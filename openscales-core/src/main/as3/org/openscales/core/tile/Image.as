@@ -1,5 +1,7 @@
 package org.openscales.core.tile
 {
+	import caurina.transitions.Tweener;
+	
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
@@ -73,7 +75,8 @@ package org.openscales.core.tile
 			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
 			var loader:Loader = loaderInfo.loader as Loader;
 			this.addChild(loader);
-            this.alpha=1;
+			// Tween tile effect 
+			Tweener.addTween(this, {alpha:1, time:0.5, transition:"linear"});
 			this.layer.addChild(this);
 			this.drawn = true;
 		}
