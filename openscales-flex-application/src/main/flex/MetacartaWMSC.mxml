@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.flex.*" creationComplete="initMap()">
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.feature.Vector;
+			import org.openscales.core.Util;
+			import org.openscales.core.control.MousePosition;
+			import org.openscales.core.basetypes.Pixel;
+			import org.openscales.core.control.LayerSwitcher;
+			import mx.core.UIComponent;
+			import org.openscales.core.layer.WFS;
+			import org.openscales.core.control.Navigation;
+			import org.openscales.core.control.PanZoomBar;
+			import org.openscales.core.layer.WMS;
+			import org.openscales.core.Map;
+			import org.openscales.core.basetypes.Bounds;
+			
+			private function initMap():void {
+				
+				var map:Map = fxmap.map;
+
+				map.maxExtent = new Bounds(-180,-90,180,90);
+				map.numZoomLevels = 20;
+
+				var baselayer1:WMS = new WMS("Metacarta", "http://labs.metacarta.com/wms-c/Basic.py", {layers: "satellite", FORMAT: "image/jpeg"}, {isBaseLayer: true});
+				
+				map.addLayers([baselayer1]);
+				map.addControl(new PanZoomBar());
+				map.addControl(new Navigation());
+				map.addControl(new MousePosition());
+				//map.addControl(new LayerSwitcher({position: new Pixel(mapCanvas.width - 200, 0)}));	
+				map.zoomTo(5);
+			}
+		]]>
+	</mx:Script>
+	<openscales:FxMap id="fxmap" height="100%" width="100%" />
+</mx:Canvas>

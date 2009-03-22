@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.flex.*" creationComplete="initMap();">
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.feature.Vector;
+			import org.openscales.core.Util;
+			import org.openscales.core.basetypes.Pixel;
+			import org.openscales.core.control.LayerSwitcher;
+			import org.openscales.core.layer.WFS;
+			import org.openscales.core.control.Navigation;
+			import org.openscales.core.control.PanZoomBar;
+			import org.openscales.core.layer.WMS;
+			import org.openscales.core.Map;
+			import org.openscales.core.basetypes.Bounds;
+			import mx.core.UIComponent;
+			
+			private function initMap():void {
+				
+				var map:Map = fxmap.map;
+				map.maxExtent = new Bounds(-77.92,40.75,-77.79,40.85);
+				map.maxResolution = 1;
+				map.numZoomLevels = 21;
+				
+				var baselayer1:WMS = new WMS("Base Image", "http://www.apps.geovista.psu.edu/tilecache/tilecache.py", {layers: "centreimagerygeogjpeg", FORMAT: "image/jpeg"}, {isBaseLayer: true});
+				
+				var style_blue:Object = Util.extend({}, Vector.style['default']);
+				var style_white:Object = Util.extend({}, Vector.style['default']);
+				style_blue.strokeColor = 0x0000FF;
+				style_white.strokeColor = 0xFFFFFF;
+				
+				var wfslayer1:WFS = new WFS("Blue Course Track", "http://www.apps.geovista.psu.edu/geoserver/wfs", {typename: "golf:golf_7_2207", SRS: "EPSG:4326", VERSION: "1.0.0"}, {isBaseLayer: false, minZoomLevel: 21, style: style_blue});
+				var wfslayer2:WFS = new WFS("White Course Track", "http://www.apps.geovista.psu.edu/geoserver/wfs", {typename: "golf:golftracks2", SRS: "EPSG:4326", VERSION: "1.0.0"}, {isBaseLayer: false, minZoomLevel: 21, style: style_white});
+				map.addLayers([baselayer1, wfslayer1, wfslayer2]);
+				map.addControl(new PanZoomBar());
+				map.addControl(new Navigation());
+				//map.addControl(new LayerSwitcher({position: new Pixel(mapCanvas.width - 200, 0)}));	
+				map.zoomToExtent(new Bounds(-77.92,40.75,-77.79,40.85));
+			}
+			
+		]]>
+	</mx:Script>
+	<openscales:FxMap id="fxmap" height="100%" width="100%" />
+</mx:Canvas>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flexLibProperties version="1">
+<includeClasses>
+<classEntry path="org.openscales.core.Base"/>
+<classEntry path="org.openscales.core.CanvasOL"/>
+<classEntry path="org.openscales.core.CheckBoxOL"/>
+<classEntry path="org.openscales.core.Control"/>
+<classEntry path="org.openscales.core.EventOL"/>
+<classEntry path="org.openscales.core.Events"/>
+<classEntry path="org.openscales.core.Feature"/>
+<classEntry path="org.openscales.core.Format"/>
+<classEntry path="org.openscales.core.FrameOL"/>
+<classEntry path="org.openscales.core.Geometry"/>
+<classEntry path="org.openscales.core.Handler"/>
+<classEntry path="org.openscales.core.Icon"/>
+<classEntry path="org.openscales.core.ImageOL"/>
+<classEntry path="org.openscales.core.Layer"/>
+<classEntry path="org.openscales.core.Map"/>
+<classEntry path="org.openscales.core.Marker"/>
+<classEntry path="org.openscales.core.OpenScales"/>
+<classEntry path="org.openscales.core.PopupOL"/>
+<classEntry path="org.openscales.core.RadioButtonOL"/>
+<classEntry path="org.openscales.core.Renderer"/>
+<classEntry path="org.openscales.core.RequestOL"/>
+<classEntry path="org.openscales.core.Responders"/>
+<classEntry path="org.openscales.core.SpriteOL"/>
+<classEntry path="org.openscales.core.StringUtils"/>
+<classEntry path="org.openscales.core.TextInputOL"/>
+<classEntry path="org.openscales.core.Tile"/>
+<classEntry path="org.openscales.core.TimerOL"/>
+<classEntry path="org.openscales.core.URLLoaderOL"/>
+<classEntry path="org.openscales.core.URLStreamOL"/>
+<classEntry path="org.openscales.core.Util"/>
+<classEntry path="org.openscales.core.basetypes.Bounds"/>
+<classEntry path="org.openscales.core.basetypes.Element"/>
+<classEntry path="org.openscales.core.basetypes.LonLat"/>
+<classEntry path="org.openscales.core.basetypes.Pixel"/>
+<classEntry path="org.openscales.core.basetypes.Size"/>
+<classEntry path="org.openscales.core.control.ArgParser"/>
+<classEntry path="org.openscales.core.control.DragPan"/>
+<classEntry path="org.openscales.core.control.DrawFeature"/>
+<classEntry path="org.openscales.core.control.LayerSwitcher"/>
+<classEntry path="org.openscales.core.control.MousePosition"/>
+<classEntry path="org.openscales.core.control.Navigation"/>
+<classEntry path="org.openscales.core.control.PanZoom"/>
+<classEntry path="org.openscales.core.control.PanZoomBar"/>
+<classEntry path="org.openscales.core.control.SelectFeature"/>
+<classEntry path="org.openscales.core.control.SelectFeatureBox"/>
+<classEntry path="org.openscales.core.control.ZoomBox"/>
+<classEntry path="org.openscales.core.feature.Feature"/>
+<classEntry path="org.openscales.core.feature.State"/>
+<classEntry path="org.openscales.core.feature.Vector"/>
+<classEntry path="org.openscales.core.feature.WFS"/>
+<classEntry path="org.openscales.core.format.GML"/>
+<classEntry path="org.openscales.core.format.WFS"/>
+<classEntry path="org.openscales.core.format.WKT"/>
+<classEntry path="org.openscales.core.geometry.Collection"/>
+<classEntry path="org.openscales.core.geometry.Curve"/>
+<classEntry path="org.openscales.core.geometry.LineString"/>
+<classEntry path="org.openscales.core.geometry.LinearRing"/>
+<classEntry path="org.openscales.core.geometry.MultiLineString"/>
+<classEntry path="org.openscales.core.geometry.MultiPoint"/>
+<classEntry path="org.openscales.core.geometry.MultiPolygon"/>
+<classEntry path="org.openscales.core.geometry.Point"/>
+<classEntry path="org.openscales.core.geometry.Polygon"/>
+<classEntry path="org.openscales.core.geometry.Rectangle"/>
+<classEntry path="org.openscales.core.geometry.Surface"/>
+<classEntry path="org.openscales.core.handler.Box"/>
+<classEntry path="org.openscales.core.handler.Click"/>
+<classEntry path="org.openscales.core.handler.Drag"/>
+<classEntry path="org.openscales.core.handler.Feature"/>
+<classEntry path="org.openscales.core.handler.MouseWheel"/>
+<classEntry path="org.openscales.core.handler.Path"/>
+<classEntry path="org.openscales.core.handler.Point"/>
+<classEntry path="org.openscales.core.handler.Polygon"/>
+<classEntry path="org.openscales.core.layer.CycleMap"/>
+<classEntry path="org.openscales.core.layer.GeoRSS"/>
+<classEntry path="org.openscales.core.layer.Grid"/>
+<classEntry path="org.openscales.core.layer.HTTPRequestOL"/>
+<classEntry path="org.openscales.core.layer.Maplint"/>
+<classEntry path="org.openscales.core.layer.Mapnik"/>
+<classEntry path="org.openscales.core.layer.Markers"/>
+<classEntry path="org.openscales.core.layer.OSM"/>
+<classEntry path="org.openscales.core.layer.Osmarender"/>
+<classEntry path="org.openscales.core.layer.TMS"/>
+<classEntry path="org.openscales.core.layer.Vector"/>
+<classEntry path="org.openscales.core.layer.WFS"/>
+<classEntry path="org.openscales.core.layer.WMS"/>
+<classEntry path="org.openscales.core.popup.Anchored"/>
+<classEntry path="org.openscales.core.popup.AnchoredBubble"/>
+<classEntry path="org.openscales.core.renderer.AS"/>
+<classEntry path="org.openscales.core.renderer.Elements"/>
+<classEntry path="org.openscales.core.tile.Image"/>
+<classEntry path="org.openscales.core.tile.WFS"/>
+</includeClasses>
+<includeResources>
+<resourceEntry destPath="org/openscales/core/img/blank.gif" sourcePath="org/openscales/core/img/blank.gif"/>
+<resourceEntry destPath="org/openscales/core/img/layerSave.png" sourcePath="org/openscales/core/img/layerSave.png"/>
+<resourceEntry destPath="org/openscales/core/img/layerDel.png" sourcePath="org/openscales/core/img/layerDel.png"/>
+<resourceEntry destPath="org/openscales/core/img/north-mini.png" sourcePath="org/openscales/core/img/north-mini.png"/>
+<resourceEntry destPath="org/openscales/core/img/panning-hand-off.png" sourcePath="org/openscales/core/img/panning-hand-off.png"/>
+<resourceEntry destPath="org/openscales/core/img/drag-rectangle-off.png" sourcePath="org/openscales/core/img/drag-rectangle-off.png"/>
+<resourceEntry destPath="org/openscales/core/img/layerSel.png" sourcePath="org/openscales/core/img/layerSel.png"/>
+<resourceEntry destPath="org/openscales/core/img/layerCancel.png" sourcePath="org/openscales/core/img/layerCancel.png"/>
+<resourceEntry destPath="org/openscales/core/img/layerViz.png" sourcePath="org/openscales/core/img/layerViz.png"/>
+<resourceEntry destPath="org/openscales/core/img/drag-rectangle-on.png" sourcePath="org/openscales/core/img/drag-rectangle-on.png"/>
+<resourceEntry destPath="org/openscales/core/img/marker.png" sourcePath="org/openscales/core/img/marker.png"/>
+<resourceEntry destPath="org/openscales/core/img/zoom-plus-mini.png" sourcePath="org/openscales/core/img/zoom-plus-mini.png"/>
+<resourceEntry destPath="org/openscales/core/img/west-mini.png" sourcePath="org/openscales/core/img/west-mini.png"/>
+<resourceEntry destPath="org/openscales/core/img/marker-green.png" sourcePath="org/openscales/core/img/marker-green.png"/>
+<resourceEntry destPath="org/openscales/core/img/measuring-stick-off.png" sourcePath="org/openscales/core/img/measuring-stick-off.png"/>
+<resourceEntry destPath="org/openscales/core/img/zoom-minus-mini.png" sourcePath="org/openscales/core/img/zoom-minus-mini.png"/>
+<resourceEntry destPath="org/openscales/core/img/marker-blue.png" sourcePath="org/openscales/core/img/marker-blue.png"/>
+<resourceEntry destPath="org/openscales/core/img/panning-hand-on.png" sourcePath="org/openscales/core/img/panning-hand-on.png"/>
+<resourceEntry destPath="org/openscales/core/img/layer-switcher-minimize.png" sourcePath="org/openscales/core/img/layer-switcher-minimize.png"/>
+<resourceEntry destPath="org/openscales/core/img/slider.png" sourcePath="org/openscales/core/img/slider.png"/>
+<resourceEntry destPath="org/openscales/core/img/layer-switcher-maximize.png" sourcePath="org/openscales/core/img/layer-switcher-maximize.png"/>
+<resourceEntry destPath="org/openscales/core/img/marker-gold.png" sourcePath="org/openscales/core/img/marker-gold.png"/>
+<resourceEntry destPath="org/openscales/core/img/layerAccept.png" sourcePath="org/openscales/core/img/layerAccept.png"/>
+<resourceEntry destPath="org/openscales/core/img/layerDraw.png" sourcePath="org/openscales/core/img/layerDraw.png"/>
+<resourceEntry destPath="org/openscales/core/img/south-mini.png" sourcePath="org/openscales/core/img/south-mini.png"/>
+<resourceEntry destPath="org/openscales/core/img/close.gif" sourcePath="org/openscales/core/img/close.gif"/>
+<resourceEntry destPath="org/openscales/core/img/east-mini.png" sourcePath="org/openscales/core/img/east-mini.png"/>
+<resourceEntry destPath="org/openscales/core/img/zoom-world-mini.png" sourcePath="org/openscales/core/img/zoom-world-mini.png"/>
+<resourceEntry destPath="org/openscales/core/img/measuring-stick-on.png" sourcePath="org/openscales/core/img/measuring-stick-on.png"/>
+<resourceEntry destPath="org/openscales/core/img/zoombar.png" sourcePath="org/openscales/core/img/zoombar.png"/>
+</includeResources>
+<namespaceManifests/>
+</flexLibProperties>

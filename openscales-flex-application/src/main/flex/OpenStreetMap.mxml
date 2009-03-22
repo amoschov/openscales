@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.flex.*" creationComplete="initMap();">
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.basetypes.Size;
+			import org.openscales.core.basetypes.Pixel;
+			import org.openscales.core.control.LayerSwitcher;
+			import org.openscales.core.layer.Maplint;
+			import org.openscales.core.layer.Mapnik;
+			import org.openscales.core.basetypes.LonLat;
+			import org.openscales.core.layer.Osmarender;
+			import org.openscales.core.control.Navigation;
+			import org.openscales.core.control.PanZoomBar;
+			import org.openscales.core.layer.OSM;
+			import org.openscales.core.Map;
+			import org.openscales.core.basetypes.Bounds;
+			private function initMap():void
+			{
+				
+				var map:Map = fxmap.map;
+				map.maxResolution = 1;
+				map.numZoomLevels = 21;
+				map.size=new Size(fxmap.width, fxmap.height);
+				
+				//var osm:Osmarender = new Osmarender('Osmarender');
+				var mapnik:Mapnik = new Mapnik("Mapnik");
+								
+				map.addLayers([mapnik]);
+				map.addControl(new PanZoomBar());
+				map.addControl(new Navigation());
+				map.addControl(new LayerSwitcher({position: new Pixel(fxmap.width - 200, 0)}));
+				
+				var lat:Number=-3.5397294921874973;
+        		var lon:Number=-43.584918945312495;
+        		var zoom:Number=8;
+        		
+        		var lonLat:LonLat = new LonLat(lon, lat);
+        		map.setCenter (lonLat, zoom);
+
+			}
+		]]>
+	</mx:Script>
+	
+	<openscales:FxMap id="fxmap" width="100%" height="100%" />	
+</mx:Canvas>

@@ -1,0 +1,173 @@
+﻿<?xml version="1.0"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.openscales</groupId>
+	<artifactId>openscales</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>OpenScales</name>
+	<description>OpenScales is a user-friendly and fast interface designed to manipulate spatial data : geographic raster viewing, data-vector editing, management of smooth transitions between scales and positions, ...</description>
+	<url>http://openscales.org/</url>
+	
+	<properties>
+		<flex.version>3.2.0.3958</flex.version>
+		<compiler.mojo.version>2.0.1</compiler.mojo.version>
+		<asdoc.mojo.version>2.0.3</asdoc.mojo.version>
+		<flex.target.player.version>9.0.0</flex.target.player.version>
+	</properties>
+	
+	<profiles>
+		<profile>
+            <id>env-dev</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+			</activation>
+            <properties>
+				<mvn.site>file:///home/www/openscales.org/mvn-site</mvn.site>
+            </properties>
+        </profile>
+	</profiles>
+	
+	<modules>
+		<module>openscales-core</module>
+		<module>openscales-flex-application</module>
+		<module>openscales-flex-component</module>
+	</modules>
+	
+	<issueManagement>
+		<system>Indefero Issue management</system>
+		<url>http://openscales.org/p/openscales/issues/</url>
+	</issueManagement>
+	<inceptionYear>2009</inceptionYear>
+	<mailingLists>
+		<mailingList>
+			<name>OpenScales developer group</name>
+			<subscribe>openscales-dev@googlegroups.com</subscribe>
+			<unsubscribe>
+				openscales-dev-unsubscribe@googlegroups.com
+			</unsubscribe>
+			<post>openscales-dev@googlegroups.com</post>
+			<archive>http://groups.google.com/group/openscales-dev</archive>
+		</mailingList>
+	</mailingLists>
+	<developers>
+		<developer>
+			<id>bouiaw</id>
+			<name>Sebastien Deleuze</name>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>aba</id>
+			<name>Aurélien Barbier-Accari</name>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>romaric</id>
+			<name>Romaric Pascal</name>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
+	<scm>
+		<connection>scm:svn:http://openscales.org/svn/openscales/trunk/</connection>
+		<developerConnection>scm:svn:http://openscales.org/svn/openscales/trunk/</developerConnection>
+		<tag>HEAD</tag>
+		<url>http://openscales.org/p/openscales/source/tree/HEAD/trunk/</url>
+	</scm>
+	<ciManagement>
+		<system>hudson</system>
+		<url>http://openscales.org/hudson/job/OpenScales/</url>
+	</ciManagement>
+	<licenses>
+	 	<license>
+			<name>LGPL (GNU Lesser General Public License)</name>
+			<url>http://www.gnu.org/licenses/lgpl-3.0-standalone.html</url>
+			<distribution>manual</distribution>
+		</license>
+ 	</licenses>
+	
+	<build>
+		<sourceDirectory>src/main/as3</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>info.flex-mojos</groupId>
+				<artifactId>flex-compiler-mojo</artifactId>
+				<version>${compiler.mojo.version}</version>
+				<extensions>true</extensions>
+				<dependencies>
+					<dependency>
+						<groupId>com.adobe.flex</groupId>
+						<artifactId>compiler</artifactId>
+						<version>${flex.version}</version>
+						<type>pom</type>
+					</dependency>
+				</dependencies> 
+				<configuration>
+					 <locales>
+						<locale>en_US</locale>
+					</locales>
+					<debug>false</debug>
+					<targetPlayer>${flex.target.player.version}</targetPlayer>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.adobe.flex.framework</groupId>
+			<artifactId>playerglobal</artifactId>
+			<version>9-${flex.version}</version>
+			<type>swc</type>
+		</dependency>
+		<dependency>
+	  		<groupId>com.adobe.flex.framework</groupId>
+	  		<artifactId>rpc</artifactId>
+	  		<version>${flex.version}</version>
+	  		<type>rb.swc</type>
+			<classifier>en_US</classifier> 
+		</dependency>
+		<dependency>
+	  		<groupId>com.adobe.flex.framework</groupId>
+	  		<artifactId>framework</artifactId>
+	  		<version>${flex.version}</version>
+	  		<type>rb.swc</type>
+	  		<classifier>en_US</classifier>
+		</dependency>
+		<dependency>
+	  		<groupId>com.adobe.flex.framework</groupId>
+	  		<artifactId>flex-framework</artifactId>
+	  		<version>${flex.version}</version>
+	  		<type>pom</type>
+		</dependency>
+	</dependencies>
+	
+
+	<repositories>
+		<repository>
+			<id>flexmojos</id>
+			<url>http://svn.sonatype.org/flexmojos/repository</url>
+		</repository>
+		<repository>
+			<id>openscales</id>
+			<url>http://openscales.org/nexus/content/repositories/releases/</url>
+		</repository>
+	</repositories>
+	
+	<pluginRepositories>
+		<pluginRepository>
+			<id>flexmojos</id>
+			<url>http://svn.sonatype.org/flexmojos/repository</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	 <distributionManagement>
+			<site>
+					<id>openscales.org</id>
+					<url>${mvn.site}</url>
+			</site>
+	</distributionManagement>
+
+</project>

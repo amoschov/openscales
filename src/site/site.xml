@@ -1,0 +1,23 @@
+<project>
+  <skin>
+    <groupId>org.apache.tapestry</groupId>
+    <artifactId>maven-skin</artifactId>
+    <version>1.2</version>
+  </skin>
+  
+  	<bannerLeft>
+	    <name>OpenScales</name>
+	    <src>images/OpenscalesLogo-GBl-BgCurs-Rounded.png</src>
+    	<href>http://openscales.org/</href>
+ 	</bannerLeft>
+  
+	<body>
+		<menu name="Overview">
+			<item name="Introduction" href="index.html"/>
+		</menu>
+		
+		<menu ref="modules" />
+		
+		<menu ref="reports" />
+	</body>
+</project>

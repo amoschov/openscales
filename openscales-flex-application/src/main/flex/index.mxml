@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:flexlayers="*" layout="absolute" >
+	<mx:TabNavigator width="100%" height="100%">
+		<flexlayers:OpenStreetMap label="Open Street Map"/>
+		<flexlayers:MetacartaWMSC label="Metacarta WMS-C" />
+		<flexlayers:GeovistaWMSCWFS label="WMS-C layer and 2 WFS"/>
+		<flexlayers:MetacartaWFS label="Metacarta WFS" />
+	</mx:TabNavigator>	
+</mx:Application>
