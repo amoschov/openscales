@@ -11,7 +11,7 @@ package org.openscales.flex {
 		
 		public function FxMap() {
 			super();
-
+			
 		}
 		
 		override protected function createChildren():void

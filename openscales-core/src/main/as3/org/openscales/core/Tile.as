@@ -18,7 +18,6 @@ package org.openscales.core
 		public var url:String = null;
 		public var bounds:Bounds = null;
 		public var size:Size = null;
-		public var position:Pixel = null;
 		public var drawn:Boolean = false;
 		public var postBody:Object = null;
 		public var BBOX:Bounds = null;
@@ -65,6 +64,7 @@ package org.openscales.core
 	        this.clear();
 	        this.bounds = bounds.clone();
 	        this.position = position.clone();
+	        this.url = this.layer.getURL(this.bounds);
 	        if (redraw) {
 	            this.draw();
 	        }	
@@ -89,6 +89,16 @@ package org.openscales.core
 	        }
 	        bounds = new Bounds(topLeft.lon, bottomRight.lat, bottomRight.lon, topLeft.lat);  
 	        return bounds;
+		}
+		
+		public function get position():Pixel
+		{
+			return new Pixel(this.x, this.y);
+		}
+		public function set position(value:Pixel):void
+		{
+			this.x = value.x;
+			this.y = value.y;
 		}
 		
 	}
