@@ -107,7 +107,7 @@ package org.openscales.core.control
 	        zoomBar.width = this.zoomStopWidth;
 	        zoomBar.height = this.zoomStopHeight * this.map.getNumZoomLevels();
 	        
-	        zoomBar.addEventListener(MouseEvent.MOUSE_DOWN, this.controlClick);
+	        zoomBar.addEventListener(MouseEvent.MOUSE_DOWN, this.zoomBarClick);
 	        zoomBar.addEventListener(MouseEvent.DOUBLE_CLICK, this.doubleClick);
 	        zoomBar.addEventListener(MouseEvent.CLICK, this.doubleClick);
 	        
@@ -127,7 +127,7 @@ package org.openscales.core.control
 	    	//this.sliderEvents.handleBrowserEvent(evt);
 	    }
 	    
-	    public function controlClick(evt:MouseEvent):void {
+	    public function zoomBarClick(evt:MouseEvent):void {
 	    	if (!OpenScalesEvent.isLeftClick(evt)) return;
 	        var y:Number = evt.stageY;
 	        var top:Number = Util.pagePosition(evt.currentTarget)[1];

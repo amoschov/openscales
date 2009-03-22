@@ -382,6 +382,11 @@ package org.openscales.core
 		public function updateSize():void { 
 
 				this.scrollRect = new Rectangle(0,0,this.size.w,this.size.h);
+				
+				this.graphics.clear();
+				this.graphics.beginFill(0xFFFFFF);
+				this.graphics.drawRect(0,0,this.size.w,this.size.h);
+				this.graphics.endFill();
 					            	
 	            for(var i:int=0; i < this.layers.length; i++) {
 	                this.layers[i].onMapResize();                

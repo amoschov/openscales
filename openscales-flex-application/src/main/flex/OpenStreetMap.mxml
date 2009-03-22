@@ -29,7 +29,7 @@
 				map.addLayers([mapnik]);
 				map.addControl(new PanZoomBar());
 				map.addControl(new Navigation());
-				//map.addControl(new LayerSwitcher({position: new Pixel(map.width - 200, 0)}));
+				map.addControl(new LayerSwitcher({position: new Pixel(map.width/2, 0)}));
 				
 				var lat:Number=-3.5397294921874973;
         		var lon:Number=-43.584918945312495;

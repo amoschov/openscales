@@ -1,10 +1,10 @@
 package org.openscales.core
 {
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.layer.Vector;
 	
 	public class Control extends Sprite
@@ -50,7 +50,11 @@ package org.openscales.core
 		}
 		
 		public function draw():void {
-	        
+	        // Reset before drawing
+	        this.graphics.clear();
+	        while (this.numChildren > 0) {
+	    		var child:DisplayObject = removeChildAt(0);
+	        }
 		}
 		
 		public function set position(px:Pixel):void {

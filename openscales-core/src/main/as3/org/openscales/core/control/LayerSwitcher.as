@@ -1,79 +1,54 @@
 package org.openscales.core.control
 {
-	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
-	import mx.controls.Label;
-	
-	import org.openscales.core.CanvasOL;
-	import org.openscales.core.CheckBoxOL;
 	import org.openscales.core.Control;
 	import org.openscales.core.Layer;
 	import org.openscales.core.Map;
-	import org.openscales.core.RadioButtonOL;
-	import org.openscales.core.Util;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.event.OpenScalesEvent;
 	
 	public class LayerSwitcher extends Control
 	{
 		
-		public var activeColor:String = "#00008B";
+		private var _activeColor:uint = 0x00008B;
+		private var _textColor:uint = 0xFFFFFF;
+		private var _textOffset:int=20;
+		
+		private var _minimized:Boolean = true;
+	    	    
+	    private var _minimizeButton:Button = null;
 	    
-	    public var layersCanvas:CanvasOL = null;
-
-	    public var baseLayersCanvas:CanvasOL = null;
-
-	    public var baseLayers:Array = null;
-
-	    //public var dataLbl:Label = null;
-	    
-	    public var dataLayersCanvas:CanvasOL = null;
-
-	    public var dataLayers:Array = null;
-
-	    public var minimizeCanvas:CanvasOL = null;
-
-	    public var maximizeCanvas:CanvasOL = null;
-
-	    public var ascending:Boolean = true;
-	    
-	    public var mouseDown:Boolean;
-	    
-	    public var canWidth:Number;
-	    
-	    public var baseLayerCount:int = 0;
-	    
-	    public var dataLayerCount:int = 0;
-	    
+	    private var _maximizeButton:Button = null;
+	    	    
 	    [Embed(source="/org/openscales/core/img/layer-switcher-maximize.png")]
-        protected var layerSwitcherMaximizeImg:Class;
+        private var _layerSwitcherMaximizeImg:Class;
         
        	[Embed(source="/org/openscales/core/img/layer-switcher-minimize.png")]
-        protected var layerSwitcherMinimizeImg:Class;
+        private var _layerSwitcherMinimizeImg:Class;
 
 		public function LayerSwitcher(options:Object = null):void {
 			super(options);
-			this.layersCanvas = new CanvasOL();
-			this.baseLayersCanvas = new CanvasOL();
-			this.dataLayersCanvas = new CanvasOL();
+			
+			this._minimizeButton = new Button("minimize", new _layerSwitcherMinimizeImg(), this.position.add(-18,0));
+			this._maximizeButton = new Button("maximize", new _layerSwitcherMaximizeImg(), this.position.add(-18,0));
+			
+			this._minimizeButton.addEventListener(MouseEvent.CLICK, minMaxButtonClick); 
+			this._maximizeButton.addEventListener(MouseEvent.CLICK, minMaxButtonClick);
+			 
 		}
 		
 		override public function destroy():void {
 			OpenScalesEvent.stopObservingElement("click", this);
 
-	        OpenScalesEvent.stopObservingElement("click", this.minimizeCanvas);
-	        OpenScalesEvent.stopObservingElement("click", this.maximizeCanvas);
-	        
-	        this.clearLayersArray("base");
-	        this.clearLayersArray("data");
-	        
-	        this.map.events.unregister("addlayer", this, this.redraw);
-	        this.map.events.unregister("changelayer", this, this.redraw);
-	        this.map.events.unregister("removelayer", this, this.redraw);
-	        this.map.events.unregister("changebaselayer", this, this.redraw);
+	        OpenScalesEvent.stopObservingElement("click", this._minimizeButton);
+	        OpenScalesEvent.stopObservingElement("click", this._maximizeButton);
+	        	        
+	        this.map.events.unregister("addlayer", this, this.draw);
+	        this.map.events.unregister("changelayer", this, this.draw);
+	        this.map.events.unregister("removelayer", this, this.draw);
+	        this.map.events.unregister("changebaselayer", this, this.draw);
 	        
 	        super.destroy();
 		}
@@ -81,311 +56,88 @@ package org.openscales.core.control
 		override public function setMap(map:Map):void {
 			super.setMap(map);
 
-	        this.map.events.register("addlayer", this, this.redraw);
-	        this.map.events.register("changelayer", this, this.redraw);
-	        this.map.events.register("removelayer", this, this.redraw);
-	        this.map.events.register("changebaselayer", this, this.redraw);
+	        this.map.events.register("addlayer", this, this.draw);
+	        this.map.events.register("changelayer", this, this.draw);
+	        this.map.events.register("removelayer", this, this.draw);
+	        this.map.events.register("changebaselayer", this, this.draw);
 		}
 		
 		override public function draw():void {
 			super.draw();
-
-	        this.redraw();
-	        
-	        this.loadContents();    
-	
-		}
-		
-		public function clearLayersArray(layersType:String):void {
-			var layers:Array = this[layersType + "Layers"];
-	        if (layers) {
-	            for(var i:int=0; i < layers.length; i++) {
-	                var layer:Object = layers[i];
-	                OpenScalesEvent.stopObservingElement("click", layer.inputElem);
-	                OpenScalesEvent.stopObservingElement("click", layer.labelSpan);
-	            }
-	        }
-	        this[layersType + "Layers"] = new Array();
-		}
-		
-		public function redraw(obt:Object = null):Sprite {
-	        this.clearLayersArray("base");
-	        this.clearLayersArray("data");
-	        baseLayerCount = 0;
-	        dataLayerCount = 0;
-	        
-	        var containsOverlays:Boolean = false;
-	        
-	        var layers:Array = this.map.layers.slice();
-	        if (!this.ascending) { layers.reverse(); }
-	        for( var i:int = 0; i < layers.length; i++) {
-	            var layer:Layer = layers[i];
-	            var baseLayer:Boolean = layer.isBaseLayer;
-	
-	            if (baseLayer || layer.displayInLayerSwitcher) {
-	
-	                if (!baseLayer) {
-	                    containsOverlays = true;
-	                }
-	
-	                var checked:Boolean = (baseLayer) ? (layer == this.map.baseLayer)
-	                                          : layer.visibility;
-
-					var type:String = (baseLayer) ? "radio" : "checkbox";
-	                var inputElem:Object = createElement(type); //supprimer la methode et creer les radioboutons à la main
-	                	               
-	                
-	                inputElem.id = "input_" + layer.name;
-	                inputElem.name = (baseLayer) ? "baseLayers" : layer.name;
-	                inputElem.selected = checked;
-	                inputElem.label = layer.name;
-	                var layerCount:int = (baseLayer) ? baseLayerCount : dataLayerCount;
-	                inputElem.y = layerCount * 20;
-	
-	                if (!baseLayer && !layer.inRange) {
-	                    inputElem.enabled = false;
-	                }
-	                var context:Object = {
-	                    'inputElem': inputElem,
-	                    'layer': layer,
-	                    'layerSwitcher': this
-	                }
-	                inputElem.context = context;
-	                new OpenScalesEvent().observe(inputElem, MouseEvent.CLICK, 
-	                              onInputClick);	    
-	                
-	                var groupArray:Array = (baseLayer) ? this.baseLayers
-	                                             : this.dataLayers;
-	                groupArray.push({
-	                    'layer': layer,
-	                    'inputElem': inputElem
-	                });
-	                                                     
-	    
-	                var groupCanvas:Object = (baseLayer) ? this.baseLayersCanvas
-	                                           : this.dataLayersCanvas;
-	                if (baseLayer) {
-	                	baseLayerCount++;
-	                } else {
-	                	dataLayerCount++;
-	                }
-	                groupCanvas.addChild(inputElem);
-	            }
-	        }    
-	
-			this.width = 200;
-			this.height = (baseLayerCount + dataLayerCount) * 25 + 60;
-			if (this.position) {
-				this.x =  this.position.x;
-				this.y =  this.position.y;	
-			}
-	        return this;
-		}
-		
-		 public function createElement(type:String):Object {
-			var element:Object = null;
-			if (type == "radio") {
-				element = new RadioButtonOL();
-				element.styleName = "layerinput";
-			} else if (type == "checkbox") {
-				element = new CheckBoxOL();
-				element.styleName = "layerinput";
-			}
-			return element;
-		} //supprimer cette methode "create element"
-		
-		public function onInputClick(e:MouseEvent):void {
-			var inputElem:Object = e.currentTarget;
-			if (inputElem.enabled) {
-				var context:Object = inputElem.context;
-	            if (inputElem is RadioButtonOL) {
-	                inputElem.selected = true;
-	                context.layer.map.setBaseLayer(context.layer, true);
-	                context.layer.map.events.triggerEvent("changebaselayer");
-	            } else {
-	                inputElem.selected = !inputElem.selected;
-	                context.layerSwitcher.updateMap();
-	            }
-	        }
-	        //OpenScalesEvent.stop(e);
-		}
-		
-		public function onLayerClick(e:MouseEvent):void {
-			this.updateMap();
-		}
-		
-		public function updateMap():void {    
-	        for(var i:int=0; i < this.baseLayers.length; i++) {
-	            var layerEntry:Object = this.baseLayers[i];
-	            if (layerEntry.inputElem.selected) {
-	                this.map.setBaseLayer(layerEntry.layer, false);
-	                var layer:Layer = this.map.layers[0] as Layer;//Création d'un layer
-	                //this.map.layers.lenght -> obtenir la taille du tableau, donc obtenir le nbr de layer existant
-	                
-	            }
-	        }
-
-	        for(i=0; i < this.dataLayers.length; i++) {
-	            layerEntry = this.dataLayers[i];   
-	            layerEntry.layer.setVisibility(layerEntry.inputElem.selected, true);
-	        }
-		}
-		
-		public function maximizeControl(e:MouseEvent = null):void {
-			this.width = 200;
-	        this.height = (baseLayerCount + dataLayerCount) * 25 + 60;
-	        this.x = this.position.x;
-	
-	        this.showControls(false);
-		}
-		
-		public function minimizeControl(e:MouseEvent = null):void {
-	        this.width = 20;
-			this.height = 0;
-			this.x = this.position.x + 200 - 20;
-	
-	        this.showControls(true);
-		}
-		
-		public function showControls(minimize:Boolean):void {
-			this.maximizeCanvas.visible = !minimize;
-	        this.minimizeCanvas.visible = minimize;
-
-		}
-		
-		public function loadContents():void {
-	        this.y = 0;
-/* 	        this.setStyle("fontFamily", "Verdana, Arial");
-	        this.setStyle("fontWeight", "bold");
-	        this.setStyle("fontSize", 10);
-	        this.setStyle("color", "#FFFFFF"); */
-	        this.height=150;
-	    
-	        new OpenScalesEvent().observe(this, MouseEvent.MOUSE_UP, 
-	                      this.mouseUpF);
-	        new OpenScalesEvent().observe(this, MouseEvent.CLICK,
-	                      this.ignoreEvent);
-	        new OpenScalesEvent().observe(this, MouseEvent.MOUSE_DOWN,
-	                      this.mouseDownF);
-	        new OpenScalesEvent().observe(this, MouseEvent.DOUBLE_CLICK, this.ignoreEvent);
-	  
-	        this.layersCanvas = new CanvasOL();
-	        this.layersCanvas.horizontalScrollPolicy = "off";
-	        this.layersCanvas.verticalScrollPolicy = "off";
-	        this.layersCanvas.id = "layersCanvas";
-	        this.layersCanvas.setStyle("backgroundColor", this.activeColor);
-	        this.layersCanvas.setStyle("backgroundAlpha", 0.75);
-	        
-	        // had to set width/height to get transparency in IE to work.
-	        // thanks -- http://jszen.blogspot.com/2005/04/ie6-opacity-filter-caveat.html
-	        //
-	        this.layersCanvas.percentWidth = 100;
-	        this.layersCanvas.percentHeight = 100;
-	
-	        var baseLbl:Label = new Label();
-	        baseLbl.htmlText = "<u>Base Layer</u>";
-	        
-	        this.baseLayersCanvas = new CanvasOL();
-	        this.baseLayersCanvas.horizontalScrollPolicy = "off";
-	        this.baseLayersCanvas.verticalScrollPolicy = "off";
-	        this.baseLayersCanvas.percentWidth = 100;
-	        
-			var dataLbl :Label = new Label();
-	        dataLbl = new Label();
-	        dataLbl.htmlText = "<u>Overlays</u>";
-	        
-	        this.dataLayersCanvas = new CanvasOL();
-	        this.dataLayersCanvas.horizontalScrollPolicy = "off";
-	        this.dataLayersCanvas.verticalScrollPolicy = "off";
-	        this.dataLayersCanvas.percentWidth = 100;
-	                     
-	                
-	     /*            var checkBox:CheckBox = new CheckBox();
-	                checkBox.name = "kikou";
-	                checkBox.label = "kikou";
-	              checkBox.x=3;
-	              checkBox.y=43;
-	                this.layersCanvas.addChild(checkBox);*/
-	
-			if (this.ascending) {
-				baseLbl.x = 3;
-				baseLbl.y = 23;
-				this.baseLayersCanvas.x = 3;
-				this.baseLayersCanvas.y = 43;
-				dataLbl.x = 3;
-				dataLbl.y = 83;
-				this.dataLayersCanvas.x = 3;
-				this.dataLayersCanvas.y = 103;
+			
+			if(_minimized) {
+				this.addChild(_maximizeButton);
 			} else {
-				dataLbl.x = 3;
-				dataLbl.y = 23;
-				this.dataLayersCanvas.x = 3;
-				this.dataLayersCanvas.y = 43;
-				baseLbl.x = 3;
-				baseLbl.y = 83;
-				this.baseLayersCanvas.x = 3;
-				this.baseLayersCanvas.y = 103;
+				this.graphics.beginFill(this._activeColor);
+				this.graphics.drawRoundRectComplex(this.position.x-200,this.position.y,200,300, 20, 0, 20, 0);
+				this.graphics.endFill();
+				this.alpha = 0.7;
+				
+				var titleFormat:TextFormat = new TextFormat();
+				titleFormat.bold = true;
+				titleFormat.size = 11;
+				titleFormat.color = this._textColor;
+				titleFormat.font = "Verdana";
+				
+				var contentFormat:TextFormat = new TextFormat();
+				contentFormat.size = 11;
+				contentFormat.color = this._textColor;
+				contentFormat.font = "Verdana";
+				
+				var y:int = this.position.y + 20;
+				
+				var baselayerTextField:TextField = new TextField();
+				baselayerTextField.text="Base Layer";
+				baselayerTextField.setTextFormat(titleFormat);
+				baselayerTextField.x = this.position.x - 180;
+				baselayerTextField.y = y;
+				this.addChild(baselayerTextField);
+				
+				// Display baselayers
+				for(var i:int=0;i<this.map.layers.length;i++) {
+					var layer:Layer = this.map.layers[i] as Layer;
+					if(layer.isBaseLayer==true) {
+						y+=this._textOffset;
+						var layerTextField:TextField = new TextField();
+						layerTextField.text=layer.name;
+						layerTextField.setTextFormat(contentFormat);
+						layerTextField.x = this.position.x - 170;
+						layerTextField.y = y;
+						this.addChild(layerTextField);
+					}
+				}
+				
+				y+=this._textOffset;
+				var overlayTextField:TextField = new TextField();
+				overlayTextField.text="Overlays";
+				overlayTextField.setTextFormat(titleFormat);
+				overlayTextField.x = this.position.x - 180;
+				overlayTextField.y = y;
+				this.addChild(overlayTextField);
+				
+				// Display overlays
+				for(i=0;i<this.map.layers.length;i++) {
+					var layer:Layer = this.map.layers[i] as Layer;
+					if(layer.isBaseLayer==false) {
+						y+=this._textOffset;
+						var layerTextField:TextField = new TextField();
+						layerTextField.text=layer.name;
+						layerTextField.setTextFormat(contentFormat);
+						layerTextField.x = this.position.x - 170;
+						layerTextField.y = y;
+						this.addChild(layerTextField);
+					}
+				}
+			
+				this.addChild(_minimizeButton);
 			}
-	
-            this.layersCanvas.addChild(baseLbl);
-            this.layersCanvas.addChild(this.baseLayersCanvas);
-            this.layersCanvas.addChild(dataLbl);
-            this.layersCanvas.addChild(this.dataLayersCanvas); 
- 			
-	        //carré bleu
-	        this.addChild(this.layersCanvas);
-	
-			this.layersCanvas.setStyle("cornerRadius", 5);
-
-	        var sz:Size = new Size(18,18);        
-	
-	        this.maximizeCanvas = Util.createAlphaImageCanvas(
-	                                    "OpenScales_Control_MaximizeDiv", 
-	                                    null, 
-	                                    sz, 
-	                                    new layerSwitcherMaximizeImg(), 
-	                                    "absolute");
-	        this.maximizeCanvas.y = 5;
-	        this.maximizeCanvas.x = 3;
-	        this.maximizeCanvas.visible = false;
-	        new OpenScalesEvent().observe(this.maximizeCanvas, 
-	                      MouseEvent.CLICK, 
-	                      this.maximizeControl);
-	        
-	        this.addChild(this.maximizeCanvas);
-
-	        sz = new Size(18,18);        
-	        this.minimizeCanvas = Util.createAlphaImageCanvas(
-	                                    "OpenScales_Control_MinimizeDiv", 
-	                                    null, 
-	                                    sz, 
-	                                    new layerSwitcherMinimizeImg(), 
-	                                    "absolute");
-	        this.minimizeCanvas.y = 5;
-	        this.minimizeCanvas.x = 3;
-	        this.minimizeCanvas.visible = true;
-	        new OpenScalesEvent().observe(this.minimizeCanvas, 
-	                      MouseEvent.CLICK, 
-	                      this.minimizeControl);
-	
-	        this.addChild(this.minimizeCanvas);
 		}
 		
-		public function ignoreEvent(evt:Event):void {
-			OpenScalesEvent.stop(evt);
+		private function minMaxButtonClick(event:MouseEvent):void {
+			this._minimized = !this._minimized;
+			this.draw();
 		}
 		
-		public function mouseDownF(evt:Event):void {
-			this.mouseDown = true;
-        	this.ignoreEvent(evt);
-		}
-		
-		public function mouseUpF(evt:Event):void {
-			if (this.mouseDown) {
-	            this.mouseDown = false;
-	            this.ignoreEvent(evt);
-	        }
-		}
 		
 	}
 }
