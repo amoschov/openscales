@@ -97,8 +97,10 @@ package org.openscales.core
 		}
 		public function set position(value:Pixel):void
 		{
-			this.x = value.x;
-			this.y = value.y;
+			if(value) {
+				this.x = value.x;
+				this.y = value.y;
+			}
 		}
 		
 	}

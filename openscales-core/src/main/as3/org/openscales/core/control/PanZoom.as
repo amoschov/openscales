@@ -1,6 +1,7 @@
 package org.openscales.core.control
 {
 	import flash.display.Bitmap;
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
@@ -68,53 +69,39 @@ package org.openscales.core.control
 		}
 		
 		
-		override public function draw(toSuper:Boolean = false):void {
+		override public function draw():void {
 	        super.draw();
-	        if (!toSuper) {
-		        var px:Pixel = this.position;
-		
-		        // place the controls
-		        this.buttons = new Array();
-		
-		        var sz:Size = new Size(18,18);
+	        
+	        var px:Pixel = this.position;
+	
+	        // place the controls
+	        this.buttons = new Array();
+	
+	        var sz:Size = new Size(18,18);
 
-		        var centered:Pixel = new Pixel(this.x+sz.w/2, this.y);
-		
-		        this._addButton("panup", Util.getImagesLocation() + "north-mini.png", centered, sz);
-		        px.y = centered.y+sz.h;
-		        this._addButton("panleft", Util.getImagesLocation() + "west-mini.png", px, sz);
-		        this._addButton("panright", Util.getImagesLocation() + "east-mini.png", px.add(sz.w, 0), sz);
-		        this._addButton("pandown", Util.getImagesLocation() + "south-mini.png", 
-		                        centered.add(0, sz.h*2), sz);
-		        this._addButton("zoomin", Util.getImagesLocation() + "zoom-plus-mini.png", 
-		                        centered.add(0, sz.h*3+5), sz);
-		        this._addButton("zoomworld", Util.getImagesLocation() + "zoom-world-mini.png", 
-		                        centered.add(0, sz.h*4+5), sz);
-		        this._addButton("zoomout", Util.getImagesLocation() + "zoom-minus-mini.png", 
-		                        centered.add(0, sz.h*5+5), sz);
-	        }
+	        var centered:Pixel = new Pixel(this.x+sz.w/2, this.y);
+	
+	        this._addButton("panup", new northMiniImg(), centered, sz);
+	        px.y = centered.y+sz.h;
+	        this._addButton("panleft", new westMiniImg(), px, sz);
+	        this._addButton("panright", new eastMiniImg(), px.add(sz.w, 0), sz);
+	        this._addButton("pandown", new southMiniImg(), centered.add(0, sz.h*2), sz);
+	        this._addButton("zoomin", new zoomPlusMiniImg(), centered.add(0, sz.h*3+5), sz);
+	        this._addButton("zoomworld", new zoomWorldMiniImg(), centered.add(0, sz.h*4+5), sz);
+	        this._addButton("zoomout", new zoomMinusMiniImg(), centered.add(0, sz.h*5+5), sz);
 	        
 		}
 		
-		public function _addButton(id:String, source:Object, xy:Pixel, sz:Size, alt:String = null):void {
-	        var btn:Bitmap = source as Bitmap;
-	        btn.x = xy.x;
-	        btn.y = xy.y;
-	        	
+		public function _addButton(name:String, image:Bitmap, xy:Pixel, sz:Size, alt:String = null):void {
+	        
+	        var btn:Button = new Button(name, image, xy, sz);
+	        
 	        this.addChild(btn);
 	
-	        new OpenScalesEvent().observe(btn, MouseEvent.CLICK, 
-                                 this.buttonDown, true);
-        	//new OpenScalesEvent().observe(btn, MouseEvent.MOUSE_UP, 
-             //                    this.doubleClick, true);
-        	new OpenScalesEvent().observe(btn, MouseEvent.DOUBLE_CLICK, 
-                                 this.doubleClick, true);
-        /*	new OpenScalesEvent().observe(btn, MouseEvent.CLICK, 
-                                 this.doubleClick, true);*/
-	
-	        //we want to remember/reference the outer div
+	        btn.addEventListener(MouseEvent.CLICK, this.click);
+        	btn.addEventListener(MouseEvent.DOUBLE_CLICK, this.doubleClick);
+        	
 	        this.buttons.push(btn);
-
 		}
 		
 		public function doubleClick(evt:Event):Boolean {
@@ -122,12 +109,12 @@ package org.openscales.core.control
         	return false;
 		}
 		
-		public function buttonDown(evt:Event):void {
+		public function click(evt:Event):void {
 			if (!(evt.type == MouseEvent.CLICK)) return;
 		
-			var btn:CanvasOL = evt.currentTarget as CanvasOL;
+			var btn:Button = evt.currentTarget as Button;
 	
-	        switch (btn.action) {
+	        switch (btn.name) {
 	            case "panup": 
 	                this.map.pan(0, -50);
 	                break;

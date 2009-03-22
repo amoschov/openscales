@@ -24,7 +24,7 @@ package org.openscales.core.control
     		super(options);
     	}
     	
-    	override public function draw(toSuper:Boolean = false):void {
+    	override public function draw():void {
     		this.handler = new Drag(this,
                             {"down": this.init, "move": this.panMap, "done": this.panMapDone});
             

@@ -20,7 +20,7 @@ package org.openscales.core.control
     	public function SelectFeatureBox(options:Object = null):void {
     	}
     	
-    	override public function draw(toSuper:Boolean = false):void {
+    	override public function draw():void {
     		this.handler = new Box( this,
                             {done: this.selectBox}, {keyMask: this.keyMask} );
             

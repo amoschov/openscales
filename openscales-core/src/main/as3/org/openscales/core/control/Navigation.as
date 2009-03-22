@@ -53,7 +53,7 @@ package org.openscales.core.control
 	        return true;
 		}
 		
-		override public function draw(toSuper:Boolean = false):void {
+		override public function draw():void {
 			this.clickHandler = new Click(this, 
 	                                        { 'doubleClick': this.defaultDblClick },
 	                                        {

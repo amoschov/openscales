@@ -49,7 +49,7 @@ package org.openscales.core
 	        }
 		}
 		
-		public function draw(toSuper:Boolean = false):void {
+		public function draw():void {
 	        
 		}
 		

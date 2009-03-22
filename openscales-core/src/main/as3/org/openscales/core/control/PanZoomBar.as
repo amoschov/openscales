@@ -67,8 +67,7 @@ package org.openscales.core.control
 	    	this.draw();
 	    }
 	    
-	    override public function draw(toSuper:Boolean = true):void {
-	        super.draw(toSuper);
+	    override public function draw():void {
 
 	        this.buttons = [];
 			var px:Pixel = this.position;
@@ -95,12 +94,12 @@ package org.openscales.core.control
 	        this.slider.y = centered.y + zoomsToEnd * this.zoomStopHeight;
 	       
 	        
-	        new OpenScalesEvent().observe(slider, MouseEvent.MOUSE_DOWN, this.zoomBarDown, true);
-	        new OpenScalesEvent().observe(slider, MouseEvent.MOUSE_MOVE, this.zoomBarDrag, true);
-	        new OpenScalesEvent().observe(slider, MouseEvent.MOUSE_UP, this.zoomBarUp, true);
-	        new OpenScalesEvent().observe(slider, MouseEvent.MOUSE_OUT, this.zoomBarUp, true);
-	        new OpenScalesEvent().observe(slider, MouseEvent.DOUBLE_CLICK, this.doubleClick, true);
-	        new OpenScalesEvent().observe(slider, MouseEvent.CLICK, this.doubleClick, true);
+	        slider.addEventListener(MouseEvent.MOUSE_DOWN, this.zoomBarDown);
+	        slider.addEventListener(MouseEvent.MOUSE_MOVE, this.zoomBarDrag);
+	        slider.addEventListener(MouseEvent.MOUSE_UP, this.zoomBarUp);
+	        slider.addEventListener(MouseEvent.MOUSE_OUT, this.zoomBarUp);
+	        slider.addEventListener(MouseEvent.DOUBLE_CLICK, this.doubleClick);
+	        slider.addEventListener(MouseEvent.CLICK, this.doubleClick);
 	        
 	        this.zoomBar = new zoombarImg();
 	        zoomBar.x = centered.x;
@@ -108,9 +107,9 @@ package org.openscales.core.control
 	        zoomBar.width = this.zoomStopWidth;
 	        zoomBar.height = this.zoomStopHeight * this.map.getNumZoomLevels();
 	        
-	        new OpenScalesEvent().observe(this, MouseEvent.MOUSE_DOWN, this.controlClick, true);
-	        new OpenScalesEvent().observe(this, MouseEvent.DOUBLE_CLICK, this.doubleClick, true);
-	        new OpenScalesEvent().observe(this, MouseEvent.CLICK, this.doubleClick, true);
+	        zoomBar.addEventListener(MouseEvent.MOUSE_DOWN, this.controlClick);
+	        zoomBar.addEventListener(MouseEvent.DOUBLE_CLICK, this.doubleClick);
+	        zoomBar.addEventListener(MouseEvent.CLICK, this.doubleClick);
 	        
 	        this.addChild(this.zoomBar);
 	

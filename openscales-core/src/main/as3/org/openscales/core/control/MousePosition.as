@@ -34,19 +34,17 @@ package org.openscales.core.control
     		super(options);
     	}
     	
-    	override public function draw(toSuper:Boolean = false):void {
+    	override public function draw():void {
 	    	super.draw();
 	
-	        if (!toSuper) {
-		        if (!this.element) {
-		            this.x = this.map.width - 150;
-		            this.y = this.map.height - 30;
-		            this.label = new Label();
-		            this.element.addChild(label);
-		        }
-	        
-	        	this.redraw();
+	        if (!this.element) {
+	            this.x = this.map.width - 150;
+	            this.y = this.map.height - 30;
+	            this.label = new Label();
+	            this.element.addChild(label);
 	        }
+        
+        	this.redraw();
 
     	}
     	

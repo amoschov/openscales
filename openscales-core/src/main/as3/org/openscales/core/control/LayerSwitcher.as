@@ -87,7 +87,7 @@ package org.openscales.core.control
 	        this.map.events.register("changebaselayer", this, this.redraw);
 		}
 		
-		override public function draw(toSuper:Boolean = false):void {
+		override public function draw():void {
 			super.draw();
 
 	        this.redraw();
