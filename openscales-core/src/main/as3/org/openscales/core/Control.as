@@ -1,11 +1,13 @@
 package org.openscales.core
 {
+	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.layer.Vector;
 	
-	public class Control
+	public class Control extends Sprite
 	{
 		
 		public static var TYPE_BUTTON:int = 1;
@@ -15,25 +17,25 @@ package org.openscales.core
 		
 		public var id:String = null;
 		public var map:Map = null;
-		public var canvas:CanvasOL = null;
 		public var type:Array = null;
 		public var displayClass:String = "";
 		public var active:Boolean = false;
-		public var position:Pixel = null;
-		public var outsideCanvas:CanvasOL = null;
 		public var handler:Handler = null;
 		public var layer:Vector = null;
 		public var layerZPos:int;
 		public var keyMask:int;
+		/* private var _size:Size = null; */
 		
 		public function Control(options:Object = null):void {
 			
 			this.displayClass = getQualifiedClassName(this).split('::')[1];
 			this.position = new Pixel(0,0);
+			this.name = this.displayClass;
 			
 			Util.extend(this, options);
 			
 			this.id = Util.createUniqueID(getQualifiedClassName(this) + "_");
+			
 		}
 		
 		public function destroy():void {  
@@ -47,25 +49,19 @@ package org.openscales.core
 	        }
 		}
 		
-		public function draw(px:Pixel = null, toSuper:Boolean = false):CanvasOL {
-			if (this.canvas == null) {
-	            this.canvas = Util.createCanvas();
-	            this.canvas.id = this.id;
-	            this.canvas.name = this.displayClass;
-	            this.canvas.clipContent = true;
-	        }
-	        if (px != null) {
-	            this.position = px.clone();
-	        }
-	        this.moveTo(this.position);        
-	        return this.canvas;
+		public function draw(toSuper:Boolean = false):void {
+	        
 		}
 		
-		public function moveTo(px:Pixel):void {
-			if ((px != null) && (this.canvas != null)) {
-	            this.canvas.x = px.x;
-	            this.canvas.y = px.y;
+		public function set position(px:Pixel):void {
+			if (px != null) {
+	            this.x = px.x;
+	            this.y = px.y;
 	        }
+		}
+		
+		public function get position():Pixel {
+			return new Pixel(this.x, this.y);
 		}
 		
 		public function activate():Boolean {
@@ -89,6 +85,22 @@ package org.openscales.core
 	        }
 	        return false;
 		}
+		
+		/* public function get size():Size
+		{
+			var size:Size = null;
+	        if (_size != null) {
+	            size = _size.clone();
+	        }
+	        return size;
+		}
+		
+		public function set size(newSize:Size):void
+		{
+			_size= newSize;
+			
+			this.draw();
+		} */
 				
 	}
 }

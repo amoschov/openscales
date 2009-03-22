@@ -1,6 +1,7 @@
 package org.openscales.core.control
 {
-	import org.openscales.core.CanvasOL;
+	import flash.display.Sprite;
+	
 	import org.openscales.core.Control;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -19,10 +20,10 @@ package org.openscales.core.control
     	public function SelectFeatureBox(options:Object = null):void {
     	}
     	
-    	override public function draw(px:Pixel = null, toSuper:Boolean = false):CanvasOL {
+    	override public function draw(toSuper:Boolean = false):void {
     		this.handler = new Box( this,
                             {done: this.selectBox}, {keyMask: this.keyMask} );
-            return null;
+            
     	}
     	
     	public function selectBox(position:*):void {

@@ -1,6 +1,8 @@
 package org.openscales.core.control
 {
-	import org.openscales.core.CanvasOL;
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	
 	import org.openscales.core.Control;
 	import org.openscales.core.Handler;
 	import org.openscales.core.basetypes.LonLat;
@@ -8,8 +10,6 @@ package org.openscales.core.control
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.handler.Click;
 	import org.openscales.core.handler.MouseWheel;
-	
-	import flash.events.MouseEvent;
 
 	public class Navigation extends Control
 	{
@@ -53,7 +53,7 @@ package org.openscales.core.control
 	        return true;
 		}
 		
-		override public function draw(px:Pixel = null, toSuper:Boolean = false):CanvasOL {
+		override public function draw(toSuper:Boolean = false):void {
 			this.clickHandler = new Click(this, 
 	                                        { 'doubleClick': this.defaultDblClick },
 	                                        {
@@ -69,7 +69,7 @@ package org.openscales.core.control
 	                                    this, {"up"  : this.wheelUp,
 	                                           "down": this.wheelDown} );
 	        this.activate();
-	        return null;
+	        
 		}
 		
 		public function defaultDblClick(evt:MouseEvent):void {

@@ -1,5 +1,6 @@
 package org.openscales.core.control
 {
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
 	import mx.controls.Label;
@@ -13,7 +14,7 @@ package org.openscales.core.control
 	public class MousePosition extends Control
 	{
 		
-		public var element:CanvasOL = null;
+		public var element:Sprite = null;
 		
 		public var label:Label = null;
 
@@ -33,22 +34,20 @@ package org.openscales.core.control
     		super(options);
     	}
     	
-    	override public function draw(px:Pixel = null, toSuper:Boolean = false):CanvasOL {
-	    	super.draw(px);
+    	override public function draw(toSuper:Boolean = false):void {
+	    	super.draw();
 	
 	        if (!toSuper) {
 		        if (!this.element) {
-		            this.canvas.x = this.map.width - 150;
-		            this.canvas.y = this.map.height - 30;
-		            this.canvas.classNameOL = this.displayClass;
-		            this.element = this.canvas;
+		            this.x = this.map.width - 150;
+		            this.y = this.map.height - 30;
 		            this.label = new Label();
 		            this.element.addChild(label);
 		        }
 	        
 	        	this.redraw();
 	        }
-	        return this.canvas;
+
     	}
     	
     	public function redraw(evt:MouseEvent = null):void {

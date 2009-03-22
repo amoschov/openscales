@@ -1,16 +1,15 @@
 package org.openscales.core.control
 {
+	import flash.display.Bitmap;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import mx.core.BitmapAsset;
-	
 	import org.openscales.core.CanvasOL;
 	import org.openscales.core.Control;
-	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.event.OpenScalesEvent;
 	
 	public class PanZoom extends Control
 	{
@@ -48,12 +47,13 @@ package org.openscales.core.control
         protected var zoombarImg:Class;
 		
 		public function PanZoom(options:Object = null):void {
-		    super(options);
 		    
 		    if (this.position == null) {
 		    	this.position = new Pixel(PanZoom.X,
 		    					PanZoom.Y);
 		    }
+		    
+		    super(options);
 		}
 		
 		override public function destroy():void {
@@ -68,16 +68,17 @@ package org.openscales.core.control
 		}
 		
 		
-		override public function draw(px:Pixel = null, toSuper:Boolean = false):CanvasOL {
-	        super.draw(px);
+		override public function draw(toSuper:Boolean = false):void {
+	        super.draw();
 	        if (!toSuper) {
-		        px = this.position;
+		        var px:Pixel = this.position;
 		
 		        // place the controls
 		        this.buttons = new Array();
 		
 		        var sz:Size = new Size(18,18);
-		        var centered:Pixel = new Pixel(px.x+sz.w/2, px.y);
+
+		        var centered:Pixel = new Pixel(this.x+sz.w/2, this.y);
 		
 		        this._addButton("panup", Util.getImagesLocation() + "north-mini.png", centered, sz);
 		        px.y = centered.y+sz.h;
@@ -92,19 +93,15 @@ package org.openscales.core.control
 		        this._addButton("zoomout", Util.getImagesLocation() + "zoom-minus-mini.png", 
 		                        centered.add(0, sz.h*5+5), sz);
 	        }
-	        return this.canvas;
+	        
 		}
 		
-		public function _addButton(id:String, source:Object, xy:Pixel, sz:Size, alt:String = null):CanvasOL {
-	        var btn:CanvasOL = Util.createAlphaImageCanvas(
-	                                    "OpenLayers_Control_PanZoom_" + id, 
-	                                    xy, sz, source, "absolute");
-	        btn.clipContent = true;
-	        if (alt != null) {                            
-	        	btn.toolTip = alt;
-	        }
-	
-	        this.canvas.addChild(btn);
+		public function _addButton(id:String, source:Object, xy:Pixel, sz:Size, alt:String = null):void {
+	        var btn:Bitmap = source as Bitmap;
+	        btn.x = xy.x;
+	        btn.y = xy.y;
+	        	
+	        this.addChild(btn);
 	
 	        new OpenScalesEvent().observe(btn, MouseEvent.CLICK, 
                                  this.buttonDown, true);
@@ -114,13 +111,10 @@ package org.openscales.core.control
                                  this.doubleClick, true);
         /*	new OpenScalesEvent().observe(btn, MouseEvent.CLICK, 
                                  this.doubleClick, true);*/
-	        btn.action = id;
-	        btn.map = this.map;
-	        btn.slideFactor = this.slideFactor;
 	
 	        //we want to remember/reference the outer div
 	        this.buttons.push(btn);
-	        return btn;
+
 		}
 		
 		public function doubleClick(evt:Event):Boolean {

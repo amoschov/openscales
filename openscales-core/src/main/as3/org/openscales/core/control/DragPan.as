@@ -1,10 +1,10 @@
 package org.openscales.core.control
 {
-	import org.openscales.core.CanvasOL;
+	import flash.display.Sprite;
+	
 	import org.openscales.core.Control;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.handler.Drag;
 
 	public class DragPan extends Control
@@ -24,10 +24,10 @@ package org.openscales.core.control
     		super(options);
     	}
     	
-    	override public function draw(px:Pixel = null, toSuper:Boolean = false):CanvasOL {
+    	override public function draw(toSuper:Boolean = false):void {
     		this.handler = new Drag(this,
                             {"down": this.init, "move": this.panMap, "done": this.panMapDone});
-            return null;
+            
     	}
     	
     	public function init(xy:Pixel):void {

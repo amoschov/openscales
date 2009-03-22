@@ -1,6 +1,7 @@
 package org.openscales.core.control
 {
-	import org.openscales.core.CanvasOL;
+	import flash.display.Sprite;
+	
 	import org.openscales.core.Control;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -18,10 +19,10 @@ package org.openscales.core.control
     		
     	}
     	
-    	override public function draw(px:Pixel = null, toSuper:Boolean = false):CanvasOL {
+    	override public function draw(toSuper:Boolean = false):void {
     		this.handler = new Box( this,
                             {done: this.zoomBox}, {keyMask: this.keyMask} );
-            return null;
+            
     	}
     	
     	public function zoomBox(position:*):void {

@@ -136,22 +136,10 @@ package org.openscales.core
 	        //this.events.register("movestart", this, this.updateSize);
 	        //this.canvas.addEventListener("resize", this.updateSize);
 
-			this.layers = [];
+			this.layers = new Array();
+			this.controls = new Array();
+			this.popups = new Array();
 			
-			if (this.controls == null) {
-	            if (Control != null) {
-	                this.controls = new Array();
-	            } else {
-	                this.controls = new Array();
-	            }
-	        }
-	        
-		    for(var i:int=0; i < this.controls.length; i++) {
-	            this.addControlToMap(this.controls[i]);
-	        }
-	        
-	        this.popups = [];
-
 		}
 		
 		private function destroy():Boolean {
@@ -307,19 +295,11 @@ package org.openscales.core
 	        }
 		}
 		
-		public function addControl(control:Control, px:Pixel = null):void {
+		public function addControl(control:Control):void {
 			this.controls.push(control);
-        	this.addControlToMap(control, px);
-		}
-		
-		public function addControlToMap(control:Control, px:Pixel = null):void {
-	        control.setMap(this);
-	        var canvas:CanvasOL = control.draw(px);
-	        if (canvas) {
-	            if(!control.outsideCanvas) {
-	                this.addChild( canvas );
-	            }
-	        }
+        	control.setMap(this);
+        	control.draw();
+        	this.addChild( control );
 		}
 		
 		public function setLayerZIndex(layer:Layer, zIdx:int):void {

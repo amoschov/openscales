@@ -1,21 +1,21 @@
 package org.openscales.core.control
 {
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import mx.controls.CheckBox;
 	import mx.controls.Label;
 	
 	import org.openscales.core.CanvasOL;
 	import org.openscales.core.CheckBoxOL;
 	import org.openscales.core.Control;
-	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.Layer;
 	import org.openscales.core.Map;
 	import org.openscales.core.RadioButtonOL;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.event.OpenScalesEvent;
 	
 	public class LayerSwitcher extends Control
 	{
@@ -62,7 +62,7 @@ package org.openscales.core.control
 		}
 		
 		override public function destroy():void {
-			OpenScalesEvent.stopObservingElement("click", this.canvas);
+			OpenScalesEvent.stopObservingElement("click", this);
 
 	        OpenScalesEvent.stopObservingElement("click", this.minimizeCanvas);
 	        OpenScalesEvent.stopObservingElement("click", this.maximizeCanvas);
@@ -87,14 +87,13 @@ package org.openscales.core.control
 	        this.map.events.register("changebaselayer", this, this.redraw);
 		}
 		
-		override public function draw(px:Pixel = null, toSuper:Boolean = false):CanvasOL {
+		override public function draw(toSuper:Boolean = false):void {
 			super.draw();
 
 	        this.redraw();
 	        
 	        this.loadContents();    
 	
-	        return this.canvas;
 		}
 		
 		public function clearLayersArray(layersType:String):void {
@@ -109,7 +108,7 @@ package org.openscales.core.control
 	        this[layersType + "Layers"] = new Array();
 		}
 		
-		public function redraw(obt:Object = null):CanvasOL {
+		public function redraw(obt:Object = null):Sprite {
 	        this.clearLayersArray("base");
 	        this.clearLayersArray("data");
 	        baseLayerCount = 0;
@@ -174,13 +173,13 @@ package org.openscales.core.control
 	            }
 	        }    
 	
-			this.canvas.width = 200;
-			this.canvas.height = (baseLayerCount + dataLayerCount) * 25 + 60;
+			this.width = 200;
+			this.height = (baseLayerCount + dataLayerCount) * 25 + 60;
 			if (this.position) {
-				this.canvas.x =  this.position.x;
-				this.canvas.y =  this.position.y;	
+				this.x =  this.position.x;
+				this.y =  this.position.y;	
 			}
-	        return this.canvas;
+	        return this;
 		}
 		
 		 public function createElement(type:String):Object {
@@ -233,17 +232,17 @@ package org.openscales.core.control
 		}
 		
 		public function maximizeControl(e:MouseEvent = null):void {
-			this.canvas.width = 200;
-	        this.canvas.height = (baseLayerCount + dataLayerCount) * 25 + 60;
-	        this.canvas.x = this.position.x;
+			this.width = 200;
+	        this.height = (baseLayerCount + dataLayerCount) * 25 + 60;
+	        this.x = this.position.x;
 	
 	        this.showControls(false);
 		}
 		
 		public function minimizeControl(e:MouseEvent = null):void {
-	        this.canvas.width = 20;
-			this.canvas.height = 0;
-			this.canvas.x = this.position.x + 200 - 20;
+	        this.width = 20;
+			this.height = 0;
+			this.x = this.position.x + 200 - 20;
 	
 	        this.showControls(true);
 		}
@@ -255,20 +254,20 @@ package org.openscales.core.control
 		}
 		
 		public function loadContents():void {
-	        this.canvas.y = 0;
-	        this.canvas.setStyle("fontFamily", "Verdana, Arial");
-	        this.canvas.setStyle("fontWeight", "bold");
-	        this.canvas.setStyle("fontSize", 10);
-	        this.canvas.setStyle("color", "#FFFFFF");
-	        this.canvas.height=150;
+	        this.y = 0;
+/* 	        this.setStyle("fontFamily", "Verdana, Arial");
+	        this.setStyle("fontWeight", "bold");
+	        this.setStyle("fontSize", 10);
+	        this.setStyle("color", "#FFFFFF"); */
+	        this.height=150;
 	    
-	        new OpenScalesEvent().observe(this.canvas, MouseEvent.MOUSE_UP, 
+	        new OpenScalesEvent().observe(this, MouseEvent.MOUSE_UP, 
 	                      this.mouseUpF);
-	        new OpenScalesEvent().observe(this.canvas, MouseEvent.CLICK,
+	        new OpenScalesEvent().observe(this, MouseEvent.CLICK,
 	                      this.ignoreEvent);
-	        new OpenScalesEvent().observe(this.canvas, MouseEvent.MOUSE_DOWN,
+	        new OpenScalesEvent().observe(this, MouseEvent.MOUSE_DOWN,
 	                      this.mouseDownF);
-	        new OpenScalesEvent().observe(this.canvas, MouseEvent.DOUBLE_CLICK, this.ignoreEvent);
+	        new OpenScalesEvent().observe(this, MouseEvent.DOUBLE_CLICK, this.ignoreEvent);
 	  
 	        this.layersCanvas = new CanvasOL();
 	        this.layersCanvas.horizontalScrollPolicy = "off";
@@ -334,7 +333,7 @@ package org.openscales.core.control
             this.layersCanvas.addChild(this.dataLayersCanvas); 
  			
 	        //carré bleu
-	        this.canvas.addChild(this.layersCanvas);
+	        this.addChild(this.layersCanvas);
 	
 			this.layersCanvas.setStyle("cornerRadius", 5);
 
@@ -353,7 +352,7 @@ package org.openscales.core.control
 	                      MouseEvent.CLICK, 
 	                      this.maximizeControl);
 	        
-	        this.canvas.addChild(this.maximizeCanvas);
+	        this.addChild(this.maximizeCanvas);
 
 	        sz = new Size(18,18);        
 	        this.minimizeCanvas = Util.createAlphaImageCanvas(
@@ -369,7 +368,7 @@ package org.openscales.core.control
 	                      MouseEvent.CLICK, 
 	                      this.minimizeControl);
 	
-	        this.canvas.addChild(this.minimizeCanvas);
+	        this.addChild(this.minimizeCanvas);
 		}
 		
 		public function ignoreEvent(evt:Event):void {
