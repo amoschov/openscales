@@ -4,7 +4,7 @@
 <compilerSourcePath/>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path=""/>
-<libraryPathEntry kind="3" linkType="1" path="/openscales-flexlayers-core/bin/openscales-flexlayers-core.swc" useDefaultLinkType="false"/>
+<libraryPathEntry kind="3" linkType="1" path="/openscales-core/bin/openscales-core.swc" useDefaultLinkType="false"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>

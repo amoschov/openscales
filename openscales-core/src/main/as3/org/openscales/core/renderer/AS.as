@@ -263,15 +263,15 @@ package org.openscales.core.renderer
 	        var rendererRoot:Sprite = new Sprite();
 			
 			// Create a rect because empty Sprite can't have its width or height modified 
-			root.graphics.beginFill(0xFFFFFF);
-			root.graphics.drawRect(0,0,1,1);
-			root.graphics.endFill()
+			rendererRoot.graphics.beginFill(0xFFFFFF);
+			rendererRoot.graphics.drawRect(0,0,1,1);
+			rendererRoot.graphics.endFill()
 	        
 	        return rendererRoot; 
 		}
 		
 		override public function createRoot():Sprite {
-		        var root:Sprite = new Sprite();
+		    var root:Sprite = new Sprite();
 	        
 	        // Create a rect because empty Sprite can't have its width or height modified
 			root.graphics.beginFill(0xFFFFFF);
