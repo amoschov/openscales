@@ -2,6 +2,7 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.flex.*" creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.basetypes.Size;
 			import org.openscales.core.feature.Vector;
 			import org.openscales.core.Util;
 			import org.openscales.core.basetypes.Pixel;
@@ -20,6 +21,7 @@
 				map.maxExtent = new Bounds(-77.92,40.75,-77.79,40.85);
 				map.maxResolution = 1;
 				map.numZoomLevels = 21;
+				map.size=new Size(fxmap.width, fxmap.height);
 				
 				var baselayer1:WMS = new WMS("Base Image", "http://www.apps.geovista.psu.edu/tilecache/tilecache.py", {layers: "centreimagerygeogjpeg", FORMAT: "image/jpeg"}, {isBaseLayer: true});
 				

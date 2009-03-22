@@ -2,6 +2,7 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.flex.*" creationComplete="initMap()">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.basetypes.Size;
 			import org.openscales.core.feature.Vector;
 			import org.openscales.core.Util;
 			import org.openscales.core.control.MousePosition;
@@ -21,6 +22,7 @@
 
 				map.maxExtent = new Bounds(-180,-90,180,90);
 				map.numZoomLevels = 20;
+				map.size=new Size(fxmap.width, fxmap.height);
 
 				var baselayer1:WMS = new WMS("Metacarta", "http://labs.metacarta.com/wms-c/Basic.py", {layers: "satellite", FORMAT: "image/jpeg"}, {isBaseLayer: true});
 				

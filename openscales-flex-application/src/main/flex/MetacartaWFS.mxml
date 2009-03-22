@@ -2,6 +2,7 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.flex.*" creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.basetypes.Size;
 			import org.openscales.core.basetypes.LonLat;
 			import org.openscales.core.OpenScales;
 			import org.openscales.core.feature.Vector;
@@ -20,12 +21,13 @@
 				OpenScales.ProxyHost="http://openscales.org/proxy.php?url=";
 				
 				var map:Map = fxmap.map;
+				map.size=new Size(fxmap.width, fxmap.height);
 				
-				/* var wmslayer1:WMS = new WMS( "OpenLayers WMS",
+				var wmslayer1:WMS = new WMS( "OpenLayers WMS",
                     "http://labs.metacarta.com/wms-c/Basic.py",
-                    {layers: 'basic'} , {isBaseLayer: true}); */
+                    {layers: 'basic'} , {isBaseLayer: true});
 
-				var wfslayer1:WFS = new WFS("test", "http://sigma.openplans.org/geoserver/wfs", {typename: "topp:states", SRS: "EPSG:4326", VERSION: "1.0.0"}, {isBaseLayer: true, minZoomLevel: 21});
+				var wfslayer1:WFS = new WFS("test", "http://sigma.openplans.org/geoserver/wfs", {typename: "topp:states", SRS: "EPSG:4326", VERSION: "1.0.0"}, {isBaseLayer: false, minZoomLevel: 21});
 
 				map.addLayers([wfslayer1]);
 				map.addControl(new PanZoomBar());
