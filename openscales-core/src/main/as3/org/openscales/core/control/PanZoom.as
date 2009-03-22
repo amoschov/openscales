@@ -7,7 +7,7 @@ package org.openscales.core.control
 	
 	import org.openscales.core.CanvasOL;
 	import org.openscales.core.Control;
-	import org.openscales.core.EventOL;
+	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
@@ -61,7 +61,7 @@ package org.openscales.core.control
 	        while(this.buttons.length) {
 	            var btn:CanvasOL = this.buttons.shift();
 	            btn.map = null;
-	            EventOL.stopObservingElement(MouseEvent.CLICK, btn);
+	            OpenScalesEvent.stopObservingElement(MouseEvent.CLICK, btn);
 	        }
 	        this.buttons = null;
 	        this.position = null;
@@ -106,13 +106,13 @@ package org.openscales.core.control
 	
 	        this.canvas.addChild(btn);
 	
-	        new EventOL().observe(btn, MouseEvent.CLICK, 
+	        new OpenScalesEvent().observe(btn, MouseEvent.CLICK, 
                                  this.buttonDown, true);
-        	//new EventOL().observe(btn, MouseEvent.MOUSE_UP, 
+        	//new OpenScalesEvent().observe(btn, MouseEvent.MOUSE_UP, 
              //                    this.doubleClick, true);
-        	new EventOL().observe(btn, MouseEvent.DOUBLE_CLICK, 
+        	new OpenScalesEvent().observe(btn, MouseEvent.DOUBLE_CLICK, 
                                  this.doubleClick, true);
-        /*	new EventOL().observe(btn, MouseEvent.CLICK, 
+        /*	new OpenScalesEvent().observe(btn, MouseEvent.CLICK, 
                                  this.doubleClick, true);*/
 	        btn.action = id;
 	        btn.map = this.map;

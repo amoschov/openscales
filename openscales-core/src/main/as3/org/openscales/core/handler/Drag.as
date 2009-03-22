@@ -2,7 +2,7 @@ package org.openscales.core.handler
 {
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.EventOL;
+	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.Handler;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
@@ -40,7 +40,7 @@ package org.openscales.core.handler
 		public function mouseDown(evt:MouseEvent):Boolean {
 			var propagate:Boolean = true;
 	        this.dragging = false;
-	        if (this.checkModifiers(evt) && EventOL.isLeftClick(evt)) {
+	        if (this.checkModifiers(evt) && OpenScalesEvent.isLeftClick(evt)) {
 	            this.started = true;
 	            this.start = new Pixel(evt.stageX, evt.stageY);
 	            this.last = new Pixel(evt.stageX, evt.stageY);

@@ -4,6 +4,7 @@ package org.openscales.core
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.event.Events;
 	
 	public class Marker
 	{

@@ -1,4 +1,4 @@
-package org.openscales.core
+package org.openscales.core.event
 {
 	
 	import org.openscales.core.basetypes.Pixel;
@@ -8,7 +8,7 @@ package org.openscales.core
 	
 	import mx.containers.Canvas;
 	
-	public class EventOL extends flash.events.Event
+	public class OpenScalesEvent extends Event
 	{
 		public var observers:Object = false;
 		
@@ -32,11 +32,11 @@ package org.openscales.core
     	
     	public var xy:Pixel = null;
     	
-    	public function EventOL():void {
+    	public function OpenScalesEvent():void {
     		super("", true, true);
     	}
     	
-    	public static function element(event:EventOL):Object {
+    	public static function element(event:OpenScalesEvent):Object {
     		return event.currentTarget;
     	}
     	
@@ -61,7 +61,7 @@ package org.openscales.core
     		}
     	}
     	
-    	public static function findElement(event:EventOL, tagName:String):Object {
+    	public static function findElement(event:OpenScalesEvent, tagName:String):Object {
     		var element:Object = element(event);
 	        while (element.parent && (!element.tagName ||
 	              (element.tagName.toUpperCase() != tagName.toUpperCase())))

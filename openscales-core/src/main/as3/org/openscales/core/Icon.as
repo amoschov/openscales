@@ -1,8 +1,8 @@
 package org.openscales.core
 {
-	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.Pixel;
-	import mx.controls.TextArea;
+	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.event.OpenScalesEvent;
 	
 	public class Icon
 	{
@@ -33,7 +33,7 @@ package org.openscales.core
 	    }
 	    
 	    public function destroy():void {
-		   	EventOL.stopObservingElement("click", this.imageCanvas);
+		   	OpenScalesEvent.stopObservingElement("click", this.imageCanvas);
 	        this.imageCanvas = null;
 	    }
 	    

@@ -6,6 +6,7 @@ package org.openscales.core
 	import mx.events.ResizeEvent;
 	
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.event.Events;
 	
 	public class Handler
 	{

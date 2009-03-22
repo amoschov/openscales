@@ -3,7 +3,7 @@ package org.openscales.core.handler
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Control;
-	import org.openscales.core.EventOL;
+	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.Handler;
 	import org.openscales.core.basetypes.Pixel;
 
@@ -52,7 +52,7 @@ package org.openscales.core.handler
 	                }
 	            }
 
-	            EventOL.stop(evt);
+	            OpenScalesEvent.stop(evt);
 	        }
 
     	}
@@ -64,7 +64,7 @@ package org.openscales.core.handler
 		override public function activate(evt:MouseEvent = null):Boolean {
 			if (super.activate()){
 				var wheelListener:Function = this.wheelListener;
-				new EventOL().observe(this.map, MouseEvent.MOUSE_WHEEL, wheelListener);
+				new OpenScalesEvent().observe(this.map, MouseEvent.MOUSE_WHEEL, wheelListener);
 				return true;
 			} else {
 				return false;
@@ -74,7 +74,7 @@ package org.openscales.core.handler
 		override public function deactivate(evt:MouseEvent = null):Boolean {
 			if (super.deactivate()) {
 				var wheelListener:Function = this.wheelListener;
-				new EventOL().stopObserving(this.map, MouseEvent.MOUSE_WHEEL, wheelListener);
+				new OpenScalesEvent().stopObserving(this.map, MouseEvent.MOUSE_WHEEL, wheelListener);
 				return true;
 			} else {
 				return false;

@@ -1,8 +1,9 @@
-package org.openscales.core
+package org.openscales.core.event
 {
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.event.OpenScalesEvent;
 	
 	public class Events
 	{
@@ -71,9 +72,9 @@ package org.openscales.core
 	            }
 	            
 	            //element.addEventListener(eventType, this.eventHandler);
-	            new EventOL().observe(element, eventType, this.eventHandler, this.fallThrough);
+	            new OpenScalesEvent().observe(element, eventType, this.eventHandler, this.fallThrough);
 	        }
-	        new EventOL().observe(element, "dragstart", EventOL.stop, this.fallThrough);
+	        new OpenScalesEvent().observe(element, "dragstart", OpenScalesEvent.stop, this.fallThrough);
     	}
     	
     	public function register(type:String, obj:Object, func:Function):void {
@@ -146,7 +147,7 @@ package org.openscales.core
 	                }
 	            }
 	            if (!this.fallThrough) {           
-	                EventOL.stop(evt, true);
+	                OpenScalesEvent.stop(evt, true);
 	            }
 	        }
     	}

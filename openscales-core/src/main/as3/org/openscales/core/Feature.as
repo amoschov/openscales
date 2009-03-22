@@ -4,6 +4,7 @@ package org.openscales.core
 	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.event.Events;
 	import org.openscales.core.popup.AnchoredBubble;
 	
 	public class Feature

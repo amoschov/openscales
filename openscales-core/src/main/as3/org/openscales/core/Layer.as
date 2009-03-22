@@ -3,12 +3,11 @@ package org.openscales.core
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 	
-	import mx.containers.Canvas;
-	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.event.Events;
 	
 	public class Layer extends Sprite
 	{

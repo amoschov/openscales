@@ -8,6 +8,7 @@ package org.openscales.core
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.event.Events;
 	
 	public class Map extends Sprite
 	{
@@ -105,13 +106,6 @@ package org.openscales.core
 			this.layers = new Array();
 			this.size = new Size(width, height);
 			
-						/* this.viewPort = new Sprite();
-			this.viewPort.visible=false;
-			this.viewPort.width = this.size.w;
-			this.viewPort.height = this.size.h;
-			this.addChildAt(this.viewPort, 0); */
-			
-			
 			this.layerContainer = new Sprite();
 			
 			this.layerContainer.graphics.beginFill(0xFFFFFF);
@@ -165,7 +159,7 @@ package org.openscales.core
 	            return false;
 	        }
 	        
-	       // new EventOL().stopObserving(this.can.parentApplication, 'unload', this.unloadDestroy);
+	       // new OpenScalesEvent().stopObserving(this.can.parentApplication, 'unload', this.unloadDestroy);
 	        this.unloadDestroy = null;
 	
 	        if (this.layers != null) {

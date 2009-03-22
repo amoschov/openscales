@@ -9,6 +9,8 @@ package org.openscales.core
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.event.Events;
+	import org.openscales.core.event.OpenScalesEvent;
 	
 	public class PopupOL
 	{
@@ -109,9 +111,9 @@ package org.openscales.core
 		    		
 		    		this.layerIndex = layersParent.getChildIndex(layerCanvas);
 		    		layersParent.setChildIndex(layerCanvas, layersParent.numChildren-1);*/
-	                EventOL.stop(evt);
+	                OpenScalesEvent.stop(evt);
 	            }
-	            new EventOL().observe(closeImg, MouseEvent.CLICK, 
+	            new OpenScalesEvent().observe(closeImg, MouseEvent.CLICK, 
 	                                     closePopup);
 	        }
 	
@@ -226,7 +228,7 @@ package org.openscales.core
 		
 		public function registerEvents():void {
 			
-			//new EventOL().observe(this.canvas, MouseEvent.CLICK, this.onclick);
+			//new OpenScalesEvent().observe(this.canvas, MouseEvent.CLICK, this.onclick);
 			
 	    /*    this.events = new Events(this, this.canvas, null, true);
 	
@@ -240,24 +242,24 @@ package org.openscales.core
 		
 		public function onmousedown(evt:MouseEvent):void {
 			this.mousedown = true;
-        	EventOL.stop(evt, true);
+        	OpenScalesEvent.stop(evt, true);
 		}
 		
 		public function onmousemove(evt:MouseEvent):void {
 			if (this.mousedown) {
-            	EventOL.stop(evt, true);
+            	OpenScalesEvent.stop(evt, true);
         	}
 		}
 		
 		public function onmouseup(evt:MouseEvent):void {
 			if (this.mousedown) {
 	            this.mousedown = false;
-	            EventOL.stop(evt, true);
+	            OpenScalesEvent.stop(evt, true);
 	        }
 		}
 		
 		public function onclick(evt:MouseEvent):void {
-			EventOL.stop(evt, true);
+			OpenScalesEvent.stop(evt, true);
 		}
 		
 		public function onmouseout(evt:MouseEvent):void {
@@ -265,7 +267,7 @@ package org.openscales.core
 		}
 		
 		public function ondblclick(evt:MouseEvent):void {
-			EventOL.stop(evt, true);
+			OpenScalesEvent.stop(evt, true);
 		}
 		
 	}

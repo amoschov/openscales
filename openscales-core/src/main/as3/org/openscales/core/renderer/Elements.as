@@ -6,7 +6,7 @@ package org.openscales.core.renderer
 	
 	import org.openscales.core.CanvasOL;
 	import org.openscales.core.Control;
-	import org.openscales.core.EventOL;
+	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.Renderer;
 	import org.openscales.core.SpriteOL;
 	import org.openscales.core.control.SelectFeature;
@@ -79,7 +79,7 @@ package org.openscales.core.renderer
 	        		if (control.active) {
 	        			for (var func:String in control.handler.callbacks) {
 	        				var callback:Function = control.handler.callbacks[func];
-	        				new EventOL().observe(node, MouseEvent.CLICK, callback); 
+	        				new OpenScalesEvent().observe(node, MouseEvent.CLICK, callback); 
 	        			}
 	        		}
 	        	}

@@ -8,7 +8,7 @@ package org.openscales.core.tile
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
 	
-	import org.openscales.core.EventOL;
+	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.Layer;
 	import org.openscales.core.Tile;
 	import org.openscales.core.basetypes.Bounds;
@@ -27,8 +27,8 @@ package org.openscales.core.tile
 		}
 		
 		override public function destroy():void {
-	        EventOL.stopObservingElement(Event.COMPLETE, this);
-	        EventOL.stopObservingElement(IOErrorEvent.IO_ERROR, this);
+	        OpenScalesEvent.stopObservingElement(Event.COMPLETE, this);
+	        OpenScalesEvent.stopObservingElement(IOErrorEvent.IO_ERROR, this);
 			
 			while (numChildren > 0) {
 	    		var child:DisplayObject = removeChildAt(0);

@@ -5,8 +5,8 @@ package org.openscales.core.control
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.CanvasOL;
-	import org.openscales.core.EventOL;
-	import org.openscales.core.Events;
+	import org.openscales.core.event.OpenScalesEvent;
+	import org.openscales.core.event.Events;
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
@@ -100,12 +100,12 @@ package org.openscales.core.control
 	        slider.toolTip = "Zoom Slider";
 	        this.slider = slider;
 	        
-	        new EventOL().observe(slider, MouseEvent.MOUSE_DOWN, this.zoomBarDown, true);
-	        new EventOL().observe(slider, MouseEvent.MOUSE_MOVE, this.zoomBarDrag, true);
-	        new EventOL().observe(slider, MouseEvent.MOUSE_UP, this.zoomBarUp, true);
-	        new EventOL().observe(slider, MouseEvent.MOUSE_OUT, this.zoomBarUp, true);
-	        new EventOL().observe(slider, MouseEvent.DOUBLE_CLICK, this.doubleClick, true);
-	        new EventOL().observe(slider, MouseEvent.CLICK, this.doubleClick, true);
+	        new OpenScalesEvent().observe(slider, MouseEvent.MOUSE_DOWN, this.zoomBarDown, true);
+	        new OpenScalesEvent().observe(slider, MouseEvent.MOUSE_MOVE, this.zoomBarDrag, true);
+	        new OpenScalesEvent().observe(slider, MouseEvent.MOUSE_UP, this.zoomBarUp, true);
+	        new OpenScalesEvent().observe(slider, MouseEvent.MOUSE_OUT, this.zoomBarUp, true);
+	        new OpenScalesEvent().observe(slider, MouseEvent.DOUBLE_CLICK, this.doubleClick, true);
+	        new OpenScalesEvent().observe(slider, MouseEvent.CLICK, this.doubleClick, true);
 	        slider.doubleClickEnabled = true;
 	        
 	        var sz:Size = new Size();
@@ -125,10 +125,10 @@ package org.openscales.core.control
 	        this.canvasEvents.register(MouseEvent.MOUSE_MOVE, this, this.passEventToSlider);
 	        this.canvasEvents.register(MouseEvent.DOUBLE_CLICK, this, this.doubleClick);
 	        this.canvasEvents.register(MouseEvent.CLICK, this, this.doubleClick); */
-	        new EventOL().observe(canvas, MouseEvent.MOUSE_DOWN, this.canvasClick, true);
-	        //new EventOL().observe(canvas, MouseEvent.MOUSE_MOVE, this.passEventToSlider);
-	        new EventOL().observe(canvas, MouseEvent.DOUBLE_CLICK, this.doubleClick, true);
-	        new EventOL().observe(canvas, MouseEvent.CLICK, this.doubleClick, true);
+	        new OpenScalesEvent().observe(canvas, MouseEvent.MOUSE_DOWN, this.canvasClick, true);
+	        //new OpenScalesEvent().observe(canvas, MouseEvent.MOUSE_MOVE, this.passEventToSlider);
+	        new OpenScalesEvent().observe(canvas, MouseEvent.DOUBLE_CLICK, this.doubleClick, true);
+	        new OpenScalesEvent().observe(canvas, MouseEvent.CLICK, this.doubleClick, true);
 	        
 	        this.canvas.addChild(canvas);
 	
@@ -147,16 +147,16 @@ package org.openscales.core.control
 	    }
 	    
 	    public function canvasClick(evt:MouseEvent):void {
-	    	if (!EventOL.isLeftClick(evt)) return;
+	    	if (!OpenScalesEvent.isLeftClick(evt)) return;
 	        var y:Number = evt.stageY;
 	        var top:Number = Util.pagePosition(evt.currentTarget)[1];
 	        var levels:Number = Math.floor((y - top)/this.zoomStopHeight);
 	        this.map.zoomTo((this.map.getNumZoomLevels() -1) -  levels);
-	        EventOL.stop(evt);
+	        OpenScalesEvent.stop(evt);
 	    }
 	    
 	    public function zoomBarDown(evt:MouseEvent):void {
-	    	if (!EventOL.isLeftClick(evt)) return;
+	    	if (!OpenScalesEvent.isLeftClick(evt)) return;
 	        this.map.events.register(MouseEvent.MOUSE_MOVE, this, this.passEventToSlider);
 	        this.map.events.register(MouseEvent.MOUSE_UP, this, this.passEventToSlider);
 	        this.map.events.register(MouseEvent.MOUSE_OUT, this, this.passEventToSlider);
@@ -165,7 +165,7 @@ package org.openscales.core.control
 	        this.canvas.useHandCursor = true;
 	        
 	        this.zoomBarCanvas.offsets = null; 
-	        EventOL.stop(evt);
+	        OpenScalesEvent.stop(evt);
 	    }
 	    
 	    public function zoomBarDrag(evt:MouseEvent):void {
@@ -178,12 +178,12 @@ package org.openscales.core.control
 	                this.slider.y = newTop;
 	            }
 	            this.mouseDragStart = new Pixel(evt.stageX, evt.stageY);
-	            EventOL.stop(evt);
+	            OpenScalesEvent.stop(evt);
 	        }
 	    }
 	    
 	    public function zoomBarUp(evt:MouseEvent):void {
-	    	if (!EventOL.isLeftClick(evt)) return;
+	    	if (!OpenScalesEvent.isLeftClick(evt)) return;
 	        if (this.zoomStart) {
 	            this.canvas.useHandCursor = false;
 	            this.map.events.unregister(MouseEvent.MOUSE_UP, this, this.passEventToSlider);
@@ -193,7 +193,7 @@ package org.openscales.core.control
 	            this.map.zoomTo(this.map.zoom + Math.round(deltaY/this.zoomStopHeight));
 	            this.moveZoomBar();
 	            this.mouseDragStart = null;
-	            EventOL.stop(evt);
+	            OpenScalesEvent.stop(evt);
 	        }
 	    }
 	    

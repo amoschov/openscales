@@ -4,7 +4,7 @@ package org.openscales.core.layer
 	
 	import mx.rpc.events.ResultEvent;
 	
-	import org.openscales.core.EventOL;
+	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.Feature;
 	import org.openscales.core.Icon;
 	import org.openscales.core.Marker;
@@ -160,7 +160,7 @@ package org.openscales.core.layer
 	        }
 	        if (!sameMarkerClicked) {
 	            var popup:Object = markerClicked.createPopup();
-	            new EventOL().observe(popup.div, "click",
+	            new OpenScalesEvent().observe(popup.div, "click",
 	            function():void { 
 	              for(var i:int=0; i < markerClicked.layer.map.popups.length; i++) { 
 	                markerClicked.layer.map.removePopup(markerClicked.layer.map.popups[i]); 
@@ -168,7 +168,7 @@ package org.openscales.core.layer
 	            });
 	            markerClicked.layer.map.addPopup(popup); 
 	        }
-	        EventOL.stop(evt);
+	        OpenScalesEvent.stop(evt);
 		}
 		
 		public function clearFeatures():void {

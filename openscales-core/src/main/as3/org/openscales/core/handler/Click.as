@@ -58,7 +58,7 @@ package org.openscales.core.handler
 	                var clickEvent : Event = this.single ? evt : null;
 	                this.timer = new TimerOL(this.delay);
 	                this.timer.mouseevent = evt;
-	                //new EventOL().observe(this.timer, TimerEvent.TIMER, this.delayedCall);
+	                //new OpenScalesEvent().observe(this.timer, TimerEvent.TIMER, this.delayedCall);
 	                //this.timer.start();
 	            }
 	        }

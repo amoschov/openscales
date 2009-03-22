@@ -9,7 +9,7 @@ package org.openscales.core.control
 	import org.openscales.core.CanvasOL;
 	import org.openscales.core.CheckBoxOL;
 	import org.openscales.core.Control;
-	import org.openscales.core.EventOL;
+	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.Layer;
 	import org.openscales.core.Map;
 	import org.openscales.core.RadioButtonOL;
@@ -62,10 +62,10 @@ package org.openscales.core.control
 		}
 		
 		override public function destroy():void {
-			EventOL.stopObservingElement("click", this.canvas);
+			OpenScalesEvent.stopObservingElement("click", this.canvas);
 
-	        EventOL.stopObservingElement("click", this.minimizeCanvas);
-	        EventOL.stopObservingElement("click", this.maximizeCanvas);
+	        OpenScalesEvent.stopObservingElement("click", this.minimizeCanvas);
+	        OpenScalesEvent.stopObservingElement("click", this.maximizeCanvas);
 	        
 	        this.clearLayersArray("base");
 	        this.clearLayersArray("data");
@@ -102,8 +102,8 @@ package org.openscales.core.control
 	        if (layers) {
 	            for(var i:int=0; i < layers.length; i++) {
 	                var layer:Object = layers[i];
-	                EventOL.stopObservingElement("click", layer.inputElem);
-	                EventOL.stopObservingElement("click", layer.labelSpan);
+	                OpenScalesEvent.stopObservingElement("click", layer.inputElem);
+	                OpenScalesEvent.stopObservingElement("click", layer.labelSpan);
 	            }
 	        }
 	        this[layersType + "Layers"] = new Array();
@@ -152,7 +152,7 @@ package org.openscales.core.control
 	                    'layerSwitcher': this
 	                }
 	                inputElem.context = context;
-	                new EventOL().observe(inputElem, MouseEvent.CLICK, 
+	                new OpenScalesEvent().observe(inputElem, MouseEvent.CLICK, 
 	                              onInputClick);	    
 	                
 	                var groupArray:Array = (baseLayer) ? this.baseLayers
@@ -208,7 +208,7 @@ package org.openscales.core.control
 	                context.layerSwitcher.updateMap();
 	            }
 	        }
-	        //EventOL.stop(e);
+	        //OpenScalesEvent.stop(e);
 		}
 		
 		public function onLayerClick(e:MouseEvent):void {
@@ -262,13 +262,13 @@ package org.openscales.core.control
 	        this.canvas.setStyle("color", "#FFFFFF");
 	        this.canvas.height=150;
 	    
-	        new EventOL().observe(this.canvas, MouseEvent.MOUSE_UP, 
+	        new OpenScalesEvent().observe(this.canvas, MouseEvent.MOUSE_UP, 
 	                      this.mouseUpF);
-	        new EventOL().observe(this.canvas, MouseEvent.CLICK,
+	        new OpenScalesEvent().observe(this.canvas, MouseEvent.CLICK,
 	                      this.ignoreEvent);
-	        new EventOL().observe(this.canvas, MouseEvent.MOUSE_DOWN,
+	        new OpenScalesEvent().observe(this.canvas, MouseEvent.MOUSE_DOWN,
 	                      this.mouseDownF);
-	        new EventOL().observe(this.canvas, MouseEvent.DOUBLE_CLICK, this.ignoreEvent);
+	        new OpenScalesEvent().observe(this.canvas, MouseEvent.DOUBLE_CLICK, this.ignoreEvent);
 	  
 	        this.layersCanvas = new CanvasOL();
 	        this.layersCanvas.horizontalScrollPolicy = "off";
@@ -349,7 +349,7 @@ package org.openscales.core.control
 	        this.maximizeCanvas.y = 5;
 	        this.maximizeCanvas.x = 3;
 	        this.maximizeCanvas.visible = false;
-	        new EventOL().observe(this.maximizeCanvas, 
+	        new OpenScalesEvent().observe(this.maximizeCanvas, 
 	                      MouseEvent.CLICK, 
 	                      this.maximizeControl);
 	        
@@ -365,7 +365,7 @@ package org.openscales.core.control
 	        this.minimizeCanvas.y = 5;
 	        this.minimizeCanvas.x = 3;
 	        this.minimizeCanvas.visible = true;
-	        new EventOL().observe(this.minimizeCanvas, 
+	        new OpenScalesEvent().observe(this.minimizeCanvas, 
 	                      MouseEvent.CLICK, 
 	                      this.minimizeControl);
 	
@@ -373,7 +373,7 @@ package org.openscales.core.control
 		}
 		
 		public function ignoreEvent(evt:Event):void {
-			EventOL.stop(evt);
+			OpenScalesEvent.stop(evt);
 		}
 		
 		public function mouseDownF(evt:Event):void {
