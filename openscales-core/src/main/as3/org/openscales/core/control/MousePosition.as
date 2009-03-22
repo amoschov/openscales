@@ -1,11 +1,9 @@
 package org.openscales.core.control
 {
-	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.text.TextField;
+	import flash.text.TextFormat;
 	
-	import mx.controls.Label;
-	
-	import org.openscales.core.CanvasOL;
 	import org.openscales.core.Control;
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
@@ -13,11 +11,9 @@ package org.openscales.core.control
 
 	public class MousePosition extends Control
 	{
+				
+		public var label:TextField = null;
 		
-		public var element:Sprite = null;
-		
-		public var label:Label = null;
-
     	private var _prefix:String = "";
     	
     	private var _separator:String = ", ";
@@ -32,18 +28,25 @@ package org.openscales.core.control
     	  	
     	public function MousePosition(options:Object = null):void {
     		super(options);
+    		
+    		this.label = new TextField();
+			
+			var labelFormat:TextFormat = new TextFormat();
+			labelFormat.size = 11;
+			labelFormat.color = 0x0F0F0F;
+			labelFormat.font = "Verdana";
+			this.label.setTextFormat(labelFormat);
+			
     	}
     	
     	override public function draw():void {
 	    	super.draw();
+	    	
+	    	this.addChild(label);
 	
-	        if (!this.element) {
-	            this.x = this.map.width - 150;
-	            this.y = this.map.height - 30;
-	            this.label = new Label();
-	            this.element.addChild(label);
-	        }
-        
+			this.x = this.map.width - 150;
+			this.y = this.map.height - 30;
+	      
         	this.redraw();
 
     	}
@@ -67,16 +70,13 @@ package org.openscales.core.control
 	        }
 	        
 	        var digits:int = int(this.numdigits);
-	        var newHtml:String =
+	        this.label.text =
 	            this.prefix +
 	            lonLat.lon.toFixed(digits) +
 	            this.separator + 
 	            lonLat.lat.toFixed(digits) +
 	            this.suffix;
 	
-	        if (newHtml != this.label.htmlText) {
-	            this.label.htmlText = newHtml;
-	        }
     	}
 		
 		override public function setMap(map:Map):void {
