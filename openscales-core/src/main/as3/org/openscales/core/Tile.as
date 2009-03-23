@@ -56,7 +56,7 @@ package org.openscales.core
                 || (this.layer.maxExtent
                     && this.bounds.intersectsBounds(this.layer.maxExtent, false)))
                 && !(this.layer.buffer == 0
-                     && !this.bounds.intersectsBounds(this.layer.map.getExtent(), false)));
+                     && !this.bounds.intersectsBounds(this.layer.map.extent, false)));
 		}
 		
 		public function moveTo(bounds:Bounds, position:Pixel, redraw:Boolean = true):void {

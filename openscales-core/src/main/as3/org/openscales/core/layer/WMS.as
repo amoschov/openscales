@@ -55,7 +55,7 @@ package org.openscales.core.layer
        	}
        	
        	override public function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
-	        var projection:String = this.map.getProjection();
+	        var projection:String = this.map.projection;
 	        this.params.SRS = (projection == "none") ? null : projection;
 	
 	        return super.getFullRequestString(newParams, altUrl);

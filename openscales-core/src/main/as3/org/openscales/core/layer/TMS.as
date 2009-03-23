@@ -39,7 +39,7 @@ package org.openscales.core.layer
 		override public function getURL(bounds:Bounds):String
 		{
 			bounds = this.adjustBoundsByGutter(bounds);
-			var res:Number = this.map.getResolution();
+			var res:Number = this.map.resolution;
 			var x:Number = Math.round((bounds.left - this.tileOrigin.lon) / (res * this.tileSize.w));
  	        var y:Number = Math.round((bounds.bottom - this.tileOrigin.lat) / (res * this.tileSize.h));
  	        var z:Number = this.serverResolutions != null ? this.serverResolutions.indexOf(res) : this.map.zoom;

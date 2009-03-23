@@ -21,7 +21,7 @@ package org.openscales.core.layer
 		
 		override public function getURL(bounds:Bounds):String
 		{
-			var res:Number = this.map.getResolution();
+			var res:Number = this.map.resolution;
         	var x:Number = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
         	var y:Number = Math.round((this.maxExtent.top - bounds.top) / (res * this.tileSize.h));
         	var z:Number = this.map.zoom;

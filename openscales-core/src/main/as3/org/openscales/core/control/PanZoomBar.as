@@ -87,7 +87,7 @@ package org.openscales.core.control
 	    
 	    public function _addZoomBar(centered:Pixel):Pixel {
         
-	        var zoomsToEnd:int = this.map.getNumZoomLevels() - 1 - this.map.zoom;
+	        var zoomsToEnd:int = this.map.numZoomLevels - 1 - this.map.zoom;
 	        this.slider = new sliderImg();
 	        this.slider.x = centered.x - 1;
 	        this.slider.y = centered.y + zoomsToEnd * this.zoomStopHeight;
@@ -104,7 +104,7 @@ package org.openscales.core.control
 	        zoomBar.x = centered.x;
 	        zoomBar.y = centered.y
 	        zoomBar.width = this.zoomStopWidth;
-	        zoomBar.height = this.zoomStopHeight * this.map.getNumZoomLevels();
+	        zoomBar.height = this.zoomStopHeight * this.map.numZoomLevels;
 	        
 	        zoomBar.addEventListener(MouseEvent.MOUSE_DOWN, this.zoomBarClick);
 	        zoomBar.addEventListener(MouseEvent.DOUBLE_CLICK, this.doubleClick);
@@ -118,7 +118,7 @@ package org.openscales.core.control
 	        this.map.events.register("zoomend", this, this.moveZoomBar);
 	
 	        centered = centered.add(0, 
-	            this.zoomStopHeight * this.map.getNumZoomLevels());
+	            this.zoomStopHeight * this.map.numZoomLevels);
 	        return centered; 
 	    }
 	    
@@ -131,7 +131,7 @@ package org.openscales.core.control
 	        var y:Number = evt.stageY;
 	        var top:Number = Util.pagePosition(evt.currentTarget)[1];
 	        var levels:Number = Math.floor((y - top)/this.zoomStopHeight);
-	        this.map.zoomTo((this.map.getNumZoomLevels() -1) -  levels);
+	        this.map.zoomTo((this.map.numZoomLevels -1) -  levels);
 	        OpenScalesEvent.stop(evt);
 	    }
 	    
@@ -179,7 +179,7 @@ package org.openscales.core.control
 	    
 	    public function moveZoomBar(evt:MouseEvent = null):void {
 		   	var newTop:Number = 
-	            ((this.map.getNumZoomLevels()-1) - this.map.zoom) * 
+	            ((this.map.numZoomLevels-1) - this.map.zoom) * 
 	            this.zoomStopHeight + this.startTop + 1;
 	        this.slider.y = newTop;
 	    }

@@ -91,7 +91,7 @@ package org.openscales.core.layer
 			super.moveTo(bounds, zoomChanged, dragging);
 	        
 	        if (bounds == null) {
-	            bounds = this.map.getExtent();
+	            bounds = this.map.extent;
 	        }
 	        if (bounds != null) {
 
@@ -195,8 +195,8 @@ package org.openscales.core.layer
 	        var minCols:Number = Math.ceil(viewSize.w/this.tileSize.w) +
 	                      Math.max(1, 2 * this.buffer);
 	        
-	        var extent:Bounds = this.map.getMaxExtent();
-	        var resolution:Number = this.map.getResolution();
+	        var extent:Bounds = this.map.maxExtent;
+	        var resolution:Number = this.map.resolution;
 	        var tilelon:Number = resolution * this.tileSize.w;
 	        var tilelat:Number = resolution * this.tileSize.h;
 	        
@@ -277,9 +277,9 @@ package org.openscales.core.layer
 	        var minRows:Number = Math.ceil(viewSize.h/this.tileSize.h) + 1;
 	        var minCols:Number = Math.ceil(viewSize.w/this.tileSize.w) + 1;
 	        
-	        var bounds:Bounds = this.map.getExtent();
-	        var extent:Bounds = this.map.getMaxExtent();
-	        var resolution:Number = this.map.getResolution();
+	        var bounds:Bounds = this.map.extent;
+	        var extent:Bounds = this.map.maxExtent;
+	        var resolution:Number = this.map.resolution;
 	        var tilelon:Number = resolution * this.tileSize.w;
 	        var tilelat:Number = resolution * this.tileSize.h;
 	        
@@ -495,7 +495,7 @@ package org.openscales.core.layer
 			var modelRowIndex:int = (prepend) ? 0 : (this.grid.length - 1);
 	        var modelRow:Array = this.grid[modelRowIndex];
 	
-	        var resolution:Number = this.map.getResolution();
+	        var resolution:Number = this.map.resolution;
 	        var deltaY:Number = (prepend) ? -this.tileSize.h : this.tileSize.h;
 	        var deltaLat:Number = resolution * -deltaY;
 	
@@ -520,7 +520,7 @@ package org.openscales.core.layer
 		
 		private function shiftColumn(prepend:Boolean):void {
 			var deltaX:Number = (prepend) ? -this.tileSize.w : this.tileSize.w;
-	        var resolution:Number = this.map.getResolution();
+	        var resolution:Number = this.map.resolution;
 	        var deltaLon:Number = resolution * deltaX;
 	
 	        for (var i:int=0; i<this.grid.length; i++) {
@@ -568,12 +568,12 @@ package org.openscales.core.layer
 			if (this.singleTile) {
 				this.clearGrid();
 				this.setTileSize();
-				this.initSingleTile(this.map.getExtent());
+				this.initSingleTile(this.map.extent);
 			}			
 		}
 		
 		public function getTileBounds(viewPortPx:Pixel):Bounds {
-	        var maxExtent:Bounds = this.map.getMaxExtent();
+	        var maxExtent:Bounds = this.map.maxExtent;
 	        var resolution:Number = this.getResolution();
 	        var tileMapWidth:Number = resolution * this.tileSize.w;
 	        var tileMapHeight:Number = resolution * this.tileSize.h;

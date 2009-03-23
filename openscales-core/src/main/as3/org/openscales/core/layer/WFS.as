@@ -96,7 +96,7 @@ package org.openscales.core.layer
 
 		        
 			        if (bounds == null) {
-			            bounds = this.map.getExtent();
+			            bounds = this.map.extent;
 			        }
 			
 			        var firstRendering:Boolean = (this.tile == null);
@@ -169,7 +169,7 @@ package org.openscales.core.layer
 	    }
 	    
 		public function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
-	        var projection:String = this.map.getProjection();
+	        var projection:String = this.map.projection;
 	        this.params.SRS = (projection == "none") ? null : projection;
 	
 	        return new Grid(this.name, this.url, this.params, this.options).getFullRequestString(newParams, altUrl);

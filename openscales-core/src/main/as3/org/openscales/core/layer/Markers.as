@@ -44,7 +44,7 @@ package org.openscales.core.layer
 	    
 	    public function addMarker(marker:Marker):void {
 	    	this.markers.push(marker);
-	        if (this.map && this.map.getExtent()) {
+	        if (this.map && this.map.extent) {
 	            marker.map = this.map;
 	            this.drawMarker(marker);
 	        }

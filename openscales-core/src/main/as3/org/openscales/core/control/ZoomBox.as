@@ -39,7 +39,7 @@ package org.openscales.core.control
 	                var pixHeight:Number = Math.abs(position.top-position.bottom);
 	                var zoomFactor:Number = Math.min((this.map.size.h / pixHeight),
 	                    (this.map.size.w / pixWidth));
-	                var extent:Bounds = map.getExtent();
+	                var extent:Bounds = map.extent;
 	                var center:LonLat = this.map.getLonLatFromPixel(
 	                    position.getCenterPixel());
 	                var xmin:Number = center.lon - (extent.getWidth()/2)*zoomFactor;

@@ -1,7 +1,6 @@
 package org.openscales.core
 {
 	import flash.display.Sprite;
-	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
 	import org.openscales.core.basetypes.Bounds;
@@ -10,11 +9,24 @@ package org.openscales.core
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.event.Events;
 	
+	/**
+	 * Class: OpenLayers.Map
+	 * Instances of OpenLayers.Map are interactive maps embedded in a web page.
+	 * Create a new map with the Map constructor.
+	 * 
+	 * On their own maps do not provide much functionality.  To extend a map
+	 * it's necessary to add controls (Control) and 
+	 * layers (Layer) to the map. 
+	 */
 	public class Map extends Sprite
 	{
 		
-		public var TILE_WIDTH:Number = 256;
-		public var TILE_HEIGHT:Number = 256;
+		public var DEFAULT_TILE_WIDTH:Number = 256;
+		public var DEFAULT_TILE_HEIGHT:Number = 256;
+		public var DEFAULT_NUM_ZOOM_LEVELS:Number = 16;
+		public var DEFAULT_MAX_RESOLUTION:Number = 1.40625;
+		public var DEFAULT_PROJECTION:String = "EPSG:4326";	
+			
 		
 		public var Z_INDEX_BASE:Object = {BaseLayer: 100, Overlay:325, Popup:750, Control: 1000};
 		
@@ -24,73 +36,41 @@ package org.openscales.core
         "addmarker", "removemarker", "clearmarkers", "mouseOver",
         "mouseOut", "mouseMove", "dragstart", "drag", "dragend",
         "changebaselayer", "changeannolayer"];
-		
-		public var id:String = null;
-		
+				
 		public var events:Events = null;
-		
-		private var unloadDestroy:Function = null;
-		
-		//public var viewPort:Sprite = null;
-		
 		public var layerContainerOrigin:LonLat = null;
+		public var fallThrough:Boolean = false;
+		public var units:String = "degrees";
 		
 		public var popupContainer:Sprite = null;
-		
 		public var layerContainer:Sprite = null;
 		
 		/**
 		 * Array of Layer classes
 		 */
 		public var layers:Array = null;
-		
-		public var controls:Array = null;
-		
-		public var popups:Array = null;
-		
 		public var baseLayer:Layer = null;
 		
-		private var _center:LonLat = null;
-		
-		private var _zoom:Number = 0;
-		
-		public var viewRequestID:int = 0;
-		
-		private var _tileSize:Size = null;
-		
-		public var projection:String = "EPSG:4326";
-		
-		public var units:String = "degrees";
-		
-		public var maxResolution:Object = 1.40625;
-		
-		public var minResolution:Object;
+		public var controls:Array = null;
+		public var popups:Array = null;
 		
 		public var maxScale:Number;
-		
 		public var minScale:Number;
 		
-		public var maxExtent:Bounds = null;
-		
-		public var minExtent:Bounds = null;
-		
-		public var numZoomLevels:Number = 16;
-		
-		public var fallThrough:Boolean = false;
-		
-		public var scales:Object = null;
-		
-		public var resolutions:Object = null;
-		
-		public var maxZoomLevel:Object = null;
-		
 		public var vectorLayer:Layer = null;
-		
 		public var featureSelection:Array = null;
-		
-		public var canPos:Pixel = null;
-		
+
 		private var _size:Size = null;
+		private var _tileSize:Size = null;
+		private var _center:LonLat = null;
+		private var _zoom:Number = 0;
+		private var _maxExtent:Bounds = null;
+		private var _maxResolution:Number;
+		private var _minResolution:Number;
+		private var _numZoomLevels:int;
+		private var _scales:Array;
+		private var _resolutions:Array;
+		public var _projection:String;
 		
 		public function Map(width:Number=600, height:Number=400, options:Object = null):void {
 			
@@ -98,13 +78,16 @@ package org.openscales.core
 			
 			this.setOptions(options);
 			
-			this.id = Util.createUniqueID("Map_");
-						
-			var topleft:Point = this.localToGlobal(new Point(0, 0));
-			this.canPos = new Pixel(topleft.x, topleft.y);
-			
 			this.layers = new Array();
+			this.controls = new Array();
+			this.popups = new Array();
+									
 			this.size = new Size(width, height);
+			this.tileSize = new Size(this.DEFAULT_TILE_WIDTH, this.DEFAULT_TILE_HEIGHT);
+			this.maxExtent = new Bounds(-180,-90,180,90);
+			this.maxResolution =  this.DEFAULT_MAX_RESOLUTION;
+			this.projection = this.DEFAULT_PROJECTION;
+			this.numZoomLevels = this.DEFAULT_NUM_ZOOM_LEVELS;
 			
 			this.layerContainer = new Sprite();
 			
@@ -115,8 +98,6 @@ package org.openscales.core
 			this.layerContainer.width = this.size.w;
 			this.layerContainer.height = this.size.h;
 			this.addChild(this.layerContainer);
-			
-	
 			
 			this.popupContainer = new Sprite();
 			this.popupContainer.width = this.size.w;
@@ -130,26 +111,9 @@ package org.openscales.core
 			this.addChild(this.popupContainer);
 			
 			this.events = new Events(this, this, this.EVENT_TYPES, this.fallThrough);
-	        
-	 
-	        // update the map size and location before the map moves
-	        //this.events.register("movestart", this, this.updateSize);
-	        //this.canvas.addEventListener("resize", this.updateSize);
-
-			this.layers = new Array();
-			this.controls = new Array();
-			this.popups = new Array();
-			
 		}
 		
-		private function destroy():Boolean {
-	        if (this.unloadDestroy == null) {
-	            return false;
-	        }
-	        
-	       // new OpenScalesEvent().stopObserving(this.can.parentApplication, 'unload', this.unloadDestroy);
-	        this.unloadDestroy = null;
-	
+		private function destroy():Boolean {	
 	        if (this.layers != null) {
 	            for (var i:int = this.layers.length - 1; i>=0; i--) {
 	                //pass 'false' to destroy so that map wont try to set a new 
@@ -164,10 +128,6 @@ package org.openscales.core
 	            } 
 	            this.controls = null;
 	        }
-	        /* if (this.viewPort) {
-	            this.removeChild(this.viewPort);
-	        }
-	        this.viewPort = null; */
 	
 	        this.events.destroy();
 	        this.events = null;
@@ -175,10 +135,7 @@ package org.openscales.core
 		}
 		
 		public function setOptions(options:Object):void {
-			this.tileSize = new Size(this.TILE_WIDTH, this.TILE_HEIGHT);
 			
-			//this.maxExtent = new Bounds(-77.90,40.77,-77.81,40.83);
-			this.maxExtent = new Bounds(-180,-90,180,90);
 			
 			Util.extend(this, options);		
 		}
@@ -272,7 +229,7 @@ package org.openscales.core
 	        this.events.triggerEvent("removelayer");	
 		}
 		
-		public function getNumLayers():Number {
+		public function get numLayers():Number {
 			return this.layers.length;
 		}
 		
@@ -326,8 +283,6 @@ package org.openscales.core
 					}
 					
 					this.baseLayer = newBaseLayer;
-					
-					this.viewRequestID++;
 					this.baseLayer.visibility = true;
 					
 					var center:LonLat = this.center;
@@ -408,7 +363,7 @@ package org.openscales.core
 	            center = this.center;
 	        }                
 	        if (resolution == -1) {
-	            resolution = this.getResolution();
+	            resolution = this.resolution;
 	        }
 	    
 	        if ((center != null) && (resolution != -1)) {
@@ -470,11 +425,9 @@ package org.openscales.core
 	
 	            if (zoomChanged) {
 	                this.zoom = zoom;
-
-	                this.viewRequestID++;
 	            } 
 	            
-	            var bounds:Bounds = this.getExtent();
+	            var bounds:Bounds = this.extent;
   	
 	            this.baseLayer.moveTo(bounds, zoomChanged, dragging);
 	            for (var i:int = 0; i < this.layers.length; i++) {
@@ -524,52 +477,105 @@ package org.openscales.core
 		public function isValidZoomLevel(zoomLevel:Number):Boolean {
 			var isValid:Boolean = ( (!isNaN(zoomLevel)) &&
 	            (zoomLevel >= 0) && 
-	            (zoomLevel < this.getNumZoomLevels()) );
+	            (zoomLevel < this.numZoomLevels) );
 		    return isValid;
 		}
 		
 		public function isValidLonLat(lonlat:LonLat):Boolean {
 	        var valid:Boolean = false;
 	        if (lonlat != null) {
-	            var maxExtent:Bounds = this.getMaxExtent();
+	            var maxExtent:Bounds = this.maxExtent;
 	            valid = maxExtent.containsLonLat(lonlat);        
 	        }
 	        return valid;
 		}
 		
-		public function getProjection():String {
-	        var projection:String = null;
+		public function set projection(value:String):void {
+			this._projection = value;
+		}
+		
+		public function get projection():String {
+	        var projection:String = _projection;
 	        if (this.baseLayer != null) {
 	            projection = this.baseLayer.projection;
 	        }
 	        return projection;
 		}
 		
-		public function getMaxResolution():String {
-	        var maxResolution:String = null;
+		public function set minResolution(value:Number):void {
+			this._minResolution = value;
+		}
+		
+		public function get minResolution():Number {
+	        var minResolution:Number = _minResolution;
 	        if (this.baseLayer != null) {
-	            maxResolution = this.baseLayer.maxResolution.toString();
+	            minResolution = this.baseLayer.minResolution;
+	        }
+	        return minResolution;
+		}
+		
+		
+		public function set maxResolution(value:Number):void {
+			this._maxResolution = value;
+		}
+		
+		public function get maxResolution():Number {
+	        var maxResolution:Number = _maxResolution;
+	        if (this.baseLayer != null) {
+	            maxResolution = this.baseLayer.maxResolution;
 	        }
 	        return maxResolution;
 		}
 		
-		public function getMaxExtent():Bounds {
-	        var maxExtentH:Bounds = null;
-	        if (this.baseLayer != null) {
-	            maxExtentH = this.baseLayer.maxExtent;
-	        }        
-	        return maxExtentH;	
+		public function set resolutions(value:Array):void {
+			this._resolutions = value;
 		}
 		
-		public function getNumZoomLevels():int {	
-	        var numZoomLevels:int = undefined;
+		public function get resolutions():Array {
+	        var resolutions:Array = _resolutions;
+	        if (this.baseLayer != null) {
+	            resolutions = this.baseLayer.resolutions;
+	        }
+	        return resolutions;
+		}		
+		
+		public function set scales(value:Array):void {
+			this._scales = value;
+		}
+		
+		public function get scales():Array {
+	        var scales:Array = _scales;
+	        if (this.baseLayer != null) {
+	            scales = this.baseLayer.scales;
+	        }
+	        return scales;
+		}		
+		
+		public function set maxExtent(value:Bounds):void {
+			this._maxExtent = value;
+		}
+		
+		public function get maxExtent():Bounds {
+	        var maxExtent:Bounds = _maxExtent;
+	        if (this.baseLayer != null) {
+	            maxExtent = this.baseLayer.maxExtent;
+	        }        
+	        return maxExtent;	
+		}
+				
+		public function set numZoomLevels(value:int):void {
+			this._numZoomLevels = value;
+		}
+		
+		public function get numZoomLevels():int {	
+	        var numZoomLevels:int = _numZoomLevels;
 	        if (this.baseLayer != null) {
 	            numZoomLevels = this.baseLayer.numZoomLevels;
 	        }
 	        return numZoomLevels;
 		}
 		
-		public function getExtent():Bounds {
+		public function get extent():Bounds {
 	        var extent:Bounds = null;
 	        if (this.baseLayer != null) {
 	            extent = this.baseLayer.getExtent();
@@ -577,7 +583,7 @@ package org.openscales.core
 	        return extent;
 		}
 		
-		public function getResolution():Number {
+		public function get resolution():Number {
 	        var resolution:Number = undefined;
 	        if (this.baseLayer != null) {
 	            resolution = this.baseLayer.getResolution();
@@ -585,10 +591,10 @@ package org.openscales.core
 	        return resolution;
 		}
 		
-		public function getScale():Number {
+		public function get scale():Number {
 			var scale:Number = undefined;
 	        if (this.baseLayer != null) {
-	            var res:Number = this.getResolution();
+	            var res:Number = this.resolution;
 	            var units:String = this.baseLayer.units;
 	            scale = Util.getScaleFromResolution(res, units);
 	        }
@@ -630,7 +636,7 @@ package org.openscales.core
 		}
 		
 		public function zoomToMaxExtent():void {
-			this.zoomToExtent(this.getMaxExtent());
+			this.zoomToExtent(this.maxExtent);
 		}
 		
 		public function zoomToScale(scale:Number):void {
@@ -679,7 +685,7 @@ package org.openscales.core
 	        }
 	        return viewPortPx;
 		}
-		
+
 		public function getLayerPxFromViewPortPx(viewPortPx:Pixel):Pixel {
 			var layerPx:Pixel = null;
 	        if (viewPortPx != null) {
@@ -689,7 +695,7 @@ package org.openscales.core
 	        }
 	        return layerPx;
 		}
-		
+
 		public function getLonLatFromLayerPx(px:Pixel):LonLat {
 			px = this.getViewPortPxFromLayerPx(px);
 	    	return this.getLonLatFromViewPortPx(px); 
@@ -699,7 +705,7 @@ package org.openscales.core
 	    	var px:Pixel = this.getViewPortPxFromLonLat(lonlat);
 	    	return this.getLayerPxFromViewPortPx(px);
 		}
-		
+
 		// Getters & setters as3
 		
 		public function get center():LonLat

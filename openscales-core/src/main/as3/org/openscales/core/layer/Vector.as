@@ -110,7 +110,7 @@ package org.openscales.core.layer
 	        if (!dragging) {
 	            //this.x = - int(this.map.layerContainer.x);
 	            //this.y = - int(this.map.layerContainer.y);
-	            var extent:Bounds = this.map.getExtent();
+	            var extent:Bounds = this.map.extent;
 	            this.renderer.setExtent(extent);
 	        }
 	

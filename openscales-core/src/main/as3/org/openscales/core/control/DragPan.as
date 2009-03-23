@@ -39,7 +39,7 @@ package org.openscales.core.control
 	        var deltaX:Number = this.handler.start.x - xy.x;
 	        var deltaY:Number = this.handler.start.y - xy.y;
         
-	        var newCenter:LonLat = new LonLat(startCenter.lon + deltaX * map.getResolution() , startCenter.lat - deltaY * map.getResolution());
+	        var newCenter:LonLat = new LonLat(startCenter.lon + deltaX * map.resolution , startCenter.lat - deltaY * map.resolution);
 	        
 	        this.map.setCenter(newCenter, NaN, this.handler.dragging);
 

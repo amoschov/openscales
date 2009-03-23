@@ -205,8 +205,8 @@ package org.openscales.core
 	          'scales', 'resolutions',
 	          'maxScale', 'minScale', 
 	          'maxResolution', 'minResolution', 
-	          'minExtent', 'maxExtent',
-	          'numZoomLevels', 'maxZoomLevel'
+	          'maxExtent',
+	          'numZoomLevels'
 	        );
 	
 	        var confProps:Object = new Object();        
@@ -328,7 +328,7 @@ package org.openscales.core
 	            var size:Size = this.map.size;
 	            var center:LonLat = this.map.center;
 	            if (center) {
-	                var res:Number  = this.map.getResolution();
+	                var res:Number  = this.map.resolution;
 	        
 	                var delta_x:Number = viewPortPx.x - (size.w / 2);
 	                var delta_y:Number = viewPortPx.y - (size.h / 2);
@@ -343,8 +343,8 @@ package org.openscales.core
 		public function getViewPortPxFromLonLat(lonlat:LonLat):Pixel {
 			var px:Pixel = null; 
 	        if (lonlat != null) {
-	            var resolution:Number = this.map.getResolution();
-	            var extent:Bounds = this.map.getExtent();
+	            var resolution:Number = this.map.resolution;
+	            var extent:Bounds = this.map.extent;
 	            px = new Pixel(
 	                           Math.round(1/resolution * (lonlat.lon - extent.left)),
 	                           Math.round(1/resolution * (extent.top - lonlat.lat))
@@ -370,7 +370,7 @@ package org.openscales.core
 		public function calculateInRange():Boolean {
 			var inRange:Boolean = false;
 	        if (this.map) {
-	            var resolution:Number = this.map.getResolution();
+	            var resolution:Number = this.map.resolution;
 	            inRange = ( (resolution >= this.minResolution) &&
 	                        (resolution <= this.maxResolution) );
 	        }
@@ -378,7 +378,7 @@ package org.openscales.core
 		}
 		
 		public function adjustBoundsByGutter(bounds:Bounds):Bounds {
-			var mapGutter:Number = this.gutter * this.map.getResolution();
+			var mapGutter:Number = this.gutter * this.map.resolution;
 	        bounds = new Bounds(bounds.left - mapGutter,
 	                                       bounds.bottom - mapGutter,
 	                                       bounds.right + mapGutter,

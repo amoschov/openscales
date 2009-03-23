@@ -47,7 +47,7 @@ package org.openscales.core
 	    }
 		
 		public function getResolution():Number {
-			this.resolution = this.resolution || this.map.getResolution();
+			this.resolution = this.resolution || this.map.resolution;
         	return this.resolution;
 		}
 		
