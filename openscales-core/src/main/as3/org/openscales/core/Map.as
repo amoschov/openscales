@@ -25,7 +25,8 @@ package org.openscales.core
 		public var DEFAULT_TILE_HEIGHT:Number = 256;
 		public var DEFAULT_NUM_ZOOM_LEVELS:Number = 16;
 		public var DEFAULT_MAX_RESOLUTION:Number = 1.40625;
-		public var DEFAULT_PROJECTION:String = "EPSG:4326";	
+		public var DEFAULT_PROJECTION:String = "EPSG:4326";
+		public var DEFAULT_UNITS:String = "degrees";
 			
 		
 		public var Z_INDEX_BASE:Object = {BaseLayer: 100, Overlay:325, Popup:750, Control: 1000};
@@ -37,29 +38,16 @@ package org.openscales.core
         "mouseOut", "mouseMove", "dragstart", "drag", "dragend",
         "changebaselayer", "changeannolayer"];
 				
-		public var events:Events = null;
-		public var layerContainerOrigin:LonLat = null;
-		public var fallThrough:Boolean = false;
-		public var units:String = "degrees";
-		
-		public var popupContainer:Sprite = null;
-		public var layerContainer:Sprite = null;
-		
-		/**
-		 * Array of Layer classes
-		 */
-		public var layers:Array = null;
-		public var baseLayer:Layer = null;
-		
-		public var controls:Array = null;
-		public var popups:Array = null;
-		
-		public var maxScale:Number;
-		public var minScale:Number;
-		
-		public var vectorLayer:Layer = null;
-		public var featureSelection:Array = null;
-
+		private var _events:Events = null;
+		private var _featureSelection:Array = null;
+		private var _layerContainerOrigin:LonLat = null;
+		private var _vectorLayer:Layer = null;
+		private var _popupContainer:Sprite = null;
+		private var _layerContainer:Sprite = null;
+		private var _layers:Array = null;
+		private var _baseLayer:Layer = null;
+		private var _controls:Array = null;
+		private var _popups:Array = null;
 		private var _size:Size = null;
 		private var _tileSize:Size = null;
 		private var _center:LonLat = null;
@@ -70,7 +58,10 @@ package org.openscales.core
 		private var _numZoomLevels:int;
 		private var _scales:Array;
 		private var _resolutions:Array;
-		public var _projection:String;
+		private var _projection:String;
+		private var _units:String;
+		private var _maxScale:Number;
+		private var _minScale:Number;
 		
 		public function Map(width:Number=600, height:Number=400, options:Object = null):void {
 			
@@ -78,9 +69,9 @@ package org.openscales.core
 			
 			this.setOptions(options);
 			
-			this.layers = new Array();
-			this.controls = new Array();
-			this.popups = new Array();
+			this._layers = new Array();
+			this._controls = new Array();
+			this._popups = new Array();
 									
 			this.size = new Size(width, height);
 			this.tileSize = new Size(this.DEFAULT_TILE_WIDTH, this.DEFAULT_TILE_HEIGHT);
@@ -88,49 +79,50 @@ package org.openscales.core
 			this.maxResolution =  this.DEFAULT_MAX_RESOLUTION;
 			this.projection = this.DEFAULT_PROJECTION;
 			this.numZoomLevels = this.DEFAULT_NUM_ZOOM_LEVELS;
+			this.units = this.DEFAULT_UNITS;
 			
-			this.layerContainer = new Sprite();
+			this._layerContainer = new Sprite();
 			
-			this.layerContainer.graphics.beginFill(0xFFFFFF);
-			this.layerContainer.graphics.drawRect(0,0,this.size.w,this.size.h);
-			this.layerContainer.graphics.endFill();
+			this._layerContainer.graphics.beginFill(0xFFFFFF);
+			this._layerContainer.graphics.drawRect(0,0,this.size.w,this.size.h);
+			this._layerContainer.graphics.endFill();
 			
-			this.layerContainer.width = this.size.w;
-			this.layerContainer.height = this.size.h;
-			this.addChild(this.layerContainer);
+			this._layerContainer.width = this.size.w;
+			this._layerContainer.height = this.size.h;
+			this.addChild(this._layerContainer);
 			
-			this.popupContainer = new Sprite();
-			this.popupContainer.width = this.size.w;
-			this.popupContainer.height = this.size.h;
+			this._popupContainer = new Sprite();
+			this._popupContainer.width = this.size.w;
+			this._popupContainer.height = this.size.h;
 			
-			this.popupContainer.graphics.beginFill(0xFFFFFF);
-			this.popupContainer.graphics.drawRect(0,0,this.size.w,this.size.h);
-			this.popupContainer.graphics.endFill();
+			this._popupContainer.graphics.beginFill(0xFFFFFF);
+			this._popupContainer.graphics.drawRect(0,0,this.size.w,this.size.h);
+			this._popupContainer.graphics.endFill();
 			
-			this.popupContainer.visible = false;
-			this.addChild(this.popupContainer);
+			this._popupContainer.visible = false;
+			this.addChild(this._popupContainer);
 			
-			this.events = new Events(this, this, this.EVENT_TYPES, this.fallThrough);
+			this._events = new Events(this, this, this.EVENT_TYPES, false);
 		}
 		
 		private function destroy():Boolean {	
-	        if (this.layers != null) {
-	            for (var i:int = this.layers.length - 1; i>=0; i--) {
+	        if (this._layers != null) {
+	            for (var i:int = this._layers.length - 1; i>=0; i--) {
 	                //pass 'false' to destroy so that map wont try to set a new 
 	                // baselayer after each baselayer is removed
-	                this.layers[i].destroy(false);
+	                this._layers[i].destroy(false);
 	            } 
-	            this.layers = null;
+	            this._layers = null;
 	        }
-	        if (this.controls != null) {
-	            for (var j:int = this.controls.length - 1; j>=0; j--) {
-	                this.controls[j].destroy();
+	        if (this._controls != null) {
+	            for (var j:int = this._controls.length - 1; j>=0; j--) {
+	                this._controls[j].destroy();
 	            } 
-	            this.controls = null;
+	            this._controls = null;
 	        }
 	
-	        this.events.destroy();
-	        this.events = null;
+	        this._events.destroy();
+	        this._events = null;
 	        return true;
 		}
 		
@@ -142,8 +134,8 @@ package org.openscales.core
 		
 		public function getLayer(id:String):Layer {
 			var foundLayer:Layer = null;
-			for (var i:int = 0; i < this.layers.length; i++) {
-				var layer:Layer = this.layers[i];
+			for (var i:int = 0; i < this._layers.length; i++) {
+				var layer:Layer = this._layers[i];
 				if (layer.id == id) {
 					foundLayer = layer;
 				}
@@ -153,8 +145,8 @@ package org.openscales.core
 		
 		public function getLayerByName(name:String):Layer {
 			var foundLayer:Layer = null;
-			for (var i:int = 0; i < this.layers.length; i++) {
-				var layer:Layer = this.layers[i];
+			for (var i:int = 0; i < this._layers.length; i++) {
+				var layer:Layer = this._layers[i];
 				if (layer.name == name) {
 					foundLayer = layer;
 				}
@@ -167,23 +159,23 @@ package org.openscales.core
 		}
 		
 		public function addLayer(layer:Layer):Boolean {
-			for(var i:int=0; i < this.layers.length; i++) {
-	            if (this.layers[i] == layer) {
+			for(var i:int=0; i < this._layers.length; i++) {
+	            if (this._layers[i] == layer) {
 	                return false;
 	            }
 	        }
 
 	        if (layer.zindex < 0) {
-	        	this.setLayerZindex(layer, this.layers.length);
+	        	this.setLayerZindex(layer, this._layers.length);
 	        }
 	        
 	        if (layer.isFixed) {
 	            this.addChild(layer);
 	        } else {
-	         	this.layerContainer.addChild(layer);
+	         	this._layerContainer.addChild(layer);
 	        }
 	        
-	        this.layers.push(layer);
+	        this._layers.push(layer);
 	        layer.setMap(this);
 	        
 	        if (layer.isBaseLayer) {
@@ -211,15 +203,15 @@ package org.openscales.core
 			if (layer.isFixed) {
 				this.removeChild(layer);
 			} else {
-				this.layerContainer.removeChild(layer);
+				this._layerContainer.removeChild(layer);
 			}
 			layer.map = null;
-			Util.removeItem(this.layers, layer);
+			Util.removeItem(this._layers, layer);
 			
 	        if (setNewBaseLayer && (this.baseLayer == layer)) {
-            	this.baseLayer = null;
-	            for(var i:int=0; i < this.layers.length; i++) {
-	                var iLayer:Layer = this.layers[i];
+            	this._baseLayer = null;
+	            for(var i:int=0; i < this._layers.length; i++) {
+	                var iLayer:Layer = this._layers[i];
 	                if (iLayer.isBaseLayer) {
 	                    this.setBaseLayer(iLayer);
 	                    break;
@@ -230,30 +222,30 @@ package org.openscales.core
 		}
 		
 		public function get numLayers():Number {
-			return this.layers.length;
+			return this._layers.length;
 		}
 		
 		public function getLayerIndex(layer:Layer):int {
-			return Util.indexOf(this.layers, layer);
+			return Util.indexOf(this._layers, layer);
 		}
 		
 		public function setLayerIndex(layer:Layer, idx:int):void {
 	        var base:int = this.getLayerIndex(layer);
 	        if (idx < 0) 
 	            idx = 0;
-	        else if (idx > this.layers.length)
-	            idx = this.layers.length;
+	        else if (idx > this._layers.length)
+	            idx = this._layers.length;
 	        if (base != idx) {
-	            this.layers.splice(base, 1);
-	            this.layers.splice(idx, 0, layer);
-	            for (var i:int = 0; i < this.layers.length; i++)
-	                this.setLayerZIndex(this.layers[i], i);
+	            this._layers.splice(base, 1);
+	            this._layers.splice(idx, 0, layer);
+	            for (var i:int = 0; i < this._layers.length; i++)
+	                this.setLayerZIndex(this._layers[i], i);
 	            this.events.triggerEvent("changelayer");
 	        }
 		}
 		
 		public function addControl(control:Control):void {
-			this.controls.push(control);
+			this._controls.push(control);
         	control.setMap(this);
         	control.draw();
         	this.addChild( control );
@@ -276,13 +268,13 @@ package org.openscales.core
 			
 			if (newBaseLayer != this.baseLayer) {
 				
-				if (Util.indexOf(this.layers, newBaseLayer) != -1) {
+				if (Util.indexOf(this._layers, newBaseLayer) != -1) {
 					
 					if (this.baseLayer != null) {
 						this.baseLayer.setVisibility(false, noEvent);
 					}
 					
-					this.baseLayer = newBaseLayer;
+					this._baseLayer = newBaseLayer;
 					this.baseLayer.visibility = true;
 					
 					var center:LonLat = this.center;
@@ -312,23 +304,23 @@ package org.openscales.core
 	
 	        if (exclusive) {
 	            //remove all other popups from screen
-	            for(var i:int=0; i < this.popups.length; i++) {
-	                this.removePopup(this.popups[i]);
+	            for(var i:int=0; i < this._popups.length; i++) {
+	                this.removePopup(this._popups[i]);
 	            }
 	        }
 	
 	        popup.map = this;
-	        this.popups.push(popup);
+	        this._popups.push(popup);
 	        popup.draw();
 	        if (popup) {
-	            this.popupContainer.addChildAt(popup, this.popups.length);
+	            this._popupContainer.addChildAt(popup, this._popups.length);
 	        }
 	    }
 
 	    public function removePopup(popup:PopupOL):void {
-	        Util.removeItem(this.popups, popup);
+	        Util.removeItem(this._popups, popup);
 	        if (popup) {
-	            try { this.popupContainer.removeChild(popup); }
+	            try { this._popupContainer.removeChild(popup); }
 	            catch (e:Error) { } 
 	        }
 	        popup.map = null;
@@ -343,8 +335,8 @@ package org.openscales.core
 				this.graphics.drawRect(0,0,this.size.w,this.size.h);
 				this.graphics.endFill();
 					            	
-	            for(var i:int=0; i < this.layers.length; i++) {
-	                this.layers[i].onMapResize();                
+	            for(var i:int=0; i < this._layers.length; i++) {
+	                this._layers[i].onMapResize();                
 	            }
 	
 	            if (this.baseLayer != null) {
@@ -412,15 +404,15 @@ package org.openscales.core
 	
 	            if (centerChanged) {
 	                if ((!zoomChanged) && (this.center)) { 
-	                    this.centerLayerContainer(lonlat);
+	                    this.center_layerContainer(lonlat);
 	                }
 	                this.center = lonlat.clone();
 	            }
 
-	            if ((zoomChanged) || (this.layerContainerOrigin == null)) {
-	                this.layerContainerOrigin = this.center.clone();
-	                this.layerContainer.x = 0;
-	                this.layerContainer.y = 0;
+	            if ((zoomChanged) || (this._layerContainerOrigin == null)) {
+	                this._layerContainerOrigin = this.center.clone();
+	                this._layerContainer.x = 0;
+	                this._layerContainer.y = 0;
 	            }
 	
 	            if (zoomChanged) {
@@ -430,8 +422,8 @@ package org.openscales.core
 	            var bounds:Bounds = this.extent;
   	
 	            this.baseLayer.moveTo(bounds, zoomChanged, dragging);
-	            for (var i:int = 0; i < this.layers.length; i++) {
-	                var layer:Layer = this.layers[i];
+	            for (var i:int = 0; i < this._layers.length; i++) {
+	                var layer:Layer = this._layers[i];
 	                if (!layer.isBaseLayer) {
 	                    
 	                    var moveLayer:Boolean;
@@ -451,8 +443,8 @@ package org.openscales.core
 	            }
 	            
 	            if (zoomChanged) {
-	                for (var j:int = 0; j < this.popups.length; j++) {
-	                    this.popups[i].updatePosition();
+	                for (var j:int = 0; j < this._popups.length; j++) {
+	                    this._popups[i].updatePosition();
 	                }
 	            }
 	            
@@ -464,13 +456,13 @@ package org.openscales.core
 	        if (!dragging) { this.events.triggerEvent("moveend"); }
 		}
 		
-		public function centerLayerContainer(lonlat:LonLat):void {
-			var originPx:Pixel = this.getViewPortPxFromLonLat(this.layerContainerOrigin);
+		public function center_layerContainer(lonlat:LonLat):void {
+			var originPx:Pixel = this.getViewPortPxFromLonLat(this._layerContainerOrigin);
 	        var newPx:Pixel = this.getViewPortPxFromLonLat(lonlat);
 	
 	        if ((originPx != null) && (newPx != null)) {
-	            this.layerContainer.x = (originPx.x - newPx.x);
-	            this.layerContainer.y  = (originPx.y - newPx.y);
+	            this._layerContainer.x = (originPx.x - newPx.x);
+	            this._layerContainer.y  = (originPx.y - newPx.y);
 	        }
 		}
 		
@@ -488,6 +480,201 @@ package org.openscales.core
 	            valid = maxExtent.containsLonLat(lonlat);        
 	        }
 	        return valid;
+		}
+		
+		public function getZoomForExtent(bounds:Bounds):Number {
+			var zoom:int = -1;
+	        if (this.baseLayer != null) {
+	            zoom = this.baseLayer.getZoomForExtent(bounds);
+	        }
+	        return zoom;
+		}
+		
+		public function getZoomForResolution(resolution:Number):Number {
+			var zoom:int = -1;
+	        if (this.baseLayer != null) {
+	            zoom = this.baseLayer.getZoomForResolution(resolution);
+	        }
+	        return zoom;
+		}
+		
+		public function zoomTo(zoom:int):void {
+	        if (this.isValidZoomLevel(zoom)) {
+	            this.setCenter(null, zoom);
+	        }
+		}
+		
+		public function zoomIn():void{
+			this.zoomTo(this.zoom + 1);
+		}
+		
+		public function zoomOut():void {
+			this.zoomTo(this.zoom - 1);
+		}
+		
+		public function zoomToExtent(bounds:Bounds):void {
+	        this.setCenter(bounds.getCenterLonLat(), this.getZoomForExtent(bounds));
+		}
+		
+		public function zoomToMaxExtent():void {
+			this.zoomToExtent(this.maxExtent);
+		}
+		
+		public function zoomToScale(scale:Number):void {
+			var res:Number = new Util().getResolutionFromScale(scale, this.baseLayer.units);
+	        var w_deg:Number = this.size.w * res;
+	        var h_deg:Number = this.size.h * res;
+	        var center:LonLat = this.center;
+	
+	        var extent:Bounds = new Bounds(center.lon - w_deg / 2,
+	                                           center.lat - h_deg / 2,
+	                                           center.lon + w_deg / 2,
+	                                           center.lat + h_deg / 2);
+	        this.zoomToExtent(extent);
+		}
+		
+		public function getLonLatFromViewPortPx(viewPortPx:Pixel):LonLat {
+	        var lonlat:LonLat = null; 
+	        if (this.baseLayer != null) {
+	            lonlat = this.baseLayer.getLonLatFromViewPortPx(viewPortPx);
+	        }
+	        return lonlat;
+		}
+		
+		public function getViewPortPxFromLonLat(lonlat:LonLat):Pixel {
+			var px:Pixel = null; 
+	        if (this.baseLayer != null) {
+	            px = this.baseLayer.getViewPortPxFromLonLat(lonlat);
+	        }
+	        return px;
+		}
+		
+		public function getLonLatFromPixel(px:Pixel):LonLat {
+			return this.getLonLatFromViewPortPx(px);
+		}
+		
+		public function getPixelFromLonLat(lonlat:LonLat):Pixel {
+			return this.getViewPortPxFromLonLat(lonlat);
+		}
+		
+		public function getViewPortPxFromLayerPx(layerPx:Pixel):Pixel {
+			var viewPortPx:Pixel = null;
+	        if (layerPx != null) {
+	            var dX:int = int(this._layerContainer.x);
+	            var dY:int = int(this._layerContainer.y);
+	            viewPortPx = layerPx.add(dX, dY);            
+	        }
+	        return viewPortPx;
+		}
+
+		public function getLayerPxFromViewPortPx(viewPortPx:Pixel):Pixel {
+			var layerPx:Pixel = null;
+	        if (viewPortPx != null) {
+	            var dX:int = -int(this._layerContainer.x);
+	            var dY:int = -int(this._layerContainer.y);
+	            layerPx = viewPortPx.add(dX, dY);
+	        }
+	        return layerPx;
+		}
+
+		public function getLonLatFromLayerPx(px:Pixel):LonLat {
+			px = this.getViewPortPxFromLayerPx(px);
+	    	return this.getLonLatFromViewPortPx(px); 
+		}
+		
+		public function getLayerPxFromLonLat(lonlat:LonLat):Pixel {
+	    	var px:Pixel = this.getViewPortPxFromLonLat(lonlat);
+	    	return this.getLayerPxFromViewPortPx(px);
+		}
+
+		// Getters & setters as3
+		
+		public function get center():LonLat
+		{
+			return _center;
+		}
+		public function set center(newCenter:LonLat):void
+		{
+			_center = newCenter;
+		}
+		
+		public function get tileSize():Size
+		{
+			return _tileSize;
+		}
+		public function set tileSize(newTileSize:Size):void
+		{
+			_tileSize = newTileSize;
+		}
+		
+		public function get zoom():Number
+		{
+			return _zoom;
+		}
+		public function set zoom(newZoom:Number):void
+		{
+			_zoom = newZoom;
+		}
+		
+		public function get size():Size
+		{
+			var size:Size = null;
+	        if (_size != null) {
+	            size = _size.clone();
+	        }
+	        return size;
+		}
+		
+		public function set size(newSize:Size):void
+		{
+			_size= newSize;
+			
+			this.updateSize();
+		}
+		
+		public function get layers():Array {
+	        return this._layers;
+		}
+		
+		public function get controls():Array {
+	        return this._controls;
+		}
+		
+		public function get baseLayer():Layer {
+	        return this._baseLayer;
+		}
+		
+		public function get layerContainer():Sprite {
+	        return this._layerContainer;
+		}
+		
+		public function get vectorLayer():Layer {
+	        return this._vectorLayer;
+		}
+		
+		public function set featureSelection(value:Array):void
+		{
+			this._featureSelection= value;
+		}
+		
+		public function get featureSelection():Array {
+	        return this._featureSelection;
+		}
+				
+		public function get events():Events {
+	        return this._events;
+		}
+		
+		public function set units(value:String):void {
+			this._units = value;
+		}
+		
+		public function get units():String {
+	        var units:String = _units;
+	        if (this.baseLayer != null) {
+	            units = this.baseLayer.units;
+	        }
+	        return units;
 		}
 		
 		public function set projection(value:String):void {
@@ -512,6 +699,30 @@ package org.openscales.core
 	            minResolution = this.baseLayer.minResolution;
 	        }
 	        return minResolution;
+		}
+		
+		public function set maxScale(value:Number):void {
+			this._maxScale = value;
+		}
+		
+		public function get maxScale():Number {
+	        var maxScale:Number = _maxScale;
+	        if (this.baseLayer != null) {
+	            maxScale = this.baseLayer.maxScale;
+	        }
+	        return maxScale;
+		}
+		
+		public function set minScale(value:Number):void {
+			this._minScale = value;
+		}
+		
+		public function get minScale():Number {
+	        var minScale:Number = _minScale;
+	        if (this.baseLayer != null) {
+	            minScale = this.baseLayer.minScale;
+	        }
+	        return minScale;
 		}
 		
 		
@@ -601,154 +812,5 @@ package org.openscales.core
 	        return scale;
 		}
 		
-		public function getZoomForExtent(bounds:Bounds):Number {
-			var zoom:int = -1;
-	        if (this.baseLayer != null) {
-	            zoom = this.baseLayer.getZoomForExtent(bounds);
-	        }
-	        return zoom;
-		}
-		
-		public function getZoomForResolution(resolution:Number):Number {
-			var zoom:int = -1;
-	        if (this.baseLayer != null) {
-	            zoom = this.baseLayer.getZoomForResolution(resolution);
-	        }
-	        return zoom;
-		}
-		
-		public function zoomTo(zoom:int):void {
-	        if (this.isValidZoomLevel(zoom)) {
-	            this.setCenter(null, zoom);
-	        }
-		}
-		
-		public function zoomIn():void{
-			this.zoomTo(this.zoom + 1);
-		}
-		
-		public function zoomOut():void {
-			this.zoomTo(this.zoom - 1);
-		}
-		
-		public function zoomToExtent(bounds:Bounds):void {
-	        this.setCenter(bounds.getCenterLonLat(), this.getZoomForExtent(bounds));
-		}
-		
-		public function zoomToMaxExtent():void {
-			this.zoomToExtent(this.maxExtent);
-		}
-		
-		public function zoomToScale(scale:Number):void {
-			var res:Number = new Util().getResolutionFromScale(scale, this.baseLayer.units);
-	        var w_deg:Number = this.size.w * res;
-	        var h_deg:Number = this.size.h * res;
-	        var center:LonLat = this.center;
-	
-	        var extent:Bounds = new Bounds(center.lon - w_deg / 2,
-	                                           center.lat - h_deg / 2,
-	                                           center.lon + w_deg / 2,
-	                                           center.lat + h_deg / 2);
-	        this.zoomToExtent(extent);
-		}
-		
-		public function getLonLatFromViewPortPx(viewPortPx:Pixel):LonLat {
-	        var lonlat:LonLat = null; 
-	        if (this.baseLayer != null) {
-	            lonlat = this.baseLayer.getLonLatFromViewPortPx(viewPortPx);
-	        }
-	        return lonlat;
-		}
-		
-		public function getViewPortPxFromLonLat(lonlat:LonLat):Pixel {
-			var px:Pixel = null; 
-	        if (this.baseLayer != null) {
-	            px = this.baseLayer.getViewPortPxFromLonLat(lonlat);
-	        }
-	        return px;
-		}
-		
-		public function getLonLatFromPixel(px:Pixel):LonLat {
-			return this.getLonLatFromViewPortPx(px);
-		}
-		
-		public function getPixelFromLonLat(lonlat:LonLat):Pixel {
-			return this.getViewPortPxFromLonLat(lonlat);
-		}
-		
-		public function getViewPortPxFromLayerPx(layerPx:Pixel):Pixel {
-			var viewPortPx:Pixel = null;
-	        if (layerPx != null) {
-	            var dX:int = int(this.layerContainer.x);
-	            var dY:int = int(this.layerContainer.y);
-	            viewPortPx = layerPx.add(dX, dY);            
-	        }
-	        return viewPortPx;
-		}
-
-		public function getLayerPxFromViewPortPx(viewPortPx:Pixel):Pixel {
-			var layerPx:Pixel = null;
-	        if (viewPortPx != null) {
-	            var dX:int = -int(this.layerContainer.x);
-	            var dY:int = -int(this.layerContainer.y);
-	            layerPx = viewPortPx.add(dX, dY);
-	        }
-	        return layerPx;
-		}
-
-		public function getLonLatFromLayerPx(px:Pixel):LonLat {
-			px = this.getViewPortPxFromLayerPx(px);
-	    	return this.getLonLatFromViewPortPx(px); 
-		}
-		
-		public function getLayerPxFromLonLat(lonlat:LonLat):Pixel {
-	    	var px:Pixel = this.getViewPortPxFromLonLat(lonlat);
-	    	return this.getLayerPxFromViewPortPx(px);
-		}
-
-		// Getters & setters as3
-		
-		public function get center():LonLat
-		{
-			return _center;
-		}
-		public function set center(newCenter:LonLat):void
-		{
-			_center = newCenter;
-		}
-		
-		public function get tileSize():Size
-		{
-			return _tileSize;
-		}
-		public function set tileSize(newTileSize:Size):void
-		{
-			_tileSize = newTileSize;
-		}
-		
-		public function get zoom():Number
-		{
-			return _zoom;
-		}
-		public function set zoom(newZoom:Number):void
-		{
-			_zoom = newZoom;
-		}
-		
-		public function get size():Size
-		{
-			var size:Size = null;
-	        if (_size != null) {
-	            size = _size.clone();
-	        }
-	        return size;
-		}
-		
-		public function set size(newSize:Size):void
-		{
-			_size= newSize;
-			
-			this.updateSize();
-		}
 	}
 }
