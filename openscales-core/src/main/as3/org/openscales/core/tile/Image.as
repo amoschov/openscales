@@ -72,14 +72,16 @@ package org.openscales.core.tile
 		
 		public function onTileLoadEnd(event:Event):void
 		{
-			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
-			var loader:Loader = loaderInfo.loader as Loader;
-			this.addChild(loader);
-			// Tween tile effect 
-			new GTweeny(this, 0.3, {alpha:1}); 
-
-			this.layer.addChild(this);
-			this.drawn = true;
+			if(this.layer) {
+				var loaderInfo:LoaderInfo = event.target as LoaderInfo;
+				var loader:Loader = loaderInfo.loader as Loader;
+				this.addChild(loader);
+				// Tween tile effect 
+				new GTweeny(this, 0.3, {alpha:1}); 
+	
+				this.layer.addChild(this);
+				this.drawn = true;
+			}
 		}
 		
 		private function onTileLoadError(event:IOErrorEvent):void
