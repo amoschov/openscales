@@ -26,7 +26,7 @@ package org.openscales.core.tile
 			super(layer, position, bounds, url, size);
 			
 			// otherwise you'll get seams between tiles :(
-			this.cacheAsBitmap = true;
+			this.cacheAsBitmap = false;
 			
 			_tileLoader = new Loader();
 		}
