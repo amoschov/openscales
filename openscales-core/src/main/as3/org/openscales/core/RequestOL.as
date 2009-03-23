@@ -1,8 +1,12 @@
 package org.openscales.core
 {
-	import flash.display.Loader;
 	import flash.events.Event;
+	import flash.events.HTTPStatusEvent;
+	import flash.events.IEventDispatcher;
 	import flash.events.IOErrorEvent;
+	import flash.events.ProgressEvent;
+	import flash.events.SecurityErrorEvent;
+	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	
@@ -51,8 +55,9 @@ package org.openscales.core
 		      if (proxy != null) {
 		      	this.url = proxy + encodeURIComponent(this.url);
 		      }
-		      
-		      var loader:Loader = new Loader();
+		      var loader:URLLoader = new URLLoader();
+			  configureListeners(loader);
+			
 		      var urlRequest:URLRequest = new URLRequest(this.url);
 		      urlRequest.method = this.options.method;
 				
@@ -61,22 +66,54 @@ package org.openscales.core
 		      		urlRequest.contentType = "application/xml";
 		      }
 		      
-			  loader.load ( urlRequest );		      
-		      
 		      if (this.options.onComplete) {
 		      	loader.addEventListener(Event.COMPLETE, this.options.onComplete);
 		      	/* loader.resultFormat = "e4x"; */
 		      }
-			  loader.addEventListener(IOErrorEvent.IO_ERROR, handleFault);
+			  
+			  loader.load ( urlRequest );		      
+		      
 		
 		    } catch (e:Error) {
-		      this.dispatchException(e);
+		      trace(e.message);
 		    }
 		}
 		
-		private function handleFault(event:IOErrorEvent):void {
-			
-		}
+		
+		private function configureListeners(dispatcher:IEventDispatcher):void {
+            dispatcher.addEventListener(Event.COMPLETE, completeHandler);
+            dispatcher.addEventListener(Event.OPEN, openHandler);
+            dispatcher.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+            dispatcher.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+            dispatcher.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
+            dispatcher.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+        }
+
+        private function completeHandler(event:Event):void {
+            var loader:URLLoader = URLLoader(event.target);
+            trace("completeHandler: " + loader.data);
+        }
+
+        private function openHandler(event:Event):void {
+            trace("openHandler: " + event);
+        }
+
+        private function progressHandler(event:ProgressEvent):void {
+            trace("progressHandler loaded:" + event.bytesLoaded + " total: " + event.bytesTotal);
+        }
+
+        private function securityErrorHandler(event:SecurityErrorEvent):void {
+            trace("securityErrorHandler: " + event);
+        }
+
+        private function httpStatusHandler(event:HTTPStatusEvent):void {
+            trace("httpStatusHandler: " + event);
+        }
+
+        private function ioErrorHandler(event:IOErrorEvent):void {
+            trace("ioErrorHandler: " + event);
+        }
+
 		
 		
 	}

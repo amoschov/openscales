@@ -1,9 +1,8 @@
 package org.openscales.core.tile
 {
 	
-	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.events.Event;
+	import flash.net.URLLoader;
 	
 	import org.openscales.core.Layer;
 	import org.openscales.core.OpenScales;
@@ -52,10 +51,8 @@ package org.openscales.core.tile
 		}
 		
 		public function requestSuccess(event:Event):void {
-			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
-			var loader:Loader = loaderInfo.loader as Loader;
-			
-			var doc:XML = loader.content as XML;
+			var loader:URLLoader = event.target as URLLoader;
+			var doc:XML =  new XML(loader.data);;
 			var wfsLayer:org.openscales.core.layer.WFS = this.layer as org.openscales.core.layer.WFS;
 			
 	        if (wfsLayer && wfsLayer.vectorMode) {

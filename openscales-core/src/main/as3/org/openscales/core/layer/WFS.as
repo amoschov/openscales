@@ -1,8 +1,7 @@
 package org.openscales.core.layer
 {	
-	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.events.Event;
+	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Map;
@@ -202,10 +201,8 @@ package org.openscales.core.layer
 		}
 		
 		public function commitSuccessFailure(event:Event):void {
-			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
-			var loader:Loader = loaderInfo.loader as Loader;
-			
-			var response:String = loader.content as String;
+			var loader:URLLoader = event.target as URLLoader;
+			var response:String = loader.data as String;
 	        if (response.indexOf('SUCCESS') != -1) {
 	            this.commitReport('WFS Transaction: SUCCESS', response);
 	            

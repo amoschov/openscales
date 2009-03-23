@@ -1,9 +1,8 @@
 package org.openscales.core.layer
 {
-	import flash.display.Loader;
-	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.net.URLLoader;
 	
 	import org.openscales.core.Feature;
 	import org.openscales.core.Icon;
@@ -39,10 +38,9 @@ package org.openscales.core.layer
 		}
 		
 		public function parseData(event:Event):void {
-			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
-			var loader:Loader = loaderInfo.loader as Loader;
+			var loader:URLLoader = event.target as URLLoader;
 			
-			var doc:XML = loader.content as XML;
+			var doc:XML = new XML(loader.data);
 	        
 	        this.name = null;
 	        try {
