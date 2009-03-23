@@ -1,6 +1,5 @@
 package org.openscales.core.layer
 {
-	import org.openscales.core.CanvasOL;
 	import org.openscales.core.Layer;
 	import org.openscales.core.Marker;
 	import org.openscales.core.Util;
@@ -53,9 +52,8 @@ package org.openscales.core.layer
 	    
 	    public function removeMarker(marker:Marker):void {
 	        Util.removeItem(this.markers, marker);
-	        if ((marker.icon != null) && (marker.icon.imageCanvas != null) &&
-	            (marker.icon.imageCanvas.parent == this) ) {
-	            this.removeChild(marker.icon.imageCanvas);    
+	        if ((marker != null) && (marker.parent == this) ) {
+	            this.removeChild(marker);    
 	            marker.drawn = false;
 	        }
 	    }
@@ -71,18 +69,18 @@ package org.openscales.core.layer
 	    public function drawMarker(marker:Marker):void {
 	    	var px:Pixel = this.map.getLayerPxFromLonLat(marker.lonlat);
 	        if (px == null) {
-	            marker.display(false);
+	            marker.visible = false;
 	        } else {
-	            var markerImg:CanvasOL = marker.draw(px);
+	            marker.draw(px);
 	            if (!marker.drawn) {
-	                this.addChild(markerImg);
+	                this.addChild(marker);
 	                marker.drawn = true;
 	            }
 	        }
 	    }
 	    
 	    public function bringToFront(marker:Marker):void {
-	    	this.setChildIndex(marker.icon.imageCanvas, this.numChildren-1);
+	    	this.setChildIndex(marker, this.numChildren-1);
 	    }
 	    
 	    public function getDataExtent():Bounds {

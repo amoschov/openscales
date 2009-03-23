@@ -4,7 +4,6 @@ package org.openscales.core.control
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.CanvasOL;
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;

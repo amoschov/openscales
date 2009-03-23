@@ -1,20 +1,31 @@
 package org.openscales.core
 {
-	import mx.rpc.events.FaultEvent;
-	import mx.rpc.events.ResultEvent;
-	import mx.rpc.http.mxml.HTTPService;
+	import flash.display.Loader;
+	import flash.events.Event;
+	import flash.events.IOErrorEvent;
+	import flash.net.URLRequest;
+	import flash.net.URLRequestMethod;
 	
-	public class RequestOL extends Base
+	public class RequestOL
 	{
-		
+		public var options:Object = null;
 		public static var activeRequestCount:int = 0;
 		private var url:String = null;
 		
 		public function RequestOL(url:String, options:Object, proxy:String = null):void {
-			this.transport = getTransport();
+			
 			this.setOptions(options);
 			this.request(url, proxy);
 		}
+		
+		public function setOptions(options:Object):void {
+			this.options = {
+			  method:       URLRequestMethod.POST,
+			  parameters:   ''
+			}
+			Util.extend(this.options, options || {});
+		}
+
 		
 		private function request(url:String, proxy:String):void {
 			var parameters:Object = this.options.parameters || '';
@@ -26,7 +37,7 @@ package org.openscales.core
 		      }
 		      var body:Object= this.options.postBody ? this.options.postBody : postBody;
 		      if (body) {
-		      	this.options.method = "post";
+		      	this.options.method = URLRequestMethod.POST;
 		      	if (parameters.BBOX) {
 		      		var bbox:String = Util.getBBOXStringFromBounds(parameters.BBOX);
 		      		body.*::Query.*::Filter.*::And.*::BBOX.*::Box.*::coordinates = bbox;
@@ -34,43 +45,39 @@ package org.openscales.core
 		      	}
 		      }
 		      this.url = url;
-		      if (this.options.method == 'get' && parameters.length > 0)
+		      if (this.options.method == URLRequestMethod.GET && parameters.length > 0)
 		        this.url += (this.url.match(/\?/) ? '&' : '?') + parameters;
 		
 		      if (proxy != null) {
 		      	this.url = proxy + encodeURIComponent(this.url);
 		      }
-		      trace(this.url);
-		      this.transport.url = this.url;
 		      
+		      var loader:Loader = new Loader();
+		      var urlRequest:URLRequest = new URLRequest(this.url);
+		      urlRequest.method = this.options.method;
+				
+			  if (this.options.method == URLRequestMethod.POST) {
+		      		urlRequest.data = body;
+		      		urlRequest.contentType = "application/xml";
+		      }
 		      
-		      this.transport.method = this.options.method;
+			  loader.load ( urlRequest );		      
 		      
 		      if (this.options.onComplete) {
-		      	this.transport.addEventListener(ResultEvent.RESULT, this.options.onComplete);
-		      	this.transport.resultFormat = "e4x";
+		      	loader.addEventListener(Event.COMPLETE, this.options.onComplete);
+		      	/* loader.resultFormat = "e4x"; */
 		      }
-
-		      if (this.options.method == "post") {
-		      		this.transport.request = body;
-		      		this.transport.contentType = "application/xml";
-		      }
-		      
-		      this.transport.showBusyCursor = true;
-			  this.transport.addEventListener(FaultEvent.FAULT, handleFault);
-		      this.transport.send();
+			  loader.addEventListener(IOErrorEvent.IO_ERROR, handleFault);
 		
 		    } catch (e:Error) {
 		      this.dispatchException(e);
 		    }
 		}
 		
-		private function handleFault(event:FaultEvent):void {
+		private function handleFault(event:IOErrorEvent):void {
 			
 		}
-		private function getTransport():HTTPService {
-			return new HTTPService();
-		}
+		
 		
 	}
 }

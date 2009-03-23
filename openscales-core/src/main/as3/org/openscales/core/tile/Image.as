@@ -9,8 +9,6 @@ package org.openscales.core.tile
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
 	
-	import mx.effects.easing.Sine;
-	
 	import org.openscales.core.Layer;
 	import org.openscales.core.Tile;
 	import org.openscales.core.basetypes.Bounds;
@@ -78,7 +76,7 @@ package org.openscales.core.tile
 			var loader:Loader = loaderInfo.loader as Loader;
 			this.addChild(loader);
 			// Tween tile effect 
-			new GTweeny(this, 0.3, {alpha:1}, {ease:Sine.easeInOut}); 
+			new GTweeny(this, 0.3, {alpha:1}); 
 
 			this.layer.addChild(this);
 			this.drawn = true;

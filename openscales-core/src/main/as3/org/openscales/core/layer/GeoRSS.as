@@ -1,18 +1,18 @@
 package org.openscales.core.layer
 {
+	import flash.display.Loader;
+	import flash.display.LoaderInfo;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import mx.rpc.events.ResultEvent;
-	
-	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.Feature;
 	import org.openscales.core.Icon;
 	import org.openscales.core.Marker;
 	import org.openscales.core.OpenScales;
-	import org.openscales.core.PopupOL;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.event.OpenScalesEvent;
 	
 	public class GeoRSS extends Markers
 	{
@@ -38,8 +38,11 @@ package org.openscales.core.layer
         	super.destroy();
 		}
 		
-		public function parseData(resultEvt:ResultEvent):void {
-			var doc:XML = resultEvt.result as XML;
+		public function parseData(event:Event):void {
+			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
+			var loader:Loader = loaderInfo.loader as Loader;
+			
+			var doc:XML = loader.content as XML;
 	        
 	        this.name = null;
 	        try {
@@ -128,7 +131,7 @@ package org.openscales.core.layer
 				}
 	
 	            data.icon = this.icon == null ? 
-	                                     Marker.defaultIcon() : 
+	                                     new Marker() : 
 	                                     this.icon.clone();
 	            data.popupSize = new Size(250, 120);
 	            if ((title != null) && (description != null)) {

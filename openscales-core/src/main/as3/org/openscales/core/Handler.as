@@ -1,9 +1,8 @@
 package org.openscales.core
 {
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
-	
-	import mx.events.ResizeEvent;
 	
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.event.Events;
@@ -111,7 +110,7 @@ package org.openscales.core
 			
 		}
 		
-		public function resize(evt:ResizeEvent):void {
+		public function resize(evt:Event):void {
 			
 		}
 		

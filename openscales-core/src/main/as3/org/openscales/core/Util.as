@@ -4,9 +4,7 @@ package org.openscales.core
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.xml.XMLNode;
-	
-	import mx.containers.Canvas;
-	
+		
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
@@ -16,29 +14,8 @@ package org.openscales.core
 		
 		private static var lastSeqID:Number = 0;
 		private var viewRequestID:Number = 0;
-		private var canvas:Canvas = null;
 		public static var MISSING_TILE_URL:String = "http://openstreetmap.org/openlayers/img/404.png";
-		
-		public function Util(canvas:Canvas = null):void {
-			this.canvas = canvas;
-		}
-		
-		public function getElement(element:Object = null):Object {
-			var elements:Array = new Array();
-
-		    for (var i:int = 0; i < arguments.length; i++) {
-		        var element:Object = arguments[i];
-		        if (element is String) {
-		            element = this.canvas.parentApplication.getChildByName(String(element));
-		        }
-		        if (arguments.length == 1) {
-		            return element;
-		        }
-		        elements.push(element);
-		    }
-		    return elements;
-		}
-		
+	
 		public static function extend(destination:Object, source:Object):Object {
 		    for (var property:String in source) {
 		      destination[property] = source[property];
@@ -64,111 +41,6 @@ package org.openscales.core
 		        if (array[i] == obj) return i;
 		    }
 		    return -1; 
-		}
-		
-	private static function modifyFlexElement(element:Object, id:String, px:Pixel, sz:Size, position:String = null, border:String = null, overflow:String = null, opacity:Number = NaN):void {
-		    if (id != null) {
-		        element.id = id;
-		    }
-		    if (px != null) {
-		        element.x = px.x;
-		        element.y = px.y;
-		    }
-		    if (sz != null) {
-		        element.width = sz.w;
-		        element.height = sz.h;
-		    }
-		    if (position != null) {
-		        element.style.position = position;
-		    }
-		    if (border != null) {
-		        element.style.border = border;
-		    }
-		    if (overflow != null) {
-		        element.style.overflow = overflow;
-		    }
-		    if (opacity) {
-		      //  element.style.opacity = opacity;
-		      //  element.style.filter = 'alpha(opacity=' + (opacity * 100) + ')';
-		        element.alpha = opacity;
-		    }
-		}
-	 			
-		 public static function createCanvas(id:String = null, px:Pixel = null, sz:Size = null, source:Object = null, position:String = null, border:String = null, overflow:String = null, opacity:Number = NaN):CanvasOL {
-			var canvas:CanvasOL = new CanvasOL();
-			canvas.clipContent = false;
-			canvas.horizontalScrollPolicy = "off";
-			canvas.verticalScrollPolicy = "off";
-			
-			if (source != null) {
-				var img:ImageOL = new ImageOL();
-				img.source = source;
-				canvas.addChild(img);
-			}
-			
-			if (id != null) {
-				id = Util.createUniqueID("OpenLayersCanvas");
-			}
-			
-			if (position != null) {
-				position = "absolute";
-			}
-			
-			Util.modifyFlexElement(canvas, id, px, sz, position, border, overflow, opacity);
-			
-			return canvas;
-		} 
-		
-		public static function createImage(id:String, px:Pixel, sz:Size, source:Object, position:String, border:String, opacity:Number = NaN, delayDisplay:Boolean = false):ImageOL {
-			var image:ImageOL = new ImageOL();
-
-		    if (!id) {
-		        id = Util.createUniqueID("OpenLayersDiv");
-		    }
-		    if (!position) {
-		        position = "relative";
-		    }
-
-		    modifyFlexElement(image, id, px, sz, position, 
-		                                     border, null, opacity);
-		    
-		    image.style.alt = id;
-		    image.galleryImg = "no";
-		    if (source) {
-		        image.source = source;
-		    }
-
-		    return image;
-		}
-		
-		public static function modifyAlphaImageCanvas(canvas:Object, id:String, px:Pixel, sz:Size = null, source:Object = null, position:String = null, border:String = null, sizing:String = null, opacity:Number = NaN):void {
-			modifyFlexElement(canvas, id, px, sz);
-			
-			var img:ImageOL = canvas.getChildAt(0) as ImageOL;
-			
-			if (source != null) {
-				img.source = source;
-			}
-			
-			modifyFlexElement(img, canvas.id + "_innerImage", null, sz, "relative", border);
-			
-			if (opacity) {
-				//canvas.style.opacity = opacity;
-				//canvas.style.filter = "alpha(opacity=" + (opacity * 100) + ")";
-				img.alpha = opacity;
-			}
-		}
-		
-		public static function createAlphaImageCanvas(id:String, px:Pixel = null, sz:Size = null, source:Object = null, position:String = null, border:String = null, sizing:String = "scale", opacity:Number = NaN, delayDisplay:Boolean = false):CanvasOL {
-			var canvas:CanvasOL = Util.createCanvas();
-		    var img:ImageOL = Util.createImage(null, null, null, source, null, null, 
-		                                          opacity, false);
-		    canvas.addChild(img);
-		
-		    Util.modifyAlphaImageCanvas(canvas, id, px, sz, source, position, 
-		                                        border, sizing, opacity);
-		    
-		    return canvas;
 		}
 		
 		public static function createUniqueID(prefix:String):String {
@@ -331,7 +203,7 @@ package org.openscales.core
 		    return [globalPoint.x, globalPoint.y];
 		}
 		
-		public static function bringCanvasToFront(inCanvas:CanvasOL, container:CanvasOL):int {
+		/* public static function bringCanvasToFront(inCanvas:CanvasOL, container:CanvasOL):int {
 			var zPos:int = container.getChildIndex(inCanvas);
 			container.setChildIndex(inCanvas, container.numChildren - 1);
 			return zPos;
@@ -339,7 +211,7 @@ package org.openscales.core
 		
 		public static function putCanvasBack(inCanvas:CanvasOL, container:CanvasOL, zPos:int):void {
 			container.setChildIndex(inCanvas, zPos);
-		}
+		} */
 		
 		public static function mouseLeft(evt:MouseEvent, can:DisplayObject):Boolean {
 		    var target:Object = evt.currentTarget

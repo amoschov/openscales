@@ -1,6 +1,9 @@
 package org.openscales.core.layer
-{
-	import mx.rpc.events.ResultEvent;
+{	
+	import flash.display.Loader;
+	import flash.display.LoaderInfo;
+	import flash.events.Event;
+	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.OpenScales;
@@ -190,7 +193,7 @@ package org.openscales.core.layer
 	        var successfailure:Function = commitSuccessFailure;
 	        
 	        new RequestOL(url, 
-	                         {   method: 'post', 
+	                         {   method:URLRequestMethod.POST, 
 	                             postBody: data,
 	                             onComplete: successfailure
 	                          },
@@ -198,8 +201,11 @@ package org.openscales.core.layer
 	                         );
 		}
 		
-		public function commitSuccessFailure(evt:ResultEvent):void {
-			var response:String = evt.result as String;
+		public function commitSuccessFailure(event:Event):void {
+			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
+			var loader:Loader = loaderInfo.loader as Loader;
+			
+			var response:String = loader.content as String;
 	        if (response.indexOf('SUCCESS') != -1) {
 	            this.commitReport('WFS Transaction: SUCCESS', response);
 	            
@@ -214,7 +220,7 @@ package org.openscales.core.layer
 	        }
 		}
 		
-		public function commitFailure(response:ResultEvent):void {
+		public function commitFailure(response:Event):void {
 			
 		}
 		

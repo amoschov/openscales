@@ -364,16 +364,16 @@ package org.openscales.core
 	
 	        popup.map = this;
 	        this.popups.push(popup);
-	        var popupCanvas:CanvasOL = popup.draw();
-	        if (popupCanvas) {
-	            this.popupContainer.addChildAt(popupCanvas, this.Z_INDEX_BASE['Popup'] + this.popups.length);
+	        popup.draw();
+	        if (popup) {
+	            this.popupContainer.addChildAt(popup, this.popups.length);
 	        }
 	    }
 
 	    public function removePopup(popup:PopupOL):void {
 	        Util.removeItem(this.popups, popup);
-	        if (popup.canvas) {
-	            try { this.popupContainer.removeChild(popup.canvas); }
+	        if (popup) {
+	            try { this.popupContainer.removeChild(popup); }
 	            catch (e:Error) { } 
 	        }
 	        popup.map = null;

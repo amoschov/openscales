@@ -6,8 +6,6 @@ package org.openscales.core.event
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import mx.containers.Canvas;
-	
 	public class OpenScalesEvent extends Event
 	{
 		public var observers:Object = false;

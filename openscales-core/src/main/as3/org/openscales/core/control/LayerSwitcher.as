@@ -117,10 +117,10 @@ package org.openscales.core.control
 				
 				// Display overlays
 				for(i=0;i<this.map.layers.length;i++) {
-					var layer:Layer = this.map.layers[i] as Layer;
+					layer = this.map.layers[i] as Layer;
 					if(layer.isBaseLayer==false) {
 						y+=this._textOffset;
-						var layerTextField:TextField = new TextField();
+						layerTextField = new TextField();
 						layerTextField.text=layer.name;
 						layerTextField.setTextFormat(contentFormat);
 						layerTextField.x = this.position.x - 170;

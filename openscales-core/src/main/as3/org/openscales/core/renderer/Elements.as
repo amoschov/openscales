@@ -4,7 +4,6 @@ package org.openscales.core.renderer
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.CanvasOL;
 	import org.openscales.core.Control;
 	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.Renderer;

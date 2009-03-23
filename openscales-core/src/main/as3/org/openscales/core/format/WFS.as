@@ -1,9 +1,7 @@
 package org.openscales.core.format
 {
 	import flash.xml.XMLNode;
-	
-	import mx.controls.Alert;
-	
+		
 	import org.openscales.core.Layer;
 	import org.openscales.core.feature.State;
 	import org.openscales.core.feature.Vector;
@@ -71,7 +69,7 @@ package org.openscales.core.format
     	}
     	
     	public function update(feature:Vector):XMLNode {
-	        if (!feature.fid) { Alert.show("Can't update a feature for which there is no FID."); }
+	        if (!feature.fid) { trace("Can't update a feature for which there is no FID."); }
 	        var updateNode:XMLNode = new XMLNode(1, "wfs:Update");
 	        updateNode.attributes.typeName = this.layerName;
 	
@@ -99,7 +97,7 @@ package org.openscales.core.format
     	
     	public function remove(feature:Vector):XMLNode {
 	        if (!feature.attributes.fid) { 
-	            Alert.show("Can't update a feature for which there is no FID."); 
+	            trace("Can't update a feature for which there is no FID."); 
 	            return null; 
 	        }
 	        var deleteNode:XMLNode = new XMLNode(1, "wfs:Delete");

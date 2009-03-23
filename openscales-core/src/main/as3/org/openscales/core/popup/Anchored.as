@@ -1,6 +1,7 @@
 package org.openscales.core.popup
 {
-	import org.openscales.core.CanvasOL;
+	import flash.display.Sprite;
+	
 	import org.openscales.core.PopupOL;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -21,7 +22,7 @@ package org.openscales.core.popup
 	                                           offset: new Pixel(0,0)};
 	    }
 	    
-	    override public function draw(px:Pixel = null):CanvasOL {
+	    override public function draw(px:Pixel = null):void {
 	    	if (px == null) {
 	            if ((this.lonlat != null) && (this.map != null)) {
 	                px = this.map.getLayerPxFromLonLat(this.lonlat);
@@ -29,8 +30,7 @@ package org.openscales.core.popup
 	        }
 
 	        this.relativePosition = this.calculateRelativePosition(px);
-	        
-	        return super.draw(px);
+
 	    }
 	    
 	    public function calculateRelativePosition(px:Pixel):String {
@@ -42,11 +42,9 @@ package org.openscales.core.popup
 	        return Bounds.oppositeQuadrant(quadrant);
 	    }
 	    
-	    override public function moveTo(px:Pixel):void {
+	    override public function set position(px:Pixel):void {
 	        var newPx:Pixel = this.calculateNewPx(px);
-	        
-	        var newArguments:Array = new Array(newPx);        
-	        super.moveTo(px);
+	        super.position = newPx;
 	    }
 	    
 	    override public function setSize(size:Size = null):void {
@@ -54,7 +52,7 @@ package org.openscales.core.popup
 	
 	        if ((this.lonlat) && (this.map)) {
 	            var px:Pixel = this.map.getLayerPxFromLonLat(this.lonlat);
-	            this.moveTo(px);
+	            this.position = px;
 	        }
 	    }
 	    

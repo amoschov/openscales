@@ -1,10 +1,17 @@
 package org.openscales.core
 {
+	import flash.display.Loader;
+	import flash.display.LoaderInfo;
+	import flash.display.Sprite;
+	import flash.events.Event;
+	import flash.events.IOErrorEvent;
+	import flash.net.URLRequest;
+	
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.event.OpenScalesEvent;
 	
-	public class Icon
+	public class Icon extends Sprite
 	{
 	    public var url:String = null;
 	    
@@ -14,11 +21,8 @@ package org.openscales.core
 
 	    public var calculateOffset:Function = null;    
 	    
-	    public var imageCanvas:CanvasOL = null;
-	
-	    public var px:Pixel = null;
 	    
-	    public var marker:Marker = null;
+	    private var _iconLoader:Loader = null;
 	    
 	    public function Icon(url:String, size:Size = null, offset:Pixel = null, calculateOffset:Function = null):void {	
 	        this.url = url;
@@ -27,14 +31,11 @@ package org.openscales.core
 	        this.calculateOffset = calculateOffset;
 	
 	        var id:String = Util.createUniqueID("FL_Icon_");
-	        this.imageCanvas = Util.createAlphaImageCanvas(id);
-	        this.imageCanvas.doubleClickEnabled = true;
-	        this.imageCanvas.flIcon = this;
+	        this.doubleClickEnabled = true;
 	    }
 	    
 	    public function destroy():void {
-		   	OpenScalesEvent.stopObservingElement("click", this.imageCanvas);
-	        this.imageCanvas = null;
+		   	OpenScalesEvent.stopObservingElement("click", this);
 	    }
 	    
 	    public function clone():Icon {
@@ -58,43 +59,47 @@ package org.openscales.core
      		this.draw();	
      	}
      	
-     	public function draw(px:Pixel = null):CanvasOL {
- 	        Util.modifyAlphaImageCanvas(this.imageCanvas, 
-                                    null, 
-                                    null, 
-                                    this.size, 
-                                    this.url, 
-                                    "absolute");
-	        this.moveTo(px);
-	        return this.imageCanvas;
+     	public function draw(px:Pixel = null):void {
+ 	        _iconLoader.load(new URLRequest(this.url));
+	        _iconLoader.name=this.url;
+	        _iconLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onIconLoadEnd, false, 0, true);
+			_iconLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onIconLoadError, false, 0, true);
+			
+	        this.position = px;
      	}
      	
-     	public function setOpacity(opacity:Number):void {
- 		     Util.modifyAlphaImageCanvas(this.imageCanvas, null, null, null, 
-                                   	null, null, null, null, opacity);
-     	}
+     	public function onIconLoadEnd(event:Event):void
+		{
+			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
+			var loader:Loader = loaderInfo.loader as Loader;
+			this.addChild(loader);
+		}
+		
+		private function onIconLoadError(event:IOErrorEvent):void
+		{
+			trace("Error when loading icon " + this.url);
+
+		}
      	
-     	public function moveTo(px:Pixel):void {
-     		if (px != null) {
-	            this.px = px;
+     	public function set position(px:Pixel):void {
+			if (px != null) {
+	            this.x = px.x;
+	            this.y = px.y;
 	        }
-	
-	        if (this.imageCanvas != null) {
-	            if (this.px == null) {
-	                this.display(false);
-	            } else {
-	                if (this.calculateOffset != null) {
-	                    this.offset = this.calculateOffset(this.size);  
-	                }
-	                var offsetPx:Pixel = this.px.offset(this.offset);
-	                Util.modifyAlphaImageCanvas(this.imageCanvas, null, offsetPx);
-	            }
-	        }
-     	}
+	        
+	        if (this.calculateOffset != null) {
+                this.offset = this.calculateOffset(this.size);  
+            }
+            var offsetPx:Pixel = this.position.offset(this.offset);
+            this.x = offsetPx.x;
+	        this.y = offsetPx.y;
+                	        
+		}
+		
+		public function get position():Pixel {
+			return new Pixel(this.x, this.y);
+		}
      	
-     	public function display(display:Boolean):void {
-     		this.imageCanvas.visible = (display) ? true : false;
-     	}
      	
 	}
 }

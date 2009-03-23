@@ -1,13 +1,10 @@
 package org.openscales.core.control
 {
 	import flash.display.Bitmap;
-	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.CanvasOL;
 	import org.openscales.core.Control;
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.event.OpenScalesEvent;
@@ -60,8 +57,7 @@ package org.openscales.core.control
 		override public function destroy():void {
 			super.destroy();
 	        while(this.buttons.length) {
-	            var btn:CanvasOL = this.buttons.shift();
-	            btn.map = null;
+	            var btn:Button = this.buttons.shift();
 	            OpenScalesEvent.stopObservingElement(MouseEvent.CLICK, btn);
 	        }
 	        this.buttons = null;

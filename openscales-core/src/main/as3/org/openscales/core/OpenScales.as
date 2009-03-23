@@ -1,5 +1,7 @@
 package org.openscales.core
 {
+	import flash.net.URLRequestMethod;
+	
 	public class OpenScales
 	{
 		
@@ -18,7 +20,7 @@ package org.openscales.core
 			var successorfailure:Function = onComplete;
 			
 			new RequestOL(uri,
-                     {   method: 'get', 
+                     {   method: URLRequestMethod.GET, 
                          parameters: params,
                          onComplete: successorfailure
                       }, proxy);

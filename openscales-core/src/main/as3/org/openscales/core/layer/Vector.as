@@ -2,9 +2,7 @@ package org.openscales.core.layer
 {
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
-	
-	import mx.controls.Alert;
-	
+		
 	import org.openscales.core.Layer;
 	import org.openscales.core.Map;
 	import org.openscales.core.Renderer;
@@ -82,7 +80,7 @@ package org.openscales.core.layer
 	            var message:String = "Your browser does not support vector rendering. " + 
 	                            "Currently supported renderers are:\n";
 	            message += this.renderers.join("\n");
-	            Alert.show(message);
+	            trace(message);
 	        } 
 	    }
 	    

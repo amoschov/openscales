@@ -1,6 +1,9 @@
 package org.openscales.core.tile
 {
-	import mx.rpc.events.ResultEvent;
+	
+	import flash.display.Loader;
+	import flash.display.LoaderInfo;
+	import flash.events.Event;
 	
 	import org.openscales.core.Layer;
 	import org.openscales.core.OpenScales;
@@ -48,8 +51,11 @@ package org.openscales.core.tile
 			OpenScales.loadURL(this.url, null, this, success);
 		}
 		
-		public function requestSuccess(result:ResultEvent):void {
-			var doc:XML = result.result as XML;
+		public function requestSuccess(event:Event):void {
+			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
+			var loader:Loader = loaderInfo.loader as Loader;
+			
+			var doc:XML = loader.content as XML;
 			var wfsLayer:org.openscales.core.layer.WFS = this.layer as org.openscales.core.layer.WFS;
 			
 	        if (wfsLayer && wfsLayer.vectorMode) {

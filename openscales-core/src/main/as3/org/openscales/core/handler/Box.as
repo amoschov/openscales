@@ -1,8 +1,8 @@
 package org.openscales.core.handler
 {
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.CanvasOL;
 	import org.openscales.core.Control;
 	import org.openscales.core.Handler;
 	import org.openscales.core.Map;
@@ -15,7 +15,7 @@ package org.openscales.core.handler
 		
 		public var dragHandler:Drag = null;
 		
-		public var zoomBox:CanvasOL = null;
+		public var zoomBox:Sprite = null;
 		
 		public function Box(control:Control, callbacks:Object, options:Object):void {
 			super(control, callbacks, options);
@@ -37,11 +37,11 @@ package org.openscales.core.handler
 		}
 		
 		public function startBox(xy:Pixel):void {
-			this.zoomBox = Util.createCanvas("zoomBox",
-                                                 this.dragHandler.start);
-            this.zoomBox.setStyle("borderStyle", "solid");
-            this.zoomBox.setStyle("borderColor", 0xff0000);
-            this.zoomBox.setStyle("borderWidth", 1);
+			this.zoomBox = new Sprite();
+			this.zoomBox.name = "zoomBox";
+			this.zoomBox.x = this.dragHandler.start.x;
+			this.zoomBox.y = this.dragHandler.start.y;
+			
 	        this.map.addChild(this.zoomBox);
 		}
 		

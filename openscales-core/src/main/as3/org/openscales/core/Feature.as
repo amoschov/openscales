@@ -76,7 +76,8 @@ package org.openscales.core
 			var marker:Marker = null;
 	        
 	        if (this.lonlat != null) {
-	            this.marker = new Marker(this.lonlat, this.data.icon, this);
+	            this.marker = new Marker();
+	            this.marker.lonlat = this.lonlat;
 	        }
 	        return this.marker;
 		}
@@ -89,7 +90,7 @@ package org.openscales.core
 			if (this.lonlat != null) {
             
 	            var id:String = this.id + "_popup";
-	            var anchor:Icon = (this.marker) ? this.marker.icon : null;
+	            var anchor:Icon = this.marker;
 	
 	            this.popup = new AnchoredBubble(id, 
                                             this.lonlat,
