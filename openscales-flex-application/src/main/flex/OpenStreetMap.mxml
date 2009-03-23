@@ -33,7 +33,7 @@
 				
 				var lat:Number=-3.5397294921874973;
         		var lon:Number=-43.584918945312495;
-        		var zoom:Number=8;
+        		var zoom:Number=9;
         		
         		var lonLat:LonLat = new LonLat(lon, lat);
         		map.setCenter (lonLat, zoom);
