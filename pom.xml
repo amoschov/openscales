@@ -70,6 +70,38 @@
 			<name>Romaric Pascal</name>
 			<timezone>+1</timezone>
 		</developer>
+		<developer>
+			<id>scottpez</id>
+			<name>Scott Pezanowski</name>
+			<organization>The GeoVISTA Center, Department of Geography, The Pennsylvania State University</organization>
+			<organizationUrl>http://www.geovista.psu.edu/</organizationUrl>
+			<timezone>-5</timezone>
+		</developer>
+		<developer>
+			<id>mauri</id>
+			<name>Mauricio Miranda</name>
+			<timezone>-3</timezone>
+		</developer>
+		<developer>
+			<id>fpanettieri</id>
+			<name>Fabio Panettieri</name>
+			<timezone>-1</timezone>
+		</developer>
+		<developer>
+			<id>thibautm</id>
+			<name>Thibaut Muller</name>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>jeremiep</id>
+			<name>Jérémie Perera</name>
+			<timezone>+1</timezone>
+		</developer>
+		<developer>
+			<id>fcellier</id>
+			<name>Fabien Cellier</name>
+			<timezone>+1</timezone>
+		</developer>
 	</developers>
 	<scm>
 		<connection>scm:svn:http://openscales.org/svn/openscales/trunk/</connection>
