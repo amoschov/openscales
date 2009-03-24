@@ -1,7 +1,5 @@
 package org.openscales.core.geometry
-{
-	import org.openscales.core.Geometry;
-	
+{	
 	public class LineString extends Curve
 	{
 		

@@ -1,7 +1,7 @@
 package org.openscales.core.control
 {
-	import org.openscales.core.Control;
-	import org.openscales.core.Layer;
+	import org.openscales.core.control.Control;
+	import org.openscales.core.layer.Layer;
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;

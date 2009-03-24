@@ -2,8 +2,7 @@ package org.openscales.core.handler
 {
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.Control;
-	import org.openscales.core.Handler;
+	import org.openscales.core.control.Control;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;

@@ -1,6 +1,6 @@
-package org.openscales.core
+package org.openscales.core.format
 {
-	import org.openscales.core.feature.Vector;
+	import org.openscales.core.Util;
 	
 	public class Format
 	{

@@ -1,10 +1,10 @@
 package org.openscales.core.format
 {
 	import flash.xml.XMLNode;
-		
-	import org.openscales.core.Layer;
+	
 	import org.openscales.core.feature.State;
 	import org.openscales.core.feature.Vector;
+	import org.openscales.core.layer.Layer;
 	
 	public class WFS extends GML
 	{

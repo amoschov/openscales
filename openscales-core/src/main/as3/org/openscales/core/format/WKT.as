@@ -2,11 +2,10 @@ package org.openscales.core.format
 {
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.Format;
-	import org.openscales.core.Geometry;
-	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.StringUtils;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.feature.Vector;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.MultiLineString;

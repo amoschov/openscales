@@ -9,8 +9,7 @@ package org.openscales.core.tile
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
 	
-	import org.openscales.core.Layer;
-	import org.openscales.core.Tile;
+	import org.openscales.core.layer.Layer;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;

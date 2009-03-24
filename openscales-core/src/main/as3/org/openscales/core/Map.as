@@ -7,7 +7,10 @@ package org.openscales.core
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.control.Control;
 	import org.openscales.core.event.Events;
+	import org.openscales.core.layer.Layer;
+	import org.openscales.core.popup.PopupOL;
 	
 	/**
 	 * Class: OpenLayers.Map

@@ -1,12 +1,14 @@
-package org.openscales.core
+package org.openscales.core.tile
 {
 	import flash.display.Sprite;
 	
+	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.event.Events;
+	import org.openscales.core.layer.Layer;
 
 	public class Tile extends Sprite
 	{

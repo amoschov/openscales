@@ -1,6 +1,5 @@
 package org.openscales.core.geometry
 {
-	import org.openscales.core.Geometry;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	

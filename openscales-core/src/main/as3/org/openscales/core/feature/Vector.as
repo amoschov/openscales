@@ -1,9 +1,8 @@
 package org.openscales.core.feature
 {
-	import org.openscales.core.Feature;
-	import org.openscales.core.Geometry;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.geometry.Geometry;
 	
 	public class Vector extends Feature
 	{

@@ -7,7 +7,6 @@ package org.openscales.core.layer
 	import org.openscales.core.Map;
 	import org.openscales.core.OpenScales;
 	import org.openscales.core.RequestOL;
-	import org.openscales.core.Tile;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -15,6 +14,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.format.WFS;
+	import org.openscales.core.tile.Tile;
 	import org.openscales.core.tile.WFS;
 	
 	public class WFS extends org.openscales.core.layer.Vector

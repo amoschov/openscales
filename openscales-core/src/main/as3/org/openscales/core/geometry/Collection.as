@@ -3,7 +3,6 @@ package org.openscales.core.geometry
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.Geometry;
 	import org.openscales.core.Util;
 	
 	public class Collection extends Geometry

@@ -1,9 +1,11 @@
-package org.openscales.core
+package org.openscales.core.handler
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
+	import org.openscales.core.Map;
+	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.event.Events;
 	

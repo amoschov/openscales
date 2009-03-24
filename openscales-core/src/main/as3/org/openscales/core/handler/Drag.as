@@ -2,10 +2,9 @@ package org.openscales.core.handler
 {
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.event.OpenScalesEvent;
-	import org.openscales.core.Handler;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.event.OpenScalesEvent;
 
 	public class Drag extends Handler
 	{

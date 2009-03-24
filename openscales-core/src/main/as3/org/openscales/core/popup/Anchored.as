@@ -2,7 +2,6 @@ package org.openscales.core.popup
 {
 	import flash.display.Sprite;
 	
-	import org.openscales.core.PopupOL;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;

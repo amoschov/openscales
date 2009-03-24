@@ -1,7 +1,7 @@
 package org.openscales.core.handler
 {
 	import org.openscales.core.feature.Vector;
-	import org.openscales.core.Control;
+	import org.openscales.core.control.Control;
 	import org.openscales.core.geometry.LinearRing;
 	import flash.events.MouseEvent;
 	

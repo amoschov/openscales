@@ -4,11 +4,10 @@ package org.openscales.core.renderer
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.Control;
-	import org.openscales.core.event.OpenScalesEvent;
-	import org.openscales.core.Renderer;
 	import org.openscales.core.SpriteOL;
+	import org.openscales.core.control.Control;
 	import org.openscales.core.control.SelectFeature;
+	import org.openscales.core.event.OpenScalesEvent;
 	
 	public class Elements extends Renderer
 	{

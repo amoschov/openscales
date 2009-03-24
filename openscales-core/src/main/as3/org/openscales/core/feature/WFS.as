@@ -1,11 +1,10 @@
 package org.openscales.core.feature
 {
-	import org.openscales.core.Feature;
-	import org.openscales.core.Layer;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.layer.Layer;
 	
-	public class WFS extends org.openscales.core.Feature
+	public class WFS extends Feature
 	{
 		
 		public function WFS(layer:Layer, xmlNode:XML):void {

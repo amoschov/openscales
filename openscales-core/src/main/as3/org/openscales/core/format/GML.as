@@ -3,7 +3,6 @@ package org.openscales.core.format
 	import flash.utils.getQualifiedClassName;
 	import flash.xml.XMLNode;
 	
-	import org.openscales.core.Format;
 	import org.openscales.core.Util;
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.geometry.Collection;

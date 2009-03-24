@@ -4,9 +4,8 @@ package org.openscales.core.tile
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	
-	import org.openscales.core.Layer;
+	import org.openscales.core.layer.Layer;
 	import org.openscales.core.OpenScales;
-	import org.openscales.core.Tile;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;

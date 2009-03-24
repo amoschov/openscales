@@ -4,7 +4,6 @@ package org.openscales.core.layer
 	import flash.events.MouseEvent;
 	import flash.net.URLLoader;
 	
-	import org.openscales.core.Feature;
 	import org.openscales.core.Icon;
 	import org.openscales.core.Marker;
 	import org.openscales.core.OpenScales;
@@ -12,6 +11,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.event.OpenScalesEvent;
+	import org.openscales.core.feature.Feature;
 	
 	public class GeoRSS extends Markers
 	{

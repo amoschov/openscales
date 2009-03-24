@@ -1,10 +1,9 @@
 package org.openscales.core.control
 {
-	import org.openscales.core.Control;
-	import org.openscales.core.Geometry;
 	import org.openscales.core.Util;
-	import org.openscales.core.layer.Vector;
 	import org.openscales.core.feature.Vector;
+	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.layer.Vector;
 
 	public class DrawFeature extends Control
 	{

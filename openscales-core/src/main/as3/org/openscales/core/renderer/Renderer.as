@@ -1,4 +1,4 @@
-package org.openscales.core
+package org.openscales.core.renderer
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;

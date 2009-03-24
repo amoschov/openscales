@@ -1,16 +1,19 @@
-package org.openscales.core
+package org.openscales.core.popup
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.utils.getQualifiedClassName;
 	
+	import org.openscales.core.Map;
+	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.Button;
 	import org.openscales.core.event.Events;
 	import org.openscales.core.event.OpenScalesEvent;
+	import org.openscales.core.feature.Feature;
 	
 	public class PopupOL extends Sprite
 	{

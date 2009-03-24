@@ -1,14 +1,12 @@
 package org.openscales.core.control
 {
-	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.Control;
-	import org.openscales.core.Handler;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.handler.Click;
+	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.MouseWheel;
 
 	public class Navigation extends Control

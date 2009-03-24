@@ -1,6 +1,6 @@
 package org.openscales.core.control
 {
-	import org.openscales.core.Control;
+	import org.openscales.core.control.Control;
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.feature.Vector;

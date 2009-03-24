@@ -1,6 +1,10 @@
 package org.openscales.core
 {
 	import flash.display.Sprite;
+	
+	import org.openscales.core.feature.Feature;
+	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.popup.PopupOL;
 
 	public class SpriteOL extends Sprite
 	{

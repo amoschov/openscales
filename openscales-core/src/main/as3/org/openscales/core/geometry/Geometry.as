@@ -1,7 +1,8 @@
-package org.openscales.core
+package org.openscales.core.geometry
 {
 	import flash.utils.getQualifiedClassName;
 	
+	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.feature.Vector;

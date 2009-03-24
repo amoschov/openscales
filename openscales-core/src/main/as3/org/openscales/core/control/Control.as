@@ -1,10 +1,13 @@
-package org.openscales.core
+package org.openscales.core.control
 {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 	
+	import org.openscales.core.Map;
+	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.handler.Handler;
 	import org.openscales.core.layer.Vector;
 	
 	public class Control extends Sprite

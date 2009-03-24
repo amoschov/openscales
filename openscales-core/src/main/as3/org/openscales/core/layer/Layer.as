@@ -1,8 +1,10 @@
-package org.openscales.core
+package org.openscales.core.layer
 {
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 	
+	import org.openscales.core.Map;
+	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;

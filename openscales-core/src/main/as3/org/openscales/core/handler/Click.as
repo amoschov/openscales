@@ -4,8 +4,7 @@ package org.openscales.core.handler
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	
-	import org.openscales.core.Control;
-	import org.openscales.core.Handler;
+	import org.openscales.core.control.Control;
 	import org.openscales.core.TimerOL;
 	import org.openscales.core.basetypes.Pixel;
 

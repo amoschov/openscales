@@ -1,13 +1,13 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.Tile;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.tile.Image;
+	import org.openscales.core.tile.Tile;
 	
 	public class Grid extends HTTPRequestOL
 	{

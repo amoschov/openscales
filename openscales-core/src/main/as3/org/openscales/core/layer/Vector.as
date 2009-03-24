@@ -2,14 +2,13 @@ package org.openscales.core.layer
 {
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
-		
-	import org.openscales.core.Layer;
+	
 	import org.openscales.core.Map;
-	import org.openscales.core.Renderer;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.renderer.AS;
+	import org.openscales.core.renderer.Renderer;
 	
 	public class Vector extends Layer
 	{

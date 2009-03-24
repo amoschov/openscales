@@ -3,12 +3,10 @@ package org.openscales.core.handler
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.Control;
-	import org.openscales.core.Handler;
 	import org.openscales.core.Map;
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.control.Control;
 
 	public class Box extends Handler
 	{
