@@ -20,9 +20,9 @@ package org.openscales.core.layer
                      
        	public var reproject:Boolean = true;
        	
-       	public function WMS(name:String, url:String, params:Object, options:Object = null):void {
-       		this.singleTile = true;
+       	public function WMS(name:String, url:String, params:Object, options:Object = null):void {       		
 	        super(name, url, params, options);
+	        this.singleTile = true;
 	        Util.applyDefaults(
 	                       this.params, 
 	                       Util.upperCaseObject(this.DEFAULT_PARAMS)

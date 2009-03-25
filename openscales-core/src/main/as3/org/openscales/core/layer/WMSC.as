@@ -7,8 +7,8 @@ package org.openscales.core.layer
 	{
 		public function WMSC(name:String, url:String, params:Object, options:Object = null)
 		{
-			this.singleTile = false;
 			super(name, url, params, options);
+			this.singleTile = false;
 			
 			Util.extend(this.params, {TILED:"true"});					
 		}
