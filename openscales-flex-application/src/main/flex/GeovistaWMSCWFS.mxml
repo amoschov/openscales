@@ -11,6 +11,7 @@
 			import org.openscales.core.control.Navigation;
 			import org.openscales.core.control.PanZoomBar;
 			import org.openscales.core.layer.WMS;
+			import org.openscales.core.layer.WMSC;
 			import org.openscales.core.Map;
 			import org.openscales.core.basetypes.Bounds;
 			import mx.core.UIComponent;
@@ -23,7 +24,7 @@
 				map.numZoomLevels = 21;
 				map.size=new Size(fxmap.width, fxmap.height);
 				
-				var baselayer1:WMS = new WMS("Base Image", "http://www.apps.geovista.psu.edu/tilecache/tilecache.py", {layers: "centreimagerygeogjpeg", FORMAT: "image/jpeg"}, {isBaseLayer: true});
+				var baselayer1:WMSC = new WMSC("Base Image", "http://www.apps.geovista.psu.edu/tilecache/tilecache.py", {layers: "centreimagerygeogjpeg", FORMAT: "image/jpeg"}, {isBaseLayer: true});
 				
 				var style_blue:Object = Util.extend({}, Vector.style['default']);
 				var style_white:Object = Util.extend({}, Vector.style['default']);

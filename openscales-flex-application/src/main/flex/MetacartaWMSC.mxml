@@ -13,6 +13,7 @@
 			import org.openscales.core.control.Navigation;
 			import org.openscales.core.control.PanZoomBar;
 			import org.openscales.core.layer.WMS;
+			import org.openscales.core.layer.WMSC;
 			import org.openscales.core.Map;
 			import org.openscales.core.basetypes.Bounds;
 			
@@ -24,7 +25,7 @@
 				map.numZoomLevels = 20;
 				map.size=new Size(fxmap.width, fxmap.height);
 
-				var baselayer1:WMS = new WMS("Metacarta", "http://labs.metacarta.com/wms-c/Basic.py", {layers: "satellite", FORMAT: "image/jpeg"}, {isBaseLayer: true});
+				var baselayer1:WMSC = new WMSC("Metacarta", "http://labs.metacarta.com/wms-c/Basic.py", {layers: "satellite", FORMAT: "image/jpeg"}, {isBaseLayer: true});
 				
 				map.addLayers([baselayer1]);
 				map.addControl(new PanZoomBar());

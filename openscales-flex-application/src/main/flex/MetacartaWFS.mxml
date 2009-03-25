@@ -13,6 +13,7 @@
 			import org.openscales.core.control.Navigation;
 			import org.openscales.core.control.PanZoomBar;
 			import org.openscales.core.layer.WMS;
+			import org.openscales.core.layer.WMSC;
 			import org.openscales.core.Map;
 			import org.openscales.core.basetypes.Bounds;
 			import mx.core.UIComponent;
@@ -23,7 +24,7 @@
 				var map:Map = fxmap.map;
 				map.size=new Size(fxmap.width, fxmap.height);
 				
-				var wmslayer1:WMS = new WMS( "OpenLayers WMS",
+				var wmslayer1:WMSC = new WMSC( "OpenLayers WMS",
                     "http://labs.metacarta.com/wms-c/Basic.py",
                     {layers: 'basic'} , {isBaseLayer: true});
 
