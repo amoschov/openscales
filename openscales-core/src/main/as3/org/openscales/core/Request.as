@@ -81,12 +81,12 @@ package org.openscales.core
 		
 		
 		private function configureListeners(dispatcher:IEventDispatcher):void {
-            dispatcher.addEventListener(Event.COMPLETE, completeHandler);
+            /* dispatcher.addEventListener(Event.COMPLETE, completeHandler);
             dispatcher.addEventListener(Event.OPEN, openHandler);
             dispatcher.addEventListener(ProgressEvent.PROGRESS, progressHandler);
             dispatcher.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
             dispatcher.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler);
-            dispatcher.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+            dispatcher.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler); */
         }
 
         private function completeHandler(event:Event):void {
