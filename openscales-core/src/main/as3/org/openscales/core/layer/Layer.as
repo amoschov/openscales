@@ -104,7 +104,6 @@ package org.openscales.core.layer
 				this.map.removeLayer(this, setNewBaseLayer);
 			}
 			this.map = null;
-			this.name = null;
 			this.options = null;
 			
 			if (this.events) {

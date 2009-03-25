@@ -86,7 +86,7 @@ package org.openscales.core.feature
 		
 		override public function destroy():void {
 			if (this.layer) {
-	            this.layer.destroy();
+	            //this.layer.destroy();
 	            this.layer = null;
 	        }
 	            

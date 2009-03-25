@@ -7,6 +7,7 @@ package org.openscales.core.layer
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.feature.Vector;
+	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.renderer.AS;
 	import org.openscales.core.renderer.Renderer;
 	
@@ -165,7 +166,7 @@ package org.openscales.core.layer
 	            this.features = Util.removeItem(this.features, feature);
 	
 	            if (feature.geometry) {
-	                this.renderer.eraseGeometry(feature.geometry);
+	                this.renderer.eraseGeometry(feature.geometry as Collection);
 	            }
 
 	            if (Util.indexOf(this.selectedFeatures, feature) != -1){

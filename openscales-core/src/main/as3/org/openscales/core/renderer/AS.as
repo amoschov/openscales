@@ -1,11 +1,11 @@
 package org.openscales.core.renderer
 {
 	import flash.display.Sprite;
-	import flash.geom.Rectangle;
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LinearRing;
 	
 	public class AS extends Elements
@@ -62,12 +62,9 @@ package org.openscales.core.renderer
 			super.setSize(size);
 	        
 	      	// Ugly trick due to the fact we can't set the size of and empty Sprite 
-        	this.rendererRoot.graphics.beginFill(0xFFFFFF);
-			this.rendererRoot.graphics.drawRect(0,0,this.size.w,this.size.h);
-			this.rendererRoot.graphics.endFill()
-	        this.rendererRoot.width = this.size.w;
-	        this.rendererRoot.height = this.size.h;
-	        this.rendererRoot.graphics.clear();// Ugly trick due to the fact we can't set the size of and empty Sprite 
+			this.root.graphics.drawRect(0,0,this.size.w,this.size.h);
+	        this.root.width = this.size.w;
+	        this.root.height = this.size.h;
         	
 		}
 		
@@ -261,17 +258,6 @@ package org.openscales.core.renderer
 	        return node;    
 		}
 		
-		override public function createRendererRoot():Sprite {
-	        var rendererRoot:Sprite = new Sprite();
-			
-			// Create a rect because empty Sprite can't have its width or height modified 
-			rendererRoot.graphics.beginFill(0xFFFFFF);
-			rendererRoot.graphics.drawRect(0,0,1,1);
-			rendererRoot.graphics.endFill()
-	        
-	        return rendererRoot; 
-		}
-		
 		override public function createRoot():Sprite {
 		    var root:Sprite = new Sprite();
 	        
@@ -287,7 +273,7 @@ package org.openscales.core.renderer
 			return (type == node.type);
 		} */
 		
-		override public function eraseGeometry(geometry:Object):void {
+		override public function eraseGeometry(geometry:Collection):void {
 			if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
@@ -296,13 +282,7 @@ package org.openscales.core.renderer
 	            }
 	        } else {    
 	            var element:Object = this.root.getChildByName(geometry.id);
-	            if (element && element.parent) {
-	                if (element.geometry) {
-	                    element.geometry.destroy();
-	                    element.geometry = null;
-	                }
-	                element.parent.removeChild(element);
-	            }
+	            element.parent.removeChild(element);
 	        }
 		}
 		

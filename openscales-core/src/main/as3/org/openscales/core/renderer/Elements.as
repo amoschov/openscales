@@ -7,11 +7,10 @@ package org.openscales.core.renderer
 	import org.openscales.core.control.Control;
 	import org.openscales.core.control.SelectFeature;
 	import org.openscales.core.event.OpenScalesEvent;
+	import org.openscales.core.geometry.Collection;
 	
 	public class Elements extends Renderer
 	{
-		
-		public var rendererRoot:Sprite = null;
 
 	    public var root:Sprite = null;
 
@@ -20,18 +19,15 @@ package org.openscales.core.renderer
 	    public function Elements(container:Sprite):void {
 	    	super(container);
 
-	        this.rendererRoot = this.createRendererRoot();
 	        this.root = this.createRoot();
 	        
-	        this.rendererRoot.addChild(this.root);
-	        this.container.addChild(this.rendererRoot);
+	        this.container.addChild(this.root);
 	        
 	    }
 	    
 	    override public function destroy():void {
 	        this.clear(); 
 	
-	        this.rendererRoot = null;
 	        this.root = null;
 	        this.xmlns = null;
 	
@@ -202,7 +198,7 @@ package org.openscales.core.renderer
 	        return node._featureId;
     	}
     	
-    	override public function eraseGeometry(geometry:Object):void {
+    	override public function eraseGeometry(geometry:Collection):void {
     		if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
@@ -242,9 +238,6 @@ package org.openscales.core.renderer
 			return null;
 		}
 	    
-	    public function createRendererRoot():Sprite {	
-			return null; 
-		}
 		
 		public function createRoot():Sprite {
 			return null;

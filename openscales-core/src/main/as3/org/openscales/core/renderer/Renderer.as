@@ -6,6 +6,7 @@ package org.openscales.core.renderer
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.feature.Vector;
+	import org.openscales.core.geometry.Collection;
 	
 	public class Renderer
 	{
@@ -102,7 +103,7 @@ package org.openscales.core.renderer
 	        }
 		}
 		
-		public function eraseGeometry(geometry:Object):void {
+		public function eraseGeometry(geometry:Collection):void {
 			
 		}
 		
