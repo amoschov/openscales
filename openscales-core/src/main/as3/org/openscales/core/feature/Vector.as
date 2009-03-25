@@ -4,6 +4,11 @@ package org.openscales.core.feature
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.geometry.Geometry;
 	
+	/**
+	 * Vector features use the Geometry classes as geometry description.
+	 * They have an ‘attributes’ property, which is the data object, and a ‘style’ property,
+	 * the default values of which are defined in the OpenLayers.Feature.Vector.style objects
+	 */
 	public class Vector extends Feature
 	{
 		

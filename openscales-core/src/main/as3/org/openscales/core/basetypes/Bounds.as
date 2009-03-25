@@ -1,5 +1,11 @@
 package org.openscales.core.basetypes
 {
+	/**
+	 * Instances of this class represent bounding boxes.
+	 * Data stored as left, bottom, right, top floats.
+	 * All values are initialized to 0, however, you should make sure you set them 
+	 * before using the bounds for anything.
+	 */
 	public class Bounds
 	{
 		private var _left:Number = 0.0;

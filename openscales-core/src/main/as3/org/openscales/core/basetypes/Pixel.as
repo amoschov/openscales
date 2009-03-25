@@ -1,5 +1,8 @@
 package org.openscales.core.basetypes
 {
+	/**
+	 * This class represents a screen coordinate, in x and y coordinates.
+	 */
 	public class Pixel
 	{
 		

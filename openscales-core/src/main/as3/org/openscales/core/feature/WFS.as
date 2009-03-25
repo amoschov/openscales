@@ -4,6 +4,10 @@ package org.openscales.core.feature
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.layer.Layer;
 	
+	/**
+	 * WFS handling class, for use as a featureClass on the WFS layer for handling ‘point’
+	 * WFS types.  Good for subclassing when creating a custom WFS like XML application.
+	 */
 	public class WFS extends Feature
 	{
 		

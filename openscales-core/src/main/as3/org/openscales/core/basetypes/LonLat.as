@@ -1,5 +1,8 @@
 package org.openscales.core.basetypes
 {
+	/**
+	 * This class represents a longitude and latitude pair.
+	 */
 	public class LonLat
 	{
 		

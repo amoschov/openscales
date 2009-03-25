@@ -8,6 +8,18 @@ package org.openscales.core.renderer
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.geometry.Collection;
 	
+	/**
+	 * This is the base class for all renderers.
+	 * 
+	 * It is largely composed of virtual functions that are to be implemented 
+	 * in technology-specific subclasses, but there is some generic code too.
+	 * 
+	 * The functions that are implemented here merely deal with the maintenance of the 
+	 * size and extent variables, as well as the cached ‘resolution’ value.
+	 * A note to the user that all subclasses should use getResolution() instead of 
+	 * directly accessing this.resolution in order to correctly use the cacheing system.
+	 * 
+	 */
 	public class Renderer
 	{
 		

@@ -2,6 +2,10 @@ package org.openscales.core.format
 {
 	import org.openscales.core.Util;
 	
+	/**
+	 * Base class for format reading/writing a variety of formats.
+	 * Subclasses of Format are expected to have read and write methods. 
+	 */
 	public class Format
 	{
 		

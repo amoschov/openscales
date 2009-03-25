@@ -1,5 +1,8 @@
 package org.openscales.core.basetypes
 {
+	/**
+	 * Instances of this class represent a width/height pair.
+	 */
 	public class Size
 	{
 		private var _w:Number = 0.0;

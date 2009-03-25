@@ -12,6 +12,9 @@ package org.openscales.core.feature
 	import org.openscales.core.popup.AnchoredBubble;
 	import org.openscales.core.popup.Popup;
 	
+	/**
+	 * Features are combinations of geography and attributes.
+	 */
 	public class Feature
 	{
 		

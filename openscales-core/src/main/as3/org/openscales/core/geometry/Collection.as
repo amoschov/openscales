@@ -5,6 +5,19 @@ package org.openscales.core.geometry
 	
 	import org.openscales.core.Util;
 	
+	/**
+	 * A Collection is exactly what it sounds like: A collection of different Geometries. 
+	 * These are stored in the local parameter components (which can be passed as a parameter
+	 * to the constructor).
+	 * 
+	 * As new geometries are added to the collection, they are NOT cloned. 
+	 * When removing geometries, they need to be specified by reference
+	 * (ie you have to pass in the exact geometry to be removed).
+	 * 
+	 * The getArea and getLength functions here merely iterate through the components,
+	 * summing their respective areas and lengths.
+	 * 
+	 */	
 	public class Collection extends Geometry
 	{
 		

@@ -8,6 +8,11 @@ package org.openscales.core.geometry
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.format.WKT;
 	
+	/**
+	 * A Geometry is a description of a geographic object.
+	 * Create an instance of this class with the Geometry constructor.
+	 * This is a base class, typical geometry types are described by subclasses of this class.
+	 */
 	public class Geometry
 	{
 		

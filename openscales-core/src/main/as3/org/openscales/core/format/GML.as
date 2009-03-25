@@ -14,6 +14,9 @@ package org.openscales.core.format
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	
+	/**
+	 * Read/Wite GML. Supports the GML simple features profile.
+	 */
 	public class GML extends Format
 	{
 		public var featureNS:String = "http://openscales.org/OpenScales";

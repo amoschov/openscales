@@ -11,6 +11,9 @@ package org.openscales.core.layer
 	import org.openscales.core.renderer.AS;
 	import org.openscales.core.renderer.Renderer;
 	
+	/**
+	 * Instances of Vector are used to render vector data from a variety of sources.
+	 */
 	public class Vector extends Layer
 	{
 
