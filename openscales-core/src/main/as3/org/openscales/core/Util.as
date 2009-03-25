@@ -139,7 +139,7 @@ package org.openscales.core
 		        }
 		        else {
 		          /* value is a string; simply encode */
-		          encodedValue = encodeURIComponent(value as String);
+		          encodedValue = encodeURIComponent(value.toString());
 		        }
 		        paramsArray.push(encodeURIComponent(key) + "=" + encodedValue);
 		      }
