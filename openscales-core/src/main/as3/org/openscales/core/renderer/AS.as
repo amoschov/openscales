@@ -281,8 +281,10 @@ package org.openscales.core.renderer
 	                this.eraseGeometry(geometry.components[i]);
 	            }
 	        } else {    
-	            var element:Object = this.root.getChildByName(geometry.id);
-	            element.parent.removeChild(element);
+	            if(geometry) {
+	            	var element:Object = this.root.getChildByName(geometry.id);
+	            	element.parent.removeChild(element);
+	            }
 	        }
 		}
 		

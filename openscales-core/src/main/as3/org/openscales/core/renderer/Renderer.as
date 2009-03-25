@@ -56,7 +56,9 @@ package org.openscales.core.renderer
 			if(style == null) {
 	            style = feature.style;
 	        }
-	        var node:Object = this.drawGeometry(feature.geometry, style, feature.id);
+	        if(feature && feature.geometry) {
+	        	var node:Object = this.drawGeometry(feature.geometry, style, feature.id);
+	        }
 		}
 		
 		/* public function redrawFeature(feature:Vector, style:Object):void {
