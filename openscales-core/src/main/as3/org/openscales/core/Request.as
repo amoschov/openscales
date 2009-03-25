@@ -10,13 +10,13 @@ package org.openscales.core
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	
-	public class RequestOL
+	public class Request
 	{
 		public var options:Object = null;
 		public static var activeRequestCount:int = 0;
 		private var url:String = null;
 		
-		public function RequestOL(url:String, options:Object, proxy:String = null):void {
+		public function Request(url:String, options:Object, proxy:String = null):void {
 			
 			this.setOptions(options);
 			this.request(url, proxy);

@@ -15,7 +15,7 @@ package org.openscales.core.popup
 	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.feature.Feature;
 	
-	public class PopupOL extends Sprite
+	public class Popup extends Sprite
 	{
 		
 		public static var WIDTH:Number = 200;
@@ -47,7 +47,7 @@ package org.openscales.core.popup
 	    [Embed(source="/org/openscales/core/img/close.gif")]
         private var _closeImg:Class;
 	    
-	    public function PopupOL(id:String, lonlat:LonLat, size:Size, contentHTML:String, closeBox:Boolean):void {
+	    public function Popup(id:String, lonlat:LonLat, size:Size, contentHTML:String, closeBox:Boolean):void {
 	    	if (id == null) {
 	            id = Util.createUniqueID(getQualifiedClassName(this) + "_");
 	        }
@@ -56,12 +56,12 @@ package org.openscales.core.popup
 	        this.lonlat = lonlat;
 	        this.size = (size != null) ? size 
 	                                  : new Size(
-                                           PopupOL.WIDTH,
-                                           PopupOL.HEIGHT);
+                                           Popup.WIDTH,
+                                           Popup.HEIGHT);
 	        if (contentHTML != null) { 
 	             this.contentHTML = contentHTML;
 	        }
-	        this.border = PopupOL.BORDER;
+	        this.border = Popup.BORDER;
 	
 	        textfield = new TextField();
 	        if (this.contentHTML.length > 0) {

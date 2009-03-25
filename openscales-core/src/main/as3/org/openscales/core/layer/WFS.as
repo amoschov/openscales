@@ -6,7 +6,7 @@ package org.openscales.core.layer
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.OpenScales;
-	import org.openscales.core.RequestOL;
+	import org.openscales.core.Request;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -191,7 +191,7 @@ package org.openscales.core.layer
 	
 	        var successfailure:Function = commitSuccessFailure;
 	        
-	        new RequestOL(url, 
+	        new Request(url, 
 	                         {   method:URLRequestMethod.POST, 
 	                             postBody: data,
 	                             onComplete: successfailure

@@ -19,7 +19,7 @@ package org.openscales.core
 			
 			var successorfailure:Function = onComplete;
 			
-			new RequestOL(uri,
+			new Request(uri,
                      {   method: URLRequestMethod.GET, 
                          parameters: params,
                          onComplete: successorfailure

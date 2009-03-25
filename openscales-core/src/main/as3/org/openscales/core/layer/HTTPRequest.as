@@ -2,7 +2,7 @@ package org.openscales.core.layer
 {
 	import org.openscales.core.Util;
 	
-	public class HTTPRequestOL extends Layer
+	public class HTTPRequest extends Layer
 	{
 		
 		public var URL_HASH_FACTOR:Number = (Math.sqrt(5) - 1) / 2;
@@ -19,7 +19,7 @@ package org.openscales.core.layer
 		
 		public var params:Object = null;
 		
-		public function HTTPRequestOL(name:String, url:String, params:Object = null, options:Object = null):void {
+		public function HTTPRequest(name:String, url:String, params:Object = null, options:Object = null):void {
 	        super(name, options);
 	        this.url = url;
 	        this.params = Util.extend( new Object(), params);
@@ -33,7 +33,7 @@ package org.openscales.core.layer
 		
 		override public function clone(obj:Object):Object {
 			if (obj == null) {
-	            obj = new HTTPRequestOL(this.name,
+	            obj = new HTTPRequest(this.name,
                                        this.url,
                                        this.params,
                                        this.options);

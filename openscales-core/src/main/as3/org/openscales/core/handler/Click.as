@@ -5,7 +5,7 @@ package org.openscales.core.handler
 	import flash.events.TimerEvent;
 	
 	import org.openscales.core.control.Control;
-	import org.openscales.core.TimerOL;
+	import org.openscales.core.Timer;
 	import org.openscales.core.basetypes.Pixel;
 
 	public class Click extends Handler
@@ -25,7 +25,7 @@ package org.openscales.core.handler
 
     	public var down:Pixel = null;
     	
-    	public var timer:TimerOL = null;
+    	public var timer:Timer = null;
 		
 		public function Click(control:Control, callbacks:Object, options:Object):void {
 			super(control, callbacks, options);
@@ -55,7 +55,7 @@ package org.openscales.core.handler
 	                this.clearTimer();
 	            } else {
 	                var clickEvent : Event = this.single ? evt : null;
-	                this.timer = new TimerOL(this.delay);
+	                this.timer = new Timer(this.delay);
 	                this.timer.mouseevent = evt;
 	                //new OpenScalesEvent().observe(this.timer, TimerEvent.TIMER, this.delayedCall);
 	                //this.timer.start();

@@ -4,7 +4,6 @@ package org.openscales.core.renderer
 	import flash.geom.Rectangle;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.SpriteOL;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.geometry.LinearRing;
@@ -98,11 +97,11 @@ package org.openscales.core.renderer
 	        return nodeType;
 		}
 		
-		override public function setStyle(node:SpriteOL, style:Object, options:Object):void {	
-	        style = style  || node._style;
-	        options = options || node._options;
+		override public function setStyle(node:SpriteElement, style:Object, options:Object):void {	
+	        style = style  || node.style;
+	        options = options || node.options;
 	
-	        if (node._geometryClass == "org.openscales.core.geometry::Point") {
+	        if (node.geometryClass == "org.openscales.core.geometry::Point") {
 	            node.attributes.r = style.pointRadius;
 	        }
 	        
@@ -127,9 +126,9 @@ package org.openscales.core.renderer
 	        }
 		}
 		
-		override public function removeStyle(node:SpriteOL, style:Object, options:Object):void {
-	        style = style  || node._style;
-	        options = options || node._options;
+		override public function removeStyle(node:SpriteElement, style:Object, options:Object):void {
+	        style = style  || node.style;
+	        options = options || node.options;
 	        
 	        if (options.isFilled) {
 	            node.graphics.beginFill(style.fillColor, style.fillOpacity);
@@ -137,11 +136,11 @@ package org.openscales.core.renderer
 	        
 		}
 		
-		override public function drawPoint(node:SpriteOL, geometry:Object):void {
+		override public function drawPoint(node:SpriteElement, geometry:Object):void {
 			this.drawCircle(node, geometry, node.attributes.r);
 		}
 		
-		override public function drawCircle(node:SpriteOL, geometry:Object, radius:Number):void {
+		override public function drawCircle(node:SpriteElement, geometry:Object, radius:Number):void {
 			var resolution:Number = this.getResolution();
 	        var x:Number = (geometry.x / resolution + this.left);
 	        var y:Number = (this.top - geometry.y / resolution);
@@ -156,7 +155,7 @@ package org.openscales.core.renderer
 	        } 
 		}
 		
-		override public function drawLineString(node:SpriteOL, geometry:Object):void {
+		override public function drawLineString(node:SpriteElement, geometry:Object):void {
 			for (var i:int = 0; i < geometry.components.length; i++) {
 				var componentString:String = this.getShortString(geometry.components[i]);
 				var componentPoint:Array = componentString.split(",");
@@ -168,7 +167,7 @@ package org.openscales.core.renderer
 			}  
 		}
 		
-		override public function drawPolygon(node:SpriteOL, geometry:Object):void {
+		override public function drawPolygon(node:SpriteElement, geometry:Object):void {
 	        var draw:Boolean = true;
 	        for (var j:int = 0; j < geometry.components.length; j++) {
 	            var linearRing:LinearRing = geometry.components[j];
@@ -189,7 +188,7 @@ package org.openscales.core.renderer
 	        } 
 		}
 		
-		override public function drawRectangle(node:SpriteOL, geometry:Object):void {
+		override public function drawRectangle(node:SpriteElement, geometry:Object):void {
 	        var x:Number = (geometry.x / resolution + this.left);
 	        var y:Number = (geometry.y / resolution - this.top);
 	        var draw:Boolean = true;
@@ -202,7 +201,7 @@ package org.openscales.core.renderer
 	        }
 		}
 		
-		override public function drawCurve(node:SpriteOL, geometry:Object):void {
+		override public function drawCurve(node:SpriteElement, geometry:Object):void {
 			var d:String = null;
 	        var draw:Boolean = true;
 	        var component:String;
@@ -253,11 +252,11 @@ package org.openscales.core.renderer
 			return true;
 		}
 		
-		override public function createNode(type:Object, id:Object):SpriteOL {
-			var node:SpriteOL = new SpriteOL();
-			node.id = String(id);
+		override public function createNode(type:Object, id:Object):SpriteElement {
+			var node:SpriteElement = new SpriteElement();
+			//node.id = String(id);
 			node.name = String(id);
-			node.type = String(type);
+			//node.type = String(type);
 			node.alpha = 1.0;
 	        return node;    
 		}
@@ -284,9 +283,9 @@ package org.openscales.core.renderer
 	        return root;
 		}
 		
-		override public function nodeTypeCompare(node:SpriteOL, type:String):Boolean {
+		/* override public function nodeTypeCompare(node:SpriteOL, type:String):Boolean {
 			return (type == node.type);
-		}
+		} */
 		
 		override public function eraseGeometry(geometry:Object):void {
 			if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||

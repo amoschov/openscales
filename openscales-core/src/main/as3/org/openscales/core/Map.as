@@ -10,7 +10,7 @@ package org.openscales.core
 	import org.openscales.core.control.Control;
 	import org.openscales.core.event.Events;
 	import org.openscales.core.layer.Layer;
-	import org.openscales.core.popup.PopupOL;
+	import org.openscales.core.popup.Popup;
 	
 	/**
 	 * Class: OpenLayers.Map
@@ -303,7 +303,7 @@ package org.openscales.core
 	    * @param {OpenLayers.Popup} popup
 	    * @param {Boolean} exclusive If true, closes all other popups first
 	    **/
-	    public function addPopup(popup:PopupOL, exclusive:Boolean = true):void {
+	    public function addPopup(popup:Popup, exclusive:Boolean = true):void {
 	
 	        if (exclusive) {
 	            //remove all other popups from screen
@@ -320,7 +320,7 @@ package org.openscales.core
 	        }
 	    }
 
-	    public function removePopup(popup:PopupOL):void {
+	    public function removePopup(popup:Popup):void {
 	        Util.removeItem(this._popups, popup);
 	        if (popup) {
 	            try { this._popupContainer.removeChild(popup); }

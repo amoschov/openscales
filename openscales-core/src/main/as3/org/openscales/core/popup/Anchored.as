@@ -7,7 +7,7 @@ package org.openscales.core.popup
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	
-	public class Anchored extends PopupOL
+	public class Anchored extends Popup
 	{
 		public var relativePosition:String = null;
 

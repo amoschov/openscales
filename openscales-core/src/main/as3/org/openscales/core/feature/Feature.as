@@ -10,14 +10,14 @@ package org.openscales.core.feature
 	import org.openscales.core.event.Events;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.AnchoredBubble;
-	import org.openscales.core.popup.PopupOL;
+	import org.openscales.core.popup.Popup;
 	
 	public class Feature
 	{
 		
 		private var events:Events = null;
 
-	    public var layer:Object = null;
+	    public var layer:Layer = null;
 
 	    public var id:String = null;
 	    
@@ -27,12 +27,10 @@ package org.openscales.core.feature
 	    
 	    private var marker:Marker = null;
 
-	    public var popup:PopupOL = null;
+	    public var popup:Popup = null;
 	    
 	    public var attributes:Object = null;
-	    
-	    public var node:Object = null;
-		
+	    		
 		public var selected:Boolean = false;
 		
 		public function Feature(layer:Layer, lonlat:LonLat, data:Object):void {
@@ -71,7 +69,7 @@ package org.openscales.core.feature
 		public function onScreen():Boolean {
 			var onScreen:Boolean = false;
 	        if ((this.layer != null) && (this.layer.map != null)) {
-	            var screenBounds:Bounds = this.layer.map.getExtent();
+	            var screenBounds:Bounds = this.layer.map.extent;
 	            onScreen = screenBounds.containsLonLat(this.lonlat);
 	        }    
 	        return onScreen;
@@ -91,7 +89,7 @@ package org.openscales.core.feature
 			this.marker.destroy();
 		}
 		
-		public function createPopup(closeBox:Boolean = false):PopupOL {
+		public function createPopup(closeBox:Boolean = false):Popup {
 			if (this.lonlat != null) {
             
 	            var id:String = this.id + "_popup";

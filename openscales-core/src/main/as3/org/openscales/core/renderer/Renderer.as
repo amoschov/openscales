@@ -58,13 +58,13 @@ package org.openscales.core.renderer
 	        var node:Object = this.drawGeometry(feature.geometry, style, feature.id);
 		}
 		
-		public function redrawFeature(feature:Vector, style:Object):void {
+		/* public function redrawFeature(feature:Vector, style:Object):void {
 			if(style == null) {
 	            style = feature.style;
 	        }
 	        this.clearNode(feature.node);
 	        this.redrawGeometry(feature.node, feature.geometry, style, feature.id);
-		}
+		} */
 		
 		public function moveFeature(feature:Vector):void {
 			this.moveGeometry(feature.geometry);

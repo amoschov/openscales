@@ -9,7 +9,7 @@ package org.openscales.core.layer
 	import org.openscales.core.tile.Image;
 	import org.openscales.core.tile.Tile;
 	
-	public class Grid extends HTTPRequestOL
+	public class Grid extends HTTPRequest
 	{
 		
 		public var tileSizeG:Size = null;
