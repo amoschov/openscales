@@ -92,11 +92,13 @@ package org.openscales.core.handler
 		}
 		
 		public function register(name:String, method:Function):void {
-			this.map.events.registerPriority(name, this, method);
+			//this.map.events.registerPriority(name, this, method);
+			this.map.addEventListener(name,method,false,100);
 		}
 		
 		public function unregister(name:String, method:Function):void {
-			this.map.events.unregister(name, this, method);
+			//this.map.events.unregister(name, this, method);
+			this.map.removeEventListener(name,method);
 		}
 		
 		public function destroy():void {

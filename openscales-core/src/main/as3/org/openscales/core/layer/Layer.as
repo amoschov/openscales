@@ -10,6 +10,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.event.Events;
+	import org.openscales.core.events.MapEvent;
 	
 	public class Layer extends Sprite
 	{
@@ -193,7 +194,8 @@ package org.openscales.core.layer
 	            this.redraw();
 	            if ((this.map != null) && 
 	                ((noEvent == true) || (noEvent == false))) {
-	                this.map.events.triggerEvent("changelayer");
+	                //this.map.events.triggerEvent("changelayer");
+	                this.map.dispatchEvent(new MapEvent(MapEvent.LAYER_CHANGED));
 	            }
 	            this.events.triggerEvent("visibilitychanged");
 	        }

@@ -1,6 +1,5 @@
 package org.openscales.core.control
 {
-	import flash.display.Bitmap;
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	
@@ -10,6 +9,7 @@ package org.openscales.core.control
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.event.Events;
 	import org.openscales.core.event.OpenScalesEvent;
+	import org.openscales.core.events.MapEvent;
 	
 	public class PanZoomBar extends PanZoom
 	{
@@ -46,15 +46,18 @@ package org.openscales.core.control
 	        this.removeChild(this.zoomBar);
 	        this.zoomBar = null;
 		
-	        this.map.events.unregister("zoomend", this, this.moveZoomBar);
-	        this.map.events.unregister("changebaselayer", this, this.redraw)
+	        //this.map.events.unregister("zoomend", this, this.moveZoomBar);
+	        //this.map.events.unregister("changebaselayer", this, this.redraw)
+	        this.map.removeEventListener(MapEvent.ZOOM_END,this.moveZoomBar);
+	        this.map.removeEventListener(MapEvent.BASE_LAYER_CHANGED,this.redraw);
 	
 	        super.destroy();
 	    }
 	    
 	    override public function setMap(map:Map):void {
 	    	super.setMap(map);
-	    	this.map.events.register("changebaselayer", this, this.redraw);
+	    	//this.map.events.register("changebaselayer", this, this.redraw);
+	    	this.map.addEventListener(MapEvent.BASE_LAYER_CHANGED,this.redraw);
 	    }
 	    
 	    public function redraw(obt:Object = null):void {
@@ -115,7 +118,7 @@ package org.openscales.core.control
 	        this.startTop = int(this.zoomBar.y);
 	        this.addChild(slider);
 	
-	        this.map.events.register("zoomend", this, this.moveZoomBar);
+	        this.map.addEventListener(MapEvent.ZOOM_END,this.moveZoomBar);
 	
 	        centered = centered.add(0, 
 	            this.zoomStopHeight * this.map.numZoomLevels);
@@ -137,9 +140,14 @@ package org.openscales.core.control
 	    
 	    public function zoomBarDown(evt:MouseEvent):void {
 	    	if (!OpenScalesEvent.isLeftClick(evt)) return;
-	        this.map.events.register(MouseEvent.MOUSE_MOVE, this, this.passEventToSlider);
-	        this.map.events.register(MouseEvent.MOUSE_UP, this, this.passEventToSlider);
-	        this.map.events.register(MouseEvent.MOUSE_OUT, this, this.passEventToSlider);
+	    	
+	        //this.map.events.register(MouseEvent.MOUSE_MOVE, this, this.passEventToSlider);
+	        //this.map.events.register(MouseEvent.MOUSE_UP, this, this.passEventToSlider);
+	        //this.map.events.register(MouseEvent.MOUSE_OUT, this, this.passEventToSlider);	        
+	        this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.passEventToSlider);
+	        this.map.addEventListener(MouseEvent.MOUSE_UP,this.passEventToSlider);
+	        this.map.addEventListener(MouseEvent.MOUSE_OUT,this.passEventToSlider);
+	        
 	        this.mouseDragStart = new Pixel(evt.stageX, evt.stageY);
 	        this.zoomStart = new Pixel(evt.stageX, evt.stageY);
 	        this.useHandCursor = true;
@@ -166,9 +174,12 @@ package org.openscales.core.control
 	    	if (!OpenScalesEvent.isLeftClick(evt)) return;
 	        if (this.zoomStart) {
 	            this.useHandCursor = false;
-	            this.map.events.unregister(MouseEvent.MOUSE_UP, this, this.passEventToSlider);
-	            this.map.events.unregister(MouseEvent.MOUSE_OUT, this, this.passEventToSlider);
-	            this.map.events.unregister(MouseEvent.MOUSE_MOVE, this, this.passEventToSlider);
+	            //this.map.events.unregister(MouseEvent.MOUSE_UP, this, this.passEventToSlider);
+	            //this.map.events.unregister(MouseEvent.MOUSE_OUT, this, this.passEventToSlider);
+	            //this.map.events.unregister(MouseEvent.MOUSE_MOVE, this, this.passEventToSlider);
+	            this.map.removeEventListener(MouseEvent.MOUSE_MOVE,this.passEventToSlider);
+	        	this.map.removeEventListener(MouseEvent.MOUSE_UP,this.passEventToSlider);
+	        	this.map.removeEventListener(MouseEvent.MOUSE_OUT,this.passEventToSlider);
 	            var deltaY:Number = this.zoomStart.y - evt.stageY;
 	            this.map.zoomTo(this.map.zoom + Math.round(deltaY/this.zoomStopHeight));
 	            this.moveZoomBar();

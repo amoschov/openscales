@@ -8,7 +8,7 @@ package org.openscales.core
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.Control;
-	import org.openscales.core.event.Events;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Popup;
 	
@@ -33,15 +33,7 @@ package org.openscales.core
 			
 		
 		public var Z_INDEX_BASE:Object = {BaseLayer: 100, Overlay:325, Popup:750, Control: 1000};
-		
-		public var EVENT_TYPES:Array = [
-        "addlayer", "removelayer", "changelayer", "movestart", "move", 
-        "moveend", "zoomend", "popupopen", "popupclose",
-        "addmarker", "removemarker", "clearmarkers", "mouseOver",
-        "mouseOut", "mouseMove", "dragstart", "drag", "dragend",
-        "changebaselayer", "changeannolayer"];
-				
-		private var _events:Events = null;
+						
 		private var _featureSelection:Array = null;
 		private var _layerContainerOrigin:LonLat = null;
 		private var _vectorLayer:Layer = null;
@@ -86,7 +78,7 @@ package org.openscales.core
 			
 			this._layerContainer = new Sprite();
 			
-			this._layerContainer.graphics.beginFill(0xFFFFFF);
+			this._layerContainer.graphics.beginFill(0xFFFFFF,0);
 			this._layerContainer.graphics.drawRect(0,0,this.size.w,this.size.h);
 			this._layerContainer.graphics.endFill();
 			
@@ -98,14 +90,13 @@ package org.openscales.core
 			this._popupContainer.width = this.size.w;
 			this._popupContainer.height = this.size.h;
 			
-			this._popupContainer.graphics.beginFill(0xFFFFFF);
+			this._popupContainer.graphics.beginFill(0xFFFFFF,0);
 			this._popupContainer.graphics.drawRect(0,0,this.size.w,this.size.h);
 			this._popupContainer.graphics.endFill();
 			
 			this._popupContainer.visible = false;
 			this.addChild(this._popupContainer);
 			
-			this._events = new Events(this, this, this.EVENT_TYPES, false);
 		}
 		
 		private function destroy():Boolean {	
@@ -124,8 +115,6 @@ package org.openscales.core
 	            this._controls = null;
 	        }
 	
-	        this._events.destroy();
-	        this._events = null;
 	        return true;
 		}
 		
@@ -191,7 +180,8 @@ package org.openscales.core
 	        	layer.redraw();
 	        }
 	        
-	        this.events.triggerEvent("addlayer");
+	        //this.events.triggerEvent("addlayer");
+	        this.dispatchEvent(new MapEvent(MapEvent.LAYER_ADDED));
 	        
 	        return true;        
 		}
@@ -221,7 +211,9 @@ package org.openscales.core
 	                }
 	            }
 	        }
-	        this.events.triggerEvent("removelayer");	
+	        
+	        //this.events.triggerEvent("removelayer");
+	        this.dispatchEvent(new MapEvent(MapEvent.LAYER_REMOVED));	
 		}
 		
 		public function get numLayers():Number {
@@ -243,7 +235,8 @@ package org.openscales.core
 	            this._layers.splice(idx, 0, layer);
 	            for (var i:int = 0; i < this._layers.length; i++)
 	                this.setLayerZIndex(this._layers[i], i);
-	            this.events.triggerEvent("changelayer");
+	            //this.events.triggerEvent("changelayer");
+	            this.dispatchEvent(new MapEvent(MapEvent.LAYER_CHANGED));
 	        }
 		}
 		
@@ -292,7 +285,9 @@ package org.openscales.core
 					}
 					
 					if (!noEvent) {
-						this.events.triggerEvent("changebaselayer");
+						
+						//this.events.triggerEvent("changebaselayer");
+						this.dispatchEvent(new MapEvent(MapEvent.BASE_LAYER_CHANGED));
 					}
 					
 				}
@@ -403,7 +398,10 @@ package org.openscales.core
 
 	        if (zoomChanged || centerChanged || !dragging) {
 	
-	            if (!dragging) { this.events.triggerEvent("movestart"); }
+	            if (!dragging) { 
+	            	//this.events.triggerEvent("movestart");
+	            	this.dispatchEvent(new MapEvent(MapEvent.MOVE_START)); 
+	            }
 	
 	            if (centerChanged) {
 	                if ((!zoomChanged) && (this.center)) { 
@@ -434,7 +432,8 @@ package org.openscales.core
 	                    if (layer.inRange != inRange) {
 	                        layer.inRange = inRange;
 	                        moveLayer = true;
-	                        this.events.triggerEvent("changelayer");
+	                        //this.events.triggerEvent("changelayer");
+	                        this.dispatchEvent(new MapEvent(MapEvent.LAYER_CHANGED));
 	                    } else {
 	                        moveLayer = (layer.visibility && layer.inRange);
 	                    }
@@ -451,12 +450,20 @@ package org.openscales.core
 	                }
 	            }
 	            
-	            this.events.triggerEvent("move");
+	            //this.events.triggerEvent("move");
+	            this.dispatchEvent(new MapEvent(MapEvent.MOVE));
 	    
-	            if (zoomChanged) { this.events.triggerEvent("zoomend"); }
+	            if (zoomChanged) { 
+	            	//this.events.triggerEvent("zoomend");
+	            	this.dispatchEvent(new MapEvent(MapEvent.ZOOM_END)); 
+	            }
 	        }
 
-	        if (!dragging) { this.events.triggerEvent("moveend"); }
+	        if (!dragging) { 
+	        	
+	        	//this.events.triggerEvent("moveend");
+	        	this.dispatchEvent(new MapEvent(MapEvent.MOVE_END)); 
+	        }
 		}
 		
 		public function center_layerContainer(lonlat:LonLat):void {
@@ -663,11 +670,7 @@ package org.openscales.core
 		public function get featureSelection():Array {
 	        return this._featureSelection;
 		}
-				
-		public function get events():Events {
-	        return this._events;
-		}
-		
+						
 		public function set units(value:String):void {
 			this._units = value;
 		}

@@ -81,7 +81,8 @@ package org.openscales.core.control
 		
 		override public function setMap(map:Map):void {
 			super.setMap(map);
-			this.map.events.register(MouseEvent.MOUSE_MOVE, this, this.redraw);
+			//this.map.events.register(MouseEvent.MOUSE_MOVE, this, this.redraw);
+			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
 		}
 		
 		// Getters & setters

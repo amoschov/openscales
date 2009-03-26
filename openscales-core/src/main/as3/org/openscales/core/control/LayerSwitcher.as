@@ -4,10 +4,10 @@ package org.openscales.core.control
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
-	import org.openscales.core.control.Control;
-	import org.openscales.core.layer.Layer;
 	import org.openscales.core.Map;
 	import org.openscales.core.event.OpenScalesEvent;
+	import org.openscales.core.events.MapEvent;
+	import org.openscales.core.layer.Layer;
 	
 	public class LayerSwitcher extends Control
 	{
@@ -45,10 +45,15 @@ package org.openscales.core.control
 	        OpenScalesEvent.stopObservingElement("click", this._minimizeButton);
 	        OpenScalesEvent.stopObservingElement("click", this._maximizeButton);
 	        	        
-	        this.map.events.unregister("addlayer", this, this.draw);
-	        this.map.events.unregister("changelayer", this, this.draw);
-	        this.map.events.unregister("removelayer", this, this.draw);
-	        this.map.events.unregister("changebaselayer", this, this.draw);
+	        //this.map.events.unregister("addlayer", this, this.draw);
+	        //this.map.events.unregister("changelayer", this, this.draw);
+	        //this.map.events.unregister("removelayer", this, this.draw);
+	        //this.map.events.unregister("changebaselayer", this, this.draw);
+	        this.map.removeEventListener(MapEvent.LAYER_ADDED,this.draw);
+	        this.map.removeEventListener(MapEvent.LAYER_CHANGED,this.draw);
+	        this.map.removeEventListener(MapEvent.LAYER_REMOVED,this.draw);
+	        this.map.removeEventListener(MapEvent.BASE_LAYER_CHANGED,this.draw);
+	        
 	        
 	        super.destroy();
 		}
@@ -56,10 +61,14 @@ package org.openscales.core.control
 		override public function setMap(map:Map):void {
 			super.setMap(map);
 
-	        this.map.events.register("addlayer", this, this.draw);
-	        this.map.events.register("changelayer", this, this.draw);
-	        this.map.events.register("removelayer", this, this.draw);
-	        this.map.events.register("changebaselayer", this, this.draw);
+	        //this.map.events.register("addlayer", this, this.draw);
+	        //this.map.events.register("changelayer", this, this.draw);
+	        //this.map.events.register("removelayer", this, this.draw);
+	        //this.map.events.register("changebaselayer", this, this.draw);
+	        this.map.addEventListener(MapEvent.LAYER_ADDED,this.draw);
+	        this.map.addEventListener(MapEvent.LAYER_CHANGED,this.draw);
+	        this.map.addEventListener(MapEvent.LAYER_REMOVED,this.draw);
+	        this.map.addEventListener(MapEvent.BASE_LAYER_CHANGED,this.draw);
 		}
 		
 		override public function draw():void {
