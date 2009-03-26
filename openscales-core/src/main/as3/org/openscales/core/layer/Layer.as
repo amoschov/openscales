@@ -73,7 +73,7 @@ package org.openscales.core.layer
 		
 		public var opacity:Number = -1;
 		
-		public var buffer:Number = 1;
+		public var buffer:Number = 2;
 		
 		public var featureNS:String;
 		
