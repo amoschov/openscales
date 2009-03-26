@@ -2,6 +2,9 @@ package org.openscales.core.renderer
 {
 	import flash.display.Sprite;
 
+	/**
+	 * Sprite element used by the Sprite Renderer.
+	 */
 	public class SpriteElement extends Sprite
 	{
 		

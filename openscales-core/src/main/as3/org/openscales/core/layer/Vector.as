@@ -8,7 +8,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.renderer.AS;
+	import org.openscales.core.renderer.SpriteRenderer;
 	import org.openscales.core.renderer.Renderer;
 	
 	/**
@@ -74,7 +74,7 @@ package org.openscales.core.layer
 	    }
 	    
 	    private function assignRenderer():void {
-	       	var rendererClass:Class = org.openscales.core.renderer.AS;
+	       	var rendererClass:Class = org.openscales.core.renderer.SpriteRenderer;
 	     	this.renderer = new rendererClass(this);
 	    }
 	    
