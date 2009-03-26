@@ -12,32 +12,22 @@ package org.openscales.core.renderer
 	public class Elements extends Renderer
 	{
 
-	    public var root:Sprite = null;
-
-	    public var xmlns:String = null;
 	    
 	    public function Elements(container:Sprite):void {
 	    	super(container);
-
-	        this.root = this.createRoot();
-	        
-	        this.container.addChild(this.root);
 	        
 	    }
 	    
 	    override public function destroy():void {
 	        this.clear(); 
 	
-	        this.root = null;
-	        this.xmlns = null;
-	
 	        super.destroy();
 	    }
 	    
 	    override public function clear():void {
-	    	if (this.root) {
-	            while (this.root.numChildren > 0) {
-	            	this.root.removeChildAt(this.root.numChildren-1);
+	    	if (this.container) {
+	            while (this.container.numChildren > 0) {
+	            	this.container.removeChildAt(this.container.numChildren-1);
 	            }
 	        }
 	    }
@@ -62,7 +52,7 @@ package org.openscales.core.renderer
 	        node.featureId = featureId;
 	        node.geometryClass = getQualifiedClassName(geometry);
 	        node.style = style;
-	        this.root.addChild(node);
+	        this.container.addChild(node);
 
 	        this.drawGeometryNode(node, geometry);
 	        
@@ -97,7 +87,7 @@ package org.openscales.core.renderer
 	    }
 	    
 	    override public function moveGeometry(geometry:Object):void {
-	    	var node:SpriteElement = this.root.getChildAt(this.root.numChildren - 1) as SpriteElement;
+	    	var node:SpriteElement = this.container.getChildAt(this.container.numChildren - 1) as SpriteElement;
 	    	this.moveGeometryNode(node, geometry);
 	    }
 	    
@@ -218,7 +208,7 @@ package org.openscales.core.renderer
 	    }
 	    
 	    public function nodeFactory(id:String, type:String, geometry:Object):SpriteElement {
-	    	var node:SpriteElement = this.root.getChildByName(id) as SpriteElement;
+	    	var node:SpriteElement = this.container.getChildByName(id) as SpriteElement;
 	        if (node) {
 	            if (!this.nodeTypeCompare(node, type)) {
 	                node.parent.removeChild(node);

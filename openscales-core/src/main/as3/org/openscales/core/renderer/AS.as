@@ -62,9 +62,9 @@ package org.openscales.core.renderer
 			super.setSize(size);
 	        
 	      	// Ugly trick due to the fact we can't set the size of and empty Sprite 
-			this.root.graphics.drawRect(0,0,this.size.w,this.size.h);
-	        this.root.width = this.size.w;
-	        this.root.height = this.size.h;
+			this.container.graphics.drawRect(0,0,this.size.w,this.size.h);
+	        this.container.width = this.size.w;
+	        this.container.height = this.size.h;
         	
 		}
 		
@@ -148,7 +148,7 @@ package org.openscales.core.renderer
 	        if (draw) { 
 	            node.graphics.drawCircle(x, y, radius);
 	        } else {
-	            this.root.removeChild(node);
+	            this.container.removeChild(node);
 	        } 
 		}
 		
@@ -282,7 +282,7 @@ package org.openscales.core.renderer
 	            }
 	        } else {    
 	            if(geometry) {
-	            	var element:Object = this.root.getChildByName(geometry.id);
+	            	var element:Object = this.container.getChildByName(geometry.id);
 	            	element.parent.removeChild(element);
 	            }
 	        }
