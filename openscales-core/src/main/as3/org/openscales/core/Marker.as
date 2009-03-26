@@ -65,7 +65,7 @@ package org.openscales.core
      	
      	override public function draw(px:Pixel = null):void {
  	        if(url == null) {
- 	        	var markerBtn:Button = new Button("", new this._markerImg(), new Pixel(-(size.w/2), -size.h), new Size(21, 25)); 	                                                                null,
+ 	        	var markerBtn:Button = new Button("", new this._markerImg(), px, new Size(21, 25)); 	                                                                null,
  	        	this.addChild(markerBtn);
  	        }
  	        else {
