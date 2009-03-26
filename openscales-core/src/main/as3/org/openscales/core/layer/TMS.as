@@ -21,7 +21,7 @@ package org.openscales.core.layer
 		public function TMS(name:String, url:String, options:Object):void
 		{
 			this.isBaseLayer = true;
-			super(name, url, options);
+			super(name, url, null, options);
 		}
 		
 		override public function clone(obj:Object):Object

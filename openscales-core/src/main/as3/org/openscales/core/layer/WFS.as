@@ -35,35 +35,41 @@ package org.openscales.core.layer
 		public var tile:Tile = null;
 		
 		public var writer:Object = null;
+		
+		public var featureClass:Class = null;
+		
+		public var typename:String = null;
 			                    
 	    public function WFS(name:String, url:String, params:Object, options:Object = null):void {
 	        if (options == null) { options = {}; } 
 	        
-	        if (options.featureClass || !org.openscales.core.layer.Vector || !org.openscales.core.feature.Vector) {
-	            this.vectorMode = false;
-	        }    
-
 	        Util.extend(options, {'reportError': false});
-	        super(name, options);
+	        super(name, options)
+	        
+	        if (this.featureClass || !org.openscales.core.layer.Vector || !org.openscales.core.feature.Vector) {
+	            this.vectorMode = false;
+	        } 
 	        
 	        if (!this.renderer || !this.vectorMode) {
 	            this.vectorMode = false; 
-	            if (!options.featureClass) {
-	                options.featureClass = org.openscales.core.feature.WFS;
+	            if (!this.featureClass) {
+	                this.featureClass = org.openscales.core.feature.WFS;
 	            }   
 	        }
 	        
-	        if (this.params && this.params.typename && !this.options.typename) {
-	            this.options.typename = this.params.typename;
+	        if (this.params && this.params.typename && !this.typename) {
+	            this.typename = this.params.typename;
 	        }
 	        
-	        if (!this.options.geometry_column) {
-	            this.options.geometry_column = "the_geom";
+	        if (!(this.options && this.options.geometry_column)) {
+	            this.geometry_column = "the_geom";
 	        }    
 	        
 	        this.params = params;
 	        Util.applyDefaults(this.params, Util.upperCaseObject(this.DEFAULT_PARAMS));
 	        this.url = url;
+	        
+	        
 	    }
 	    
 	    override public function destroy(setNewBaseLayer:Boolean = true):void {
@@ -92,7 +98,7 @@ package org.openscales.core.layer
 		            }
 		        }
 	
-		        if (this.options.minZoomLevel && this.map.zoom < this.options.minZoomLevel) {
+		        if (this.minZoomLevel && this.map.zoom < this.minZoomLevel) {
 
 		        
 			        if (bounds == null) {

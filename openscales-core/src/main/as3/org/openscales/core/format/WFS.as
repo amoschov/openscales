@@ -5,6 +5,7 @@ package org.openscales.core.format
 	import org.openscales.core.feature.State;
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.layer.Layer;
+	import org.openscales.core.layer.WFS;
 	
 	public class WFS extends GML
 	{
@@ -20,8 +21,9 @@ package org.openscales.core.format
 	        if (this.layer.options.geometry_column) {
 	            this.geometryName = this.layer.options.geometry_column;
 	        }
-	        if (this.layer.options.typename) {
-	            this.featureName = this.layer.options.typename;
+	        var wfsLayer:org.openscales.core.layer.WFS = this.layer as org.openscales.core.layer.WFS;
+	        if (wfsLayer.typename) {
+	            this.featureName = wfsLayer.typename;
 	        }
     	}
     	

@@ -66,8 +66,7 @@ package org.openscales.core.tile
 		public function addResults(results:Object):void {
 			var wfsLayer:org.openscales.core.layer.WFS = this.layer as org.openscales.core.layer.WFS;
 			for (var i:int=0; i < results.length; i++) {
-	            var feature:Object = new wfsLayer.options.featureClass(this.layer, 
-	                                                      results[i]);
+	            var feature:Object = new wfsLayer.featureClass(this.layer, results[i]);
 	            this.features.push(feature);
 	        }
 		}

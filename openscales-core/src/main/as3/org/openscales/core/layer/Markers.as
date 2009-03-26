@@ -21,11 +21,11 @@ package org.openscales.core.layer
 	    	super.destroy(setNewBaseLayer);
 	    }
 	    
-	    public function setOpacity(opacity:Number):void {
-	    	if (opacity != this.opacity) {
-            	this.opacity = opacity;
+	    override public function set alpha(alpha:Number):void {
+	    	if (alpha != this.alpha) {
+            	super.alpha = alpha;
             	for (var i:int = 0; i < this.markers.length; i++) {
-                	this.markers[i].setOpacity(this.opacity);
+                	this.markers[i].alpha(this.alpha);
             	}
         	}
 	    }

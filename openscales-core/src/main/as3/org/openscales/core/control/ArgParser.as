@@ -79,7 +79,7 @@ package org.openscales.core.control
 	                if (c == "B") {
 	                    this.map.setBaseLayer(layer);
 	                } else if ( (c == "T") || (c == "F") ) {
-	                    layer.setVisibility(c == "T");
+	                    layer.visible = (c == "T");
 	                }
 	            }
 	        }

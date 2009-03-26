@@ -32,8 +32,6 @@ package org.openscales.core.layer
 				
 		public var displayInLayerSwitcher:Boolean = true;
 		
-		private var _visibility:Boolean = true;
-		
 		public var inRange:Boolean = false;
 		
 		public var imageSize:Size = null;
@@ -71,8 +69,6 @@ package org.openscales.core.layer
 		public var isFixed:Boolean = false;
 		
 		public var tileSize:Size = null;
-		
-		public var opacity:Number = -1;
 		
 		public var buffer:Number = 2;
 		
@@ -117,8 +113,6 @@ package org.openscales.core.layer
 			if (this.options == null) {
 	            this.options = new Object();
 	        }
-	        
-	       	Util.extend(this.options, newOptions);
 
 	        Util.extend(this, newOptions);
 		}
@@ -137,7 +131,7 @@ package org.openscales.core.layer
 	            // map's center might not yet be set
 	            var extent:Bounds = this.getExtent();
 	
-	            if (extent && this.inRange && this.visibility) {
+	            if (extent && this.inRange && this.visible) {
 	                this.moveTo(extent, true, false);
 	                redrawn = true;
 	            }
@@ -158,7 +152,7 @@ package org.openscales.core.layer
 	            
 	            if (!this.isBaseLayer) {
 	                this.inRange = this.calculateInRange();
-	                var show:Boolean = ((this.visibility) && (this.inRange));
+	                var show:Boolean = ((this.visible) && (this.inRange));
 	                this.visible = (show ? true : false);
 	            }
 
@@ -187,14 +181,11 @@ package org.openscales.core.layer
 	        }
 		}
 		
-		public function setVisibility(visibility:Boolean, noEvent:Boolean = true):void {
-			if (visibility != this.visibility) {
-	            this.visibility = visibility;
-	            this.display(visibility);
+		override public function set visible(value:Boolean):void {
+			if (visible != this.visible) {
+	            this.visible = visible;
 	            this.redraw();
-	            if ((this.map != null) && 
-	                ((noEvent == true) || (noEvent == false))) {
-	                //this.map.events.triggerEvent("changelayer");
+	            if (this.map != null) {
 	                this.map.dispatchEvent(new MapEvent(MapEvent.LAYER_CHANGED));
 	            }
 	            this.events.triggerEvent("visibilitychanged");
@@ -356,18 +347,12 @@ package org.openscales.core.layer
 	        return px;
 		}
 		
-		public function display(display:Boolean):void {
-			if (display != this.visible) {
-	            this.visible = display;
-	        }
-		}
-		
 		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
-			var display:Boolean = this.visibility;
+			var display:Boolean = this.visible;
 	        if (!this.isBaseLayer) {
 	            display = display && this.inRange;
 	        }
-	        this.display(display);
+	        this.visible = display;
 		}
 		
 		public function calculateInRange():Boolean {
@@ -400,16 +385,6 @@ package org.openscales.core.layer
 		
 		public function getImageSize():Size {
 			return (this.imageSize || this.tileSize); 
-		}
-		
-		// Getters & setters
-		public function get visibility():Boolean 
-		{
-			return _visibility;
-		}
-		public function set visibility(newVisibility:Boolean):void
-		{
-			_visibility = newVisibility;
 		}
 		
 	}

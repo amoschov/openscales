@@ -1,5 +1,6 @@
 package org.openscales.core.control
 {
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -49,10 +50,10 @@ package org.openscales.core.control
 	        //this.map.events.unregister("changelayer", this, this.draw);
 	        //this.map.events.unregister("removelayer", this, this.draw);
 	        //this.map.events.unregister("changebaselayer", this, this.draw);
-	        this.map.removeEventListener(MapEvent.LAYER_ADDED,this.draw);
-	        this.map.removeEventListener(MapEvent.LAYER_CHANGED,this.draw);
-	        this.map.removeEventListener(MapEvent.LAYER_REMOVED,this.draw);
-	        this.map.removeEventListener(MapEvent.BASE_LAYER_CHANGED,this.draw);
+	        this.map.removeEventListener(MapEvent.LAYER_ADDED, this.layerUpdated);
+	        this.map.removeEventListener(MapEvent.LAYER_CHANGED, this.layerUpdated);
+	        this.map.removeEventListener(MapEvent.LAYER_REMOVED, this.layerUpdated);
+	        this.map.removeEventListener(MapEvent.BASE_LAYER_CHANGED, this.layerUpdated);
 	        
 	        
 	        super.destroy();
@@ -65,10 +66,10 @@ package org.openscales.core.control
 	        //this.map.events.register("changelayer", this, this.draw);
 	        //this.map.events.register("removelayer", this, this.draw);
 	        //this.map.events.register("changebaselayer", this, this.draw);
-	        this.map.addEventListener(MapEvent.LAYER_ADDED,this.draw);
-	        this.map.addEventListener(MapEvent.LAYER_CHANGED,this.draw);
-	        this.map.addEventListener(MapEvent.LAYER_REMOVED,this.draw);
-	        this.map.addEventListener(MapEvent.BASE_LAYER_CHANGED,this.draw);
+	        this.map.addEventListener(MapEvent.LAYER_ADDED, this.layerUpdated);
+	        this.map.addEventListener(MapEvent.LAYER_CHANGED, this.layerUpdated);
+	        this.map.addEventListener(MapEvent.LAYER_REMOVED, this.layerUpdated);
+	        this.map.addEventListener(MapEvent.BASE_LAYER_CHANGED, this.layerUpdated);
 		}
 		
 		override public function draw():void {
@@ -140,6 +141,10 @@ package org.openscales.core.control
 			
 				this.addChild(_minimizeButton);
 			}
+		}
+		
+		private function layerUpdated(event:Event):void {
+			this.draw();
 		}
 		
 		private function minMaxButtonClick(event:MouseEvent):void {

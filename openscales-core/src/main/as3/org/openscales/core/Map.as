@@ -87,8 +87,6 @@ package org.openscales.core
 			this.addChild(this._layerContainer);
 			
 			this._popupContainer = new Sprite();
-			this._popupContainer.width = this.size.w;
-			this._popupContainer.height = this.size.h;
 			
 			this._popupContainer.graphics.beginFill(0xFFFFFF,0);
 			this._popupContainer.graphics.drawRect(0,0,this.size.w,this.size.h);
@@ -174,7 +172,7 @@ package org.openscales.core
 				if (this.baseLayer == null) {
 					this.setBaseLayer(layer);
 				} else {
-					layer.setVisibility(false);
+					layer.visible = false;
 				}
 	        } else {
 	        	layer.redraw();
@@ -265,13 +263,9 @@ package org.openscales.core
 			if (newBaseLayer != this.baseLayer) {
 				
 				if (Util.indexOf(this._layers, newBaseLayer) != -1) {
-					
-					if (this.baseLayer != null) {
-						this.baseLayer.setVisibility(false, noEvent);
-					}
-					
+										
 					this._baseLayer = newBaseLayer;
-					this.baseLayer.visibility = true;
+					this.baseLayer.visible = true;
 					
 					var center:LonLat = this.center;
 					if (center != null) {
@@ -435,7 +429,7 @@ package org.openscales.core
 	                        //this.events.triggerEvent("changelayer");
 	                        this.dispatchEvent(new MapEvent(MapEvent.LAYER_CHANGED));
 	                    } else {
-	                        moveLayer = (layer.visibility && layer.inRange);
+	                        moveLayer = (layer.visible && layer.inRange);
 	                    }
 	
 	                    if (moveLayer) {

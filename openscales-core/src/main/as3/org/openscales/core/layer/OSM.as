@@ -8,13 +8,9 @@ package org.openscales.core.layer
 		public function OSM(name:String, url:String, options:Object):void
 		{
 			options = Util.extend({
-				attribution: "Data by <a href='http://openstreetmap.org/'>OpenStreetMap</a>",
-            	//maxExtent: new Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34),
             	maxResolution: 156543.0339,
             	units: "m",
-            	//projection: "EPSG:900913",
-            	projection: "EPSG:4326",
-            	transitionEffect: "resize"
+            	projection: "EPSG:4326"
 			}, options);
 			super(name, url, options);
 		}
