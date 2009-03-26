@@ -14,8 +14,7 @@ package org.openscales.core.feature
 		
 		public var fid:String = null;
 
-	    // TODO : types Geometry ?
-	    public var geometry:Object = null;
+	    public var geometry:Geometry = null;
 
 	    public var state:String = null;
 	    
@@ -101,7 +100,7 @@ package org.openscales.core.feature
 		
 		public function clone(obj:Object):Object {
 			if (obj == null) {
-	            obj = new Feature(null, this.geometry.clone(), this.data);
+	            obj = new Vector(null, this.geometry.clone(), this.data);
 	        } 
 	        
 	        Util.applyDefaults(obj, this);

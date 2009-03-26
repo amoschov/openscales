@@ -2,10 +2,11 @@ package org.openscales.core.handler
 {
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.control.Control;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.control.Control;
 	import org.openscales.core.feature.Vector;
+	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
 	
@@ -34,8 +35,8 @@ package org.openscales.core.handler
 		}
 		
 		public function addPoint():void {
-			this.line.geometry.addComponent(this.point.geometry.clone(), this.line.geometry.components.length);
-			
+			var line:LineString = this.line.geometry as LineString;
+			line.addComponent(this.point.geometry.clone(), line.components.length);
 			this.callback("point", [this.point.geometry]);
 		}
 		
@@ -44,9 +45,15 @@ package org.openscales.core.handler
 		}
 		
 		public function modifyFeature():void {
-			var index:int = this.line.geometry.components.length - 1;
-	        this.line.geometry.components[index].x = this.point.geometry.x;
-	        this.line.geometry.components[index].y = this.point.geometry.y;
+			
+			var line:LineString = this.line.geometry as LineString;
+			var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
+			
+			if(line) {
+				var index:int = line.components.length - 1;
+	        	line.components[index].x = p.x;
+	        	line.components[index].y = p.y;
+	  		}
 		}
 		
 		override public function drawFeature():void {
@@ -69,8 +76,9 @@ package org.openscales.core.handler
 	        this.mouseDown = true;
 	        this.lastDown = xy;
 	        var lonlat:LonLat = this.control.map.getLonLatFromPixel(xy);
-	        this.point.geometry.x = lonlat.lon;
-	        this.point.geometry.y = lonlat.lat;
+	        var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
+	        p.x = lonlat.lon;
+	        p.y = lonlat.lat;
 	        if((this.lastUp == null) || !this.lastUp.equals(xy)) {
 	            this.addPoint();
 	        }
@@ -83,8 +91,9 @@ package org.openscales.core.handler
 			var xy:Pixel = new Pixel(evt.stageX, evt.stageY);
 			if(this.drawing) { 
 	            var lonlat:LonLat = this.map.getLonLatFromPixel(xy);
-	            this.point.geometry.x = lonlat.lon;
-	            this.point.geometry.y = lonlat.lat;
+	            var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
+	            p.x = lonlat.lon;
+	            p.y = lonlat.lat;
 	            if(this.mouseDown && this.freehandMode(evt)) {
 	                this.addPoint();
 	            } else {
@@ -114,8 +123,9 @@ package org.openscales.core.handler
 		
 		override public function doubleclick(evt:MouseEvent):Boolean {
 			if(!this.freehandMode(evt)) {
-	            var index:int = this.line.geometry.components.length - 1;
-	            this.line.geometry.removeComponent(this.line.geometry.components[index]);
+	            var line:LineString = this.line.geometry as LineString;
+	            var index:int = line.components.length - 1;
+	            line.removeComponent(line.components[index]);
 	            this.finalize();
 	        }
 	        return false;

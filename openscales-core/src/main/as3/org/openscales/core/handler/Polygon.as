@@ -1,9 +1,11 @@
 package org.openscales.core.handler
 {
-	import org.openscales.core.feature.Vector;
-	import org.openscales.core.control.Control;
-	import org.openscales.core.geometry.LinearRing;
 	import flash.events.MouseEvent;
+	
+	import org.openscales.core.control.Control;
+	import org.openscales.core.feature.Vector;
+	import org.openscales.core.geometry.LineString;
+	import org.openscales.core.geometry.LinearRing;
 	
 	public class Polygon extends Path
 	{
@@ -17,7 +19,8 @@ package org.openscales.core.handler
 		override public function createFeature():void {
 	        this.polygon = new Vector(new org.openscales.core.geometry.Polygon());
 	        this.line = new Vector(new LinearRing());
-	        this.polygon.geometry.addComponent(this.line.geometry);
+	        var p:org.openscales.core.geometry.Polygon = this.polygon.geometry as org.openscales.core.geometry.Polygon;
+	        p.addComponent(this.line.geometry);
 	        this.point = new Vector(new org.openscales.core.geometry.Point());
 		}
 		
@@ -27,9 +30,12 @@ package org.openscales.core.handler
 		}
 		
 		override public function modifyFeature():void {
-			var index:int = this.line.geometry.components.length - 2;
-	        this.line.geometry.components[index].x = this.point.geometry.x;
-	        this.line.geometry.components[index].y = this.point.geometry.y;
+			var line:LineString = this.line.geometry as LineString;
+			var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
+			var index:int = line.components.length - 2;
+			
+	        line.components[index].x = p.x;
+	        line.components[index].y = p.y;
 		}
 		
 		override public function drawFeature():void {
@@ -43,8 +49,9 @@ package org.openscales.core.handler
 		
 		override public function doubleclick(evt:MouseEvent):Boolean {
 			if(!this.freehandMode(evt)) {
-	            var index:int = this.line.geometry.components.length - 2;
-	            this.line.geometry.removeComponent(this.line.geometry.components[index]);
+				var line:LineString = this.line.geometry as LineString;
+	            var index:int = line.components.length - 2;
+	            line.removeComponent(line.components[index]);
 	            this.finalize();
 	        }
 	        return false;

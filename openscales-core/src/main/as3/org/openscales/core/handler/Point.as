@@ -110,8 +110,9 @@ package org.openscales.core.handler
 	        this.lastDown = xy;
 	        this.drawing = true;
 	        var lonlat:LonLat = this.map.getLonLatFromPixel(xy);
-	        this.point.geometry.x = lonlat.lon;
-	        this.point.geometry.y = lonlat.lat;
+	        var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
+	        p.x = lonlat.lon;
+	        p.y = lonlat.lat;
 	        this.drawFeature();
 	        return false;
 		}
@@ -120,8 +121,9 @@ package org.openscales.core.handler
 			if(this.drawing) {
 				var xy:Pixel = new Pixel(evt.stageX, evt.stageY);
 	            var lonlat:LonLat = this.map.getLonLatFromPixel(xy);
-	            this.point.geometry.x = lonlat.lon;
-	            this.point.geometry.y = lonlat.lat;
+	            var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
+	            p.x = lonlat.lon;
+	            p.y = lonlat.lat;
 	            this.drawFeature();
 	        }
 	        return true;

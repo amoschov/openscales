@@ -1,5 +1,6 @@
 package org.openscales.core.geometry
 {
+	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Util;
@@ -30,6 +31,15 @@ package org.openscales.core.geometry
 			this.id = null;
 
         	this.bounds = null;
+		}
+		
+		public function clone():Object {
+			var geometryClass:Class = Class(getDefinitionByName(getQualifiedClassName(this)));
+			var geometry:Object = new geometryClass();
+	       
+	        Util.applyDefaults(geometry, this);
+	        
+	        return geometry;
 		}
 		
 		public function setBounds(bounds:Bounds):void {

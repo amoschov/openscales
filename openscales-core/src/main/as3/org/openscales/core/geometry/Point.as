@@ -20,10 +20,8 @@ package org.openscales.core.geometry
 	        this.y = Number(y);
 		}
 		
-		public function clone(obj:Object = null):Object {
-			if (obj == null) {
-	            obj = new Point(this.x, this.y);
-	        }
+		override public function clone():Object {
+            var obj:Object = new Point(this.x, this.y);
 	
 	        Util.applyDefaults(obj, this);
 	
