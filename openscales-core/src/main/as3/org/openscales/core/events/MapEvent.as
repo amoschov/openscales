@@ -12,35 +12,35 @@ package org.openscales.core.events{
         "mouseOut", "mouseMove", "dragstart", "drag", "dragend",
         "changebaselayer"];*/
 		
-		public static const LAYER_ADDED:String="addlayer";
+		public static const LAYER_ADDED:String="openscales.addlayer";
 		
-		public static const LAYER_REMOVED:String="removelayer";
+		public static const LAYER_REMOVED:String="openscales.removelayer";
 		
-		public static const LAYER_CHANGED:String="changelayer";
+		public static const LAYER_CHANGED:String="openscales.changelayer";
 		
-		public static const BASE_LAYER_CHANGED:String="changebaselayer";
+		public static const BASE_LAYER_CHANGED:String="openscales.changebaselayer";
 		
-		public static const MOVE_START:String="movestart";
+		public static const MOVE_START:String="openscales.movestart";
 		
-		public static const MOVE:String="move";
+		public static const MOVE:String="openscales.lmove";
 		
-		public static const MOVE_END:String="moveend";
+		public static const MOVE_END:String="openscales.moveend";
 		
-		public static const ZOOM_END:String="zoomend";
+		public static const ZOOM_END:String="openscales.zoomend";
 		
-		public static const POPUP_OPEN:String="popupopen";
+		public static const POPUP_OPEN:String="openscales.popupopen";
 		
-		public static const POPUP_CLOSE:String="popupclose";
+		public static const POPUP_CLOSE:String="openscales.popupclose";
 		
-		public static const ADD_MARKER:String="addmarker";
+		public static const ADD_MARKER:String="openscales.addmarker";
 		
-		public static const REMOVE_MARKER:String="removemarker";
+		public static const REMOVE_MARKER:String="openscales.removemarker";
 		
-		public static const CLEAR_MARKERS:String="clearmarkers";
+		public static const CLEAR_MARKERS:String="openscales.clearmarkers";
 				
-		public static const DRAG:String="drag";
+		public static const DRAG:String="openscales.drag";
 		
-		public static const DRAG_END:String="dragend";
+		public static const DRAG_END:String="openscales.dragend";
 
 				
 		/**
