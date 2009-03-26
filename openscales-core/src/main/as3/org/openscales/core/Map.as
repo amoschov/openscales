@@ -797,7 +797,7 @@ package org.openscales.core
 		public function get resolution():Number {
 	        var resolution:Number = undefined;
 	        if (this.baseLayer != null) {
-	            resolution = this.baseLayer.getResolution();
+	            resolution = this.baseLayer.resolution;
 	        }
 	        return resolution;
 		}

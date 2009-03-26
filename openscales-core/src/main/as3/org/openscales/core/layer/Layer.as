@@ -34,8 +34,6 @@ package org.openscales.core.layer
 		
 		public var inRange:Boolean = false;
 		
-		public var imageSize:Size = null;
-		
 		public var imageOffset:Pixel = null;
 		
 		public var options:Object = null;
@@ -81,6 +79,8 @@ package org.openscales.core.layer
 		public var zindex:int = -1;
 		
 		public var markers:Array = null;
+		
+		private var _imageSize:Size = null;
 		
 		public function Layer(name:String, options:Object):void {
 			
@@ -374,7 +374,7 @@ package org.openscales.core.layer
 	        return bounds;
 		}
 		
-		public function getResolution():Number {	
+		public function get resolution():Number {	
 	        var zoom:Number = this.map.zoom;
 	        return this.resolutions[zoom];
 		}
@@ -383,8 +383,12 @@ package org.openscales.core.layer
 			return null;
 		}
 		
-		public function getImageSize():Size {
-			return (this.imageSize || this.tileSize); 
+		public function get imageSize():Size {
+			return (this._imageSize || this.tileSize); 
+		}
+		
+		public function set imageSize(value:Size):void {
+			this._imageSize = value; 
 		}
 		
 	}
