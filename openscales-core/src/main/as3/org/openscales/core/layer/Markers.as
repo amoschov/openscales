@@ -95,6 +95,10 @@ package org.openscales.core.layer
 
         	return maxExtent;
 	    }
+	    
+	    override public function calculateInRange():Boolean {
+	    	return true;
+	    }
 		
 	}
 }

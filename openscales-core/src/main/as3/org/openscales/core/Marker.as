@@ -1,5 +1,7 @@
 package org.openscales.core
 {
+	import flash.display.Bitmap;
+	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -44,7 +46,7 @@ package org.openscales.core
 	  	    
 	    override public function set position(px:Pixel):void {
 	        super.position = px;        
-	        this.lonlat = this.map.getLonLatFromLayerPx(px);
+	        //this.lonlat = this.map.getLonLatFromLayerPx(px);
      	}
      	
      	public function onScreen():Boolean {
@@ -65,8 +67,13 @@ package org.openscales.core
      	
      	override public function draw(px:Pixel = null):void {
  	        if(url == null) {
- 	        	var markerBtn:Button = new Button("", new this._markerImg(), px, new Size(21, 25)); 	                                                                null,
- 	        	this.addChild(markerBtn);
+ 	        	var defaultMarker:Bitmap = new this._markerImg();
+ 	        	defaultMarker.x = px.x;
+ 	        	defaultMarker.y = px.y;
+ 	        	if(this.numChildren==1) {
+ 	        		this.removeChildAt(0);
+ 	        	}
+ 	        	this.addChild(defaultMarker);
  	        }
  	        else {
  	        	super.draw(px);
