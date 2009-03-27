@@ -36,7 +36,8 @@
 				map.addLayers([baselayer1, wfslayer1, wfslayer2]);
 				map.addControl(new PanZoomBar());
 				map.addControl(new Navigation());
-				//map.addControl(new LayerSwitcher({position: new Pixel(mapCanvas.width - 200, 0)}));	
+				//map.addControl(new LayerSwitcher({position: new Pixel(mapCanvas.width - 200, 0)}));
+				map.addControl(new LayerSwitcher({position: new Pixel(map.width/2, 0)}));	
 				map.zoomToExtent(new Bounds(-77.92,40.75,-77.79,40.85));
 			}
 			

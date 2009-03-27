@@ -169,14 +169,20 @@ package org.openscales.core.layer
 		}
 		
 		override public function set visible(value:Boolean):void {
-			if (visible != this.visible) {
-	            this.visible = visible;
+			if (value != this.visible) {
+				
+				trace("Visibility will be changed to "+value);
+	            super.visible = value;
 	            this.redraw();
-	            if (this.map != null) {
+	            //With this code, bugs in LayerSwitcher : when the event CheckButtonClick is call,
+	            // the status of the check button is changed twice.
+/*	            if (this.map != null) {
 	                this.map.dispatchEvent(new MapEvent(MapEvent.LAYER_CHANGED));
-	            }
+	            }*/
 	            this.events.triggerEvent("visibilitychanged");
 	        }
+	        
+	        trace("Changing visibility to :"+value);
 		}
 		
 		public function initResolutions():void {

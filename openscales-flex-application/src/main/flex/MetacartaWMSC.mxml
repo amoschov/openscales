@@ -31,7 +31,8 @@
 				map.addControl(new PanZoomBar());
 				map.addControl(new Navigation());
 				map.addControl(new MousePosition());
-				//map.addControl(new LayerSwitcher({position: new Pixel(mapCanvas.width - 200, 0)}));	
+				//map.addControl(new LayerSwitcher({position: new Pixel(mapCanvas.width - 200, 0)}));
+				map.addControl(new LayerSwitcher({position: new Pixel(map.width/2, 0)}));
 				map.zoomTo(5);
 			}
 		]]>

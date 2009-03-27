@@ -6,6 +6,8 @@ package org.openscales.core.control
 	import flash.text.TextFormat;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.control.ui.CheckBox;
+	import org.openscales.core.control.ui.RadioButton;
 	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;
@@ -28,6 +30,19 @@ package org.openscales.core.control
         
        	[Embed(source="/org/openscales/core/img/layer-switcher-minimize.png")]
         private var _layerSwitcherMinimizeImg:Class;
+        
+        [Embed(source="/org/openscales/core/img/uncheck.png")]
+        private var _layerSwitcherUncheckImg:Class;
+        
+        [Embed(source="/org/openscales/core/img/check.png")]
+        private var _layerSwitchercheckImg:Class;
+        
+        [Embed(source="/org/openscales/core/img/radiobutton-noselected.png")]
+        private var _layerSwitcherRadioButtonNoSelectedImg:Class;
+        
+        [Embed(source="/org/openscales/core/img/radiobutton-selected.png")]
+        private var LayerSwitcherRadioButtonSelectedImg:Class;
+
 
 		public function LayerSwitcher(options:Object = null):void {
 			super(options);
@@ -108,11 +123,24 @@ package org.openscales.core.control
 					var layer:Layer = this.map.layers[i] as Layer;
 					if(layer.isBaseLayer==true) {
 						y+=this._textOffset;
+						var radioButton:RadioButton;
+						if(i == 0)
+						{
+							radioButton = new RadioButton(this.position.add(-185,y+2),layer.name,true);							
+						}
+						else
+						{
+							radioButton = new RadioButton(this.position.add(-185,y+2),layer.name,false);
+						}
+						radioButton.width = 13;
+						radioButton.height = 13;
+						radioButton.addEventListener(MouseEvent.CLICK,RadioButtonClick);
 						var layerTextField:TextField = new TextField();
 						layerTextField.text=layer.name;
 						layerTextField.setTextFormat(contentFormat);
 						layerTextField.x = this.position.x - 170;
 						layerTextField.y = y;
+						this.addChild(radioButton);
 						this.addChild(layerTextField);
 					}
 				}
@@ -135,6 +163,12 @@ package org.openscales.core.control
 						layerTextField.setTextFormat(contentFormat);
 						layerTextField.x = this.position.x - 170;
 						layerTextField.y = y;
+						var check:CheckBox = new CheckBox(this.position.add(-185,y+2),layer.name);
+						
+						check.width=12;
+						check.height=12;
+						check.addEventListener(MouseEvent.CLICK,CheckButtonClick);			
+						this.addChild(check);
 						this.addChild(layerTextField);
 					}
 				}
@@ -151,6 +185,39 @@ package org.openscales.core.control
 			this._minimized = !this._minimized;
 			this.draw();
 		}
+		
+		private function CheckButtonClick(event:MouseEvent):void
+		{
+			var i:int = 0;
+			var layer2:Layer = this.map.getLayerByName((event.target as CheckBox).layerName);
+			if((event.target as CheckBox).status == true)
+			{
+				(event.target as CheckBox).status = false;
+				layer2.visible = false;
+			}
+			else
+			{
+				(event.target as CheckBox).status = true;
+				layer2.visible = true;
+			}
+		}
+		
+		private function RadioButtonClick(event:MouseEvent):void
+		{
+			var i:int = 0;
+			var layer2:Layer = this.map.getLayerByName((event.target as RadioButton).layerName);
+			if((event.target as RadioButton).status == true)
+			{
+				(event.target as RadioButton).status = false;
+				layer2.visible = false;
+			}
+			else
+			{
+				(event.target as RadioButton).status = true;
+				layer2.visible = true;
+			}
+		}
+
 		
 		
 	}
