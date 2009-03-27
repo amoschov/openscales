@@ -80,8 +80,8 @@ package org.openscales.core.layer
 	        return obj;
 		}
 		
-		override public function setMap(map:Map):void {
-			super.setMap(map);
+		override public function set map(map:Map):void {
+			super.map = map;
 	        if (this.tileSize == null) {
 	            this.tileSize = map.tileSize;
 	        }

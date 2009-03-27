@@ -62,7 +62,7 @@ package org.openscales.core
 			
 			super();
 			
-			this.setOptions(options);
+			Util.extend(this, options);	
 			
 			this._layers = new Array();
 			this._controls = new Array();
@@ -116,23 +116,6 @@ package org.openscales.core
 	        return true;
 		}
 		
-		public function setOptions(options:Object):void {
-			
-			
-			Util.extend(this, options);		
-		}
-		
-		public function getLayer(id:String):Layer {
-			var foundLayer:Layer = null;
-			for (var i:int = 0; i < this._layers.length; i++) {
-				var layer:Layer = this._layers[i];
-				if (layer.id == id) {
-					foundLayer = layer;
-				}
-			}
-			return foundLayer;
-		}
-		
 		public function getLayerByName(name:String):Layer {
 			var foundLayer:Layer = null;
 			for (var i:int = 0; i < this._layers.length; i++) {
@@ -166,7 +149,7 @@ package org.openscales.core
 	        }
 	        
 	        this._layers.push(layer);
-	        layer.setMap(this);
+	        layer.map = this;
 	        
 	        if (layer.isBaseLayer) {
 				if (this.baseLayer == null) {
@@ -257,7 +240,7 @@ package org.openscales.core
 		public function setBaseLayer(newBaseLayer:Layer, noEvent:Boolean = false):void {
 			var oldExtent:Bounds = null;
 			if (this.baseLayer != null) {
-				oldExtent = this.baseLayer.getExtent();
+				oldExtent = this.baseLayer.extent;
 			}
 			
 			if (newBaseLayer != this.baseLayer) {
@@ -789,7 +772,7 @@ package org.openscales.core
 		public function get extent():Bounds {
 	        var extent:Bounds = null;
 	        if (this.baseLayer != null) {
-	            extent = this.baseLayer.getExtent();
+	            extent = this.baseLayer.extent;
 	        }
 	        return extent;
 		}

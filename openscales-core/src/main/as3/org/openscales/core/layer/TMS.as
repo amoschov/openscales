@@ -55,8 +55,8 @@ package org.openscales.core.layer
 			return new Image(this, position, bounds, null, this.tileSize);
 		}
 		
-		override public function setMap(map:Map):void {
- 	        super.setMap(map);
+		override public function set map(map:Map):void {
+ 	        super.map = map;
  	        if (!this.tileOrigin) {
  	        	this.tileOrigin = new LonLat(this.map.maxExtent.left, this.map.maxExtent.bottom);
  	        }

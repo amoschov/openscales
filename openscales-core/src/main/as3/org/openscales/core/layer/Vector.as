@@ -87,8 +87,8 @@ package org.openscales.core.layer
 	        } 
 	    }
 	    
-	    override public function setMap(map:Map):void {
-	    	super.setMap(map);
+	    override public function set map(map:Map):void {
+	    	super.map = map;
 	
 	        if (!this.renderer) {
 	            this.map.removeLayer(this);

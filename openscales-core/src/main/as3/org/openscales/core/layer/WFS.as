@@ -39,6 +39,8 @@ package org.openscales.core.layer
 		public var featureClass:Class = null;
 		
 		public var typename:String = null;
+		
+		public var extractAttributes:Boolean = true;
 			                    
 	    public function WFS(name:String, url:String, params:Object, options:Object = null):void {
 	        if (options == null) { options = {}; } 
@@ -78,9 +80,9 @@ package org.openscales.core.layer
 	        }
 	    }
 	    
-	    override public function setMap(map:Map):void {
+	    override public function set map(map:Map):void {
 	        if (this.vectorMode) {
-	            super.setMap(map);
+	            super.map = map;
 	        }
 	    }
 	    

@@ -15,14 +15,9 @@ package org.openscales.core.layer
 	public class Layer extends Sprite
 	{
 		
-		public var id:String = null;
-		
-		
 		public var EVENT_TYPES:Array = ["loadstart", "loadend", "loadcancel", "visibilitychanged"];
 		
 		public var events:Events = null;
-		
-		public var map:Map = null;
 		
 		public var isBaseLayer:Boolean = false;
 		
@@ -81,19 +76,15 @@ package org.openscales.core.layer
 		public var markers:Array = null;
 		
 		private var _imageSize:Size = null;
+		private var _map:Map = null;
 		
 		public function Layer(name:String, options:Object):void {
 			
-			addOptions(options);
+			Util.extend(this, options);
 			
 			this.name = name;
-			
-			if (this.id == null) {
-				
-				this.id = Util.createUniqueID(getQualifiedClassName(this) + "_"); 
-				
-				this.events = new Events(this, this, this.EVENT_TYPES);
-			}
+			this.events = new Events(this, this, this.EVENT_TYPES);
+	
 		}
 		
 		public function destroy(setNewBaseLayer:Boolean = true):void {
@@ -109,14 +100,6 @@ package org.openscales.core.layer
 			this.events = null;
 		}
 		
-		public function addOptions(newOptions:Object):void {
-			if (this.options == null) {
-	            this.options = new Object();
-	        }
-
-	        Util.extend(this, newOptions);
-		}
-		
 		public function onMapResize():void {
 			
 		}
@@ -129,7 +112,7 @@ package org.openscales.core.layer
 	            this.inRange = this.calculateInRange();
 	
 	            // map's center might not yet be set
-	            var extent:Bounds = this.getExtent();
+	            var extent:Bounds = this.extent;
 	
 	            if (extent && this.inRange && this.visible) {
 	                this.moveTo(extent, true, false);
@@ -139,10 +122,10 @@ package org.openscales.core.layer
 	        return redrawn;
 		}
 		
-		public function setMap(map:Map):void {
-			if (this.map == null) {
+		public function set map(map:Map):void {
+			if (this._map == null) {
         
-	            this.map = map;
+	            this._map = map;
 
 	            this.maxExtent = this.maxExtent || this.map.maxExtent;
 	            this.projection = this.projection || this.map.projection;
@@ -158,6 +141,10 @@ package org.openscales.core.layer
 
 	            this.setTileSize();
 	        }
+		}
+		
+		public function get map():Map {
+			return this._map;
 		}
 		
 		public function setTileSize(size:Size = null):void {
@@ -206,7 +193,7 @@ package org.openscales.core.layer
 	        var confProps:Object = new Object();        
 	        for(var i:int=0; i < props.length; i++) {
 	            var property:String = props[i];
-	            confProps[property] = this.options[property] || this.map[property];
+	            confProps[property] = this.map[property];
 	        }
 
 	        if ( (!confProps.numZoomLevels) && (confProps.maxZoomLevel) ) {
@@ -295,7 +282,7 @@ package org.openscales.core.layer
 	        return obj;
 		}
 		
-		public function getExtent():Bounds {
+		public function get extent():Bounds {
 			return this.map.calculateBounds();
 		}
 		
