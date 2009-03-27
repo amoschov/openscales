@@ -33,7 +33,7 @@ package org.openscales.core.control.ui
 			super("selected", this.image, xy);
 		}
 		
-		public function set status(value:Boolean) {
+		public function set status(value:Boolean):void {
 			this._status = value;
 			
 			for(var i:int=0; i<this.numChildren;i++) {
