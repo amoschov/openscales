@@ -85,11 +85,11 @@ package org.openscales.core.format
 	        var p:Object = new Object();
 	
 	        var feature:Vector = new Vector();
+			feature.fid = xmlNode..@fid;
 			
 	        if (xmlNode..*::the_geom.*::MultiPolygon.length() > 0) {
 	            var multipolygon:XML = xmlNode..*::the_geom.*::MultiPolygon[0];
-	            feature.fid = multipolygon.parentNode.parentNode.@*::fid;
-	
+	            
 	            geom = new MultiPolygon();
 	            var polygons:XMLList = multipolygon..*::Polygon;
 	            for (var i:int = 0; i < polygons.length(); i++) {
@@ -98,7 +98,6 @@ package org.openscales.core.format
 	            }
 	        } else if (xmlNode..*::the_geom.*::MultiLineString.length() > 0) {
 	            var multilinestring:XML = xmlNode..*::the_geom.*::MultiLineString[0];
-	            feature.fid = multilinestring.parentNode.parentNode.@*::fid;
 	            
 	            geom = new MultiLineString();
 	            var lineStrings:XMLList = multilinestring..*::LineString;
@@ -112,7 +111,6 @@ package org.openscales.core.format
 	            }
 	        } else if (xmlNode..*::the_geom.*::MultiPoint.length() > 0) {
 	            var multiPoint:XML = xmlNode..*::the_geom.*::MultiPoint[0];
-	            feature.fid = multiPoint.parentNode.parentNode.@*::fid;
 	                
 	            geom = new MultiPoint();
 	            
@@ -124,12 +122,10 @@ package org.openscales.core.format
 	            }
 	        } else if (xmlNode..*::the_geom.*::Polygon.length() > 0) {
 	            var polygon2:XML = xmlNode..*::the_geom.*::Polygon[0];
-	            feature.fid = polygon2.parentNode.parentNode.@*::fid;
 	            
 	            geom = this.parsePolygonNode(polygon2);
 	        } else if (xmlNode..*::the_geom.*::LineString.length() > 0) {
 	            var lineString2:XML = xmlNode..*::the_geom.*::LineString[0];
-	            feature.fid = lineString2.parentNode.parentNode.@*::fid;
 	
 	            p = this.parseCoords(lineString2);
 	            if (p.points) {
@@ -137,7 +133,6 @@ package org.openscales.core.format
 	            }
 	        } else if (xmlNode..*::the_geom.*::Point.length() > 0) {
 	            var point:XML = xmlNode..*::the_geom.*::Point[0];
-	            feature.fid = point.parentNode.parentNode.@*::fid;
 	            
 	            p = this.parseCoords(point);
 	            if (p.points) {
