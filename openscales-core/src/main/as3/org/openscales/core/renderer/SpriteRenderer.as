@@ -142,7 +142,7 @@ package org.openscales.core.renderer
 		}
 		
 		public function drawPoint(node:SpriteElement, geometry:Object):void {
-			this.drawCircle(node, geometry, node.attributes.r);
+			this.drawCircle(node, geometry, node.style.pointRadius);
 		}
 		
 		public function drawCircle(node:SpriteElement, geometry:Object, radius:Number):void {

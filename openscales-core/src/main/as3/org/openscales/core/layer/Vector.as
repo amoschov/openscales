@@ -130,7 +130,7 @@ package org.openscales.core.layer
 	    	if (!(features is Array)) {
 	            features = [features];
 	        }
-	
+
 	        for (var i:int = 0; i < features.length; i++) {
 	            var feature:org.openscales.core.feature.Vector = features[i];
 	            

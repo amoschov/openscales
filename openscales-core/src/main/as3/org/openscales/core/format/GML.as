@@ -93,7 +93,7 @@ package org.openscales.core.format
 	            geom = new MultiPolygon();
 	            var polygons:XMLList = multipolygon..*::Polygon;
 	            for (var i:int = 0; i < polygons.length(); i++) {
-	                var polygon:Object = this.parsePolygonNode(polygons[i]);
+	                var polygon:Polygon = this.parsePolygonNode(polygons[i]);
 	                geom.addComponents(polygon);
 	            }
 	        } else if (xmlNode..*::the_geom.*::MultiLineString.length() > 0) {
@@ -134,9 +134,11 @@ package org.openscales.core.format
 	        } else if (xmlNode..*::the_geom.*::Point.length() > 0) {
 	            var point:XML = xmlNode..*::the_geom.*::Point[0];
 	            
+	            geom = new MultiPoint();
 	            p = this.parseCoords(point);
 	            if (p.points) {
-	                geom = p.points[0];
+	            	//var nPoint:Point = new Point(p.points[0].x,p.points[0].y);
+	                geom.addComponents(p.points[0]);
 	            }
 	        }
 	        
