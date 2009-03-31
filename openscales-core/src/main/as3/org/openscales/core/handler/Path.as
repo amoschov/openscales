@@ -66,7 +66,7 @@ package org.openscales.core.handler
 		}
 		
 		override public function mousedown(evt:MouseEvent):Boolean {
-			var xy:Pixel = new Pixel(evt.stageX, evt.stageY);
+			var xy:Pixel = new Pixel(map.mouseX, map.mouseY);
 	        if (this.lastDown && this.lastDown.equals(xy)) {
 	            return false;
 	        }
@@ -88,7 +88,7 @@ package org.openscales.core.handler
 		}
 		
 		override public function mousemove(evt:MouseEvent):Boolean {
-			var xy:Pixel = new Pixel(evt.stageX, evt.stageY);
+			var xy:Pixel = new Pixel(map.mouseX, map.mouseY);
 			if(this.drawing) { 
 	            var lonlat:LonLat = this.map.getLonLatFromPixel(xy);
 	            var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
@@ -105,7 +105,7 @@ package org.openscales.core.handler
 		}
 		
 		override public function mouseup(evt:MouseEvent):Boolean {
-			var xy:Pixel = new Pixel(evt.stageX, evt.stageY);
+			var xy:Pixel = new Pixel(map.mouseX, map.mouseY);
 			this.mouseDown = false;
 	        if(this.drawing) {
 	            if(this.freehandMode(evt)) {

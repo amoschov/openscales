@@ -58,14 +58,14 @@ package org.openscales.core.control
 	            lonLat = new LonLat(0, 0);
 	        } else {
 	            if (this.lastXy == null ||
-	                Math.abs(evt.stageX - this.lastXy.x) > this.granularity ||
-	                Math.abs(evt.stageY - this.lastXy.y) > this.granularity)
+	                Math.abs(map.mouseX - this.lastXy.x) > this.granularity ||
+	                Math.abs(map.mouseY - this.lastXy.y) > this.granularity)
 	            {
-	                this.lastXy = new Pixel(evt.stageX, evt.stageY);
+	                this.lastXy = new Pixel(map.mouseX, map.mouseY);
 	                return;
 	            }
 				
-				this.lastXy = new Pixel(evt.stageX, evt.stageY);
+				this.lastXy = new Pixel(map.mouseX, map.mouseY);
 	            lonLat = this.map.getLonLatFromPixel(this.lastXy);
 	        }
 	        

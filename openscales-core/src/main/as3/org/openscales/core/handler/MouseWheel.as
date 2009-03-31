@@ -57,7 +57,7 @@ package org.openscales.core.handler
     	}
 		
 		public function mouseMove(evt:MouseEvent):void {
-			this.mousePosition = new Pixel(evt.stageX, evt.stageY);
+			this.mousePosition = new Pixel(map.mouseX, map.mouseY);
 		}
 		
 		override public function activate(evt:MouseEvent = null):Boolean {

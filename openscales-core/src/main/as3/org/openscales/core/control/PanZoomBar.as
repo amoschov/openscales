@@ -131,7 +131,7 @@ package org.openscales.core.control
 	    
 	    public function zoomBarClick(evt:MouseEvent):void {
 	    	if (!OpenScalesEvent.isLeftClick(evt)) return;
-	        var y:Number = evt.stageY;
+	        var y:Number = map.mouseY;
 	        var top:Number = Util.pagePosition(evt.currentTarget)[1];
 	        var levels:Number = Math.floor((y - top)/this.zoomStopHeight);
 	        this.map.zoomTo((this.map.numZoomLevels -1) -  levels);
@@ -148,8 +148,8 @@ package org.openscales.core.control
 	        this.map.addEventListener(MouseEvent.MOUSE_UP,this.passEventToSlider);
 	        this.map.addEventListener(MouseEvent.MOUSE_OUT,this.passEventToSlider);
 	        
-	        this.mouseDragStart = new Pixel(evt.stageX, evt.stageY);
-	        this.zoomStart = new Pixel(evt.stageX, evt.stageY);
+	        this.mouseDragStart = new Pixel(map.mouseX, map.mouseY);
+	        this.zoomStart = new Pixel(map.mouseX, map.mouseY);
 	        this.useHandCursor = true;
 	        
 	        /* this.zoomBar.offsets = null; */ 
@@ -158,14 +158,14 @@ package org.openscales.core.control
 	    
 	    public function zoomBarDrag(evt:MouseEvent):void {
 	    	if (this.mouseDragStart != null) {
-	            var deltaY:Number = this.mouseDragStart.y - evt.stageY;
+	            var deltaY:Number = this.mouseDragStart.y - map.mouseY;
 	            var offsets:Array = Util.pagePosition(this.zoomBar);
-	            if ((evt.stageY - offsets[1]) > 0 && 
-	                (evt.stageY - offsets[1]) < int(this.zoomBar.height) - 2) {
+	            if ((map.mouseY - offsets[1]) > 0 && 
+	                (map.mouseY - offsets[1]) < int(this.zoomBar.height) - 2) {
 	                var newTop:Number = int(this.slider.y) - deltaY;
 	                this.slider.y = newTop;
 	            }
-	            this.mouseDragStart = new Pixel(evt.stageX, evt.stageY);
+	            this.mouseDragStart = new Pixel(map.mouseX, map.mouseY);
 	            OpenScalesEvent.stop(evt);
 	        }
 	    }
@@ -180,7 +180,7 @@ package org.openscales.core.control
 	            this.map.removeEventListener(MouseEvent.MOUSE_MOVE,this.passEventToSlider);
 	        	this.map.removeEventListener(MouseEvent.MOUSE_UP,this.passEventToSlider);
 	        	this.map.removeEventListener(MouseEvent.MOUSE_OUT,this.passEventToSlider);
-	            var deltaY:Number = this.zoomStart.y - evt.stageY;
+	            var deltaY:Number = this.zoomStart.y - map.mouseY;
 	            this.map.zoomTo(this.map.zoom + Math.round(deltaY/this.zoomStopHeight));
 	            this.moveZoomBar();
 	            this.mouseDragStart = null;

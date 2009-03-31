@@ -32,7 +32,7 @@ package org.openscales.core.handler
 			
 			if(!isNaN(this.pixelTolerance)) {
 	            this.mouseDown = function(evt:MouseEvent):Boolean {
-	                this.down = new Pixel(evt.stageX, evt.stageY);
+	                this.down = new Pixel(map.mouseX, map.mouseY);
 	                return true;
 	            };
 	        }
@@ -67,8 +67,8 @@ package org.openscales.core.handler
 			var passes:Boolean = true;
 	        if(this.pixelTolerance && this.down) {
 	            var dpx:Number = Math.sqrt(
-	                Math.pow(this.down.x - evt.stageX, 2) +
-	                Math.pow(this.down.y - evt.stageY, 2)
+	                Math.pow(this.down.x - map.mouseX, 2) +
+	                Math.pow(this.down.y - map.mouseY, 2)
 	            );
 	            if(dpx > this.pixelTolerance) {
 	                passes = false;

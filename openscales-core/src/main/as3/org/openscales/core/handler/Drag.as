@@ -41,12 +41,12 @@ package org.openscales.core.handler
 	        this.dragging = false;
 	        if (this.checkModifiers(evt) && OpenScalesEvent.isLeftClick(evt)) {
 	            this.started = true;
-	            this.start = new Pixel(evt.stageX, evt.stageY);
-	            this.last = new Pixel(evt.stageX, evt.stageY);
+	            this.start = new Pixel(map.mouseX, map.mouseY);
+	            this.last = new Pixel(map.mouseX, map.mouseY);
 	            this.map.buttonMode = true;
 	            this.map.useHandCursor = true;
 	            this.down(evt);
-	            this.callback("down", [new Pixel(evt.stageX, evt.stageY)]);
+	            this.callback("down", [new Pixel(map.mouseX, map.mouseY)]);
 	            
 	            if(this.oldOnselectstart == null) {
 	                this.oldOnselectstart = (Drag.onselectstart != null) ? Drag.onselectstart : function():Boolean { return true; };
@@ -64,17 +64,17 @@ package org.openscales.core.handler
 		
 		public function mouseMove(evt:MouseEvent):Boolean {
 			if (this.started) {
-	            if(evt.stageX != this.last.x || evt.stageY != this.last.y) {
+	            if(map.mouseX != this.last.x || map.mouseY != this.last.y) {
 	                
 	                this.dragging = true;
 	                this.move(evt);
 	                
-	                this.callback("move", [new Pixel(evt.stageX, evt.stageY)]);
+	                this.callback("move", [new Pixel(map.mouseX, map.mouseY)]);
 	                if(this.oldOnselectstart == null) {
 	                    this.oldOnselectstart = Drag.onselectstart;
 	                    Drag.onselectstart = function():Boolean {return false;};
 	                }
-	                this.last = new Pixel(evt.stageX, evt.stageY);
+	                this.last = new Pixel(map.mouseX, map.mouseY);
 	            }
 	        }
 	        return true;
@@ -88,9 +88,9 @@ package org.openscales.core.handler
 	            this.map.useHandCursor = false;
 	            this.map.buttonMode = false;
 	            this.up(evt);
-	            this.callback("up", [new Pixel(evt.stageX, evt.stageY)]);
+	            this.callback("up", [new Pixel(map.mouseX, map.mouseY)]);
 	            if(dragged) {
-	                this.callback("done", [new Pixel(evt.stageX, evt.stageY)]);
+	                this.callback("done", [new Pixel(map.mouseX, map.mouseY)]);
 	            }
 	            Drag.onselectstart = this.oldOnselectstart;
 	        }
@@ -106,7 +106,7 @@ package org.openscales.core.handler
 	            this.out(evt);
 	            this.callback("out", []);
 	            if(dragged) {
-	                this.callback("done", [new Pixel(evt.stageX, evt.stageY)]);
+	                this.callback("done", [new Pixel(map.mouseX, map.mouseY)]);
 	            }
 	            if(Drag.onselectstart != null) {
 	                Drag.onselectstart = this.oldOnselectstart;

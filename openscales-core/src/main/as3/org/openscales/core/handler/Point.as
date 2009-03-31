@@ -100,7 +100,7 @@ package org.openscales.core.handler
 		    if(!this.checkModifiers(evt)) {
 	            return true;
 	        }
-	        var xy:Pixel = new Pixel(evt.stageX, evt.stageY)
+	        var xy:Pixel = new Pixel(map.mouseX, map.mouseY)
 	        if(this.lastDown && this.lastDown.equals(xy)) {
 	            return true;
 	        }
@@ -119,7 +119,7 @@ package org.openscales.core.handler
 		
 		public function mousemove(evt:MouseEvent):Boolean {
 			if(this.drawing) {
-				var xy:Pixel = new Pixel(evt.stageX, evt.stageY);
+				var xy:Pixel = new Pixel(map.mouseX, map.mouseY);
 	            var lonlat:LonLat = this.map.getLonLatFromPixel(xy);
 	            var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
 	            p.x = lonlat.lon;

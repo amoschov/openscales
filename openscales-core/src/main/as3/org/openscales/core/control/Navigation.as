@@ -71,7 +71,7 @@ package org.openscales.core.control
 		}
 		
 		public function defaultDblClick(evt:MouseEvent):void {
-			var newCenter:LonLat = this.map.getLonLatFromViewPortPx( new Pixel(evt.stageX, evt.stageY) ); 
+			var newCenter:LonLat = this.map.getLonLatFromViewPortPx( new Pixel(map.mouseX, map.mouseY) ); 
         	this.map.setCenter(newCenter, this.map.zoom + 1);
 		}
 		
@@ -81,13 +81,13 @@ package org.openscales.core.control
 	            return;
 	        }
 	        var size:Size    = this.map.size;
-	        var deltaX:Number  = size.w/2 - evt.stageX;
-	        var deltaY:Number  = evt.stageY - size.h/2;
+	        var deltaX:Number  = size.w/2 - map.mouseX;
+	        var deltaY:Number  = size.h/2 - map.mouseY;
 	        var newRes:Number  = this.map.baseLayer.resolutions[newZoom];
-	        var zoomPoint:LonLat = this.map.getLonLatFromPixel(new Pixel(evt.stageX, evt.stageY));
+	        var zoomPoint:LonLat = this.map.getLonLatFromPixel(new Pixel(map.mouseX, map.mouseY));
 	        var newCenter:LonLat = new LonLat(
 	                            zoomPoint.lon + deltaX * newRes,
-	                            zoomPoint.lat + deltaY * newRes );
+	                            zoomPoint.lat - deltaY * newRes );
 	        this.map.setCenter( newCenter, newZoom );
 		}
 		
