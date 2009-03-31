@@ -4,6 +4,7 @@
 		<flexlayers:OpenStreetMap label="Open Street Map"/>
 		<flexlayers:MetacartaWMSC label="Metacarta WMS-C" />
 		<flexlayers:GeovistaWMSCWFS label="WMS-C layer and 2 WFS"/>
-		<flexlayers:MetacartaWFS label="Metacarta WFS" />
+		<flexlayers:MetacartaWFSPolygons label="Metacarta WFS Polygons" />
+		<flexlayers:MetacartaWFSPoints label="Metacarta WFS Points" />
 	</mx:TabNavigator>	
 </mx:Application>

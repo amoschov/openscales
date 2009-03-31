@@ -280,6 +280,7 @@ package org.openscales.core.renderer
 		} */
 		
 		override public function eraseGeometry(geometry:Collection):void {
+
 			if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
@@ -381,7 +382,7 @@ package org.openscales.core.renderer
 	        }
 	        
 	        this.setStyle(node, style, options);
-	        
+
 	        switch (getQualifiedClassName(geometry)) {
 	            case "org.openscales.core.geometry::Point":
 	                this.drawPoint(node, geometry);
