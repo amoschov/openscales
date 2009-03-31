@@ -110,8 +110,8 @@ package org.openscales.core.handler
 			
 		}
 		
-		public function doubleClick(evt:MouseEvent):void {
-			
+		public function doubleClick(evt:MouseEvent):Boolean {
+			return true;
 		}
 		
 		public function resize(evt:Event):void {
@@ -124,6 +124,34 @@ package org.openscales.core.handler
 		
 		public function blur(evt:MouseEvent):void {
 			
+		}
+		
+		public function mouseDown(evt:MouseEvent):Boolean {
+			return true;
+		}
+		
+		public function mouseMove(evt:MouseEvent):Boolean {
+			return true;
+		}
+		
+		public function mouseUp(evt:MouseEvent):Boolean {
+			return true;
+		}
+		
+		public function mouseOut(evt:MouseEvent):Boolean {
+			return true;
+		}
+		
+		public function rollOver(evt:MouseEvent):Boolean {
+			return true;
+		}
+		
+		public function rollOut(evt:MouseEvent):Boolean {
+			return true;
+		}
+		
+		public function click(evt:MouseEvent):Boolean {
+			return true;
 		}
 		
 	}

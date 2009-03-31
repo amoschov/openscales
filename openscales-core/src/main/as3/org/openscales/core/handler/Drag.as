@@ -36,7 +36,7 @@ package org.openscales.core.handler
 			
 		}
 		
-		public function mouseDown(evt:MouseEvent):Boolean {
+		public override function mouseDown(evt:MouseEvent):Boolean {
 			var propagate:Boolean = true;
 	        this.dragging = false;
 	        if (this.checkModifiers(evt) && OpenScalesEvent.isLeftClick(evt)) {
@@ -62,7 +62,7 @@ package org.openscales.core.handler
 	        return propagate;
 		}
 		
-		public function mouseMove(evt:MouseEvent):Boolean {
+		public override function mouseMove(evt:MouseEvent):Boolean {
 			if (this.started) {
 	            if(map.mouseX != this.last.x || map.mouseY != this.last.y) {
 	                
@@ -80,7 +80,7 @@ package org.openscales.core.handler
 	        return true;
 		}
 		
-		public function mouseUp(evt:MouseEvent):Boolean {
+		public override function mouseUp(evt:MouseEvent):Boolean {
 			if (this.started) {
 	            var dragged:Boolean = (this.start != this.last);
 	            this.started = false;
@@ -97,7 +97,7 @@ package org.openscales.core.handler
 	        return true;
 		}
 		
-		public function mouseOut(evt:MouseEvent):Boolean {
+		public override function mouseOut(evt:MouseEvent):Boolean {
 			if (this.started && Util.mouseLeft(evt, this.map)) {
 	            var dragged:Boolean = (this.start != this.last);
 	            this.started = false; 
@@ -115,15 +115,7 @@ package org.openscales.core.handler
 	        return true;
 		}
 		
-		public function rollOver(evt:MouseEvent):Boolean {
-			return true;
-		}
-		
-		public function rollOut(evt:MouseEvent):Boolean {
-			return true;
-		}
-		
-		public function click(evt:MouseEvent):Boolean {
+		public override function click(evt:MouseEvent):Boolean {
 			return (this.start == this.last);
 		}
 		

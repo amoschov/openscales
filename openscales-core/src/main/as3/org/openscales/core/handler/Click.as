@@ -30,26 +30,27 @@ package org.openscales.core.handler
 		public function Click(control:Control, callbacks:Object, options:Object):void {
 			super(control, callbacks, options);
 			
-			if(!isNaN(this.pixelTolerance)) {
+			/*if(!isNaN(this.pixelTolerance)) {
 	            this.mouseDown = function(evt:MouseEvent):Boolean {
 	                this.down = new Pixel(map.mouseX, map.mouseY);
 	                return true;
 	            };
-	        }
+	        }*/
 		}
 		
-		public var mouseDown:Function = null;
+		//public var mouseDown:Function = null;
 		
-		override public function doubleClick(evt:MouseEvent):void {
+		override public function doubleClick(evt:MouseEvent):Boolean {
 			if(this.passesTolerance(evt)) {
 	            if(this["double"]) {
 	                this.callback('doubleClick', [evt]);
 	            }
 	            this.clearTimer();
 	        }
+	        return true;
 		}
 		
-		public function click(evt:MouseEvent):void {
+		public override function click(evt:MouseEvent):Boolean {
 			if(this.passesTolerance(evt)) {
 	            if(this.timer) {
 	                this.clearTimer();
@@ -61,6 +62,7 @@ package org.openscales.core.handler
 	                //this.timer.start();
 	            }
 	        }
+	        return true;
 		}
 		
 		public function passesTolerance(evt:MouseEvent):Boolean {
@@ -107,24 +109,9 @@ package org.openscales.core.handler
 	        return deactivated;
 		}
 		
-		public function mouseOut(evt:MouseEvent):void {
-			
-		}
-		
-		public function mouseUp(evt:MouseEvent):void {
-			
-		}
-		
-		public function mouseMove(evt:MouseEvent):void {
-			
-		}
-		
-		public function rollOver(evt:MouseEvent):Boolean {
-			return true;
-		}
-		
-		public function rollOut(evt:MouseEvent):Boolean {
-			return true;
-		}
+		public override function mouseDown(evt:MouseEvent):Boolean {
+            this.down = new Pixel(evt.stageX, evt.stageY);
+            return true;
+        }		
 	}
 }

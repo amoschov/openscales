@@ -56,8 +56,9 @@ package org.openscales.core.handler
 
     	}
 		
-		public function mouseMove(evt:MouseEvent):void {
+		public override function mouseMove(evt:MouseEvent):Boolean {
 			this.mousePosition = new Pixel(map.mouseX, map.mouseY);
+			return true;
 		}
 		
 		override public function activate(evt:MouseEvent = null):Boolean {
@@ -80,27 +81,5 @@ package org.openscales.core.handler
 			}
 		}
 		
-		public function mouseDown(evt:MouseEvent):void {
-			
-		}
-		
-		public function mouseOut(evt:MouseEvent):void {
-			
-		}
-		
-		public function click(evt:MouseEvent):void {
-			
-		}
-		
-		public function mouseUp(evt:MouseEvent):void {
-		}
-		
-		public function rollOver(evt:MouseEvent):Boolean {
-			return true;
-		}
-		
-		public function rollOut(evt:MouseEvent):Boolean {
-			return true;
-		}
 	}
 }

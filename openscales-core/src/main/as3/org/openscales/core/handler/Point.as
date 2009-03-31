@@ -19,7 +19,7 @@ package org.openscales.core.handler
 
     	public var drawing:Boolean = false;
 
-    	public var mouseDown:Boolean = false;
+    	public var mouseDowned:Boolean = false;
 
     	public var lastDown:Pixel = null;
 
@@ -68,7 +68,7 @@ package org.openscales.core.handler
 	        this.callback("done", [this.geometryClone()]);
 	        this.destroyFeature();
 	        this.drawing = false;
-	        this.mouseDown = false;
+	        this.mouseDowned = false;
 	        this.lastDown = null;
 	        this.lastUp = null;
 		}
@@ -78,12 +78,12 @@ package org.openscales.core.handler
 	        this.callback("cancel", [this.geometryClone()]);
 	        this.destroyFeature();
 	        this.drawing = false;
-	        this.mouseDown = false;
+	        this.mouseDowned = false;
 	        this.lastDown = null;
 	        this.lastUp = null;
 		}
 		
-		public function doubleclick(evt:MouseEvent):Boolean {
+		public override function doubleClick(evt:MouseEvent):Boolean {
 			evt.stopPropagation();
 	        return false;
 		}
@@ -96,8 +96,8 @@ package org.openscales.core.handler
 			return this.point.geometry.clone();
 		}
 		
-		public function mousedown(evt:MouseEvent):Boolean {
-		    if(!this.checkModifiers(evt)) {
+		public override function mouseDown(evt:MouseEvent):Boolean {
+			if(!this.checkModifiers(evt)) {
 	            return true;
 	        }
 	        var xy:Pixel = new Pixel(map.mouseX, map.mouseY)
@@ -117,7 +117,7 @@ package org.openscales.core.handler
 	        return false;
 		}
 		
-		public function mousemove(evt:MouseEvent):Boolean {
+		public override function mouseMove(evt:MouseEvent):Boolean {
 			if(this.drawing) {
 				var xy:Pixel = new Pixel(map.mouseX, map.mouseY);
 	            var lonlat:LonLat = this.map.getLonLatFromPixel(xy);
@@ -129,14 +129,14 @@ package org.openscales.core.handler
 	        return true;
 		}
 		
-		public function mouseup(evt:MouseEvent):Boolean {
+		public override function mouseUp(evt:MouseEvent):Boolean {
 			if(this.drawing) {
 	            this.finalize();
 	            return false;
 	        } else {
 	            return true;
 	        }
-		}
+		}		
 
 	}
 }

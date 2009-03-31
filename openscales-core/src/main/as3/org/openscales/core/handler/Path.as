@@ -65,7 +65,7 @@ package org.openscales.core.handler
 			return this.line.geometry.clone();
 		}
 		
-		override public function mousedown(evt:MouseEvent):Boolean {
+		override public function mouseDown(evt:MouseEvent):Boolean {
 			var xy:Pixel = new Pixel(map.mouseX, map.mouseY);
 	        if (this.lastDown && this.lastDown.equals(xy)) {
 	            return false;
@@ -73,7 +73,7 @@ package org.openscales.core.handler
 	        if(this.lastDown == null) {
 	            this.createFeature();
 	        }
-	        this.mouseDown = true;
+	        this.mouseDowned = true;
 	        this.lastDown = xy;
 	        var lonlat:LonLat = this.control.map.getLonLatFromPixel(xy);
 	        var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
@@ -87,14 +87,14 @@ package org.openscales.core.handler
 	        return false;
 		}
 		
-		override public function mousemove(evt:MouseEvent):Boolean {
+		override public function mouseMove(evt:MouseEvent):Boolean {
 			var xy:Pixel = new Pixel(map.mouseX, map.mouseY);
 			if(this.drawing) { 
 	            var lonlat:LonLat = this.map.getLonLatFromPixel(xy);
 	            var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
 	            p.x = lonlat.lon;
 	            p.y = lonlat.lat;
-	            if(this.mouseDown && this.freehandMode(evt)) {
+	            if(this.mouseDowned && this.freehandMode(evt)) {
 	                this.addPoint();
 	            } else {
 	                this.modifyFeature();
@@ -104,9 +104,9 @@ package org.openscales.core.handler
 	        return true;
 		}
 		
-		override public function mouseup(evt:MouseEvent):Boolean {
+		override public function mouseUp(evt:MouseEvent):Boolean {
 			var xy:Pixel = new Pixel(map.mouseX, map.mouseY);
-			this.mouseDown = false;
+			this.mouseDowned = false;
 	        if(this.drawing) {
 	            if(this.freehandMode(evt)) {
 	                this.finalize();
@@ -121,12 +121,13 @@ package org.openscales.core.handler
 	        return true;
 		}
 		
-		override public function doubleclick(evt:MouseEvent):Boolean {
+		override public function doubleClick(evt:MouseEvent):Boolean {
+			throw new Error("jojojo");
 			if(!this.freehandMode(evt)) {
 	            var line:LineString = this.line.geometry as LineString;
 	            var index:int = line.components.length - 1;
 	            line.removeComponent(line.components[index]);
-	            this.finalize();
+	            this.finalize();	            
 	        }
 	        return false;
 		}
