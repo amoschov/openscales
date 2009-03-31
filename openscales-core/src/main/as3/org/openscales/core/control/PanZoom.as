@@ -46,12 +46,7 @@ package org.openscales.core.control
 		
 		public function PanZoom(options:Object = null):void {
 		    
-		    if (this.position == null) {
-		    	this.position = new Pixel(PanZoom.X,
-		    					PanZoom.Y);
-		    }
-		    
-		    super(options);
+			super(options);
 		}
 		
 		override public function destroy():void {

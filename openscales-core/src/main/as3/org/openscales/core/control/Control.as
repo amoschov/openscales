@@ -36,13 +36,16 @@ package org.openscales.core.control
 		public function Control(options:Object = null):void {
 			
 			this.displayClass = getQualifiedClassName(this).split('::')[1];
-			this.position = new Pixel(0,0);
+			
+			if (options != null && options.position != null) {
+		    	this.position = (options.position as Pixel);
+		    } else {
+		    	this.position = new Pixel(0,0);
+		    }
+			
 			this.name = this.displayClass;
-			
 			Util.extend(this, options);
-			
-			this.id = Util.createUniqueID(getQualifiedClassName(this) + "_");
-			
+			this.id = Util.createUniqueID(getQualifiedClassName(this) + "_");			
 		}
 		
 		public function destroy():void {  
