@@ -40,27 +40,27 @@ package org.openscales.core.handler
 		}
 		
 		/**
-		 * function down(xy:Pixel):void
+		 * callback function down(xy:Pixel):void
 		 */
 		public var down:Function = null;
 		
 		/**
-		 * function move(xy:Pixel):void
+		 * callback function move(xy:Pixel):void
 		 */
 		public var move:Function = null;
 		
 		/**
-		 * function up(xy:Pixel):void
+		 * callback function up(xy:Pixel):void
 		 */
 		public var up:Function = null;
 		
 		/**
-		 * function out():void
+		 * callback function out():void
 		 */
 		public var out:Function = null;
 		
 		/**
-		 * function done(xy:Pixel):void 
+		 * callback function done(xy:Pixel):void 
 		 */
 		public var done:Function = null;
 				

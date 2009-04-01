@@ -24,71 +24,71 @@ package org.openscales.core.handler
 	    	this.layerIndex = this.layer.zindex;
 	        this.layer.zindex = this.map.Z_INDEX_BASE['Popup'] - 1;
 	        
-	        control.addEventListener(MouseEvent.MOUSE_DOWN, this.mousedown);
-	        control.addEventListener(MouseEvent.MOUSE_MOVE, this.mousemove);
-	        control.addEventListener(MouseEvent.MOUSE_UP, this.mouseup);
-	        control.addEventListener(MouseEvent.DOUBLE_CLICK, this.mousedoubleclick);
+	        control.addEventListener(MouseEvent.MOUSE_DOWN, this.mouseDown);
+	        control.addEventListener(MouseEvent.MOUSE_MOVE, this.mouseMove);
+	        control.addEventListener(MouseEvent.MOUSE_UP, this.mouseUp);
+	        control.addEventListener(MouseEvent.DOUBLE_CLICK, this.mouseDoubleClick);
 	        
     	}
     	
     	override public function deactivate():void {
     		this.layer.zindex = this.layerIndex;
     		
-    		control.removeEventListener(MouseEvent.MOUSE_DOWN, this.mousedown);
-	        control.removeEventListener(MouseEvent.MOUSE_MOVE, this.mousemove);
-	        control.removeEventListener(MouseEvent.MOUSE_UP, this.mouseup);
-	        control.removeEventListener(MouseEvent.DOUBLE_CLICK, this.mousedoubleclick);
+    		control.removeEventListener(MouseEvent.MOUSE_DOWN, this.mouseDown);
+	        control.removeEventListener(MouseEvent.MOUSE_MOVE, this.mouseMove);
+	        control.removeEventListener(MouseEvent.MOUSE_UP, this.mouseUp);
+	        control.removeEventListener(MouseEvent.DOUBLE_CLICK, this.mouseDoubleClick);
     	}
     	
     	/**
-		 * function over(feature:org.openscales.core.feature.Vector):void
+		 * callback function over(feature:org.openscales.core.feature.Vector):void
 		 */
 		public var over:Function = null;
 		
     	
     	/**
-		 * function out(feature:org.openscales.core.feature.Vector):void
+		 * callback function out(feature:org.openscales.core.feature.Vector):void
 		 */
 		public var out:Function = null;
 		
 		/**
-		 * function move(feature:org.openscales.core.feature.Vector):void
+		 * callback function move(feature:org.openscales.core.feature.Vector):void
 		 */
 		public var move:Function = null;
 		
 		/**
-		 * function down(feature:org.openscales.core.feature.Vector):void
+		 * callback function down(feature:org.openscales.core.feature.Vector):void
 		 */
 		public var down:Function = null;
 		
 		/**
-		 * function up(feature:org.openscales.core.feature.Vector):void
+		 * callback function up(feature:org.openscales.core.feature.Vector):void
 		 */
 		public var up:Function = null;
     	
     	/**
-		 * function doubleclick(feature:org.openscales.core.feature.Vector):void
+		 * callback function doubleclick(feature:org.openscales.core.feature.Vector):void
 		 */
-		public var doubleclick:Function = null;
+		public var doubleClick:Function = null;
     	
 		
-    	protected function mousedown(evt:MouseEvent):Boolean {
+    	protected function mouseDown(evt:MouseEvent):Boolean {
     		var selected:Boolean = this.select(this.down, evt);
     		return !selected;
     	}
     	
-    	protected function mousemove(evt:MouseEvent):Boolean {
+    	protected function mouseMove(evt:MouseEvent):Boolean {
     		this.select(this.move, evt);
         	return true;
     	}
     	
-    	protected function mouseup(evt:MouseEvent):Boolean {
+    	protected function mouseUp(evt:MouseEvent):Boolean {
     		var selected:Boolean = this.select(this.up, evt);
         	return !selected;
     	}
     	
-    	protected function mousedoubleclick(evt:MouseEvent):Boolean {
-    		var selected:Boolean = this.select(this.doubleclick, evt);
+    	protected function mouseDoubleClick(evt:MouseEvent):Boolean {
+    		var selected:Boolean = this.select(this.doubleClick, evt);
         	return !selected;
     	}
     	

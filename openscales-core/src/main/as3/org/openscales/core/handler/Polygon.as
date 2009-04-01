@@ -48,7 +48,7 @@ package org.openscales.core.handler
 			return this.polygon.geometry.clone();
 		}
 		
-		override protected function mousedoubleclick(evt:MouseEvent):Boolean {
+		override protected function mouseDoubleClick(evt:MouseEvent):Boolean {
 			if(!this.freehandMode(evt)) {
 				var line:LineString = this.line.geometry as LineString;
 	            var index:int = line.components.length - 2;

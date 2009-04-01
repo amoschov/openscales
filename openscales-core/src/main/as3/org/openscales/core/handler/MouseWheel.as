@@ -13,25 +13,25 @@ package org.openscales.core.handler
     	}
     	
     	override public function activate():void {
-			this.map.addEventListener(MouseEvent.MOUSE_WHEEL, this.onWheelEvent);
+			this.map.addEventListener(MouseEvent.MOUSE_WHEEL, this.mouseWheel);
 		}
 		
 		override public function deactivate():void {
-			this.map.removeEventListener(MouseEvent.MOUSE_WHEEL, this.onWheelEvent);
+			this.map.removeEventListener(MouseEvent.MOUSE_WHEEL, this.mouseWheel);
 		}
 		
 		/**
-		 * function down(evt:MouseEvent):void
+		 * callback function down(evt:MouseEvent):void
 		 */
 		public var down:Function = null;
     	
     	/**
-		 * function up(evt:MouseEvent):void
+		 * callback function up(evt:MouseEvent):void
 		 */
 		public var up:Function = null;
     	
     	
-    	private function onWheelEvent(evt:MouseEvent):void {
+    	private function mouseWheel(evt:MouseEvent):void {
 	        if (!this.checkModifiers(evt)) {
 	            return;
 	        }

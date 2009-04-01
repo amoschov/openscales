@@ -20,7 +20,7 @@ package org.openscales.core.handler
 
     	public var drawing:Boolean = false;
 
-    	public var mouseDown:Boolean = false;
+    	public var isMouseDown:Boolean = false;
 
     	public var lastDown:Pixel = null;
 
@@ -37,9 +37,9 @@ package org.openscales.core.handler
 	        this.layer = new org.openscales.core.layer.Vector("Point", options);
 	        this.map.addLayer(this.layer);
 	        
-	        control.addEventListener(MouseEvent.MOUSE_DOWN, this.mousedown);
-	        control.addEventListener(MouseEvent.MOUSE_MOVE, this.mousemove);
-	        control.addEventListener(MouseEvent.MOUSE_UP, this.mouseup);
+	        control.addEventListener(MouseEvent.MOUSE_DOWN, this.mouseDown);
+	        control.addEventListener(MouseEvent.MOUSE_MOVE, this.mouseMove);
+	        control.addEventListener(MouseEvent.MOUSE_UP, this.mouseUp);
 		}
 		
 		override public function deactivate():void {
@@ -48,16 +48,16 @@ package org.openscales.core.handler
 		        this.cancel(this.geometryClone());
 		        this.destroyFeature();
 		        this.drawing = false;
-		        this.mouseDown = false;
+		        this.isMouseDown = false;
 		        this.lastDown = null;
 		        this.lastUp = null;
 		    }
 		    this.map.removeLayer(this.layer, false);
 		    this.layer.destroy();
 		    
-		    control.removeEventListener(MouseEvent.MOUSE_DOWN, this.mousedown);
-	        control.removeEventListener(MouseEvent.MOUSE_MOVE, this.mousemove);
-	        control.removeEventListener(MouseEvent.MOUSE_UP, this.mouseup);
+		    control.removeEventListener(MouseEvent.MOUSE_DOWN, this.mouseDown);
+	        control.removeEventListener(MouseEvent.MOUSE_MOVE, this.mouseMove);
+	        control.removeEventListener(MouseEvent.MOUSE_UP, this.mouseUp);
 		}
 		
 		public function createFeature():void {
@@ -66,12 +66,12 @@ package org.openscales.core.handler
 		}
 		
 		/**
-		 * function done(geometry:Geometry):void
+		 * callback function done(geometry:Geometry):void
 		 */
 		public var done:Function = null;
 		
 		/**
-		 * function cancel(geometry:Geometry):void
+		 * callback function cancel(geometry:Geometry):void
 		 */
 		public var cancel:Function = null;
 		
@@ -85,7 +85,7 @@ package org.openscales.core.handler
 	        this.done(this.geometryClone());
 	        this.destroyFeature();
 	        this.drawing = false;
-	        this.mouseDown = false;
+	        this.isMouseDown = false;
 	        this.lastDown = null;
 	        this.lastUp = null;
 		}
@@ -99,7 +99,7 @@ package org.openscales.core.handler
 			return this.point.geometry.clone();
 		}
 		
-		protected function mousedown(evt:MouseEvent):Boolean {
+		protected function mouseDown(evt:MouseEvent):Boolean {
 		    if(!this.checkModifiers(evt)) {
 	            return true;
 	        }
@@ -120,7 +120,7 @@ package org.openscales.core.handler
 	        return false;
 		}
 		
-		protected function mousemove(evt:MouseEvent):Boolean {
+		protected function mouseMove(evt:MouseEvent):Boolean {
 			if(this.drawing) {
 				var xy:Pixel = new Pixel(map.mouseX, map.mouseY);
 	            var lonlat:LonLat = this.map.getLonLatFromPixel(xy);
@@ -132,7 +132,7 @@ package org.openscales.core.handler
 	        return true;
 		}
 		
-		protected function mouseup(evt:MouseEvent):Boolean {
+		protected function mouseUp(evt:MouseEvent):Boolean {
 			if(this.drawing) {
 	            this.finalize();
 	            return false;
@@ -141,7 +141,7 @@ package org.openscales.core.handler
 	        }
 		}
 		
-		protected function mousedoubleclick(evt:MouseEvent):Boolean {
+		protected function mouseDoubleClick(evt:MouseEvent):Boolean {
 			evt.stopPropagation();
 			return false;
 		}

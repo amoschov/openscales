@@ -15,9 +15,6 @@ package org.openscales.core.handler
 
 		}
 		
-		/**
-		 * StartBox
-		 */
 		override protected function mouseDown(evt:MouseEvent):Boolean  {
 			var result:Boolean = super.mouseDown(evt);
 			
@@ -31,9 +28,6 @@ package org.openscales.core.handler
 	        return result;
 		}
 		
-		/**
-		 * moveBox
-		 */
 		override protected function mouseMove(evt:MouseEvent):Boolean {
 			var result:Boolean = super.mouseMove(evt);
 			
@@ -49,9 +43,6 @@ package org.openscales.core.handler
 	        return result;
 		}
 		
-		/**
-		 * endBox
-		 */
 		override protected function mouseUp(evt:MouseEvent):Boolean {
 			this.removeBox();
 			

@@ -7,6 +7,27 @@ package org.openscales.core.handler
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.control.Control;
 	
+	/**
+	 * Base class to construct a higher-level handler for event sequences.  All
+	 *     handlers have activate and deactivate methods.  In addition, they have
+	 *     methods named like browser events.  When a handler is activated, any
+	 *     additional methods named like a browser event is registered as a
+	 *     listener for the corresponding event.  When a handler is deactivated,
+	 *     those same methods are unregistered as event listeners.
+	 *
+	 * Handlers also typically have a callbacks function variables with.  The controls that 
+	 *     wrap handlers define the methods that correspond to these abstract events 
+	 *     so instead of listening for individual mouse events, they only listen 
+	 *     for the abstract events defined by the handler.
+	 * 
+	 * Callbacks are identified by asDocs comments, taht sepcified also the signature 
+	 * 		of the expected function.
+	 *     
+	 * Handlers are created by controls, which ultimately have the responsibility
+	 *     of making changes to the the state of the application.  Handlers
+	 *     themselves may make temporary changes, but in general are expected to
+	 *     return the application in the same state that they found it.
+	 */
 	public class Handler
 	{
 		

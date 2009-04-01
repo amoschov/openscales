@@ -14,8 +14,14 @@ package org.openscales.core.handler
 
 		private var _mouseEvent:MouseEvent = null;
 		
+		/**
+		 * callback function doubleClick(evt:MouseEvent):void
+		 */
 		public var doubleClick:Function = null;
 		
+		/**
+		 * callback function down(evt:MouseEvent):void
+		 */
 		public var click:Function = null;
 		
 		public function Click(control:Control, options:Object=null):void {
@@ -37,21 +43,21 @@ package org.openscales.core.handler
 		    }
 		}
 		
-		private function mouseclick(event:MouseEvent):void{
+		private function mouseClick(event:MouseEvent):void{
 		    _mouseEvent = event;
 		    _clickNum++
 		    _timer.start() 
 		}
 		
 		override public function activate():void {
-			this.map.addEventListener(MouseEvent.CLICK, this.mouseclick);
+			this.map.addEventListener(MouseEvent.CLICK, this.mouseClick);
 			_timer.addEventListener(TimerEvent.TIMER, chooseClick);
 		}
 		
 		override public function deactivate():void {
         	_timer.stop();
         	_timer.removeEventListener(TimerEvent.TIMER, chooseClick);
-        	this.map.removeEventListener(MouseEvent.CLICK, this.mouseclick);
+        	this.map.removeEventListener(MouseEvent.CLICK, this.mouseClick);
 			
 		}		
 		
