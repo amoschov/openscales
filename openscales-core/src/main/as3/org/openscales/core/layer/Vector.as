@@ -57,6 +57,9 @@ package org.openscales.core.layer
 	
 	        this.features = new Array();
 	        this.selectedFeatures = new Array();
+	        
+	        // For better performances
+	        this.cacheAsBitmap = true;
 	    }
 	    
 	    override public function destroy(setNewBaseLayer:Boolean = true):void {

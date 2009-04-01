@@ -13,6 +13,9 @@ package org.openscales.core.layer
 	    public function Markers(name:String, options:Object = null):void {
 	    	super(name, options);
 	    	this.markers = [];
+	    	
+	    	// For better performances
+	    	this.cacheAsBitmap = true;
 	    }
 	    
 	    override public function destroy(setNewBaseLayer:Boolean = true):void {
