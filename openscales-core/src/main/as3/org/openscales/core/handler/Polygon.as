@@ -4,6 +4,7 @@ package org.openscales.core.handler
 	
 	import org.openscales.core.control.Control;
 	import org.openscales.core.feature.Vector;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
 	
@@ -29,7 +30,7 @@ package org.openscales.core.handler
 	        this.point.destroy();
 		}
 		
-		override public function modifyFeature():void {
+		override protected function modifyFeature():void {
 			var line:LineString = this.line.geometry as LineString;
 			var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
 			var index:int = line.components.length - 2;
@@ -43,11 +44,11 @@ package org.openscales.core.handler
 	        this.layer.drawFeature(this.point, this.style);
 		}
 		
-		override public function geometryClone():Object {
+		override public function geometryClone():Geometry {
 			return this.polygon.geometry.clone();
 		}
 		
-		override public function doubleClick(evt:MouseEvent):Boolean {
+		override protected function mousedoubleclick(evt:MouseEvent):Boolean {
 			if(!this.freehandMode(evt)) {
 				var line:LineString = this.line.geometry as LineString;
 	            var index:int = line.components.length - 2;

@@ -7,8 +7,6 @@ package org.openscales.core.control
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.event.Events;
-	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.events.MapEvent;
 	
 	public class PanZoomBar extends PanZoom
@@ -20,11 +18,7 @@ package org.openscales.core.control
 
 	    public var slider:DisplayObject = null;
 
-	    public var sliderEvents:Events = null;
-
 	    public var zoomBar:DisplayObject = null;
-
-	    public var canvasEvents:Events = null;
 	    
 	    public var startTop:Number = NaN;
 	    
@@ -39,15 +33,10 @@ package org.openscales.core.control
 	    override public function destroy():void {
 	    	this.removeChild(this.slider);
 	        this.slider = null;
-	
-	        this.sliderEvents.destroy();
-	        this.sliderEvents = null;
 	        
 	        this.removeChild(this.zoomBar);
 	        this.zoomBar = null;
-		
-	        //this.map.events.unregister("zoomend", this, this.moveZoomBar);
-	        //this.map.events.unregister("changebaselayer", this, this.redraw)
+
 	        this.map.removeEventListener(MapEvent.ZOOM_END,this.moveZoomBar);
 	        this.map.removeEventListener(MapEvent.BASE_LAYER_CHANGED,this.redraw);
 	
@@ -56,7 +45,6 @@ package org.openscales.core.control
 	    
 	    override public function setMap(map:Map):void {
 	    	super.setMap(map);
-	    	//this.map.events.register("changebaselayer", this, this.redraw);
 	    	this.map.addEventListener(MapEvent.BASE_LAYER_CHANGED,this.redraw);
 	    }
 	    
@@ -130,20 +118,15 @@ package org.openscales.core.control
 	    }
 	    
 	    public function zoomBarClick(evt:MouseEvent):void {
-	    	if (!OpenScalesEvent.isLeftClick(evt)) return;
 	        var y:Number = map.mouseY;
 	        var top:Number = Util.pagePosition(evt.currentTarget)[1];
 	        var levels:Number = Math.floor((y - top)/this.zoomStopHeight);
 	        this.map.zoomTo((this.map.numZoomLevels -1) -  levels);
-	        OpenScalesEvent.stop(evt);
+	        evt.stopPropagation();
 	    }
 	    
 	    public function zoomBarDown(evt:MouseEvent):void {
-	    	if (!OpenScalesEvent.isLeftClick(evt)) return;
 	    	
-	        //this.map.events.register(MouseEvent.MOUSE_MOVE, this, this.passEventToSlider);
-	        //this.map.events.register(MouseEvent.MOUSE_UP, this, this.passEventToSlider);
-	        //this.map.events.register(MouseEvent.MOUSE_OUT, this, this.passEventToSlider);	        
 	        this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.passEventToSlider);
 	        this.map.addEventListener(MouseEvent.MOUSE_UP,this.passEventToSlider);
 	        this.map.addEventListener(MouseEvent.MOUSE_OUT,this.passEventToSlider);
@@ -152,8 +135,7 @@ package org.openscales.core.control
 	        this.zoomStart = new Pixel(map.mouseX, map.mouseY);
 	        this.useHandCursor = true;
 	        
-	        /* this.zoomBar.offsets = null; */ 
-	        OpenScalesEvent.stop(evt);
+	        evt.stopPropagation();
 	    }
 	    
 	    public function zoomBarDrag(evt:MouseEvent):void {
@@ -166,17 +148,13 @@ package org.openscales.core.control
 	                this.slider.y = newTop;
 	            }
 	            this.mouseDragStart = new Pixel(map.mouseX, map.mouseY);
-	            OpenScalesEvent.stop(evt);
+	            evt.stopPropagation();
 	        }
 	    }
 	    
 	    public function zoomBarUp(evt:MouseEvent):void {
-	    	if (!OpenScalesEvent.isLeftClick(evt)) return;
 	        if (this.zoomStart) {
 	            this.useHandCursor = false;
-	            //this.map.events.unregister(MouseEvent.MOUSE_UP, this, this.passEventToSlider);
-	            //this.map.events.unregister(MouseEvent.MOUSE_OUT, this, this.passEventToSlider);
-	            //this.map.events.unregister(MouseEvent.MOUSE_MOVE, this, this.passEventToSlider);
 	            this.map.removeEventListener(MouseEvent.MOUSE_MOVE,this.passEventToSlider);
 	        	this.map.removeEventListener(MouseEvent.MOUSE_UP,this.passEventToSlider);
 	        	this.map.removeEventListener(MouseEvent.MOUSE_OUT,this.passEventToSlider);
@@ -184,7 +162,7 @@ package org.openscales.core.control
 	            this.map.zoomTo(this.map.zoom + Math.round(deltaY/this.zoomStopHeight));
 	            this.moveZoomBar();
 	            this.mouseDragStart = null;
-	            OpenScalesEvent.stop(evt);
+	            evt.stopPropagation();
 	        }
 	    }
 	    

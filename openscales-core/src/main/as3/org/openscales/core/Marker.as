@@ -7,14 +7,11 @@ package org.openscales.core
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.Button;
-	import org.openscales.core.event.Events;
 	
 	public class Marker extends Icon
 	{
 
 	    public var lonlat:LonLat = null;
-
-	    public var events:Events = null;
 	    
 	    public var map:Object = null;
 	    
@@ -29,18 +26,12 @@ package org.openscales.core
 	    	super(url, size, offset, calculateOffset);
 	    	this.lonlat = lonlat;
 	        
-	        this.events = new Events(this, this, null);
-	        
 	        this.data = new Object();
 	    }
 	    
 	    override public function destroy():void {
 	    	super.destroy();
-	    	this.map = null;
-	
-	        this.events.destroy();
-	        this.events = null;
-	        
+	    	this.map = null;	        
 	    }
 	    
 	  	    

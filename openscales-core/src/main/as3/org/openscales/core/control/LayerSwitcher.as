@@ -8,7 +8,6 @@ package org.openscales.core.control
 	import org.openscales.core.Map;
 	import org.openscales.core.control.ui.CheckBox;
 	import org.openscales.core.control.ui.RadioButton;
-	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;
 	
@@ -56,15 +55,9 @@ package org.openscales.core.control
 		}
 		
 		override public function destroy():void {
-			OpenScalesEvent.stopObservingElement("click", this);
-
-	        OpenScalesEvent.stopObservingElement("click", this._minimizeButton);
-	        OpenScalesEvent.stopObservingElement("click", this._maximizeButton);
-	        	        
-	        //this.map.events.unregister("addlayer", this, this.draw);
-	        //this.map.events.unregister("changelayer", this, this.draw);
-	        //this.map.events.unregister("removelayer", this, this.draw);
-	        //this.map.events.unregister("changebaselayer", this, this.draw);
+		
+			this._minimizeButton.removeEventListener(MouseEvent.CLICK, minMaxButtonClick);
+			this._maximizeButton.removeEventListener(MouseEvent.CLICK, minMaxButtonClick);
 	        this.map.removeEventListener(MapEvent.LAYER_ADDED, this.layerUpdated);
 	        this.map.removeEventListener(MapEvent.LAYER_CHANGED, this.layerUpdated);
 	        this.map.removeEventListener(MapEvent.LAYER_REMOVED, this.layerUpdated);
@@ -77,10 +70,6 @@ package org.openscales.core.control
 		override public function setMap(map:Map):void {
 			super.setMap(map);
 
-	        //this.map.events.register("addlayer", this, this.draw);
-	        //this.map.events.register("changelayer", this, this.draw);
-	        //this.map.events.register("removelayer", this, this.draw);
-	        //this.map.events.register("changebaselayer", this, this.draw);
 	        this.map.addEventListener(MapEvent.LAYER_ADDED, this.layerUpdated);
 	        this.map.addEventListener(MapEvent.LAYER_CHANGED, this.layerUpdated);
 	        this.map.addEventListener(MapEvent.LAYER_REMOVED, this.layerUpdated);

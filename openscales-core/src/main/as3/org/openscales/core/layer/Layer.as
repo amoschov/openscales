@@ -9,16 +9,11 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.event.Events;
 	import org.openscales.core.events.MapEvent;
 	
 	public class Layer extends Sprite
 	{
-		
-		public var EVENT_TYPES:Array = ["loadstart", "loadend", "loadcancel", "visibilitychanged"];
-		
-		public var events:Events = null;
-		
+			
 		public var isBaseLayer:Boolean = false;
 		
 		public var isAnnoLayer:Boolean = false;
@@ -83,7 +78,7 @@ package org.openscales.core.layer
 			Util.extend(this, options);
 			
 			this.name = name;
-			this.events = new Events(this, this, this.EVENT_TYPES);
+			this.doubleClickEnabled = true;
 	
 		}
 		
@@ -94,10 +89,6 @@ package org.openscales.core.layer
 			this.map = null;
 			this.options = null;
 			
-			if (this.events) {
-				this.events.destroy();
-			}
-			this.events = null;
 		}
 		
 		public function onMapResize():void {
@@ -176,10 +167,9 @@ package org.openscales.core.layer
 	            this.redraw();
 	            //With this code, bugs in LayerSwitcher : when the event CheckButtonClick is call,
 	            // the status of the check button is changed twice.
-/*	            if (this.map != null) {
+	           if (this.map != null) {
 	                this.map.dispatchEvent(new MapEvent(MapEvent.LAYER_CHANGED));
-	            }*/
-	            this.events.triggerEvent("visibilitychanged");
+	            }
 	        }
 	        
 	        trace("Changing visibility to :"+value);

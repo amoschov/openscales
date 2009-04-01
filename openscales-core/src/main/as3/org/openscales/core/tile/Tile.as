@@ -7,14 +7,11 @@ package org.openscales.core.tile
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.event.Events;
 	import org.openscales.core.layer.Layer;
 
 	public class Tile extends Sprite
 	{
 		
-		public var EVENT_TYPES:Array = ["loadstart", "loadend", "reload"];
-		public var events:Events = null;
 		public var id:String = null;
 		public var layer:Layer = null;
 		public var url:String = null;
@@ -39,7 +36,6 @@ package org.openscales.core.tile
 
 	        this.id = Util.createUniqueID("Tile_");
 	        
-	        this.events = new Events(this, null, this.EVENT_TYPES);
 		}
 		
 		public function destroy():void {
@@ -47,9 +43,7 @@ package org.openscales.core.tile
 	        this.bounds = null;
 	        this.size = null;
 	        this.position = null;
-	        
-	        this.events.destroy();
-	        this.events = null;
+
 		}
 		
 		public function draw():Boolean {

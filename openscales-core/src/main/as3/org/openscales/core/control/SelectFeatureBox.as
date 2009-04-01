@@ -21,8 +21,10 @@ package org.openscales.core.control
     	}
     	
     	override public function draw():void {
-    		this.handler = new Box( this,
-                            {done: this.selectBox}, {keyMask: this.keyMask} );
+    		var box:Box = new Box( this, {keyMask: this.keyMask} );
+    		box.done = this.selectBox;
+    		
+    		this.handler = box;
             
     	}
     	

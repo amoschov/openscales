@@ -1,13 +1,11 @@
 package org.openscales.core.handler
 {
-	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.event.Events;
+	import org.openscales.core.control.Control;
 	
 	public class Handler
 	{
@@ -17,28 +15,24 @@ package org.openscales.core.handler
 		public static var MOD_CTRL:int = 2;
 		public static var MOD_ALT:int = 4;
 		
-		private var id:String = null;
-		public var control:* = null;
+		public var control:Control = null;
 		public var map:Map = null;
 		public var keyMask:int;
 		public var active:Boolean = false;
-		public var callbacks:Object = null;
 		public var style:Object = null;
 		public var last:Pixel = null;
     	public var start:Pixel = null;
     	public var dragging:Boolean = false;
 		
-		public function Handler(control:*=null, callbacks:Object=null, options:Object=null):void {
+		public function Handler(control:Control=null, options:Object=null):void {
 			Util.extend(this, options);
 			this.control = control;
-			this.callbacks = callbacks;
 			if (control.map) {
 				this.setMap(control.map);
 			}
 			
 			Util.extend(this, options);
 			
-			this.id = Util.createUniqueID(getQualifiedClassName(this) + "_");
 		}
 		
 		public function setMap(map:Map):void {
@@ -57,48 +51,12 @@ package org.openscales.core.handler
 	        return (keyModifiers == this.keyMask);
 		}
 		
-		public function activate(evt:MouseEvent = null):Boolean {
-	        var events:Array = Events.BROWSER_EVENTS;
-	        for (var i:int = 0; i < events.length; i++) {
-	        	if (this[events[i]]) {
-		        	this.register(events[i], this[events[i]]); 
-	         	}
-	        }
-	        
-	        this.active = true;
-	        return true;
+		public function activate():void {
+
 		}
 		
-		public function deactivate(evt:MouseEvent = null):Boolean {
-			if(!this.active) {
-	            return false;
-	        }
-	        var events:Array = Events.BROWSER_EVENTS;
-	        for (var i:int = 0; i < events.length; i++) {
-	            if (this[events[i]]) {
-	                this.unregister(events[i], this[events[i]]); 
-	            }
-	        }
-	        this.active = false;
-	        return true;
-		}
-		
-		public function callback(name:String, args:Object):void {
-			if (this.callbacks) {
-				if (this.callbacks[name]) {
-	            	this.callbacks[name].apply(this.control, args);
-	        	}
-	  		}
-		}
-		
-		public function register(name:String, method:Function):void {
-			//this.map.events.registerPriority(name, this, method);
-			this.map.addEventListener(name,method,false,100);
-		}
-		
-		public function unregister(name:String, method:Function):void {
-			//this.map.events.unregister(name, this, method);
-			this.map.removeEventListener(name,method);
+		public function deactivate():void {
+
 		}
 		
 		public function destroy():void {
@@ -106,53 +64,6 @@ package org.openscales.core.handler
 			this.map = null;
 		}
 		
-		public function mouseOver(evt:MouseEvent):void {
-			
-		}
-		
-		public function doubleClick(evt:MouseEvent):Boolean {
-			return true;
-		}
-		
-		public function resize(evt:Event):void {
-			
-		}
-		
-		public function focus(evt:MouseEvent):void {
-			
-		}
-		
-		public function blur(evt:MouseEvent):void {
-			
-		}
-		
-		public function mouseDown(evt:MouseEvent):Boolean {
-			return true;
-		}
-		
-		public function mouseMove(evt:MouseEvent):Boolean {
-			return true;
-		}
-		
-		public function mouseUp(evt:MouseEvent):Boolean {
-			return true;
-		}
-		
-		public function mouseOut(evt:MouseEvent):Boolean {
-			return true;
-		}
-		
-		public function rollOver(evt:MouseEvent):Boolean {
-			return true;
-		}
-		
-		public function rollOut(evt:MouseEvent):Boolean {
-			return true;
-		}
-		
-		public function click(evt:MouseEvent):Boolean {
-			return true;
-		}
 		
 	}
 }

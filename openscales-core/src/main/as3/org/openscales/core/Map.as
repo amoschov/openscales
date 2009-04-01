@@ -635,6 +635,10 @@ package org.openscales.core
 	        return this._layerContainer;
 		}
 		
+		public function get popupContainer():Sprite {
+	        return this._popupContainer;
+		}
+		
 		public function get vectorLayer():Layer {
 	        return this._vectorLayer;
 		}

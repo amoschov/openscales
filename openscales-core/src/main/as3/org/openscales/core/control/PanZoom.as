@@ -7,7 +7,6 @@ package org.openscales.core.control
 	import org.openscales.core.control.Control;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.event.OpenScalesEvent;
 	
 	public class PanZoom extends Control
 	{
@@ -46,14 +45,15 @@ package org.openscales.core.control
 		
 		public function PanZoom(options:Object = null):void {
 		    
-			super(options);
+		    super(options);
 		}
 		
 		override public function destroy():void {
 			super.destroy();
 	        while(this.buttons.length) {
 	            var btn:Button = this.buttons.shift();
-	            OpenScalesEvent.stopObservingElement(MouseEvent.CLICK, btn);
+	            btn.removeEventListener(MouseEvent.CLICK, this.click);
+	            btn.removeEventListener(MouseEvent.DOUBLE_CLICK, this.doubleClick);
 	        }
 	        this.buttons = null;
 	        this.position = null;

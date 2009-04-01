@@ -13,7 +13,6 @@ package org.openscales.core.tile
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.event.OpenScalesEvent;
 	
 	public class Image extends Tile
 	{
@@ -92,8 +91,9 @@ package org.openscales.core.tile
 		override public function clear():void {
 			super.clear();
 	        this.alpha = 0;
-	        OpenScalesEvent.stopObservingElement(Event.COMPLETE, this);
-	        OpenScalesEvent.stopObservingElement(IOErrorEvent.IO_ERROR, this);
+	        this.removeEventListener(Event.COMPLETE, onTileLoadEnd);
+	        this.removeEventListener(IOErrorEvent.IO_ERROR, onTileLoadError);
+	        
 	        graphics.clear();
         }
 		

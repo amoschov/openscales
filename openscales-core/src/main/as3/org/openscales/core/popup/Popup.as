@@ -11,8 +11,6 @@ package org.openscales.core.popup
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.Button;
-	import org.openscales.core.event.Events;
-	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.feature.Feature;
 	
 	public class Popup extends Sprite
@@ -21,8 +19,6 @@ package org.openscales.core.popup
 		public static var WIDTH:Number = 200;
 		public static var HEIGHT:Number = 200;
 		public static var BORDER:String = "0px";
-		
-	    private var events:Events = null;
 	    
 	    private var id:String = "";
 
@@ -84,10 +80,9 @@ package org.openscales.core.popup
 	            	target.popup.feature.attributes.label = label.substr(3);
 	                target.popup.visible = false; */
 				    
-	                OpenScalesEvent.stop(evt);
+	                evt.stopPropagation();
 	            }
-	            new OpenScalesEvent().observe(closeImg, MouseEvent.CLICK, 
-	                                     closePopup);
+	            closeImg.addEventListener(MouseEvent.CLICK, closePopup);
 	        }
 	
 	        this.registerEvents();
@@ -114,8 +109,6 @@ package org.openscales.core.popup
 	            this.map.removePopup(this);
 	            this.map = null;
 	        }
-	        this.events.destroy();
-	        this.events = null;
 	    }
 	    
 	    public function draw(px:Pixel = null):void {
@@ -183,24 +176,24 @@ package org.openscales.core.popup
 		
 		public function onmousedown(evt:MouseEvent):void {
 			this.mousedown = true;
-        	OpenScalesEvent.stop(evt, true);
+        	evt.stopPropagation();
 		}
 		
 		public function onmousemove(evt:MouseEvent):void {
 			if (this.mousedown) {
-            	OpenScalesEvent.stop(evt, true);
+            	evt.stopPropagation();
         	}
 		}
 		
 		public function onmouseup(evt:MouseEvent):void {
 			if (this.mousedown) {
 	            this.mousedown = false;
-	            OpenScalesEvent.stop(evt, true);
+	            evt.stopPropagation();
 	        }
 		}
 		
 		public function onclick(evt:MouseEvent):void {
-			OpenScalesEvent.stop(evt, true);
+			evt.stopPropagation();
 		}
 		
 		public function onmouseout(evt:MouseEvent):void {
@@ -208,7 +201,7 @@ package org.openscales.core.popup
 		}
 		
 		public function ondblclick(evt:MouseEvent):void {
-			OpenScalesEvent.stop(evt, true);
+			evt.stopPropagation();
 		}
 		
 	}

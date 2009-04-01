@@ -7,7 +7,6 @@ package org.openscales.core.feature
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.event.Events;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.AnchoredBubble;
 	import org.openscales.core.popup.Popup;
@@ -18,8 +17,6 @@ package org.openscales.core.feature
 	public class Feature
 	{
 		
-		private var events:Events = null;
-
 	    public var layer:Layer = null;
 
 	    public var id:String = null;
@@ -50,11 +47,6 @@ package org.openscales.core.feature
 	            }
 	        }
 	
-	        if (this.events) {
-	            this.events.destroy();
-	        }
-	        this.events = null;
-	        
 	        this.layer = null;
 	        this.id = null;
 	        this.lonlat = null;

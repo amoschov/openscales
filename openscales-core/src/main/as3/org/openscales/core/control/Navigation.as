@@ -6,7 +6,6 @@ package org.openscales.core.control
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.handler.Click;
-	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.MouseWheel;
 
 	public class Navigation extends Control
@@ -14,11 +13,9 @@ package org.openscales.core.control
 		
 		public var dragPan:DragPan = null;
 
-    	//public var zoomBox:ZoomBox = null;
-
     	public var wheelHandler:MouseWheel = null;
     	
-    	public var clickHandler:Handler = null;
+    	public var clickHandler:Click = null;
 
     	public function Navigation(options:Object = null):void {
         	super(options);
@@ -30,20 +27,17 @@ package org.openscales.core.control
 	        this.dragPan.destroy();
 	        this.wheelHandler.destroy();
 	        this.clickHandler.destroy();
-	        //this.zoomBox.destroy();
     	}
     	
     	override public function activate():Boolean {
     		this.dragPan.activate();
 	        this.wheelHandler.activate();
 	        this.clickHandler.activate();
-	        //this.zoomBox.activate();
 	        super.activate();
 	        return true;
     	}
 		
 		override public function deactivate():Boolean {
-			//this.zoomBox.deactivate();
 	        this.dragPan.deactivate();
 	        this.clickHandler.deactivate();
 	        this.wheelHandler.deactivate();
@@ -52,24 +46,22 @@ package org.openscales.core.control
 		}
 		
 		override public function draw():void {
-			this.clickHandler = new Click(this, 
-	                                        { 'doubleClick': this.defaultDblClick },
-	                                        {
-	                                          'double': true, 
-	                                          'stopDouble': true
-	                                        });
+
 	        this.dragPan = new DragPan({map: this.map});
-	        //this.zoomBox = new ZoomBox(
-	        //            {map: this.map, keyMask: Handler.MOD_SHIFT});
 	        this.dragPan.draw();
-	        //this.zoomBox.draw();
-	        this.wheelHandler = new MouseWheel(
-	                                    this, {"up"  : this.wheelUp,
-	                                           "down": this.wheelDown} );
+	        
+			this.clickHandler = new Click(this);
+			//this.clickHandler.click = this.defaultDblClick;
+			this.clickHandler.doubleClick = this.defaultDblClick;
+	       
+	        this.wheelHandler = new MouseWheel(this);
+	        this.wheelHandler.up = this.wheelUp;
+	        this.wheelHandler.down = this.wheelDown;
+
 	        this.activate();
 	        
 		}
-		
+				
 		public function defaultDblClick(evt:MouseEvent):void {
 			var newCenter:LonLat = this.map.getLonLatFromViewPortPx( new Pixel(map.mouseX, map.mouseY) ); 
         	this.map.setCenter(newCenter, this.map.zoom + 1);

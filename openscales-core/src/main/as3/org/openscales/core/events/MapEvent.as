@@ -4,14 +4,6 @@ package org.openscales.core.events{
 
 	public class MapEvent extends MouseEvent{
 		
-		/* Events types initially in the Map class
-		public var EVENT_TYPES:Array = [
-        "addlayer", "removelayer", "changelayer", "movestart", "move", 
-        "moveend", "zoomend", "popupopen", "popupclose",
-        "addmarker", "removemarker", "clearmarkers", "mouseOver",
-        "mouseOut", "mouseMove", "dragstart", "drag", "dragend",
-        "changebaselayer"];*/
-		
 		public static const LAYER_ADDED:String="openscales.addlayer";
 		
 		public static const LAYER_REMOVED:String="openscales.removelayer";
@@ -41,6 +33,11 @@ package org.openscales.core.events{
 		public static const DRAG:String="openscales.drag";
 		
 		public static const DRAG_END:String="openscales.dragend";
+		
+		public static const TILE_LOAD_START:String="openscales.loadstart";
+		
+		public static const TILE_LOAD_END:String="openscales.loadend";
+
 
 				
 		/**

@@ -8,9 +8,9 @@ package org.openscales.core.renderer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.Control;
 	import org.openscales.core.control.SelectFeature;
-	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LinearRing;
+	import org.openscales.core.handler.Feature;
 	
 	/**
 	 * Flash Sprite based renderer.
@@ -333,10 +333,8 @@ package org.openscales.core.renderer
 	        	var control:Control = this.map.controls[i];
 	        	if (control is SelectFeature) {
 	        		if (control.active) {
-	        			for (var func:String in control.handler.callbacks) {
-	        				var callback:Function = control.handler.callbacks[func];
-	        				new OpenScalesEvent().observe(node, MouseEvent.CLICK, callback); 
-	        			}
+	        			//var handler:Feature = control.handler;
+	        			//node.addEventListener(MouseEvent.CLICK, handler.mouseclick);
 	        		}
 	        	}
 	        }

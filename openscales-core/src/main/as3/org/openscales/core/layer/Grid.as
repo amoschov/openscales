@@ -1,11 +1,13 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.Map;
+	import org.openscales.core.OpenScales;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.tile.Image;
 	import org.openscales.core.tile.Tile;
 	
@@ -34,8 +36,6 @@ package org.openscales.core.layer
 		
 		public function Grid(name:String = null, url:String = null, params:Object = null, options:Object = null):void {
 			super(name, url, params, options);
-			
-			this.events.addEventType("tileloaded");
 			
 			this.grid = new Array();
 		}
@@ -433,7 +433,7 @@ package org.openscales.core.layer
 	            }
 	            this.numLoadingTiles++;
 	        };
-	        tile.events.register("loadstart", this, tile.onLoadStart);
+	        this.addEventListener(MapEvent.TILE_LOAD_START, tile.onLoadStart);
 	      
 	        tile.onLoadEnd = function():void {
 	            this.numLoadingTiles--;
@@ -443,12 +443,14 @@ package org.openscales.core.layer
 	                this.events.triggerEvent("loadend");
 	            }
 	        };
-	        tile.events.register("loadend", this, tile.onLoadEnd);
+	        
+	        this.addEventListener(MapEvent.TILE_LOAD_END, tile.onLoadEnd);
+
 		}
 		
 		public function removeTileMonitoringHooks(tile:Tile):void {
-			tile.events.unregister("loadstart", this, tile.onLoadStart);
-        	tile.events.unregister("loadend", this, tile.onLoadEnd);
+			this.removeEventListener(MapEvent.TILE_LOAD_START, tile.onLoadStart);
+			this.removeEventListener(MapEvent.TILE_LOAD_END, tile.onLoadEnd);
 		}
 		
 		public function moveGriddedTiles(bounds:Bounds):void {

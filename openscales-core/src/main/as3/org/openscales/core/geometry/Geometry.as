@@ -33,9 +33,9 @@ package org.openscales.core.geometry
         	this.bounds = null;
 		}
 		
-		public function clone():Object {
+		public function clone():Geometry {
 			var geometryClass:Class = Class(getDefinitionByName(getQualifiedClassName(this)));
-			var geometry:Object = new geometryClass();
+			var geometry:Geometry = new geometryClass();
 	       
 	        Util.applyDefaults(geometry, this);
 	        

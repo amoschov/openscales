@@ -1,8 +1,5 @@
 package org.openscales.core.control
 {
-	import flash.display.Sprite;
-	
-	import org.openscales.core.control.Control;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.handler.Drag;
@@ -25,9 +22,12 @@ package org.openscales.core.control
     	}
     	
     	override public function draw():void {
-    		this.handler = new Drag(this,
-                            {"down": this.init, "move": this.panMap, "done": this.panMapDone});
-            
+    		var drag:Drag = new Drag(this);
+    		drag.down = this.init;
+    		drag.move = this.panMap;
+    		drag.done = this.panMapDone;
+    		 
+    		this.handler = drag;
     	}
     	
     	public function init(xy:Pixel):void {

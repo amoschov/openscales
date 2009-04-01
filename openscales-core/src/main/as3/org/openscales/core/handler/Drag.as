@@ -4,7 +4,7 @@ package org.openscales.core.handler
 	
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.event.OpenScalesEvent;
+	import org.openscales.core.control.Control;
 
 	public class Drag extends Handler
 	{
@@ -16,37 +16,65 @@ package org.openscales.core.handler
 
 		public static var onselectstart:Function = null;
 
-		public function Drag(control:*, callbacks:Object, options:Object = null):void {
-			super(control, callbacks, options);
+		public function Drag(control:Control, options:Object = null):void {
+			super(control, options);
 		}
 		
-		public function down(evt:MouseEvent):void {
-			
+		override public function activate():void {
+            this.dragging = false;
+           	this.map.addEventListener(MouseEvent.MOUSE_DOWN, this.mouseDown);
+           	this.map.addEventListener(MouseEvent.MOUSE_MOVE, this.mouseMove);
+           	this.map.addEventListener(MouseEvent.MOUSE_UP, this.mouseUp);
+           	this.map.addEventListener(MouseEvent.MOUSE_OUT, this.mouseOut);
 		}
 		
-		public function move(evt:MouseEvent):void {
-			
+		override public function deactivate():void {
+            this.started = false;
+	        this.dragging = false;
+	        this.start = null;
+	        this.last = null;
+           	this.map.removeEventListener(MouseEvent.MOUSE_DOWN, this.mouseDown); 
+           	this.map.removeEventListener(MouseEvent.MOUSE_MOVE, this.mouseMove);
+           	this.map.removeEventListener(MouseEvent.MOUSE_UP, this.mouseUp);
+           	this.map.removeEventListener(MouseEvent.MOUSE_OUT, this.mouseOut);
 		}
 		
-		public function up(evt:MouseEvent):void {
-			
-		}
+		/**
+		 * function down(xy:Pixel):void
+		 */
+		public var down:Function = null;
 		
-		public function out(evt:MouseEvent):void {
-			
-		}
+		/**
+		 * function move(xy:Pixel):void
+		 */
+		public var move:Function = null;
 		
-		public override function mouseDown(evt:MouseEvent):Boolean {
+		/**
+		 * function up(xy:Pixel):void
+		 */
+		public var up:Function = null;
+		
+		/**
+		 * function out():void
+		 */
+		public var out:Function = null;
+		
+		/**
+		 * function done(xy:Pixel):void 
+		 */
+		public var done:Function = null;
+				
+		
+		protected function mouseDown(evt:MouseEvent):Boolean {
 			var propagate:Boolean = true;
 	        this.dragging = false;
-	        if (this.checkModifiers(evt) && OpenScalesEvent.isLeftClick(evt)) {
+	        if (this.checkModifiers(evt)) {
 	            this.started = true;
 	            this.start = new Pixel(map.mouseX, map.mouseY);
 	            this.last = new Pixel(map.mouseX, map.mouseY);
 	            this.map.buttonMode = true;
 	            this.map.useHandCursor = true;
-	            this.down(evt);
-	            this.callback("down", [new Pixel(map.mouseX, map.mouseY)]);
+	            this.down(new Pixel(map.mouseX, map.mouseY));
 	            
 	            if(this.oldOnselectstart == null) {
 	                this.oldOnselectstart = (Drag.onselectstart != null) ? Drag.onselectstart : function():Boolean { return true; };
@@ -62,14 +90,12 @@ package org.openscales.core.handler
 	        return propagate;
 		}
 		
-		public override function mouseMove(evt:MouseEvent):Boolean {
+		protected function mouseMove(evt:MouseEvent):Boolean {
 			if (this.started) {
 	            if(map.mouseX != this.last.x || map.mouseY != this.last.y) {
 	                
 	                this.dragging = true;
-	                this.move(evt);
-	                
-	                this.callback("move", [new Pixel(map.mouseX, map.mouseY)]);
+	                this.move(new Pixel(map.mouseX, map.mouseY));
 	                if(this.oldOnselectstart == null) {
 	                    this.oldOnselectstart = Drag.onselectstart;
 	                    Drag.onselectstart = function():Boolean {return false;};
@@ -80,33 +106,33 @@ package org.openscales.core.handler
 	        return true;
 		}
 		
-		public override function mouseUp(evt:MouseEvent):Boolean {
+		protected function mouseUp(evt:MouseEvent):Boolean {
 			if (this.started) {
 	            var dragged:Boolean = (this.start != this.last);
 	            this.started = false;
 	            this.dragging = false;
 	            this.map.useHandCursor = false;
 	            this.map.buttonMode = false;
-	            this.up(evt);
-	            this.callback("up", [new Pixel(map.mouseX, map.mouseY)]);
+	            if(this.up != null)
+	            	this.up(new Pixel(map.mouseX, map.mouseY));
 	            if(dragged) {
-	                this.callback("done", [new Pixel(map.mouseX, map.mouseY)]);
+	                this.done(new Pixel(map.mouseX, map.mouseY));
 	            }
 	            Drag.onselectstart = this.oldOnselectstart;
 	        }
 	        return true;
 		}
 		
-		public override function mouseOut(evt:MouseEvent):Boolean {
+		protected function mouseOut(evt:MouseEvent):Boolean {
 			if (this.started && Util.mouseLeft(evt, this.map)) {
 	            var dragged:Boolean = (this.start != this.last);
 	            this.started = false; 
 	            this.dragging = false;
 	            this.map.useHandCursor = false;
-	            this.out(evt);
-	            this.callback("out", []);
+	            this.out();
+
 	            if(dragged) {
-	                this.callback("done", [new Pixel(map.mouseX, map.mouseY)]);
+	                this.done(new Pixel(map.mouseX, map.mouseY));
 	            }
 	            if(Drag.onselectstart != null) {
 	                Drag.onselectstart = this.oldOnselectstart;
@@ -115,30 +141,6 @@ package org.openscales.core.handler
 	        return true;
 		}
 		
-		public override function click(evt:MouseEvent):Boolean {
-			return (this.start == this.last);
-		}
-		
-		override public function activate(evt:MouseEvent=null):Boolean {
-			var activated:Boolean = false;
-	        if(super.activate(evt)) {
-	            this.dragging = false;
-	            activated = true;
-	        }
-	        return activated;
-		}
-		
-		override public function deactivate(evt:MouseEvent=null):Boolean {
-			var deactivated:Boolean = false;
-	        if(super.deactivate(evt)) {
-	            this.started = false;
-	            this.dragging = false;
-	            this.start = null;
-	            this.last = null;
-	            deactivated = true;
-	        }
-	        return deactivated;
-		}
 		
 	}
 }

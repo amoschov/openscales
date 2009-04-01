@@ -1,6 +1,5 @@
 package org.openscales.core.control
 {
-	import org.openscales.core.control.Control;
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.feature.Vector;
@@ -17,20 +16,18 @@ package org.openscales.core.control
     	public var onSelect:Function = new Function();
 
     	public var onUnselect:Function = new Function();
-
-    	public var callbacks:Object = null;
     	
     	public var selectStyle:Object = org.openscales.core.feature.Vector.style['select'];
 
 		public function SelectFeature(layer:org.openscales.core.layer.Vector, options:Object):void {
 	        super([options]);
-	        this.callbacks = Util.extend({
-	                                                  down: this.downFeature,
-	                                                  over: this.overFeature,
-	                                                  out: this.outFeature
-	                                                }, this.callbacks);
+	        
+	        var feature:Feature = new Feature(this, layer);
+	        feature.down = this.downFeature;
+	        feature.over = this.overFeature;
+	        feature.out = this.outFeature;
+	       	this.handler = feature;
 	        this.layer = layer;
-	        this.handler = new Feature(this, layer, this.callbacks);
 			
 		}
 		

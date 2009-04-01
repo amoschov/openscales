@@ -2,28 +2,36 @@ package org.openscales.core.handler
 {
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.control.Control;
-	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.control.Control;
 
 	public class MouseWheel extends Handler
 	{
+    	
+    	public function MouseWheel(control:Control, options:Object = null):void {
+    		super(control, options);
+    	}
+    	
+    	override public function activate():void {
+			this.map.addEventListener(MouseEvent.MOUSE_WHEEL, this.onWheelEvent);
+		}
 		
-		public var wheelListener:Function = null;
-
-    	public var mousePosition:Pixel = null;
+		override public function deactivate():void {
+			this.map.removeEventListener(MouseEvent.MOUSE_WHEEL, this.onWheelEvent);
+		}
+		
+		/**
+		 * function down(evt:MouseEvent):void
+		 */
+		public var down:Function = null;
     	
-    	public function MouseWheel(control:Control, callbacks:Object, options:Object = null):void {
-    		super(control, callbacks, options);
-    		this.wheelListener = this.onWheelEvent;
-    	}
+    	/**
+		 * function up(evt:MouseEvent):void
+		 */
+		public var up:Function = null;
     	
-    	override public function destroy():void {
-    		super.destroy();
-    		this.wheelListener = null;
-    	}
     	
-    	public function onWheelEvent(evt:MouseEvent):void {
+    	private function onWheelEvent(evt:MouseEvent):void {
 	        if (!this.checkModifiers(evt)) {
 	            return;
 	        }
@@ -45,41 +53,15 @@ package org.openscales.core.handler
 	            }
 	            if (delta) {
 	                if (delta < 0) {
-	                   this.callback("down", [evt]);
+	                   this.down(evt);
 	                } else {
-	                   this.callback("up", [evt]);
+	                   this.up(evt);
 	                }
 	            }
 
-	            OpenScalesEvent.stop(evt);
 	        }
 
     	}
-		
-		public override function mouseMove(evt:MouseEvent):Boolean {
-			this.mousePosition = new Pixel(map.mouseX, map.mouseY);
-			return true;
-		}
-		
-		override public function activate(evt:MouseEvent = null):Boolean {
-			if (super.activate()){
-				var wheelListener:Function = this.wheelListener;
-				new OpenScalesEvent().observe(this.map, MouseEvent.MOUSE_WHEEL, wheelListener);
-				return true;
-			} else {
-				return false;
-			}
-		}
-		
-		override public function deactivate(evt:MouseEvent = null):Boolean {
-			if (super.deactivate()) {
-				var wheelListener:Function = this.wheelListener;
-				new OpenScalesEvent().stopObserving(this.map, MouseEvent.MOUSE_WHEEL, wheelListener);
-				return true;
-			} else {
-				return false;
-			}
-		}
 		
 	}
 }

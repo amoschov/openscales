@@ -10,7 +10,6 @@ package org.openscales.core.layer
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.event.OpenScalesEvent;
 	import org.openscales.core.feature.Feature;
 	
 	public class GeoRSS extends Markers
@@ -147,12 +146,14 @@ package org.openscales.core.layer
 	            var feature:Feature = new Feature(this, location, data);
 	            this.features.push(feature);
 	            var marker:Marker = feature.createMarker();
-	            marker.events.register('click', feature, this.markerClick);
+	            marker.addEventListener(MouseEvent.CLICK, this.markerClick);
+	            
 	            this.addMarker(marker);
 	        }
 		}
 		
 		public function markerClick(evt:MouseEvent):void {
+			/* Method to refactor */
 			var markerClicked:Object = evt.currentTarget as Marker;
 			var sameMarkerClicked:Boolean = (markerClicked == markerClicked.layer.selectedFeature);
 	        markerClicked.layer.selectedFeature = (!sameMarkerClicked) ? this : null;
@@ -161,15 +162,13 @@ package org.openscales.core.layer
 	        }
 	        if (!sameMarkerClicked) {
 	            var popup:Object = markerClicked.createPopup();
-	            new OpenScalesEvent().observe(popup.div, "click",
-	            function():void { 
+	            markerClicked.addEventListener(MouseEvent.CLICK, function():void { 
 	              for(var i:int=0; i < markerClicked.layer.map.popups.length; i++) { 
 	                markerClicked.layer.map.removePopup(markerClicked.layer.map.popups[i]); 
 	              } 
 	            });
 	            markerClicked.layer.map.addPopup(popup); 
 	        }
-	        OpenScalesEvent.stop(evt);
 		}
 		
 		public function clearFeatures():void {
