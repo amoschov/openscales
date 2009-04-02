@@ -233,11 +233,15 @@ package org.openscales.core.control
 			_slideVerticalTemp = (event.target as SliderVertical);
 			_slideHorizontalTemp = (this.getChildByName("slide horizontal"+childIndex)) as SliderHorizontal;
 						
-			_slideHorizontalTemp.addEventListener(MouseEvent.MOUSE_MOVE,SlideMouseMouve);
+			_slideHorizontalTemp.addEventListener(MouseEvent.MOUSE_MOVE,SlideMouseMove);
+			this.map.addEventListener(MouseEvent.MOUSE_UP,SlideMouseUp);
+			
+			// Stop propagation in order to avoid map move
+			event.stopPropagation();
 				
 		}
 		
-		private function SlideMouseMouve(event:MouseEvent):void
+		private function SlideMouseMove(event:MouseEvent):void
 		{			
 			var childIndex:String = _slideVerticalTemp.name;
 			childIndex = childIndex.substring(14,15);
@@ -245,12 +249,16 @@ package org.openscales.core.control
 			var resultAlpha:Number = (mouseX/76)- (509/76);
 			var layer2:Layer = this.map.getLayerByName(_slideVerticalTemp.layerName);
 			layer2.alpha = resultAlpha;
+			
+			// Stop propagation in order to avoid map move
+			event.stopPropagation();
 		
-			_slideVerticalTemp.addEventListener(MouseEvent.MOUSE_UP,SlideMouseUP);	
+				
 		}
-		private function SlideMouseUP(event:MouseEvent):void
+		private function SlideMouseUp(event:MouseEvent):void
 		{
-			_slideHorizontalTemp.removeEventListener(MouseEvent.MOUSE_MOVE,SlideMouseMouve);
+			_slideHorizontalTemp.removeEventListener(MouseEvent.MOUSE_MOVE,SlideMouseMove);
+			this.map.removeEventListener(MouseEvent.MOUSE_UP,SlideMouseUp);
 		}
 	
 	}
