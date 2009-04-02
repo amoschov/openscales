@@ -168,7 +168,7 @@ package org.openscales.core.layer
 	            //With this code, bugs in LayerSwitcher : when the event CheckButtonClick is call,
 	            // the status of the check button is changed twice.
 	           if (this.map != null) {
-	                this.map.dispatchEvent(new MapEvent(MapEvent.LAYER_CHANGED));
+	//                this.map.dispatchEvent(new MapEvent(MapEvent.LAYER_CHANGED));
 	            }
 	        }
 	        

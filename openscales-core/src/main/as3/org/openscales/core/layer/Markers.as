@@ -28,7 +28,8 @@ package org.openscales.core.layer
 	    	if (alpha != this.alpha) {
             	super.alpha = alpha;
             	for (var i:int = 0; i < this.markers.length; i++) {
-                	this.markers[i].alpha(this.alpha);
+                //	this.markers[i].alpha(this.alpha);
+                	this.markers[i].alpha = (this.alpha);
             	}
         	}
 	    }

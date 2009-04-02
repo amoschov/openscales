@@ -8,6 +8,8 @@ package org.openscales.core.control
 	import org.openscales.core.Map;
 	import org.openscales.core.control.ui.CheckBox;
 	import org.openscales.core.control.ui.RadioButton;
+	import org.openscales.core.control.ui.SliderHorizontal;
+	import org.openscales.core.control.ui.SliderVertical;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;
 	
@@ -16,13 +18,19 @@ package org.openscales.core.control
 		
 		private var _activeColor:uint = 0x00008B;
 		private var _textColor:uint = 0xFFFFFF;
-		private var _textOffset:int=20;
+		private var _textOffset:int=35;
 		
 		private var _minimized:Boolean = true;
 	    	    
 	    private var _minimizeButton:Button = null;
 	    
 	    private var _maximizeButton:Button = null;
+	    
+	    private var _oldMouseX:int = 0;
+	    
+	    private var _slideHorizontalTemp:SliderHorizontal = null;
+	    
+	    private var _slideVerticalTemp:SliderVertical = null;
 	    	    
 	    [Embed(source="/org/openscales/core/img/layer-switcher-maximize.png")]
         private var _layerSwitcherMaximizeImg:Class;
@@ -30,19 +38,6 @@ package org.openscales.core.control
        	[Embed(source="/org/openscales/core/img/layer-switcher-minimize.png")]
         private var _layerSwitcherMinimizeImg:Class;
         
-        [Embed(source="/org/openscales/core/img/uncheck.png")]
-        private var _layerSwitcherUncheckImg:Class;
-        
-        [Embed(source="/org/openscales/core/img/check.png")]
-        private var _layerSwitchercheckImg:Class;
-        
-        [Embed(source="/org/openscales/core/img/radiobutton-noselected.png")]
-        private var _layerSwitcherRadioButtonNoSelectedImg:Class;
-        
-        [Embed(source="/org/openscales/core/img/radiobutton-selected.png")]
-        private var LayerSwitcherRadioButtonSelectedImg:Class;
-
-
 		public function LayerSwitcher(options:Object = null):void {
 			super(options);
 			
@@ -111,24 +106,33 @@ package org.openscales.core.control
 				for(var i:int=0;i<this.map.layers.length;i++) {
 					var layer:Layer = this.map.layers[i] as Layer;
 					if(layer.isBaseLayer==true) {
-						y+=this._textOffset;
 						var radioButton:RadioButton;
 						if(i == 0)
 						{
+							y+=this._textOffset-15;
 							radioButton = new RadioButton(this.position.add(-185,y+2),layer.name,true);							
 						}
 						else
 						{
+							y+=this._textOffset;
 							radioButton = new RadioButton(this.position.add(-185,y+2),layer.name,false);
 						}
 						radioButton.width = 13;
 						radioButton.height = 13;
 						radioButton.addEventListener(MouseEvent.CLICK,RadioButtonClick);
+						var slideHorizontalButtonBL:SliderHorizontal = new SliderHorizontal("slide horizontal"+i,this.position.add(-130,y+19),layer.name);
+						var slideVerticalButtonBL:SliderVertical = new SliderVertical("slide vertical"+i,this.position.add(-55,y+21),layer.name);
+						slideVerticalButtonBL.width = 5;
+						slideVerticalButtonBL.addEventListener(MouseEvent.MOUSE_DOWN,SlideMouseClick);
 						var layerTextField:TextField = new TextField();
 						layerTextField.text=layer.name;
 						layerTextField.setTextFormat(contentFormat);
 						layerTextField.x = this.position.x - 170;
 						layerTextField.y = y;
+						layerTextField.height = 20;
+						layerTextField.width = 120;
+						this.addChild(slideHorizontalButtonBL);
+						this.addChild(slideVerticalButtonBL);
 						this.addChild(radioButton);
 						this.addChild(layerTextField);
 					}
@@ -146,17 +150,31 @@ package org.openscales.core.control
 				for(i=0;i<this.map.layers.length;i++) {
 					layer = this.map.layers[i] as Layer;
 					if(layer.isBaseLayer==false) {
-						y+=this._textOffset;
+						if(i == 1)
+						{
+							y+=this._textOffset-15;
+						}
+						else
+						{
+							y+=this._textOffset;
+						}
 						layerTextField = new TextField();
 						layerTextField.text=layer.name;
 						layerTextField.setTextFormat(contentFormat);
 						layerTextField.x = this.position.x - 170;
 						layerTextField.y = y;
+						layerTextField.height = 20;
+						layerTextField.width = 120;
+						var slideHorizontalButtonO:SliderHorizontal = new SliderHorizontal("slide horizontal"+i,this.position.add(-130,y+23),layer.name);
+						var slideVerticalButtonO:SliderVertical = new SliderVertical("slide vertical"+i,this.position.add(-55,y+26),layer.name);
+						slideVerticalButtonO.width = 5;
+						slideVerticalButtonO.addEventListener(MouseEvent.MOUSE_DOWN,SlideMouseClick);
 						var check:CheckBox = new CheckBox(this.position.add(-185,y+2),layer.name);
-						
 						check.width=12;
 						check.height=12;
-						check.addEventListener(MouseEvent.CLICK,CheckButtonClick);			
+						check.addEventListener(MouseEvent.CLICK,CheckButtonClick);	
+						this.addChild(slideHorizontalButtonO);	
+						this.addChild(slideVerticalButtonO);	
 						this.addChild(check);
 						this.addChild(layerTextField);
 					}
@@ -206,8 +224,34 @@ package org.openscales.core.control
 				layer2.visible = true;
 			}
 		}
-
 		
+		private function SlideMouseClick(event:MouseEvent):void
+		{		
+			var childIndex:String = (event.target as Button).name;
+			childIndex = childIndex.substring(14,15);
 		
+			_slideVerticalTemp = (event.target as SliderVertical);
+			_slideHorizontalTemp = (this.getChildByName("slide horizontal"+childIndex)) as SliderHorizontal;
+						
+			_slideHorizontalTemp.addEventListener(MouseEvent.MOUSE_MOVE,SlideMouseMouve);
+				
+		}
+		
+		private function SlideMouseMouve(event:MouseEvent):void
+		{			
+			var childIndex:String = _slideVerticalTemp.name;
+			childIndex = childIndex.substring(14,15);
+			_slideVerticalTemp.x = mouseX;
+			var resultAlpha:Number = (mouseX/76)- (509/76);
+			var layer2:Layer = this.map.getLayerByName(_slideVerticalTemp.layerName);
+			layer2.alpha = resultAlpha;
+		
+			_slideVerticalTemp.addEventListener(MouseEvent.MOUSE_UP,SlideMouseUP);	
+		}
+		private function SlideMouseUP(event:MouseEvent):void
+		{
+			_slideHorizontalTemp.removeEventListener(MouseEvent.MOUSE_MOVE,SlideMouseMouve);
+		}
+	
 	}
 }
