@@ -1,6 +1,7 @@
 package org.openscales.core.renderer
 {
 	import flash.display.Sprite;
+	import org.openscales.core.feature.Style;
 
 	/**
 	 * Sprite element used by the Sprite Renderer.
@@ -8,17 +9,17 @@ package org.openscales.core.renderer
 	public class SpriteElement extends Sprite
 	{
 		
-		private var _style:Object = new Object();
+		private var _style:Style = null;
 		private var _featureId:String = null;
 		private var _options:Object = new Object();
 		private var _geometryClass:String = null;
 		private var _attributes:Object = new Object();
 		
-		public function get style():Object {
+		public function get style():Style {
 			return this._style;
 		}
 		
-		public function set style(value:Object):void {
+		public function set style(value:Style):void {
 			this._style = value;
 		}
 		
@@ -27,7 +28,7 @@ package org.openscales.core.renderer
 		}
 		
 		public function set featureId(value:String):void {
-			this._style = _featureId;
+			this._featureId = value;
 		}
 		
 		public function get options():Object {
@@ -43,7 +44,7 @@ package org.openscales.core.renderer
 		}
 		
 		public function set geometryClass(value:String):void {
-			this._style = _geometryClass;
+			this._geometryClass = value;
 		}
 		
 		public function get attributes():Object {

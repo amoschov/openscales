@@ -6,10 +6,11 @@ package org.openscales.core.layer
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.renderer.SpriteRenderer;
 	import org.openscales.core.renderer.Renderer;
+	import org.openscales.core.renderer.SpriteRenderer;
 	
 	/**
 	 * Instances of Vector are used to render vector data from a variety of sources.
@@ -23,7 +24,7 @@ package org.openscales.core.layer
 
 	    public var selectedFeatures:Array = null;
 	
-	    public var style:Object = null;
+	    public var style:Style = null;
 		
 		private var renderers:Array = ['AS'];
 
@@ -38,8 +39,7 @@ package org.openscales.core.layer
 	    public var preFeatureInsert:Function = null;
 	    
 	    public function Vector(name:String, options:Object = null):void {
-	    	var defaultStyle:Object = org.openscales.core.feature.Vector.style['default'];
-	        this.style = Util.extend({}, defaultStyle);
+	        this.style = new Style();
 	        
 	        this.onFeatureInsert = new Function();
 	        this.preFeatureInsert = new Function();
@@ -149,7 +149,7 @@ package org.openscales.core.layer
 	            feature.layer = this;
 	
 	            if (!feature.style) {
-	                feature.style = Util.extend({}, this.style);
+	                feature.style = this.style;
 	            }
 	
 	            this.preFeatureInsert(feature);
@@ -188,7 +188,7 @@ package org.openscales.core.layer
 	        }
 	    }
 	    
-	    public function drawFeature(feature:org.openscales.core.feature.Vector, style:Object = null):void {
+	    public function drawFeature(feature:org.openscales.core.feature.Vector, style:Style = null):void {
 	    	if(style == null) {
 	            if(feature.style) {
 	                style = feature.style;

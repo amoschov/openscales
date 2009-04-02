@@ -18,11 +18,11 @@ package org.openscales.core.feature
 
 	    public var state:String = null;
 	    
-	    public var style:Object = null;
+	    public var style:Style = null;
 	    
-	    public var originalStyle:Object = null;
+	    public var originalStyle:Style = null;
 	    
-	    public static var style:Object = {'default': {
+	   /* public static var style:Object = {'default': {
 		        fillColor: 0x00ff00,
 		        fillOpacity: 0.4, 
 		        hoverFillColor: "white",
@@ -74,9 +74,9 @@ package org.openscales.core.feature
 		        hoverPointUnit: "%",
 		        pointerEvents: "visiblePainted"
 		    }
-	    };
+	    };*/
 		
-		public function Vector(geometry:Geometry = null, data:Object = null, style:Object = null):void {
+		public function Vector(geometry:Geometry = null, data:Object = null, style:Style = null):void {
 			super(null, null, data);
 	        this.lonlat = null;
 	        this.geometry = geometry;
@@ -100,7 +100,7 @@ package org.openscales.core.feature
 		
 		public function clone(obj:Object):Object {
 			if (obj == null) {
-	            obj = new Vector(null, this.geometry.clone(), this.data);
+	            obj = new Vector(this.geometry.clone(),this.data , this.style);
 	        } 
 	        
 	        Util.applyDefaults(obj, this);

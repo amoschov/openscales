@@ -2,10 +2,10 @@ package org.openscales.core.handler
 {
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.control.Control;
+	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
@@ -27,7 +27,7 @@ package org.openscales.core.handler
     	public var lastUp:Pixel = null;
 
 		public function Point(control:Control = null, options:Object = null):void {
-			this.style = Util.extend(org.openscales.core.feature.Vector.style['default'], {});
+			this.style = new Style();
 
        		super(control, options);
 		}

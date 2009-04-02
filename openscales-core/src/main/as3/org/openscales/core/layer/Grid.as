@@ -8,6 +8,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.events.MapEvent;
+	import org.openscales.core.feature.Style;
 	import org.openscales.core.tile.Image;
 	import org.openscales.core.tile.Tile;
 	
@@ -32,7 +33,7 @@ package org.openscales.core.layer
 		
 		public var proxy:String = null;
 		
-		public var style:Object = null;
+		public var style:Style = null;
 		
 		public function Grid(name:String = null, url:String = null, params:Object = null, options:Object = null):void {
 			super(name, url, params, options);

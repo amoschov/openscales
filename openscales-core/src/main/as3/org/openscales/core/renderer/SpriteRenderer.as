@@ -11,6 +11,7 @@ package org.openscales.core.renderer
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.handler.Feature;
+	import org.openscales.core.feature.Style;
 	
 	/**
 	 * Flash Sprite based renderer.
@@ -102,13 +103,13 @@ package org.openscales.core.renderer
 	        return nodeType;
 		}
 		
-		public function setStyle(node:SpriteElement, style:Object, options:Object):void {	
+		public function setStyle(node:SpriteElement, style:Style, options:Object):void {	
 	        style = style  || node.style;
 	        options = options || node.options;
 	
-	        if (node.geometryClass == "org.openscales.core.geometry::Point") {
+	        /*if (node.geometryClass == "org.openscales.core.geometry::Point") {
 	            node.attributes.r = style.pointRadius;
-	        }
+	        }*/
 	        
 	        if (options.isFilled) {
 	            node.graphics.beginFill(style.fillColor, style.fillOpacity);
@@ -122,16 +123,16 @@ package org.openscales.core.renderer
 	            //don't draw the line
 	        }
 	        
-	        if (style.pointerEvents) {
+	        /*if (style.pointerEvents) {
 	            node.attributes.pointerEvents = style.pointerEvents;
 	        }
 	        
 	        if (style.cursor) {
 	            node.attributes.cursor = style.cursor;
-	        }
+	        }*/
 		}
 		
-		public function removeStyle(node:SpriteElement, style:Object, options:Object):void {
+		public function removeStyle(node:SpriteElement, style:Style, options:Object):void {
 	        style = style  || node.style;
 	        options = options || node.options;
 	        
@@ -309,7 +310,7 @@ package org.openscales.core.renderer
 	        }
 	    }
 	    
-	    override public function drawGeometry(geometry:Object, style:Object, featureId:String):Object {
+	    override public function drawGeometry(geometry:Object, style:Style, featureId:String):Object {
 		    if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
@@ -342,7 +343,7 @@ package org.openscales.core.renderer
 	        return node;
 	    }
 	    
-	    override public function redrawGeometry(node:*, geometry:Object, style:Object, featureId:String):Object {
+	    override public function redrawGeometry(node:*, geometry:Object, style:Style, featureId:String):Object {
 		    if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
@@ -367,7 +368,7 @@ package org.openscales.core.renderer
 	    	this.drawGeometryNode(node, geometry);
 	    }
     
-    	public function drawGeometryNode(node:SpriteElement, geometry:Object, style:Object = null):void {
+    	public function drawGeometryNode(node:SpriteElement, geometry:Object, style:Style = null):void {
     		style = style || node.style;
 
 	        var options:Object = {

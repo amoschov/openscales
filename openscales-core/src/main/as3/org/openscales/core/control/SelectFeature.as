@@ -2,6 +2,7 @@ package org.openscales.core.control
 {
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
+	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.handler.Feature;
 	import org.openscales.core.layer.Vector;
@@ -17,7 +18,7 @@ package org.openscales.core.control
 
     	public var onUnselect:Function = new Function();
     	
-    	public var selectStyle:Object = org.openscales.core.feature.Vector.style['select'];
+    	public var selectStyle:Style = new Style();
 
 		public function SelectFeature(layer:org.openscales.core.layer.Vector, options:Object):void {
 	        super([options]);

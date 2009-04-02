@@ -5,6 +5,7 @@ package org.openscales.core.renderer
 	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.geometry.Collection;
 	
@@ -64,7 +65,7 @@ package org.openscales.core.renderer
         	return this.resolution;
 		}
 		
-		public function drawFeature(feature:Vector, style:Object):void {
+		public function drawFeature(feature:Vector, style:Style):void {
 			if(style == null) {
 	            style = feature.style;
 	        }
@@ -85,11 +86,11 @@ package org.openscales.core.renderer
 			this.moveGeometry(feature.geometry);
 		}
 		
-		public function drawGeometry(geometry:Object, style:Object, featureId:String):Object {
+		public function drawGeometry(geometry:Object, style:Style, featureId:String):Object {
 			return null;
 		}
 		
-		public function redrawGeometry(node:*, geometry:Object, style:Object, featureId:String):Object {
+		public function redrawGeometry(node:*, geometry:Object, style:Style, featureId:String):Object {
 			return null;
 		}
 		

@@ -6,6 +6,7 @@ package org.openscales.core.handler
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.control.Control;
+	import org.openscales.core.feature.Style;
 	
 	/**
 	 * Base class to construct a higher-level handler for event sequences.  All
@@ -40,7 +41,7 @@ package org.openscales.core.handler
 		public var map:Map = null;
 		public var keyMask:int;
 		public var active:Boolean = false;
-		public var style:Object = null;
+		public var style:Style = null;
 		public var last:Pixel = null;
     	public var start:Pixel = null;
     	public var dragging:Boolean = false;
