@@ -1,7 +1,5 @@
 package org.openscales.core.popup
 {
-	import flash.display.Sprite;
-	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -9,7 +7,7 @@ package org.openscales.core.popup
 	
 	public class Anchored extends Popup
 	{
-		public var relativePosition:String = null;
+		public var relativePosition:String = "";
 
 	    private var anchor:Object = null;
 	    
@@ -21,7 +19,7 @@ package org.openscales.core.popup
 	                                           offset: new Pixel(0,0)};
 	    }
 	    
-	    override public function draw(px:Pixel = null):void {
+	    override public function draw(px:Pixel=null):void {
 	    	if (px == null) {
 	            if ((this.lonlat != null) && (this.map != null)) {
 	                px = this.map.getLayerPxFromLonLat(this.lonlat);
@@ -29,7 +27,6 @@ package org.openscales.core.popup
 	        }
 
 	        this.relativePosition = this.calculateRelativePosition(px);
-
 	    }
 	    
 	    public function calculateRelativePosition(px:Pixel):String {

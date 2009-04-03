@@ -42,7 +42,7 @@ package org.openscales.core
 		private var _layers:Array = null;
 		private var _baseLayer:Layer = null;
 		private var _controls:Array = null;
-		private var _popups:Array = null;
+		public var _popups:Array = null;
 		private var _size:Size = null;
 		private var _tileSize:Size = null;
 		private var _center:LonLat = null;
@@ -88,11 +88,11 @@ package org.openscales.core
 			
 			this._popupContainer = new Sprite();
 			
-			this._popupContainer.graphics.beginFill(0xFFFFFF,0);
+			this._popupContainer.graphics.beginFill(0x000000,0);
 			this._popupContainer.graphics.drawRect(0,0,this.size.w,this.size.h);
 			this._popupContainer.graphics.endFill();
 			
-			this._popupContainer.visible = false;
+			this._popupContainer.visible = true;
 			this.addChild(this._popupContainer);
 			
 		}
@@ -168,9 +168,9 @@ package org.openscales.core
 		}
 		
 		public function addLayers(layers:Array):void {
-	        for (var i:int = 0; i <  layers.length; i++) {
+	         for (var i:int = 0; i <  layers.length; i++) {
 	            this.addLayer(layers[i]);
-	        }
+	        } 
 		}
 		
 		public function removeLayer(layer:Layer, setNewBaseLayer:Boolean = true):void {
@@ -288,7 +288,7 @@ package org.openscales.core
 	        this._popups.push(popup);
 	        popup.draw();
 	        if (popup) {
-	            this._popupContainer.addChildAt(popup, this._popups.length);
+	            this._popupContainer.addChild(popup);
 	        }
 	    }
 
@@ -423,7 +423,7 @@ package org.openscales.core
 	            
 	            if (zoomChanged) {
 	                for (var j:int = 0; j < this._popups.length; j++) {
-	                    this._popups[i].updatePosition();
+	                    this._popups[j].updatePosition();
 	                }
 	            }
 	            

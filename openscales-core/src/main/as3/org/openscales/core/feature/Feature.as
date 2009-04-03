@@ -1,14 +1,14 @@
 package org.openscales.core.feature
 {
 	import flash.utils.getQualifiedClassName;
-	
+	import org.openscales.core.popup.AnchoredBubble;
 	import org.openscales.core.Icon;
 	import org.openscales.core.Marker;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.layer.Layer;
-	import org.openscales.core.popup.AnchoredBubble;
 	import org.openscales.core.popup.Popup;
 	
 	/**
@@ -36,7 +36,13 @@ package org.openscales.core.feature
 		public function Feature(layer:Layer, lonlat:LonLat, data:Object):void {
 			this.layer = layer;
 	        this.lonlat = lonlat;
-	        this.data = (data != null) ? data : new Object();
+	        if (data != null){
+	        	this.data = data;
+	        }
+	        else{
+	        	this.data = new Object();
+	        }
+	        
 	        this.id = Util.createUniqueID(getQualifiedClassName(this) + "_"); 
 		}
 		
@@ -84,7 +90,7 @@ package org.openscales.core.feature
 			this.marker.destroy();
 		}
 		
-		public function createPopup(closeBox:Boolean = false):Popup {
+		public function createPopup(closeBox:Boolean = true):Popup {
 			if (this.lonlat != null) {
             
 	            var id:String = this.id + "_popup";
@@ -94,10 +100,9 @@ package org.openscales.core.feature
                                             this.lonlat,
                                             this.data.popupSize,
                                             this.data.popupContentHTML,
-                                            anchor, closeBox); 
-                                        
+                                            anchor, closeBox);                                        
                 this.popup.feature = this;
-	        }        
+	        } 
 	        return this.popup;
 		}
 		

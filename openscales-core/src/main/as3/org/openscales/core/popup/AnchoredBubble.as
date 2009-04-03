@@ -11,7 +11,7 @@ package org.openscales.core.popup
 		
 		public static var CORNER_SIZE:Number = 5;
 		
-		public var rounded:Boolean = false;
+		public var rounded:Boolean = true;
 		
 		public function AnchoredBubble(id:String, lonlat:LonLat, size:Size, contentHTML:String, anchor:Object, closeBox:Boolean):void {
 			super(id, lonlat, size, contentHTML, anchor, closeBox);
@@ -24,8 +24,6 @@ package org.openscales.core.popup
 	        
 	        this.setRicoCorners(!this.rounded);
 	        this.rounded = true;
-	
-
 		}
 		
 		override public function setSize(size:Size = null):void {
@@ -52,6 +50,9 @@ package org.openscales.core.popup
 	        } else {
 	            //Corner.reRound(this.groupCanvas, options);
 	            //set the popup color and opacity
+	            graphics.beginFill(0x000000,0.5)
+	        	graphics.drawRect(this.position.x, this.position.y, this.size.w, this.size.h);
+	        	graphics.endFill();
 	        }
 		}
 		

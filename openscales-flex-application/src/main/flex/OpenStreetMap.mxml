@@ -2,6 +2,7 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.flex.*" creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.popup.Popup;
 			import org.openscales.core.control.MousePosition;
 			import org.openscales.core.Marker;
 			import org.openscales.core.feature.Feature;
@@ -19,37 +20,56 @@
 			import org.openscales.core.layer.OSM;
 			import org.openscales.core.Map;
 			import org.openscales.core.basetypes.Bounds;
+			
+			public var map:Map; 
+			
+			public var feature:Feature; 
+			
+			public var lat:Number=-3.5397294921874973;
+        	public var lon:Number=-43.584918945312495;
+        	
+        	public var mark:Marker;
+			
 			private function initMap():void
 			{
 				
-				var map:Map = fxmap.map;
+				map = fxmap.map;
 				map.maxResolution = 1;
 				map.numZoomLevels = 21;
 				map.size=new Size(fxmap.width, fxmap.height);
 				
-				var lat:Number=-3.5397294921874973;
-        		var lon:Number=-43.584918945312495;
+				
         		var zoom:Number=9;
 				
 				//var osm:Osmarender = new Osmarender('Osmarender');
 				var mapnik:Mapnik = new Mapnik("Mapnik");
 				
 				var markers:Markers = new Markers("Markers");
-				var feature:Feature = new Feature(markers,new LonLat(lon,lat),null);
-				var mark:Marker = feature.createMarker();
+				
+				feature = new Feature(markers,new LonLat(lon,lat),null);
+				
+				mark = feature.createMarker();
+				
+				mark.addEventListener(MouseEvent.CLICK, showPopup);
+				
 				markers.addMarker(mark);
 								
-				map.addLayers([mapnik,markers]);
+				map.addLayers([mapnik ,markers]);
 				map.addControl(new PanZoomBar());
 				map.addControl(new Navigation());
 				map.addControl(new LayerSwitcher({position: new Pixel(map.width/2, 0)}));
 				map.addControl(new MousePosition());
-				
-        		
+				 		
         		var lonLat:LonLat = new LonLat(lon, lat);
         		map.setCenter (lonLat, zoom);
 
 			}
+			
+			 private function showPopup(e:MouseEvent):void
+			{
+				var pop:Popup = feature.createPopup();	
+				map.addPopup(pop);
+			} 
 		]]>
 	</mx:Script>
 	

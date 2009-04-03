@@ -1,12 +1,13 @@
 package org.openscales.core
 {
 	import flash.display.Bitmap;
-	
+	import flash.events.MouseEvent;
+	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.control.Button;
+	import org.openscales.core.popup.Popup;
 	
 	public class Marker extends Icon
 	{
@@ -19,6 +20,8 @@ package org.openscales.core
 	    
 	    public var data:Object = null;
 	    
+	    public var popup:Popup;
+	    
 	  	[Embed(source="/org/openscales/core/img/marker.png")]
         private var _markerImg:Class;
 	    
@@ -26,7 +29,7 @@ package org.openscales.core
 	    	super(url, size, offset, calculateOffset);
 	    	this.lonlat = lonlat;
 	        
-	        this.data = new Object();
+	        this.data = new Object();        
 	    }
 	    
 	    override public function destroy():void {
@@ -37,7 +40,7 @@ package org.openscales.core
 	  	    
 	    override public function set position(px:Pixel):void {
 	        super.position = px;        
-	        //this.lonlat = this.map.getLonLatFromLayerPx(px);
+	        this.lonlat = this.map.getLonLatFromLayerPx(px);
      	}
      	
      	public function onScreen():Boolean {
@@ -69,7 +72,6 @@ package org.openscales.core
  	        else {
  	        	super.draw(px);
  	        }
-     	}
-     	
+     	}    	
 	}
 }
