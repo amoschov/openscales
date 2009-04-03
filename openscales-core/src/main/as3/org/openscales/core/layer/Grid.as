@@ -17,9 +17,7 @@ package org.openscales.core.layer
 		public var tileSizeG:Size = null;
 		
 		public var grid:Array = null;
-		
-		//public var buffer:int = 2;
-		
+				
 		public var singleTile:Boolean = false;
 		
 		public var ratio:Number = 1.5;
@@ -34,14 +32,14 @@ package org.openscales.core.layer
 		
 		public var style:Style = null;
 		
-		public var buffer:Number = 2;
-		
 		private var _tileSize:Size = null;
 		
 		public function Grid(name:String = null, url:String = null, params:Object = null, options:Object = null):void {
 			super(name, url, params, options);
 			
 			this.grid = new Array();
+			
+			this.buffer = 2;
 		}
 		
 		override public function destroy(newBaseLayer:Boolean = true):void {

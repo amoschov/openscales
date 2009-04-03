@@ -52,7 +52,8 @@ package org.openscales.core.tile
         	return ((this.layer.displayOutsideMaxExtent
                 || (this.layer.maxExtent
                     && this.bounds.intersectsBounds(this.layer.maxExtent, false)))
-                && (this.bounds.intersectsBounds(this.layer.map.extent, false)));
+                  && !(this.layer.buffer == 0
+                     && !this.bounds.intersectsBounds(this.layer.map.extent, false)));
 		}
 		
 		public function moveTo(bounds:Bounds, position:Pixel, redraw:Boolean = true):void {

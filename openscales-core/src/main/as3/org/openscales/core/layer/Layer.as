@@ -72,6 +72,8 @@ package org.openscales.core.layer
 		
 		protected var _imageSize:Size = null;
 		
+		private var _buffer:Number;
+		
 		private var _map:Map = null;
 		
 		public function Layer(name:String, options:Object = null):void {
@@ -471,6 +473,15 @@ package org.openscales.core.layer
 		public function set isBaseLayer(value:Boolean):void {
 	    	this._isBaseLayer = value;
 	    }
+	    
+	    public function get buffer():Number {
+			return this._buffer; 
+		}
+		
+		public function set buffer(value:Number):void {
+			this._buffer = value; 
+		}
+	    
 		
 	}
 }
