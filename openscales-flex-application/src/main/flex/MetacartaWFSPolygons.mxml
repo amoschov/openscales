@@ -2,6 +2,7 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.flex.*" creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ResizeEvent;
 			import org.openscales.core.feature.Style;
 			import org.openscales.core.basetypes.Size;
 			import org.openscales.core.basetypes.LonLat;
@@ -19,10 +20,12 @@
 			import org.openscales.core.basetypes.Bounds;
 			import mx.core.UIComponent;
 			
+			public var map:Map;
+			
 			private function initMap():void {
 				OpenScales.ProxyHost="http://openscales.org/proxy.php?url=";
 				
-				var map:Map = fxmap.map;
+				map = fxmap.map;
 				map.size=new Size(fxmap.width, fxmap.height);
 				
 				var wmslayer1:WMSC = new WMSC( "OpenLayers WMS",
@@ -46,8 +49,15 @@
 				map.addControl(new LayerSwitcher({position: new Pixel(map.width/2, 0)}));	
 				map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735));
 				
+				this.addEventListener(ResizeEvent.RESIZE,ResizeMap);
+				
 			}
 			
+			public function ResizeMap(event:ResizeEvent):void
+			{
+				this.map.width = fxmap.width;
+				this.map.height = fxmap.height;
+			}
 		]]>
 	</mx:Script>
 	<openscales:FxMap id="fxmap" height="100%" width="100%" />

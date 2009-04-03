@@ -2,6 +2,7 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.flex.*" creationComplete="initMap()">
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ResizeEvent;
 			import org.openscales.core.basetypes.Size;
 			import org.openscales.core.feature.Vector;
 			import org.openscales.core.Util;
@@ -17,9 +18,11 @@
 			import org.openscales.core.Map;
 			import org.openscales.core.basetypes.Bounds;
 			
+			public var map:Map;
+			
 			private function initMap():void {
 				
-				var map:Map = fxmap.map;
+				map = fxmap.map;
 
 				map.maxExtent = new Bounds(-180,-90,180,90);
 				map.numZoomLevels = 20;
@@ -34,6 +37,14 @@
 				//map.addControl(new LayerSwitcher({position: new Pixel(mapCanvas.width - 200, 0)}));
 				map.addControl(new LayerSwitcher({position: new Pixel(map.width/2, 0)}));
 				map.zoomTo(5);
+				
+				this.addEventListener(ResizeEvent.RESIZE,ResizeMap);
+			}
+			
+			public function ResizeMap(event:ResizeEvent):void
+			{
+				this.map.width = fxmap.width;
+				this.map.height = fxmap.height;
 			}
 		]]>
 	</mx:Script>

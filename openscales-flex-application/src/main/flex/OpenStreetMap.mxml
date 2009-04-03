@@ -2,6 +2,7 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.flex.*" creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
+			import mx.events.ResizeEvent;
 			import org.openscales.core.popup.Popup;
 			import org.openscales.core.control.MousePosition;
 			import org.openscales.core.Marker;
@@ -62,7 +63,15 @@
 				 		
         		var lonLat:LonLat = new LonLat(lon, lat);
         		map.setCenter (lonLat, zoom);
+        		
+        		this.addEventListener(ResizeEvent.RESIZE,ResizeMap);
 
+			}
+			
+			public function ResizeMap(event:ResizeEvent):void
+			{
+				this.map.width = fxmap.width;
+				this.map.height = fxmap.height;
 			}
 			
 			 private function showPopup(e:MouseEvent):void
