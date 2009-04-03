@@ -14,7 +14,6 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.format.WFS;
-	import org.openscales.core.tile.Tile;
 	import org.openscales.core.tile.WFS;
 	
 	public class WFS extends org.openscales.core.layer.Vector
@@ -32,7 +31,7 @@ package org.openscales.core.layer
 		
 		public var url:String = null;
 		
-		public var tile:Tile = null;
+		public var tile:org.openscales.core.tile.WFS = null;
 		
 		public var writer:Object = null;
 		
@@ -138,31 +137,23 @@ package org.openscales.core.layer
 			               	this.featuresBbox = tileBounds;
 			            } 
 			            
-			            //Commented to avoid a vector features request when we already got them.
+			            
 			            else {
 			            	
 			            	if ( !this.featuresBbox.containsBounds(tileBounds)) {
-			            		
-				            	this.tile.destroy();
-				                
-				                this.tile = null;
-				                this.tile = new org.openscales.core.tile.WFS(this, pos, tileBounds, 
-				                                                     url, tileSize);
-				                this.tile.draw();
-				                
+				     
 				                this.featuresBbox.extendFromBounds((tileBounds));
 				                
+				                url = this.getFullRequestString();
+			            		params = { BBOX:this.featuresBbox.toBBOX() };
+			            		url += "&" + Util.getParameterString(params);
+			            		
+			            		this.tile.url = url;
+			            		this.tile.loadFeaturesForRegion(this.tile.requestSuccess);
+				                
 			            	}
+			            	 	
 			            	
-			               /* if (this.vectorMode) {
-			                    this.destroyFeatures();
-			                }
-			                this.tile.destroy();
-			                
-			                this.tile = null;
-			                this.tile = new org.openscales.core.tile.WFS(this, pos, tileBounds, 
-			                                                     url, tileSize);
-			                this.tile.draw();*/
 			            } 
 			        }
 			 	}
