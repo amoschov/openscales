@@ -1,7 +1,6 @@
 package org.openscales.core.layer
 {
 	import flash.display.Sprite;
-	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
@@ -9,71 +8,73 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.events.MapEvent;
 	
 	public class Layer extends Sprite
 	{
 			
-		public var isBaseLayer:Boolean = false;
+		/**
+		 * Whether or not the layer is a base layer. This should be set
+		 * individually by all subclasses. Default is false
+		 */
+		private var _isBaseLayer:Boolean = false;
+										
+		/**
+		 * Rhe current map resolution is within the layer's min/max range.
+		 * This is set in <Map.setCenter> whenever the zoom changes.
+		 */
+		private var _inRange:Boolean = false;
 		
-		public var isAnnoLayer:Boolean = false;
+		/**
+		 * For layers with a gutter, the image offset represents displacement due 
+		 * to the gutter
+		 */
+		private var _imageOffset:Pixel = null;
 		
-		public var isDynamicLayer:Boolean = false;
-				
-		public var displayInLayerSwitcher:Boolean = true;
+		 /**
+ 	     * Determines the width (in pixels) of the gutter around image
+ 	     *     tiles to ignore.  By setting this property to a non-zero value,
+ 	     *     images will be requested that are wider and taller than the tile
+ 	     *     size by a value of 2 x gutter.  This allows artifacts of rendering
+ 	     *     at tile edges to be ignored.  Set a gutter value that is equal to
+ 	     *     half the size of the widest symbol that needs to be displayed.
+	     *     Defaults to zero.  Non-tiled layers always have zero gutter.
+	     */
+		private var _gutter:Number = 0;
 		
-		public var inRange:Boolean = false;
+		private var _projection:String = null;
 		
-		public var imageOffset:Pixel = null;
+		private var _units:String = null;
 		
-		public var options:Object = null;
+		private var _scales:Array = null;
 		
-		public var gutter:Number = 0;
+		private var _resolutions:Array = null;
 		
-		public var projection:String = null;
+		private var _maxExtent:Bounds = null;
 		
-		public var units:String = null;
+		private var _maxResolution:Number;
 		
-		public var scales:Array = null;
+		private var _minResolution:Number;
 		
-		public var resolutions:Array = null;
+		private var _numZoomLevels:int;
 		
-		public var maxExtent:Bounds = null;
+		private var _minScale:Number;
 		
-		public var maxResolution:Number;
+		private var _maxScale:Number;
 		
-		public var minResolution:Number;
+		private var _minZoomLevel:Number;		
+
+		private var _displayOutsideMaxExtent:Boolean = false;		
+		/**
+		 * On OpenScales, zindex is manage internally with Layer child index 
+		 * property against Map
+		 */
+		private var _zindex:int = -1;
 		
-		public var numZoomLevels:Number;
+		protected var _imageSize:Size = null;
 		
-		public var minScale:Number;
-		
-		public var maxScale:Number;
-		
-		public var minZoomLevel:Number;
-		
-		public var displayOutsideMaxExtent:Boolean = false;
-		
-		public var isFixed:Boolean = false;
-		
-		public var tileSize:Size = null;
-		
-		public var buffer:Number = 2;
-		
-		public var featureNS:String;
-		
-		public var reportError:Boolean = false;
-		
-		public var geometry_column:String = null;
-		
-		public var zindex:int = -1;
-		
-		public var markers:Array = null;
-		
-		private var _imageSize:Size = null;
 		private var _map:Map = null;
 		
-		public function Layer(name:String, options:Object):void {
+		public function Layer(name:String, options:Object = null):void {
 			
 			Util.extend(this, options);
 			
@@ -87,7 +88,6 @@ package org.openscales.core.layer
 				this.map.removeLayer(this, setNewBaseLayer);
 			}
 			this.map = null;
-			this.options = null;
 			
 		}
 		
@@ -130,34 +130,12 @@ package org.openscales.core.layer
 	                this.visible = (show ? true : false);
 	            }
 
-	            this.setTileSize();
 	        }
 		}
 		
 		public function get map():Map {
 			return this._map;
-		}
-		
-		public function setTileSize(size:Size = null):void {
-	        var tileSize:Size = (size) ? size : ((this.tileSize) ? this.tileSize : this.map.tileSize);
-	        this.tileSize = tileSize;
-	        if(this.gutter) {
-	            // layers with gutters need non-null tile sizes
-	            //if(tileSize == null) {
-	            //    OpenLayers.console.error("Error in layer.setMap() for " +
-	            //                              this.name + ": layers with gutters " +
-	            //                              "need non-null tile sizes");
-	            //}
-	            this.imageOffset = new Pixel(-this.gutter, -this.gutter); 
-	            this.imageSize = new Size(tileSize.w + (2 * this.gutter), 
-	                                                 tileSize.h + (2 * this.gutter)); 
-	        } else {
-	            // layers without gutters may have null tile size - as long
-	            // as they don't rely on Tile.Image
-	            this.imageSize = tileSize;
-	            this.imageOffset = new Pixel(0, 0);
-	        }
-		}
+		}		
 		
 		public function initResolutions():void {
 			
@@ -252,7 +230,7 @@ package org.openscales.core.layer
 		
 		public function clone(obj:Object):Object {
 			if (obj == null) {
-	            obj = new Layer(this.name, this.options);
+	            obj = new Layer(this.name);
 	        } 
 	        
 	        Util.applyDefaults(obj, this);
@@ -351,12 +329,148 @@ package org.openscales.core.layer
 		}
 		
 		public function get imageSize():Size {
-			return (this._imageSize || this.tileSize); 
+			return this._imageSize; 
 		}
 		
 		public function set imageSize(value:Size):void {
 			this._imageSize = value; 
 		}
+		
+		public function get zindex():int {
+	    	return this.map.getChildIndex(this);
+	    }
+	    
+		public function set zindex(value:int):void {
+	    	this.map.setChildIndex(this, value);
+	    }
+	    
+	    public function get displayOutsideMaxExtent():Boolean {
+	    	return this._displayOutsideMaxExtent;
+	    }
+	    
+		public function set displayOutsideMaxExtent(value:Boolean):void {
+	    	this._displayOutsideMaxExtent = value;
+	    }	    
+	    
+	    public function get minZoomLevel():Number {
+			return this._minZoomLevel; 
+		}
+		
+		public function set minZoomLevel(value:Number):void {
+			this._minZoomLevel = value; 
+		}
+		
+		public function get maxScale():Number {
+			return this._maxScale; 
+		}
+		
+		public function set maxScale(value:Number):void {
+			this._maxScale = value; 
+		}
+		
+		public function get minScale():Number {
+			return this._minScale; 
+		}
+		
+		public function set minScale(value:Number):void {
+			this._minScale = value; 
+		}
+		
+		public function get numZoomLevels():int {
+			return this._numZoomLevels; 
+		}
+		
+		public function set numZoomLevels(value:int):void {
+			this._numZoomLevels = value; 
+		}
+		
+		public function get maxResolution():Number {
+			return this._maxResolution; 
+		}
+		
+		public function set maxResolution(value:Number):void {
+			this._maxResolution = value; 
+		}
+		
+		public function get minResolution():Number {
+			return this._minResolution; 
+		}
+		
+		public function set minResolution(value:Number):void {
+			this._minResolution = value; 
+		}
+		
+		public function get maxExtent():Bounds {
+			return this._maxExtent; 
+		}
+		
+		public function set maxExtent(value:Bounds):void {
+			this._maxExtent = value; 
+		}
+		
+		public function get resolutions():Array {
+			return this._resolutions; 
+		}
+		
+		public function set resolutions(value:Array):void {
+			this._resolutions = value; 
+		}
+		
+		public function get scales():Array {
+			return this._scales; 
+		}
+		
+		public function set scales(value:Array):void {
+			this._scales = value; 
+		}
+		
+		public function get units():String {
+			return this._units; 
+		}
+		
+		public function set units(value:String):void {
+			this._units = value; 
+		}
+		
+		public function get projection():String {
+			return this._projection; 
+		}
+		
+		public function set projection(value:String):void {
+			this._projection = value; 
+		}
+		
+		public function get gutter():Number {
+			return this._gutter; 
+		}
+		
+		public function set gutter(value:Number):void {
+			this._gutter = value; 
+		}
+		
+		public function get imageOffset():Pixel {
+			return this._imageOffset; 
+		}
+		
+		public function set imageOffset(value:Pixel):void {
+			this._imageOffset = value; 
+		}
+		
+		public function get inRange():Boolean {
+	    	return this._inRange;
+	    }
+	    
+		public function set inRange(value:Boolean):void {
+	    	this._inRange = value;
+	    }
+	    
+	    public function get isBaseLayer():Boolean {
+	    	return this._isBaseLayer;
+	    }
+	    
+		public function set isBaseLayer(value:Boolean):void {
+	    	this._isBaseLayer = value;
+	    }
 		
 	}
 }

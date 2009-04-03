@@ -10,6 +10,7 @@ package org.openscales.core
 	import org.openscales.core.control.Control;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;
+	import org.openscales.core.layer.Vector;
 	import org.openscales.core.popup.Popup;
 	
 	/**
@@ -137,12 +138,9 @@ package org.openscales.core
 	                return false;
 	            }
 	        }
-
-	        if (layer.zindex < 0) {
-	        	this.setLayerZindex(layer, this._layers.length);
-	        }
 	        
-	        if (layer.isFixed) {
+	        
+	        if ((layer as Vector) && (layer as Vector).isFixed) {
 	            this.addChild(layer);
 	        } else {
 	         	this._layerContainer.addChild(layer);
@@ -174,7 +172,7 @@ package org.openscales.core
 		}
 		
 		public function removeLayer(layer:Layer, setNewBaseLayer:Boolean = true):void {
-			if (layer.isFixed) {
+			if ((layer as Vector) && (layer as Vector).isFixed) {
 				this.removeChild(layer);
 			} else {
 				this._layerContainer.removeChild(layer);

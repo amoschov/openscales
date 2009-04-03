@@ -46,10 +46,6 @@ package org.openscales.core.renderer
 	        this.map = null;
 	    }
 	    
-	    public function supported():Boolean {
-	    	return false;
-	    }
-	    
 	    public function setExtent(extent:Bounds):void {
 	    	this.extent = extent.clone();
         	this.resolution = NaN;

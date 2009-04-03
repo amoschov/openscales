@@ -1,7 +1,6 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.OpenScales;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -35,6 +34,10 @@ package org.openscales.core.layer
 		
 		public var style:Style = null;
 		
+		public var buffer:Number = 2;
+		
+		private var _tileSize:Size = null;
+		
 		public function Grid(name:String = null, url:String = null, params:Object = null, options:Object = null):void {
 			super(name, url, params, options);
 			
@@ -66,8 +69,7 @@ package org.openscales.core.layer
 			if (obj == null) {
 	            obj = new Grid(this.name,
                                 this.url,
-                                this.params,
-                                this.options);
+                                this.params);
 	        }
 	
 	        obj = super.clone([obj]);
@@ -116,14 +118,18 @@ package org.openscales.core.layer
 	        }
 		}
 		
-		override public function setTileSize(size:Size = null):void {
+		public function set tileSize(size:Size):void {
 	        if (this.singleTile) {
 	            var size:Size = this.map.size;
 	            size.h = int(size.h * this.ratio);
 	            size.w = int(size.w * this.ratio);
 	        } 
-	        super.setTileSize(size);	
+	        this._tileSize = size;	
 		}
+		
+		public function get tileSize():Size {
+			return this._tileSize;
+		}		
 		
 		private function getGridBounds():Bounds {
 			var bottom:int = this.grid.length - 1;
@@ -570,7 +576,7 @@ package org.openscales.core.layer
 		override public function onMapResize():void {
 			if (this.singleTile) {
 				this.clearGrid();
-				this.setTileSize();
+				this.tileSize = null;
 				this.initSingleTile(this.map.extent);
 			}			
 		}
@@ -592,6 +598,10 @@ package org.openscales.core.layer
 	        return new Bounds(tileLeft, tileBottom,
 	                                     tileLeft + tileMapWidth,
 	                                     tileBottom + tileMapHeight);
+		}
+		
+		override public function get imageSize():Size {
+			return (this._imageSize || this.tileSize); 
 		}
 		
 	}

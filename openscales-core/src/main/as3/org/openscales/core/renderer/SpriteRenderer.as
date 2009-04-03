@@ -262,10 +262,6 @@ package org.openscales.core.renderer
 	        return string;
 		}
 		
-		override public function supported():Boolean {
-			return true;
-		}
-		
 		public function createNode(type:Object, id:Object):SpriteElement {
 			var node:SpriteElement = new SpriteElement();
 			//node.id = String(id);

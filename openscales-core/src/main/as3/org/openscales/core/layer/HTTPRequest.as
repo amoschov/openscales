@@ -35,8 +35,7 @@ package org.openscales.core.layer
 			if (obj == null) {
 	            obj = new HTTPRequest(this.name,
                                        this.url,
-                                       this.params,
-                                       this.options);
+                                       this.params);
 	        }
 
 	        obj = new Layer(this.name, arguments).clone([obj]);

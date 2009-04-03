@@ -18,7 +18,7 @@ package org.openscales.core.layer
 		if the map resolutions differs from the server */
 		private var serverResolutions:Array = null;
 		
-		public function TMS(name:String, url:String, options:Object):void
+		public function TMS(name:String, url:String, options:Object = null):void
 		{
 			this.isBaseLayer = true;
 			super(name, url, null, options);
@@ -28,7 +28,7 @@ package org.openscales.core.layer
 		{
 			if (obj == null)
 			{
-				obj = new TMS(this.name, this.url, this.options);
+				obj = new TMS(this.name, this.url);
 			}
 			
 			obj = super.clone([obj]);

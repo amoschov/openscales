@@ -19,6 +19,8 @@ package org.openscales.core.layer
 	{
 
 	    private var isVector:Boolean = true;
+	    
+	    public var isFixed:Boolean = false;
 	
 	    public var features:Array = null;
 	    
@@ -28,8 +30,6 @@ package org.openscales.core.layer
 	
 	    public var style:Style = null;
 		
-		private var renderers:Array = ['AS'];
-
 	    public var renderer:Renderer = null;
 
 	    private var geometryType:String = null;
@@ -48,14 +48,9 @@ package org.openscales.core.layer
 	
 	        super(name, options);
 	        
-	        if (!this.renderer || !this.renderer.supported()) {  
+	        if (!this.renderer) {  
 	            this.assignRenderer();
 	        }
-
-	        if (!this.renderer || !this.renderer.supported()) {
-	            this.renderer = null;
-	            this.displayError();
-	        } 
 	
 	        this.features = new Array();
 	        this.selectedFeatures = new Array();
@@ -81,15 +76,6 @@ package org.openscales.core.layer
 	    private function assignRenderer():void {
 	       	var rendererClass:Class = org.openscales.core.renderer.SpriteRenderer;
 	     	this.renderer = new rendererClass(this);
-	    }
-	    
-	    private function displayError():void {
-	    	if (this.reportError) {
-	            var message:String = "Your browser does not support vector rendering. " + 
-	                            "Currently supported renderers are:\n";
-	            message += this.renderers.join("\n");
-	            trace(message);
-	        } 
 	    }
 	    
 	    override public function set map(map:Map):void {

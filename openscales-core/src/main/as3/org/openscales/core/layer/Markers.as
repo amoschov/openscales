@@ -7,8 +7,10 @@ package org.openscales.core.layer
 
 	public class Markers extends Layer
 	{
+		
+		private var _markers:Array = null;
 	
-	    public var drawn:Boolean = false;
+	    private var _drawn:Boolean = false;
 	    
 	    public function Markers(name:String, options:Object = null):void {
 	    	super(name, options);
@@ -103,6 +105,21 @@ package org.openscales.core.layer
 	    override public function calculateInRange():Boolean {
 	    	return true;
 	    }
-		
+	    
+	    public function get markers():Array {
+	    	return this._markers;
+	    }
+	    
+		public function set markers(value:Array):void {
+	    	this._markers = value;
+	    }
+	    
+	    public function get drawn():Boolean {
+	    	return this._drawn;
+	    }
+	    
+		public function set drawn(value:Boolean):void {
+	    	this._drawn = value;
+	    }
 	}
 }

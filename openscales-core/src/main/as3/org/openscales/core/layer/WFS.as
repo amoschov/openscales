@@ -37,14 +37,17 @@ package org.openscales.core.layer
 		
 		public var featureClass:Class = null;
 		
+		public var featureNS:String = null;
+		
 		public var typename:String = null;
+		
+		public var geometry_column:String = null;
 		
 		public var extractAttributes:Boolean = true;
 			                    
 	    public function WFS(name:String, url:String, params:Object, options:Object = null):void {
 	        if (options == null) { options = {}; } 
 	        
-	        Util.extend(options, {'reportError': false});
 	        super(name, options)
 	        
 	        if (this.featureClass || !org.openscales.core.layer.Vector || !org.openscales.core.feature.Vector) {
@@ -62,7 +65,7 @@ package org.openscales.core.layer
 	            this.typename = this.params.typename;
 	        }
 	        
-	        if (!(this.options && this.options.geometry_column)) {
+	        if (!(this.geometry_column)) {
 	            this.geometry_column = "the_geom";
 	        }    
 	        
@@ -170,8 +173,7 @@ package org.openscales.core.layer
 	        if (obj == null) {
 	            obj = new WFS(this.name,
                                this.url,
-                               this.params,
-                               this.options);
+                               this.params);
 	        }
 
 	        if (this.vectorMode) {
@@ -185,7 +187,7 @@ package org.openscales.core.layer
 	        var projection:String = this.map.projection;
 	        this.params.SRS = (projection == "none") ? null : projection;
 	
-	        return new Grid(this.name, this.url, this.params, this.options).getFullRequestString(newParams, altUrl);
+	        return new Grid(this.name, this.url, this.params).getFullRequestString(newParams, altUrl);
 		}
 		
 		public function commit():void {
