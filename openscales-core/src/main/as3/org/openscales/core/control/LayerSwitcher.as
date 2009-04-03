@@ -31,6 +31,8 @@ package org.openscales.core.control
 	    private var _slideHorizontalTemp:SliderHorizontal = null;
 	    
 	    private var _slideVerticalTemp:SliderVertical = null;
+	    
+	    private var _percentageTextFieldTemp:TextField = null;
 	    	    
 	    [Embed(source="/org/openscales/core/img/layer-switcher-maximize.png")]
         private var _layerSwitcherMaximizeImg:Class;
@@ -131,10 +133,19 @@ package org.openscales.core.control
 						layerTextField.y = y;
 						layerTextField.height = 20;
 						layerTextField.width = 120;
+						var percentageTextFieldBL:TextField = new TextField();
+						percentageTextFieldBL.name = "percentage"+i;
+						percentageTextFieldBL.text="100%";
+						percentageTextFieldBL.setTextFormat(contentFormat);
+						percentageTextFieldBL.x = this.position.x - 45;
+						percentageTextFieldBL.y = y+18;
+						percentageTextFieldBL.height = 20;
+						percentageTextFieldBL.width = 50;
 						this.addChild(slideHorizontalButtonBL);
 						this.addChild(slideVerticalButtonBL);
 						this.addChild(radioButton);
 						this.addChild(layerTextField);
+						this.addChild(percentageTextFieldBL);
 					}
 				}
 				
@@ -173,10 +184,19 @@ package org.openscales.core.control
 						check.width=12;
 						check.height=12;
 						check.addEventListener(MouseEvent.CLICK,CheckButtonClick);	
+						var percentageTextField:TextField = new TextField();
+						percentageTextField.name = "percentage"+i;
+						percentageTextField.text="100%";
+						percentageTextField.setTextFormat(contentFormat);
+						percentageTextField.x = this.position.x - 45;
+						percentageTextField.y = y+22;
+						percentageTextField.height = 20;
+						percentageTextField.width = 50;
 						this.addChild(slideHorizontalButtonO);	
 						this.addChild(slideVerticalButtonO);	
 						this.addChild(check);
 						this.addChild(layerTextField);
+						this.addChild(percentageTextField);
 					}
 				}
 			
@@ -243,12 +263,19 @@ package org.openscales.core.control
 		
 		private function SlideMouseMove(event:MouseEvent):void
 		{			
-			var childIndex:String = _slideVerticalTemp.name;
-			childIndex = childIndex.substring(14,15);
+			
 			_slideVerticalTemp.x = mouseX;
-			var resultAlpha:Number = (mouseX/76)- (509/76);
+			var resultAlpha:Number = (mouseX/77)- (_slideHorizontalTemp.x/77);
+			var resultPercentage:int = resultAlpha*100;
 			var layer2:Layer = this.map.getLayerByName(_slideVerticalTemp.layerName);
 			layer2.alpha = resultAlpha;
+			
+			var childIndex:String = _slideVerticalTemp.name;
+			childIndex = childIndex.substring(14,15);
+			_percentageTextFieldTemp = this.getChildByName("percentage"+childIndex) as TextField;
+			_percentageTextFieldTemp.textColor = 0xffffff;
+			_percentageTextFieldTemp.text = resultPercentage.toString()+"%";
+			
 			
 			// Stop propagation in order to avoid map move
 			event.stopPropagation();
