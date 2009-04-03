@@ -141,7 +141,6 @@ package org.openscales.core.layer
 			            } else {
 			                if (this.vectorMode) {
 			                    this.destroyFeatures();
-			                    this.renderer.clear();
 			                }
 			                this.tile.destroy();
 			                

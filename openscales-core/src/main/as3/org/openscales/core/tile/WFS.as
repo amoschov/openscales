@@ -54,6 +54,10 @@ package org.openscales.core.tile
 			var doc:XML =  new XML(loader.data);;
 			var wfsLayer:org.openscales.core.layer.WFS = this.layer as org.openscales.core.layer.WFS;
 			
+			if (wfsLayer && wfsLayer.vectorMode) {
+				wfsLayer.renderer.clear();
+			}
+			
 	        if (wfsLayer && wfsLayer.vectorMode) {
 	            var gml:GML = new GML({extractAttributes: wfsLayer.extractAttributes});
 	            wfsLayer.addFeatures(gml.read(doc));
