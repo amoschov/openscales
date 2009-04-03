@@ -112,6 +112,18 @@ package org.openscales.core.basetypes
 			}
 		}
 		
+		public function extendFromBounds(bounds:Bounds):void {
+			
+					this.left = (bounds.left < this.left) ? bounds.left 
+                                                     : this.left;
+               		this.bottom = (bounds.bottom < this.bottom) ? bounds.bottom 
+                                                           : this.bottom;
+               		this.right = (bounds.right > this.right) ? bounds.right 
+                                                        : this.right;
+               		this.top = (bounds.top > this.top) ? bounds.top 
+                                                  : this.top;
+		}
+		
 		public function containsLonLat(ll:LonLat, inclusive:Boolean = true):Boolean {
 			return this.contains(ll.lon, ll.lat, inclusive);
 		}

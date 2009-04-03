@@ -135,10 +135,25 @@ package org.openscales.core.layer
 			                this.tile = new org.openscales.core.tile.WFS(this, pos, tileBounds, 
 			                                                     url, tileSize);
 			                this.tile.draw();
+			               	this.featuresBbox = tileBounds;
 			            } 
 			            
 			            //Commented to avoid a vector features request when we already got them.
 			            else {
+			            	
+			            	if ( !this.featuresBbox.containsBounds(tileBounds)) {
+			            		
+				            	this.tile.destroy();
+				                
+				                this.tile = null;
+				                this.tile = new org.openscales.core.tile.WFS(this, pos, tileBounds, 
+				                                                     url, tileSize);
+				                this.tile.draw();
+				                
+				                this.featuresBbox.extendFromBounds((tileBounds));
+				                
+			            	}
+			            	
 			               /* if (this.vectorMode) {
 			                    this.destroyFeatures();
 			                }

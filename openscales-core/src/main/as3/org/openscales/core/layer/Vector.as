@@ -21,6 +21,8 @@ package org.openscales.core.layer
 	    private var isVector:Boolean = true;
 	
 	    public var features:Array = null;
+	    
+	    public var featuresBbox:Bounds = null;
 
 	    public var selectedFeatures:Array = null;
 	
@@ -57,7 +59,7 @@ package org.openscales.core.layer
 	
 	        this.features = new Array();
 	        this.selectedFeatures = new Array();
-	        
+	        this.featuresBbox = new Bounds();
 	        // For better performances
 	        this.cacheAsBitmap = true;
 	    }
