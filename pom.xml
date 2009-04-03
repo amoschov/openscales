@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
@@ -159,10 +159,14 @@
 	
 
 	<repositories>
-		<repository>
-			<id>flexmojos</id>
-			<url>http://svn.sonatype.org/flexmojos/repository</url>
-		</repository>
+        <repository>
+            <id>flexmojos</id>
+            <url>http://repository.sonatype.org/content/groups/flexgroup</url>
+        </repository>
+        <!--repository>
+            <id>flexmojos</id>
+            <url>http://repository.sonatype.org/content/repositories/flexmojos-releases/</url>
+        </repository-->
 		<repository>
 			<id>openscales</id>
 			<url>http://openscales.org/nexus/content/repositories/releases/</url>
@@ -170,10 +174,10 @@
 	</repositories>
 	
 	<pluginRepositories>
-		<pluginRepository>
-			<id>flexmojos</id>
-			<url>http://svn.sonatype.org/flexmojos/repository</url>
-		</pluginRepository>
+        <pluginRepository>
+            <id>flexmojos</id>
+            <url>http://repository.sonatype.org/content/groups/flexgroup</url>
+        </pluginRepository>
 	</pluginRepositories>
 
 	 <distributionManagement>
