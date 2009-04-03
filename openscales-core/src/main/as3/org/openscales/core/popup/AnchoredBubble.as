@@ -50,10 +50,11 @@ package org.openscales.core.popup
 	        } else {
 	            //Corner.reRound(this.groupCanvas, options);
 	            //set the popup color and opacity
-	            graphics.beginFill(0x000000,0.5)
-	        	graphics.drawRect(this.position.x, this.position.y, this.size.w, this.size.h);
-	        	graphics.endFill();
+	            
 	        }
+	        graphics.beginFill(0x000000,0.5)
+	        graphics.drawRect(this.positionP.x, this.positionP.y, this.size.w, this.size.h);
+	        graphics.endFill();
 		}
 		
 		public function getCornersToRound():Object {		

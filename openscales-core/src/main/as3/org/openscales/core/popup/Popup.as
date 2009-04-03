@@ -41,6 +41,8 @@ package org.openscales.core.popup
 	    
 	    public var feature:Feature = null;
 	    
+	    public var positionP:Pixel;
+	    
 	    [Embed(source="/org/openscales/core/img/close.gif")]
         private var _closeImg:Class;
 	    
@@ -74,9 +76,9 @@ package org.openscales.core.popup
 	        
 	        this.addChild(textfield); */
 	
-	         if (closeBox == true) {
+	          if (closeBox == true) {
 	            var closeSize:Size = new Size(17,17);
-	            var closeImg:Button = new Button(this.id + "_close", new this._closeImg(), new Pixel(this.padding, this.padding), closeSize); 	                                                                null, 
+	            var closeImg:Button = new Button(this.id + "_close", new this._closeImg(), new Pixel(this.positionP.x, this.positionP.y), closeSize); 	                                                                null, 
 				
 	            this.addChild(closeImg);
 	
@@ -89,7 +91,7 @@ package org.openscales.core.popup
 	                
 	            } 
 	            closeImg.addEventListener(MouseEvent.CLICK, closePopup);
-	        } 
+	        }  
 	        /* this.registerEvents(); */    
 	    }
 	    

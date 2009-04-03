@@ -75,8 +75,8 @@
 			}
 			
 			 private function showPopup(e:MouseEvent):void
-			{
-				var pop:Popup = feature.createPopup();	
+			{				
+				var pop:Popup = feature.createPopup();				
 				map.addPopup(pop);
 			} 
 		]]>
