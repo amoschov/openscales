@@ -109,12 +109,12 @@ package org.openscales.core.renderer
 			return null;
 		}
 		
-		public function eraseFeatures(feature:Object):void {
+		/*public function eraseFeatures(feature:Array):void {
 
 	        if(feature && feature.geometry) {
 	            this.eraseGeometry(feature.geometry);
 	        }
-		}
+		}*/
 		
 		public function eraseGeometry(geometry:Collection):void {
 			

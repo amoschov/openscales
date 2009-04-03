@@ -109,9 +109,9 @@ package org.openscales.core.layer
 	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
 	    	super.moveTo(bounds, zoomChanged, dragging);
 	    	
-	    	if (zoomChanged) {
+	    	/*if (zoomChanged) {
 	    		this.eraseFeatures(this.features);
-	    	}
+	    	}*/
         
 	        if (!dragging) {
 	            //this.x = - int(this.map.layerContainer.x);
@@ -199,9 +199,9 @@ package org.openscales.core.layer
 	        this.renderer.drawFeature(feature, style);
 	    }
 	    
-	    public function eraseFeatures(feature:Array):void {
+	   /* public function eraseFeatures(feature:Array):void {
 	    	this.renderer.eraseFeatures(features);
-	    }
+	    }*/
 	    
 	    public function getFeatureFromEvent(evt:MouseEvent):org.openscales.core.feature.Vector {
 	    	var featureId:String = this.renderer.getFeatureIdFromEvent(evt);

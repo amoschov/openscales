@@ -93,12 +93,13 @@ package org.openscales.core.layer
 	        
 	        if (dragging) {
 	        } else {
-		        
-		        if ( zoomChanged ) {
+	        	
+		        //Commented to avoid the reload of vectorial features
+		      /*  if ( zoomChanged ) {
 		            if (this.vectorMode) {
 		                this.renderer.clear();
 		            }
-		        }
+		        }*/
 	
 		        if (this.minZoomLevel && this.map.zoom < this.minZoomLevel) {
 
@@ -138,8 +139,11 @@ package org.openscales.core.layer
 			                this.tile = new org.openscales.core.tile.WFS(this, pos, tileBounds, 
 			                                                     url, tileSize);
 			                this.tile.draw();
-			            } else {
-			                if (this.vectorMode) {
+			            } 
+			            
+			            //Commented to avoid a vector features request when we already got them.
+			            else {
+			               /* if (this.vectorMode) {
 			                    this.destroyFeatures();
 			                }
 			                this.tile.destroy();
@@ -147,7 +151,7 @@ package org.openscales.core.layer
 			                this.tile = null;
 			                this.tile = new org.openscales.core.tile.WFS(this, pos, tileBounds, 
 			                                                     url, tileSize);
-			                this.tile.draw();
+			                this.tile.draw();*/
 			            } 
 			        }
 			 	}
