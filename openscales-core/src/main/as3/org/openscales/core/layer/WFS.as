@@ -117,12 +117,8 @@ package org.openscales.core.layer
 			            var center:LonLat = bounds.getCenterLonLat();
 			            var tileWidth:Number = bounds.getWidth() * this.ratio;
 			            var tileHeight:Number = bounds.getHeight() * this.ratio;
-			            var tileBounds:Bounds = 
-			                new Bounds(center.lon - (tileWidth / 2),
-			                                      center.lat - (tileHeight / 2),
-			                                      center.lon + (tileWidth / 2),
-			                                      center.lat + (tileHeight / 2));
-			
+			            var tileBounds:Bounds = this.extent;
+			            			
 			            var tileSize:Size = this.map.size;
 			            tileSize.w = tileSize.w * this.ratio;
 			            tileSize.h = tileSize.h * this.ratio;
