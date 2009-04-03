@@ -265,7 +265,7 @@ package org.openscales.core.control
 		{			
 			
 			_slideVerticalTemp.x = mouseX;
-			var resultAlpha:Number = (mouseX/77)- (_slideHorizontalTemp.x/77);
+			var resultAlpha:Number = (mouseX/76)- (510/76);
 			var resultPercentage:int = resultAlpha*100;
 			var layer2:Layer = this.map.getLayerByName(_slideVerticalTemp.layerName);
 			layer2.alpha = resultAlpha;
