@@ -263,9 +263,10 @@ package org.openscales.core.control
 		
 		private function SlideMouseMove(event:MouseEvent):void
 		{			
-			
+			var k:int = _slideHorizontalTemp.x+1;
+			var l:int = k+(_slideHorizontalTemp.width)-1;
 			_slideVerticalTemp.x = mouseX;
-			var resultAlpha:Number = (mouseX/76)- (510/76);
+			var resultAlpha:Number = (mouseX/(l-k)) - (k/(l-k))
 			var resultPercentage:int = resultAlpha*100;
 			var layer2:Layer = this.map.getLayerByName(_slideVerticalTemp.layerName);
 			layer2.alpha = resultAlpha;
