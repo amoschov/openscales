@@ -82,7 +82,7 @@ package org.openscales.core.format
     	
     	public function parseFeature(xmlNode:XML):Vector {
     		var geom:Collection = null;
-	        var p:Object = new Object();
+	        var p:Array = new Array();
 	
 	        var feature:Vector = new Vector();
 			feature.fid = xmlNode..@fid;
@@ -104,8 +104,8 @@ package org.openscales.core.format
 	            
 	            for (i = 0; i < lineStrings.length(); i++) {
 	                p = this.parseCoords(lineStrings[i]);
-	                if(p.points){
-	                    var lineString:LineString = new LineString(p.points);
+	                if(p){
+	                    var lineString:LineString = new LineString(p);
 	                    geom.addComponents(lineString);
 	                }
 	            }
@@ -118,7 +118,7 @@ package org.openscales.core.format
 	            
 	            for (i = 0; i < points.length(); i++) {
 	                p = this.parseCoords(points[i]);
-	                geom.addComponents(p.points[0]);
+	                geom.addComponents(p[0]);
 	            }
 	        } else if (xmlNode..*::the_geom.*::Polygon.length() > 0) {
 	            var polygon2:XML = xmlNode..*::the_geom.*::Polygon[0];
@@ -128,17 +128,17 @@ package org.openscales.core.format
 	            var lineString2:XML = xmlNode..*::the_geom.*::LineString[0];
 	
 	            p = this.parseCoords(lineString2);
-	            if (p.points) {
-	                geom = new LineString(p.points);
+	            if (p) {
+	                geom = new LineString(p);
 	            }
 	        } else if (xmlNode..*::the_geom.*::Point.length() > 0) {
 	            var point:XML = xmlNode..*::the_geom.*::Point[0];
 	            
 	            geom = new MultiPoint();
 	            p = this.parseCoords(point);
-	            if (p.points) {
+	            if (p) {
 	            	//var nPoint:Point = new Point(p.points[0].x,p.points[0].y);
-	                geom.addComponents(p.points[0]);
+	                geom.addComponents(p[0]);
 	            }
 	        }
 	        
@@ -179,12 +179,13 @@ package org.openscales.core.format
     	public function parsePolygonNode(polygonNode:Object):Polygon {
     		var linearRings:XMLList = polygonNode..*::LinearRing;
 	        
-	        var rings:Array = [];
-	        var p:Object;
+	        // Optimize by specifying the array size
+	        var rings:Array = new Array(linearRings.length());
+	        var p:Array = null;
 
 	        for (var i:int = 0; i < linearRings.length(); i++) {
 	            p = this.parseCoords(linearRings[i]);
-	            var ring1:LinearRing = new LinearRing(p.points);
+	            var ring1:LinearRing = new LinearRing(p);
 	            rings.push(ring1);
 	        }
 	        
@@ -192,13 +193,15 @@ package org.openscales.core.format
 	        return poly;
     	}
     	
-    	public function parseCoords(xmlNode:XML):Object {
+    	/**
+    	 * Return an array of coords
+    	 */ 
+    	public function parseCoords(xmlNode:XML):Array {
     		var x:Number, y:Number, left:Number, bottom:Number, right:Number, top:Number;
-
-	        var p:Object = new Object(); // return value = [points,bounds]
+	        
+	        var points:Array = new Array();
 	        
 	        if (xmlNode) {
-	            p.points = [];
 
 	            var coordNodes:XMLList = xmlNode.*::posList;
 
@@ -223,10 +226,11 @@ package org.openscales.core.format
 	            for(var i:int = 0; i < nums.length; i = i + this.dim) {
 	                x = Number(nums[i]);
 	                y = Number(nums[i+1]);
-	                p.points.push(new Point(x, y));
+	                points.push(new Point(x, y));
 	            }
+	            return points
 	        }
-	        return p;
+	        return points;
     	}
     	
     	override public function write(features:Object):Object {

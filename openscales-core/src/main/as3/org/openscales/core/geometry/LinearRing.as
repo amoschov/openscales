@@ -11,17 +11,12 @@ package org.openscales.core.geometry
 		
 		override public function addComponent(point:Object, index:Number=NaN):Boolean {
 			var added:Boolean = false;
-
-	        var lastPoint:Point = this.components[this.components.length-1];
-	        super.removeComponent([lastPoint]);
-	
+	        	
+			var lastPoint:Point = this.components[this.components.length-1];
 	        if(!isNaN(index) || !point.equals(lastPoint)) {
 	            added = super.addComponent(point, index);
 	        }
 
-	        var firstPoint:Point = this.components[0];
-	        super.addComponent([firstPoint.clone()]);
-	
 	        return added;
 		}
 		

@@ -73,7 +73,7 @@ package org.openscales.core.geometry
 	            components = [components];
 	        }
 	        for(var i:int=0; i < components.length; i++) {
-	            this.addComponent(components[i]);
+            	this.addComponent(components[i]);
 	        }
 		}
 		
