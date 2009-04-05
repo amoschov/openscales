@@ -3,6 +3,10 @@
 	<name>openscales-flex-application</name>
 	<comment></comment>
 	<projects>
+		<project>openscales-commons</project>
+		<project>openscales-core</project>
+		<project>openscales-flex-component</project>
+		<project>openscales-proj4as</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

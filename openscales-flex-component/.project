@@ -3,6 +3,7 @@
 	<name>openscales-flex-component</name>
 	<comment></comment>
 	<projects>
+		<project>openscales-commons</project>
 		<project>openscales-core</project>
 	</projects>
 	<buildSpec>
