@@ -118,7 +118,7 @@
 	<licenses>
 	 	<license>
 			<name>LGPL with some exceptions / clarifications</name>
-			<url>http://openscales.org/mvn-site/license.html</url>
+			<url>http://openscales.org/svn/openscales/</url>
 			<distribution>repo</distribution>
 		</license>
  	</licenses>

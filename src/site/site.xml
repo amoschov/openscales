@@ -14,6 +14,7 @@
 	<body>
 		<menu name="Overview">
 			<item name="Introduction" href="index.html"/>
+			<item name="License" href="license.html"/>
 		</menu>
 		
 		<menu ref="modules" />
