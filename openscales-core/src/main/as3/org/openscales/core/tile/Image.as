@@ -9,16 +9,18 @@ package org.openscales.core.tile
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
 	
-	import org.openscales.core.layer.Layer;
 	import org.openscales.commons.basetypes.Bounds;
 	import org.openscales.commons.basetypes.Pixel;
 	import org.openscales.commons.basetypes.Size;
+	import org.openscales.core.layer.Layer;
 	
 	public class Image extends Tile
 	{
 		public var queued:Boolean = false;
 		
 		private var _tileLoader:Loader = null;
+		
+		private var _tween:GTweeny = null;
 		
 		public function Image(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size):void {
 			super(layer, position, bounds, url, size);
@@ -77,13 +79,8 @@ package org.openscales.core.tile
 				this.addChild(loader);
 				
 				// Tween tile effect 
-				
-	
 				this.layer.addChild(this);
-				this.graphics.beginFill(0xFF00000);
-				this.graphics.drawCircle(0, 0, 4);
-				this.graphics.endFill();
-				new GTweeny(this, 0.3, {alpha:1}); 
+				this._tween = new GTweeny(this, 0.3, {alpha:1}); 
 				this.drawn = true;
 			}
 		}
@@ -96,6 +93,7 @@ package org.openscales.core.tile
 		
 		override public function clear():void {
 			super.clear();
+			this._tween = null;
 	        this.alpha = 0;
 	        this.removeEventListener(Event.COMPLETE, onTileLoadEnd);
 	        this.removeEventListener(IOErrorEvent.IO_ERROR, onTileLoadError);
