@@ -1,6 +1,8 @@
 OpenScales is released under an open source license (http://www.opensource.org/).
 
-OpenScales license is the GNU Lesser Public License (LGPL, available at http://www.gnu.org/copyleft/lgpl.html), with some exclusions (see below). This basically means that you can get the full source code for nothing, so long as you adhere to a few rules.
+OpenScales license is the GNU Lesser Public License (LGPL, available at http://www.gnu.org/copyleft/lgpl.html), 
+with some exclusions (see below). This basically means that you can get the full source code for nothing, so 
+long as you adhere to a few rules.
 
 Under the LGPL you may use OpenScales for any purpose you wish, and modify it if you require, as long as you:
 
@@ -11,7 +13,8 @@ The above is a precis, please do read the full license agreement.
 
 In addition to the LGPL license text, the following exceptions / clarifications to the LGPL conditions apply to OpenScales:
 
-   1. Making modifications to OpenScales configuration files, build configuration such as pom.xml in order to create a customised build setup of OpenScales with the otherwise unmodified source code, does not constitute a derived work
+   1. Making modifications to OpenScales configuration files, build configuration such as pom.xml in order to create a 
+      customised build setup of OpenScales with the otherwise unmodified source code, does not constitute a derived work
    2. Code which subclasses OpenScales classes outside of the OpenScales libraries does not form a derived work
    3. Statically linking the OpenScales libraries into a user application does not make the user application a derived work.
    4. Using source code obsfucation on the OpenScales source code when distributing it is not permitted.
