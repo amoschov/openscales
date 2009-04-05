@@ -1,9 +1,9 @@
-package org.openscales.core.geometry
+package org.openscales.commons.geometry
 {
 	public class MultiPolygon extends Collection
 	{
 		
-		private var componentTypes:Array = ["org.openscales.core.geometry::Polygon"];
+		private var componentTypes:Array = ["org.openscales.commons.geometry::Polygon"];
 		
 		public function MultiPolygon(components:Object = null):void {
 			super(components);

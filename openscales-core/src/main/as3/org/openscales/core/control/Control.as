@@ -5,8 +5,8 @@ package org.openscales.core.control
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.Util;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.commons.Util;
+	import org.openscales.commons.basetypes.Pixel;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.layer.Vector;
 	

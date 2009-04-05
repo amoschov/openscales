@@ -1,9 +1,9 @@
-package org.openscales.core.geometry
+package org.openscales.commons.geometry
 {
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.Util;
+	import org.openscales.commons.Util;
 	
 	/**
 	 * A Collection is exactly what it sounds like: A collection of different Geometries. 

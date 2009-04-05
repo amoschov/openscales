@@ -2,7 +2,7 @@ package org.openscales.core.handler
 {
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.commons.basetypes.Pixel;
 	import org.openscales.core.control.Control;
 
 	public class MouseWheel extends Handler

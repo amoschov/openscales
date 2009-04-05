@@ -2,9 +2,9 @@ package {
 	import flash.display.Sprite;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.commons.basetypes.LonLat;
+	import org.openscales.commons.basetypes.Pixel;
+	import org.openscales.commons.basetypes.Size;
 	import org.openscales.core.control.LayerSwitcher;
 	import org.openscales.core.control.MousePosition;
 	import org.openscales.core.control.Navigation;

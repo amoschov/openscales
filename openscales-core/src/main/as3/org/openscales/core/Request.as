@@ -10,6 +10,8 @@ package org.openscales.core
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	
+	import org.openscales.commons.Util;
+	
 	public class Request
 	{
 		public var options:Object = null;

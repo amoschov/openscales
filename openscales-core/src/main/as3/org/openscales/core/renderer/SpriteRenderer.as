@@ -4,12 +4,12 @@ package org.openscales.core.renderer
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.commons.basetypes.Bounds;
+	import org.openscales.commons.basetypes.Size;
 	import org.openscales.core.control.Control;
 	import org.openscales.core.control.SelectFeature;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.LinearRing;
+	import org.openscales.commons.geometry.Collection;
+	import org.openscales.commons.geometry.LinearRing;
 	import org.openscales.core.handler.Feature;
 	import org.openscales.core.feature.Style;
 	
@@ -80,21 +80,21 @@ package org.openscales.core.renderer
 		public function getNodeType(geometry:Object):String {
 			var nodeType:String = null;
 	        switch (getQualifiedClassName(geometry)) {
-	            case "org.openscales.core.geometry::Point":
+	            case "org.openscales.commons.geometry::Point":
 	                nodeType = "circle";
 	                break;
-	            case "org.openscales.core.geometry::Rectangle":
+	            case "org.openscales.commons.geometry::Rectangle":
 	                nodeType = "rect";
 	                break;
-	            case "org.openscales.core.geometry::LineString":
+	            case "org.openscales.commons.geometry::LineString":
 	                nodeType = "line";
 	                break;
-	            case "org.openscales.core.geometry::LinearRing":
+	            case "org.openscales.commons.geometry::LinearRing":
 	                nodeType = "line";
 	                break;
-	            case "org.openscales.core.geometry::Polygon":
-	            case "org.openscales.core.geometry::Curve":
-	            case "org.openscales.core.geometry::Surface":
+	            case "org.openscales.commons.geometry::Polygon":
+	            case "org.openscales.commons.geometry::Curve":
+	            case "org.openscales.commons.geometry::Surface":
 	                nodeType = "line";
 	                break;
 	            default:
@@ -107,7 +107,7 @@ package org.openscales.core.renderer
 	        style = style  || node.style;
 	        options = options || node.options;
 	
-	        /*if (node.geometryClass == "org.openscales.core.geometry::Point") {
+	        /*if (node.geometryClass == "org.openscales.commons.geometry::Point") {
 	            node.attributes.r = style.pointRadius;
 	        }*/
 	        
@@ -278,9 +278,9 @@ package org.openscales.core.renderer
 		
 		override public function eraseGeometry(geometry:Collection):void {
 
-			if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
-	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
-	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
+			if ((getQualifiedClassName(geometry) == "org.openscales.commons.geometry::MultiPoint") ||
+	            (getQualifiedClassName(geometry) == "org.openscales.commons.geometry::MultiLineString") ||
+	            (getQualifiedClassName(geometry) == "org.openscales.commons.geometry::MultiPolygon")) {
 	            for (var i:int = 0; i < geometry.components.length; i++) {
 	                this.eraseGeometry(geometry.components[i]);
 	            }
@@ -307,9 +307,9 @@ package org.openscales.core.renderer
 	    }
 	    
 	    override public function drawGeometry(geometry:Object, style:Style, featureId:String):Object {
-		    if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
-	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
-	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
+		    if ((getQualifiedClassName(geometry) == "org.openscales.commons.geometry::MultiPoint") ||
+	            (getQualifiedClassName(geometry) == "org.openscales.commons.geometry::MultiLineString") ||
+	            (getQualifiedClassName(geometry) == "org.openscales.commons.geometry::MultiPolygon")) {
 	            for (i = 0; i < geometry.components.length; i++) {
 	                this.drawGeometry(geometry.components[i], style, featureId);
 	            }
@@ -340,9 +340,9 @@ package org.openscales.core.renderer
 	    }
 	    
 	    override public function redrawGeometry(node:*, geometry:Object, style:Style, featureId:String):Object {
-		    if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
-	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
-	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
+		    if ((getQualifiedClassName(geometry) == "org.openscales.commons.geometry::MultiPoint") ||
+	            (getQualifiedClassName(geometry) == "org.openscales.commons.geometry::MultiLineString") ||
+	            (getQualifiedClassName(geometry) == "org.openscales.commons.geometry::MultiPolygon")) {
 	            for (var i:int = 0; i < geometry.components.length; i++) {
 	                this.redrawGeometry(node, geometry.components[i], style, featureId);
 	            }
@@ -372,29 +372,29 @@ package org.openscales.core.renderer
 	            'isStroked': true
 	        };
 	        
-	        if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::LineString") {
+	        if (getQualifiedClassName(geometry) == "org.openscales.commons.geometry::LineString") {
 	        	options.isFilled = false;
 	        }
 	        
 	        this.setStyle(node, style, options);
 
 	        switch (getQualifiedClassName(geometry)) {
-	            case "org.openscales.core.geometry::Point":
+	            case "org.openscales.commons.geometry::Point":
 	                this.drawPoint(node, geometry);
 	                break;
-	            case "org.openscales.core.geometry::LineString":
+	            case "org.openscales.commons.geometry::LineString":
 	                this.drawLineString(node, geometry);
 	                break;
-	            case "org.openscales.core.geometry::LinearRing":
+	            case "org.openscales.commons.geometry::LinearRing":
 	                this.drawLinearRing(node, geometry);
 	                break;
-	            case "org.openscales.core.geometry::Polygon":
+	            case "org.openscales.commons.geometry::Polygon":
 	                this.drawPolygon(node, geometry);
 	                break;
-	            case "org.openscales.core.geometry::Surface":
+	            case "org.openscales.commons.geometry::Surface":
 	                this.drawSurface(node, geometry);
 	                break;
-	            case "org.openscales.core.geometry::Rectangle":
+	            case "org.openscales.commons.geometry::Rectangle":
 	                this.drawRectangle(node, geometry);
 	                break;
 	            default:

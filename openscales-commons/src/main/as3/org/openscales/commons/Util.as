@@ -1,13 +1,13 @@
-package org.openscales.core
+package org.openscales.commons
 {
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.xml.XMLNode;
 		
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.commons.basetypes.Bounds;
+	import org.openscales.commons.basetypes.Pixel;
+	import org.openscales.commons.basetypes.Size;
 	
 	public class Util
 	{

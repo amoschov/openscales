@@ -6,8 +6,8 @@ package org.openscales.core.control
 	
 	import org.openscales.core.control.Control;
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.commons.basetypes.LonLat;
+	import org.openscales.commons.basetypes.Pixel;
 
 	public class MousePosition extends Control
 	{

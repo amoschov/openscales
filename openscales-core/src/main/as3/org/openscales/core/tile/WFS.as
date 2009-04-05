@@ -6,9 +6,9 @@ package org.openscales.core.tile
 	
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.OpenScales;
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.commons.basetypes.Bounds;
+	import org.openscales.commons.basetypes.Pixel;
+	import org.openscales.commons.basetypes.Size;
 	import org.openscales.core.format.GML;
 	import org.openscales.core.layer.WFS;
 	

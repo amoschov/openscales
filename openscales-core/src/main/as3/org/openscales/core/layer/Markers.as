@@ -1,9 +1,9 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.Marker;
-	import org.openscales.core.Util;
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.commons.Util;
+	import org.openscales.commons.basetypes.Bounds;
+	import org.openscales.commons.basetypes.Pixel;
 
 	public class Markers extends Layer
 	{

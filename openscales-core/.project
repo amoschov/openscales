@@ -3,6 +3,7 @@
 	<name>openscales-core</name>
 	<comment></comment>
 	<projects>
+		<project>openscales-commons</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

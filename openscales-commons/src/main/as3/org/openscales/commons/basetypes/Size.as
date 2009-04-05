@@ -1,4 +1,4 @@
-package org.openscales.core.basetypes
+package org.openscales.commons.basetypes
 {
 	/**
 	 * Instances of this class represent a width/height pair.

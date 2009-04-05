@@ -7,8 +7,9 @@ package org.openscales.core
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
 	
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.commons.Util;
+	import org.openscales.commons.basetypes.Pixel;
+	import org.openscales.commons.basetypes.Size;
 	
 	public class Icon extends Sprite
 	{

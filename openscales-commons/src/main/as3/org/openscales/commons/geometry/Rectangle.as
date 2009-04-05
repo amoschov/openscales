@@ -1,6 +1,6 @@
-package org.openscales.core.geometry
+package org.openscales.commons.geometry
 {
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.commons.basetypes.Bounds;
 	
 	public class Rectangle extends Geometry
 	{

@@ -3,7 +3,7 @@ package org.openscales.flex {
 	import mx.core.UIComponent;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.commons.basetypes.Size;
 
 	public class FxMap extends UIComponent {
 		

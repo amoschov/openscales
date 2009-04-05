@@ -1,6 +1,6 @@
 package org.openscales.core.format
 {
-	import org.openscales.core.Util;
+	import org.openscales.commons.Util;
 	
 	/**
 	 * Base class for format reading/writing a variety of formats.

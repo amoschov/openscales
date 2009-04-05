@@ -1,7 +1,7 @@
 package org.openscales.core.control
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.Util;
+	import org.openscales.commons.Util;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.handler.Feature;

@@ -1,9 +1,9 @@
-package org.openscales.core.geometry
+package org.openscales.commons.geometry
 {
 	public class Polygon extends Collection
 	{
 		
-		private var componentTypes:Array = ["org.openscales.core.geometry::LinearRing"];
+		private var componentTypes:Array = ["org.openscales.commons.geometry::LinearRing"];
 		
 		public function Polygon(components:Object = null):void {
 			super(components);

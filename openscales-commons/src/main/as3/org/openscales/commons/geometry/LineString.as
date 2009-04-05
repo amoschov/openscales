@@ -1,4 +1,4 @@
-package org.openscales.core.geometry
+package org.openscales.commons.geometry
 {	
 	public class LineString extends Curve
 	{

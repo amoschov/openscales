@@ -3,16 +3,16 @@ package org.openscales.core.format
 	import flash.utils.getQualifiedClassName;
 	import flash.xml.XMLNode;
 	
-	import org.openscales.core.Util;
+	import org.openscales.commons.Util;
 	import org.openscales.core.feature.Vector;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.LinearRing;
-	import org.openscales.core.geometry.MultiLineString;
-	import org.openscales.core.geometry.MultiPoint;
-	import org.openscales.core.geometry.MultiPolygon;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.Polygon;
+	import org.openscales.commons.geometry.Collection;
+	import org.openscales.commons.geometry.LineString;
+	import org.openscales.commons.geometry.LinearRing;
+	import org.openscales.commons.geometry.MultiLineString;
+	import org.openscales.commons.geometry.MultiPoint;
+	import org.openscales.commons.geometry.MultiPolygon;
+	import org.openscales.commons.geometry.Point;
+	import org.openscales.commons.geometry.Polygon;
 	
 	/**
 	 * Read/Wite GML. Supports the GML simple features profile.
@@ -264,8 +264,8 @@ package org.openscales.core.format
     	
     	public function buildGeometryNode(geometry:Object):XML {
 	        var gml:XML;
-	        if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon"
-	            || getQualifiedClassName(geometry) == "org.openscales.core.geometry::Polygon") {
+	        if (getQualifiedClassName(geometry) == "org.openscales.commons.geometry::MultiPolygon"
+	            || getQualifiedClassName(geometry) == "org.openscales.commons.geometry::Polygon") {
 	                gml = new XML("<" + this.gmlprefix + ":MultiPolygon xmlns:" + this.gmlprefix + "=\"" + this.gmlns + "\"></" + this.gmlprefix + ":MultiPolygon>");
 
 	                var polygonMember:XML = new XML("<" + this.gmlprefix + ":polygonMember xmlns:" + this.gmlprefix + "=\"" + this.gmlns + "\"></" + this.gmlprefix + ":polygonMember>");
@@ -281,8 +281,8 @@ package org.openscales.core.format
 	                
 	                gml.appendChild(polygonMember);
 	            }
-	        else if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString"
-	                 || getQualifiedClassName(geometry) == "org.openscales.core.geometry::LineString") {
+	        else if (getQualifiedClassName(geometry) == "org.openscales.commons.geometry::MultiLineString"
+	                 || getQualifiedClassName(geometry) == "org.openscales.commons.geometry::LineString") {
 	                     gml = new XML("<" + this.gmlprefix + ":MultiLineString xmlns:" + this.gmlprefix + "=\"" + this.gmlns + "\"></" + this.gmlprefix + ":MultiLineString>");
 	                     
 	                     var lineStringMember:XML = new XML("<" + this.gmlprefix + ":lineStringMember xmlns:" + this.gmlprefix + "=\"" + this.gmlns + "\"></" + this.gmlprefix + ":lineStringMember>");
@@ -294,7 +294,7 @@ package org.openscales.core.format
 	                     
 	                     gml.appendChild(lineStringMember);
 	                 }
-	        else if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") {
+	        else if (getQualifiedClassName(geometry) == "org.openscales.commons.geometry::MultiPoint") {
 	                     
 	                gml = new XML("<" + this.gmlprefix + ":MultiPoint xmlns:" + this.gmlprefix + "=\"" + this.gmlns + "\"></" + this.gmlprefix + ":MultiPoint>");
 	                var parts:Object = "";
@@ -307,7 +307,7 @@ package org.openscales.core.format
 	                    pointMember.appendChild(point);
 	                    gml.appendChild(pointMember);
 	               }     
-	        } else if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::Point") {
+	        } else if (getQualifiedClassName(geometry) == "org.openscales.commons.geometry::Point") {
 	        	parts = geometry;
 	        	gml = new XML("<" + this.gmlprefix + ":Point xmlns:" + this.gmlprefix + "=\"" + this.gmlns + "\"></" + this.gmlprefix + ":Point>");
 	        	gml.appendChild(this.buildCoordinatesNode(parts));

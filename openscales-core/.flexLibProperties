@@ -10,11 +10,6 @@
 <classEntry path="org.openscales.core.Request"/>
 <classEntry path="org.openscales.core.StringUtils"/>
 <classEntry path="org.openscales.core.Timer"/>
-<classEntry path="org.openscales.core.Util"/>
-<classEntry path="org.openscales.core.basetypes.Bounds"/>
-<classEntry path="org.openscales.core.basetypes.LonLat"/>
-<classEntry path="org.openscales.core.basetypes.Pixel"/>
-<classEntry path="org.openscales.core.basetypes.Size"/>
 <classEntry path="org.openscales.core.control.ArgParser"/>
 <classEntry path="org.openscales.core.control.Button"/>
 <classEntry path="org.openscales.core.control.Control"/>
@@ -42,18 +37,6 @@
 <classEntry path="org.openscales.core.format.GML"/>
 <classEntry path="org.openscales.core.format.WFS"/>
 <classEntry path="org.openscales.core.format.WKT"/>
-<classEntry path="org.openscales.core.geometry.Collection"/>
-<classEntry path="org.openscales.core.geometry.Curve"/>
-<classEntry path="org.openscales.core.geometry.Geometry"/>
-<classEntry path="org.openscales.core.geometry.LineString"/>
-<classEntry path="org.openscales.core.geometry.LinearRing"/>
-<classEntry path="org.openscales.core.geometry.MultiLineString"/>
-<classEntry path="org.openscales.core.geometry.MultiPoint"/>
-<classEntry path="org.openscales.core.geometry.MultiPolygon"/>
-<classEntry path="org.openscales.core.geometry.Point"/>
-<classEntry path="org.openscales.core.geometry.Polygon"/>
-<classEntry path="org.openscales.core.geometry.Rectangle"/>
-<classEntry path="org.openscales.core.geometry.Surface"/>
 <classEntry path="org.openscales.core.handler.Box"/>
 <classEntry path="org.openscales.core.handler.Click"/>
 <classEntry path="org.openscales.core.handler.Drag"/>
@@ -105,8 +88,8 @@
 <resourceEntry destPath="org/openscales/core/img/marker-green.png" sourcePath="org/openscales/core/img/marker-green.png"/>
 <resourceEntry destPath="org/openscales/core/img/measuring-stick-off.png" sourcePath="org/openscales/core/img/measuring-stick-off.png"/>
 <resourceEntry destPath="org/openscales/core/img/zoom-minus-mini.png" sourcePath="org/openscales/core/img/zoom-minus-mini.png"/>
-<resourceEntry destPath="org/openscales/core/img/panning-hand-on.png" sourcePath="org/openscales/core/img/panning-hand-on.png"/>
 <resourceEntry destPath="org/openscales/core/img/marker-blue.png" sourcePath="org/openscales/core/img/marker-blue.png"/>
+<resourceEntry destPath="org/openscales/core/img/panning-hand-on.png" sourcePath="org/openscales/core/img/panning-hand-on.png"/>
 <resourceEntry destPath="org/openscales/core/img/layer-switcher-minimize.png" sourcePath="org/openscales/core/img/layer-switcher-minimize.png"/>
 <resourceEntry destPath="org/openscales/core/img/slider.png" sourcePath="org/openscales/core/img/slider.png"/>
 <resourceEntry destPath="org/openscales/core/img/layer-switcher-maximize.png" sourcePath="org/openscales/core/img/layer-switcher-maximize.png"/>

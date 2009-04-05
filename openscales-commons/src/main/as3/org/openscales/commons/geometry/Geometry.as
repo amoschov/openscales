@@ -1,13 +1,11 @@
-package org.openscales.core.geometry
+package org.openscales.commons.geometry
 {
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.Util;
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.feature.Vector;
-	import org.openscales.core.format.WKT;
+	import org.openscales.commons.Util;
+	import org.openscales.commons.basetypes.Bounds;
+	import org.openscales.commons.basetypes.LonLat;
 	
 	/**
 	 * A Geometry is a description of a geographic object.
@@ -102,10 +100,5 @@ package org.openscales.core.geometry
 			return 0.0;
 		}
 		
-		public function toString():String {
-			return new WKT().write(
-	            new Vector(this)
-	        ).toString();
-		}
 	}
 }

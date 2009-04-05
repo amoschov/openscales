@@ -1,7 +1,7 @@
 package org.openscales.core.control
 {
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.commons.basetypes.LonLat;
+	import org.openscales.commons.basetypes.Pixel;
 	import org.openscales.core.handler.Drag;
 
 	public class DragPan extends Control

@@ -1,7 +1,7 @@
 package org.openscales.core.layer
 {
-	import org.openscales.core.Util;
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.commons.Util;
+	import org.openscales.commons.basetypes.Bounds;
 	
 	public class OSM extends TMS
 	{

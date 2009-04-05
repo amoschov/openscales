@@ -1,9 +1,9 @@
 package org.openscales.core.popup
 {
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.commons.basetypes.Bounds;
+	import org.openscales.commons.basetypes.LonLat;
+	import org.openscales.commons.basetypes.Pixel;
+	import org.openscales.commons.basetypes.Size;
 	
 	public class Anchored extends Popup
 	{

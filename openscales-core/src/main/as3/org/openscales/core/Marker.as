@@ -3,10 +3,10 @@ package org.openscales.core
 	import flash.display.Bitmap;
 	import flash.events.MouseEvent;
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.commons.basetypes.Bounds;
+	import org.openscales.commons.basetypes.LonLat;
+	import org.openscales.commons.basetypes.Pixel;
+	import org.openscales.commons.basetypes.Size;
 	import org.openscales.core.popup.Popup;
 	
 	public class Marker extends Icon

@@ -1,7 +1,7 @@
 
 package org.openscales.core.layer
 {
-	import org.openscales.core.Util;
+	import org.openscales.commons.Util;
 	
 	public class WMSC extends WMS
 	{

@@ -2,9 +2,9 @@ package org.openscales.core.control
 {
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.commons.basetypes.LonLat;
+	import org.openscales.commons.basetypes.Pixel;
+	import org.openscales.commons.basetypes.Size;
 	import org.openscales.core.handler.Click;
 	import org.openscales.core.handler.MouseWheel;
 

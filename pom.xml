@@ -11,8 +11,8 @@
 	
 	<properties>
 		<flex.version>3.3.0.4852</flex.version>
-		<compiler.mojo.version>2.0.1</compiler.mojo.version>
-		<asdoc.mojo.version>2.0.3</asdoc.mojo.version>
+		<compiler.mojo.version>2.0.3</compiler.mojo.version>
+		<asdoc.mojo.version>2.0.1</asdoc.mojo.version>
 		<flex.target.player.version>9.0.0</flex.target.player.version>
 	</properties>
 	
@@ -32,10 +32,12 @@
 	</profiles>
 	
 	<modules>
+		<module>openscales-commons</module>
 		<module>openscales-core</module>
 		<module>openscales-application</module>
 		<module>openscales-flex-application</module>
 		<module>openscales-flex-component</module>
+		<module>openscales-proj4as</module>
 	</modules>
 	
 	<issueManagement>

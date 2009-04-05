@@ -3,16 +3,16 @@ package org.openscales.core.format
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.StringUtils;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.commons.basetypes.Pixel;
 	import org.openscales.core.feature.Vector;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.LinearRing;
-	import org.openscales.core.geometry.MultiLineString;
-	import org.openscales.core.geometry.MultiPoint;
-	import org.openscales.core.geometry.MultiPolygon;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.Polygon;
+	import org.openscales.commons.geometry.Geometry;
+	import org.openscales.commons.geometry.LineString;
+	import org.openscales.commons.geometry.LinearRing;
+	import org.openscales.commons.geometry.MultiLineString;
+	import org.openscales.commons.geometry.MultiPoint;
+	import org.openscales.commons.geometry.MultiPolygon;
+	import org.openscales.commons.geometry.Point;
+	import org.openscales.commons.geometry.Polygon;
 	
 	public class WKT extends Format
 	{

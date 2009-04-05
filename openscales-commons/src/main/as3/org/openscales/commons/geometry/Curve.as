@@ -1,9 +1,9 @@
-package org.openscales.core.geometry
+package org.openscales.commons.geometry
 {
 	public class Curve extends MultiPoint
 	{
 		
-		private var componentTypes:Array = ["org.openscales.core.geometry::Point"];
+		private var componentTypes:Array = ["org.openscales.commons.geometry::Point"];
 		
 		public function Curve(points:Object):void {
 			super(points);
