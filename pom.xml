@@ -60,16 +60,22 @@
 		<developer>
 			<id>bouiaw</id>
 			<name>Sebastien Deleuze</name>
+			<organization>Atos Worldline</organization>
+			<organizationUrl>http://www.atosworldline.com/</organizationUrl>
 			<timezone>+1</timezone>
 		</developer>
 		<developer>
 			<id>aba</id>
 			<name>Aurélien Barbier-Accari</name>
+			<organization>Atos Worldline</organization>
+			<organizationUrl>http://www.atosworldline.com/</organizationUrl>
 			<timezone>+1</timezone>
 		</developer>
 		<developer>
 			<id>romaric</id>
 			<name>Romaric Pascal</name>
+			<organization>Atos Worldline</organization>
+			<organizationUrl>http://www.atosworldline.com/</organizationUrl>
 			<timezone>+1</timezone>
 		</developer>
 		<developer>
@@ -82,26 +88,36 @@
 		<developer>
 			<id>mauri</id>
 			<name>Mauricio Miranda</name>
+			<organization>Xoomcode</organization>
+			<organizationUrl>http://www.xoomcode.com/</organizationUrl>
 			<timezone>-3</timezone>
 		</developer>
 		<developer>
 			<id>fpanettieri</id>
 			<name>Fabio Panettieri</name>
-			<timezone>-1</timezone>
+			<organization>Xoomcode</organization>
+			<organizationUrl>http://www.xoomcode.com/</organizationUrl>
+			<timezone>-3</timezone>
 		</developer>
 		<developer>
 			<id>thibautm</id>
 			<name>Thibaut Muller</name>
+			<organization>Atos Worldline</organization>
+			<organizationUrl>http://www.atosworldline.com/</organizationUrl>
 			<timezone>+1</timezone>
 		</developer>
 		<developer>
 			<id>jeremiep</id>
 			<name>Jérémie Perera</name>
+			<organization>Atos Worldline</organization>
+			<organizationUrl>http://www.atosworldline.com/</organizationUrl>
 			<timezone>+1</timezone>
 		</developer>
 		<developer>
 			<id>fcellier</id>
 			<name>Fabien Cellier</name>
+			<organization>Atos Worldline</organization>
+			<organizationUrl>http://www.atosworldline.com/</organizationUrl>
 			<timezone>+1</timezone>
 		</developer>
 	</developers>
@@ -118,7 +134,7 @@
 	<licenses>
 	 	<license>
 			<name>LGPL with some exceptions / clarifications</name>
-			<url>http://openscales.org/svn/openscales/</url>
+			<url>http://openscales.org/svn/openscales/trunk/license.txt</url>
 			<distribution>repo</distribution>
 		</license>
  	</licenses>
