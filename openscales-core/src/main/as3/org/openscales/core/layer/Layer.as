@@ -204,7 +204,7 @@ package org.openscales.core.layer
 	                    Math.floor(Math.log(ratio) / Math.log(2)) + 1;
 	            }
 
-	            for (i=0; i < confProps.numZoomLevels; i++) {
+ 	            for (i=0; i < confProps.numZoomLevels; i++) {
 	                var res:Number = confProps.maxResolution / Math.pow(2, i)
 	                confProps.resolutions.push(res);
 	            }    

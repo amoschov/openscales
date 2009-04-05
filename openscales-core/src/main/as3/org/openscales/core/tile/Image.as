@@ -61,6 +61,7 @@ package org.openscales.core.tile
 	        	this.url = this.layer.getURL(this.bounds);
 	        	
 	        _tileLoader.load(new URLRequest(this.url));
+	        trace(this.url);
 	        _tileLoader.name=this.url;
 	        _tileLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onTileLoadEnd, false, 0, true);
 			_tileLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onTileLoadError, false, 0, true);
@@ -74,10 +75,15 @@ package org.openscales.core.tile
 				var loaderInfo:LoaderInfo = event.target as LoaderInfo;
 				var loader:Loader = loaderInfo.loader as Loader;
 				this.addChild(loader);
+				
 				// Tween tile effect 
-				new GTweeny(this, 0.3, {alpha:1}); 
+				
 	
 				this.layer.addChild(this);
+				this.graphics.beginFill(0xFF00000);
+				this.graphics.drawCircle(0, 0, 4);
+				this.graphics.endFill();
+				new GTweeny(this, 0.3, {alpha:1}); 
 				this.drawn = true;
 			}
 		}

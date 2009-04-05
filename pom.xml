@@ -38,6 +38,7 @@
 		<module>openscales-flex-application</module>
 		<module>openscales-flex-component</module>
 		<module>openscales-proj4as</module>
+		<module>openscales-testing</module>
 	</modules>
 	
 	<issueManagement>

@@ -200,7 +200,7 @@ package org.openscales.core.layer
 	        var minCols:Number = Math.ceil(viewSize.w/this.tileSize.w) +
 	                      Math.max(1, 2 * this.buffer);
 	        
-	        var extent:Bounds = this.map.maxExtent;
+	        var extent:Bounds = this.maxExtent;
 	        var resolution:Number = this.map.resolution;
 	        var tilelon:Number = resolution * this.tileSize.w;
 	        var tilelat:Number = resolution * this.tileSize.h;
@@ -580,7 +580,7 @@ package org.openscales.core.layer
 		}
 		
 		public function getTileBounds(viewPortPx:Pixel):Bounds {
-	        var maxExtent:Bounds = this.map.maxExtent;
+	        var maxExtent:Bounds = this.maxExtent;
 	        var resolution:Number = this.resolution;
 	        var tileMapWidth:Number = resolution * this.tileSize.w;
 	        var tileMapHeight:Number = resolution * this.tileSize.h;
