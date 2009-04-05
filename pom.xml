@@ -117,9 +117,9 @@
 	</ciManagement>
 	<licenses>
 	 	<license>
-			<name>LGPL (GNU Lesser General Public License)</name>
-			<url>http://www.gnu.org/licenses/lgpl-3.0-standalone.html</url>
-			<distribution>manual</distribution>
+			<name>LGPL with some exceptions / clarifications</name>
+			<url>http://openscales.org/mvn-site/license.html</url>
+			<distribution>repo</distribution>
 		</license>
  	</licenses>
 	
