@@ -3,6 +3,7 @@
 <includeClasses>
 <classEntry path="org.openscales.proj4as.Proj4as"/>
 <classEntry path="org.openscales.proj4as.Projection"/>
+<classEntry path="org.openscales.proj4as.projections.IdentityTest"/>
 </includeClasses>
 <includeResources/>
 <namespaceManifests/>
