@@ -14,9 +14,13 @@ package org.openscales.core.tile
 	import org.openscales.commons.basetypes.Size;
 	import org.openscales.core.layer.Layer;
 	
+	/**
+	 * Instances of OpenLayers.Tile.Image are used to manage the image tiles
+	 * used by various layers.
+	 */
 	public class Image extends Tile
 	{
-		public var queued:Boolean = false;
+		private var _queued:Boolean = false;
 		
 		private var _tileLoader:Loader = null;
 		
@@ -100,7 +104,14 @@ package org.openscales.core.tile
 	        
 	        graphics.clear();
         }
-		
+        
+        public function get queued():Boolean {
+        	return this._queued;
+        }
+        
+        public function set queued(value:Boolean):void {
+        	this._queued = value;
+        }
 		
 	}
 }

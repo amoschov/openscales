@@ -5,9 +5,10 @@ package org.openscales.core.renderer
 	
 	import org.openscales.commons.basetypes.Bounds;
 	import org.openscales.commons.basetypes.Size;
+	import org.openscales.commons.geometry.Collection;
+	import org.openscales.core.Map;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Vector;
-	import org.openscales.commons.geometry.Collection;
 	
 	/**
 	 * This is the base class for all renderers.
@@ -32,7 +33,7 @@ package org.openscales.core.renderer
 	    
 	    public var resolution:Number;
 
-	    public var map:Object = null;
+	    public var map:Map = null;
 	    
 	    public function Renderer(container:Sprite):void {
 	    	this.container = container;

@@ -4,25 +4,24 @@ package org.openscales.core.tile
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	
-	import org.openscales.core.layer.Layer;
-	import org.openscales.core.OpenScales;
 	import org.openscales.commons.basetypes.Bounds;
 	import org.openscales.commons.basetypes.Pixel;
 	import org.openscales.commons.basetypes.Size;
+	import org.openscales.core.OpenScales;
 	import org.openscales.core.format.GML;
+	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.WFS;
 	
+	/**
+	 * WFS single tile
+	 */
 	public class WFS extends Tile
 	{
 		
-		private var features:Array = null;
-
-    	private var urlW:String = null;
-		
+		private var _features:Array = null;		
 		
 		public function WFS(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size):void {
 			super(layer, position, bounds, url, size);
-			this.urlW = url;        
         	this.features = new Array();
 		}
 		
@@ -30,7 +29,6 @@ package org.openscales.core.tile
 			super.destroy();
 	        this.destroyAllFeatures();
 	        this.features = null;
-	        this.urlW = null;
 		}
 		
 		override public function clear():void {
@@ -82,6 +80,14 @@ package org.openscales.core.tile
 	            feature.destroy();
 	        }
 		}
+		
+		public function get features():Array {
+        	return this._features;
+        }
+        
+        public function set features(value:Array):void {
+        	this._features = value;
+        }
 
 	}
 }

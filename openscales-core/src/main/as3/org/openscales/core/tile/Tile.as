@@ -10,33 +10,29 @@ package org.openscales.core.tile
 	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.Layer;
 
+	/**
+	 *  This is a class designed to designate a single tile, however
+ 	 *  it is explicitly designed to do relatively little. Tiles store 
+	 *  information about themselves -- such as the URL that they are related
+	 *  to, and their size. 
+	 */
 	public class Tile extends Sprite
 	{
 		
-		public var id:String = null;
-		public var layer:Layer = null;
-		public var url:String = null;
-		public var bounds:Bounds = null;
-		public var size:Size = null;
-		public var drawn:Boolean = false;
-		public var postBody:Object = null;
-		public var BBOX:Bounds = null;
-		public var onLoadStart:Function = null;
-		public var onLoadEnd:Function = null;
+		private var _layer:Layer = null;
+		private var _url:String = null;
+		private var _bounds:Bounds = null;
+		private var _size:Size = null;
+		private var _drawn:Boolean = false;
+		private var _onLoadStart:Function = null;
+		private var _onLoadEnd:Function = null;
 		
-		public function Tile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size, params:Object = null):void {
+		public function Tile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size):void {
 			this.layer = layer;
 	        this.position = position;
 	        this.bounds = bounds;
 	        this.url = url;
-	        this.size = size;
-	        if (params != null) {
-	        	this.postBody = params.postBody;
-	        	this.BBOX = params.BBOX;
-	        }
-
-	        this.id = Util.createUniqueID("Tile_");
-	        
+	        this.size = size;       
 		}
 		
 		public function destroy():void {
@@ -100,5 +96,64 @@ package org.openscales.core.tile
 			}
 		}
 		
+		public function get layer():Layer {
+        	return this._layer;
+        }
+        
+        public function set layer(value:Layer):void {
+        	this._layer = value;
+        }
+        
+        public function get url():String {
+        	return this._url;
+        }
+        
+        public function set url(value:String):void {
+        	this._url = value;
+        }
+        
+        public function get bounds():Bounds {
+        	return this._bounds;
+        }
+        
+        public function set bounds(value:Bounds):void {
+        	this._bounds = value;
+        }
+        
+        public function get size():Size {
+        	return this._size;
+        }
+        
+        public function set size(value:Size):void {
+        	this._size = value;
+        }
+        
+        public function get drawn():Boolean {
+        	return this._drawn;
+        }
+        
+        public function set drawn(value:Boolean):void {
+        	this._drawn = value;
+        }
+        
+        public function get onLoadStart():Function {
+        	return this._onLoadStart;
+        }
+        
+        public function set onLoadStart(value:Function):void {
+        	this._onLoadStart = value;
+        }
+        
+        public function get onLoadEnd():Function {
+        	return this._onLoadEnd;
+        }
+        
+        public function set onLoadEnd(value:Function):void {
+        	this._onLoadEnd = value;
+        }
+
+		
+		
+       
 	}
 }

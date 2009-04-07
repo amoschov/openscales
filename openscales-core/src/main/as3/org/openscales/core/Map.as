@@ -44,7 +44,7 @@ package org.openscales.core
 		private var _layers:Array = null;
 		private var _baseLayer:Layer = null;
 		private var _controls:Array = null;
-		public var _popups:Array = null;
+		private var _popups:Array = null;
 		private var _size:Size = null;
 		private var _tileSize:Size = null;
 		private var _center:LonLat = null;
