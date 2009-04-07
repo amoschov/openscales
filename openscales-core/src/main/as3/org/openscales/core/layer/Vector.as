@@ -3,12 +3,12 @@ package org.openscales.core.layer
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.Map;
 	import org.openscales.commons.Util;
 	import org.openscales.commons.basetypes.Bounds;
+	import org.openscales.commons.geometry.Collection;
+	import org.openscales.core.Map;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Vector;
-	import org.openscales.commons.geometry.Collection;
 	import org.openscales.core.renderer.Renderer;
 	import org.openscales.core.renderer.SpriteRenderer;
 	
@@ -106,6 +106,7 @@ package org.openscales.core.layer
 	            //this.y = - int(this.map.layerContainer.y);
 	            var extent:Bounds = this.map.extent;
 	            this.renderer.setExtent(extent);
+	            
 	        }
 	
 	        if (!this.drawn || zoomChanged) {
@@ -113,6 +114,7 @@ package org.openscales.core.layer
 	            for(var i:int = 0; i < this.features.length; i++) {
 	                var feature:org.openscales.core.feature.Vector = this.features[i];
 	                this.drawFeature(feature);
+	                
 	            }
 	        }
 	    }
@@ -171,8 +173,11 @@ package org.openscales.core.layer
 	    
 	    public function destroyFeatures():void {
 	    	this.selectedFeatures = new Array();
-	        for (var i:int = this.features.length - 1; i >= 0; i--) {
-	            this.features[i].destroy();
+	    	var destroyed:org.openscales.core.feature.Vector = null;
+	        while(this.features.length > 0) {
+	            destroyed = this.features.shift();
+	            destroyed.destroy();
+	            destroyed = null;
 	        }
 	    }
 	    

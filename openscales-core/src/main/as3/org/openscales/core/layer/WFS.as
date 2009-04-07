@@ -142,21 +142,23 @@ package org.openscales.core.layer
 			            
 			            
 			            else {
-			            	
+
 			            	if ( !this.featuresBbox.containsBounds(tileBounds)) {
-				     
+				     			
+				     			if (this.vectorMode) {
+			                    	this.destroyFeatures();
+			                	}
+			                	
 				                this.featuresBbox.extendFromBounds((tileBounds));
 				                
 				                url = this.getFullRequestString();
 			            		params = { BBOX:this.featuresBbox.toBBOX() };
 			            		url += "&" + Util.getParameterString(params);
 			            		
-			            		this.tile.url = url;
-			            		this.tile.loadFeaturesForRegion(this.tile.requestSuccess);
-				                
-			            	}
-			            	 	
-			            	
+			            		 
+			            		this.tile.url = url;			            		
+			            		this.tile.loadFeaturesForRegion(this.tile.requestSuccess);				                
+			            	}		            	
 			            } 
 			        }
 			 	}
