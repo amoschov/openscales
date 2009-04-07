@@ -55,6 +55,7 @@ package org.openscales.core.tile
 			var wfsLayer:org.openscales.core.layer.WFS = this.layer as org.openscales.core.layer.WFS;
 			
 			if (wfsLayer && wfsLayer.vectorMode) {
+				wfsLayer.destroyFeatures();
 				wfsLayer.renderer.clear();
 			}
 			

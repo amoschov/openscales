@@ -144,11 +144,7 @@ package org.openscales.core.layer
 			            else {
 
 			            	if ( !this.featuresBbox.containsBounds(tileBounds)) {
-				     			
-				     			if (this.vectorMode) {
-			                    	this.destroyFeatures();
-			                	}
-			                	
+				     						                	
 				                this.featuresBbox.extendFromBounds((tileBounds));
 				                
 				                url = this.getFullRequestString();
