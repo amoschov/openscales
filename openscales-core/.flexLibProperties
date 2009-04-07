@@ -9,7 +9,6 @@
 <classEntry path="org.openscales.core.OpenScales"/>
 <classEntry path="org.openscales.core.Request"/>
 <classEntry path="org.openscales.core.StringUtils"/>
-<classEntry path="org.openscales.core.Timer"/>
 <classEntry path="org.openscales.core.control.ArgParser"/>
 <classEntry path="org.openscales.core.control.Button"/>
 <classEntry path="org.openscales.core.control.Control"/>
@@ -46,21 +45,21 @@
 <classEntry path="org.openscales.core.handler.Path"/>
 <classEntry path="org.openscales.core.handler.Point"/>
 <classEntry path="org.openscales.core.handler.Polygon"/>
-<classEntry path="org.openscales.core.layer.CycleMap"/>
 <classEntry path="org.openscales.core.layer.GeoRSS"/>
 <classEntry path="org.openscales.core.layer.Grid"/>
 <classEntry path="org.openscales.core.layer.HTTPRequest"/>
 <classEntry path="org.openscales.core.layer.Layer"/>
-<classEntry path="org.openscales.core.layer.Maplint"/>
-<classEntry path="org.openscales.core.layer.Mapnik"/>
 <classEntry path="org.openscales.core.layer.Markers"/>
-<classEntry path="org.openscales.core.layer.OSM"/>
-<classEntry path="org.openscales.core.layer.Osmarender"/>
 <classEntry path="org.openscales.core.layer.TMS"/>
 <classEntry path="org.openscales.core.layer.Vector"/>
 <classEntry path="org.openscales.core.layer.WFS"/>
 <classEntry path="org.openscales.core.layer.WMS"/>
 <classEntry path="org.openscales.core.layer.WMSC"/>
+<classEntry path="org.openscales.core.layer.osm.CycleMap"/>
+<classEntry path="org.openscales.core.layer.osm.Maplint"/>
+<classEntry path="org.openscales.core.layer.osm.Mapnik"/>
+<classEntry path="org.openscales.core.layer.osm.OSM"/>
+<classEntry path="org.openscales.core.layer.osm.Osmarender"/>
 <classEntry path="org.openscales.core.popup.Anchored"/>
 <classEntry path="org.openscales.core.popup.AnchoredBubble"/>
 <classEntry path="org.openscales.core.popup.Popup"/>
@@ -88,8 +87,8 @@
 <resourceEntry destPath="org/openscales/core/img/marker-green.png" sourcePath="org/openscales/core/img/marker-green.png"/>
 <resourceEntry destPath="org/openscales/core/img/measuring-stick-off.png" sourcePath="org/openscales/core/img/measuring-stick-off.png"/>
 <resourceEntry destPath="org/openscales/core/img/zoom-minus-mini.png" sourcePath="org/openscales/core/img/zoom-minus-mini.png"/>
-<resourceEntry destPath="org/openscales/core/img/marker-blue.png" sourcePath="org/openscales/core/img/marker-blue.png"/>
 <resourceEntry destPath="org/openscales/core/img/panning-hand-on.png" sourcePath="org/openscales/core/img/panning-hand-on.png"/>
+<resourceEntry destPath="org/openscales/core/img/marker-blue.png" sourcePath="org/openscales/core/img/marker-blue.png"/>
 <resourceEntry destPath="org/openscales/core/img/layer-switcher-minimize.png" sourcePath="org/openscales/core/img/layer-switcher-minimize.png"/>
 <resourceEntry destPath="org/openscales/core/img/slider.png" sourcePath="org/openscales/core/img/slider.png"/>
 <resourceEntry destPath="org/openscales/core/img/layer-switcher-maximize.png" sourcePath="org/openscales/core/img/layer-switcher-maximize.png"/>

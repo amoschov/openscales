@@ -1,4 +1,4 @@
-package org.openscales.core.layer
+package org.openscales.core.layer.osm
 {
 	import org.openscales.commons.Util;
 	

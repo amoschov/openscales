@@ -1,15 +1,15 @@
 package {
 	import flash.display.Sprite;
 	
-	import org.openscales.core.Map;
 	import org.openscales.commons.basetypes.LonLat;
 	import org.openscales.commons.basetypes.Pixel;
 	import org.openscales.commons.basetypes.Size;
+	import org.openscales.core.Map;
 	import org.openscales.core.control.LayerSwitcher;
 	import org.openscales.core.control.MousePosition;
 	import org.openscales.core.control.Navigation;
 	import org.openscales.core.control.PanZoomBar;
-	import org.openscales.core.layer.Mapnik;
+	import org.openscales.core.layer.osm.Mapnik;
 
 	[SWF(width='600', height='400')]
 	public class OpenscalesApplication extends Sprite
