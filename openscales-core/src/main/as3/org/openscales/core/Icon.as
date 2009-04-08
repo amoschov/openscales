@@ -21,7 +21,6 @@ package org.openscales.core
 
 	    public var calculateOffset:Function = null;    
 	    
-	    
 	    private var _iconLoader:Loader = null;
 	    
 	    public function Icon(url:String, size:Size = null, offset:Pixel = null, calculateOffset:Function = null):void {	

@@ -284,10 +284,6 @@ package org.openscales.core
 	        }
 	
 	        popup.map = this;
-	        popup.positionP = this.getPixelFromLonLat(popup.lonlat);
-	        
-	        popup.positionP.x +=25;
-	        popup.positionP.y +=30;
 	        
 	        this._popups.push(popup);
 	        popup.draw();

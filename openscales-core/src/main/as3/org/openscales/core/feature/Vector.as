@@ -21,60 +21,6 @@ package org.openscales.core.feature
 	    public var style:Style = null;
 	    
 	    public var originalStyle:Style = null;
-	    
-	   /* public static var style:Object = {'default': {
-		        fillColor: 0x00ff00,
-		        fillOpacity: 0.4, 
-		        hoverFillColor: "white",
-		        hoverFillOpacity: 0.8,
-		        strokeColor: 0x00ff00,
-		        strokeOpacity: 1,
-		        strokeWidth: 4,
-		        strokeLinecap: "round",
-		        hoverStrokeColor: "red",
-		        hoverStrokeOpacity: 1,
-		        hoverStrokeWidth: 0.2,
-		        pointRadius: 6,
-		        hoverPointRadius: 1,
-		        hoverPointUnit: "%",
-		        pointerEvents: "visiblePainted"
-		    },
-		    'select': {
-		        fillColor: 0x00ff00,
-		        fillOpacity: 0.4, 
-		        hoverFillColor: "white",
-		        hoverFillOpacity: 0.8,
-		        strokeColor: 0xff0000,
-		        strokeOpacity: 1,
-		        strokeWidth: 2,
-		        strokeLinecap: "round",
-		        hoverStrokeColor: "red",
-		        hoverStrokeOpacity: 1,
-		        hoverStrokeWidth: 0.2,
-		        pointRadius: 6,
-		        hoverPointRadius: 1,
-		        hoverPointUnit: "%",
-		        pointerEvents: "visiblePainted",
-		        cursor: "pointer"
-		    },
-		    'temporary': {
-		        fillColor: "yellow",
-		        fillOpacity: 0.2, 
-		        hoverFillColor: "white",
-		        hoverFillOpacity: 0.8,
-		        strokeColor: "yellow",
-		        strokeOpacity: 1,
-		        strokeLinecap: "round",
-		        strokeWidth: 4,
-		        hoverStrokeColor: "red",
-		        hoverStrokeOpacity: 1,
-		        hoverStrokeWidth: 0.2,
-		        pointRadius: 6,
-		        hoverPointRadius: 1,
-		        hoverPointUnit: "%",
-		        pointerEvents: "visiblePainted"
-		    }
-	    };*/
 		
 		public function Vector(geometry:Geometry = null, data:Object = null, style:Style = null):void {
 			super(null, null, data);

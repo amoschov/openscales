@@ -5,18 +5,28 @@ package org.openscales.core.popup
 	import org.openscales.commons.basetypes.Pixel;
 	import org.openscales.commons.basetypes.Size;
 	
+	/**
+	 * Anchored popup
+	 */
 	public class Anchored extends Popup
 	{
-		public var relativePosition:String = "";
+		/** 
+	     * Relative position of the popup ("br", "tr", "tl" or "bl").
+	     * TODO : use an enum for that
+	     */
+		public var _relativePosition:String = "";
 
-	    private var anchor:Object = null;
+	    /**
+	     * Object to which we'll anchor the popup. Must expose 
+	     * 'size' (Size) and 'offset' (Pixel) properties.
+	     * TODO : use an interface for that
+	     */
+	    private var _anchor:Object = null;
 	    
 	    public function Anchored(id:String, lonlat:LonLat, size:Size, contentHTML:String, anchor:Object, closeBox:Boolean):void {
 	        super(id, lonlat, size, contentHTML, closeBox);
 	
-	        this.anchor = (anchor != null) ? anchor 
-	                                       : { size: new Size(0,0),
-	                                           offset: new Pixel(0,0)};
+	        this._anchor = anchor;
 	    }
 	    
 	    override public function draw(px:Pixel=null):void {
@@ -27,6 +37,8 @@ package org.openscales.core.popup
 	        }
 
 	        this.relativePosition = this.calculateRelativePosition(px);
+	        
+	        super.draw(px);
 	    }
 	    
 	    public function calculateRelativePosition(px:Pixel):String {
@@ -43,8 +55,8 @@ package org.openscales.core.popup
 	        super.position = newPx;
 	    }
 	    
-	    override public function setSize(size:Size = null):void {
-	    	super.setSize(size);
+	    override public function set size(size:Size):void {
+	    	super.size = size;
 	
 	        if ((this.lonlat) && (this.map)) {
 	            var px:Pixel = this.map.getLayerPxFromLonLat(this.lonlat);
@@ -53,15 +65,23 @@ package org.openscales.core.popup
 	    }
 	    
 	    public function calculateNewPx(px:Pixel):Pixel {
-	    	var newPx:Pixel = px.offset(this.anchor.offset);
+	    	var newPx:Pixel = px.offset(this._anchor.offset);
 	
 	        var top:Boolean = (this.relativePosition.charAt(0) == 't');
-	        newPx.y += (top) ? -this.size.h : this.anchor.size.h;
+	        newPx.y += (top) ? -this.size.h : this._anchor.size.h;
 	        
 	        var left:Boolean = (this.relativePosition.charAt(1) == 'l');
-	        newPx.x += (left) ? -this.size.w : this.anchor.size.w;
+	        newPx.x += (left) ? -this.size.w : this._anchor.size.w;
 	
 	        return newPx;  
 	    }
+	    
+	    public function get relativePosition():String {
+        	return this._relativePosition;
+        }
+        
+        public function set relativePosition(value:String):void {
+        	this._relativePosition = value;
+        }
 	}
 }

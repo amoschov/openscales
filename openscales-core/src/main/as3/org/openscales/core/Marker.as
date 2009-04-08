@@ -14,7 +14,7 @@ package org.openscales.core
 
 	    public var lonlat:LonLat = null;
 	    
-	    public var map:Object = null;
+	    public var map:Map = null;
 	    
 	    public var drawn:Boolean = false;
 	    
@@ -46,7 +46,7 @@ package org.openscales.core
      	public function onScreen():Boolean {
 	     	var onScreen:Boolean = false;
 	        if (this.map) {
-	            var screenBounds:Bounds = this.map.getExtent();
+	            var screenBounds:Bounds = this.map.extent;
 	            onScreen = screenBounds.containsLonLat(this.lonlat);
 	        }    
 	        return onScreen;

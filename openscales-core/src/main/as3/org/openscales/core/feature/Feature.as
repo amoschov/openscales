@@ -1,18 +1,19 @@
 package org.openscales.core.feature
 {
 	import flash.utils.getQualifiedClassName;
-	import org.openscales.core.popup.AnchoredBubble;
-	import org.openscales.core.Icon;
-	import org.openscales.core.Marker;
+	
 	import org.openscales.commons.Util;
 	import org.openscales.commons.basetypes.Bounds;
 	import org.openscales.commons.basetypes.LonLat;
-	import org.openscales.commons.basetypes.Size;
+	import org.openscales.core.Icon;
+	import org.openscales.core.Marker;
 	import org.openscales.core.layer.Layer;
+	import org.openscales.core.popup.Anchored;
 	import org.openscales.core.popup.Popup;
 	
 	/**
-	 * Features are combinations of geography and attributes.
+	 * Features are combinations of geography and attributes. The Feature
+ 	 * class specifically combines a marker and a lonlat.
 	 */
 	public class Feature
 	{
@@ -96,11 +97,11 @@ package org.openscales.core.feature
 	            var id:String = this.id + "_popup";
 	            var anchor:Icon = this.marker;
 	
-	            this.popup = new AnchoredBubble(id, 
-                                            this.lonlat,
-                                            this.data.popupSize,
-                                            this.data.popupContentHTML,
-                                            anchor, closeBox);                                        
+	            this.popup = new Anchored(	id, 
+	                                        this.lonlat,
+	                                        this.data.popupSize,
+	                                        this.data.popupContentHTML,
+	                                        anchor, closeBox);                                        
                 this.popup.feature = this;
 	        } 
 	        return this.popup;

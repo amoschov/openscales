@@ -29,7 +29,5 @@ package org.openscales.core.feature
 	                id: null};
 		}
 		
-		private var CLASS_NAME:String = "OpenScales.Feature.WFS";
-		
 	}
 }

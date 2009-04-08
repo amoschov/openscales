@@ -5,55 +5,49 @@ package org.openscales.core.popup
 	import flash.text.TextField;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.Map;
-	import org.openscales.core.Marker;
 	import org.openscales.commons.Util;
 	import org.openscales.commons.basetypes.LonLat;
 	import org.openscales.commons.basetypes.Pixel;
 	import org.openscales.commons.basetypes.Size;
+	import org.openscales.core.Map;
+	import org.openscales.core.Marker;
 	import org.openscales.core.control.Button;
 	import org.openscales.core.feature.Feature;
 	
 	public class Popup extends Sprite
 	{
 		
-		public static var WIDTH:Number = 200;
-		public static var HEIGHT:Number = 200;
-		public static var BORDER:String = "3px";
+		public static var WIDTH:Number = 400;
+		public static var HEIGHT:Number = 400;
+		public static var BORDER:Number = 3;
 	    
-	    private var id:String = "";
+	    private var _id:String = "";
 
-	    public var lonlat:LonLat = null;
+	    public var _lonlat:LonLat = null;
 	
-	    public var size:Size = null;    
-	    
-	    private var contentHTML:String = "";
-	    
-	    public var border:String = "";
+	    private var _size:Size = null;    
+	    	    
+	    private var _border:Number;
     
-	    public var padding:Number = 3;
-	
-	    public var map:Map = null;
+	    private var _map:Map = null;
+	        
+	    private var _textfield:TextField = null;
 	    
-	    private var mousedown:Boolean;
-	    
-	    public var textfield:TextField = null;
-	    
-	    public var feature:Feature = null;
-	    
-	    public var positionP:Pixel;
-	    
+	    private var _feature:Feature = null;
+	    	    
 	    [Embed(source="/org/openscales/core/img/close.gif")]
         private var _closeImg:Class;
 	    
-	    public function Popup(id:String, lonlat:LonLat, size:Size, contentHTML:String, closeBox:Boolean):void {
+	    public function Popup(id:String, lonlat:LonLat, size:Size = null, htmlText:String = "", closeBox:Boolean = true):void {
 	    	if (id == null) {
 	            id = Util.createUniqueID(getQualifiedClassName(this) + "_");
 	        }
 	
 	        this.id = id;
-	        
 	        this.lonlat = lonlat;
+	        this.border = Popup.BORDER;
+	        this.textfield = new TextField();
+	        this.htmlText = htmlText;
 	        
 	        if (size != null){
 	        	this.size = size;
@@ -61,43 +55,32 @@ package org.openscales.core.popup
 	        else{
 	        	this.size = new Size(Popup.WIDTH,Popup.HEIGHT);
 	        }
-	        	        
-	        if (contentHTML != null) { 
-	             this.contentHTML = contentHTML;
-	        }
-	        this.border = Popup.BORDER;
-	
-	        /* textfield = new TextField();
-	        if (this.contentHTML.length > 0) {
-	        	textfield.htmlText = this.contentHTML;
-	        }
-	      
-	         textfield.text = "[x]"; 
 	        
-	        this.addChild(textfield); */
+	        this.addChild(textfield);
+		    
+		    if (closeBox == true) {
 	
-	          if (closeBox == true) {
-	            var closeSize:Size = new Size(17,17);
-	            var closeImg:Button = new Button(this.id + "_close", new this._closeImg(), new Pixel(this.positionP.x, this.positionP.y), closeSize); 	                                                                null, 
+	            var closeImg:Button = new Button(this.id + "_close", new this._closeImg(), this.position.add(25,30)); 
 				
 	            this.addChild(closeImg);
 	
-	             var closePopup:Function = function(evt:MouseEvent):void {
-	            	var target:Sprite = (evt.target as Sprite);
-	            	target.visible = false;
-	            	graphics.clear(); 
-	            					    
-	                evt.stopPropagation();
-	                
-	            } 
 	            closeImg.addEventListener(MouseEvent.CLICK, closePopup);
 	        }  
-	        /* this.registerEvents(); */    
+	        
 	    }
 	    
-	     public function showPopup(event:MouseEvent):void {
+	    public function closePopup(evt:MouseEvent):void {
+        	var target:Sprite = (evt.target as Sprite);
+        	target.visible = false;
+        	graphics.clear(); 
+        					    
+            evt.stopPropagation();
+            
+        } 
+	    
+	    public function showPopup(event:MouseEvent):void {
 			var mark:Marker = (event.currentTarget as Marker);
-			(mark.map as Map).addPopup(this); 
+			mark.map.addPopup(this); 
 		}
 		
 		private function hidePopup(event:MouseEvent):void {
@@ -121,9 +104,23 @@ package org.openscales.core.popup
 	                px = this.map.getLayerPxFromLonLat(this.lonlat);
 	            }
 	        }        
-	        this.setSize();
-	        this.setContentHTML();
-	        this.position = px;
+			this.graphics.beginFill(0xFFFFFF);
+			this.graphics.drawRect(px.x,px.y,this.size.w, this.size.h);
+			this.graphics.endFill();
+			this.width = this.size.w;
+			this.height = this.size.h;
+			this.graphics.lineStyle(this.border, 0x000000);
+			this.graphics.moveTo(px.x, px.y);
+			this.graphics.lineTo(px.x, px.y + this.size.h);
+			this.graphics.lineTo(px.x + this.size.w, px.y + this.size.h);
+			this.graphics.lineTo(px.x + this.size.w, px.y);
+			this.graphics.lineTo(px.x, px.y);
+			
+			this.textfield.x = px.x;
+			this.textfield.y = px.y;
+			
+
+
 	    }
 	    
 	    public function updatePosition():void {
@@ -144,67 +141,68 @@ package org.openscales.core.popup
 			return new Pixel(this.x, this.y);
 		}
 		
-		public function setContentHTML(contentHTML:String = null):void {
-			if (contentHTML != null) {
-	            this.contentHTML = contentHTML;
+		public function set htmlText(value:String):void {
+			if (value != null) {
+	            this.textfield.htmlText = value;
 	        }
-	        
-	        /* if (this.contentHTML.length > 0) {
-	            (this.getChildAt(0) as TextField).text = "[x]" + this.contentHTML;
-	        } */
 		}
 		
-		public function setSize(size:Size = null):void {
+		public function get size():Size {
+			return this._size;
+			
+		}
+		public function set size(size:Size):void {
 			if (size != null) {
-	            this.size = size;
+	            this._size = size;
 	            this.width = this.size.w;
 	            this.height = this.size.h;
 	        }
-
 		}
 		
-		public function registerEvents():void {
+		public function get border():Number {
+			return this._border;
 			
-			/* new OpenScalesEvent().observe(this.canvas, MouseEvent.CLICK, this.onclick);
+		}
+		public function set border(value:Number):void {
+			this._border = value;
+		}
+		
+		public function get textfield():TextField {
+			return this._textfield;
 			
-	        this.events = new Events(this, this.canvas, null, true); */
-	
-	        /* this.addEventListener(MouseEvent.MOUSE_DOWN, onmousedown);
-	        this.addEventListener(MouseEvent.MOUSE_MOVE, onmousemove);
-	        this.addEventListener(MouseEvent.MOUSE_UP, onmouseup);
-	        this.addEventListener(MouseEvent.CLICK, onclick);
-	        this.addEventListener(MouseEvent.MOUSE_OUT, onmouseout);
-	        this.addEventListener(MouseEvent.DOUBLE_CLICK, ondblclick); */
+		}
+		public function set textfield(value:TextField):void {
+			this._textfield = value;
 		}
 		
-		public function onmousedown(evt:MouseEvent):void {
-			this.mousedown = true;
-        	evt.stopPropagation();
+		public function get map():Map {
+			return this._map;
+			
+		}
+		public function set map(value:Map):void {
+			this._map = value;
 		}
 		
-		public function onmousemove(evt:MouseEvent):void {
-			if (this.mousedown) {
-            	evt.stopPropagation();
-        	}
+		public function get id():String {
+			return this._id;
+			
+		}
+		public function set id(value:String):void {
+			this._id = value;
 		}
 		
-		public function onmouseup(evt:MouseEvent):void {
-			if (this.mousedown) {
-	            this.mousedown = false;
-	            evt.stopPropagation();
-	        }
+		public function get lonlat():LonLat {
+			return this._lonlat;
+		}
+		public function set lonlat(value:LonLat):void {
+			this._lonlat = value;
 		}
 		
-		public function onclick(evt:MouseEvent):void {
-			evt.stopPropagation();
+		public function get feature():Feature {
+			return this._feature;
 		}
-		
-		public function onmouseout(evt:MouseEvent):void {
-			this.mousedown = false;
-		}
-		
-		public function ondblclick(evt:MouseEvent):void {
-			evt.stopPropagation();
+		public function set feature(value:Feature):void {
+			this._feature = value;
 		}
 	}
 }
