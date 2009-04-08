@@ -23,7 +23,7 @@ package org.openscales.core.popup
 	    
 	    private var _id:String = "";
 
-	    public var _lonlat:LonLat = null;
+	    private var _lonlat:LonLat = null;
 	
 	    private var _size:Size = null;    
 	    	    
