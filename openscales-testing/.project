@@ -3,7 +3,7 @@
 	<name>openscales-testing</name>
 	<comment></comment>
 	<projects>
-		<project>openscales-proj4as</project>
+		<project>openscales-proj</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>openscales-flex-application</name>
+	<name>openscales-fx-examples</name>
 	<comment></comment>
 	<projects>
 		<project>openscales-commons</project>

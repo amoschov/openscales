@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<project>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.openscales</groupId>
+	<artifactId>openscales-proj</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>swc</packaging>
+	<name>Projection support</name>
+	
+	<parent>
+		<groupId>org.openscales</groupId>
+		<artifactId>openscales</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	
+	<dependencies>
+	  	<dependency>
+			<groupId>org.openscales</groupId>
+			<artifactId>openscales-commons</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>swc</type>
+		</dependency>
+		
+	</dependencies>
+	
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>info.flex-mojos</groupId>
+				<artifactId>asdoc-mojo</artifactId>
+				<version>${asdoc.mojo.version}</version>
+			</plugin>
+		</plugins>
+	</reporting>
+	
+	
+</project>

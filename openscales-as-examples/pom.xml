@@ -2,10 +2,10 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
-	<artifactId>openscales-proj4as</artifactId>
+	<artifactId>openscales-as-examples</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<packaging>swc</packaging>
-	<name>Projection support</name>
+	<packaging>swf</packaging>
+	<name>AS examples</name>
 	
 	<parent>
 		<groupId>org.openscales</groupId>
@@ -15,13 +15,12 @@
 	</parent>
 	
 	<dependencies>
-	  	<dependency>
+		<dependency>
 			<groupId>org.openscales</groupId>
-			<artifactId>openscales-commons</artifactId>
+			<artifactId>openscales-core</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<type>swc</type>
 		</dependency>
-		
 	</dependencies>
 	
 	<reporting>
@@ -33,6 +32,7 @@
 			</plugin>
 		</plugins>
 	</reporting>
+	
 	
 	
 </project>
