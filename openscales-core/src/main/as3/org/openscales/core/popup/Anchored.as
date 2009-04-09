@@ -15,6 +15,11 @@ package org.openscales.core.popup
 	     * TODO : use an enum for that
 	     */
 		public var _relativePosition:String = "";
+		
+		static public var BR:String = "br";
+		static public var TR:String = "tr";
+		static public var TL:String = "tl";
+		static public var BL:String = "bl";
 
 	    /**
 	     * Object to which we'll anchor the popup. Must expose 
@@ -67,11 +72,29 @@ package org.openscales.core.popup
 	    public function calculateNewPx(px:Pixel):Pixel {
 	    	var newPx:Pixel = px.offset(this._anchor.offset);
 	
-	        var top:Boolean = (this.relativePosition.charAt(0) == 't');
-	        newPx.y += (top) ? -this.size.h : this._anchor.size.h;
+	        /* var top:Boolean = (this.relativePosition.charAt(0) == 't');        
+	        newPx.y += (top) ? -this.size.h : this._anchor.size.h; */
 	        
-	        var left:Boolean = (this.relativePosition.charAt(1) == 'l');
-	        newPx.x += (left) ? -this.size.w : this._anchor.size.w;
+	        var top:Boolean = (this.relativePosition == TR || this.relativePosition == TL);
+	        
+	        if(top){
+	        	newPx.y += -this.size.h;
+	        }
+	        else{
+	        	newPx.y += this._anchor.size.h;
+	        } 
+	        
+	        /* var left:Boolean = (this.relativePosition.charAt(1) == 'l');
+	        newPx.x += (left) ? -this.size.w : this._anchor.size.w; */
+	        
+	        var left:Boolean = (this.relativePosition == BL || this.relativePosition == TL);
+	        
+	        if(left){
+	        	newPx.x += -this.size.w;
+	        }
+	        else{
+	        	newPx.x += this._anchor.size.w;
+	        }
 	
 	        return newPx;  
 	    }

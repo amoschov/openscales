@@ -2,8 +2,7 @@ package org.openscales.core
 {
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
-	
-	import org.openscales.core.Util;
+
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -39,7 +38,7 @@ package org.openscales.core
 		private var _featureSelection:Array = null;
 		private var _layerContainerOrigin:LonLat = null;
 		private var _vectorLayer:Layer = null;
-		private var _popupContainer:Sprite = null;
+		/* private var _popupContainer:Sprite = null; */
 		private var _layerContainer:Sprite = null;
 		private var _layers:Array = null;
 		private var _baseLayer:Layer = null;
@@ -88,14 +87,14 @@ package org.openscales.core
 			this._layerContainer.height = this.size.h;
 			this.addChild(this._layerContainer);
 			
-			this._popupContainer = new Sprite();
+			/* this._popupContainer = new Sprite();
 			
 			this._popupContainer.graphics.beginFill(0x000000,0);
 			this._popupContainer.graphics.drawRect(0,0,this.size.w,this.size.h);
 			this._popupContainer.graphics.endFill();
 			
 			this._popupContainer.visible = true;
-			this.addChild(this._popupContainer);
+			this.addChild(this._popupContainer); */
 			
 		}
 		
@@ -144,7 +143,7 @@ package org.openscales.core
 	        if ((layer as Vector) && (layer as Vector).isFixed) {
 	            this.addChild(layer);
 	        } else {
-	         	this._layerContainer.addChild(layer);
+	         	 this._layerContainer.addChild(layer); 
 	        }
 	        
 	        this._layers.push(layer);
@@ -276,29 +275,30 @@ package org.openscales.core
 	    **/
 	    public function addPopup(popup:Popup, exclusive:Boolean = true):void {
 	
-	        if (exclusive) {
+	        /* if (exclusive) {
 	            //remove all other popups from screen
 	            for(var i:int=0; i < this._popups.length; i++) {
 	                this.removePopup(this._popups[i]);
 	            }
-	        }
+	        } */
 	
 	        popup.map = this;
+	        this._popups.isFixed = true;
 	        
-	        this._popups.push(popup);
+	        /* this._popups.push(popup); */
 	        popup.draw();
-	        if (popup) {
-	            this._popupContainer.addChild(popup);
-	        }
+	        this._layerContainer.addChild(popup);
+	        
 	    }
 
 	    public function removePopup(popup:Popup):void {
-	        Util.removeItem(this._popups, popup);
+	        /* Util.removeItem(this._popups, popup);
 	        if (popup) {
 	            try { this._popupContainer.removeChild(popup); }
 	            catch (e:Error) { } 
-	        }
-	        popup.map = null;
+	        } */
+	        this._layerContainer.removeChild(popup);
+	        popup.map = null; 
 	    }
 		
 		public function updateSize():void { 
@@ -371,13 +371,14 @@ package org.openscales.core
 	
 	        var centerChanged:Boolean = (this.isValidLonLat(lonlat)) && 
 	                            (!lonlat.equals(this.center));
-	
+			
 
 	        if (zoomChanged || centerChanged || !dragging) {
 	
 	            if (!dragging) { 
 	            	//this.events.triggerEvent("movestart");
 	            	this.dispatchEvent(new MapEvent(MapEvent.MOVE_START)); 
+	       
 	            }
 	
 	            if (centerChanged) {
@@ -385,6 +386,7 @@ package org.openscales.core
 	                    this.center_layerContainer(lonlat);
 	                }
 	                this.center = lonlat.clone();
+	                
 	            }
 
 	            if ((zoomChanged) || (this._layerContainerOrigin == null)) {
@@ -421,11 +423,11 @@ package org.openscales.core
 	                }                
 	            }
 	            
-	            if (zoomChanged) {
-	                for (var j:int = 0; j < this._popups.length; j++) {
+	            /* if (zoomChanged) {
+	                 for (var j:int = 0; j < this._popups.length; j++) {
 	                    this._popups[j].updatePosition();
-	                }
-	            }
+	                } 
+	            }  */
 	            
 	            //this.events.triggerEvent("move");
 	            this.dispatchEvent(new MapEvent(MapEvent.MOVE));
@@ -635,9 +637,9 @@ package org.openscales.core
 	        return this._layerContainer;
 		}
 		
-		public function get popupContainer():Sprite {
+		/* public function get popupContainer():Sprite {
 	        return this._popupContainer;
-		}
+		} */
 		
 		public function get vectorLayer():Layer {
 	        return this._vectorLayer;

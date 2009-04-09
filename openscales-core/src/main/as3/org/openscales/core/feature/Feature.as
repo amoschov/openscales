@@ -91,7 +91,7 @@ package org.openscales.core.feature
 			this.marker.destroy();
 		}
 		
-		public function createPopup(closeBox:Boolean = false):Popup {
+		public function createPopup(closeBox:Boolean = true):Popup {
 			if (this.lonlat != null) {
             
 	            var id:String = this.id + "_popup";

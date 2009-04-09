@@ -46,11 +46,11 @@
 				
 				var markers:Markers = new Markers("Markers");
 				
-				feature = new Feature(markers,new LonLat(lon,lat),null);
+				feature = new Feature(markers,new LonLat(lon,lat),{popupContentHTML:"POPUP"});
 				
 				mark = feature.createMarker();
 				
-				mark.addEventListener(MouseEvent.CLICK, showPopup);
+				mark.addEventListener(MouseEvent.CLICK, showPopup); 
 				
 				markers.addMarker(mark);
 								
@@ -73,11 +73,11 @@
 				this.map.height = fxmap.height;
 			}
 			
-			 private function showPopup(e:MouseEvent):void
+			  private function showPopup(e:MouseEvent):void
 			{				
 				var pop:Popup = feature.createPopup();				
 				map.addPopup(pop);
-			} 
+			}  
 		]]>
 	</mx:Script>
 	

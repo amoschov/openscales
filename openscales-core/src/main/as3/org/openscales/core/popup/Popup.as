@@ -5,12 +5,12 @@ package org.openscales.core.popup
 	import flash.text.TextField;
 	import flash.utils.getQualifiedClassName;
 	
+	import org.openscales.core.Map;
+	import org.openscales.core.Marker;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.Map;
-	import org.openscales.core.Marker;
 	import org.openscales.core.control.Button;
 	import org.openscales.core.feature.Feature;
 	
@@ -34,6 +34,11 @@ package org.openscales.core.popup
 	    private var _textfield:TextField = null;
 	    
 	    private var _feature:Feature = null;
+	    
+	    private var _htmlText:String = null;
+	    
+	    private var _closeBox:Boolean;
+	    
 	    	    
 	    [Embed(source="/org/openscales/core/img/close.gif")]
         private var _closeImg:Class;
@@ -46,34 +51,26 @@ package org.openscales.core.popup
 	        this.id = id;
 	        this.lonlat = lonlat;
 	        this.border = Popup.BORDER;
+	        this.closeBox = closeBox;
+	        
 	        this.textfield = new TextField();
-	        this.htmlText = htmlText;
+	        textfield.text = htmlText;
+	        this.addChild(textfield); 
 	        
 	        if (size != null){
-	        	this.size = size;
+	        	this._size = size;
 	        }
 	        else{
 	        	this.size = new Size(Popup.WIDTH,Popup.HEIGHT);
 	        }
-	        
-	        this.addChild(textfield);
-		    
-		    if (closeBox == true) {
-	
-	            var closeImg:Button = new Button(this.id + "_close", new this._closeImg(), this.position.add(25,30)); 
-				
-	            this.addChild(closeImg);
-	
-	            closeImg.addEventListener(MouseEvent.CLICK, closePopup);
-	        }  
-	        
 	    }
 	    
 	    public function closePopup(evt:MouseEvent):void {
         	var target:Sprite = (evt.target as Sprite);
         	target.visible = false;
-        	graphics.clear(); 
-        					    
+        	graphics.clear();       	
+			this.removeChild(textfield);
+			      					    
             evt.stopPropagation();
             
         } 
@@ -89,6 +86,10 @@ package org.openscales.core.popup
 			if (feature.popup) {
 				feature.popup.visible = false;
 			}
+		}
+		
+		private function stopPropagation(event:MouseEvent):void{
+			event.stopPropagation();
 		}
 		
 	    public function destroy():void {
@@ -119,8 +120,14 @@ package org.openscales.core.popup
 			this.textfield.x = px.x;
 			this.textfield.y = px.y;
 			
-
-
+			if (this.closeBox == true) {
+	
+	            var closeImg:Button = new Button(this.id + "_close", new this._closeImg(), px.add((this.width)-50,10),new Size(37,32)); 
+				
+	            this.addChild(closeImg);
+	
+	            closeImg.addEventListener(MouseEvent.CLICK, closePopup);
+	  		}
 	    }
 	    
 	    public function updatePosition():void {
@@ -203,6 +210,17 @@ package org.openscales.core.popup
 		}
 		public function set feature(value:Feature):void {
 			this._feature = value;
+		}
+		
+		public function get htmlText():String{
+			return this._htmlText;			
+		}
+		
+		public function get closeBox():Boolean{
+			return this._closeBox;
+		}
+		public function set closeBox(value:Boolean):void{
+			this._closeBox = value;
 		}
 	}
 }

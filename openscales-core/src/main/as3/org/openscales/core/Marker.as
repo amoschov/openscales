@@ -2,7 +2,7 @@ package org.openscales.core
 {
 	import flash.display.Bitmap;
 	import flash.events.MouseEvent;
-	import org.openscales.core.Map;
+	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -29,7 +29,8 @@ package org.openscales.core
 	    	super(url, size, offset, calculateOffset);
 	    	this.lonlat = lonlat;
 	        
-	        this.data = new Object();        
+	        this.data = new Object();
+	               
 	    }
 	    
 	    override public function destroy():void {

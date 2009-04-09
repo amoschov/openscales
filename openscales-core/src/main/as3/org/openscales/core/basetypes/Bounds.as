@@ -190,8 +190,22 @@ package org.openscales.core.basetypes
 			var quadrant:String = "";
 	        var center:LonLat = this.getCenterLonLat();
 	        
-	        quadrant += (lonlat.lat < center.lat) ? "b" : "t";
-	        quadrant += (lonlat.lon < center.lon) ? "l" : "r";
+	        /* quadrant += (lonlat.lat < center.lat) ? "b" : "t";
+	        quadrant += (lonlat.lon < center.lon) ? "l" : "r"; */
+	        
+	        if (lonlat.lat < center.lat){
+	        	quadrant += "b";
+	        }
+	        else{
+	        	quadrant += "t";
+	        }
+	        
+	        if(lonlat.lon < center.lon){
+	        	quadrant += "l";
+	        }
+	        else{
+	        	quadrant += "r";
+	        }
 	    
 	        return quadrant; 
 		}
