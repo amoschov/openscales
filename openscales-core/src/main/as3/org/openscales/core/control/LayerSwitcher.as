@@ -104,10 +104,16 @@ package org.openscales.core.control
 				baselayerTextField.y = y;
 				this.addChild(baselayerTextField);
 				
+				var k:int;
+				var l:int;
+				var resultPercentage:int;
+				var positionX:Number
+				
 				// Display baselayers
 				for(var i:int=0;i<this.map.layers.length;i++) {
 					var layer:Layer = this.map.layers[i] as Layer;
 					if(layer.isBaseLayer==true) {
+						
 						var radioButton:RadioButton;
 						if(i == 0)
 						{
@@ -119,13 +125,43 @@ package org.openscales.core.control
 							y+=this._textOffset;
 							radioButton = new RadioButton(this.position.add(-185,y+2),layer.name,false);
 						}
+						if(layer.visible == false)
+						{							
+							radioButton.status = false;					
+						}
 						radioButton.width = 13;
 						radioButton.height = 13;
 						radioButton.addEventListener(MouseEvent.CLICK,RadioButtonClick);
-						var slideHorizontalButtonBL:SliderHorizontal = new SliderHorizontal("slide horizontal"+i,this.position.add(-130,y+19),layer.name);
-						var slideVerticalButtonBL:SliderVertical = new SliderVertical("slide vertical"+i,this.position.add(-55,y+21),layer.name);
+						
+						var percentageTextFieldBL:TextField = new TextField();
+						percentageTextFieldBL.name = "percentage"+i;
+						percentageTextFieldBL.setTextFormat(contentFormat);
+						percentageTextFieldBL.x = this.position.x - 45;
+						percentageTextFieldBL.y = y+18;
+						percentageTextFieldBL.height = 20;
+						percentageTextFieldBL.width = 50;
+						
+						var slideHorizontalButtonBL:SliderHorizontal = new SliderHorizontal("slide horizontal"+i,this.position.add(-130,y+23),layer.name);
+						var slideVerticalButtonBL:SliderVertical = slideVerticalButtonO = new SliderVertical("slide vertical"+i,this.position.add(-55,y+26),layer.name);
+						
+						if(layer.alpha == 1)
+						{
+							percentageTextFieldBL.text="100%";
+						}
+						else
+						{
+							k = slideHorizontalButtonBL.x+1;
+							l = k+(slideHorizontalButtonBL.width)-1;					
+							positionX = ((l-k)*(layer.alpha)) + k;
+							resultPercentage = (layer.alpha)*100;
+
+							slideVerticalButtonBL.x = positionX;
+							percentageTextFieldBL.text=resultPercentage.toString()+"%";
+						}
 						slideVerticalButtonBL.width = 5;
+						percentageTextFieldBL.textColor = 0xffffff;
 						slideVerticalButtonBL.addEventListener(MouseEvent.MOUSE_DOWN,SlideMouseClick);
+						
 						var layerTextField:TextField = new TextField();
 						layerTextField.text=layer.name;
 						layerTextField.setTextFormat(contentFormat);
@@ -133,14 +169,7 @@ package org.openscales.core.control
 						layerTextField.y = y;
 						layerTextField.height = 20;
 						layerTextField.width = 120;
-						var percentageTextFieldBL:TextField = new TextField();
-						percentageTextFieldBL.name = "percentage"+i;
-						percentageTextFieldBL.text="100%";
-						percentageTextFieldBL.setTextFormat(contentFormat);
-						percentageTextFieldBL.x = this.position.x - 45;
-						percentageTextFieldBL.y = y+18;
-						percentageTextFieldBL.height = 20;
-						percentageTextFieldBL.width = 50;
+						
 						this.addChild(slideHorizontalButtonBL);
 						this.addChild(slideVerticalButtonBL);
 						this.addChild(radioButton);
@@ -176,22 +205,45 @@ package org.openscales.core.control
 						layerTextField.y = y;
 						layerTextField.height = 20;
 						layerTextField.width = 120;
-						var slideHorizontalButtonO:SliderHorizontal = new SliderHorizontal("slide horizontal"+i,this.position.add(-130,y+23),layer.name);
-						var slideVerticalButtonO:SliderVertical = new SliderVertical("slide vertical"+i,this.position.add(-55,y+26),layer.name);
-						slideVerticalButtonO.width = 5;
-						slideVerticalButtonO.addEventListener(MouseEvent.MOUSE_DOWN,SlideMouseClick);
-						var check:CheckBox = new CheckBox(this.position.add(-185,y+2),layer.name);
-						check.width=12;
-						check.height=12;
-						check.addEventListener(MouseEvent.CLICK,CheckButtonClick);	
+						
 						var percentageTextField:TextField = new TextField();
 						percentageTextField.name = "percentage"+i;
-						percentageTextField.text="100%";
 						percentageTextField.setTextFormat(contentFormat);
 						percentageTextField.x = this.position.x - 45;
 						percentageTextField.y = y+22;
 						percentageTextField.height = 20;
 						percentageTextField.width = 50;
+						
+						var slideHorizontalButtonO:SliderHorizontal = new SliderHorizontal("slide horizontal"+i,this.position.add(-130,y+23),layer.name);
+						var slideVerticalButtonO:SliderVertical = slideVerticalButtonO = new SliderVertical("slide vertical"+i,this.position.add(-55,y+26),layer.name);
+						
+						if(layer.alpha == 1)
+						{
+							percentageTextField.text="100%";
+						}
+						else
+						{
+							k = slideHorizontalButtonO.x+1;
+							l = k+(slideHorizontalButtonO.width)-1;					
+							positionX = ((l-k)*(layer.alpha)) + k;
+							resultPercentage = (layer.alpha)*100;
+
+							slideVerticalButtonO.x = positionX;
+							percentageTextField.text=resultPercentage.toString()+"%";
+						}
+						slideVerticalButtonO.width = 5;
+						percentageTextField.textColor = 0xffffff;
+						slideVerticalButtonO.addEventListener(MouseEvent.MOUSE_DOWN,SlideMouseClick);
+						
+						var check:CheckBox = new CheckBox(this.position.add(-185,y+2),layer.name);
+						if(layer.visible == false)
+						{							
+							check.status = false;					
+						}
+						check.width=12;
+						check.height=12;
+						check.addEventListener(MouseEvent.CLICK,CheckButtonClick);	
+						
 						this.addChild(slideHorizontalButtonO);	
 						this.addChild(slideVerticalButtonO);	
 						this.addChild(check);
