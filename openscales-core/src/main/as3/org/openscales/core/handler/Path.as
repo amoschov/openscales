@@ -2,13 +2,13 @@ package org.openscales.core.handler
 {
 	import flash.events.MouseEvent;
 	
-	import org.openscales.commons.basetypes.LonLat;
-	import org.openscales.commons.basetypes.Pixel;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.control.Control;
 	import org.openscales.core.feature.Vector;
-	import org.openscales.commons.geometry.Geometry;
-	import org.openscales.commons.geometry.LineString;
-	import org.openscales.commons.geometry.Point;
+	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.geometry.LineString;
+	import org.openscales.core.geometry.Point;
 	
 	public class Path extends org.openscales.core.handler.Point
 	{
@@ -26,7 +26,7 @@ package org.openscales.core.handler
 		override public function createFeature():void {
 			this.line = new Vector(new LineString());
 			
-			this.point = new Vector(new org.openscales.commons.geometry.Point());
+			this.point = new Vector(new org.openscales.core.geometry.Point());
 		}
 		
 		public function destoryFeature():void {
@@ -52,7 +52,7 @@ package org.openscales.core.handler
 		protected function modifyFeature():void {
 			
 			var line:LineString = this.line.geometry as LineString;
-			var p:org.openscales.commons.geometry.Point = this.point.geometry as org.openscales.commons.geometry.Point;
+			var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
 			
 			if(line) {
 				var index:int = line.components.length - 1;
@@ -81,7 +81,7 @@ package org.openscales.core.handler
 	        this.isMouseDown = true;
 	        this.lastDown = xy;
 	        var lonlat:LonLat = this.control.map.getLonLatFromPixel(xy);
-	        var p:org.openscales.commons.geometry.Point = this.point.geometry as org.openscales.commons.geometry.Point;
+	        var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
 	        p.x = lonlat.lon;
 	        p.y = lonlat.lat;
 	        if((this.lastUp == null) || !this.lastUp.equals(xy)) {
@@ -96,7 +96,7 @@ package org.openscales.core.handler
 			var xy:Pixel = new Pixel(map.mouseX, map.mouseY);
 			if(this.drawing) { 
 	            var lonlat:LonLat = this.map.getLonLatFromPixel(xy);
-	            var p:org.openscales.commons.geometry.Point = this.point.geometry as org.openscales.commons.geometry.Point;
+	            var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
 	            p.x = lonlat.lon;
 	            p.y = lonlat.lat;
 	            if(this.isMouseDown && this.freehandMode(evt)) {

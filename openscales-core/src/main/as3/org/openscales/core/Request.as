@@ -10,7 +10,7 @@ package org.openscales.core
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	
-	import org.openscales.commons.Util;
+	import org.openscales.core.Util;
 	
 	public class Request
 	{

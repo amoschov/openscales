@@ -3,11 +3,11 @@ package org.openscales.core
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	
-	import org.openscales.commons.Util;
-	import org.openscales.commons.basetypes.Bounds;
-	import org.openscales.commons.basetypes.LonLat;
-	import org.openscales.commons.basetypes.Pixel;
-	import org.openscales.commons.basetypes.Size;
+	import org.openscales.core.Util;
+	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.Control;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;

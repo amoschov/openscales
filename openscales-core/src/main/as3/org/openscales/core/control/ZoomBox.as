@@ -3,9 +3,9 @@ package org.openscales.core.control
 	import flash.display.Sprite;
 	
 	import org.openscales.core.control.Control;
-	import org.openscales.commons.basetypes.Bounds;
-	import org.openscales.commons.basetypes.LonLat;
-	import org.openscales.commons.basetypes.Pixel;
+	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.handler.Box;
 
 	public class ZoomBox extends Control

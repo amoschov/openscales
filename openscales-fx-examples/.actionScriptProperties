@@ -8,8 +8,8 @@
 <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/player/9" useDefaultLinkType="false"/>
 </excludedEntries>
 </libraryPathEntry>
+<libraryPathEntry kind="3" linkType="1" path="/openscales-fx/bin/openscales-fx.swc" useDefaultLinkType="false"/>
 <libraryPathEntry kind="3" linkType="1" path="/openscales-core/bin/openscales-core.swc" useDefaultLinkType="false"/>
-<libraryPathEntry kind="3" linkType="1" path="/openscales-flex-component/bin/openscales-flex-component.swc" useDefaultLinkType="false"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>

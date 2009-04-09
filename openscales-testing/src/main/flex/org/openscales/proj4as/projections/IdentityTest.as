@@ -2,7 +2,9 @@ package org.openscales.proj4as.projections
 {
 	import flexunit.framework.TestCase;
 	
-	import org.openscales.commons.geometry.Point;
+	import org.opengis.geometry.IDirectPosition;
+	import org.openscales.proj.geometry.DirectPosition2D;
+	import org.openscales.proj.projections.Identity;
 
 	public class IdentityTest extends TestCase
 	{
@@ -13,20 +15,20 @@ package org.openscales.proj4as.projections
 		
 		public function testForwardEquals():void
 		{
-			var point:Point = new Point();
-			point.x = 1;
-			point.y = 2;
-			var transformedPoint:Point = new Identity().forward(point);
-			assertTrue("testForwardEquals", point == transformedPoint);
+			var pos:DirectPosition2D = new DirectPosition2D();
+			pos.x = 1;
+			pos.y = 2;
+			var transformedPos:IDirectPosition = new Identity().forward(pos);
+			assertTrue("testForwardEquals", pos == transformedPos);
 		}
 		
 		public function testInverseEquals():void
 		{
-			var point:Point = new Point();
-			point.x = 1;
-			point.y = 2;
-			var transformedPoint:Point = new Identity().inverse(point);
-			assertTrue("testInverseEquals", point == transformedPoint);
+			var pos:DirectPosition2D = new DirectPosition2D();
+			pos.x = 1;
+			pos.y = 2;
+			var transformedPos:IDirectPosition = new Identity().inverse(pos);
+			assertTrue("testInverseEquals", pos == transformedPos);
 		}
 
 

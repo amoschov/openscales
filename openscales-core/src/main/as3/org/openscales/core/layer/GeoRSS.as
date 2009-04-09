@@ -7,9 +7,9 @@ package org.openscales.core.layer
 	import org.openscales.core.Icon;
 	import org.openscales.core.Marker;
 	import org.openscales.core.OpenScales;
-	import org.openscales.commons.Util;
-	import org.openscales.commons.basetypes.LonLat;
-	import org.openscales.commons.basetypes.Size;
+	import org.openscales.core.Util;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.feature.Feature;
 	
 	public class GeoRSS extends Markers

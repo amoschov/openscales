@@ -1,7 +1,7 @@
 package org.openscales.core.feature
 {
-	import org.openscales.commons.Util;
-	import org.openscales.commons.basetypes.LonLat;
+	import org.openscales.core.Util;
+	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.layer.Layer;
 	
 	/**

@@ -1,8 +1,8 @@
 package org.openscales.core.feature
 {
-	import org.openscales.commons.Util;
-	import org.openscales.commons.basetypes.LonLat;
-	import org.openscales.commons.geometry.Geometry;
+	import org.openscales.core.Util;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.geometry.Geometry;
 	
 	/**
 	 * Vector features use the Geometry classes as geometry description.

@@ -2,13 +2,13 @@ package org.openscales.core.handler
 {
 	import flash.events.MouseEvent;
 	
-	import org.openscales.commons.basetypes.LonLat;
-	import org.openscales.commons.basetypes.Pixel;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.control.Control;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Vector;
-	import org.openscales.commons.geometry.Geometry;
-	import org.openscales.commons.geometry.Point;
+	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.Vector;
 
 	public class Point extends Handler
@@ -62,7 +62,7 @@ package org.openscales.core.handler
 		
 		public function createFeature():void {
 	        this.point = new org.openscales.core.feature.Vector(
-                                      new org.openscales.commons.geometry.Point());
+                                      new org.openscales.core.geometry.Point());
 		}
 		
 		/**
@@ -113,7 +113,7 @@ package org.openscales.core.handler
 	        this.lastDown = xy;
 	        this.drawing = true;
 	        var lonlat:LonLat = this.map.getLonLatFromPixel(xy);
-	        var p:org.openscales.commons.geometry.Point = this.point.geometry as org.openscales.commons.geometry.Point;
+	        var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
 	        p.x = lonlat.lon;
 	        p.y = lonlat.lat;
 	        this.drawFeature();
@@ -124,7 +124,7 @@ package org.openscales.core.handler
 			if(this.drawing) {
 				var xy:Pixel = new Pixel(map.mouseX, map.mouseY);
 	            var lonlat:LonLat = this.map.getLonLatFromPixel(xy);
-	            var p:org.openscales.commons.geometry.Point = this.point.geometry as org.openscales.commons.geometry.Point;
+	            var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
 	            p.x = lonlat.lon;
 	            p.y = lonlat.lat;
 	            this.drawFeature();

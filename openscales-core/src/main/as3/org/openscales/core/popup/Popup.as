@@ -5,10 +5,10 @@ package org.openscales.core.popup
 	import flash.text.TextField;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.commons.Util;
-	import org.openscales.commons.basetypes.LonLat;
-	import org.openscales.commons.basetypes.Pixel;
-	import org.openscales.commons.basetypes.Size;
+	import org.openscales.core.Util;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.Map;
 	import org.openscales.core.Marker;
 	import org.openscales.core.control.Button;

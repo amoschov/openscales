@@ -4,9 +4,9 @@ package org.openscales.core.handler
 	
 	import org.openscales.core.control.Control;
 	import org.openscales.core.feature.Vector;
-	import org.openscales.commons.geometry.Geometry;
-	import org.openscales.commons.geometry.LineString;
-	import org.openscales.commons.geometry.LinearRing;
+	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.geometry.LineString;
+	import org.openscales.core.geometry.LinearRing;
 	
 	public class Polygon extends Path
 	{
@@ -18,11 +18,11 @@ package org.openscales.core.handler
 		}
 		
 		override public function createFeature():void {
-	        this.polygon = new Vector(new org.openscales.commons.geometry.Polygon());
+	        this.polygon = new Vector(new org.openscales.core.geometry.Polygon());
 	        this.line = new Vector(new LinearRing());
-	        var p:org.openscales.commons.geometry.Polygon = this.polygon.geometry as org.openscales.commons.geometry.Polygon;
+	        var p:org.openscales.core.geometry.Polygon = this.polygon.geometry as org.openscales.core.geometry.Polygon;
 	        p.addComponent(this.line.geometry);
-	        this.point = new Vector(new org.openscales.commons.geometry.Point());
+	        this.point = new Vector(new org.openscales.core.geometry.Point());
 		}
 		
 		override public function destoryFeature():void {
@@ -32,7 +32,7 @@ package org.openscales.core.handler
 		
 		override protected function modifyFeature():void {
 			var line:LineString = this.line.geometry as LineString;
-			var p:org.openscales.commons.geometry.Point = this.point.geometry as org.openscales.commons.geometry.Point;
+			var p:org.openscales.core.geometry.Point = this.point.geometry as org.openscales.core.geometry.Point;
 			var index:int = line.components.length - 2;
 			
 	        line.components[index].x = p.x;

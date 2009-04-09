@@ -32,7 +32,6 @@
 	</profiles>
 	
 	<modules>
-		<module>openscales-commons</module>
 		<module>openscales-core</module>
 		<module>openscales-as-examples</module>
 		<module>openscales-fx-examples</module>

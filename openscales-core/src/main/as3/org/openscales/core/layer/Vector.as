@@ -3,9 +3,9 @@ package org.openscales.core.layer
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.commons.Util;
-	import org.openscales.commons.basetypes.Bounds;
-	import org.openscales.commons.geometry.Collection;
+	import org.openscales.core.Util;
+	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.Map;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Vector;

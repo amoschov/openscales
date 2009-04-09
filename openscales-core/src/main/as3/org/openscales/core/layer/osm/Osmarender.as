@@ -1,6 +1,6 @@
 package org.openscales.core.layer.osm
 {
-	import org.openscales.commons.Util;
+	import org.openscales.core.Util;
 	
 	public class Osmarender extends OSM
 	{

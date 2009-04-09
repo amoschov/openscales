@@ -1,6 +1,6 @@
 package org.openscales.core.layer
 {
-	import org.openscales.commons.Util;
+	import org.openscales.core.Util;
 	
 	public class HTTPRequest extends Layer
 	{

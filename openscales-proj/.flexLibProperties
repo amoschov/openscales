@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flexLibProperties version="1">
 <includeClasses>
-<classEntry path="org.openscales.proj4as.Proj4as"/>
-<classEntry path="org.openscales.proj4as.Projection"/>
-<classEntry path="org.openscales.proj4as.projections.Identity"/>
+<classEntry path="org.opengis.geometry.IDirectPosition"/>
+<classEntry path="org.opengis.geometry.IEnvelope"/>
+<classEntry path="org.opengis.referencing.IReferenceSystem"/>
+<classEntry path="org.opengis.referencing.crs.ICoordinateReferenceSystem"/>
+<classEntry path="org.opengis.referencing.cs.ICoordinateSystem"/>
+<classEntry path="org.opengis.referencing.cs.ICoordinateSystemAxis"/>
+<classEntry path="org.openscales.proj.Proj4as"/>
+<classEntry path="org.openscales.proj.Projection"/>
+<classEntry path="org.openscales.proj.geometry.DirectPosition2D"/>
+<classEntry path="org.openscales.proj.geometry.Envelope2D"/>
+<classEntry path="org.openscales.proj.projections.Identity"/>
 </includeClasses>
 <includeResources/>
 <namespaceManifests/>

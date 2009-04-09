@@ -1,9 +1,9 @@
 package org.openscales.core.layer
 {
 	
-	import org.openscales.commons.Util;
-	import org.openscales.commons.basetypes.Bounds;
-	import org.openscales.commons.basetypes.Pixel;
+	import org.openscales.core.Util;
+	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.tile.Image;
 	import org.openscales.core.tile.Tile;
 	

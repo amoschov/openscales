@@ -1,11 +1,11 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.Map;
-	import org.openscales.commons.Util;
-	import org.openscales.commons.basetypes.Bounds;
-	import org.openscales.commons.basetypes.LonLat;
-	import org.openscales.commons.basetypes.Pixel;
-	import org.openscales.commons.basetypes.Size;
+	import org.openscales.core.Util;
+	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.tile.Image;
