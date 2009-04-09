@@ -10,7 +10,7 @@ package {
 	import org.openscales.core.control.PanZoomBar;
 	import org.openscales.core.layer.osm.Mapnik;
 
-	[SWF(width='800', height='600')]
+	[SWF(width='600', height='400')]
 	public class OpenscalesApplication extends Sprite
 	{
 		protected var _map:Map;
