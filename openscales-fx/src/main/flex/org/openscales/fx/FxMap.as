@@ -1,4 +1,4 @@
-package org.openscales.flex {
+package org.openscales.fx {
 	
 	import mx.core.UIComponent;
 	
@@ -54,6 +54,6 @@ package org.openscales.flex {
 			if(map)
 				map.height = this.height;
 		}
-		
+				
 	}
 }

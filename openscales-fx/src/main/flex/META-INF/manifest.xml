@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <componentPackage>
-	<component id="FxMap" class="org.openscales.flex.FxMap" />
+	<component id="FxMap" class="org.openscales.fx.FxMap" />
 </componentPackage>
