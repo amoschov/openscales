@@ -1,6 +1,7 @@
 package org.openscales.core.control
 {
 	import flash.display.DisplayObject;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
@@ -166,7 +167,7 @@ package org.openscales.core.control
 	        }
 	    }
 	    
-	    public function moveZoomBar(evt:MouseEvent = null):void {
+	    public function moveZoomBar(evt:Event = null):void {
 		   	var newTop:Number = 
 	            ((this.map.numZoomLevels-1) - this.map.zoom) * 
 	            this.zoomStopHeight + this.startTop + 1;

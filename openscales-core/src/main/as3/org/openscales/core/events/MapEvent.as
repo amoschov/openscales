@@ -1,8 +1,8 @@
 package org.openscales.core.events{
 	
-	import flash.events.MouseEvent;
+	import flash.events.Event;
 
-	public class MapEvent extends MouseEvent{
+	public class MapEvent extends Event {
 		
 		public static const LAYER_ADDED:String="openscales.addlayer";
 		
@@ -44,9 +44,9 @@ package org.openscales.core.events{
 		 * Class: OpenLayers.Map
 		 * Instances of MapEvent are events dispatched by the Map
 		 */
-		public function MapEvent(type:String){
+		public function MapEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false){
 			
-			super(type);
+			super(type, bubbles, cancelable);
 		}
 		
 	}
