@@ -211,16 +211,6 @@ package org.openscales.core.control
 						layerTextField.height = 20;
 						layerTextField.width = 120;
 						
-						var textFieldChildIndex:TextField = new TextField();
-						textFieldChildIndex.name = "childIndex"+i;
-						textFieldChildIndex.setTextFormat(contentFormat);
-						textFieldChildIndex.x = this.position.x - 150;
-						textFieldChildIndex.textColor = 0xffffff;
-						textFieldChildIndex.y = y+21;
-						textFieldChildIndex.height = 20;
-						textFieldChildIndex.width = 50;
-						textFieldChildIndex.text = this.map.layerContainer.getChildIndex(layer).toString();
-						
 						var percentageTextField:TextField = new TextField();
 						percentageTextField.name = "percentage"+i;
 						percentageTextField.setTextFormat(contentFormat);
@@ -272,7 +262,6 @@ package org.openscales.core.control
 						this.addChild(check);
 						this.addChild(layerTextField);
 						this.addChild(percentageTextField);
-						this.addChild(textFieldChildIndex);
 						this.addChild(arrowUpO);
 						this.addChild(arrowDownO);
 					}
