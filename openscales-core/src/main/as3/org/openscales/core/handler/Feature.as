@@ -22,7 +22,6 @@ package org.openscales.core.handler
     	
     	override public function activate():void {
 	    	this.layerIndex = this.layer.zindex;
-	        this.layer.zindex = this.map.Z_INDEX_BASE['Popup'] - 1;
 	        
 	        control.addEventListener(MouseEvent.MOUSE_DOWN, this.mouseDown);
 	        control.addEventListener(MouseEvent.MOUSE_MOVE, this.mouseMove);

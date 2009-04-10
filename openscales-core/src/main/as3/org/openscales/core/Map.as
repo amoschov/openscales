@@ -33,18 +33,13 @@ package org.openscales.core
 		public var DEFAULT_MAX_RESOLUTION:Number = 1.40625;
 		public var DEFAULT_PROJECTION:String = "EPSG:4326";
 		public var DEFAULT_UNITS:String = "degrees";
-			
-		
-		public var Z_INDEX_BASE:Object = {BaseLayer: 100, Overlay:325, Popup:750, Control: 1000};
 						
 		private var _featureSelection:Array = null;
 		private var _layerContainerOrigin:LonLat = null;
 		private var _vectorLayer:Layer = null;
-		/* private var _popupContainer:Sprite = null; */
 		private var _layerContainer:Sprite = null;
 		private var _baseLayer:Layer = null;
 		private var _controls:Array = null;
-		private var _popups:Array = null;
 		private var _size:Size = null;
 		private var _tileSize:Size = null;
 		private var _center:LonLat = null;
@@ -67,7 +62,6 @@ package org.openscales.core
 			Util.extend(this, options);	
 			
 			this._controls = new Array();
-			this._popups = new Array();
 									
 			this.size = new Size(width, height);
 			this.tileSize = new Size(this.DEFAULT_TILE_WIDTH, this.DEFAULT_TILE_HEIGHT);
@@ -238,9 +232,8 @@ package org.openscales.core
 	    **/
 	    public function addPopup(popup:Popup, exclusive:Boolean = true):void {
 	        popup.map = this;	                
-	        this.addChild(popup);
 	        popup.draw();
-	        	        
+	        this._layerContainer.addChild(popup);
 	    }
 
 	    public function removePopup(popup:Popup):void {
