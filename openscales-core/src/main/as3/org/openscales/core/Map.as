@@ -42,7 +42,6 @@ package org.openscales.core
 		private var _vectorLayer:Layer = null;
 		/* private var _popupContainer:Sprite = null; */
 		private var _layerContainer:Sprite = null;
-		private var _layers:Array = null;
 		private var _baseLayer:Layer = null;
 		private var _controls:Array = null;
 		private var _popups:Array = null;
@@ -67,7 +66,6 @@ package org.openscales.core
 			
 			Util.extend(this, options);	
 			
-			this._layers = new Array();
 			this._controls = new Array();
 			this._popups = new Array();
 									
@@ -96,17 +94,18 @@ package org.openscales.core
 			this._popupContainer.graphics.endFill();
 			
 			this._popupContainer.visible = true;
+
 			this.addChild(this._popupContainer); */		
+
 		}
 		
 		private function destroy():Boolean {	
-	        if (this._layers != null) {
-	            for (var i:int = this._layers.length - 1; i>=0; i--) {
+	        if (this.layers != null) {
+	            for (var i:int = this.layers.length - 1; i>=0; i--) {
 	                //pass 'false' to destroy so that map wont try to set a new 
 	                // baselayer after each baselayer is removed
-	                this._layers[i].destroy(false);
+	                this.layers[i].destroy(false);
 	            } 
-	            this._layers = null;
 	        }
 	        if (this._controls != null) {
 	            for (var j:int = this._controls.length - 1; j>=0; j--) {
@@ -120,8 +119,8 @@ package org.openscales.core
 		
 		public function getLayerByName(name:String):Layer {
 			var foundLayer:Layer = null;
-			for (var i:int = 0; i < this._layers.length; i++) {
-				var layer:Layer = this._layers[i];
+			for (var i:int = 0; i < this.layers.length; i++) {
+				var layer:Layer = this.layers[i];
 				if (layer.name == name) {
 					foundLayer = layer;
 				}
@@ -134,8 +133,8 @@ package org.openscales.core
 		}
 		
 		  public function addLayer(layer:Layer):Boolean {
-			for(var i:int=0; i < this._layers.length; i++) {
-	            if (this._layers[i] == layer) {
+			for(var i:int=0; i < this.layers.length; i++) {
+	            if (this.layers[i] == layer) {
 	                return false;
 	            }
 	        }
@@ -147,7 +146,6 @@ package org.openscales.core
 	         	 this._layerContainer.addChild(layer); 
 	        }
 	        
-	        this._layers.push(layer);
 	        layer.map = this;
 	        
 	        if (layer.isBaseLayer) {
@@ -180,12 +178,12 @@ package org.openscales.core
 				this._layerContainer.removeChild(layer);
 			}
 			layer.map = null;
-			Util.removeItem(this._layers, layer);
+			Util.removeItem(this.layers, layer);
 			
 	        if (setNewBaseLayer && (this.baseLayer == layer)) {
             	this._baseLayer = null;
-	            for(var i:int=0; i < this._layers.length; i++) {
-	                var iLayer:Layer = this._layers[i];
+	            for(var i:int=0; i < this.layers.length; i++) {
+	                var iLayer:Layer = this.layers[i];
 	                if (iLayer.isBaseLayer) {
 	                    this.setBaseLayer(iLayer);
 	                    break;
@@ -198,24 +196,24 @@ package org.openscales.core
 		}
 		
 		public function get numLayers():Number {
-			return this._layers.length;
+			return this.layers.length;
 		}
 		
 		public function getLayerIndex(layer:Layer):int {
-			return Util.indexOf(this._layers, layer);
+			return Util.indexOf(this.layers, layer);
 		}
 		
 		public function setLayerIndex(layer:Layer, idx:int):void {
 	        var base:int = this.getLayerIndex(layer);
 	        if (idx < 0) 
 	            idx = 0;
-	        else if (idx > this._layers.length)
-	            idx = this._layers.length;
+	        else if (idx > this.layers.length)
+	            idx = this.layers.length;
 	        if (base != idx) {
-	            this._layers.splice(base, 1);
-	            this._layers.splice(idx, 0, layer);
-	            for (var i:int = 0; i < this._layers.length; i++)
-	                this.setLayerZIndex(this._layers[i], i);
+	            this.layers.splice(base, 1);
+	            this.layers.splice(idx, 0, layer);
+	            for (var i:int = 0; i < this.layers.length; i++)
+	                this.setLayerZIndex(this.layers[i], i);
 	            //this.events.triggerEvent("changelayer");
 	            this.dispatchEvent(new MapEvent(MapEvent.LAYER_CHANGED));
 	        }
@@ -245,7 +243,7 @@ package org.openscales.core
 			
 			if (newBaseLayer != this.baseLayer) {
 				
-				if (Util.indexOf(this._layers, newBaseLayer) != -1) {
+				if (Util.indexOf(this.layers, newBaseLayer) != -1) {
 										
 					this._baseLayer = newBaseLayer;
 					this.baseLayer.visible = true;
@@ -308,8 +306,8 @@ package org.openscales.core
 				this.graphics.drawRect(0,0,this.size.w,this.size.h);
 				this.graphics.endFill();
 					            	
-	            for(var i:int=0; i < this._layers.length; i++) {
-	                this._layers[i].onMapResize();                
+	            for(var i:int=0; i < this.layers.length; i++) {
+	                this.layers[i].onMapResize();                
 	            }
 	
 	            if (this.baseLayer != null) {
@@ -400,8 +398,8 @@ package org.openscales.core
 	            var bounds:Bounds = this.extent;
   	
 	            this.baseLayer.moveTo(bounds, zoomChanged, dragging);
-	            for (var i:int = 0; i < this._layers.length; i++) {
-	                var layer:Layer = this._layers[i];
+	            for (var i:int = 0; i < this.layers.length; i++) {
+	                var layer:Layer = this.layers[i];
 	                if (!layer.isBaseLayer) {
 	                    
 	                    var moveLayer:Boolean;
@@ -612,11 +610,7 @@ package org.openscales.core
 			
 			this.updateSize();
 		}
-		
-		public function get layers():Array {
-	        return this._layers;
-		}
-		
+				
 		public function get controls():Array {
 	        return this._controls;
 		}
@@ -793,9 +787,13 @@ package org.openscales.core
 	        return scale;
 		}
 		
-		 public function get layerZindex():Array 
+		 public function get layers():Array 
 		 {
 	    	var layerArray:Array = new Array();
+	    	if(this.layerContainer == null)
+	    	{
+	    		return layerArray;
+	    	}
 	    	for(var i:int = 0;i<this.layerContainer.numChildren;i++)
 	    	{
 	    		if(this.layerContainer.getChildAt(i) is Layer)

@@ -1,5 +1,7 @@
 package org.openscales.core.control
 {
+	import com.gskinner.motion.GTweeny;
+	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
@@ -34,6 +36,8 @@ package org.openscales.core.control
 	    private var _slideVerticalTemp:SliderVertical = null;
 	    
 	    private var _percentageTextFieldTemp:TextField = null;
+	    
+	    private var _layerSwitcherState:String;
 	    	    
 	    [Embed(source="/org/openscales/core/img/layer-switcher-maximize.png")]
         private var _layerSwitcherMaximizeImg:Class;
@@ -79,6 +83,9 @@ package org.openscales.core.control
 			
 			if(_minimized) {
 				this.addChild(_maximizeButton);
+				this.alpha = 0.7
+				this._layerSwitcherState = "Close";
+						
 			} else {
 				this.graphics.beginFill(this._activeColor);
 				this.graphics.drawRoundRectComplex(this.position.x-200,this.position.y,200,300, 20, 0, 20, 0);
@@ -162,6 +169,7 @@ package org.openscales.core.control
 						slideVerticalButtonBL.width = 5;
 						percentageTextFieldBL.textColor = 0xffffff;
 						slideVerticalButtonBL.addEventListener(MouseEvent.MOUSE_DOWN,SlideMouseClick);
+						slideHorizontalButtonBL.addEventListener(MouseEvent.CLICK,SlideHorizontalClick);
 						
 						var layerTextField:TextField = new TextField();
 						layerTextField.text=layer.name;
@@ -190,7 +198,7 @@ package org.openscales.core.control
 				this.addChild(overlayTextField);
 				
 				// Display overlays				
-				var layerArray:Array = this.map.layerZindex;
+				var layerArray:Array = this.map.layers;
 				
 				 for(i=0;i<layerArray.length;i++) {
 					layer = layerArray[i] as Layer;
@@ -239,6 +247,7 @@ package org.openscales.core.control
 						slideVerticalButtonO.width = 5;
 						percentageTextField.textColor = 0xffffff;
 						slideVerticalButtonO.addEventListener(MouseEvent.MOUSE_DOWN,SlideMouseClick);
+						slideHorizontalButtonO.addEventListener(MouseEvent.CLICK,SlideHorizontalClick);
 						
 						var check:CheckBox = new CheckBox(this.position.add(-185,y+2),layer.name);
 						if(layer.visible == false)
@@ -251,8 +260,8 @@ package org.openscales.core.control
 						
 						var arrowUpO:Arrow = new Arrow(this.position.add(-175,y+23),layer.name,"UP")
 						var arrowDownO:Arrow = new Arrow(this.position.add(-174,y+31),layer.name,"DOWN")
-						arrowUpO.height=6;
-						arrowDownO.height=6;
+						arrowUpO.height=7;
+						arrowDownO.height=7;
 						arrowUpO.addEventListener(MouseEvent.CLICK,ArrowClick);
 						arrowDownO.addEventListener(MouseEvent.CLICK,ArrowClick);
 						
@@ -264,17 +273,29 @@ package org.openscales.core.control
 						this.addChild(percentageTextField);
 						this.addChild(arrowUpO);
 						this.addChild(arrowDownO);
+						
 					}
 				} 
+				if(this._layerSwitcherState == "Close")
+				{
+					this.alpha = 0;
+					this.x = 830;
+					var tween:GTweeny = new GTweeny(this,0.5,{alpha:0.7,x:639});
+					this._layerSwitcherState = "Open";
+				}
+				
+				this.addEventListener(MouseEvent.MOUSE_DOWN,layerswitcherStopPropagation);
 				this.addChild(_minimizeButton);
 			}
+			
 		}
 		
 		private function layerUpdated(event:Event):void {
 			this.draw();
 		}
 		
-		private function minMaxButtonClick(event:MouseEvent):void {
+		private function minMaxButtonClick(event:MouseEvent):void 
+		{
 			this._minimized = !this._minimized;
 			this.draw();
 		}
@@ -311,6 +332,30 @@ package org.openscales.core.control
 			}
 		}
 		
+		private function SlideHorizontalClick(event:MouseEvent):void
+		{					
+			var childIndex:String = (event.target as Button).name;
+			childIndex = childIndex.substring(16,17);
+			
+			 _slideHorizontalTemp = (event.target as SliderHorizontal);
+			_slideVerticalTemp = (this.getChildByName("slide vertical"+childIndex)) as SliderVertical;
+			
+			var k:int = _slideHorizontalTemp.x+1;
+			var l:int = k+(_slideHorizontalTemp.width)-1;
+			_slideVerticalTemp.x = mouseX;
+			var resultAlpha:Number = (mouseX/(l-k)) - (k/(l-k))
+			var resultPercentage:int = resultAlpha*100;
+			var layer2:Layer = this.map.getLayerByName(_slideVerticalTemp.layerName);
+			layer2.alpha = resultAlpha;
+			
+			_percentageTextFieldTemp = this.getChildByName("percentage"+childIndex) as TextField;
+			_percentageTextFieldTemp.textColor = 0xffffff;
+			_percentageTextFieldTemp.text = resultPercentage.toString()+"%";
+			
+			// Stop propagation in order to avoid map move
+			event.stopPropagation();
+				
+		}
 		private function SlideMouseClick(event:MouseEvent):void
 		{		
 			var childIndex:String = (event.target as Button).name;
@@ -376,6 +421,11 @@ package org.openscales.core.control
 					this.draw();
 				}	
 			}
+		}
+		
+		private function layerswitcherStopPropagation(event:MouseEvent):void
+		{
+			event.stopPropagation();
 		}
 	
 	}
