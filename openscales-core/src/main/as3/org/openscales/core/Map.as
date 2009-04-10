@@ -195,44 +195,11 @@ package org.openscales.core
 	        this.dispatchEvent(new MapEvent(MapEvent.LAYER_REMOVED));	
 		}
 		
-		public function get numLayers():Number {
-			return this.layers.length;
-		}
-		
-		public function getLayerIndex(layer:Layer):int {
-			return Util.indexOf(this.layers, layer);
-		}
-		
-		public function setLayerIndex(layer:Layer, idx:int):void {
-	        var base:int = this.getLayerIndex(layer);
-	        if (idx < 0) 
-	            idx = 0;
-	        else if (idx > this.layers.length)
-	            idx = this.layers.length;
-	        if (base != idx) {
-	            this.layers.splice(base, 1);
-	            this.layers.splice(idx, 0, layer);
-	            for (var i:int = 0; i < this.layers.length; i++)
-	                this.setLayerZIndex(this.layers[i], i);
-	            //this.events.triggerEvent("changelayer");
-	            this.dispatchEvent(new MapEvent(MapEvent.LAYER_CHANGED));
-	        }
-		}
-		
 		public function addControl(control:Control):void {
 			this._controls.push(control);
         	control.setMap(this);
         	control.draw();
         	this.addChild( control );
-		}
-		
-		public function setLayerZIndex(layer:Layer, zIdx:int):void {
-	        layer.zindex = this.Z_INDEX_BASE[layer.isBaseLayer ? 'BaseLayer' : 'Overlay'] + zIdx * 5;
-  		}
-  		
-		public function raiseLayer(layer:Layer, delta:int):void {
-			var idx:int = this.getLayerIndex(layer) + delta;
-			this.setLayerIndex(layer, idx);
 		}
 		
 		public function setBaseLayer(newBaseLayer:Layer, noEvent:Boolean = false):void {

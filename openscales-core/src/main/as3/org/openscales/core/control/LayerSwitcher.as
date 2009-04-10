@@ -402,22 +402,22 @@ package org.openscales.core.control
 		
 		private function ArrowClick(event:MouseEvent):void
 		{
-			var layer2:Layer = this.map.getLayerByName((event.target as Arrow).layerName);
+			var layer:Layer = this.map.getLayerByName((event.target as Arrow).layerName);
 			var numLayers:int = this.map.layers.length;
 			
 			if((event.target as Arrow).state == "UP")
 			{
-				if((this.map.layerContainer.getChildIndex(layer2)-1)>=1)
+				if((layer.zindex-1)>=1)
 				{
-					this.map.layerContainer.setChildIndex(layer2,(this.map.layerContainer.getChildIndex(layer2)-1));
+					layer.zindex = layer.zindex-1;
 					this.draw();
 				}	
 			}
 			else
 			{
-				if((this.map.layerContainer.getChildIndex(layer2)+1)<=numLayers-1)
+				if((layer.zindex+1)<=numLayers-1)
 				{
-					this.map.layerContainer.setChildIndex(layer2,(this.map.layerContainer.getChildIndex(layer2)+1));
+					layer.zindex = layer.zindex+1;
 					this.draw();
 				}	
 			}

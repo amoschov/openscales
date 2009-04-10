@@ -64,11 +64,6 @@ package org.openscales.core.layer
 		private var _minZoomLevel:Number;		
 
 		private var _displayOutsideMaxExtent:Boolean = false;		
-		/**
-		 * On OpenScales, zindex is manage internally with Layer child index 
-		 * property against Map
-		 */
-		private var _zindex:int = -1;
 		
 		protected var _imageSize:Size = null;
 		
@@ -340,18 +335,18 @@ package org.openscales.core.layer
 			    
 	    public function get zindex():int
 	    {
-	    	return this.map.layerContainer.getChildIndex(this);
+	    	return this.parent.getChildIndex(this);
 	    }
 	    
 		public function set zindex(value:int):void {
 	    	
 	    	if((this as Vector) && (this as Vector).isFixed)
 	    	{
-	    		this.map.setChildIndex(this, value);
+	    		this.parent.setChildIndex(this, value);
 	    	}
 	    	else
 	    	{
-	    		this.map.setChildIndex(this, value);
+	    		this.parent.setChildIndex(this, value);
 	    	}
 	    }
 	    
