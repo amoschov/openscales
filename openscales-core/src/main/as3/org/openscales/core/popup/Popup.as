@@ -1,5 +1,8 @@
 package org.openscales.core.popup
 {
+	import com.gskinner.motion.GTweeny;
+	
+	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
@@ -19,7 +22,7 @@ package org.openscales.core.popup
 		
 		public static var WIDTH:Number = 400;
 		public static var HEIGHT:Number = 400;
-		public static var BORDER:Number = 3;
+		public static var BORDER:Number = 4;
 	    
 	    private var _id:String = "";
 
@@ -54,7 +57,7 @@ package org.openscales.core.popup
 	        this.closeBox = closeBox;
 	        
 	        this.textfield = new TextField();
-	        textfield.text = htmlText;
+	        this.textfield.text = htmlText;
 	        this.addChild(textfield); 
 	        
 	        if (size != null){
@@ -69,8 +72,13 @@ package org.openscales.core.popup
         	var target:Sprite = (evt.target as Sprite);
         	target.visible = false;
         	graphics.clear();       	
-			this.removeChild(textfield);
-			      					    
+			graphics.clear();
+       	
+       	    this.removeChild(target);
+       		if ( this.contains(textfield) )
+       		{      
+					this.removeChild(textfield);
+       		}			      					    
             evt.stopPropagation();
             
         } 
@@ -100,21 +108,21 @@ package org.openscales.core.popup
 	    }
 	    
 	    public function draw(px:Pixel = null):void {
-	    	if (px == null) {
+	    	 if (px == null) {
 	            if ((this.lonlat != null) && (this.map != null)) {
 	                px = this.map.getLayerPxFromLonLat(this.lonlat);
 	            }
-	        }        
+	        }         
 			this.graphics.beginFill(0xFFFFFF);
-			this.graphics.drawRect(px.x,px.y,this.size.w, this.size.h);
+			this.graphics.drawRect(px.x,px.y,Popup.WIDTH, Popup.HEIGHT);
 			this.graphics.endFill();
-			this.width = this.size.w;
-			this.height = this.size.h;
+			this.width = Popup.WIDTH;
+			this.height = Popup.HEIGHT; 
 			this.graphics.lineStyle(this.border, 0x000000);
 			this.graphics.moveTo(px.x, px.y);
-			this.graphics.lineTo(px.x, px.y + this.size.h);
-			this.graphics.lineTo(px.x + this.size.w, px.y + this.size.h);
-			this.graphics.lineTo(px.x + this.size.w, px.y);
+			this.graphics.lineTo(px.x, px.y + Popup.HEIGHT);
+			this.graphics.lineTo(px.x + Popup.WIDTH, px.y + Popup.HEIGHT);
+			this.graphics.lineTo(px.x + Popup.WIDTH, px.y);
 			this.graphics.lineTo(px.x, px.y);
 			
 			this.textfield.x = px.x;
@@ -122,12 +130,16 @@ package org.openscales.core.popup
 			
 			if (this.closeBox == true) {
 	
-	            var closeImg:Button = new Button(this.id + "_close", new this._closeImg(), px.add((this.width)-50,10),new Size(37,32)); 
-				
+	          	var img:Bitmap = new this._closeImg();
+
+	            var closeImg:Button = new Button(this.id + "_close", img, px.add((this.size.w)- 42,5),/* null */ new Size(37,32));
+	            
 	            this.addChild(closeImg);
 	
 	            closeImg.addEventListener(MouseEvent.CLICK, closePopup);
-	  		}
+	  	 	}
+	  		this.alpha = 0;
+	  		var tween:GTweeny = new GTweeny(this, 0.5, {alpha:1});
 	    }
 	    
 	    public function updatePosition():void {

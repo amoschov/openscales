@@ -46,7 +46,7 @@
 				
 				var markers:Markers = new Markers("Markers");
 				
-				feature = new Feature(markers,new LonLat(lon,lat),{popupContentHTML:"POPUP"});
+				feature = new Feature(markers,new LonLat(lon,lat),{popupContentHTML:"POPUP IS GREAT"});
 				
 				mark = feature.createMarker();
 				
@@ -75,7 +75,7 @@
 			
 			  private function showPopup(e:MouseEvent):void
 			{				
-				var pop:Popup = feature.createPopup();				
+				var pop:Popup = feature.createPopup();			
 				map.addPopup(pop);
 			}  
 		]]>

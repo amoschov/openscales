@@ -1,5 +1,7 @@
 package org.openscales.core
 {
+	import com.gskinner.motion.GTweeny;
+	
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	
@@ -94,8 +96,7 @@ package org.openscales.core
 			this._popupContainer.graphics.endFill();
 			
 			this._popupContainer.visible = true;
-			this.addChild(this._popupContainer); */
-			
+			this.addChild(this._popupContainer); */		
 		}
 		
 		private function destroy():Boolean {	
@@ -281,15 +282,11 @@ package org.openscales.core
 	            for(var i:int=0; i < this._popups.length; i++) {
 	                this.removePopup(this._popups[i]);
 	            }
-	        } */
-	
-	        popup.map = this;
-	        this._popups.isFixed = true;
-	        
-	        /* this._popups.push(popup); */
+	        } */        	       
+	        popup.map = this;	                
 	        popup.draw();
 	        this._layerContainer.addChild(popup);
-	        
+	        	        
 	    }
 
 	    public function removePopup(popup:Popup):void {
@@ -299,7 +296,7 @@ package org.openscales.core
 	            catch (e:Error) { } 
 	        } */
 	        this._layerContainer.removeChild(popup);
-	        popup.map = null; 
+	        popup.map = null;
 	    }
 		
 		public function updateSize():void { 
@@ -423,12 +420,6 @@ package org.openscales.core
 	                    }
 	                }                
 	            }
-	            
-	            /* if (zoomChanged) {
-	                 for (var j:int = 0; j < this._popups.length; j++) {
-	                    this._popups[j].updatePosition();
-	                } 
-	            }  */
 	            
 	            //this.events.triggerEvent("move");
 	            this.dispatchEvent(new MapEvent(MapEvent.MOVE));
