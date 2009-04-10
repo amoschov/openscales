@@ -27,6 +27,7 @@
 <classEntry path="org.openscales.core.control.SelectFeature"/>
 <classEntry path="org.openscales.core.control.SelectFeatureBox"/>
 <classEntry path="org.openscales.core.control.ZoomBox"/>
+<classEntry path="org.openscales.core.control.ui.Arrow"/>
 <classEntry path="org.openscales.core.control.ui.CheckBox"/>
 <classEntry path="org.openscales.core.control.ui.RadioButton"/>
 <classEntry path="org.openscales.core.control.ui.SliderHorizontal"/>

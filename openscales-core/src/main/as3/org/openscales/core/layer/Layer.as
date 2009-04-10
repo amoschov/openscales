@@ -337,13 +337,22 @@ package org.openscales.core.layer
 		public function set imageSize(value:Size):void {
 			this._imageSize = value; 
 		}
-		
-		public function get zindex():int {
-	    	return this.map.getChildIndex(this);
+			    
+	    public function get zindex():int
+	    {
+	    	return this.map.layerContainer.getChildIndex(this);
 	    }
 	    
 		public function set zindex(value:int):void {
-	    	this.map.setChildIndex(this, value);
+	    	
+	    	if((this as Vector) && (this as Vector).isFixed)
+	    	{
+	    		this.map.setChildIndex(this, value);
+	    	}
+	    	else
+	    	{
+	    		this.map.setChildIndex(this, value);
+	    	}
 	    }
 	    
 	    public function get displayOutsideMaxExtent():Boolean {

@@ -2,7 +2,7 @@ package org.openscales.core
 {
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
-
+	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -132,7 +132,7 @@ package org.openscales.core
 			layer.zindex = this.Z_INDEX_BASE[layer.isBaseLayer ? 'BaseLayer' : 'Overlay'] + zIdx * 5;
 		}
 		
-		public function addLayer(layer:Layer):Boolean {
+		  public function addLayer(layer:Layer):Boolean {
 			for(var i:int=0; i < this._layers.length; i++) {
 	            if (this._layers[i] == layer) {
 	                return false;
@@ -163,7 +163,8 @@ package org.openscales.core
 	        this.dispatchEvent(new MapEvent(MapEvent.LAYER_ADDED));
 	        
 	        return true;        
-		}
+		}  
+		 
 		
 		public function addLayers(layers:Array):void {
 	         for (var i:int = 0; i <  layers.length; i++) {
@@ -800,6 +801,20 @@ package org.openscales.core
 	        }
 	        return scale;
 		}
+		
+		 public function get layerZindex():Array 
+		 {
+	    	var layerArray:Array = new Array();
+	    	for(var i:int = 0;i<this.layerContainer.numChildren;i++)
+	    	{
+	    		if(this.layerContainer.getChildAt(i) is Layer)
+	    		{
+	    				layerArray.push(this.layerContainer.getChildAt(i)) 			
+	    		}
+	    	}
+	    	return layerArray;
+	    
+	    } 
 		
 	}
 }

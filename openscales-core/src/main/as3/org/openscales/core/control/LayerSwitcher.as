@@ -6,6 +6,7 @@ package org.openscales.core.control
 	import flash.text.TextFormat;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.control.ui.Arrow;
 	import org.openscales.core.control.ui.CheckBox;
 	import org.openscales.core.control.ui.RadioButton;
 	import org.openscales.core.control.ui.SliderHorizontal;
@@ -142,7 +143,7 @@ package org.openscales.core.control
 						percentageTextFieldBL.width = 50;
 						
 						var slideHorizontalButtonBL:SliderHorizontal = new SliderHorizontal("slide horizontal"+i,this.position.add(-130,y+23),layer.name);
-						var slideVerticalButtonBL:SliderVertical = slideVerticalButtonO = new SliderVertical("slide vertical"+i,this.position.add(-55,y+26),layer.name);
+						var slideVerticalButtonBL:SliderVertical = new SliderVertical("slide vertical"+i,this.position.add(-55,y+26),layer.name);
 						
 						if(layer.alpha == 1)
 						{
@@ -184,11 +185,15 @@ package org.openscales.core.control
 				overlayTextField.setTextFormat(titleFormat);
 				overlayTextField.x = this.position.x - 180;
 				overlayTextField.y = y;
+				overlayTextField.width = 80;
+				overlayTextField.height = 50;
 				this.addChild(overlayTextField);
 				
-				// Display overlays
-				for(i=0;i<this.map.layers.length;i++) {
-					layer = this.map.layers[i] as Layer;
+				// Display overlays				
+				var layerArray:Array = this.map.layerZindex;
+				
+				 for(i=0;i<layerArray.length;i++) {
+					layer = layerArray[i] as Layer;
 					if(layer.isBaseLayer==false) {
 						if(i == 1)
 						{
@@ -196,7 +201,7 @@ package org.openscales.core.control
 						}
 						else
 						{
-							y+=this._textOffset;
+							y+=this._textOffset+5;
 						}
 						layerTextField = new TextField();
 						layerTextField.text=layer.name;
@@ -205,6 +210,16 @@ package org.openscales.core.control
 						layerTextField.y = y;
 						layerTextField.height = 20;
 						layerTextField.width = 120;
+						
+						var textFieldChildIndex:TextField = new TextField();
+						textFieldChildIndex.name = "childIndex"+i;
+						textFieldChildIndex.setTextFormat(contentFormat);
+						textFieldChildIndex.x = this.position.x - 150;
+						textFieldChildIndex.textColor = 0xffffff;
+						textFieldChildIndex.y = y+21;
+						textFieldChildIndex.height = 20;
+						textFieldChildIndex.width = 50;
+						textFieldChildIndex.text = this.map.layerContainer.getChildIndex(layer).toString();
 						
 						var percentageTextField:TextField = new TextField();
 						percentageTextField.name = "percentage"+i;
@@ -215,11 +230,11 @@ package org.openscales.core.control
 						percentageTextField.width = 50;
 						
 						var slideHorizontalButtonO:SliderHorizontal = new SliderHorizontal("slide horizontal"+i,this.position.add(-130,y+23),layer.name);
-						var slideVerticalButtonO:SliderVertical = slideVerticalButtonO = new SliderVertical("slide vertical"+i,this.position.add(-55,y+26),layer.name);
+						var slideVerticalButtonO:SliderVertical = new SliderVertical("slide vertical"+i,this.position.add(-55,y+26),layer.name);
 						
 						if(layer.alpha == 1)
 						{
-							percentageTextField.text="100%";
+							percentageTextField.text="100%";							
 						}
 						else
 						{
@@ -244,14 +259,24 @@ package org.openscales.core.control
 						check.height=12;
 						check.addEventListener(MouseEvent.CLICK,CheckButtonClick);	
 						
+						var arrowUpO:Arrow = new Arrow(this.position.add(-175,y+23),layer.name,"UP")
+						var arrowDownO:Arrow = new Arrow(this.position.add(-174,y+31),layer.name,"DOWN")
+						arrowUpO.height=6;
+						arrowDownO.height=6;
+						arrowUpO.addEventListener(MouseEvent.CLICK,ArrowClick);
+						arrowDownO.addEventListener(MouseEvent.CLICK,ArrowClick);
+						
+						
 						this.addChild(slideHorizontalButtonO);	
 						this.addChild(slideVerticalButtonO);	
 						this.addChild(check);
 						this.addChild(layerTextField);
 						this.addChild(percentageTextField);
+						this.addChild(textFieldChildIndex);
+						this.addChild(arrowUpO);
+						this.addChild(arrowDownO);
 					}
-				}
-			
+				} 
 				this.addChild(_minimizeButton);
 			}
 		}
@@ -339,6 +364,29 @@ package org.openscales.core.control
 		{
 			_slideHorizontalTemp.removeEventListener(MouseEvent.MOUSE_MOVE,SlideMouseMove);
 			this.map.removeEventListener(MouseEvent.MOUSE_UP,SlideMouseUp);
+		}
+		
+		private function ArrowClick(event:MouseEvent):void
+		{
+			var layer2:Layer = this.map.getLayerByName((event.target as Arrow).layerName);
+			var numLayers:int = this.map.layers.length;
+			
+			if((event.target as Arrow).state == "UP")
+			{
+				if((this.map.layerContainer.getChildIndex(layer2)-1)>=1)
+				{
+					this.map.layerContainer.setChildIndex(layer2,(this.map.layerContainer.getChildIndex(layer2)-1));
+					this.draw();
+				}	
+			}
+			else
+			{
+				if((this.map.layerContainer.getChildIndex(layer2)+1)<=numLayers-1)
+				{
+					this.map.layerContainer.setChildIndex(layer2,(this.map.layerContainer.getChildIndex(layer2)+1));
+					this.draw();
+				}	
+			}
 		}
 	
 	}
