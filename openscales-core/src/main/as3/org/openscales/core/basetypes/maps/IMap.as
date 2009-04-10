@@ -26,7 +26,6 @@
 package org.openscales.core.basetypes.maps
 {
     import flash.utils.Dictionary;
-    import mx.collections.IList;
     
     /**
      * 
