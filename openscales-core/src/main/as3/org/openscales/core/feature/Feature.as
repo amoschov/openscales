@@ -2,11 +2,11 @@ package org.openscales.core.feature
 {
 	import flash.utils.getQualifiedClassName;
 	
+	import org.openscales.core.Icon;
+	import org.openscales.core.Marker;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.Icon;
-	import org.openscales.core.Marker;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Anchored;
 	import org.openscales.core.popup.Popup;
@@ -101,7 +101,9 @@ package org.openscales.core.feature
 	                                        this.lonlat,
 	                                        this.data.popupSize,
 	                                        this.data.popupContentHTML,
-	                                        anchor, closeBox);                                        
+	                                        this.marker,
+	                                        closeBox);
+
                 this.popup.feature = this;
 	        } 
 	        return this.popup;

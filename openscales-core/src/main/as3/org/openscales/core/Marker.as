@@ -41,7 +41,10 @@ package org.openscales.core
 	  	    
 	    override public function set position(px:Pixel):void {
 	        super.position = px;        
-	        this.lonlat = this.map.getLonLatFromLayerPx(px);
+	        if ( this.map )
+	        {      
+	        	this.lonlat = this.map.getLonLatFromLayerPx(px);
+	        }
      	}
      	
      	public function onScreen():Boolean {
@@ -61,6 +64,10 @@ package org.openscales.core
      	}
      	
      	override public function draw(px:Pixel = null):void {
+ 	        
+ 	        trace("Marker lonlat : " + lonlat.lon + ", " + lonlat.lat);
+ 	        trace("Marker pixel : " + px.x + ", " + px.y);
+ 	        
  	        if(url == null) {
  	        	var defaultMarker:Bitmap = new this._markerImg();
  	        	defaultMarker.x = px.x;

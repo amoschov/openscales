@@ -128,11 +128,7 @@ package org.openscales.core
 			return foundLayer;
 		}
 		
-		public function setLayerZindex(layer:Layer, zIdx:int):void {
-			layer.zindex = this.Z_INDEX_BASE[layer.isBaseLayer ? 'BaseLayer' : 'Overlay'] + zIdx * 5;
-		}
-		
-		  public function addLayer(layer:Layer):Boolean {
+		public function addLayer(layer:Layer):Boolean {
 			for(var i:int=0; i < this.layers.length; i++) {
 	            if (this.layers[i] == layer) {
 	                return false;
@@ -241,25 +237,13 @@ package org.openscales.core
 	    * @param {Boolean} exclusive If true, closes all other popups first
 	    **/
 	    public function addPopup(popup:Popup, exclusive:Boolean = true):void {
-	
-	        /* if (exclusive) {
-	            //remove all other popups from screen
-	            for(var i:int=0; i < this._popups.length; i++) {
-	                this.removePopup(this._popups[i]);
-	            }
-	        } */        	       
 	        popup.map = this;	                
+	        this.addChild(popup);
 	        popup.draw();
-	        this._layerContainer.addChild(popup);
 	        	        
 	    }
 
 	    public function removePopup(popup:Popup):void {
-	        /* Util.removeItem(this._popups, popup);
-	        if (popup) {
-	            try { this._popupContainer.removeChild(popup); }
-	            catch (e:Error) { } 
-	        } */
 	        this._layerContainer.removeChild(popup);
 	        popup.map = null;
 	    }

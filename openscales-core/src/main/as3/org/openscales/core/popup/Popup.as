@@ -20,9 +20,9 @@ package org.openscales.core.popup
 	public class Popup extends Sprite
 	{
 		
-		public static var WIDTH:Number = 400;
-		public static var HEIGHT:Number = 400;
-		public static var BORDER:Number = 4;
+		public static var WIDTH:Number = 300;
+		public static var HEIGHT:Number = 300;
+		public static var BORDER:Number = 2;
 	    
 	    private var _id:String = "";
 
@@ -108,31 +108,31 @@ package org.openscales.core.popup
 	    }
 	    
 	    public function draw(px:Pixel = null):void {
-	    	 if (px == null) {
+	    	if (px == null) {
 	            if ((this.lonlat != null) && (this.map != null)) {
-	                px = this.map.getLayerPxFromLonLat(this.lonlat);
+	                px = this.map.getViewPortPxFromLonLat(this.lonlat);
 	            }
-	        }         
+	        }
+	        
+	        this.position = px;
+ 	                 
 			this.graphics.beginFill(0xFFFFFF);
-			this.graphics.drawRect(px.x,px.y,Popup.WIDTH, Popup.HEIGHT);
+			this.graphics.drawRect(0,0,this.size.w, this.size.h);
+			this.width = this.size.w;
+			this.height = this.size.h;
 			this.graphics.endFill();
-			this.width = Popup.WIDTH;
-			this.height = Popup.HEIGHT; 
 			this.graphics.lineStyle(this.border, 0x000000);
-			this.graphics.moveTo(px.x, px.y);
-			this.graphics.lineTo(px.x, px.y + Popup.HEIGHT);
-			this.graphics.lineTo(px.x + Popup.WIDTH, px.y + Popup.HEIGHT);
-			this.graphics.lineTo(px.x + Popup.WIDTH, px.y);
-			this.graphics.lineTo(px.x, px.y);
-			
-			this.textfield.x = px.x;
-			this.textfield.y = px.y;
+			this.graphics.moveTo(0, 0);
+			this.graphics.lineTo(0, this.size.h);
+			this.graphics.lineTo(this.size.w, this.size.h);
+			this.graphics.lineTo(this.size.w, 0);
+			this.graphics.lineTo(0, 0);
 			
 			if (this.closeBox == true) {
 	
 	          	var img:Bitmap = new this._closeImg();
 
-	            var closeImg:Button = new Button(this.id + "_close", img, px.add((this.size.w)- 42,5),/* null */ new Size(37,32));
+	            var closeImg:Button = new Button(this.id + "_close", img, new Pixel(this.size.w- 17, 0));
 	            
 	            this.addChild(closeImg);
 	
@@ -140,13 +140,6 @@ package org.openscales.core.popup
 	  	 	}
 	  		this.alpha = 0;
 	  		var tween:GTweeny = new GTweeny(this, 0.5, {alpha:1});
-	    }
-	    
-	    public function updatePosition():void {
-		    if ((this.lonlat) && (this.map)) {
-		    	var px:Pixel = this.map.getLayerPxFromLonLat(this.lonlat);
-                this.position = px;           
-	        }
 	    }
 	    
 		public function set position(px:Pixel):void {
