@@ -57,7 +57,8 @@ package org.openscales.core.popup
 	        this.closeBox = closeBox;
 	        
 	        this.textfield = new TextField();
-	        this.textfield.text = htmlText;
+	        this.textfield.multiline = true;
+	        this.textfield.htmlText = htmlText;
 	        this.addChild(textfield); 
 	        
 	        if (size != null){
@@ -120,6 +121,8 @@ package org.openscales.core.popup
 			this.graphics.drawRect(0,0,this.size.w, this.size.h);
 			this.width = this.size.w;
 			this.height = this.size.h;
+			this._textfield.width = this.size.w;
+			this._textfield.height = this.size.h;
 			this.graphics.endFill();
 			this.graphics.lineStyle(this.border, 0x000000);
 			this.graphics.moveTo(0, 0);
@@ -132,7 +135,7 @@ package org.openscales.core.popup
 	
 	          	var img:Bitmap = new this._closeImg();
 
-	            var closeImg:Button = new Button(this.id + "_close", img, new Pixel(this.size.w- 17, 0));
+	            var closeImg:Button = new Button(this.id + "_close", img, new Pixel(this.size.w- 17 - (this.border/2), (this.border/2)));
 	            
 	            this.addChild(closeImg);
 	

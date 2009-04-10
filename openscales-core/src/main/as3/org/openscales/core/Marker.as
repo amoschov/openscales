@@ -65,9 +65,6 @@ package org.openscales.core
      	
      	override public function draw(px:Pixel = null):void {
  	        
- 	        trace("Marker lonlat : " + lonlat.lon + ", " + lonlat.lat);
- 	        trace("Marker pixel : " + px.x + ", " + px.y);
- 	        
  	        if(url == null) {
  	        	var defaultMarker:Bitmap = new this._markerImg();
  	        	defaultMarker.x = px.x;
