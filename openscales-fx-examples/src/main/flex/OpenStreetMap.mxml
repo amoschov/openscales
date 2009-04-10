@@ -46,7 +46,7 @@
 				
 				var markers:Markers = new Markers("Markers");
 				
-				feature = new Feature(markers,new LonLat(lon,lat),{popupContentHTML:"POPUP IS GREAT"});
+				feature = new Feature(markers,new LonLat(lon,lat),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\">OpenScales</a></u>"});
 				
 				mark = feature.createMarker();
 				
