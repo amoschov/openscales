@@ -2,8 +2,14 @@ package org.openscales.core.events{
 	
 	import org.openscales.core.Map;
 
+	/**
+	 * Event related to a map.
+	 */
 	public class MapEvent extends OpenScalesEvent {
 		
+		/**
+		 * Map concerned by the event.
+		 */
 		private var _map:Map = null;
 		
 		public static const MOVE_START:String="openscales.movestart";
@@ -27,5 +33,12 @@ package org.openscales.core.events{
 			super(type, bubbles, cancelable);
 		}
 		
+		public function get map():Map {
+			return this._map;
+		}
+		
+		public function set map(map:Map):void {
+			this._map = map;	
+		}
 	}
 }

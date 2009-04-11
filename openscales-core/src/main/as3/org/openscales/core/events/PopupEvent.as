@@ -1,13 +1,17 @@
 package org.openscales.core.events
 {
 	import org.openscales.core.popup.Popup;
-	import org.openscales.core.tile.Tile;
 	
 	/**
+	 * Event related to a popup.
+	 * 
 	 * TODO : add event dispatch in code
 	 */
 	public class PopupEvent extends OpenScalesEvent
 	{
+		/**
+		 * Popup concerned by the event.
+		 */
 		private var _popup:Popup = null;
 		
 		public static const POPUP_OPEN:String="openscales.popupopen";
@@ -18,6 +22,14 @@ package org.openscales.core.events
 		{
 			this._popup = popup;
 			super(type, bubbles, cancelable);
+		}
+		
+		public function get popup():Popup {
+			return this._popup;
+		}
+		
+		public function set popup(popup:Popup):void {
+			this._popup = popup;	
 		}
 		
 	}

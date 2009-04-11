@@ -2,8 +2,14 @@ package org.openscales.core.events
 {
 	import org.openscales.core.layer.Layer;
 	
+	/**
+	 * Event related to a layer.
+	 */
 	public class LayerEvent extends OpenScalesEvent
 	{
+		/**
+		 * Layer concerned by the event.
+		 */
 		private var _layer:Layer = null;
 		
 		public static const LAYER_ADDED:String="openscales.addlayer";
@@ -18,6 +24,14 @@ package org.openscales.core.events
 		{
 			this._layer = layer;
 			super(type, bubbles, cancelable);
+		}
+		
+		public function get layer():Layer {
+			return this._layer;
+		}
+		
+		public function set layer(layer:Layer):void {
+			this._layer = layer;	
 		}
 		
 	}
