@@ -1,51 +1,29 @@
 package org.openscales.core.events{
 	
-	import flash.events.Event;
+	import org.openscales.core.Map;
 
-	public class MapEvent extends Event {
+	public class MapEvent extends OpenScalesEvent {
 		
-		public static const LAYER_ADDED:String="openscales.addlayer";
-		
-		public static const LAYER_REMOVED:String="openscales.removelayer";
-		
-		public static const LAYER_CHANGED:String="openscales.changelayer";
-		
-		public static const BASE_LAYER_CHANGED:String="openscales.changebaselayer";
+		private var _map:Map = null;
 		
 		public static const MOVE_START:String="openscales.movestart";
 		
-		public static const MOVE:String="openscales.lmove";
+		public static const MOVE:String="openscales.move";
 		
 		public static const MOVE_END:String="openscales.moveend";
 		
 		public static const ZOOM_END:String="openscales.zoomend";
 		
-		public static const POPUP_OPEN:String="openscales.popupopen";
-		
-		public static const POPUP_CLOSE:String="openscales.popupclose";
-		
-		public static const ADD_MARKER:String="openscales.addmarker";
-		
-		public static const REMOVE_MARKER:String="openscales.removemarker";
-		
-		public static const CLEAR_MARKERS:String="openscales.clearmarkers";
-				
 		public static const DRAG:String="openscales.drag";
 		
 		public static const DRAG_END:String="openscales.dragend";
 		
-		public static const TILE_LOAD_START:String="openscales.loadstart";
-		
-		public static const TILE_LOAD_END:String="openscales.loadend";
-
-
-				
 		/**
 		 * Class: OpenLayers.Map
 		 * Instances of MapEvent are events dispatched by the Map
 		 */
-		public function MapEvent(type:String, bubbles:Boolean = false, cancelable:Boolean = false){
-			
+		public function MapEvent(type:String, map:Map, bubbles:Boolean = false, cancelable:Boolean = false){
+			this._map = map;
 			super(type, bubbles, cancelable);
 		}
 		

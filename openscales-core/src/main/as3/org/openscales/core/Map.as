@@ -1,7 +1,5 @@
 package org.openscales.core
 {
-	import com.gskinner.motion.GTweeny;
-	
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	
@@ -10,6 +8,7 @@ package org.openscales.core
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.Control;
+	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.Vector;
@@ -148,8 +147,7 @@ package org.openscales.core
 	        	layer.redraw();
 	        }
 	        
-	        //this.events.triggerEvent("addlayer");
-	        this.dispatchEvent(new MapEvent(MapEvent.LAYER_ADDED));
+	        this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_ADDED, layer));
 	        
 	        return true;        
 		}  
@@ -181,8 +179,7 @@ package org.openscales.core
 	            }
 	        }
 	        
-	        //this.events.triggerEvent("removelayer");
-	        this.dispatchEvent(new MapEvent(MapEvent.LAYER_REMOVED));	
+	        this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_REMOVED, layer));	
 		}
 		
 		public function addControl(control:Control):void {
@@ -217,9 +214,7 @@ package org.openscales.core
 					}
 					
 					if (!noEvent) {
-						
-						//this.events.triggerEvent("changebaselayer");
-						this.dispatchEvent(new MapEvent(MapEvent.BASE_LAYER_CHANGED));
+						this.dispatchEvent(new LayerEvent(LayerEvent.BASE_LAYER_CHANGED, newBaseLayer));
 					}
 					
 				}
@@ -316,8 +311,7 @@ package org.openscales.core
 	        if (zoomChanged || centerChanged || !dragging) {
 	
 	            if (!dragging) { 
-	            	//this.events.triggerEvent("movestart");
-	            	this.dispatchEvent(new MapEvent(MapEvent.MOVE_START)); 
+	            	this.dispatchEvent(new MapEvent(MapEvent.MOVE_START, this)); 
 	       
 	            }
 	
@@ -351,8 +345,7 @@ package org.openscales.core
 	                    if (layer.inRange != inRange) {
 	                        layer.inRange = inRange;
 	                        moveLayer = true;
-	                        //this.events.triggerEvent("changelayer");
-	                        this.dispatchEvent(new MapEvent(MapEvent.LAYER_CHANGED));
+	                        this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_CHANGED, layer));
 	                    } else {
 	                        moveLayer = (layer.visible && layer.inRange);
 	                    }
@@ -363,19 +356,15 @@ package org.openscales.core
 	                }                
 	            }
 	            
-	            //this.events.triggerEvent("move");
-	            this.dispatchEvent(new MapEvent(MapEvent.MOVE));
+	            this.dispatchEvent(new MapEvent(MapEvent.MOVE, this));
 	    
 	            if (zoomChanged) { 
-	            	//this.events.triggerEvent("zoomend");
-	            	this.dispatchEvent(new MapEvent(MapEvent.ZOOM_END)); 
+	            	this.dispatchEvent(new MapEvent(MapEvent.ZOOM_END, this)); 
 	            }
 	        }
 
 	        if (!dragging) { 
-	        	
-	        	//this.events.triggerEvent("moveend");
-	        	this.dispatchEvent(new MapEvent(MapEvent.MOVE_END)); 
+	           	this.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this)); 
 	        }
 		}
 		

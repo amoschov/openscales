@@ -8,6 +8,7 @@ package org.openscales.core.control
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
 	
 	public class PanZoomBar extends PanZoom
@@ -39,14 +40,14 @@ package org.openscales.core.control
 	        this.zoomBar = null;
 
 	        this.map.removeEventListener(MapEvent.ZOOM_END,this.moveZoomBar);
-	        this.map.removeEventListener(MapEvent.BASE_LAYER_CHANGED,this.redraw);
+	        this.map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED,this.redraw);
 	
 	        super.destroy();
 	    }
 	    
 	    override public function setMap(map:Map):void {
 	    	super.setMap(map);
-	    	this.map.addEventListener(MapEvent.BASE_LAYER_CHANGED,this.redraw);
+	    	this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED,this.redraw);
 	    }
 	    
 	    public function redraw(obt:Object = null):void {

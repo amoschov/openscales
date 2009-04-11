@@ -2,7 +2,6 @@ package org.openscales.core.control
 {
 	import com.gskinner.motion.GTweeny;
 	
-	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -13,7 +12,7 @@ package org.openscales.core.control
 	import org.openscales.core.control.ui.RadioButton;
 	import org.openscales.core.control.ui.SliderHorizontal;
 	import org.openscales.core.control.ui.SliderVertical;
-	import org.openscales.core.events.MapEvent;
+	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.layer.Layer;
 	
 	public class LayerSwitcher extends Control
@@ -60,10 +59,10 @@ package org.openscales.core.control
 		
 			this._minimizeButton.removeEventListener(MouseEvent.CLICK, minMaxButtonClick);
 			this._maximizeButton.removeEventListener(MouseEvent.CLICK, minMaxButtonClick);
-	        this.map.removeEventListener(MapEvent.LAYER_ADDED, this.layerUpdated);
-	        this.map.removeEventListener(MapEvent.LAYER_CHANGED, this.layerUpdated);
-	        this.map.removeEventListener(MapEvent.LAYER_REMOVED, this.layerUpdated);
-	        this.map.removeEventListener(MapEvent.BASE_LAYER_CHANGED, this.layerUpdated);
+	        this.map.removeEventListener(LayerEvent.LAYER_ADDED, this.layerUpdated);
+	        this.map.removeEventListener(LayerEvent.LAYER_CHANGED, this.layerUpdated);
+	        this.map.removeEventListener(LayerEvent.LAYER_REMOVED, this.layerUpdated);
+	        this.map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED, this.layerUpdated);
 	        
 	        
 	        super.destroy();
@@ -72,10 +71,10 @@ package org.openscales.core.control
 		override public function setMap(map:Map):void {
 			super.setMap(map);
 
-	        this.map.addEventListener(MapEvent.LAYER_ADDED, this.layerUpdated);
-	        this.map.addEventListener(MapEvent.LAYER_CHANGED, this.layerUpdated);
-	        this.map.addEventListener(MapEvent.LAYER_REMOVED, this.layerUpdated);
-	        this.map.addEventListener(MapEvent.BASE_LAYER_CHANGED, this.layerUpdated);
+	        this.map.addEventListener(LayerEvent.LAYER_ADDED, this.layerUpdated);
+	        this.map.addEventListener(LayerEvent.LAYER_CHANGED, this.layerUpdated);
+	        this.map.addEventListener(LayerEvent.LAYER_REMOVED, this.layerUpdated);
+	        this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.layerUpdated);
 		}
 		
 		override public function draw():void {
@@ -290,7 +289,7 @@ package org.openscales.core.control
 			
 		}
 		
-		private function layerUpdated(event:Event):void {
+		private function layerUpdated(event:LayerEvent):void {
 			this.draw();
 		}
 		

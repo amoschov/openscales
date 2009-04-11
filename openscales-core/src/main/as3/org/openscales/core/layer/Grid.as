@@ -7,6 +7,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.events.MapEvent;
+	import org.openscales.core.events.TileEvent;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.tile.Image;
 	import org.openscales.core.tile.Tile;
@@ -438,7 +439,7 @@ package org.openscales.core.layer
 	            }
 	            this.numLoadingTiles++;
 	        };
-	        this.addEventListener(MapEvent.TILE_LOAD_START, tile.onLoadStart);
+	        this.addEventListener(TileEvent.TILE_LOAD_START, tile.onLoadStart);
 	      
 	        tile.onLoadEnd = function():void {
 	            this.numLoadingTiles--;
@@ -449,13 +450,13 @@ package org.openscales.core.layer
 	            }
 	        };
 	        
-	        this.addEventListener(MapEvent.TILE_LOAD_END, tile.onLoadEnd);
+	        this.addEventListener(TileEvent.TILE_LOAD_END, tile.onLoadEnd);
 
 		}
 		
 		public function removeTileMonitoringHooks(tile:Tile):void {
-			this.removeEventListener(MapEvent.TILE_LOAD_START, tile.onLoadStart);
-			this.removeEventListener(MapEvent.TILE_LOAD_END, tile.onLoadEnd);
+			this.removeEventListener(TileEvent.TILE_LOAD_START, tile.onLoadStart);
+			this.removeEventListener(TileEvent.TILE_LOAD_END, tile.onLoadEnd);
 		}
 		
 		public function moveGriddedTiles(bounds:Bounds):void {

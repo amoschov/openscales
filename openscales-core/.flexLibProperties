@@ -74,9 +74,11 @@
 <classEntry path="org.openscales.core.feature.WFS"/>
 <classEntry path="org.openscales.core.control.PanZoomBar"/>
 <classEntry path="org.openscales.core.popup.Popup"/>
+<classEntry path="org.openscales.core.events.LayerEvent"/>
 <classEntry path="org.openscales.core.layer.WMSC"/>
 <classEntry path="org.openscales.core.geometry.MultiLineString"/>
 <classEntry path="org.openscales.core.handler.Handler"/>
+<classEntry path="org.openscales.core.events.OpenScalesEvent"/>
 <classEntry path="org.openscales.core.layer.osm.Osmarender"/>
 <classEntry path="org.openscales.core.feature.State"/>
 <classEntry path="org.openscales.core.tile.WFS"/>
@@ -88,18 +90,18 @@
 </includeClasses>
 <includeResources>
 <resourceEntry destPath="org/openscales/core/img/blank.gif" sourcePath="org/openscales/core/img/blank.gif"/>
-<resourceEntry destPath="org/openscales/core/img/layerSave.png" sourcePath="org/openscales/core/img/layerSave.png"/>
 <resourceEntry destPath="org/openscales/core/img/layerDel.png" sourcePath="org/openscales/core/img/layerDel.png"/>
-<resourceEntry destPath="org/openscales/core/img/north-mini.png" sourcePath="org/openscales/core/img/north-mini.png"/>
+<resourceEntry destPath="org/openscales/core/img/layerSave.png" sourcePath="org/openscales/core/img/layerSave.png"/>
 <resourceEntry destPath="org/openscales/core/img/panning-hand-off.png" sourcePath="org/openscales/core/img/panning-hand-off.png"/>
+<resourceEntry destPath="org/openscales/core/img/north-mini.png" sourcePath="org/openscales/core/img/north-mini.png"/>
 <resourceEntry destPath="org/openscales/core/img/drag-rectangle-off.png" sourcePath="org/openscales/core/img/drag-rectangle-off.png"/>
-<resourceEntry destPath="org/openscales/core/img/layerSel.png" sourcePath="org/openscales/core/img/layerSel.png"/>
 <resourceEntry destPath="org/openscales/core/img/layerCancel.png" sourcePath="org/openscales/core/img/layerCancel.png"/>
+<resourceEntry destPath="org/openscales/core/img/layerSel.png" sourcePath="org/openscales/core/img/layerSel.png"/>
 <resourceEntry destPath="org/openscales/core/img/layerViz.png" sourcePath="org/openscales/core/img/layerViz.png"/>
 <resourceEntry destPath="org/openscales/core/img/drag-rectangle-on.png" sourcePath="org/openscales/core/img/drag-rectangle-on.png"/>
 <resourceEntry destPath="org/openscales/core/img/marker.png" sourcePath="org/openscales/core/img/marker.png"/>
-<resourceEntry destPath="org/openscales/core/img/zoom-plus-mini.png" sourcePath="org/openscales/core/img/zoom-plus-mini.png"/>
 <resourceEntry destPath="org/openscales/core/img/west-mini.png" sourcePath="org/openscales/core/img/west-mini.png"/>
+<resourceEntry destPath="org/openscales/core/img/zoom-plus-mini.png" sourcePath="org/openscales/core/img/zoom-plus-mini.png"/>
 <resourceEntry destPath="org/openscales/core/img/marker-green.png" sourcePath="org/openscales/core/img/marker-green.png"/>
 <resourceEntry destPath="org/openscales/core/img/measuring-stick-off.png" sourcePath="org/openscales/core/img/measuring-stick-off.png"/>
 <resourceEntry destPath="org/openscales/core/img/zoom-minus-mini.png" sourcePath="org/openscales/core/img/zoom-minus-mini.png"/>
@@ -114,8 +116,8 @@
 <resourceEntry destPath="org/openscales/core/img/south-mini.png" sourcePath="org/openscales/core/img/south-mini.png"/>
 <resourceEntry destPath="org/openscales/core/img/close.gif" sourcePath="org/openscales/core/img/close.gif"/>
 <resourceEntry destPath="org/openscales/core/img/east-mini.png" sourcePath="org/openscales/core/img/east-mini.png"/>
-<resourceEntry destPath="org/openscales/core/img/zoom-world-mini.png" sourcePath="org/openscales/core/img/zoom-world-mini.png"/>
 <resourceEntry destPath="org/openscales/core/img/measuring-stick-on.png" sourcePath="org/openscales/core/img/measuring-stick-on.png"/>
+<resourceEntry destPath="org/openscales/core/img/zoom-world-mini.png" sourcePath="org/openscales/core/img/zoom-world-mini.png"/>
 <resourceEntry destPath="org/openscales/core/img/zoombar.png" sourcePath="org/openscales/core/img/zoombar.png"/>
 </includeResources>
 <namespaceManifests/>
