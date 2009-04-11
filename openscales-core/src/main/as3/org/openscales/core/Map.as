@@ -188,7 +188,7 @@ package org.openscales.core
         	control.draw();
         	this.addChild( control );
 		}
-		
+				
 		public function setBaseLayer(newBaseLayer:Layer, noEvent:Boolean = false):void {
 			var oldExtent:Bounds = null;
 			if (this.baseLayer != null) {
