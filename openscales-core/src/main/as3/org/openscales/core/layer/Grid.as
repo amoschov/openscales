@@ -162,9 +162,9 @@ package org.openscales.core.layer
 		}
 		
 		public function initSingleTile(bounds:Bounds):void {
-	        var center:LonLat = bounds.getCenterLonLat();
-	        var tileWidth:Number = bounds.getWidth() * this.ratio;
-	        var tileHeight:Number = bounds.getHeight() * this.ratio;
+	        var center:LonLat = bounds.centerLonLat;
+	        var tileWidth:Number = bounds.width * this.ratio;
+	        var tileHeight:Number = bounds.height * this.ratio;
 	                                       
 	        var tileBounds:Bounds = 
 	            new Bounds(center.lon - (tileWidth/2),

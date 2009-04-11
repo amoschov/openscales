@@ -243,8 +243,8 @@ package org.openscales.core.layer
 		
 		public function getZoomForExtent(extent:Bounds):Number {
 			var viewSize:Size = this.map.size;
-	        var idealResolution:Number = Math.max( extent.getWidth()  / viewSize.w,
-	                                        extent.getHeight() / viewSize.h );
+	        var idealResolution:Number = Math.max( extent.width  / viewSize.w,
+	                                        extent.height / viewSize.h );
 	
 	        return this.getZoomForResolution(idealResolution);
 		}

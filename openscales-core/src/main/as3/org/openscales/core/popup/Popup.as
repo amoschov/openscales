@@ -113,7 +113,7 @@ package org.openscales.core.popup
 	            if ((this.lonlat != null) && (this.map != null)) {
 	                px = this.map.getViewPortPxFromLonLat(this.lonlat);
 	            }
-	        }
+	        }        
 	        
 	        this.position = px;
  	                 

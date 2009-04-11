@@ -62,7 +62,7 @@ package org.openscales.core.renderer
 	        // Set the viewbox -- the left/top will be pixels-dragged-since-res change,
 	        // the width/height will be pixels.
 	        var extentString:String = left + " " + top + " " + 
-	                             extent.getWidth() / resolution + " " + extent.getHeight() / resolution;
+	                             extent.width / resolution + " " + extent.height / resolution;
 	        //var extentString = extent.left / resolution + " " + -extent.top / resolution + " " + 
 /* 	        this.rendererRoot.viewBox = extentString; */
 		}

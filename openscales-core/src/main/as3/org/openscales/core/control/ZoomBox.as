@@ -43,10 +43,10 @@ package org.openscales.core.control
 	                var extent:Bounds = map.extent;
 	                var center:LonLat = this.map.getLonLatFromPixel(
 	                    position.getCenterPixel());
-	                var xmin:Number = center.lon - (extent.getWidth()/2)*zoomFactor;
-	                var xmax:Number = center.lon + (extent.getWidth()/2)*zoomFactor;
-	                var ymin:Number = center.lat - (extent.getHeight()/2)*zoomFactor;
-	                var ymax:Number = center.lat + (extent.getHeight()/2)*zoomFactor;
+	                var xmin:Number = center.lon - (extent.width/2)*zoomFactor;
+	                var xmax:Number = center.lon + (extent.width/2)*zoomFactor;
+	                var ymin:Number = center.lat - (extent.height/2)*zoomFactor;
+	                var ymax:Number = center.lat + (extent.height/2)*zoomFactor;
 	                bounds = new Bounds(xmin, ymin, xmax, ymax);
 	            }
 	            this.map.zoomToExtent(bounds);

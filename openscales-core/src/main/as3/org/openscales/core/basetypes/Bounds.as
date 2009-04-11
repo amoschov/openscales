@@ -60,23 +60,23 @@ package org.openscales.core.basetypes
             return bbox;
 		}
 		
-		public function getWidth():Number {
+		public function get width():Number {
 			return this.right - this.left;
 		}
 		
-		public function getHeight():Number {
+		public function get height():Number {
 			return this.top - this.bottom;
 		}
 		
-		public function getSize():Size {
-			return new Size(this.getWidth(), this.getHeight());
+		public function get size():Size {
+			return new Size(this.width, this.height);
 		}
 		
-		public function getCenterPixel():Pixel {
+		public function get centerPixel():Pixel {
 			return new Pixel((this.left + this.right) / 2, (this.bottom + this.top) / 2);
 		}
 		
-		public function getCenterLonLat():LonLat {
+		public function get centerLonLat():LonLat {
 			return new LonLat((this.left + this.right) / 2, (this.bottom + this.top) / 2);
 		}
 		
@@ -188,7 +188,7 @@ package org.openscales.core.basetypes
 		
 		public function determineQuadrant(lonlat:LonLat):String {
 			var quadrant:String = "";
-	        var center:LonLat = this.getCenterLonLat();
+	        var center:LonLat = this.centerLonLat;
 	        
 	        /* quadrant += (lonlat.lat < center.lat) ? "b" : "t";
 	        quadrant += (lonlat.lon < center.lon) ? "l" : "r"; */

@@ -210,7 +210,7 @@ package org.openscales.core
 						if (oldExtent == null) {
 							this.setCenter(center, this.zoom, false, true);
 						} else {
-							this.setCenter(oldExtent.getCenterLonLat(), 
+							this.setCenter(oldExtent.centerLonLat, 
                                        this.getZoomForExtent(oldExtent),
                                        false, true);
 						}
@@ -302,7 +302,7 @@ package org.openscales.core
 		
 		public function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false):void {
 			if (!this.center && !this.isValidLonLat(lonlat)) {
-	            lonlat = this.maxExtent.getCenterLonLat();
+	            lonlat = this.maxExtent.centerLonLat;
 	        }
 	        
 	        var zoomChanged:Boolean = forceZoomChange || (
@@ -436,7 +436,7 @@ package org.openscales.core
 		}
 		
 		public function zoomToExtent(bounds:Bounds):void {
-	        this.setCenter(bounds.getCenterLonLat(), this.getZoomForExtent(bounds));
+	        this.setCenter(bounds.centerLonLat, this.getZoomForExtent(bounds));
 		}
 		
 		public function zoomToMaxExtent():void {
