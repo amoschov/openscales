@@ -1,14 +1,14 @@
-package org.openscales.core.control
+package org.openscales.core.handler
 {
 	import org.openscales.core.Map;
 
-	public class AbstractControl implements IControl
+	public class AbstractHandler implements IHandler
 	{
 		private var _target:Map;
 		
 		private var _active:Boolean;
 		
-		public function AbstractControl(target:Map = null, active:Boolean = false)
+		public function AbstractHandler(target:Map = null, active:Boolean = false)
 		{
 			this.target = target;
 			this.active = active;

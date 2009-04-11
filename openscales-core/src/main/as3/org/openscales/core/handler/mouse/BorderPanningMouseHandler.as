@@ -1,11 +1,12 @@
-package org.openscales.core.control.mouse{
+package org.openscales.core.handler.mouse {
+	
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.control.AbstractControl;
+	import org.openscales.core.handler.AbstractHandler;
 	
-	public class BorderPanningMouseControl extends AbstractControl {
+	public class BorderPanningMouseHandler extends AbstractHandler {
 		
 		private var _ratio:int;
 		
@@ -13,7 +14,7 @@ package org.openscales.core.control.mouse{
 		
 		private var _deltaY:int = 0;
 		
-		public function BorderPanningMouseControl(target:Map=null,active:Boolean=false, ratio:int = 20){
+		public function BorderPanningMouseHandler(target:Map=null,active:Boolean=false, ratio:int = 20){
 			this.ratio = ratio;
 			super(target, active);			
 		}

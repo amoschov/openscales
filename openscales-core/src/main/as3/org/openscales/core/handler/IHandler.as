@@ -1,7 +1,7 @@
-package org.openscales.core.control {
+package org.openscales.core.handler {
 	import org.openscales.core.Map;
 	
-	public interface IControl{
+	public interface IHandler{
 		
 		function get target():Map;
 		

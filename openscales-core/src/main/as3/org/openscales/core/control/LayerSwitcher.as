@@ -8,6 +8,7 @@ package org.openscales.core.control
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.control.ui.Arrow;
+	import org.openscales.core.control.ui.Button;
 	import org.openscales.core.control.ui.CheckBox;
 	import org.openscales.core.control.ui.RadioButton;
 	import org.openscales.core.control.ui.SliderHorizontal;

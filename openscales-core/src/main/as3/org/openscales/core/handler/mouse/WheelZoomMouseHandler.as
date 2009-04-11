@@ -1,13 +1,14 @@
-package org.openscales.core.control.mouse{
+package org.openscales.core.handler.mouse {
+	
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.control.AbstractControl;
+	import org.openscales.core.handler.AbstractHandler;
 	
 	
-	public class WheelZoomMouseControl extends AbstractControl {
+	public class WheelZoomMouseHandler extends AbstractHandler {
 			
-		public function WheelZoomMouseControl(target:Map = null, active:Boolean = false){
+		public function WheelZoomMouseHandler(target:Map = null, active:Boolean = false){
 			super(target,active);
 		}
 		

@@ -1,9 +1,6 @@
 package org.openscales.core.control.ui
 {
 	import org.openscales.core.basetypes.Pixel;
-	import flash.display.Bitmap;
-	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.control.Button;
 
 	public class SliderHorizontal extends Button
 	{

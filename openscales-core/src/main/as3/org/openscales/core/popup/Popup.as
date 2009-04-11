@@ -14,7 +14,7 @@ package org.openscales.core.popup
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.control.Button;
+	import org.openscales.core.control.ui.Button;
 	import org.openscales.core.feature.Feature;
 	
 	public class Popup extends Sprite

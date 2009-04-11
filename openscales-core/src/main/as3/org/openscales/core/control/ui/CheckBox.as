@@ -3,7 +3,6 @@ package org.openscales.core.control.ui
 	import flash.display.Bitmap;
 	
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.control.Button;
 
 	public class CheckBox extends Button
 	{

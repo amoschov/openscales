@@ -1,4 +1,4 @@
-package org.openscales.core.control
+package org.openscales.core.control.ui
 {
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
