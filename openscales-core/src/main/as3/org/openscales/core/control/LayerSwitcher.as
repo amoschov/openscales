@@ -65,7 +65,6 @@ package org.openscales.core.control
 	        this.map.removeEventListener(LayerEvent.LAYER_REMOVED, this.layerUpdated);
 	        this.map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED, this.layerUpdated);
 	        
-	        
 	        super.destroy();
 		}
 		
