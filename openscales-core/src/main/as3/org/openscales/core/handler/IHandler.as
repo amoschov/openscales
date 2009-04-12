@@ -3,9 +3,9 @@ package org.openscales.core.handler {
 	
 	public interface IHandler{
 		
-		function get target():Map;
+		function get map():Map;
 		
-		function set target(value:Map):void;
+		function set map(value:Map):void;
 		
 		function get active():Boolean;
 		

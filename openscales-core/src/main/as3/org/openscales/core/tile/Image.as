@@ -67,7 +67,6 @@ package org.openscales.core.tile
 	        	this.url = this.layer.getURL(this.bounds);
 	        	
 	        _tileLoader.load(new URLRequest(this.url));
-	        trace(this.url);
 	        _tileLoader.name=this.url;
 	        _tileLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onTileLoadEnd, false, 0, true);
 			_tileLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onTileLoadError, false, 0, true);

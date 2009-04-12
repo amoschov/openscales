@@ -69,8 +69,8 @@ package org.openscales.core.control
 	        super.destroy();
 		}
 		
-		override public function setMap(map:Map):void {
-			super.setMap(map);
+		override public function set map(map:Map):void {
+			super.map = map;
 
 	        this.map.addEventListener(LayerEvent.LAYER_ADDED, this.layerUpdated);
 	        this.map.addEventListener(LayerEvent.LAYER_CHANGED, this.layerUpdated);

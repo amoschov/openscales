@@ -7,10 +7,8 @@ package org.openscales.core.renderer
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.Control;
-	import org.openscales.core.control.SelectFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LinearRing;
-	import org.openscales.core.handler.Feature;
 	import org.openscales.core.feature.Style;
 	
 	/**
@@ -310,7 +308,7 @@ package org.openscales.core.renderer
 		    if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
-	            for (i = 0; i < geometry.components.length; i++) {
+	            for (var i:int = 0; i < geometry.components.length; i++) {
 	                this.drawGeometry(geometry.components[i], style, featureId);
 	            }
 	            return null;
@@ -325,16 +323,6 @@ package org.openscales.core.renderer
 	        this.container.addChild(node);
 
 	        this.drawGeometryNode(node, geometry);
-	        
-	        for (var i:int=0; i < this.map.controls.length; i++) {
-	        	var control:Control = this.map.controls[i];
-	        	if (control is SelectFeature) {
-	        		if (control.active) {
-	        			//var handler:Feature = control.handler;
-	        			//node.addEventListener(MouseEvent.CLICK, handler.mouseclick);
-	        		}
-	        	}
-	        }
 	        
 	        return node;
 	    }

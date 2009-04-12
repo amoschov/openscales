@@ -7,9 +7,10 @@ package org.openscales.core
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.control.Control;
+	import org.openscales.core.control.IControl;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
+	import org.openscales.core.handler.IHandler;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.Vector;
 	import org.openscales.core.popup.Popup;
@@ -39,6 +40,7 @@ package org.openscales.core
 		private var _layerContainer:Sprite = null;
 		private var _baseLayer:Layer = null;
 		private var _controls:Array = null;
+		private var _handlers:Array = null;
 		private var _size:Size = null;
 		private var _tileSize:Size = null;
 		private var _center:LonLat = null;
@@ -61,6 +63,7 @@ package org.openscales.core
 			Util.extend(this, options);	
 			
 			this._controls = new Array();
+			this._handlers = new Array();
 									
 			this.size = new Size(width, height);
 			this.tileSize = new Size(this.DEFAULT_TILE_WIDTH, this.DEFAULT_TILE_HEIGHT);
@@ -79,16 +82,6 @@ package org.openscales.core
 			this._layerContainer.width = this.size.w;
 			this._layerContainer.height = this.size.h;
 			this.addChild(this._layerContainer);
-			
-			/* this._popupContainer = new Sprite();
-			
-			this._popupContainer.graphics.beginFill(0x000000,0);
-			this._popupContainer.graphics.drawRect(0,0,this.size.w,this.size.h);
-			this._popupContainer.graphics.endFill();
-			
-			this._popupContainer.visible = true;
-
-			this.addChild(this._popupContainer); */		
 
 		}
 		
@@ -182,11 +175,17 @@ package org.openscales.core
 	        this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_REMOVED, layer));	
 		}
 		
-		public function addControl(control:Control):void {
+		public function addControl(control:IControl):void {
 			this._controls.push(control);
-        	control.setMap(this);
+        	control.map = this;
         	control.draw();
-        	this.addChild( control );
+        	this.addChild( control as Sprite );
+		}
+		
+		public function addHandler(handler:IHandler):void {
+			this._handlers.push(handler);
+        	handler.map = this;
+        	handler.active = true;
 		}
 				
 		public function setBaseLayer(newBaseLayer:Layer, noEvent:Boolean = false):void {

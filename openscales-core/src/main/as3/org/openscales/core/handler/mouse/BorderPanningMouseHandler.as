@@ -4,9 +4,9 @@ package org.openscales.core.handler.mouse {
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.handler.AbstractHandler;
+	import org.openscales.core.handler.Handler;
 	
-	public class BorderPanningMouseHandler extends AbstractHandler {
+	public class BorderPanningMouseHandler extends Handler {
 		
 		private var _ratio:int;
 		
@@ -28,16 +28,16 @@ package org.openscales.core.handler.mouse {
 		}
 		
 		override protected function registerListeners():void {
-			this.target.addEventListener(MouseEvent.MOUSE_MOVE,this.onMouseMove);
-			this.target.addEventListener(MouseEvent.MOUSE_OVER,this.onMouseOver);
-			this.target.addEventListener(MouseEvent.MOUSE_OUT,this.onMouseOut);
+			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.onMouseMove);
+			this.map.addEventListener(MouseEvent.MOUSE_OVER,this.onMouseOver);
+			this.map.addEventListener(MouseEvent.MOUSE_OUT,this.onMouseOut);
 		}
 		
 		override protected function unregisterListeners():void {
-			this.target.removeEventListener(MouseEvent.MOUSE_MOVE,this.onMouseMove);
-			this.target.removeEventListener(MouseEvent.MOUSE_OVER,this.onMouseOver);
-			this.target.removeEventListener(MouseEvent.MOUSE_OUT,this.onMouseOut);
-			this.target.removeEventListener(Event.ENTER_FRAME,this.onEnterFrame);
+			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,this.onMouseMove);
+			this.map.removeEventListener(MouseEvent.MOUSE_OVER,this.onMouseOver);
+			this.map.removeEventListener(MouseEvent.MOUSE_OUT,this.onMouseOut);
+			this.map.removeEventListener(Event.ENTER_FRAME,this.onEnterFrame);
 		}
 		
 		private function onMouseMove(event:MouseEvent):void{
@@ -45,21 +45,21 @@ package org.openscales.core.handler.mouse {
 		}
 		
 		private function onMouseOut(event:MouseEvent):void{
-			this.target.removeEventListener(Event.ENTER_FRAME,this.onEnterFrame);
+			this.map.removeEventListener(Event.ENTER_FRAME,this.onEnterFrame);
 		}
 		
 		private function onMouseOver(event:MouseEvent):void{
 			this.updateDelta(event);
-			this.target.addEventListener(Event.ENTER_FRAME,this.onEnterFrame);
+			this.map.addEventListener(Event.ENTER_FRAME,this.onEnterFrame);
 		}
 		
 		private function onEnterFrame(event:Event):void{
-			this.target.pan(this._deltaX,this._deltaY);
+			this.map.pan(this._deltaX,this._deltaY);
 		}
 		
 		private function updateDelta(event:MouseEvent):void {
-			this._deltaX = (event.stageX - (target.size.w/2)) / this.ratio;
-			this._deltaY = (event.stageY - (target.size.h/2)) / this.ratio;
+			this._deltaX = (event.stageX - (this.map.size.w/2)) / this.ratio;
+			this._deltaY = (event.stageY - (this.map.size.h/2)) / this.ratio;
 		}
 		
 	}

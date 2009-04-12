@@ -7,59 +7,48 @@ package org.openscales.core.control
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.handler.Handler;
-	import org.openscales.core.layer.Vector;
 	
 	/**
 	 * Controls affect the display or behavior of the map.
 	 * They allow everything from panning and zooming to displaying a scale indicator.
 	 */
-	public class Control extends Sprite
+	public class Control extends Sprite implements IControl
 	{
 		
-		public static var TYPE_BUTTON:int = 1;
-		public static var TYPE_TOGGLE:int = 2;
-		public static var TYPE_TOOL:int = 3;
-		public static var TYPES:Array = new Array(TYPE_BUTTON, TYPE_TOGGLE, TYPE_TOOL);
-		
-		public var id:String = null;
-		public var map:Map = null;
-		public var type:Array = null;
-		public var displayClass:String = "";
-		public var active:Boolean = false;
-		public var handler:Handler = null;
-		public var layer:Vector = null;
-		public var layerZPos:int;
-		public var keyMask:int;
-		/* private var _size:Size = null; */
+		public var _map:Map = null;
+		public var _active:Boolean = false;
 		
 		public function Control(options:Object = null):void {
-			
-			this.displayClass = getQualifiedClassName(this).split('::')[1];
-					
+								
 			if (options != null && options.position != null) {
 		    	this.position = (options.position as Pixel);
 		    } else {
 		    	this.position = new Pixel(0,0);
 		    }
 
-			this.name = this.displayClass;
+			this.name = getQualifiedClassName(this).split('::')[1];
 			
 			Util.extend(this, options);
-			
-			this.id = Util.createUniqueID(getQualifiedClassName(this) + "_");
-			
 		}
 		
 		public function destroy():void {  
 	        this.map = null;
 		}
 		
-		public function setMap(map:Map):void {
-			this.map = map;
-	        if (this.handler) {
-	            this.handler.setMap(map);
-	        }
+		public function get map():Map {
+			return this._map;   
+		}
+		
+		public function set map(value:Map):void {
+			this._map = value;   
+		}
+		
+		public function get active():Boolean {
+			return this._active;   
+		}
+		
+		public function set active(value:Boolean):void {
+			this._active = value;   
 		}
 		
 		public function draw():void {
@@ -80,44 +69,6 @@ package org.openscales.core.control
 		public function get position():Pixel {
 			return new Pixel(this.x, this.y);
 		}
-		
-		public function activate():Boolean {
-			if (this.active) {
-	            return false;
-	        }
-	        if (this.handler) {
-	        	this.handler.activate();
-	        }
-	        this.active = true;
-	        return true;
-		}
-		
-		public function deactivate():Boolean {
-	        if (this.active) {
-	            if (this.handler) {
-	                this.handler.deactivate();
-	            }
-	            this.active = false;
-	            return true;
-	        }
-	        return false;
-		}
-		
-		/* public function get size():Size
-		{
-			var size:Size = null;
-	        if (_size != null) {
-	            size = _size.clone();
-	        }
-	        return size;
-		}
-		
-		public function set size(newSize:Size):void
-		{
-			_size= newSize;
-			
-			this.draw();
-		} */
 				
 	}
 }

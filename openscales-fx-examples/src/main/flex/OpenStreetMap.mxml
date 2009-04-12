@@ -2,6 +2,9 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.fx.*" creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.IHandler;
+			import org.openscales.core.handler.mouse.DragNDropMouseHandler;
+			import org.openscales.core.handler.mouse.WheelZoomMouseHandler;
 			import mx.events.ResizeEvent;
 			import org.openscales.core.Map;
 			import org.openscales.core.popup.Popup;
@@ -56,7 +59,8 @@
 								
 				map.addLayers([mapnik ,markers]);
 				map.addControl(new PanZoomBar());
-				map.addControl(new Navigation());
+				var wheel:IHandler = new WheelZoomMouseHandler(map, true);
+				var drag:IHandler = new DragNDropMouseHandler(map, true);
 				map.addControl(new LayerSwitcher({position: new Pixel(map.width/2, 0)}));
 				map.addControl(new MousePosition());
 				 		

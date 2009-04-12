@@ -2,6 +2,9 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.fx.*" creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.IHandler;
+			import org.openscales.core.handler.mouse.DragNDropMouseHandler;
+			import org.openscales.core.handler.mouse.WheelZoomMouseHandler;
 			import mx.events.ResizeEvent;
 			import org.openscales.core.feature.Style;
 			import org.openscales.core.basetypes.Size;
@@ -12,7 +15,6 @@
 			import org.openscales.core.basetypes.Pixel;
 			import org.openscales.core.control.LayerSwitcher;
 			import org.openscales.core.layer.WFS;
-			import org.openscales.core.control.Navigation;
 			import org.openscales.core.control.PanZoomBar;
 			import org.openscales.core.layer.WMS;
 			import org.openscales.core.layer.WMSC;
@@ -44,8 +46,8 @@
 
 				map.addLayers([wmslayer1,wfslayer1]);
 				map.addControl(new PanZoomBar());
-				map.addControl(new Navigation());
-				//map.addControl(new LayerSwitcher({position: new Pixel(mapCanvas.width - 200, 0)}));
+				map.addHandler(new WheelZoomMouseHandler());
+				map.addHandler(new DragNDropMouseHandler());
 				map.addControl(new LayerSwitcher({position: new Pixel(map.width/2, 0)}));	
 				map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735));
 				

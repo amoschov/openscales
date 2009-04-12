@@ -3,31 +3,50 @@ package org.openscales.core.handler.mouse {
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.handler.AbstractHandler;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.handler.Handler;
 	
 	
-	public class WheelZoomMouseHandler extends AbstractHandler {
+	public class WheelZoomMouseHandler extends Handler {
 			
 		public function WheelZoomMouseHandler(target:Map = null, active:Boolean = false){
 			super(target,active);
 		}
 		
 		override protected function registerListeners():void{
-			this.target.addEventListener(MouseEvent.MOUSE_WHEEL,this._onMouseWheel);
+			this.map.addEventListener(MouseEvent.MOUSE_WHEEL,this.onMouseWheel);
 		}
 		
 		override protected function unregisterListeners():void{
-			this.target.removeEventListener(MouseEvent.MOUSE_WHEEL,this._onMouseWheel);
+			this.map.removeEventListener(MouseEvent.MOUSE_WHEEL,this.onMouseWheel);
 		}
 		
-		private function _onMouseWheel(event:MouseEvent):void{
+		private function onMouseWheel(event:MouseEvent):void{
 			
-			if(event.delta>0){
-				this.target.zoomIn();
+			var deltaZ:int;
+			
+			if(event.delta > 0) {
+				deltaZ = 1;
+			} else {
+				deltaZ = -1;
 			}
-			else{
-				this.target.zoomOut();
-			}
+			
+			var newZoom:int = this.map.zoom + deltaZ;
+	        if (!this.map.isValidZoomLevel(newZoom)) {
+	            return;
+	        }
+	        var size:Size    = this.map.size;
+	        var deltaX:Number  = size.w/2 - this.map.mouseX;
+	        var deltaY:Number  = size.h/2 - this.map.mouseY;
+	        var newRes:Number  = this.map.baseLayer.resolutions[newZoom];
+	        var zoomPoint:LonLat = this.map.getLonLatFromPixel(new Pixel(this.map.mouseX, this.map.mouseY));
+	        var newCenter:LonLat = new LonLat(
+	                            zoomPoint.lon + deltaX * newRes,
+	                            zoomPoint.lat - deltaY * newRes );
+	        this.map.setCenter( newCenter, newZoom );
 		}
+		
 	}
 }
