@@ -13,7 +13,6 @@
 			import org.openscales.core.feature.Feature;
 			import org.openscales.core.layer.Markers;
 			import org.openscales.core.control.PanZoom;
-			import org.openscales.core.control.Navigation;
 			import org.openscales.core.control.PanZoomBar;
 			import org.openscales.core.basetypes.Bounds;
 			import org.openscales.core.basetypes.LonLat;
@@ -58,9 +57,9 @@
 				markers.addMarker(mark);
 								
 				map.addLayers([mapnik ,markers]);
+				map.addHandler(new WheelZoomMouseHandler());
+				map.addHandler(new DragNDropMouseHandler());
 				map.addControl(new PanZoomBar());
-				var wheel:IHandler = new WheelZoomMouseHandler(map, true);
-				var drag:IHandler = new DragNDropMouseHandler(map, true);
 				map.addControl(new LayerSwitcher({position: new Pixel(map.width/2, 0)}));
 				map.addControl(new MousePosition());
 				 		
