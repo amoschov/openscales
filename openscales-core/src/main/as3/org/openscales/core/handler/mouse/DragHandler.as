@@ -8,7 +8,7 @@ package org.openscales.core.handler.mouse {
 	import org.openscales.core.handler.Handler;
 	
 	
-	public class DragNDropMouseHandler extends Handler {
+	public class DragHandler extends Handler {
 		
 		private var _startCenter:LonLat = null;
 		
@@ -18,12 +18,13 @@ package org.openscales.core.handler.mouse {
 		
 		private var _dragging:Boolean = false;
 			
-		public function DragNDropMouseHandler(target:Map = null, active:Boolean = false){
+		public function DragHandler(target:Map = null, active:Boolean = false){
 			super(target,active);
 		}
 		
 		override protected function registerListeners():void{
 			this.map.addEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
+			this.map.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
 			this.map.addEventListener(MouseEvent.CLICK, this.onMouseUp);
 		}
 		
@@ -39,6 +40,8 @@ package org.openscales.core.handler.mouse {
 			this.start = new Pixel(event.stageX, event.stageY);
 			this.startCenter = this.map.center;
 	        this.last = new Pixel(event.stageX, event.stageY);
+	        this.map.useHandCursor = true;
+            this.map.buttonMode = true;
            	this.map.addEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);
            	this.down(new Pixel(event.stageX, event.stageY));
 		}
@@ -55,15 +58,13 @@ package org.openscales.core.handler.mouse {
 	 	
 	 	protected function onMouseUp(event:MouseEvent):void {
 			this.map.removeEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);
-           	this.map.removeEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
-           	//this.map.removeEventListener(MouseEvent.MOUSE_OUT, this.onMouseUp);
 			
 			if (this._dragging) {
-	            this.map.useHandCursor = false;
-	            this.map.buttonMode = false;
                 this.done(new Pixel(event.stageX, event.stageY));
-                this._dragging = false;
 	        }
+	        this.map.useHandCursor = false;
+            this.map.buttonMode = false;
+            this._dragging = false;
 	 	}
 	 	
 	 	public function get start():Pixel {

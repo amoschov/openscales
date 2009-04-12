@@ -6,7 +6,7 @@ package org.openscales.core.handler.mouse {
 	import org.openscales.core.Map;
 	import org.openscales.core.handler.Handler;
 	
-	public class BorderPanningMouseHandler extends Handler {
+	public class BorderPanHandler extends Handler {
 		
 		private var _ratio:int;
 		
@@ -14,7 +14,7 @@ package org.openscales.core.handler.mouse {
 		
 		private var _deltaY:int = 0;
 		
-		public function BorderPanningMouseHandler(target:Map=null,active:Boolean=false, ratio:int = 20){
+		public function BorderPanHandler(target:Map=null,active:Boolean=false, ratio:int = 20){
 			this.ratio = ratio;
 			super(target, active);			
 		}

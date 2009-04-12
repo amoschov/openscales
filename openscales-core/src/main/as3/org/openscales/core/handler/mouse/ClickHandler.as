@@ -10,7 +10,7 @@ package org.openscales.core.handler.mouse {
 	import org.openscales.core.handler.Handler;
 	
 	
-	public class ClickMouseHandler extends Handler {
+	public class ClickHandler extends Handler {
 		
 		private var _timer:Timer = new Timer(250,1);
 		
@@ -18,7 +18,7 @@ package org.openscales.core.handler.mouse {
 		
 		private var _mouseEvent:MouseEvent = null;
 			
-		public function ClickMouseHandler(target:Map = null, active:Boolean = false){
+		public function ClickHandler(target:Map = null, active:Boolean = false){
 			super(target,active);
 		}
 		

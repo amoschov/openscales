@@ -9,9 +9,9 @@ package org.openscales.core.handler.mouse {
 	import org.openscales.core.handler.Handler;
 	
 	
-	public class WheelZoomMouseHandler extends Handler {
+	public class WheelHandler extends Handler {
 			
-		public function WheelZoomMouseHandler(target:Map = null, active:Boolean = false){
+		public function WheelHandler(target:Map = null, active:Boolean = false){
 			super(target,active);
 		}
 		

@@ -4,9 +4,9 @@ package {
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.handler.mouse.BorderPanningMouseHandler;
-	import org.openscales.core.handler.mouse.ClickMouseHandler;
-	import org.openscales.core.handler.mouse.WheelZoomMouseHandler;
+	import org.openscales.core.handler.mouse.BorderPanHandler;
+	import org.openscales.core.handler.mouse.ClickHandler;
+	import org.openscales.core.handler.mouse.WheelHandler;
 	import org.openscales.core.layer.osm.Mapnik;
 
 	[SWF(width='600', height='400')]
@@ -25,9 +25,9 @@ package {
 			var mapnik:Mapnik = new Mapnik("Mapnik");
 							
 			_map.addLayers([mapnik]);
-			_map.addHandler(new WheelZoomMouseHandler());
-			_map.addHandler(new BorderPanningMouseHandler());
-			_map.addHandler(new ClickMouseHandler());
+			_map.addHandler(new WheelHandler());
+			_map.addHandler(new BorderPanHandler());
+			_map.addHandler(new ClickHandler());
 			
 			var lat:Number=-3.5397294921874973;
     		var lon:Number=-43.584918945312495;

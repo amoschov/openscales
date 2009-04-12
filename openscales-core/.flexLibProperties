@@ -8,7 +8,7 @@
 <classEntry path="org.openscales.core.renderer.Renderer"/>
 <classEntry path="org.openscales.core.layer.osm.Maplint"/>
 <classEntry path="org.openscales.core.geometry.Curve"/>
-<classEntry path="org.openscales.core.handler.mouse.ClickMouseHandler"/>
+<classEntry path="org.openscales.core.handler.mouse.ClickHandler"/>
 <classEntry path="org.openscales.core.tile.Image"/>
 <classEntry path="org.openscales.core.format.Format"/>
 <classEntry path="org.openscales.core.format.WKT"/>
@@ -43,10 +43,10 @@
 <classEntry path="org.openscales.core.layer.Markers"/>
 <classEntry path="org.openscales.core.Map"/>
 <classEntry path="org.openscales.core.geometry.Point"/>
-<classEntry path="org.openscales.core.handler.mouse.BorderPanningMouseHandler"/>
+<classEntry path="org.openscales.core.handler.mouse.BorderPanHandler"/>
 <classEntry path="org.openscales.core.layer.osm.CycleMap"/>
 <classEntry path="org.openscales.core.events.PopupEvent"/>
-<classEntry path="org.openscales.core.handler.mouse.WheelZoomMouseHandler"/>
+<classEntry path="org.openscales.core.handler.mouse.WheelHandler"/>
 <classEntry path="org.openscales.core.control.MousePosition"/>
 <classEntry path="org.openscales.core.geometry.LineString"/>
 <classEntry path="org.openscales.core.geometry.MultiPoint"/>
@@ -85,7 +85,7 @@
 <classEntry path="org.openscales.core.tile.WFS"/>
 <classEntry path="org.openscales.core.Util"/>
 <classEntry path="org.openscales.core.renderer.SpriteElement"/>
-<classEntry path="org.openscales.core.handler.mouse.DragNDropMouseHandler"/>
+<classEntry path="org.openscales.core.handler.mouse.DragHandler"/>
 <classEntry path="org.openscales.core.layer.HTTPRequest"/>
 <classEntry path="org.openscales.core.control.ui.SliderVertical"/>
 </includeClasses>
