@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flexLibProperties version="1">
-<includeClasses/>
+<includeClasses>
+<classEntry path="org.openscales.fx.FxLayer"/>
+<classEntry path="org.openscales.fx.FxMap"/>
+</includeClasses>
 <includeResources/>
 <namespaceManifests>
 <namespaceManifestEntry manifest="META-INF/manifest.xml" namespace="http://openscales.org"/>

@@ -542,6 +542,16 @@ package org.openscales.core
 			
 			this.updateSize();
 		}
+		
+		override public function set width(value:Number):void {
+			this._size.w = value;
+			this.updateSize();
+		}
+		
+		override public function set height(value:Number):void {
+			this._size.h = value;
+			this.updateSize();			
+		}
 				
 		public function get controls():Array {
 	        return this._controls;

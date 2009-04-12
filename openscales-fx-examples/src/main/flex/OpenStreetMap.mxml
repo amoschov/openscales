@@ -35,16 +35,10 @@
 			
 			private function initMap():void
 			{
-				map = fxmap.map;
-				map.maxResolution = 1;
-				map.numZoomLevels = 21;
-				map.size=new Size(fxmap.width, fxmap.height);
-				
+				map = fxmap.map;				
 				
         		var zoom:Number=9;
 				
-				//var osm:Osmarender = new Osmarender('Osmarender');
-				var mapnik:Mapnik = new Mapnik("Mapnik");
 				
 				var markers:Markers = new Markers("Markers");
 				
@@ -56,7 +50,7 @@
 				
 				markers.addMarker(mark);
 								
-				map.addLayers([mapnik ,markers]);
+				map.addLayers([markers]);
 				map.addHandler(new WheelHandler());
 				map.addHandler(new DragHandler());
 				map.addControl(new PanZoomBar());
@@ -84,5 +78,8 @@
 		]]>
 	</mx:Script>
 	
-	<openscales:FxMap id="fxmap" width="100%" height="100%" />	
+	<openscales:FxMap id="fxmap" width="{this.width}" height="{this.height}" maxResolution="1" numZoomLevels="21">
+		<openscales:FxLayer type="OSM_MAPNIK"/>
+	</openscales:FxMap>
+	
 </mx:Canvas>

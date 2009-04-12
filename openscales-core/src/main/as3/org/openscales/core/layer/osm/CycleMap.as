@@ -4,7 +4,7 @@ package org.openscales.core.layer.osm
 	
 	public class CycleMap extends OSM
 	{
-		public function CycleMap(name:String, options:Object)
+		public function CycleMap(name:String, options:Object=null)
 		{
 			var url:String = "http://a.andy.sandbox.cloudmade.com/tiles/cycle/";
         	
