@@ -7,7 +7,7 @@ package org.openscales.fx.layer.osm
 	{
 		public function FxOsmarender()
 		{
-			this.layer = new Osmarender();
+			this._layer = new Osmarender();
 			super();
 		}
 		

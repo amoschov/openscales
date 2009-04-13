@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="http://openscales.org" creationComplete="initMap()">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap()">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.handler.IHandler;
@@ -27,14 +27,6 @@
 				map = fxmap.map;
 				map.size=new Size(fxmap.width, fxmap.height);
 
-				map.maxExtent = new Bounds(-180,-90,180,90);
-
-				var baselayer1:WMSC = new WMSC("Metacarta", "http://labs.metacarta.com/wms-c/Basic.py", {layers: "satellite", FORMAT: "image/jpeg"}, {isBaseLayer: true});
-				
-				map.addLayers([baselayer1]);
-				
-				map.zoom = 5;
-				
 				this.addEventListener(ResizeEvent.RESIZE,ResizeMap);
 			}
 			
@@ -45,14 +37,20 @@
 			}
 		]]>
 	</mx:Script>
-	<openscales:FxMap id="fxmap" width="100%" height="100%" numZoomLevels="20">
+	<os:Map id="fxmap" width="100%" height="100%" numZoomLevels="20" zoom="5">
 		
-		<openscales:FxPanZoomBar />
-		<openscales:FxMousePosition />
-		<openscales:FxLayerSwitcher />
+		<os:WMSC name="Metacarta" url="http://labs.metacarta.com/wms-c/Basic.py"
+						   layers="satellite" format="image/jpeg" isBaseLayer="true"/>
+						   
+						   
+		<os:MaxExtent left="-180" bottom="-90" right="180" top="90" />
 		
-		<openscales:FxDragHandler />
-		<openscales:FxClickHandler />
-		<openscales:FxWheelHandler />
-	</openscales:FxMap>
+		<os:PanZoomBar />
+		<os:MousePosition />
+		<os:LayerSwitcher />
+		
+		<os:DragHandler />
+		<os:ClickHandler />
+		<os:WheelHandler />
+	</os:Map>
 </mx:Canvas>

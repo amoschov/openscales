@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="http://openscales.org" creationComplete="initMap();" >
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap();" >
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.handler.IHandler;
@@ -53,18 +53,19 @@
 		]]>
 	</mx:Script>
 	
-	<openscales:FxMap id="fxmap" width="100%" height="100%"
+	<os:Map id="fxmap" width="100%" height="100%"
 					  maxResolution="1" numZoomLevels="21" zoom="9"
 					  lon="-43.584918945312495" lat="-3.5397294921874973">
-		<openscales:FxMapnik name="Mapnik"/>
 		
-		<openscales:FxPanZoomBar />
-		<openscales:FxMousePosition />
-		<openscales:FxLayerSwitcher />
+		<os:Mapnik name="Mapnik"/>
 		
-		<openscales:FxDragHandler />
-		<openscales:FxClickHandler />
-		<openscales:FxWheelHandler />
-	</openscales:FxMap>
+		<os:PanZoomBar />
+		<os:MousePosition />
+		<os:LayerSwitcher />
+		
+		<os:DragHandler />
+		<os:ClickHandler />
+		<os:WheelHandler />
+	</os:Map>
 	
 </mx:Canvas>

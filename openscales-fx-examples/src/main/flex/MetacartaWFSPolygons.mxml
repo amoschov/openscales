@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="http://openscales.org" creationComplete="initMap();">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.handler.IHandler;
@@ -30,23 +30,7 @@
 				map = fxmap.map;
 				map.size=new Size(fxmap.width, fxmap.height);
 				
-				var wmslayer1:WMSC = new WMSC( "OpenLayers WMS",
-                    "http://labs.metacarta.com/wms-c/Basic.py",
-                    {layers: 'basic'} , {isBaseLayer: true});
-
-				var wfslayer1:WFS = new WFS("test", "http://sigma.openplans.org/geoserver/wfs", {typename: "topp:states", SRS: "EPSG:4326", VERSION: "1.0.0"}, {isBaseLayer: false, minZoomLevel: 21});
-				
-				//Custom polygon style
-				var polyStyle:Style = new Style();
-				polyStyle.fillColor = 0xff0000;
-				polyStyle.fillOpacity = 0.8;
-				polyStyle.strokeColor = 0x0000ff;
-				polyStyle.strokeWidth = polyStyle.strokeWidth / 2;
-				wfslayer1.style = polyStyle;
-
-				map.addLayers([wmslayer1,wfslayer1]);
 				map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735));
-				
 				this.addEventListener(ResizeEvent.RESIZE,ResizeMap);
 				
 			}
@@ -58,13 +42,25 @@
 			}
 		]]>
 	</mx:Script>
-	<openscales:FxMap id="fxmap" height="100%" width="100%" >
-	<openscales:FxPanZoomBar />
-		<openscales:FxMousePosition />
-		<openscales:FxLayerSwitcher />
+	<os:Map id="fxmap" height="100%" width="100%" >
+
+		<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
+	
+		<os:WFS name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="topp:states" srs="EPSG:4326" version="1.0.0"
+				isBaseLayer="false" minZoomLevel="21">
+			<os:Style fillColor="0xff0000" fillOpacity="0.8" strokeColor="0x0000ff" strokeWidth="2" />
+			
+		</os:WFS>
 		
-		<openscales:FxDragHandler />
-		<openscales:FxClickHandler />
-		<openscales:FxWheelHandler />
-	</openscales:FxMap>
+		<!--Still an issue with ox:Extent tag that call map.zoomToExtent ... -->
+		<!--<os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" />-->
+			
+		<os:PanZoomBar />
+		<os:MousePosition />
+		<os:LayerSwitcher />
+		
+		<os:DragHandler />
+		<os:ClickHandler />
+		<os:WheelHandler />
+	</os:Map>
 </mx:Canvas>

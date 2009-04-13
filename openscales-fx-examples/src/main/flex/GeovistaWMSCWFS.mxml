@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="http://openscales.org" creationComplete="initMap();">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.handler.mouse.DragHandler;
@@ -26,23 +26,10 @@
 			private function initMap():void {
 				
 				map = fxmap.map;
-				map.maxExtent = new Bounds(-77.92,40.75,-77.79,40.85);
-				map.maxResolution = 1;
-				map.numZoomLevels = 21;
 				map.size=new Size(fxmap.width, fxmap.height);
 				
-				var baselayer1:WMSC = new WMSC("Base Image", "http://www.apps.geovista.psu.edu/tilecache/tilecache.py", {layers: "centreimagerygeogjpeg", FORMAT: "image/jpeg"}, {isBaseLayer: true});
-				
-				var style_blue:Style = new Style();
-				var style_white:Style = new Style();
-				style_blue.strokeColor = 0x0000FF;
-				style_white.strokeColor = 0xFFFFFF;
-				
-				var wfslayer1:WFS = new WFS("Blue Course Track", "http://www.apps.geovista.psu.edu/geoserver/wfs", {typename: "golf:golf_7_2207", SRS: "EPSG:4326", VERSION: "1.0.0"}, {isBaseLayer: false, minZoomLevel: 21, style: style_blue});
-				var wfslayer2:WFS = new WFS("White Course Track", "http://www.apps.geovista.psu.edu/geoserver/wfs", {typename: "golf:golftracks2", SRS: "EPSG:4326", VERSION: "1.0.0"}, {isBaseLayer: false, minZoomLevel: 21, style: style_white});
-				map.addLayers([baselayer1, wfslayer1, wfslayer2]);
 				map.zoomToExtent(new Bounds(-77.92,40.75,-77.79,40.85));
-				
+								
 				this.addEventListener(ResizeEvent.RESIZE,ResizeMap);
 			}
 			
@@ -53,12 +40,31 @@
 			}
 		]]>
 	</mx:Script>
-	<openscales:FxMap id="fxmap" height="100%" width="100%">
-		<openscales:FxMousePosition />
-		<openscales:FxLayerSwitcher />
+	<os:Map id="fxmap" height="100%" width="100%" maxResolution="1" numZoomLevels="21">
 		
-		<openscales:FxDragHandler />
-		<openscales:FxClickHandler />
-		<openscales:FxWheelHandler />
-	</openscales:FxMap>
+		<os:MaxExtent left="-77.92" bottom="40.75" right="-77.79" top="40.85" />
+				
+		<os:WMSC name="Base Image" url="http://www.apps.geovista.psu.edu/tilecache/tilecache.py" layers="centreimagerygeogjpeg"
+				 format="image/jpeg" isBaseLayer="true" />
+		
+		<os:WFS name="Blue Course Track" url="http://www.apps.geovista.psu.edu/geoserver/wfs" typename="golf:golf_7_2207"
+				srs="EPSG:4326" version="1.0.0" isBaseLayer="false" minZoomLevel="21">
+			<os:Style strokeColor="0x0000FF" />
+		</os:WFS>
+
+		<os:WFS name="White Course Track" url="http://www.apps.geovista.psu.edu/geoserver/wfs" typename="golf:golftracks2"
+				srs="EPSG:4326" version="1.0.0" isBaseLayer="false" minZoomLevel="21">
+			<os:Style strokeColor="0xFFFFFF" />
+		</os:WFS>
+		
+		<!--Still an issue with ox:Extent tag that call map.zoomToExtent ... -->
+		<!--<os:Extent left="-77.92" bottom="40.75" right="-77.79" top="40.85" />-->
+
+		<os:MousePosition />
+		<os:LayerSwitcher />
+		
+		<os:DragHandler />
+		<os:ClickHandler />
+		<os:WheelHandler />
+	</os:Map>
 </mx:Canvas>

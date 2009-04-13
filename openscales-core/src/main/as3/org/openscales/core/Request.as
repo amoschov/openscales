@@ -51,6 +51,7 @@ package org.openscales.core
 		      	}
 		      }
 		      this.url = url;
+		      trace(this.url);
 		      if (this.options.method == URLRequestMethod.GET && parameters.length > 0)
 		        this.url += (this.url.match(/\?/) ? '&' : '?') + parameters;
 		

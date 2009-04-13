@@ -47,10 +47,17 @@ package org.openscales.fx {
 			if(!isNaN(this._numZoomLevels))
 				this.map.numZoomLevels = this._numZoomLevels;
 				
-			
-				
+			// Some operations must be done at the beginning, in order to do
+			// not depend on declaration order
 			for(var i:int=0; i < this.rawChildren.numChildren ; i++) {
 				var child:DisplayObject = this.rawChildren.getChildAt(i);
+				if(child is FxMaxExtent) {
+					this.map.maxExtent = (child as FxMaxExtent).bounds;
+				}
+			}
+				
+			for(i=0; i < this.rawChildren.numChildren ; i++) {
+				child = this.rawChildren.getChildAt(i);
 				if(child is FxLayer) {
 					var layer:Layer = (child as FxLayer).layer;
 					layer.name = (child as FxLayer).name;
@@ -60,6 +67,7 @@ package org.openscales.fx {
 				} else if(child is FxHandler) {
 					this.map.addHandler((child as FxHandler).handler);
 				}
+				
 			}
 			
 			if(!isNaN(this._lon) && !isNaN(this._lat))
@@ -70,6 +78,15 @@ package org.openscales.fx {
 				
 			if(!isNaN(this._zoom))
 				this.map.zoom = this._zoom;
+				
+			// Some operations must be done at the end, in order to do
+			// not depend on declaration order
+			for(i=0; i < this.rawChildren.numChildren ; i++) {
+				child = this.rawChildren.getChildAt(i);
+				if(child is FxExtent) {
+					this.map.zoomToExtent((child as FxExtent).bounds);
+				}
+			}
 			
 		}
 						

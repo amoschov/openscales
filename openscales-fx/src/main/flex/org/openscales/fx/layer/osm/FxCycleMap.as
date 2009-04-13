@@ -7,7 +7,7 @@ package org.openscales.fx.layer.osm
 	{
 		public function FxCycleMap()
 		{
-			this.layer = new CycleMap();
+			this._layer = new CycleMap();
 			super();
 		}
 		

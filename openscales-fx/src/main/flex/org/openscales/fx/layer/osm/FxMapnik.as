@@ -7,7 +7,7 @@ package org.openscales.fx.layer.osm
 	{
 		public function FxMapnik()
 		{
-			this.layer = new Mapnik();
+			this._layer = new Mapnik();
 			super();
 		}
 		

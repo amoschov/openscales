@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="http://openscales.org" creationComplete="initMap();">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.handler.IHandler;
@@ -29,13 +29,6 @@
 				map = fxmap.map;
 				map.size=new Size(fxmap.width, fxmap.height);
 				
-				var wmslayer1:WMSC = new WMSC( "OpenLayers WMS",
-                    "http://labs.metacarta.com/wms-c/Basic.py",
-                    {layers: 'basic'} , {isBaseLayer: true});
-
-				var wfslayer1:WFS = new WFS("test", "http://sigma.openplans.org/geoserver/wfs", {typename: "tiger:poi", SRS: "EPSG:4326", VERSION: "1.0.0"}, {isBaseLayer: false, minZoomLevel: 21});
-
-				map.addLayers([wmslayer1,wfslayer1]);
 				map.zoomToExtent(new Bounds(-74.0118315772888,40.70754683896324,-74.00857344353275,40.711945649065406));
 				
 				this.addEventListener(ResizeEvent.RESIZE,ResizeMap);
@@ -49,12 +42,18 @@
 			
 		]]>
 	</mx:Script>
-	<openscales:FxMap id="fxmap" height="100%" width="100%">
-		<openscales:FxMousePosition />
-		<openscales:FxLayerSwitcher />
+	<os:Map id="fxmap" height="100%" width="100%">
 		
-		<openscales:FxDragHandler />
-		<openscales:FxClickHandler />
-		<openscales:FxWheelHandler />
-	</openscales:FxMap>
+		<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
+		
+		<os:WFS name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="tiger:poi" srs="EPSG:4326" version="1.0.0"
+				isBaseLayer="false" minZoomLevel="21" />
+		
+		<os:MousePosition />
+		<os:LayerSwitcher />
+		
+		<os:DragHandler />
+		<os:ClickHandler />
+		<os:WheelHandler />
+	</os:Map>
 </mx:Canvas>

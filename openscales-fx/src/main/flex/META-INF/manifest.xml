@@ -1,19 +1,27 @@
 <?xml version="1.0"?>
 <componentPackage>
-	<component id="FxMap" class="org.openscales.fx.FxMap" />
+	<component id="Map" class="org.openscales.fx.FxMap" />
+	<component id="Extent" class="org.openscales.fx.FxExtent" />
+	<component id="MaxExtent" class="org.openscales.fx.FxMaxExtent" />
 	
-	<component id="FxMapnik" class="org.openscales.fx.layer.osm.FxMapnik" />
-	<component id="FxCycleMap" class="org.openscales.fx.layer.osm.FxCycleMap" />
-	<component id="FxMaplint" class="org.openscales.fx.layer.osm.FxMaplint" />
-	<component id="FxOsmarender" class="org.openscales.fx.layer.osm.FxOsmarender" />
+	<component id="Style" class="org.openscales.fx.feature.FxStyle" />
 	
-	<component id="FxLayerSwitcher" class="org.openscales.fx.control.FxLayerSwitcher" />
-	<component id="FxMousePosition" class="org.openscales.fx.control.FxMousePosition" />
-	<component id="FxPanZoom" class="org.openscales.fx.control.FxPanZoom" />
-	<component id="FxPanZoomBar" class="org.openscales.fx.control.FxPanZoomBar" />
+	<component id="WMS" class="org.openscales.fx.layer.FxWMS" />
+	<component id="WMSC" class="org.openscales.fx.layer.FxWMSC" />
+	<component id="WFS" class="org.openscales.fx.layer.FxWFS" />
 	
-	<component id="FxBorderPanHandler" class="org.openscales.fx.handler.mouse.FxBorderPanHandler" />
-	<component id="FxClickHandler" class="org.openscales.fx.handler.mouse.FxClickHandler" />
-	<component id="FxDragHandler" class="org.openscales.fx.handler.mouse.FxDragHandler" />
-	<component id="FxWheelHandler" class="org.openscales.fx.handler.mouse.FxWheelHandler" />
+	<component id="Mapnik" class="org.openscales.fx.layer.osm.FxMapnik" />
+	<component id="CycleMap" class="org.openscales.fx.layer.osm.FxCycleMap" />
+	<component id="Maplint" class="org.openscales.fx.layer.osm.FxMaplint" />
+	<component id="Osmarender" class="org.openscales.fx.layer.osm.FxOsmarender" />
+	
+	<component id="LayerSwitcher" class="org.openscales.fx.control.FxLayerSwitcher" />
+	<component id="MousePosition" class="org.openscales.fx.control.FxMousePosition" />
+	<component id="PanZoom" class="org.openscales.fx.control.FxPanZoom" />
+	<component id="PanZoomBar" class="org.openscales.fx.control.FxPanZoomBar" />
+	
+	<component id="BorderPanHandler" class="org.openscales.fx.handler.mouse.FxBorderPanHandler" />
+	<component id="ClickHandler" class="org.openscales.fx.handler.mouse.FxClickHandler" />
+	<component id="DragHandler" class="org.openscales.fx.handler.mouse.FxDragHandler" />
+	<component id="WheelHandler" class="org.openscales.fx.handler.mouse.FxWheelHandler" />
 </componentPackage>

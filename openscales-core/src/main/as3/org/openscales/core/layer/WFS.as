@@ -38,9 +38,7 @@ package org.openscales.core.layer
 		public var featureClass:Class = null;
 		
 		public var featureNS:String = null;
-		
-		public var typename:String = null;
-		
+				
 		public var geometry_column:String = null;
 		
 		public var extractAttributes:Boolean = true;
@@ -59,10 +57,6 @@ package org.openscales.core.layer
 	            if (!this.featureClass) {
 	                this.featureClass = org.openscales.core.feature.WFS;
 	            }   
-	        }
-	        
-	        if (this.params && this.params.typename && !this.typename) {
-	            this.typename = this.params.typename;
 	        }
 	        
 	        if (!(this.geometry_column)) {
@@ -246,6 +240,14 @@ package org.openscales.core.layer
 	            }
 	            this.tile.draw();
 	        }
+		}
+		
+		public function set typename(value:String):void {
+			this.params.typename = value;
+		}
+		
+		public function get typename():String {
+			return this.params.typename;
 		}
 		
 	}

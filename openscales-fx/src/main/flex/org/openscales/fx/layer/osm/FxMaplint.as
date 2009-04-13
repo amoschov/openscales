@@ -7,7 +7,7 @@ package org.openscales.fx.layer.osm
 	{
 		public function FxMaplint()
 		{
-			this.layer = new Maplint();
+			this._layer = new Maplint();
 			super();
 		}
 		
