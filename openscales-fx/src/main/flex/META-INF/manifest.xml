@@ -1,5 +1,19 @@
 <?xml version="1.0"?>
 <componentPackage>
 	<component id="FxMap" class="org.openscales.fx.FxMap" />
-	<component id="FxLayer" class="org.openscales.fx.FxLayer" />
+	
+	<component id="FxMapnik" class="org.openscales.fx.layer.osm.FxMapnik" />
+	<component id="FxCycleMap" class="org.openscales.fx.layer.osm.FxCycleMap" />
+	<component id="FxMaplint" class="org.openscales.fx.layer.osm.FxMaplint" />
+	<component id="FxOsmarender" class="org.openscales.fx.layer.osm.FxOsmarender" />
+	
+	<component id="FxLayerSwitcher" class="org.openscales.fx.control.FxLayerSwitcher" />
+	<component id="FxMousePosition" class="org.openscales.fx.control.FxMousePosition" />
+	<component id="FxPanZoom" class="org.openscales.fx.control.FxPanZoom" />
+	<component id="FxPanZoomBar" class="org.openscales.fx.control.FxPanZoomBar" />
+	
+	<component id="FxBorderPanHandler" class="org.openscales.fx.handler.mouse.FxBorderPanHandler" />
+	<component id="FxClickHandler" class="org.openscales.fx.handler.mouse.FxClickHandler" />
+	<component id="FxDragHandler" class="org.openscales.fx.handler.mouse.FxDragHandler" />
+	<component id="FxWheelHandler" class="org.openscales.fx.handler.mouse.FxWheelHandler" />
 </componentPackage>

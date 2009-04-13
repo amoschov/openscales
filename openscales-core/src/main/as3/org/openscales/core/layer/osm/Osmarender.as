@@ -4,7 +4,7 @@ package org.openscales.core.layer.osm
 	
 	public class Osmarender extends OSM
 	{
-		public function Osmarender(name:String, options:Object = null)
+		public function Osmarender(name:String="", options:Object = null)
 		{
         	var url :String= "http://a.tah.openstreetmap.org/Tiles/tile/";
         	var alturls : Array = [	"http://b.tah.openstreetmap.org/Tiles/tile/",

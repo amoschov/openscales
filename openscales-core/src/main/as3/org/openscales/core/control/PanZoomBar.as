@@ -123,7 +123,7 @@ package org.openscales.core.control
 	        var y:Number = map.mouseY;
 	        var top:Number = Util.pagePosition(evt.currentTarget)[1];
 	        var levels:Number = Math.floor((y - top)/this.zoomStopHeight);
-	        this.map.zoomTo((this.map.numZoomLevels -1) -  levels);
+	        this.map.zoom = (this.map.numZoomLevels -1) -  levels;
 	        evt.stopPropagation();
 	    }
 	    
@@ -161,7 +161,7 @@ package org.openscales.core.control
 	        	this.map.removeEventListener(MouseEvent.MOUSE_UP,this.passEventToSlider);
 	        	this.map.removeEventListener(MouseEvent.MOUSE_OUT,this.passEventToSlider);
 	            var deltaY:Number = this.zoomStart.y - map.mouseY;
-	            this.map.zoomTo(this.map.zoom + Math.round(deltaY/this.zoomStopHeight));
+	            this.map.zoom = this.map.zoom + Math.round(deltaY/this.zoomStopHeight);
 	            this.moveZoomBar();
 	            this.mouseDragStart = null;
 	            evt.stopPropagation();

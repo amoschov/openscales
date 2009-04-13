@@ -7,6 +7,7 @@ package org.openscales.core.control
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.events.MapEvent;
 	
 	/**
 	 * Controls affect the display or behavior of the map.
@@ -15,8 +16,8 @@ package org.openscales.core.control
 	public class Control extends Sprite implements IControl
 	{
 		
-		public var _map:Map = null;
-		public var _active:Boolean = false;
+		protected var _map:Map = null;
+		protected var _active:Boolean = false;
 		
 		public function Control(options:Object = null):void {
 								
@@ -32,6 +33,9 @@ package org.openscales.core.control
 		}
 		
 		public function destroy():void {  
+			if(this.map != null)
+				this.map.removeEventListener(MapEvent.RESIZE, this.draw);
+				
 	        this.map = null;
 		}
 		
@@ -40,7 +44,13 @@ package org.openscales.core.control
 		}
 		
 		public function set map(value:Map):void {
-			this._map = value;   
+			this._map = value;
+			
+			this.map.addEventListener(MapEvent.RESIZE, this.resize);
+		}
+		
+		public function resize(event:MapEvent):void {
+			this.draw();   
 		}
 		
 		public function get active():Boolean {

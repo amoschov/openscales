@@ -7,6 +7,7 @@ package org.openscales.core.control
 	import flash.text.TextFormat;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.control.ui.Arrow;
 	import org.openscales.core.control.ui.Button;
 	import org.openscales.core.control.ui.CheckBox;
@@ -14,6 +15,7 @@ package org.openscales.core.control
 	import org.openscales.core.control.ui.SliderHorizontal;
 	import org.openscales.core.control.ui.SliderVertical;
 	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;
 	
 	public class LayerSwitcher extends Control
@@ -50,10 +52,6 @@ package org.openscales.core.control
 			
 			this._minimizeButton = new Button("minimize", new _layerSwitcherMinimizeImg(), this.position.add(-18,0));
 			this._maximizeButton = new Button("maximize", new _layerSwitcherMaximizeImg(), this.position.add(-18,0));
-			
-			this._minimizeButton.addEventListener(MouseEvent.CLICK, minMaxButtonClick); 
-			this._maximizeButton.addEventListener(MouseEvent.CLICK, minMaxButtonClick);
-			 
 		}
 		
 		override public function destroy():void {
@@ -68,8 +66,22 @@ package org.openscales.core.control
 	        super.destroy();
 		}
 		
+		override public function resize(event:MapEvent):void {
+			this.x = this.map.size.w/2;
+			this.y = 0;
+			
+			super.resize(event);
+		}
+		
 		override public function set map(map:Map):void {
 			super.map = map;
+			
+			this.x = this.map.size.w/2;
+			this.y = 0;
+			
+			this._minimizeButton.addEventListener(MouseEvent.CLICK, minMaxButtonClick); 
+			this._maximizeButton.addEventListener(MouseEvent.CLICK, minMaxButtonClick);
+			 
 
 	        this.map.addEventListener(LayerEvent.LAYER_ADDED, this.layerUpdated);
 	        this.map.addEventListener(LayerEvent.LAYER_CHANGED, this.layerUpdated);
@@ -79,6 +91,12 @@ package org.openscales.core.control
 		
 		override public function draw():void {
 			super.draw();
+			
+			this._minimizeButton.x = this.position.add(-18,0).x;
+			this._minimizeButton.y = this.position.add(-18,0).y;
+			
+			this._maximizeButton.x = this.position.add(-18,0).x;
+			this._maximizeButton.y = this.position.add(-18,0).y;
 			
 			if(_minimized) {
 				this.addChild(_maximizeButton);
@@ -278,8 +296,7 @@ package org.openscales.core.control
 				if(this._layerSwitcherState == "Close")
 				{
 					this.alpha = 0;
-					this.x = 830;
-					var tween:GTweeny = new GTweeny(this,0.5,{alpha:0.7,x:639});
+					var tween:GTweeny = new GTweeny(this,0.5,{alpha:0.7});
 					this._layerSwitcherState = "Open";
 				}
 				

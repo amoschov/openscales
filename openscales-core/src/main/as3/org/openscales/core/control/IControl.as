@@ -18,5 +18,13 @@ package org.openscales.core.control {
 		function set position(px:Pixel):void;
 		
 		function get position():Pixel;
+		
+		function get x():Number;
+		
+		function set x(value:Number):void;
+		
+		function get y():Number;
+		
+		function set y(value:Number):void;
 	}
 }

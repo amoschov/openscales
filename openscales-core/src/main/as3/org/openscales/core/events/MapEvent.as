@@ -24,6 +24,8 @@ package org.openscales.core.events{
 		
 		public static const DRAG_END:String="openscales.dragend";
 		
+		public static const RESIZE:String="openscales.resize";
+		
 		/**
 		 * Class: OpenLayers.Map
 		 * Instances of MapEvent are events dispatched by the Map

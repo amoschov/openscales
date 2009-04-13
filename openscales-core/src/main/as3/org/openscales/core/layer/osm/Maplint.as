@@ -4,7 +4,7 @@ package org.openscales.core.layer.osm
 	
 	public class Maplint extends OSM
 	{
-		public function Maplint(name:String, options:Object=null)
+		public function Maplint(name:String="", options:Object=null)
 		{
 			var url :String = "http://d.tah.openstreetmap.org/Tiles/maplint/";
             	        	

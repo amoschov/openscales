@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.fx.*" creationComplete="initMap();">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="http://openscales.org" creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.handler.IHandler;
@@ -45,10 +45,6 @@
 				wfslayer1.style = polyStyle;
 
 				map.addLayers([wmslayer1,wfslayer1]);
-				map.addControl(new PanZoomBar());
-				map.addHandler(new WheelHandler());
-				map.addHandler(new DragHandler());
-				map.addControl(new LayerSwitcher({position: new Pixel(map.width/2, 0)}));	
 				map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735));
 				
 				this.addEventListener(ResizeEvent.RESIZE,ResizeMap);
@@ -62,5 +58,13 @@
 			}
 		]]>
 	</mx:Script>
-	<openscales:FxMap id="fxmap" height="100%" width="100%" />
+	<openscales:FxMap id="fxmap" height="100%" width="100%" >
+	<openscales:FxPanZoomBar />
+		<openscales:FxMousePosition />
+		<openscales:FxLayerSwitcher />
+		
+		<openscales:FxDragHandler />
+		<openscales:FxClickHandler />
+		<openscales:FxWheelHandler />
+	</openscales:FxMap>
 </mx:Canvas>

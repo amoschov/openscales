@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.fx.*" creationComplete="initMap();">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="http://openscales.org" creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.handler.IHandler;
@@ -36,10 +36,6 @@
 				var wfslayer1:WFS = new WFS("test", "http://sigma.openplans.org/geoserver/wfs", {typename: "tiger:poi", SRS: "EPSG:4326", VERSION: "1.0.0"}, {isBaseLayer: false, minZoomLevel: 21});
 
 				map.addLayers([wmslayer1,wfslayer1]);
-				map.addControl(new PanZoomBar());
-				map.addHandler(new WheelHandler());
-				map.addHandler(new DragHandler());
-				map.addControl(new LayerSwitcher({position: new Pixel(map.width/2, 0)}));	
 				map.zoomToExtent(new Bounds(-74.0118315772888,40.70754683896324,-74.00857344353275,40.711945649065406));
 				
 				this.addEventListener(ResizeEvent.RESIZE,ResizeMap);
@@ -53,5 +49,12 @@
 			
 		]]>
 	</mx:Script>
-	<openscales:FxMap id="fxmap" height="100%" width="100%" />
+	<openscales:FxMap id="fxmap" height="100%" width="100%">
+		<openscales:FxMousePosition />
+		<openscales:FxLayerSwitcher />
+		
+		<openscales:FxDragHandler />
+		<openscales:FxClickHandler />
+		<openscales:FxWheelHandler />
+	</openscales:FxMap>
 </mx:Canvas>

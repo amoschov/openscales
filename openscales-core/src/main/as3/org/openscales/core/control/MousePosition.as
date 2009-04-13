@@ -4,10 +4,10 @@ package org.openscales.core.control
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
-	import org.openscales.core.control.Control;
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.events.MapEvent;
 
 	public class MousePosition extends Control
 	{
@@ -43,9 +43,6 @@ package org.openscales.core.control
 	    	super.draw();
 	    	
 	    	this.addChild(label);
-	
-			this.x = this.map.width - 150;
-			this.y = this.map.height - 30;
 	      
         	this.redraw();
 
@@ -81,8 +78,17 @@ package org.openscales.core.control
 		
 		override public function set map(map:Map):void {
 			super.map = map;
-			//this.map.events.register(MouseEvent.MOUSE_MOVE, this, this.redraw);
+			
+			this.x = this.map.size.w - 110;
+			this.y = this.map.size.h - 20;
+			
 			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
+		}
+		
+		override public function resize(event:MapEvent):void {
+			this.x = this.map.size.w - 110;
+			this.y = this.map.size.h - 20;
+			super.resize(event);
 		}
 		
 		// Getters & setters

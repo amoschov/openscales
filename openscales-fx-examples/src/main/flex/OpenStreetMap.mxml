@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="org.openscales.fx.*" creationComplete="initMap();">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:openscales="http://openscales.org" creationComplete="initMap();" >
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.handler.IHandler;
@@ -28,49 +28,24 @@
 			
 			public var feature:Feature; 
 			
-			public var lat:Number=-3.5397294921874973;
-        	public var lon:Number=-43.584918945312495;
+			public static var lon:Number=-43.584918945312495;
+			public static var lat:Number=-3.5397294921874973;
         	
         	public var mark:Marker;
 			
 			private function initMap():void
 			{
-				map = fxmap.map;				
-				
-        		var zoom:Number=9;
-				
-				
+				map = fxmap.map;
+				map.size=new Size(fxmap.width, fxmap.height);				
 				var markers:Markers = new Markers("Markers");
-				
 				feature = new Feature(markers,new LonLat(lon,lat),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
-				
 				mark = feature.createMarker();
-				
 				mark.addEventListener(MouseEvent.CLICK, showPopup); 
-				
 				markers.addMarker(mark);
-								
-				map.addLayers([markers]);
-				map.addHandler(new WheelHandler());
-				map.addHandler(new DragHandler());
-				map.addControl(new PanZoomBar());
-				map.addControl(new LayerSwitcher({position: new Pixel(map.width/2, 0)}));
-				map.addControl(new MousePosition());
-				 		
-        		var lonLat:LonLat = new LonLat(lon, lat);
-        		map.setCenter (lonLat, zoom);
-        		
-        		this.addEventListener(ResizeEvent.RESIZE,ResizeMap);
-
+				map.addLayer(markers);
 			}
 			
-			public function ResizeMap(event:ResizeEvent):void
-			{
-				this.map.width = fxmap.width;
-				this.map.height = fxmap.height;
-			}
-			
-			  private function showPopup(e:MouseEvent):void
+			private function showPopup(e:MouseEvent):void
 			{				
 				var pop:Popup = feature.createPopup();			
 				map.addPopup(pop);
@@ -78,8 +53,18 @@
 		]]>
 	</mx:Script>
 	
-	<openscales:FxMap id="fxmap" width="{this.width}" height="{this.height}" maxResolution="1" numZoomLevels="21">
-		<openscales:FxLayer type="OSM_MAPNIK"/>
+	<openscales:FxMap id="fxmap" width="100%" height="100%"
+					  maxResolution="1" numZoomLevels="21" zoom="9"
+					  lon="-43.584918945312495" lat="-3.5397294921874973">
+		<openscales:FxMapnik name="Mapnik"/>
+		
+		<openscales:FxPanZoomBar />
+		<openscales:FxMousePosition />
+		<openscales:FxLayerSwitcher />
+		
+		<openscales:FxDragHandler />
+		<openscales:FxClickHandler />
+		<openscales:FxWheelHandler />
 	</openscales:FxMap>
 	
 </mx:Canvas>

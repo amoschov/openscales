@@ -237,12 +237,15 @@ package org.openscales.core
 		
 		public function updateSize():void { 
 
-				this.scrollRect = new Rectangle(0,0,this.size.w,this.size.h);
+				
 				
 				this.graphics.clear();
 				this.graphics.beginFill(0xFFFFFF);
 				this.graphics.drawRect(0,0,this.size.w,this.size.h);
 				this.graphics.endFill();
+				this.scrollRect = new Rectangle(0,0,this.size.w,this.size.h);
+				
+				this.dispatchEvent(new MapEvent(MapEvent.RESIZE, this));
 					            	
 	            for(var i:int=0; i < this.layers.length; i++) {
 	                this.layers[i].onMapResize();                
@@ -329,7 +332,7 @@ package org.openscales.core
 	            }
 	
 	            if (zoomChanged) {
-	                this.zoom = zoom;
+	                this._zoom = zoom;
 	            } 
 	            
 	            var bounds:Bounds = this.extent;
@@ -408,19 +411,13 @@ package org.openscales.core
 	        }
 	        return zoom;
 		}
-		
-		public function zoomTo(zoom:int):void {
-	        if (this.isValidZoomLevel(zoom)) {
-	            this.setCenter(null, zoom);
-	        }
-		}
-		
+			
 		public function zoomIn():void{
-			this.zoomTo(this.zoom + 1);
+			this.zoom = this.zoom + 1;
 		}
 		
 		public function zoomOut():void {
-			this.zoomTo(this.zoom - 1);
+			this.zoom = this.zoom - 1;
 		}
 		
 		public function zoomToExtent(bounds:Bounds):void {
@@ -524,7 +521,9 @@ package org.openscales.core
 		}
 		public function set zoom(newZoom:Number):void
 		{
-			_zoom = newZoom;
+			if (this.isValidZoomLevel(newZoom)) {
+	            this.setCenter(null, newZoom);
+	        }
 		}
 		
 		public function get size():Size

@@ -4,7 +4,7 @@ package org.openscales.core.layer.osm
 	
 	public class Mapnik extends OSM
 	{
-		public function Mapnik(name:String, options:Object=null)
+		public function Mapnik(name:String="", options:Object=null)
 		{
 			var url:String = "http://a.tile.openstreetmap.org/";
 			
