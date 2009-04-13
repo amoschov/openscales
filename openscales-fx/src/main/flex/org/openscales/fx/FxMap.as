@@ -84,6 +84,7 @@ package org.openscales.fx {
 			for(i=0; i < this.rawChildren.numChildren ; i++) {
 				child = this.rawChildren.getChildAt(i);
 				if(child is FxExtent) {
+					// FIXME : it works in the MXML code but not here. Called to early ???					
 					this.map.zoomToExtent((child as FxExtent).bounds);
 				}
 			}
