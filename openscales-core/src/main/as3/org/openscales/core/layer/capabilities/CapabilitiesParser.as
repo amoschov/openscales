@@ -2,6 +2,9 @@ package org.openscales.core.layer.capabilities
 {
 	import org.openscales.core.basetypes.maps.HashMap;
 	
+	/**
+	 * Generic class for GetCapabilities parsers.
+	 */
 	internal class CapabilitiesParser
 	{
 		

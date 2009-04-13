@@ -7,6 +7,9 @@ package org.openscales.core.layer.capabilities
 	import org.openscales.core.OpenScales;
 	import org.openscales.core.basetypes.maps.HashMap;
 	
+	/**
+	 * Class to request Capabilities to a given server.
+	 */
 	public class GetCapabilities
 	{
 		
@@ -21,7 +24,9 @@ package org.openscales.core.layer.capabilities
 		
 		private var _requested:Boolean = false;
 		
-		
+		/**
+		 * Class contructor
+		 */
 		public function GetCapabilities(service:String, url:String)
 		{
 			this._service = service.toUpperCase();
@@ -33,6 +38,7 @@ package org.openscales.core.layer.capabilities
 	
 		}
 		
+	
 		private function requestCapabilities():Boolean{
 			
 			if (this._service != "WFS" && this._service != "WMS"){
@@ -61,6 +67,11 @@ package org.openscales.core.layer.capabilities
 			return true;
 		}
 		
+		/**
+		 * Method to build the request url
+		 * 
+		 * @return The builded url with needed parameters
+		 */
 		private function buildRequestUrl():String {
 			var url:String = this._url;
 			
@@ -75,6 +86,9 @@ package org.openscales.core.layer.capabilities
 			return url;
 		}
 		
+		/**
+		 * Callback method after GetCapabilities request
+		 */
 		private function parseResult(event:Event):void {
 			var loader:URLLoader = event.target as URLLoader;
 			var doc:XML =  new XML(loader.data);
@@ -85,6 +99,9 @@ package org.openscales.core.layer.capabilities
 		
 		/**
 		 * Returns the capabilities HashMap representation of the specified layer name
+		 * 
+		 * @param layerName The layer's name
+		 * @return An HashMap containing the capabilities of requested layer
 		 */
 		public function getLayerCapabilities(layerName:String):HashMap {
 		
@@ -94,6 +111,8 @@ package org.openscales.core.layer.capabilities
 		/**
 		 * Returns all the capabilities (i.e. all layers or features available and their properties) of the
 		 * requested server.
+		 * 
+		 * @return An HashMap containing capabilities of all layers available on the server
 		 */
 		public function getAllCapabilities():HashMap {
 
