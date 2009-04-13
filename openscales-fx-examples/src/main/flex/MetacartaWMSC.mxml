@@ -45,11 +45,9 @@
 						   
 		<os:MaxExtent left="-180" bottom="-90" right="180" top="90" />
 		
-		<os:PanZoomBar />
 		<os:MousePosition />
-		<os:LayerSwitcher />
-		
-		<os:DragHandler />
+				
+		<os:BorderPanHandler />
 		<os:ClickHandler />
 		<os:WheelHandler />
 	</os:Map>
