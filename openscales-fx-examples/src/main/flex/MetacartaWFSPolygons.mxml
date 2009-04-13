@@ -30,7 +30,7 @@
 				map = fxmap.map;
 				map.size=new Size(fxmap.width, fxmap.height);
 				
-				map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735));
+				//map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735));
 				this.addEventListener(ResizeEvent.RESIZE,ResizeMap);
 				
 			}
@@ -53,7 +53,7 @@
 		</os:WFS>
 		
 		<!--Still an issue with ox:Extent tag that call map.zoomToExtent ... -->
-		<!--<os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" />-->
+		<os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" />
 			
 		<os:PanZoomBar />
 		<os:MousePosition />
