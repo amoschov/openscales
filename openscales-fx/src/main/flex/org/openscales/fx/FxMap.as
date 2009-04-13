@@ -7,6 +7,7 @@ package org.openscales.fx {
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.control.IControl;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.fx.control.FxControl;
 	import org.openscales.fx.handler.FxHandler;
@@ -64,6 +65,8 @@ package org.openscales.fx {
 					this.map.addLayer(layer);
 				} else if(child is FxControl) {
 					this.map.addControl((child as FxControl).control);
+				} else if(child is IControl) {
+					this.map.addControl(child as IControl, false);
 				} else if(child is FxHandler) {
 					this.map.addHandler((child as FxHandler).handler);
 				}

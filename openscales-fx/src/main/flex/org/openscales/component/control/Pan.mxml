@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*" implements="org.openscales.core.control.IControl">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			public var DELTA_PX:Number = 10;
+						
+			public function onButtonClick(event:MouseEvent):void{
+				
+				if(event.currentTarget==this.upButton){
+					this.map.pan(0, -this.DELTA_PX);
+				}
+				else if(event.currentTarget==this.rightButton){
+					this.map.pan(this.DELTA_PX, 0);
+				}
+				else if(event.currentTarget==this.downButton){
+					this.map.pan(0, this.DELTA_PX);
+				}
+				else if(event.currentTarget==this.leftButton){
+					this.map.pan(-this.DELTA_PX, 0);
+				}
+			}
+		]]>
+	</mx:Script>
+
+	<mx:Grid horizontalGap="1" verticalGap="1" >
+	
+		<mx:GridRow height="100%" width="100%">
+			<mx:GridItem width="100%" height="100%"/>
+			<mx:GridItem width="100%" height="100%">
+				<mx:Button id="upButton" icon="@Embed('/org/openscales/fx/images/up.swf')" click="this.onButtonClick(event)" label="Up" height="20" width="20"/>
+			</mx:GridItem>
+			<mx:GridItem width="100%" height="100%"/>
+		</mx:GridRow>
+		<mx:GridRow height="100%" width="100%">
+			<mx:GridItem width="100%" height="100%">
+						<mx:Button id="leftButton" icon="@Embed('/org/openscales/fx/images/left.swf')" click="this.onButtonClick(event)" label="Left" height="20" width="20"/>	
+			</mx:GridItem>
+			<mx:GridItem width="100%" height="100%"/>
+			<mx:GridItem width="100%" height="100%">
+						<mx:Button id="rightButton" icon="@Embed('/org/openscales/fx/images/right.swf')" click="this.onButtonClick(event)" label="Right" height="20" width="20"/>	
+			</mx:GridItem>
+		</mx:GridRow>
+		<mx:GridRow height="100%" width="100%">
+			<mx:GridItem width="100%" height="100%"/>
+			<mx:GridItem width="100%" height="100%">
+						<mx:Button id="downButton" icon="@Embed('/org/openscales/fx/images/down.swf')" click="this.onButtonClick(event)" label="Down" height="20" width="20"/>	
+			</mx:GridItem>
+			<mx:GridItem width="100%" height="100%"/>
+		</mx:GridRow>
+	</mx:Grid>
+</control:Control>

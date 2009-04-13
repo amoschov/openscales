@@ -38,37 +38,26 @@
 			{
 				map = fxmap.map;
 				map.size=new Size(fxmap.width, fxmap.height);				
-				var markers:Markers = new Markers("Markers");
-				feature = new Feature(markers,new LonLat(lon,lat),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
-				mark = feature.createMarker();
-				mark.addEventListener(MouseEvent.CLICK, showPopup); 
-				markers.addMarker(mark);
-				map.addLayer(markers);
+				
+				map.addControl(pan, false);
 			}
-			
-			private function showPopup(e:MouseEvent):void
-			{				
-				var pop:Popup = feature.createPopup();			
-				map.addPopup(pop);
-			}  
+
 		]]>
 	</mx:Script>
 	
+	<resize:ResizableWindow title="Pan" movable="true">
+		<os:Pan id="pan" />
+	</resize:ResizableWindow>
 	
-	
-	<resize:ResizableWindow width="600" height="400" title="OpenScales" movable="true">
+	<resize:ResizableWindow x="100" width="600" height="400" title="OpenScales" movable="true">
 		<os:Map id="fxmap" width="100%" height="100%"
 				  maxResolution="1" numZoomLevels="21" zoom="9"
 				  lon="-43.584918945312495" lat="-3.5397294921874973">
 			
 			<os:Mapnik name="Mapnik"/>
 			
-			<os:PanZoomBar />
-			<os:MousePosition />
-			<os:LayerSwitcher />
-			
 			<os:DragHandler />
-			<os:ClickHandler />
+			<os:WheelHandler />
 		<os:WheelHandler />
 		</os:Map>	
 	</resize:ResizableWindow>

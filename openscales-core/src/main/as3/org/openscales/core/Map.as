@@ -175,11 +175,12 @@ package org.openscales.core
 	        this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_REMOVED, layer));	
 		}
 		
-		public function addControl(control:IControl):void {
+		public function addControl(control:IControl, attach:Boolean=true):void {
 			this._controls.push(control);
         	control.map = this;
         	control.draw();
-        	this.addChild( control as Sprite );
+        	if(attach)
+        		this.addChild( control as Sprite );
 		}
 		
 		public function addHandler(handler:IHandler):void {

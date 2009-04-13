@@ -24,4 +24,7 @@
 	<component id="ClickHandler" class="org.openscales.fx.handler.mouse.FxClickHandler" />
 	<component id="DragHandler" class="org.openscales.fx.handler.mouse.FxDragHandler" />
 	<component id="WheelHandler" class="org.openscales.fx.handler.mouse.FxWheelHandler" />
+	
+	<component id="Pan" class="org.openscales.component.control.Pan" />
+	
 </componentPackage>
