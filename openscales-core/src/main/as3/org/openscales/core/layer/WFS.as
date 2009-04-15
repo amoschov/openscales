@@ -12,8 +12,10 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.format.WFS;
+	import org.openscales.core.layer.capabilities.GetCapabilities;
 	import org.openscales.core.tile.WFS;
 	
 	public class WFS extends org.openscales.core.layer.Vector
@@ -42,8 +44,15 @@ package org.openscales.core.layer
 		public var geometry_column:String = null;
 		
 		public var extractAttributes:Boolean = true;
+		
+		private var _capabilities:HashMap = null;
 			                    
 	    public function WFS(name:String, url:String, params:Object, options:Object = null):void {
+	    	
+	    	if (url != null && url != "") {
+	    		var getCap:GetCapabilities = new GetCapabilities("wfs", url, this);
+	    	}
+		    	
 	        if (options == null) { options = {}; } 
 	        
 	        super(name, options)
@@ -114,6 +123,10 @@ package org.openscales.core.layer
 			            var tileWidth:Number = bounds.width * this.ratio;
 			            var tileHeight:Number = bounds.height * this.ratio;
 			            var tileBounds:Bounds = this.extent;
+			            
+			            if (tileBounds.containsBounds(this.maxExtent)) {
+			            	tileBounds = this.maxExtent;
+			            }
 			            			
 			            var tileSize:Size = this.map.size;
 			            tileSize.w = tileSize.w * this.ratio;
@@ -138,16 +151,21 @@ package org.openscales.core.layer
 			            else {
 
 			            	if ( !this.featuresBbox.containsBounds(tileBounds)) {
-				     						                	
-				                this.featuresBbox.extendFromBounds((tileBounds));
+				     			
+				     			if (this.capabilities != null && 
+				     				!this.featuresBbox.containsBounds(this.capabilities.getValue("LatLon"))) {
+									
+									this.featuresBbox.extendFromBounds((tileBounds));
 				                
-				                url = this.getFullRequestString();
-			            		params = { BBOX:this.featuresBbox.toBBOX() };
-			            		url += "&" + Util.getParameterString(params);
-			            		
-			            		 
-			            		this.tile.url = url;			            		
-			            		this.tile.loadFeaturesForRegion(this.tile.requestSuccess);				                
+					                url = this.getFullRequestString();
+				            		params = { BBOX:this.featuresBbox.toBBOX() };
+				            		url += "&" + Util.getParameterString(params);
+				            		
+				            		 
+				            		this.tile.url = url;			            		
+				            		this.tile.loadFeaturesForRegion(this.tile.requestSuccess);
+								}		                	
+				                				                
 			            	}		            	
 			            } 
 			        }
@@ -249,6 +267,21 @@ package org.openscales.core.layer
 		public function get typename():String {
 			return this.params.typename;
 		}
+		
+		public function get capabilities():HashMap {
+			return this._capabilities;
+		}
+		
+		public function set capabilities(value:HashMap):void {
+			this._capabilities = value;
+		}
+		
+		public function capabilitiesGetter(caller:GetCapabilities):void {
+			if (this.params != null) {
+				this._capabilities = caller.getLayerCapabilities(this.params.typename);
+				
+			}
+        }
 		
 	}
 }

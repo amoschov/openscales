@@ -6,6 +6,8 @@ package org.openscales.core.layer.capabilities
 	
 	import org.openscales.core.OpenScales;
 	import org.openscales.core.basetypes.maps.HashMap;
+	import org.openscales.core.layer.Layer;
+	import org.openscales.core.layer.WFS;
 	
 	/**
 	 * Class to request Capabilities to a given server.
@@ -18,6 +20,8 @@ package org.openscales.core.layer.capabilities
 		private var _request:String = null;
 		private var _url:String = null;
 		
+		private var _layer:Layer = null;
+		
 		private var _parser:CapabilitiesParser = null;
 		
 		private var _capabilities:HashMap = null;
@@ -27,12 +31,14 @@ package org.openscales.core.layer.capabilities
 		/**
 		 * Class contructor
 		 */
-		public function GetCapabilities(service:String, url:String)
+		public function GetCapabilities(service:String, url:String, callerLayer:Layer = null)
 		{
 			this._service = service.toUpperCase();
 			this._url = url;
 			this._request = "GetCapabilities";
 			this._capabilities = new HashMap(false);
+			
+			this._layer = callerLayer;
 			
 			this.requestCapabilities();
 	
@@ -47,7 +53,7 @@ package org.openscales.core.layer.capabilities
 			}
 			
 			if (this._url == null) {
-				trace("URL must not be null");
+				trace("GetCapabilities: URL must not be null");
 				return false;
 			}
 			
@@ -95,6 +101,15 @@ package org.openscales.core.layer.capabilities
 
 			this._capabilities = this._parser.read(doc);
 			this._requested = true;
+			
+			if (this._layer != null) {
+				if (this._service == "WFS") {
+					(this._layer as WFS).capabilitiesGetter(this);
+				}
+				else if (this._service == "WMS") {
+					trace("GetCapabilities: WMS GetCapabilites not implemented yet");
+				}
+			}
 		}
 		
 		/**

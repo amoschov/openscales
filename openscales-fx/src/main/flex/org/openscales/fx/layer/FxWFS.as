@@ -28,7 +28,6 @@ package org.openscales.fx.layer
 		}
 		
 		override public function init():void {
-			this._layer = new WFS("", "", new Object());
 		}
 		
 		override protected function createChildren():void

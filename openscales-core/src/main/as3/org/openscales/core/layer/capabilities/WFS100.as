@@ -38,7 +38,7 @@ package org.openscales.core.layer.capabilities
 		public override function read(doc:XML):HashMap {
 			
 			use namespace _wfsns;
-			var featureCapabilities:HashMap = new HashMap(false);
+			var featureCapabilities:HashMap = new HashMap();
 			var value:String = null;
 			var name:String = null;
 			var latLon:Bounds = null;
@@ -66,10 +66,12 @@ package org.openscales.core.layer.capabilities
 				maxx = feature.LatLongBoundingBox.@maxx;
 				maxy = feature.LatLongBoundingBox.@maxy;
 				latLon = new Bounds(minx, miny, maxx, maxy);
-				featureCapabilities.put("LatLon", value);
+				featureCapabilities.put("LatLon", latLon);
 				
 				this._capabilities.put(name, featureCapabilities);
-				featureCapabilities.clear();
+				
+				//We cannot use clear() or reset() or we'll loose the datas
+				featureCapabilities = new HashMap();
 			}
 
 			return this._capabilities;
