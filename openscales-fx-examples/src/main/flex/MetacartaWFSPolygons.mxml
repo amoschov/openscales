@@ -23,10 +23,10 @@
 			import mx.core.UIComponent;
 			
 			public var map:Map;
+			OpenScales.ProxyHost="http://openscales.org/proxy.php?url=";
 			
 			private function initMap():void {
-				OpenScales.ProxyHost="http://openscales.org/proxy.php?url=";
-				
+								
 				map = fxmap.map;
 				map.size=new Size(fxmap.width, fxmap.height);
 				
