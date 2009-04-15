@@ -60,7 +60,7 @@ package org.openscales.fx {
 			for(i=0; i < this.rawChildren.numChildren ; i++) {
 				child = this.rawChildren.getChildAt(i);
 				if(child is FxLayer) {
-					var layer:Layer = (child as FxLayer).layer;
+					var layer:Layer = (child as FxLayer).getInstance();
 					layer.name = (child as FxLayer).name;
 					this.map.addLayer(layer);
 				} else if(child is FxControl) {

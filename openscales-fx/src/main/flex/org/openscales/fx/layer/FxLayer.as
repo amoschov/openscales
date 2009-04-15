@@ -22,6 +22,10 @@ package org.openscales.fx.layer
 			return this._layer;
 		}
 		
+		public function getInstance():Layer {
+			return this._layer;
+		}
+		
 		public function set isBaseLayer(value:Boolean):void {
 	    	if(this.layer != null)
 	    		this.layer.isBaseLayer = value;
