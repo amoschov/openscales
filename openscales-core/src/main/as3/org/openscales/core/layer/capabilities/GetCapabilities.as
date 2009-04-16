@@ -28,21 +28,19 @@ package org.openscales.core.layer.capabilities
 		
 		private var _requested:Boolean = false;
 		
-		private var _flexCbk:Function = null;
+		private var _cbkFunc:Function = null;
 		
 		/**
 		 * Class contructor
 		 */
-		public function GetCapabilities(service:String, url:String, callerLayer:Layer = null, flexCbk:Function=null)
+		public function GetCapabilities(service:String, url:String, cbkFunc:Function=null)
 		{
 			this._service = service.toUpperCase();
 			this._url = url;
 			this._request = "GetCapabilities";
 			this._capabilities = new HashMap(false);
 			
-			this._layer = callerLayer;
-			
-			this._flexCbk = flexCbk;
+			this._cbkFunc = cbkFunc;
 			
 			this.requestCapabilities();
 	
@@ -115,8 +113,8 @@ package org.openscales.core.layer.capabilities
 				}
 			}
 			
-			if (this._flexCbk != null) {
-				this._flexCbk.call(this);
+			if (this._cbkFunc != null) {
+				this._cbkFunc.call(this,this);
 			}
 			
 			

@@ -50,7 +50,7 @@ package org.openscales.core.layer
 	    public function WFS(name:String, url:String, params:Object, options:Object = null):void {
 	    	
 	    	if (url != null && url != "") {
-	    		var getCap:GetCapabilities = new GetCapabilities("wfs", url, this);
+	    		var getCap:GetCapabilities = new GetCapabilities("wfs", url, this.capabilitiesGetter);
 	    	}
 		    	
 	        if (options == null) { options = {}; } 

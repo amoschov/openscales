@@ -8,18 +8,16 @@
 			import org.openscales.core.layer.capabilities.GetCapabilities;
 			
 			public var DELTA_PX:Number = 10;
-			
-			private var getCap:GetCapabilities = null;
 						
 			public function onButtonClick(event:MouseEvent):void{
 				
-				getCap = new GetCapabilities("wfs", this.txtUrl.text,null,this.capabilitiesGetter);
+				var getCap:GetCapabilities = new GetCapabilities("wfs", this.txtUrl.text,this.capabilitiesGetter);
 							 
 			
 			}
 			
-			public function capabilitiesGetter():void {
-				var capabilities:HashMap = this.getCap.getAllCapabilities();
+			public function capabilitiesGetter(getCap:GetCapabilities):void {
+				var capabilities:HashMap = getCap.getAllCapabilities();
 				
 				var lb:Label = new Label();
 				lb.text = "There are " + capabilities.size() + " features available on server."
