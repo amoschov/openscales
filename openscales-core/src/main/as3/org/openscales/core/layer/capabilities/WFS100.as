@@ -50,7 +50,7 @@ package org.openscales.core.layer.capabilities
 			for each (var feature:XML in featureNodes){
 
 				name = feature.Name;
-				featureCapabilities.put("Name", value);
+				featureCapabilities.put("Name", name);
 				
 				value = feature.Title;
 				featureCapabilities.put("Title", value);

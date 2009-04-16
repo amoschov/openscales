@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*" implements="org.openscales.core.control.IControl">
+	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.basetypes.maps.HashMap;
+			import org.openscales.core.layer.Layer;
+			import org.openscales.core.layer.capabilities.GetCapabilities;
+			
+			public var DELTA_PX:Number = 10;
+			
+			private var getCap:GetCapabilities = null;
+						
+			public function onButtonClick(event:MouseEvent):void{
+				
+				getCap = new GetCapabilities("wfs", this.txtUrl.text,null,this.capabilitiesGetter);
+							 
+			
+			}
+			
+			public function capabilitiesGetter():void {
+				var capabilities:HashMap = this.getCap.getAllCapabilities();
+				
+				var lb:Label = new Label();
+				lb.text = "There are " + capabilities.size() + " features available on server."
+				lb.x = 20; lb.y = 35;
+				this.addChild(lb);
+				var y:Number = 60;
+				var featureCap:HashMap;
+				
+				for (var i:Number = 0; i<capabilities.size(); i++) {
+					featureCap = capabilities.getValues()[i];
+															
+					//Title
+					var lbTitle:Label = new Label();
+					lbTitle.text = "Title: " + featureCap.getValue("Title");
+					lbTitle.x = 20; lbTitle.y = y;
+					this.addChild(lbTitle);
+					
+					//Typename
+					var lbName:Label = new Label();
+					lbName.text = "Typename: " + featureCap.getValue("Name");
+					lbName.x = lbTitle.x; lbName.y = lbTitle.y + 15;
+					this.addChild(lbName);
+					
+					//Description
+					var lbDesc:Label = new Label();
+					lbDesc.text = "Description: " + featureCap.getValue("Abstract");
+					lbDesc.x = lbTitle.x; lbDesc.y = lbName.y + 15;
+					this.addChild(lbDesc);
+					
+					//SRS
+					var lbSrs:Label = new Label();
+					lbSrs.text = "SRS: " + featureCap.getValue("SRS");
+					lbSrs.x = lbDesc.x; lbSrs.y = lbDesc.y + 15;
+					this.addChild(lbSrs);
+					
+					//LatLongBoundingBox
+					var lbBox:Label = new Label();
+					lbBox.text = "Bounding box: " + featureCap.getValue("LatLon");
+					lbBox.x = lbDesc.x; lbBox.y = lbSrs.y + 15;
+					this.addChild(lbBox);
+					
+					y += 90;
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:Label x="10" y="10" text="WFS server URL:" id="lbUrl" enabled="false"/>
+	<mx:TextInput x="116" y="8" width="217" id="txtUrl" text="http://sigma.openplans.org/geoserver/wfs" displayAsPassword="false" editable="true" enabled="true"/>
+	<mx:Button x="341" y="8" label="Go!" width="49" id="butGo" enabled="true" click="this.onButtonClick(event)"/>
+	
+</control:Control>

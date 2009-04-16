@@ -28,10 +28,12 @@ package org.openscales.core.layer.capabilities
 		
 		private var _requested:Boolean = false;
 		
+		private var _flexCbk:Function = null;
+		
 		/**
 		 * Class contructor
 		 */
-		public function GetCapabilities(service:String, url:String, callerLayer:Layer = null)
+		public function GetCapabilities(service:String, url:String, callerLayer:Layer = null, flexCbk:Function=null)
 		{
 			this._service = service.toUpperCase();
 			this._url = url;
@@ -39,6 +41,8 @@ package org.openscales.core.layer.capabilities
 			this._capabilities = new HashMap(false);
 			
 			this._layer = callerLayer;
+			
+			this._flexCbk = flexCbk;
 			
 			this.requestCapabilities();
 	
@@ -110,6 +114,12 @@ package org.openscales.core.layer.capabilities
 					trace("GetCapabilities: WMS GetCapabilites not implemented yet");
 				}
 			}
+			
+			if (this._flexCbk != null) {
+				this._flexCbk.call(this);
+			}
+			
+			
 		}
 		
 		/**
