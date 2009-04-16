@@ -26,6 +26,7 @@
 	<component id="WheelHandler" class="org.openscales.fx.handler.mouse.FxWheelHandler" />
 	
 	<component id="Pan" class="org.openscales.component.control.Pan" />
+	<component id="LayerSwitcher" class="org.openscales.component.control.LayerSwitcher" />
 	<component id="Capabilities" class="org.openscales.component.control.Capabilities" />
 	
 </componentPackage>
