@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" >
+	
+	 
+	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.layer.Layer;
+			import org.openscales.core.Map;
+			import mx.core.LayoutContainer;
+			
+     	[Bindable]
+     	public var layerName:String;
+     	
+     	public function ListLayersName(numIndex:int):String
+     	{
+			var layer:Layer = map.layers[numIndex];
+			layerName = layer.name;
+			return layerName;
+     	}
+			
+		]]>
+	</mx:Script>
+
+	
+	<mx:Text id="BaseLayer" text="BaseLayer"/>
+	<mx:CheckBox selected="true" y="{Slide.y}"/>
+	<mx:HSlider id="Slide" minimum="0" maximum="100" value="100" y="{BaseLayer.y +20}" x="50"/>
+	<mx:Repeater id="r" dataProvider="{map.layers}">
+		<mx:Text id="layer" text="{ListLayersName(r.currentIndex)}" y="{y+=10}"/>
+		
+	</mx:Repeater>
+		
+	<mx:Text id="Overlays" text="Overlays" y="{Slide.y + 30}"/>
+</Control>
