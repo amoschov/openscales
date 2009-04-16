@@ -26,10 +26,10 @@
 	<mx:Text id="BaseLayer" text="BaseLayer"/>
 	<mx:CheckBox selected="true" y="{Slide.y}"/>
 	<mx:HSlider id="Slide" minimum="0" maximum="100" value="100" y="{BaseLayer.y +20}" x="50"/>
-	<mx:Repeater id="r" dataProvider="{map.layers}">
+	<!--<mx:Repeater id="r" dataProvider="{map.layers}">
 		<mx:Text id="layer" text="{ListLayersName(r.currentIndex)}" y="{y+=10}"/>
 		
-	</mx:Repeater>
+	</mx:Repeater>-->
 		
 	<mx:Text id="Overlays" text="Overlays" y="{Slide.y + 30}"/>
 </Control>
