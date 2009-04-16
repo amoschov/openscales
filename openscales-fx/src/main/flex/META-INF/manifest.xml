@@ -25,8 +25,8 @@
 	<component id="DragHandler" class="org.openscales.fx.handler.mouse.FxDragHandler" />
 	<component id="WheelHandler" class="org.openscales.fx.handler.mouse.FxWheelHandler" />
 	
-	<component id="Pan" class="org.openscales.component.control.Pan" />
-	<component id="LayerSwitcher" class="org.openscales.component.control.LayerSwitcher" />
-	<component id="Capabilities" class="org.openscales.component.control.Capabilities" />
+	<component id="PanComponent" class="org.openscales.component.control.Pan" />
+	<component id="LayerSwitcherComponent" class="org.openscales.component.control.LayerSwitcher" />
+	<component id="CapabilitiesComponent" class="org.openscales.component.control.Capabilities" />
 	
 </componentPackage>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"  xmlns:resize="flex.utils.ui.resize.*" xmlns:os="http://openscales.org" creationComplete="initMap();" xmlns:control="org.openscales.component.control.*" xmlns:ns1="org.openscales.component.control.*">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%"  xmlns:resize="flex.utils.ui.resize.*" xmlns:os="http://openscales.org" creationComplete="initMap();" xmlns:control="org.openscales.component.control.*" >
 	
 	<mx:Script>
 		<![CDATA[
@@ -46,16 +46,15 @@
 	</mx:Script>
 	
 	<resize:ResizableWindow title="Pan" movable="true">
-		<os:Pan id="pan" />
+		<os:PanComponent id="pan" />
 	</resize:ResizableWindow>
 	
 	<resize:ResizableWindow title="Capabilities" movable="true" x="34" y="418" width="472" height="300">
-		<ns1:Capabilities width="100%" height="100%">
-		</ns1:Capabilities>
+		<os:CapabilitiesComponent width="100%" height="100%" />
 	</resize:ResizableWindow>
 	
 		<resize:ResizableWindow title="LayerSwitcher" movable="true" x="800" width="300" height="400">
-		<control:LayerSwitcher id="layerSwitcher"/>
+		<os:LayerSwitcherComponent id="layerSwitcher"/>
 	</resize:ResizableWindow>
 	
 	<resize:ResizableWindow x="100" width="600" height="400" title="OpenScales" movable="true">
