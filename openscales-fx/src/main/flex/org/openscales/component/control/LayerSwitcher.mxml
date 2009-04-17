@@ -1,33 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml">
+<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*">
 
 	<mx:Script>
 		<![CDATA[
-			public function layerName(data:Object):String{
+			import mx.controls.Label;
+			import mx.containers.HBox;
+			import org.openscales.core.events.LayerEvent;
+			import org.openscales.core.layer.Layer;
+			import org.openscales.core.Map;
+		
+		override public function set map(value:Map):void
+		{
+			
+			super.map = value;
+			this.displayControl.label = (this.map.layers[0] as Layer).name;
+			this.map.addEventListener(LayerEvent.LAYER_ADDED,updateLayer);
+			
+		}
+			/* public function layerName(numIndex:int):String
+			{
+				return (this.map.layers[numIndex] as Layer).name;
+			} */
+			
+			public function layerVisible(layerName:String):void
+			{
+				var layer:Layer = this.map.getLayerByName(layerName);
+				layer.visible = !layer.visible;
+				displayControl.selected = layer.visible;
+			}
+			
+			public function layerOpacity(layerName:String):void
+			{
+				var layer:Layer = this.map.getLayerByName(layerName);
+				layer.alpha = opacityControl.value;
+			}
+			
+			public function updateLayer(event:LayerEvent):void
+			{
+				var Vbox:VBox = new VBox();
+				Vbox.y = Vbox.y + 60;
+				this.addChild(Vbox);
 				
-				return data.name;
+				var checkBox:CheckBox = new CheckBox();
+				checkBox.label = event.layer.name;
+				checkBox.selected = true;
+				checkBox.addEventListener(Event.CHANGE,layerVisible2);
+				Vbox.addChild(checkBox);
+				
+				var hBox:HBox = new HBox();
+				hBox.percentWidth = 100;
+				Vbox.addChild(hBox);
+				
+				var label:Label = new Label();
+				label.text = "Opacité";
+				hBox.addChild(label);
+				var slider:HSlider = new HSlider();
+				slider.percentWidth = 50;
+				slider.id = event.layer.name;
+				slider.minimum = 0;
+				slider.maximum = 1;
+				slider.labels = ['0%','100%'];
+				slider.value = 1;
+				slider.liveDragging = true;
+				slider.addEventListener(Event.CHANGE,layerOpacity2);
+				hBox.addChild(slider);
+				
 			}
 			
-			public function layerVisible(data:Object):void
+			public function layerVisible2(event:Event):void
 			{
-				data.visible = !data.visible;
-				displayControl.selected = this.data.visible;
+				var layer:Layer = this.map.getLayerByName((event.target as CheckBox).label);
+				layer.visible = !layer.visible;
+				(event.target as CheckBox).selected = layer.visible;
 			}
 			
-			public function layerOpacity(data:Object):void
+			public function layerOpacity2(event:Event):void
 			{
-				data.alpha = opacityControl.value;
+				var layer:Layer = this.map.getLayerByName((event.target as HSlider).id);
+				layer.alpha = (event.target as HSlider).value;
 			}
 		]]>
 	</mx:Script>
-
-	<mx:CheckBox id="displayControl" width="100%" height="100%" label="{layerName(this.data)}"	selected="{this.data.visible}" change="layerVisible(this.data)"/>
+<mx:VBox id="Vbox">
+	<mx:CheckBox id="displayControl" label="" width="100%" height="100%" selected="true" change="layerVisible(displayControl.label)"/>
 	<mx:HBox width="100%">		
 		<mx:Label text="Opacité"/>
-		<mx:HSlider width="50%" id="opacityControl" minimum="0" maximum="1" labels="{['0%','100%']}" value="{data.alpha}" liveDragging="true" change="layerOpacity(this.data)"/>
+		<mx:HSlider width="50%" id="opacityControl" minimum="0" maximum="1" labels="{['0%','100%']}" value="1" liveDragging="true" change="layerOpacity(displayControl.label)" />
 	</mx:HBox>
-
-
-	
 </mx:VBox>
+</control:Control>
 
