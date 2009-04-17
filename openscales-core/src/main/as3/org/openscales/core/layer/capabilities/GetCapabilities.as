@@ -14,13 +14,13 @@ package org.openscales.core.layer.capabilities
 	 */
 	public class GetCapabilities
 	{
+		private const VERSIONS:Array = new Array("1.1.0","1.0.0");
+		private const PARSERS:Array = new Array(WFS110, WFS100);
 		
 		private var _service:String = null;
 		private var _version:String = null;
 		private var _request:String = null;
 		private var _url:String = null;
-		
-		private var _layer:Layer = null;
 		
 		private var _parser:CapabilitiesParser = null;
 		
@@ -35,6 +35,7 @@ package org.openscales.core.layer.capabilities
 		 */
 		public function GetCapabilities(service:String, url:String, cbkFunc:Function=null)
 		{
+						
 			this._service = service.toUpperCase();
 			this._url = url;
 			this._request = "GetCapabilities";
@@ -43,11 +44,11 @@ package org.openscales.core.layer.capabilities
 			this._cbkFunc = cbkFunc;
 			
 			this.requestCapabilities();
-	
+			
 		}
 		
 	
-		private function requestCapabilities():Boolean{
+		private function requestCapabilities(failedVersion:String = null):Boolean{
 			
 			if (this._service != "WFS" && this._service != "WMS"){
 				trace("Bad service for GetCapabilities: " + this._service);
@@ -60,8 +61,27 @@ package org.openscales.core.layer.capabilities
 			}
 			
 			if (this._service == "WFS") {
-				this._parser = new WFS100();
-				this._version = this._parser.version;
+				var foundVersion:Boolean = false;
+				var i:Number = -1;
+				while (!foundVersion && i < VERSIONS.length) {
+					i += 1;
+					if (failedVersion != null && VERSIONS[i] != failedVersion) {
+						foundVersion = true;
+					}
+					else if (failedVersion == null) {
+						foundVersion = true;
+					}
+				}
+				
+				if (!foundVersion) {
+					trace("GetCapabilities: Not found server compatible version");
+					return false;
+				}
+				else {
+					var parser:Class = PARSERS[i];
+					this._parser = new parser;
+					this._version = VERSIONS[i];
+				}
 			}
 			else if (this._service == "WMS") {
 				trace("WMS parser not implemented yet");
@@ -100,19 +120,14 @@ package org.openscales.core.layer.capabilities
 		private function parseResult(event:Event):void {
 			var loader:URLLoader = event.target as URLLoader;
 			var doc:XML =  new XML(loader.data);
-
-			this._capabilities = this._parser.read(doc);
-			this._requested = true;
 			
-			if (this._layer != null) {
-				if (this._service == "WFS") {
-					(this._layer as WFS).capabilitiesGetter(this);
-				}
-				else if (this._service == "WMS") {
-					trace("GetCapabilities: WMS GetCapabilites not implemented yet");
-				}
+			if (doc.@version != this._version) {
+				this.requestCapabilities(doc.@version);
 			}
 			
+			this._capabilities = this._parser.read(doc);
+			this._requested = true;
+						
 			if (this._cbkFunc != null) {
 				this._cbkFunc.call(this,this);
 			}

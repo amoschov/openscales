@@ -2,31 +2,28 @@ package org.openscales.core.layer.capabilities
 {
 	import org.openscales.core.basetypes.Bounds;
 	
-	/**
-	 * WFS 1.0.0 capabilities parser
-	 */
-	internal class WFS100 extends CapabilitiesParser
+	internal class WFS110 extends CapabilitiesParser
 	{
-		import org.openscales.core.basetypes.maps.HashMap
-		
+		import org.openscales.core.basetypes.maps.HashMap;
 		private namespace _wfsns = "http://www.opengis.net/wfs";
+		private namespace _owsns = "http://www.opengis.net/ows";
 		
 		/**
-		 * Class constructor
-		 */
-		public function WFS100()
+	 	* WFS 1.1.0 capabilities parser
+	 	*/
+		public function WFS110()
 		{
 			super();
 			
-			this._version = "1.0.0";
+			this._version = "1.1.0";
 			
 			this._layerListNode = "FeatureTypeList";
 			this._layerNode = "FeatureType";
 			this._name = "Name";
 			this._title = "Title";
-			this._srs = "SRS";
+			this._srs = "DefaultSRS";
 			this._abstract = "Abstract";
-			this._latLonBoundingBox = "LatLongBoundingBox";
+			this._latLonBoundingBox = "WGS84BoundingBox";
 		}
 		
 		/**
@@ -38,11 +35,13 @@ package org.openscales.core.layer.capabilities
 		public override function read(doc:XML):HashMap {
 			
 			use namespace _wfsns;
+			use namespace _owsns;
+			
 			var featureCapabilities:HashMap = new HashMap();
 			var value:String = null;
 			var name:String = null;
 			var latLon:Bounds = null;
-			var minx:Number; var miny:Number; var maxx:Number; var maxy:Number;
+			var lowerCorner:String; var upperCorner:String; var bounds:String;
 			
 			var featureNodes:XMLList = doc..*::FeatureType;
 			this.removeNamespaces(doc);
@@ -55,17 +54,20 @@ package org.openscales.core.layer.capabilities
 				value = feature.Title;
 				featureCapabilities.put("Title", value);
 				
-				value = feature.SRS;
+				value = feature.DefaultSRS;
+				value = value.substr(value.indexOf("EPSG"));
 				featureCapabilities.put("SRS", value);
 				
 				value = feature.Abstract;
 				featureCapabilities.put("Abstract", value);
 				
-				minx = feature.LatLongBoundingBox.@minx;
-				miny = feature.LatLongBoundingBox.@miny;
-				maxx = feature.LatLongBoundingBox.@maxx;
-				maxy = feature.LatLongBoundingBox.@maxy;
-				latLon = new Bounds(minx, miny, maxx, maxy);
+				
+				var boundingBoxes:XMLList = feature..*::WGS84BoundingBox;
+				lowerCorner = feature.WGS84BoundingBox.LowerCorner;
+				upperCorner = feature.WGS84BoundingBox.UpperCorner;
+				bounds = lowerCorner.replace(" ",",");
+				bounds += upperCorner.replace(" ",",");
+				latLon = new Bounds().fromString(bounds);
 				featureCapabilities.put("LatLon", latLon);
 				
 				this._capabilities.put(name, featureCapabilities);
@@ -86,6 +88,6 @@ package org.openscales.core.layer.capabilities
 				doc.removeNamespace(new Namespace(ns));
 			}
 		}
-
+		
 	}
 }
