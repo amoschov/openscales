@@ -3,69 +3,67 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.layer.WFS;
+			import mx.controls.Text;
+			import mx.controls.Alert;
 			import org.openscales.core.basetypes.maps.HashMap;
 			import org.openscales.core.layer.Layer;
 			import org.openscales.core.layer.capabilities.GetCapabilities;
 			
-			public var DELTA_PX:Number = 10;
+			private var listDataProvider:Array = null;
+			private var capabilities:HashMap = null;
+			private var featureCap:HashMap = null;
+			private var url:String = null;
 						
 			public function onButtonClick(event:MouseEvent):void{
-				
 				var getCap:GetCapabilities = new GetCapabilities("wfs", this.txtUrl.text,this.capabilitiesGetter);
-							 
+				url = this.txtUrl.text;
+			}
 			
+			public function onChangeListElement(event:Event):void {
+				// We show to user the informations about the layer
+				featureCap = capabilities.getValue(this.list.selectedItem);
+				
+				var info:String = "\tInformation about the layer: \n\n";
+				info += "Title: " + featureCap.getValue("Title") + "\n";
+				info += "Description: " + featureCap.getValue("Abstract") + "\n";
+				info += "SRS: " + featureCap.getValue("SRS");
+				
+				this.txtInfo.text = info;
+			}
+			
+			public function onDblClickListElement(event:MouseEvent):void {
+				// We add the layer to the layer switcher
+				
+				Alert.show("You can't add a layer for now...", 'Message');
+				/*var params:Object = new Object();
+				params.typename = this.list.selectedItem;
+				params.SRS = capabilities.getValue(this.list.selectedItem).getValue("SRS");
+				params.VERSION = "1.1.0";
+				var newLayer:WFS = new WFS(this.list.selectedItem as String,this.url,params);
+				newLayer.isBaseLayer = false;
+								
+				this.map.addLayer(newLayer);*/
+				
 			}
 			
 			public function capabilitiesGetter(getCap:GetCapabilities):void {
-				var capabilities:HashMap = getCap.getAllCapabilities();
+				capabilities = getCap.getAllCapabilities();
 				
 				var lb:Label = new Label();
-				lb.text = "There are " + capabilities.size() + " features available on server."
+				lb.text = "There are " + capabilities.size() + " features available on server:"
 				lb.x = 20; lb.y = 35;
-				this.addChild(lb);
-				var y:Number = 60;
-				var featureCap:HashMap;
+				this.addChild(lb);				
 				
-				for (var i:Number = 0; i<capabilities.size(); i++) {
-					featureCap = capabilities.getValues()[i];
-															
-					//Title
-					var lbTitle:Label = new Label();
-					lbTitle.text = "Title: " + featureCap.getValue("Title");
-					lbTitle.x = 20; lbTitle.y = y;
-					this.addChild(lbTitle);
-					
-					//Typename
-					var lbName:Label = new Label();
-					lbName.text = "Typename: " + featureCap.getValue("Name");
-					lbName.x = lbTitle.x; lbName.y = lbTitle.y + 15;
-					this.addChild(lbName);
-					
-					//Description
-					var lbDesc:Label = new Label();
-					lbDesc.text = "Description: " + featureCap.getValue("Abstract");
-					lbDesc.x = lbTitle.x; lbDesc.y = lbName.y + 15;
-					this.addChild(lbDesc);
-					
-					//SRS
-					var lbSrs:Label = new Label();
-					lbSrs.text = "SRS: " + featureCap.getValue("SRS");
-					lbSrs.x = lbDesc.x; lbSrs.y = lbDesc.y + 15;
-					this.addChild(lbSrs);
-					
-					//LatLongBoundingBox
-					var lbBox:Label = new Label();
-					lbBox.text = "Bounding box: " + featureCap.getValue("LatLon");
-					lbBox.x = lbDesc.x; lbBox.y = lbSrs.y + 15;
-					this.addChild(lbBox);
-					
-					y += 90;
-				}
+				this.list.dataProvider = capabilities.getKeys().sort();	
+						
 			}
 		]]>
 	</mx:Script>
 	<mx:Label x="10" y="10" text="WFS server URL:" id="lbUrl" enabled="false"/>
 	<mx:TextInput x="116" y="8" width="217" id="txtUrl" text="http://sigma.openplans.org/geoserver/wfs" displayAsPassword="false" editable="true" enabled="true"/>
 	<mx:Button x="341" y="8" label="Go!" width="49" id="butGo" enabled="true" click="this.onButtonClick(event)"/>
-	
+	<mx:List x="10" y="60" width="380" height="114" allowMultipleSelection="false" id="list" doubleClickEnabled="true" doubleClick="this.onDblClickListElement(event)" change="this.onChangeListElement(event)"></mx:List>
+	<mx:Text x="10" y="182" width="380" height="108" id="txtInfo" visible="true"/>
+
 </control:Control>

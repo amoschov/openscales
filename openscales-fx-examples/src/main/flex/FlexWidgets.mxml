@@ -52,7 +52,7 @@
 		<os:PanComponent id="pan" />
 	</resize:ResizableWindow>
 	
-	<resize:ResizableWindow title="Capabilities" movable="true" x="34" y="418" width="472" height="300">
+	<resize:ResizableWindow title="Capabilities" movable="true" x="34" y="418" width="440" height="339">
 		<os:CapabilitiesComponent width="100%" height="100%" />
 	</resize:ResizableWindow>
 		
