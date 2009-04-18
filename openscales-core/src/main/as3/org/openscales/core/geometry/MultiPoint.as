@@ -2,10 +2,9 @@ package org.openscales.core.geometry
 {
 	public class MultiPoint extends Collection
 	{
-		
-		private var componentTypes:Array = ["org.openscales.core.geometry::Point"];
-		
+				
 		public function MultiPoint(components:Object = null):void {
+			this.componentTypes = ["org.openscales.core.geometry::Point"];
 			super(components);
 		}
 		
@@ -18,8 +17,5 @@ package org.openscales.core.geometry
 	        this.removeComponent(point);
 	    }
 		
-		override public function getComponentTypes():Array {
-			return componentTypes;
-		}
 	}
 }

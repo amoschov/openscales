@@ -15,11 +15,11 @@ package org.openscales.core.geometry
 	public class Geometry
 	{
 		
-		public var id:String = null;
+		private var _id:String = null;
 
-	    public var parent:Geometry = null;
+	    private var _parent:Geometry = null;
 
-	    public var bounds:Bounds = null;
+	    protected var _bounds:Bounds = null;
 		
 		public function Geometry():void {
 			this.id = Util.createUniqueID(getQualifiedClassName(this) + "_");
@@ -28,7 +28,7 @@ package org.openscales.core.geometry
 		public function destroy():void {
 			this.id = null;
 
-        	this.bounds = null;
+        	this._bounds = null;
 		}
 		
 		public function clone():Geometry {
@@ -40,33 +40,33 @@ package org.openscales.core.geometry
 	        return geometry;
 		}
 		
-		public function setBounds(bounds:Bounds):void {
-			if (bounds) {
-	            this.bounds = bounds.clone();
-	        }
-		}
-		
 		public function clearBounds():void {
-	        this.bounds = null;
-	        if (this.parent) {
-	            this.parent.clearBounds();
-	        }   
+	        this._bounds = null;
+	        if (this._parent) {
+	            this._parent.clearBounds();
+	        } 
 		}
 		
 		public function extendBounds(newBounds:Bounds):void {
-			var bounds:Bounds = this.getBounds();
+			var bounds:Bounds = this._bounds;
 	        if (!bounds) {
-	            this.setBounds(newBounds);
+	            this._bounds = newBounds;
 	        } else {
-	            this.bounds.extend(newBounds);
+	            this._bounds.extend(newBounds);
 	        }
 		}
 		
-		public function getBounds():Bounds {
-			if (this.bounds == null) {
+		public function get bounds():Bounds {
+			if (this._bounds == null) {
 	            this.calculateBounds();
 	        }
-	        return this.bounds;
+	        return this._bounds;
+		}
+		
+		public function set bounds(value:Bounds):void {
+			if (bounds) {
+	            this._bounds = value.clone();
+	        }
 		}
 		
 		public function calculateBounds():void {
@@ -75,7 +75,7 @@ package org.openscales.core.geometry
 		
 		public function atPoint(lonlat:LonLat, toleranceLon:Number, toleranceLat:Number):Boolean {
 			var atPoint:Boolean = false;
-	        var bounds:Bounds = this.getBounds();
+	        var bounds:Bounds = this.bounds;
 	        if ((bounds != null) && (lonlat != null)) {
 	
 	            var dX:Number = (!isNaN(toleranceLon)) ? toleranceLon : 0;
@@ -92,13 +92,31 @@ package org.openscales.core.geometry
 	        return atPoint;
 		}
 		
-		public function getLength():Number {
+		public function get length():Number {
 			return 0.0;
 		}
 		
-		public function getArea():Number {
+		public function get area():Number {
 			return 0.0;
 		}
+		
+		public function get id():String {
+			return this._id;
+		}
+		
+		public function set id(value:String):void {
+			this._id = value;
+		}
+		
+		public function get parent():Geometry {
+			return this._parent;
+		}
+		
+		public function set parent(value:Geometry):void {
+			this._parent = value;
+		}
+		
+		
 		
 	}
 }

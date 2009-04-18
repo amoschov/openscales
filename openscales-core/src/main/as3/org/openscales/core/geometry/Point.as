@@ -6,18 +6,15 @@ package org.openscales.core.geometry
 	public class Point extends Geometry
 	{
 		
-		public var x:Number = NaN;
+		private var _x:Number = NaN;
 
-		public var y:Number = NaN;
-		
-		public var components:Array = null;
-		
-		public function Point(x:Object = NaN, y:Object = NaN):void {
+		private var _y:Number = NaN;
+				
+		public function Point(x:Number = NaN, y:Number = NaN):void {
 			super();
-			this.components = new Array();
         
-	        this.x = Number(x);
-	        this.y = Number(y);
+	        this.x = x;
+	        this.y = y;
 		}
 		
 		override public function clone():Geometry {
@@ -61,6 +58,22 @@ package org.openscales.core.geometry
 		public function move(x:Number, y:Number):void {
 			this.x = this.x + x;
 	        this.y = this.y + y;
+		}
+		
+		public function get x():Number {
+			return this._x;
+		}
+		
+		public function set x(value:Number):void {
+			this._x = value;
+		}
+		
+		public function get y():Number {
+			return this._y;
+		}
+		
+		public function set y(value:Number):void {
+			this._y = value;
 		}
 
 	}

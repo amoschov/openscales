@@ -3,9 +3,8 @@ package org.openscales.core.geometry
 	public class LinearRing extends LineString
 	{
 		
-		private var componentTypes:Array = ["org.openscales.core.geometry::Point"];
-		
 		public function LinearRing(points:Array = null):void {
+			this.componentTypes = ["org.openscales.core.geometry::Point"];
 			super(points);
 		}
 		
@@ -18,10 +17,6 @@ package org.openscales.core.geometry
 	        }
 
 	        return added;
-		}
-		
-		override public function getComponentTypes():Array {
-			return componentTypes;
 		}
 		
 	}

@@ -21,9 +21,9 @@ package org.openscales.core.geometry
 	public class Collection extends Geometry
 	{
 		
-		public var components:Array = null;
+		private var _components:Array = null;
 		
-    	private var componentTypes:Array = null;
+    	private var _componentTypes:Array = null;
     	
     	public function Collection(components:Object):void {
     		super();
@@ -59,9 +59,9 @@ package org.openscales.core.geometry
 		}
 		
 		override public function calculateBounds():void {
-			this.bounds = null;
+			this._bounds = null;
 	        if ( !this.components || (this.components.length > 0)) {
-	            this.setBounds(this.components[0].getBounds());
+	            this._bounds = this.components[0].getBounds();
 	            for (var i:int = 1; i < this.components.length; i++) {
 	                this.extendBounds(this.components[i].getBounds());
 	            }
@@ -80,9 +80,8 @@ package org.openscales.core.geometry
 		public function addComponent(component:Object, index:Number = NaN):Boolean {
 			var added:Boolean = false;
 	        if(component) {
-	            if(!(component is Array) && (this.getComponentTypes() == null ||
-	               (Util.indexOf(this.getComponentTypes(),
-	                                        getQualifiedClassName(component)) > -1))) {
+	            if(!(component is Array) && (this.componentTypes == null ||
+	               (Util.indexOf(this.componentTypes, getQualifiedClassName(component)) > -1))) {
 	
 	                if(!isNaN(index) && (index < this.components.length)) {
 	                    var components1:Array = this.components.slice(0, index);
@@ -116,7 +115,7 @@ package org.openscales.core.geometry
 	        this.clearBounds();
 		}
 		
-		override public function getLength():Number {
+		override public function get length():Number {
 			var length:Number = 0.0;
 	        for (var i:int = 0; i < this.components.length; i++) {
 	            length += this.components[i].getLength();
@@ -124,7 +123,7 @@ package org.openscales.core.geometry
 	        return length;
 		}
 		
-		override public function getArea():Number {
+		override public function get area():Number {
 	        var area:Number = 0.0;
 	        for (var i:int = 0; i < this.components.length; i++) {
 	            area += this.components[i].getArea();
@@ -156,8 +155,20 @@ package org.openscales.core.geometry
 	        return equivalent;
 		}
 		
-		public function getComponentTypes():Array {
-			return componentTypes;
+		public function get components():Array {
+			return this._components;
+		}
+		
+		public function set components(value:Array):void {
+			this._components = value;
+		}
+		
+		public function get componentTypes():Array {
+			return this._componentTypes;
+		}
+		
+		public function set componentTypes(value:Array):void {
+			this._componentTypes = value;
 		}
 	}
 }
