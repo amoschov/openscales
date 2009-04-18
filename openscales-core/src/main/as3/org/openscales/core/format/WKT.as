@@ -75,6 +75,7 @@ package org.openscales.core.format
 	        return pieces.join('');
 		}
 		
+		// FIXME : refactor
 		public var extract:Object = {
 	        'point': function(point:Pixel):String {
 	            return point.x + ' ' + point.y;

@@ -10,21 +10,19 @@ package org.openscales.core
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	
-	import org.openscales.core.Util;
-	
 	public class Request
 	{
-		public var options:Object = null;
 		public static var activeRequestCount:int = 0;
-		private var url:String = null;
+		private var _url:String = null;
+		private var _options:Object = null;
 		
 		public function Request(url:String, options:Object, proxy:String = null):void {
 			
-			this.setOptions(options);
+			this.options = options;
 			this.request(url, proxy);
 		}
 		
-		public function setOptions(options:Object):void {
+		public function set options(options:Object):void {
 			this.options = {
 			  method:       URLRequestMethod.POST,
 			  parameters:   ''
@@ -32,6 +30,9 @@ package org.openscales.core
 			Util.extend(this.options, options || {});
 		}
 
+		public function get options():Object {
+        	return this._options;
+        }
 		
 		private function request(url:String, proxy:String):void {
 			var parameters:Object = this.options.parameters || '';
@@ -81,6 +82,14 @@ package org.openscales.core
 		      trace(e.message);
 		    }
 		}
+		
+		public function get url():String {
+        	return this._url;
+        }
+        
+        public function set url(value:String):void {
+        	this._url = value;
+        }
 		
 		
 		private function configureListeners(dispatcher:IEventDispatcher):void {

@@ -13,8 +13,8 @@ package org.openscales.core.control
 		
 		public static var X:int = 4;
 		public static var Y:int = 4;
-		public var slideFactor:int = 50;
-		public var buttons:Array = null;
+		private var _slideFactor:int = 50;
+		private var _buttons:Array = null;
 		
 		[Embed(source="/org/openscales/core/img/north-mini.png")]
         protected var northMiniImg:Class;
@@ -128,6 +128,22 @@ package org.openscales.core.control
 	                this.map.zoomToMaxExtent(); 
 	                break;
 	        }
+		}
+		
+		public function get slideFactor():int {
+			return this._slideFactor;   
+		}
+		
+		public function set slideFactor(value:int):void {
+			this._slideFactor = value;   
+		}
+		
+		public function get buttons():Array {
+			return this._buttons;   
+		}
+		
+		public function set buttons(value:Array):void {
+			this._buttons = value;   
 		}
 		
 	}

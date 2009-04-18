@@ -14,19 +14,19 @@ package org.openscales.core.control
 	public class PanZoomBar extends PanZoom
 	{
 		
-	    public var zoomStopWidth:Number = 18;
+	    private var _zoomStopWidth:Number = 18;
 
-	    public var zoomStopHeight:Number = 11;
+	    private var _zoomStopHeight:Number = 11;
 
-	    public var slider:DisplayObject = null;
+	    private var _slider:DisplayObject = null;
 
-	    public var zoomBar:DisplayObject = null;
+	    private var _zoomBar:DisplayObject = null;
 	    
-	    public var startTop:Number = NaN;
+	    private var _startTop:Number = NaN;
 	    
-	    public var mouseDragStart:Pixel = null;
+	    private var _mouseDragStart:Pixel = null;
 	    
-	    public var zoomStart:Pixel = null;
+	    private var _zoomStart:Pixel = null;
 	    
 	    public function PanZoomBar(options:Object = null):void {
 	    	super(options);
@@ -175,5 +175,60 @@ package org.openscales.core.control
 	        this.slider.y = newTop;
 	    }
 	    
+	    public function get zoomStopWidth():Number {
+			return this._zoomStopWidth;   
+		}
+		
+		public function set zoomStopWidth(value:Number):void {
+			this._zoomStopWidth = value;   
+		}
+	    
+	    public function get zoomStopHeight():Number {
+			return this._zoomStopHeight;   
+		}
+		
+		public function set zoomStopHeight(value:Number):void {
+			this._zoomStopHeight = value;   
+		}
+		
+		public function get slider():DisplayObject {
+			return this._slider;   
+		}
+		
+		public function set slider(value:DisplayObject):void {
+			this._slider = value;   
+		}
+		
+		public function get zoomBar():DisplayObject {
+			return this._zoomBar;   
+		}
+		
+		public function set zoomBar(value:DisplayObject):void {
+			this._zoomBar = value;   
+		}
+		
+		public function get startTop():Number {
+			return this._startTop;   
+		}
+		
+		public function set startTop(value:Number):void {
+			this._startTop = value;   
+		}
+		
+		public function get mouseDragStart():Pixel {
+			return this._mouseDragStart;   
+		}
+		
+		public function set mouseDragStart(value:Pixel):void {
+			this._mouseDragStart = value;   
+		}
+		
+		public function get zoomStart():Pixel {
+			return this._zoomStart;   
+		}
+		
+		public function set zoomStart(value:Pixel):void {
+			this._zoomStart = value;   
+		}
 	}
 }

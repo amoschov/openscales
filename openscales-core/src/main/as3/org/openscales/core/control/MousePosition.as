@@ -12,7 +12,7 @@ package org.openscales.core.control
 	public class MousePosition extends Control
 	{
 				
-		public var label:TextField = null;
+		private var _label:TextField = null;
 		
     	private var _prefix:String = "";
     	
@@ -145,6 +145,15 @@ package org.openscales.core.control
 		public function set lastXy(newLastXy:Pixel):void
 		{
 			_lastXy = newLastXy;
+		}
+		
+		public function get label():TextField
+		{
+			return this._label;
+		}
+		public function set label(value:TextField):void
+		{
+			this._label = value;
 		}
 	}
 }

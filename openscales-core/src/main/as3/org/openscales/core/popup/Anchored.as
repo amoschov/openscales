@@ -14,7 +14,7 @@ package org.openscales.core.popup
 	     * Relative position of the popup ("br", "tr", "tl" or "bl").
 	     * TODO : use an enum for that
 	     */
-		public var _relativePosition:String = "";
+		private var _relativePosition:String = "";
 		
 		static public var BR:String = "br";
 		static public var TR:String = "tr";
