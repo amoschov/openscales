@@ -13,11 +13,11 @@ package org.openscales.core
 	
 	public class Icon extends Sprite
 	{
-	    public var url:String = null;
+	    private var _url:String = null;
 	    
-	    public var size:Size = null;
+	    private var _size:Size = null;
 
-	    public var offset:Pixel = null;    
+	    private var _offset:Pixel = null;    
 
 	    public var calculateOffset:Function = null;    
 	    
@@ -44,16 +44,32 @@ package org.openscales.core
                                    this.calculateOffset);
      	}
      	
-     	public function setSize(size:Size):void {
-	        if (size != null) {
-	            this.size = size;
+     	public function get offset():Pixel {
+        	return this._offset;
+        }
+        
+        public function set offset(value:Pixel):void {
+        	this._offset = value;
+        }
+     	
+     	public function get size():Size {
+        	return this._size;
+        }
+     	
+     	public function set size(value:Size):void {
+	        if (value != null) {
+	            this._size = value;
 	        }
 	        this.draw();
      	}
      	
-     	public function setUrl(url:String):void {
-     		if (url != null) {
-     			 this.url = url;
+     	public function get url():String {
+        	return this._url;
+        }
+     	
+     	public function set url(value:String):void {
+     		if (value != null) {
+     			 this._url = value;
      		}
      		this.draw();	
      	}

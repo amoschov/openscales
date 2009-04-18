@@ -1,7 +1,6 @@
 package org.openscales.core
 {
 	import flash.display.Bitmap;
-	import flash.events.MouseEvent;
 	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -12,15 +11,15 @@ package org.openscales.core
 	public class Marker extends Icon
 	{
 
-	    public var lonlat:LonLat = null;
+	    private var _lonlat:LonLat = null;
 	    
-	    public var map:Map = null;
+	    private var _map:Map = null;
 	    
-	    public var drawn:Boolean = false;
+	    private var _drawn:Boolean = false;
 	    
-	    public var data:Object = null;
+	    private var _data:Object = null;
 	    
-	    public var popup:Popup;
+	    private var _popup:Popup;
 	    
 	  	[Embed(source="/org/openscales/core/img/marker.png")]
         private var _markerImg:Class;
@@ -59,7 +58,7 @@ package org.openscales.core
      	public function inflate(inflate:Number):void {
      	
 	       var newSize:Size = new Size(this.size.w * inflate, this.size.h * inflate);
-	       this.setSize(newSize);
+	       this.size = newSize;
 
      	}
      	
@@ -67,8 +66,10 @@ package org.openscales.core
  	        
  	        if(url == null) {
  	        	var defaultMarker:Bitmap = new this._markerImg();
- 	        	defaultMarker.x = px.x;
- 	        	defaultMarker.y = px.y;
+ 	        	if(px != null) {
+ 	        		defaultMarker.x = px.x;
+ 	        		defaultMarker.y = px.y;
+ 	        	}
  	        	if(this.numChildren==1) {
  	        		this.removeChildAt(0);
  	        	}
@@ -77,6 +78,46 @@ package org.openscales.core
  	        else {
  	        	super.draw(px);
  	        }
-     	}    	
+     	}
+     	
+     	public function get lonlat():LonLat {
+        	return this._lonlat;
+        }
+        
+        public function set lonlat(value:LonLat):void {
+        	this._lonlat = value;
+        }
+        
+        public function get map():Map {
+        	return this._map;
+        }
+        
+        public function set map(value:Map):void {
+        	this._map = value;
+        }
+        
+        public function get drawn():Boolean {
+        	return this._drawn;
+        }
+        
+        public function set drawn(value:Boolean):void {
+        	this._drawn = value;
+        } 
+        
+        public function get data():Object {
+        	return this._data;
+        }
+        
+        public function set data(value:Object):void {
+        	this._data = value;
+        }
+        
+        public function get popup():Popup {
+        	return this._popup;
+        }
+        
+        public function set popup(value:Popup):void {
+        	this._popup = value;
+        }     	
 	}
 }

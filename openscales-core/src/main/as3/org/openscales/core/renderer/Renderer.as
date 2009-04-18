@@ -121,8 +121,8 @@ package org.openscales.core.renderer
 		}
 		
 		public function get resolution():Number {
-			this._resolution = this.resolution || this.map.resolution;
-        	return this._resolution;
+			var resolution:Number = this._resolution || this.map.resolution;
+        	return resolution;
 		}
 		
 		public function set resolution(value:Number):void {
