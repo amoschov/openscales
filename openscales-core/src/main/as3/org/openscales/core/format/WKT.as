@@ -17,11 +17,11 @@ package org.openscales.core.format
 	public class WKT extends Format
 	{
 		
-		private var regExes:Object;
+		private var _regExes:Object;
 		
 		public function WKT(options:Object = null):void {
 			
-	        this.regExes = {
+	        this._regExes = {
 	            'typeStr': /^\s*(\w+)\s*\(\s*(.*)\s*\)\s*$/,
 	            'spaces': /\s+/,
 	            'parenComma': /\)\s*,\s*\(/,
@@ -33,7 +33,7 @@ package org.openscales.core.format
 		
 		override public function read(wkt:Object):Object {
 			var features:Object, type:String, str:String;
-	        var matches:Array = this.regExes.typeStr.exec(wkt);
+	        var matches:Array = this._regExes.typeStr.exec(wkt);
 	        if(matches) {
 	            type = matches[1].toLowerCase();
 	            str = matches[2];

@@ -9,25 +9,25 @@ package org.openscales.core.format
 	public class WFS extends GML
 	{
 		
-		private var layer:org.openscales.core.layer.WFS = null;
+		private var _layer:org.openscales.core.layer.WFS = null;
     	
     	public function WFS(options:Object, layer:org.openscales.core.layer.WFS):void {
     		super(options);
 	        this.layer = layer;
 	        if (this.layer.featureNS) {
-	            this.featureNS = this.layer.featureNS;
+	            this._featureNS = this.layer.featureNS;
 	        }    
 	        if (layer.geometry_column) {
-	            this.geometryName = layer.geometry_column;
+	            this._geometryName = layer.geometry_column;
 	        }
 	        var wfsLayer:org.openscales.core.layer.WFS = this.layer as org.openscales.core.layer.WFS;
 	        if (wfsLayer.typename) {
-	            this.featureName = wfsLayer.typename;
+	            this._featureName = wfsLayer.typename;
 	        }
     	}
     	
     	override public function write(features:Object):Object {
-    		var transaction:XML = new XML("<?xml version=\"1.0\" encoding=\"UTF-8\"?><" + this.wfsprefix + ":Transaction service=\"WFS\" version=\"1.0.0\" outputFormat=\"GML2\" xmlns:" + this.wfsprefix + "=\"" + this.wfsns + "\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd\"></" + this.wfsprefix + ":Transaction>");
+    		var transaction:XML = new XML("<?xml version=\"1.0\" encoding=\"UTF-8\"?><" + this._wfsprefix + ":Transaction service=\"WFS\" version=\"1.0.0\" outputFormat=\"GML2\" xmlns:" + this._wfsprefix + "=\"" + this._wfsns + "\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd\"></" + this._wfsprefix + ":Transaction>");
 	        for (var i:int=0; i < features.length; i++) {
 	            switch (features[i].state) {
 	                case State.INSERT:
@@ -46,9 +46,9 @@ package org.openscales.core.format
     	
     	override public function createFeatureXML(feature:Vector):XML {
 	        var geometryNode:XML = this.buildGeometryNode(feature.geometry);
-	        var geomContainer:XML = new XML("<" + this.featurePrefix + ":" + this.geometryName + " xmlns:" + this.featurePrefix + "=\"" + this.featureNS + "\"></" + this.featurePrefix + ":" + this.geometryName + ">");
+	        var geomContainer:XML = new XML("<" + this._featurePrefix + ":" + this._geometryName + " xmlns:" + this._featurePrefix + "=\"" + this._featureNS + "\"></" + this._featurePrefix + ":" + this._geometryName + ">");
 	        geomContainer.appendChild(geometryNode);
-	        var featureContainer:XML = new XML("<" + this.featurePrefix + ":" + this.featureName + " xmlns:" + this.featurePrefix + "=\"" + this.featureNS + "\"></" + this.featurePrefix + ":" + this.featureName + ">");
+	        var featureContainer:XML = new XML("<" + this._featurePrefix + ":" + this._featureName + " xmlns:" + this._featurePrefix + "=\"" + this._featureNS + "\"></" + this._featurePrefix + ":" + this._featureName + ">");
 	        featureContainer.appendChild(geomContainer);
 	        for(var attr:String in feature.attributes) {
 	            var attrText:XMLNode = new XMLNode(2, feature.attributes[attr]); 
@@ -56,7 +56,7 @@ package org.openscales.core.format
 	            if (attr.search(":") != -1) {
 	                nodename = attr.split(":")[1];
 	            }    
-	            var attrContainer:XML = new XML("<" + this.featurePrefix + ":" + nodename + " xmlns:" + this.featurePrefix + "=\"" + this.featureNS + "\"></" + this.featurePrefix + ":" + nodename + ">");
+	            var attrContainer:XML = new XML("<" + this._featurePrefix + ":" + nodename + " xmlns:" + this._featurePrefix + "=\"" + this._featureNS + "\"></" + this._featurePrefix + ":" + nodename + ">");
 	            attrContainer.appendChild(attrText);
 	            featureContainer.appendChild(attrContainer);
 	        }    
@@ -64,7 +64,7 @@ package org.openscales.core.format
     	}
     	
     	public function insert(feature:Vector):XML {
-	        var insertNode:XML = new XML("<" + this.wfsprefix + ":Insert xmlns:" + this.wfsprefix + "=\"" + this.wfsns + "\"></" + this.wfsprefix + ":Insert>");
+	        var insertNode:XML = new XML("<" + this._wfsprefix + ":Insert xmlns:" + this._wfsprefix + "=\"" + this._wfsns + "\"></" + this._wfsprefix + ":Insert>");
 	        insertNode.appendChild(this.createFeatureXML(feature));
 	        return insertNode;
     	}
@@ -72,12 +72,12 @@ package org.openscales.core.format
     	public function update(feature:Vector):XMLNode {
 	        if (!feature.id) { trace("Can't update a feature for which there is no FID."); }
 	        var updateNode:XMLNode = new XMLNode(1, "wfs:Update");
-	        updateNode.attributes.typeName = this.layerName;
+	        updateNode.attributes.typeName = this._layerName;
 	
 	        var propertyNode:XMLNode = new XMLNode(1, "wfs:Property");
 	        var nameNode:XMLNode = new XMLNode(1, "wfs:Name");
 	        
-	        var txtNode:XMLNode = new XMLNode(3, this.geometryName);
+	        var txtNode:XMLNode = new XMLNode(3, this._geometryName);
 	        nameNode.appendChild(txtNode);
 	        propertyNode.appendChild(nameNode);
 	        
@@ -102,7 +102,7 @@ package org.openscales.core.format
 	            return null; 
 	        }
 	        var deleteNode:XMLNode = new XMLNode(1, "wfs:Delete");
-	        deleteNode.attributes.typeName = this.layerName;
+	        deleteNode.attributes.typeName = this._layerName;
 	
 	        var filterNode:XMLNode = new XMLNode(1, "ogc:Filter");
 	        var filterIdNode:XMLNode = new XMLNode(1, "ogc:FeatureId");
@@ -116,6 +116,14 @@ package org.openscales.core.format
     	public function destroy():void {
         	this.layer = null;
     	}
+    	
+    	public function get layer():org.openscales.core.layer.WFS {
+			return this._layer;
+		}
+		
+		public function set layer(value:org.openscales.core.layer.WFS):void {
+			this._layer = value;
+		}
 		
 	}
 }
