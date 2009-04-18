@@ -85,7 +85,7 @@ package org.openscales.core.format
 	        var p:Array = new Array();
 	
 	        var feature:Vector = new Vector();
-			feature.fid = xmlNode..@fid;
+			feature.id = xmlNode..@fid;
 			
 	        if (xmlNode..*::the_geom.*::MultiPolygon.length() > 0) {
 	            var multipolygon:XML = xmlNode..*::the_geom.*::MultiPolygon[0];

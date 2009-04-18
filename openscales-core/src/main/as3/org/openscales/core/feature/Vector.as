@@ -12,15 +12,13 @@ package org.openscales.core.feature
 	public class Vector extends Feature
 	{
 		
-		public var fid:String = null;
+	    private var _geometry:Geometry = null;
 
-	    public var geometry:Geometry = null;
-
-	    public var state:String = null;
+	    private var _state:String = null;
 	    
-	    public var style:Style = null;
+	    private var _style:Style = null;
 	    
-	    public var originalStyle:Style = null;
+	    private var _originalStyle:Style = null;
 		
 		public function Vector(geometry:Geometry = null, data:Object = null, style:Style = null):void {
 			super(null, null, data);
@@ -100,6 +98,38 @@ package org.openscales.core.feature
 	        } else if (state == State.UNKNOWN) {
 	            this.state = state;
 	        }
+		}
+		
+		public function get geometry():Geometry {
+			return this._geometry;
+		}
+		
+		public function set geometry(value:Geometry):void {
+			this._geometry = value;
+		}
+		
+		public function get state():String {
+			return this._state;
+		}
+		
+		public function set state(value:String):void {
+			this._state = value;
+		}
+		
+		public function get style():Style {
+			return this._style;
+		}
+		
+		public function set style(value:Style):void {
+			this._style = value;
+		}
+		
+		public function get originalStyle():Style {
+			return this._originalStyle;
+		}
+		
+		public function set originalStyle(value:Style):void {
+			this._originalStyle = value;
 		}
 	}
 }

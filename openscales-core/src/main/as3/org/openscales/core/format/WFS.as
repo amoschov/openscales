@@ -70,7 +70,7 @@ package org.openscales.core.format
     	}
     	
     	public function update(feature:Vector):XMLNode {
-	        if (!feature.fid) { trace("Can't update a feature for which there is no FID."); }
+	        if (!feature.id) { trace("Can't update a feature for which there is no FID."); }
 	        var updateNode:XMLNode = new XMLNode(1, "wfs:Update");
 	        updateNode.attributes.typeName = this.layerName;
 	
@@ -89,7 +89,7 @@ package org.openscales.core.format
 	        
 	        var filterNode:XMLNode = new XMLNode(1, "ogc:Filter");
 	        var filterIdNode:XMLNode = new XMLNode(1, "ogc:FeatureId");
-	        filterIdNode.attributes.fid = feature.fid;
+	        filterIdNode.attributes.fid = feature.id;
 	        filterNode.appendChild(filterIdNode);
 	        updateNode.appendChild(filterNode);
 	

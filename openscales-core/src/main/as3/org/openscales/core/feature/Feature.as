@@ -17,22 +17,21 @@ package org.openscales.core.feature
 	 */
 	public class Feature
 	{
-		
-	    public var layer:Layer = null;
-
-	    public var id:String = null;
+		private var _id:String= null;
 	    
-	    public var lonlat:LonLat = null;
-
-	    public var data:Object = null;
+	    private var _layer:Layer = null;
 	    
-	    private var marker:Marker = null;
+	    private var _lonlat:LonLat = null;
 
-	    public var popup:Popup = null;
+	    private var _data:Object = null;
 	    
-	    public var attributes:Object = null;
+	    private var _marker:Marker = null;
+
+	    private var _popup:Popup = null;
+	    
+	    private var _attributes:Object = null;
 	    		
-		public var selected:Boolean = false;
+		private var _selected:Boolean = false;
 		
 		public function Feature(layer:Layer, lonlat:LonLat, data:Object):void {
 			this.layer = layer;
@@ -58,9 +57,9 @@ package org.openscales.core.feature
 	        this.id = null;
 	        this.lonlat = null;
 	        this.data = null;
-	        if (this.marker != null) {
+	        if (this._marker != null) {
 	            this.destroyMarker();
-	            this.marker = null;
+	            this._marker = null;
 	        }
 	        if (this.popup != null) {
 	            this.destroyPopup();
@@ -81,27 +80,27 @@ package org.openscales.core.feature
 			var marker:Marker = null;
 	        
 	        if (this.lonlat != null) {
-	            this.marker = new Marker();
-	            this.marker.lonlat = this.lonlat;
+	            this._marker = new Marker();
+	            this._marker.lonlat = this.lonlat;
 	        }
-	        return this.marker;
+	        return this._marker;
 		}
 		
 		public function destroyMarker():void {
-			this.marker.destroy();
+			this._marker.destroy();
 		}
 		
 		public function createPopup(closeBox:Boolean = true):Popup {
 			if (this.lonlat != null) {
             
 	            var id:String = this.id + "_popup";
-	            var anchor:Icon = this.marker;
+	            var anchor:Icon = this._marker;
 	
 	            this.popup = new Anchored(	id, 
 	                                        this.lonlat,
 	                                        this.data.popupSize,
 	                                        this.data.popupContentHTML,
-	                                        this.marker,
+	                                        this._marker,
 	                                        closeBox);
 
                 this.popup.feature = this;
@@ -111,6 +110,62 @@ package org.openscales.core.feature
 		
 		public function destroyPopup():void {
 			this.popup.destroy();
+		}
+		
+		public function get id():String {
+			return this._id;
+		}
+		
+		public function set id(value:String):void {
+			this._id = value;
+		}
+		
+		public function get layer():Layer {
+			return this._layer;
+		}
+		
+		public function set layer(value:Layer):void {
+			this._layer = value;
+		}
+		
+		public function get lonlat():LonLat {
+			return this._lonlat;
+		}
+		
+		public function set lonlat(value:LonLat):void {
+			this._lonlat = value;
+		}
+		
+		public function get data():Object {
+			return this._data;
+		}
+		
+		public function set data(value:Object):void {
+			this._data = value;
+		}
+		
+		public function get popup():Popup {
+			return this._popup;
+		}
+		
+		public function set popup(value:Popup):void {
+			this._popup = value;
+		}
+		
+		public function get attributes():Object {
+			return this._attributes;
+		}
+		
+		public function set attributes(value:Object):void {
+			this._attributes = value;
+		}
+		
+		public function get selected():Boolean {
+			return this._selected;
+		}
+		
+		public function set selected(value:Boolean):void {
+			this._selected = value;
 		}
 		
 	}
