@@ -6,7 +6,6 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.events.TileEvent;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.tile.Image;
@@ -14,25 +13,17 @@ package org.openscales.core.layer
 	
 	public class Grid extends HTTPRequest
 	{
-		
-		public var tileSizeG:Size = null;
-		
-		public var grid:Array = null;
 				
-		public var singleTile:Boolean = false;
+		private var _grid:Array = null;
+				
+		private var _singleTile:Boolean = false;
 		
-		public var ratio:Number = 1.5;
+		private var _ratio:Number = 1.5;
 		
-		public var numLoadingTiles:int = 0;
+		private var _numLoadingTiles:int = 0;
 		
-		private var origin:Pixel = null;
-		
-		public var typename:String = null;
-		
-		public var proxy:String = null;
-		
-		public var style:Style = null;
-		
+		private var _origin:Pixel = null;
+				
 		private var _tileSize:Size = null;
 		
 		public function Grid(name:String = null, url:String = null, params:Object = null, options:Object = null):void {
@@ -46,7 +37,6 @@ package org.openscales.core.layer
 		override public function destroy(newBaseLayer:Boolean = true):void {
 			this.clearGrid();
 	        this.grid = null;
-	        this.tileSizeG = null;
 	        super.destroy(); 
 		}
 		
@@ -72,10 +62,6 @@ package org.openscales.core.layer
 	        }
 	
 	        obj = super.clone([obj]);
-
-	        if (this.tileSizeG != null) {
-	            obj.tileSize = this.tileSize.clone();
-	        }
 
 	        obj.grid = new Array();
 	
@@ -221,7 +207,7 @@ package org.openscales.core.layer
 	        tileoffsetx = Math.round(tileoffsetx); // heaven help us
 	        tileoffsety = Math.round(tileoffsety);
 	
-	        this.origin = new Pixel(tileoffsetx, tileoffsety);
+	        this._origin = new Pixel(tileoffsetx, tileoffsety);
 	
 	        var startX:Number = tileoffsetx; 
 	        var startLon:Number = tileoffsetlon;
@@ -304,7 +290,7 @@ package org.openscales.core.layer
 	        tileoffsetx = Math.round(tileoffsetx);
 	        tileoffsety = Math.round(tileoffsety);
 	
-	        this.origin = new Pixel(tileoffsetx, tileoffsety);
+	        this._origin = new Pixel(tileoffsetx, tileoffsety);
 	
 	        var startX:Number = tileoffsetx; 
 	        var startLon:Number = tileoffsetlon;
@@ -601,6 +587,38 @@ package org.openscales.core.layer
 		
 		override public function get imageSize():Size {
 			return (this._imageSize || this.tileSize); 
+		}
+		
+		public function get grid():Array {
+			return this._grid;
+		}
+		
+		public function set grid(value:Array):void {
+			this._grid = value;
+		}
+		
+		public function get singleTile():Boolean {
+			return this._singleTile;
+		}
+		
+		public function set singleTile(value:Boolean):void {
+			this._singleTile = value;
+		}
+		
+		public function get ratio():Number {
+			return this._ratio;
+		}
+		
+		public function set ratio(value:Number):void {
+			this._ratio = value;
+		}
+		
+		public function get numLoadingTiles():int {
+			return this._numLoadingTiles;
+		}
+		
+		public function set numLoadingTiles(value:int):void {
+			this._numLoadingTiles = value;
 		}
 		
 	}

@@ -10,13 +10,13 @@ package org.openscales.core.layer
 	public class TMS extends Grid
 	{
 		
-		private var serviceVersion:String = "1.0.0";
+		private var _serviceVersion:String = "1.0.0";
 			
-		private var tileOrigin:LonLat = null;
+		private var _tileOrigin:LonLat = null;
 		
 		/* A list of all resolutions available on the server. Only set this property
 		if the map resolutions differs from the server */
-		private var serverResolutions:Array = null;
+		private var _serverResolutions:Array = null;
 		
 		public function TMS(name:String, url:String, options:Object = null):void
 		{
@@ -40,9 +40,9 @@ package org.openscales.core.layer
 		{
 			bounds = this.adjustBoundsByGutter(bounds);
 			var res:Number = this.map.resolution;
-			var x:Number = Math.round((bounds.left - this.tileOrigin.lon) / (res * this.tileSize.w));
- 	        var y:Number = Math.round((bounds.bottom - this.tileOrigin.lat) / (res * this.tileSize.h));
- 	        var z:Number = this.serverResolutions != null ? this.serverResolutions.indexOf(res) : this.map.zoom;
+			var x:Number = Math.round((bounds.left - this._tileOrigin.lon) / (res * this.tileSize.w));
+ 	        var y:Number = Math.round((bounds.bottom - this._tileOrigin.lat) / (res * this.tileSize.h));
+ 	        var z:Number = this._serverResolutions != null ? this._serverResolutions.indexOf(res) : this.map.zoom;
  	        // Overrided so commented
  	        // Use name instead of layername, cf. http://trac.openlayers.org/ticket/737
  	        var path:String = ""/*this.serviceVersion + "/" + this.name + "/" + z + "/" + x + "/" + y + "." + this.type*/;
@@ -57,8 +57,8 @@ package org.openscales.core.layer
 		
 		override public function set map(map:Map):void {
  	        super.map = map;
- 	        if (!this.tileOrigin) {
- 	        	this.tileOrigin = new LonLat(this.map.maxExtent.left, this.map.maxExtent.bottom);
+ 	        if (!this._tileOrigin) {
+ 	        	this._tileOrigin = new LonLat(this.map.maxExtent.left, this.map.maxExtent.bottom);
  	        }
  		} 
 	}

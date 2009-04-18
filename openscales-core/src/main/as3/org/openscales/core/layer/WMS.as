@@ -18,7 +18,7 @@ package org.openscales.core.layer
                       format: "image/jpeg"
                       };
                      
-       	public var reproject:Boolean = true;
+       	private var _reproject:Boolean = true;
        	
        	public function WMS(name:String, url:String, params:Object, options:Object = null):void {       		
 	        super(name, url, params, options);
@@ -61,6 +61,14 @@ package org.openscales.core.layer
 	
 	        return super.getFullRequestString(newParams, altUrl);
        	}
+       	
+       	public function get reproject():Boolean {
+			return this._reproject;
+		}
+		
+		public function set reproject(value:Boolean):void {
+			this._reproject = value;
+		}
 		
 	}
 }

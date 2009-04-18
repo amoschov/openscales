@@ -15,9 +15,9 @@ package org.openscales.core.layer
 		/**
 		 * Alternative urls
 		 */
-		public var altUrls:Array = null;
+		private var _altUrls:Array = null;
 		
-		public var params:Object = null;
+		private var _params:Object = null;
 		
 		public function HTTPRequest(name:String, url:String, params:Object = null, options:Object = null):void {
 	        super(name, options);
@@ -114,11 +114,32 @@ package org.openscales.core.layer
 		// Getters & setters	
 		public function get url():String
 		{
-			return _url;
+			return this._url;
 		}
-		public function set url(newUrl:String):void
+		
+		public function set url(value:String):void
 		{
-			_url = newUrl;
+			this._url = value;
+		}
+		
+		public function get altUrls():Array
+		{
+			return this._altUrls;
+		}
+		
+		public function set altUrls(value:Array):void
+		{
+			this._altUrls = value;
+		}
+		
+		public function get params():Object
+		{
+			return this._params;
+		}
+		
+		public function set params(value:Object):void
+		{
+			this._params = value;
 		}	
 	}
 }

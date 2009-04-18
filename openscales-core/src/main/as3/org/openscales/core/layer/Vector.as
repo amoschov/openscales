@@ -3,12 +3,12 @@ package org.openscales.core.layer
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
+	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.Map;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Vector;
+	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.renderer.Renderer;
 	import org.openscales.core.renderer.SpriteRenderer;
 	
@@ -17,24 +17,20 @@ package org.openscales.core.layer
 	 */
 	public class Vector extends Layer
 	{
-
-	    private var isVector:Boolean = true;
-	    
-	    public var isFixed:Boolean = false;
 	
-	    public var features:Array = null;
+	    private var _features:Array = null;
 	    
-	    public var featuresBbox:Bounds = null;
+	    private var _featuresBbox:Bounds = null;
 
-	    public var selectedFeatures:Array = null;
+	    private var _selectedFeatures:Array = null;
 	
-	    public var style:Style = null;
+	    private var _style:Style = null;
 		
-	    public var renderer:Renderer = null;
+	    private var _renderer:Renderer = null;
 
-	    private var geometryType:String = null;
+	    private var _geometryType:String = null;
 
-	    private var drawn:Boolean = false;
+	    private var _drawn:Boolean = false;
 	    
 	    public var onFeatureInsert:Function = null;
 	    
@@ -220,6 +216,62 @@ package org.openscales.core.layer
 	        }
 	        this.map.featureSelection = [];
 	    }
+	    
+	    public function get features():Array {
+			return this._features;
+		}
+		
+		public function set features(value:Array):void {
+			this._features = value;
+		}
+		
+		public function get featuresBbox():Bounds {
+			return this._featuresBbox;
+		}
+		
+		public function set featuresBbox(value:Bounds):void {
+			this._featuresBbox = value;
+		}
+		
+		public function get selectedFeatures():Array {
+			return this._selectedFeatures;
+		}
+		
+		public function set selectedFeatures(value:Array):void {
+			this._selectedFeatures = value;
+		}
+		
+		public function get style():Style {
+			return this._style;
+		}
+		
+		public function set style(value:Style):void {
+			this._style = value;
+		}
+		
+		public function get renderer():Renderer {
+			return this._renderer;
+		}
+		
+		public function set renderer(value:Renderer):void {
+			this._renderer = value;
+		}
+		
+		public function get geometryType():String {
+			return this._geometryType;
+		}
+		
+		public function set geometryType(value:String):void {
+			this._geometryType = value;
+		}
+		
+		public function get drawn():Boolean {
+			return this._drawn;
+		}
+		
+		public function set drawn(value:Boolean):void {
+			this._drawn = value;
+		}
 	    
 	}
 }

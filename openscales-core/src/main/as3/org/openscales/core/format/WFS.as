@@ -17,8 +17,8 @@ package org.openscales.core.format
 	        if (this.layer.featureNS) {
 	            this._featureNS = this.layer.featureNS;
 	        }    
-	        if (layer.geometry_column) {
-	            this._geometryName = layer.geometry_column;
+	        if (layer.geometryColumn) {
+	            this._geometryName = layer.geometryColumn;
 	        }
 	        var wfsLayer:org.openscales.core.layer.WFS = this.layer as org.openscales.core.layer.WFS;
 	        if (wfsLayer.typename) {

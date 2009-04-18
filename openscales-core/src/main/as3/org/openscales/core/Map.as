@@ -121,12 +121,7 @@ package org.openscales.core
 	            }
 	        }
 	        
-	        
-	        if ((layer as Vector) && (layer as Vector).isFixed) {
-	            this.addChild(layer);
-	        } else {
-	         	 this._layerContainer.addChild(layer); 
-	        }
+	        this._layerContainer.addChild(layer); 
 	        
 	        layer.map = this;
 	        
@@ -153,11 +148,7 @@ package org.openscales.core
 		}
 		
 		public function removeLayer(layer:Layer, setNewBaseLayer:Boolean = true):void {
-			if ((layer as Vector) && (layer as Vector).isFixed) {
-				this.removeChild(layer);
-			} else {
-				this._layerContainer.removeChild(layer);
-			}
+			this._layerContainer.removeChild(layer);
 			layer.map = null;
 			Util.removeItem(this.layers, layer);
 			

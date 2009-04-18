@@ -15,13 +15,13 @@ package org.openscales.core.layer
 	public class GeoRSS extends Markers
 	{
 	
-		public var location:String = null;
+		private var _location:String = null;
 
-    	public var features:Array = null;
+    	private var _features:Array = null;
 
-    	public var selectedFeature:Feature = null;
+    	private var _selectedFeature:Feature = null;
 
-    	public var icon:Icon = null;
+    	private var _icon:Icon = null;
     	
     	public function GeoRSS(name:String, location:String, options:Object = null):void {
 	        super(name, options);
@@ -179,6 +179,38 @@ package org.openscales.core.layer
 	                feature.destroy();
 	            }
 	        } 
+		}
+		
+		public function get location():String {
+			return this._location;
+		}
+		
+		public function set location(value:String):void {
+			this._location = value;
+		}
+		
+		public function get features():Array {
+			return this._features;
+		}
+		
+		public function set features(value:Array):void {
+			this._features = value;
+		}
+		
+		public function get selectedFeature():Feature {
+			return this._selectedFeature;
+		}
+		
+		public function set selectedFeature(value:Feature):void {
+			this._selectedFeature = value;
+		}
+		
+		public function get icon():Icon {
+			return this._icon;
+		}
+		
+		public function set icon(value:Icon):void {
+			this._icon = value;
 		}
 		
 	}

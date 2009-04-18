@@ -14,6 +14,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.feature.Vector;
+	import org.openscales.core.format.Format;
 	import org.openscales.core.format.WFS;
 	import org.openscales.core.layer.capabilities.GetCapabilities;
 	import org.openscales.core.tile.WFS;
@@ -21,29 +22,29 @@ package org.openscales.core.layer
 	public class WFS extends org.openscales.core.layer.Vector
 	{
 		
-		public var ratio:Number = 2;
-	
-	    public var DEFAULT_PARAMS:Object = { service: "WFS",
+		public var DEFAULT_PARAMS:Object = { service: "WFS",
 	                      version: "1.1.0",
 	                      request: "GetFeature" };
+		
+		private var _ratio:Number = 2;
 	                      
-		public var vectorMode:Boolean = true;
+		private var _vectorMode:Boolean = true;
 		
-		public var params:Object = null;
+		private var _params:Object = null;
 		
-		public var url:String = null;
+		private var _url:String = null;
 		
-		public var tile:org.openscales.core.tile.WFS = null;
+		private var _tile:org.openscales.core.tile.WFS = null;
 		
-		public var writer:Object = null;
+		private var _writer:Format = null;
 		
-		public var featureClass:Class = null;
+		private var _featureClass:Class = null;
 		
-		public var featureNS:String = null;
+		private var _featureNS:String = null;
 				
-		public var geometry_column:String = null;
+		private var _geometryColumn:String = null;
 		
-		public var extractAttributes:Boolean = true;
+		private var _extractAttributes:Boolean = true;
 		
 		private var _capabilities:HashMap = null;
 			                    
@@ -68,8 +69,8 @@ package org.openscales.core.layer
 	            }   
 	        }
 	        
-	        if (!(this.geometry_column)) {
-	            this.geometry_column = "the_geom";
+	        if (!(this.geometryColumn)) {
+	            this.geometryColumn = "the_geom";
 	        }    
 	        
 	        this.params = params;
@@ -120,8 +121,8 @@ package org.openscales.core.layer
 			
 			        if ( zoomChanged || firstRendering || (!dragging && outOfBounds) ) {
 			            var center:LonLat = bounds.centerLonLat;
-			            var tileWidth:Number = bounds.width * this.ratio;
-			            var tileHeight:Number = bounds.height * this.ratio;
+			            var tileWidth:Number = bounds.width * this._ratio;
+			            var tileHeight:Number = bounds.height * this._ratio;
 			            var tileBounds:Bounds = this.extent;
 			            
 			            if (tileBounds.containsBounds(this.maxExtent)) {
@@ -129,8 +130,8 @@ package org.openscales.core.layer
 			            }
 			            			
 			            var tileSize:Size = this.map.size;
-			            tileSize.w = tileSize.w * this.ratio;
-			            tileSize.h = tileSize.h * this.ratio;
+			            tileSize.w = tileSize.w * this._ratio;
+			            tileSize.h = tileSize.h * this._ratio;
 		
 			            var ul:LonLat = new LonLat(tileBounds.left, tileBounds.top);
 			            var pos:Pixel = this.map.getLayerPxFromLonLat(ul);
@@ -282,6 +283,78 @@ package org.openscales.core.layer
 				
 			}
         }
+        
+        public function get vectorMode():Boolean {
+			return this._vectorMode;
+		}
+		
+		public function set vectorMode(value:Boolean):void {
+			this._vectorMode = value;
+		}
+		
+		public function get params():Object {
+			return this._params;
+		}
+		
+		public function set params(value:Object):void {
+			this._params = value;
+		}
+		
+		public function get url():String {
+			return this._url;
+		}
+		
+		public function set url(value:String):void {
+			this._url = value;
+		}
+		
+		public function get tile():org.openscales.core.tile.WFS {
+			return this._tile;
+		}
+		
+		public function set tile(value:org.openscales.core.tile.WFS):void {
+			this._tile = value;
+		}
+		
+		public function get writer():Format {
+			return this._writer;
+		}
+		
+		public function set writer(value:Format):void {
+			this._writer = value;
+		}
+		
+		public function get featureClass():Class {
+			return this._featureClass;
+		}
+		
+		public function set featureClass(value:Class):void {
+			this._featureClass = value;
+		}
+		
+		public function get featureNS():String {
+			return this._featureNS;
+		}
+		
+		public function set featureNS(value:String):void {
+			this._featureNS = value;
+		}
+		
+		public function get geometryColumn():String {
+			return this._geometryColumn;
+		}
+		
+		public function set geometryColumn(value:String):void {
+			this._geometryColumn = value;
+		}
+		
+		public function get extractAttributes():Boolean {
+			return this._extractAttributes;
+		}
+		
+		public function set extractAttributes(value:Boolean):void {
+			this._extractAttributes = value;
+		}
 		
 	}
 }

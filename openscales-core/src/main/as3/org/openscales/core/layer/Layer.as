@@ -339,15 +339,7 @@ package org.openscales.core.layer
 	    }
 	    
 		public function set zindex(value:int):void {
-	    	
-	    	if((this as Vector) && (this as Vector).isFixed)
-	    	{
-	    		this.parent.setChildIndex(this, value);
-	    	}
-	    	else
-	    	{
-	    		this.parent.setChildIndex(this, value);
-	    	}
+			this.parent.setChildIndex(this, value);
 	    }
 	    
 	    public function get displayOutsideMaxExtent():Boolean {
