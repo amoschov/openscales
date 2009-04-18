@@ -81,13 +81,13 @@ package org.openscales.core.layer
 	            this.map.removeLayer(this);
 	        } else {
 	            this.renderer.map = this.map;
-	            this.renderer.setSize(this.map.size);
+	            this.renderer.size = this.map.size;
 	        }
 	    }
 	    
 	    override public function onMapResize():void {
 	    	super.onMapResize();
-        	this.renderer.setSize(this.map.size);
+        	this.renderer.size = this.map.size;
 	    }
 	    
 	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
@@ -101,7 +101,7 @@ package org.openscales.core.layer
 	            //this.x = - int(this.map.layerContainer.x);
 	            //this.y = - int(this.map.layerContainer.y);
 	            var extent:Bounds = this.map.extent;
-	            this.renderer.setExtent(extent);
+	            this.renderer.extent = extent;
 	            
 	        }
 	

@@ -18,12 +18,12 @@ package org.openscales.core.renderer
 	public class SpriteRenderer extends Renderer
 	{
 		
-		public var localResolution:Number = 99999;
-		public var left:Number;
-		public var right:Number;
-		public var top:Number;
-		public var bottom:Number;
-		public var maxPixel:Number;
+		private var _localResolution:Number = 99999;
+		private var _left:Number;
+		private var _right:Number;
+		private var _top:Number;
+		private var _bottom:Number;
+		private var _maxPixel:Number;
 		
 		public function SpriteRenderer(container:Sprite):void {
 			super(container);
@@ -33,14 +33,14 @@ package org.openscales.core.renderer
 			super.destroy();
 		}
 		
-		override public function setExtent(extent:Bounds):void {
-			super.setExtent(extent);
+		override public function set extent(extent:Bounds):void {
+			super.extent = extent;
 	        
-	        var resolution:Number = this.getResolution();
+	        var resolution:Number = this.resolution;
 
-	        if (!this.localResolution || resolution != this.localResolution) {
-	            this.left = -extent.left / resolution;
-	            this.top = extent.top / resolution;
+	        if (!this._localResolution || resolution != this._localResolution) {
+	            this._left = -extent.left / resolution;
+	            this._top = extent.top / resolution;
 	        }
 	
 	        
@@ -49,13 +49,13 @@ package org.openscales.core.renderer
 	
 	        // If the resolution has not changed, we already have features, and we need
 	        // to adjust the viewbox to fit them.
-	        if (this.localResolution && resolution == this.localResolution) {
-	            left = (this.left) - (-extent.left / resolution);
-	            top  = (this.top) - (extent.top / resolution);
+	        if (this._localResolution && resolution == this._localResolution) {
+	            left = (this._left) - (-extent.left / resolution);
+	            top  = (this._top) - (extent.top / resolution);
 	        }    
 	        
 	        // Store resolution for use later.
-	        this.localResolution = resolution;
+	        this._localResolution = resolution;
 	        
 	        // Set the viewbox -- the left/top will be pixels-dragged-since-res change,
 	        // the width/height will be pixels.
@@ -65,8 +65,8 @@ package org.openscales.core.renderer
 /* 	        this.rendererRoot.viewBox = extentString; */
 		}
 		
-		override public function setSize(size:Size):void {
-			super.setSize(size);
+		override public function set size(size:Size):void {
+			super.size = size;
 	        
 	      	// Ugly trick due to the fact we can't set the size of and empty Sprite 
 			this.container.graphics.drawRect(0,0,this.size.w,this.size.h);
@@ -145,12 +145,12 @@ package org.openscales.core.renderer
 		}
 		
 		public function drawCircle(node:SpriteElement, geometry:Object, radius:Number):void {
-			var resolution:Number = this.getResolution();
-	        var x:Number = (geometry.x / resolution + this.left);
-	        var y:Number = (this.top - geometry.y / resolution);
+			var resolution:Number = this.resolution;
+	        var x:Number = (geometry.x / resolution + this._left);
+	        var y:Number = (this._top - geometry.y / resolution);
 	        var draw:Boolean = true;
-	        if (x < -this.maxPixel || x > this.maxPixel) { draw = false; }
-	        if (y < -this.maxPixel || y > this.maxPixel) { draw = false; }
+	        if (x < -this._maxPixel || x > this._maxPixel) { draw = false; }
+	        if (y < -this._maxPixel || y > this._maxPixel) { draw = false; }
 	
 	        if (draw) { 
 	            node.graphics.drawCircle(x, y, radius);
@@ -193,11 +193,11 @@ package org.openscales.core.renderer
 		}
 		
 		public function drawRectangle(node:SpriteElement, geometry:Object):void {
-	        var x:Number = (geometry.x / resolution + this.left);
-	        var y:Number = (geometry.y / resolution - this.top);
+	        var x:Number = (geometry.x / resolution + this._left);
+	        var y:Number = (geometry.y / resolution - this._top);
 	        var draw:Boolean = true;
-	        if (x < -this.maxPixel || x > this.maxPixel) { draw = false; }
-	        if (y < -this.maxPixel || y > this.maxPixel) { draw = false; }
+	        if (x < -this._maxPixel || x > this._maxPixel) { draw = false; }
+	        if (y < -this._maxPixel || y > this._maxPixel) { draw = false; }
 	        if (draw) {
 	            node.graphics.drawRect(x, y, geometry.width, geometry.height);
 	        } else {
@@ -251,11 +251,11 @@ package org.openscales.core.renderer
 		}
 		
 		public function getShortString(point:Object):String {
-	        var resolution:Number = this.getResolution();
-	        var x:Number = (point.x / resolution + this.left);
-	        var y:Number = (this.top - point.y / resolution);
-	        if (x < -this.maxPixel || x > this.maxPixel) { return null; }
-	        if (y < -this.maxPixel || y > this.maxPixel) { return null; }
+	        var resolution:Number = this.resolution;
+	        var x:Number = (point.x / resolution + this._left);
+	        var y:Number = (this._top - point.y / resolution);
+	        if (x < -this._maxPixel || x > this._maxPixel) { return null; }
+	        if (y < -this._maxPixel || y > this._maxPixel) { return null; }
 	        var string:String =  x + "," + y;  
 	        return string;
 		}
