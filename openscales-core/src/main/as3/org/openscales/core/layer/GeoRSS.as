@@ -5,8 +5,8 @@ package org.openscales.core.layer
 	import flash.net.URLLoader;
 	
 	import org.openscales.core.Icon;
+	import org.openscales.core.Map;
 	import org.openscales.core.Marker;
-	import org.openscales.core.OpenScales;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Size;
@@ -27,7 +27,7 @@ package org.openscales.core.layer
 	        super(name, options);
 	        this.location = location;
 	        this.features = [];
-	        OpenScales.loadURL(location, null, this, this.parseData);
+	        Map.loadURL(location, null, this, this.parseData);
     	}
 
 		override public function destroy(setNewBaseLayer:Boolean = true):void {

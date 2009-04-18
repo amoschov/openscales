@@ -4,10 +4,10 @@ package org.openscales.core.tile
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	
+	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.OpenScales;
 	import org.openscales.core.format.GML;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.WFS;
@@ -44,7 +44,7 @@ package org.openscales.core.tile
 		}
 		
 		public function loadFeaturesForRegion(success:Function):void {
-			OpenScales.loadURL(this.url, null, this, success);
+			Map.loadURL(this.url, null, this, success);
 		}
 		
 		public function requestSuccess(event:Event):void {

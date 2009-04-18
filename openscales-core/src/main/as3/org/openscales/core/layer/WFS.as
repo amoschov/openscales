@@ -5,7 +5,6 @@ package org.openscales.core.layer
 	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.OpenScales;
 	import org.openscales.core.Request;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
@@ -211,8 +210,8 @@ package org.openscales.core.layer
 	        var url:String = this.url;
 	        var proxy:String;
 	        
-	        if (OpenScales.ProxyHost && this.url.indexOf("http") == 0) {
-	            proxy = OpenScales.ProxyHost;
+	        if (Map.proxy && this.url.indexOf("http") == 0) {
+	            proxy = Map.proxy;
 	        }
 	
 	        var successfailure:Function = commitSuccessFailure;

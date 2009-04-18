@@ -2,6 +2,7 @@ package org.openscales.core
 {
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
+	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -12,7 +13,6 @@ package org.openscales.core
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.handler.IHandler;
 	import org.openscales.core.layer.Layer;
-	import org.openscales.core.layer.Vector;
 	import org.openscales.core.popup.Popup;
 	
 	/**
@@ -33,6 +33,8 @@ package org.openscales.core
 		public var DEFAULT_MAX_RESOLUTION:Number = 1.40625;
 		public var DEFAULT_PROJECTION:String = "EPSG:4326";
 		public var DEFAULT_UNITS:String = "degrees";
+		
+		public static var proxy:String;
 						
 		private var _featureSelection:Array = null;
 		private var _layerContainerOrigin:LonLat = null;
@@ -736,7 +738,18 @@ package org.openscales.core
 	    	}
 	    	return layerArray;
 	    
-	    } 
+	    }
+	    
+	    public static function loadURL(uri:String, params:Object, caller:Object, onComplete:Function = null):void {
+			      
+			var successorfailure:Function = onComplete;
+			
+			new Request(uri,
+                     {   method: URLRequestMethod.GET, 
+                         parameters: params,
+                         onComplete: successorfailure
+                      }, Map.proxy);
+		}
 		
 	}
 }

@@ -9,7 +9,6 @@
 			import org.openscales.core.feature.Style;
 			import org.openscales.core.basetypes.Size;
 			import org.openscales.core.basetypes.LonLat;
-			import org.openscales.core.OpenScales;
 			import org.openscales.core.feature.Vector;
 			import org.openscales.core.Util;
 			import org.openscales.core.basetypes.Pixel;
@@ -23,7 +22,7 @@
 			import mx.core.UIComponent;
 			
 			public var map:Map;
-			OpenScales.ProxyHost="http://openscales.org/proxy.php?url=";
+			Map.proxy="http://openscales.org/proxy.php?url=";
 			
 			private function initMap():void {
 								

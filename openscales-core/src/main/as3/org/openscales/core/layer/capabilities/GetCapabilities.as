@@ -4,10 +4,8 @@ package org.openscales.core.layer.capabilities
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	
-	import org.openscales.core.OpenScales;
+	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.maps.HashMap;
-	import org.openscales.core.layer.Layer;
-	import org.openscales.core.layer.WFS;
 	
 	/**
 	 * Class to request Capabilities to a given server.
@@ -90,7 +88,7 @@ package org.openscales.core.layer.capabilities
 			
 			var urlRequest:String = this.buildRequestUrl(); 
 			
-			OpenScales.loadURL(urlRequest,null,this,this.parseResult);
+			Map.loadURL(urlRequest,null,this,this.parseResult);
 			
 			return true;
 		}
