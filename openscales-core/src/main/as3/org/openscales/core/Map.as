@@ -414,12 +414,10 @@ package org.openscales.core
 		}
 			
 		public function zoomIn():void{
-			//new GTweeny(this.layerContainer, 1, {scaleX:2,scaleY:2});
 			this.zoom = this.zoom + 1;
 		}
 		
 		public function zoomOut():void {
-			//new GTweeny(this.layerContainer, 1, {scaleX:0.5,scaleY:0.5});
 			this.zoom = this.zoom - 1;
 		}
 		

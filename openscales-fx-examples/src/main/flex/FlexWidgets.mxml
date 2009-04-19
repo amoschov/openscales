@@ -66,6 +66,7 @@
 				map.addLayer(markers);
 				
 				map.addControl(pan, false);
+				map.addControl(zoom, false);
 					
 			}
 			private function showPopup(e:MouseEvent):void
@@ -79,6 +80,7 @@
 	
 	<resize:ResizableWindow title="Pan" movable="true">
 		<os:PanComponent id="pan" />
+		<os:ZoomComponent id="zoom" />
 	</resize:ResizableWindow>
 	
 	<resize:ResizableWindow title="Capabilities" movable="true" x="34" y="418" width="440" height="339">

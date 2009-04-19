@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.basetypes.Pixel;
+			import org.openscales.core.Map;
+			import com.gskinner.motion.GTweeny;
+			import mx.events.SliderEvent;
+					
+			private function onZoomOutClick(event:MouseEvent):void{
+				this.map.zoomOut();
+				// For client zoom
+				//scaleOnCenter(map.layerContainer, 0.5, new Point(map.x + (map.width/2), map.y + (map.height/2)));
+			}
+			
+			private function onZoomInClick(event:MouseEvent):void{
+				this.map.zoomIn();
+				// For client zoom
+				//scaleOnCenter(map.layerContainer, 2, new Point(map.x + (map.width/2), map.y + (map.height/2)));
+			}
+			
+			private function scaleOnCenter(o:DisplayObject, scale:Number, center:Point):void{
+				// http://ryanbosinger.com/blog/2008/actionscript-30-scale-object-from-center-point/
+				var currentMatrix:Matrix=o.transform.matrix;
+				var endMatrix:Matrix=o.transform.matrix;
+				endMatrix.tx -= center.x;
+				endMatrix.ty -= center.y;
+				endMatrix.scale(scale, scale);
+				endMatrix.tx += center.x;
+				endMatrix.ty += center.y;
+				var tween:GTweeny =  new GTweeny(currentMatrix, 0.5, {a: endMatrix.a, b: endMatrix.b, c: endMatrix.c,
+												 d: endMatrix.d, tx: endMatrix.tx, ty: endMatrix.ty});
+				tween.addEventListener(Event.CHANGE, function onProgress(evt:Event):void { o.transform.matrix = currentMatrix });
+			}
+			
+			public function onZoomSliderThumbPress(event:SliderEvent):void{
+				
+				
+			}
+			
+			public function onZoomSliderThumbDrag(event:SliderEvent):void{
+				
+			}
+						
+			public function onZoomSliderThumbRelease(event:SliderEvent):void{
+				map.zoom = zoomSlider.value;
+			}
+			
+			override public function set map(value:Map):void
+			{
+				super.map = value;
+				var zoomLevels:Array = new Array();
+				for(var i:int = 0; i<map.resolutions.length; i++) {
+					zoomLevels.push(map.getZoomForResolution(map.resolutions[i]));
+				}
+				zoomSlider.tickValues = zoomLevels;
+				zoomSlider.maximum = map.getZoomForResolution(map.minResolution);
+				zoomSlider.minimum = map.getZoomForResolution(map.maxResolution);
+				zoomSlider.value = map.zoom;
+			}
+			
+		]]>
+	</mx:Script>
+
+	<mx:VBox>
+		<mx:Button id="zoomIn" height="30" width="30" icon="@Embed('/org/openscales/component/images/zoomin.swf')" click="this.onZoomInClick(event);" />
+		<mx:VSlider id="zoomSlider" 
+			liveDragging="true"
+			allowTrackClick="true"
+			tickInterval="1"
+			snapInterval="1"
+			thumbPress="this.onZoomSliderThumbPress(event)"
+			thumbDrag="this.onZoomSliderThumbDrag(event)"
+			thumbRelease="this.onZoomSliderThumbRelease(event)"/>
+		<mx:Button id="zoomOut" height="30" width="30" icon="@Embed('/org/openscales/component/images/zoomout.swf')" click="this.onZoomOutClick(event);" />
+	</mx:VBox>
+</control:Control>
