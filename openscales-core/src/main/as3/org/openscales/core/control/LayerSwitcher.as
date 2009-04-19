@@ -2,12 +2,12 @@ package org.openscales.core.control
 {
 	import com.gskinner.motion.GTweeny;
 	
+	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.control.ui.Arrow;
 	import org.openscales.core.control.ui.Button;
 	import org.openscales.core.control.ui.CheckBox;
@@ -150,10 +150,8 @@ package org.openscales.core.control
 							y+=this._textOffset;
 							radioButton = new RadioButton(this.position.add(-185,y+2),layer.name,false);
 						}
-						if(layer.visible == false)
-						{							
-							radioButton.status = false;					
-						}
+						radioButton.status = layer.visible;					
+
 						radioButton.width = 13;
 						radioButton.height = 13;
 						radioButton.addEventListener(MouseEvent.CLICK,RadioButtonClick);
@@ -336,15 +334,22 @@ package org.openscales.core.control
 		{
 			var i:int = 0;
 			var layer2:Layer = this.map.getLayerByName((event.target as RadioButton).layerName);
-			if((event.target as RadioButton).status == true)
+			if((event.target as RadioButton).status == false)
 			{
-				(event.target as RadioButton).status = false;
-				layer2.visible = false;
-			}
-			else
-			{
-				(event.target as RadioButton).status = true;
+				// Hide current baselayer
+				this.map.baseLayer.visible = false;
+				
+				// Reset other radio buttons
+				for(i=0; i < this.numChildren; i++) {
+					var child:DisplayObject = this.getChildAt(i);
+					if (child is RadioButton)
+						(child as RadioButton).status = false; 
+				}
+				
+				this.map.baseLayer = layer2;
 				layer2.visible = true;
+				(event.target as RadioButton).status = true;
+				
 			}
 		}
 		

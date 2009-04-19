@@ -58,6 +58,7 @@
 					  lon="-43.584918945312495" lat="-3.5397294921874973">
 		
 		<os:Mapnik name="Mapnik"/>
+		<os:CycleMap name="CycleMap"/>
 		
 		<os:PanZoomBar />
 		<os:MousePosition />
