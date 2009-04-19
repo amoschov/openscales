@@ -12,10 +12,10 @@
 			import org.openscales.core.Util;
 			import org.openscales.core.basetypes.Pixel;
 			import org.openscales.core.control.LayerSwitcher;
-			import org.openscales.core.layer.WFS;
+			import org.openscales.core.layer.ogc.WFS;
 			import org.openscales.core.control.PanZoomBar;
-			import org.openscales.core.layer.WMS;
-			import org.openscales.core.layer.WMSC;
+			import org.openscales.core.layer.ogc.WMS;
+			import org.openscales.core.layer.ogc.WMSC;
 			import org.openscales.core.Map;
 			import org.openscales.core.basetypes.Bounds;
 			import mx.core.UIComponent;
