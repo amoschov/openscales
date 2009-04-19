@@ -137,6 +137,9 @@ package org.openscales.core
       	 */		
 		private var _units:String;
 		
+		/**
+		 * The lonlat at which the later container was re-initialized (on-zoom) 
+		 */		
 		private var _layerContainerOrigin:LonLat = null;
 		
 		/**
@@ -213,7 +216,7 @@ package org.openscales.core
 	        
 	        if (layer.isBaseLayer) {
 				if (this.baseLayer == null) {
-					this.setBaseLayer(layer);
+					this.baseLayer = layer;
 				} else {
 					layer.visible = false;
 				}
@@ -234,6 +237,46 @@ package org.openscales.core
 	         for (var i:int = 0; i <  layers.length; i++) {
 	            this.addLayer(layers[i]);
 	        } 
+		}
+		
+		/**
+		 * Allows user to specify one of the currently-loaded layers as the Map's
+		 * new base layer.
+		 *  
+		 * @param newBaseLayer the new base layer. 
+		 */		
+		public function set baseLayer(newBaseLayer:Layer):void {
+			var oldExtent:Bounds = null;
+			if (this.baseLayer != null) {
+				oldExtent = this.baseLayer.extent;
+			}
+			
+			if (newBaseLayer != this.baseLayer) {
+				
+				if (Util.indexOf(this.layers, newBaseLayer) != -1) {
+										
+					this._baseLayer = newBaseLayer;
+					this.baseLayer.visible = true;
+					
+					var center:LonLat = this.center;
+					if (center != null) {
+						if (oldExtent == null) {
+							this.setCenter(center, this.zoom, false, true);
+						} else {
+							this.setCenter(oldExtent.centerLonLat, 
+                                       this.getZoomForExtent(oldExtent),
+                                       false, true);
+						}
+					}
+					
+					this.dispatchEvent(new LayerEvent(LayerEvent.BASE_LAYER_CHANGED, newBaseLayer));
+					
+				}
+			}
+		}
+		
+		public function get baseLayer():Layer {
+	        return this._baseLayer;
 		}
 		
 		/**
@@ -274,7 +317,7 @@ package org.openscales.core
 	            for(var i:int=0; i < this.layers.length; i++) {
 	                var iLayer:Layer = this.layers[i];
 	                if (iLayer.isBaseLayer) {
-	                    this.setBaseLayer(iLayer);
+	                    this.baseLayer = iLayer;
 	                    break;
 	                }
 	            }
@@ -309,38 +352,6 @@ package org.openscales.core
         	handler.map = this;
         	handler.active = true;
 		}
-				
-		public function setBaseLayer(newBaseLayer:Layer, noEvent:Boolean = false):void {
-			var oldExtent:Bounds = null;
-			if (this.baseLayer != null) {
-				oldExtent = this.baseLayer.extent;
-			}
-			
-			if (newBaseLayer != this.baseLayer) {
-				
-				if (Util.indexOf(this.layers, newBaseLayer) != -1) {
-										
-					this._baseLayer = newBaseLayer;
-					this.baseLayer.visible = true;
-					
-					var center:LonLat = this.center;
-					if (center != null) {
-						if (oldExtent == null) {
-							this.setCenter(center, this.zoom, false, true);
-						} else {
-							this.setCenter(oldExtent.centerLonLat, 
-                                       this.getZoomForExtent(oldExtent),
-                                       false, true);
-						}
-					}
-					
-					if (!noEvent) {
-						this.dispatchEvent(new LayerEvent(LayerEvent.BASE_LAYER_CHANGED, newBaseLayer));
-					}
-					
-				}
-			}
-		}
 		
 		/** 
 	    * @param {OpenLayers.Popup} popup
@@ -357,7 +368,10 @@ package org.openscales.core
 	        popup.map = null;
 	    }
 		
-		public function updateSize():void { 
+		/**
+		 * Update map content after a resize 
+		 */		
+		private function updateSize():void { 
 				
 				this.graphics.clear();
 				this.graphics.beginFill(0xFFFFFF);
@@ -373,50 +387,45 @@ package org.openscales.core
 	
 	            if (this.baseLayer != null) {
 	                var center:Pixel = new Pixel(this.size.w /2, this.size.h / 2);
-	                var centerLL:LonLat = this.getLonLatFromViewPortPx(center);
+	                var centerLL:LonLat = this.getLonLatFromMapPx(center);
 	                var zoom:int = this.zoom;
 	                this.zoom = undefined;
 	                this.setCenter(this.center, zoom);
 	            }
 		}
 		
-		public function calculateBounds(center:LonLat = null, resolution:Number = -1):Bounds {
-			var extent:Bounds = null;
-        
-	        if (center == null) {
-	            center = this.center;
-	        }                
-	        if (resolution == -1) {
-	            resolution = this.resolution;
-	        }
-	    
-	        if ((center != null) && (resolution != -1)) {
-	
-	            var w_deg:Number = this.size.w * resolution;
-	            var h_deg:Number = this.size.h * resolution;
-	        
-	            extent = new Bounds(center.lon - w_deg / 2,
-	                                           center.lat - h_deg / 2,
-	                                           center.lon + w_deg / 2,
-	                                           center.lat + h_deg / 2);  
-	        }
-	
-	        return extent;
-		}
-		
+		/**
+		 * Allows user to pan by a value of screen pixels.
+		 *  
+		 * @param dx horizontal pixel offset
+		 * @param dy verticial pixel offset
+		 * @param tween use tween effect
+		 */		
 		public function pan(dx:int, dy:int, tween:Boolean=false):void {
-			var centerPx:Pixel = this.getViewPortPxFromLonLat(this.center);
+			var centerPx:Pixel = this.getMapPxFromLonLat(this.center);
 	
 	        // adjust
 	        var newCenterPx:Pixel = centerPx.add(dx, dy);
 	        
 	        // only call setCenter if there has been a change
 	        if (!newCenterPx.equals(centerPx)) {
-	            var newCenterLonLat:LonLat = this.getLonLatFromViewPortPx(newCenterPx);
+	            var newCenterLonLat:LonLat = this.getLonLatFromMapPx(newCenterPx);
 	            this.setCenter(newCenterLonLat, NaN, false, false, tween);
 	        }
 		}
 		
+		/**
+		 * Set the map center (and optionally, the zoom level).
+		 * 
+		 * This method shoud be refactored in order to make panning and zooming more independant. 
+		 * 
+		 * @param lonlat the new center location.
+		 * @param zoom optional zoom level
+		 * @param dragging Specifies whether or not to trigger movestart/end events
+		 * @param forceZoomChange Specifies whether or not to trigger zoom change events (needed on baseLayer change)
+		 * @param dragTween
+		 * 
+		 */		
 		public function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false):void {
 			if (!this.center && !this.isValidLonLat(lonlat)) {
 	            lonlat = this.maxExtent.centerLonLat;
@@ -490,9 +499,15 @@ package org.openscales.core
 	        }
 		}
 		
+		/**
+		 * This function takes care to recenter the layerContainer.
+		 *  
+		 * @param lonlat the new layer container center
+		 * @param tween use tween effect is set to true
+		 */		
 		public function centerLayerContainer(lonlat:LonLat, tween:Boolean = false):void {
-			var originPx:Pixel = this.getViewPortPxFromLonLat(this._layerContainerOrigin);
-	        var newPx:Pixel = this.getViewPortPxFromLonLat(lonlat);
+			var originPx:Pixel = this.getMapPxFromLonLat(this._layerContainerOrigin);
+	        var newPx:Pixel = this.getMapPxFromLonLat(lonlat);
 	
 	        if ((originPx != null) && (newPx != null)) {
 	        	if(tween) {
@@ -506,6 +521,13 @@ package org.openscales.core
 	        }
 		}
 		
+		/**
+		 * Check if a zoom level is valid on this map.
+		 * 
+		 * @param zoomLevel the zoom level to test 
+		 * @return Whether or not the zoom level passed in is non-null and within the min/max
+		 * range of zoom levels. 
+		 */		
 		public function isValidZoomLevel(zoomLevel:Number):Boolean {
 			var isValid:Boolean = ( (!isNaN(zoomLevel)) &&
 	            (zoomLevel >= 0) && 
@@ -513,6 +535,12 @@ package org.openscales.core
 		    return isValid;
 		}
 		
+		/**
+		 *  Check if a coordinate is valid on this map.
+		 * 
+		 * @param lonlat the coordinate to test
+		 * @return Whether or not the lonlat passed in is non-null and within the maxExtent bounds 
+		 */		
 		public function isValidLonLat(lonlat:LonLat):Boolean {
 	        var valid:Boolean = false;
 	        if (lonlat != null) {
@@ -522,6 +550,14 @@ package org.openscales.core
 	        return valid;
 		}
 		
+		/**
+		 * Find the zoom level that most closely fits the specified bounds. Note that this may 
+		 * result in a zoom that does not exactly contain the entire extent.
+         *  
+		 * @param bounds the extent to use
+		 * @return the matching zoom level
+		 * 
+		 */
 		public function getZoomForExtent(bounds:Bounds):Number {
 			var zoom:int = -1;
 	        if (this.baseLayer != null) {
@@ -530,6 +566,13 @@ package org.openscales.core
 	        return zoom;
 		}
 		
+		/**
+		 * A suitable zoom level for the specified bounds. If no baselayer is set, returns null.
+		 * 
+		 * @param resolution the resolution to use
+		 * @return the matching zoom level
+		 * 
+		 */		
 		public function getZoomForResolution(resolution:Number):Number {
 			var zoom:int = -1;
 	        if (this.baseLayer != null) {
@@ -537,23 +580,28 @@ package org.openscales.core
 	        }
 	        return zoom;
 		}
-			
-		public function zoomIn():void{
-			this.zoom = this.zoom + 1;
-		}
 		
-		public function zoomOut():void {
-			this.zoom = this.zoom - 1;
-		}
-		
+		/**
+		 * Zoom to the passed in bounds, recenter.
+		 *  
+		 * @param bounds
+		 */		
 		public function zoomToExtent(bounds:Bounds):void {
 	        this.setCenter(bounds.centerLonLat, this.getZoomForExtent(bounds));
 		}
 		
+		/**
+		 * Zoom to the full extent and recenter. 
+		 */		
 		public function zoomToMaxExtent():void {
 			this.zoomToExtent(this.maxExtent);
 		}
 		
+		/**
+		 * Zoom to the passed in scale, recenter.
+		 *  
+		 * @param bounds
+		 */		
 		public function zoomToScale(scale:Number):void {
 			var res:Number = new Util().getResolutionFromScale(scale, this.baseLayer.units);
 	        var w_deg:Number = this.size.w * res;
@@ -567,31 +615,35 @@ package org.openscales.core
 	        this.zoomToExtent(extent);
 		}
 		
-		public function getLonLatFromViewPortPx(viewPortPx:Pixel):LonLat {
+		
+		/**
+		 * Return a LonLat which is the passed-in view port Pixel, translated into lon/lat
+     	 *	by the current base layer 
+		 */		
+		public function getLonLatFromMapPx(px:Pixel):LonLat {
 	        var lonlat:LonLat = null; 
 	        if (this.baseLayer != null) {
-	            lonlat = this.baseLayer.getLonLatFromViewPortPx(viewPortPx);
+	            lonlat = this.baseLayer.getLonLatFromMapPx(px);
 	        }
 	        return lonlat;
 		}
 		
-		public function getViewPortPxFromLonLat(lonlat:LonLat):Pixel {
+		/**
+		 * Return a Pixel which is the passed-in LonLat, translated into map
+		 * pixels by the current base layer
+		 */
+		public function getMapPxFromLonLat(lonlat:LonLat):Pixel {
 			var px:Pixel = null; 
 	        if (this.baseLayer != null) {
-	            px = this.baseLayer.getViewPortPxFromLonLat(lonlat);
+	            px = this.baseLayer.getMapPxFromLonLat(lonlat);
 	        }
 	        return px;
 		}
 		
-		public function getLonLatFromPixel(px:Pixel):LonLat {
-			return this.getLonLatFromViewPortPx(px);
-		}
-		
-		public function getPixelFromLonLat(lonlat:LonLat):Pixel {
-			return this.getViewPortPxFromLonLat(lonlat);
-		}
-		
-		public function getViewPortPxFromLayerPx(layerPx:Pixel):Pixel {
+		/**
+		 * Return a map Pixel computed from a layer Pixel.
+		 */
+		public function getMapPxFromLayerPx(layerPx:Pixel):Pixel {
 			var viewPortPx:Pixel = null;
 	        if (layerPx != null) {
 	            var dX:int = int(this._layerContainer.x);
@@ -600,25 +652,34 @@ package org.openscales.core
 	        }
 	        return viewPortPx;
 		}
-
-		public function getLayerPxFromViewPortPx(viewPortPx:Pixel):Pixel {
+		
+		/**
+		 * Return a layer Pixel computed from a map Pixel.
+		 */		
+		public function getLayerPxFromMapPx(mapPx:Pixel):Pixel {
 			var layerPx:Pixel = null;
-	        if (viewPortPx != null) {
+	        if (mapPx != null) {
 	            var dX:int = -int(this._layerContainer.x);
 	            var dY:int = -int(this._layerContainer.y);
-	            layerPx = viewPortPx.add(dX, dY);
+	            layerPx = mapPx.add(dX, dY);
 	        }
 	        return layerPx;
 		}
 
+		/**
+		 * Return a LonLat computed from a layer Pixel.
+		 */	
 		public function getLonLatFromLayerPx(px:Pixel):LonLat {
-			px = this.getViewPortPxFromLayerPx(px);
-	    	return this.getLonLatFromViewPortPx(px); 
+			px = this.getMapPxFromLayerPx(px);
+	    	return this.getLonLatFromMapPx(px); 
 		}
 		
+		/**
+		 * Return a layer Pixel computed from a LonLat.
+		 */	
 		public function getLayerPxFromLonLat(lonlat:LonLat):Pixel {
-	    	var px:Pixel = this.getViewPortPxFromLonLat(lonlat);
-	    	return this.getLayerPxFromViewPortPx(px);
+	    	var px:Pixel = this.getMapPxFromLonLat(lonlat);
+	    	return this.getLayerPxFromMapPx(px);
 		}
 
 		// Getters & setters as3
@@ -680,10 +741,6 @@ package org.openscales.core
 				
 		public function get controls():Array {
 	        return this._controls;
-		}
-		
-		public function get baseLayer():Layer {
-	        return this._baseLayer;
 		}
 		
 		public function get layerContainer():Sprite {
@@ -776,9 +833,18 @@ package org.openscales.core
 		
 		public function get extent():Bounds {
 	        var extent:Bounds = null;
-	        if (this.baseLayer != null) {
-	            extent = this.baseLayer.extent;
+	    
+	        if ((this.center != null) && (this.resolution != -1)) {
+	
+	            var w_deg:Number = this.size.w * this.resolution;
+	            var h_deg:Number = this.size.h * this.resolution;
+	        
+	            extent = new Bounds(this.center.lon - w_deg / 2,
+	                                           this.center.lat - h_deg / 2,
+	                                           this.center.lon + w_deg / 2,
+	                                           this.center.lat + h_deg / 2);  
 	        }
+	
 	        return extent;
 		}
 		
@@ -817,17 +883,6 @@ package org.openscales.core
 	    	return layerArray;
 	    
 	    }
-	    
-	    public static function loadURL(uri:String, params:Object, caller:Object, onComplete:Function = null):void {
-			      
-			var successorfailure:Function = onComplete;
-			
-			new Request(uri,
-                     {   method: URLRequestMethod.GET, 
-                         parameters: params,
-                         onComplete: successorfailure
-                      }, Map.proxy);
-		}
 		
 	}
 }

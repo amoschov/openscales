@@ -450,7 +450,7 @@ package org.openscales.core.layer
 	        while (true) {
 	            var tlLayer:Pixel = this.grid[0][0].position;
 	            var tlViewPort:Pixel = 
-	                this.map.getViewPortPxFromLayerPx(tlLayer);
+	                this.map.getMapPxFromLayerPx(tlLayer);
 	            if (tlViewPort.x > -this.tileSize.w * (buffer - 1)) {
 	                this.shiftColumn(true);
 	            } else if (tlViewPort.x < -this.tileSize.w * buffer) {
@@ -571,7 +571,7 @@ package org.openscales.core.layer
 	        var resolution:Number = this.resolution;
 	        var tileMapWidth:Number = resolution * this.tileSize.w;
 	        var tileMapHeight:Number = resolution * this.tileSize.h;
-	        var mapPoint:LonLat = this.getLonLatFromViewPortPx(viewPortPx);
+	        var mapPoint:LonLat = this.getLonLatFromMapPx(viewPortPx);
 	        var tileLeft:Number = maxExtent.left + (tileMapWidth *
 	                                         Math.floor((mapPoint.lon -
 	                                                     maxExtent.left) /

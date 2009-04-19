@@ -78,7 +78,7 @@
 		]]>
 	</mx:Script>
 	
-	<resize:ResizableWindow title="Pan" movable="true">
+	<resize:ResizableWindow title="Pan" movable="true" horizontalAlign="center">
 		<os:PanComponent id="pan" />
 		<os:ZoomComponent id="zoom" />
 	</resize:ResizableWindow>

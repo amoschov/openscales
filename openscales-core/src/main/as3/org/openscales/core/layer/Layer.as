@@ -220,7 +220,7 @@ package org.openscales.core.layer
 		}
 		
 		public function get extent():Bounds {
-			return this.map.calculateBounds();
+			return this.map.extent;
 		}
 		
 		public function getZoomForExtent(extent:Bounds):Number {
@@ -240,7 +240,7 @@ package org.openscales.core.layer
 	        return (i - 1);
 		}
 		
-		public function getLonLatFromViewPortPx(viewPortPx:Pixel):LonLat {
+		public function getLonLatFromMapPx(viewPortPx:Pixel):LonLat {
 			var lonlat:LonLat = null;
 	        if (viewPortPx != null) {
 	            var size:Size = this.map.size;
@@ -258,7 +258,7 @@ package org.openscales.core.layer
 	        return lonlat;
 		}
 		
-		public function getViewPortPxFromLonLat(lonlat:LonLat):Pixel {
+		public function getMapPxFromLonLat(lonlat:LonLat):Pixel {
 			var px:Pixel = null; 
 	        if (lonlat != null) {
 	            var resolution:Number = this.map.resolution;

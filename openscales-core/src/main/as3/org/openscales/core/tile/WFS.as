@@ -3,8 +3,10 @@ package org.openscales.core.tile
 	
 	import flash.events.Event;
 	import flash.net.URLLoader;
+	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.Request;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
@@ -44,7 +46,11 @@ package org.openscales.core.tile
 		}
 		
 		public function loadFeaturesForRegion(success:Function):void {
-			Map.loadURL(this.url, null, this, success);
+			new Request(this.url,
+                     {   method: URLRequestMethod.GET, 
+                         parameters: null,
+                         onComplete: success
+                      }, Map.proxy);
 		}
 		
 		public function requestSuccess(event:Event):void {

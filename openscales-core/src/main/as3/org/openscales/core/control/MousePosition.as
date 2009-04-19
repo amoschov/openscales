@@ -63,7 +63,7 @@ package org.openscales.core.control
 	            }
 				
 				this.lastXy = new Pixel(map.mouseX, map.mouseY);
-	            lonLat = this.map.getLonLatFromPixel(this.lastXy);
+	            lonLat = this.map.getLonLatFromMapPx(this.lastXy);
 	        }
 	        
 	        var digits:int = int(this.numdigits);

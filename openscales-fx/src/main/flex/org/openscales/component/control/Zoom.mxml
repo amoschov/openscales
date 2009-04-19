@@ -9,13 +9,13 @@
 			import mx.events.SliderEvent;
 					
 			private function onZoomOutClick(event:MouseEvent):void{
-				this.map.zoomOut();
+				this.map.zoom--;
 				// For client zoom
 				//scaleOnCenter(map.layerContainer, 0.5, new Point(map.x + (map.width/2), map.y + (map.height/2)));
 			}
 			
 			private function onZoomInClick(event:MouseEvent):void{
-				this.map.zoomIn();
+				this.map.zoom++;
 				// For client zoom
 				//scaleOnCenter(map.layerContainer, 2, new Point(map.x + (map.width/2), map.y + (map.height/2)));
 			}
@@ -63,7 +63,7 @@
 		]]>
 	</mx:Script>
 
-	<mx:VBox>
+	<mx:VBox horizontalAlign="center">
 		<mx:Button id="zoomIn" height="30" width="30" icon="@Embed('/org/openscales/component/images/zoomin.swf')" click="this.onZoomInClick(event);" />
 		<mx:VSlider id="zoomSlider" 
 			liveDragging="true"

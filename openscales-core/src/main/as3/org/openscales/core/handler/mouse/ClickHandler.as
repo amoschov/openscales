@@ -59,7 +59,7 @@ package org.openscales.core.handler.mouse {
 		}
 		
 		public function doubleClick(evt:MouseEvent):void {
-			var newCenter:LonLat = this.map.getLonLatFromViewPortPx( new Pixel(this.map.mouseX, this.map.mouseY) ); 
+			var newCenter:LonLat = this.map.getLonLatFromMapPx( new Pixel(this.map.mouseX, this.map.mouseY) ); 
         	this.map.setCenter(newCenter, this.map.zoom + 1);
 		}	
 	}

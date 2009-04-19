@@ -121,7 +121,7 @@ package org.openscales.fx {
 		override public function set width(value:Number):void {
 			super.width = value;
 			if(map != null)
-				this.map.updateSize();
+				this.map.width = value;
 			else
 				this._creationWidth = value;
 		}
@@ -129,7 +129,7 @@ package org.openscales.fx {
 		override public function set height(value:Number):void {
 			super.height = value;
 			if(map != null)
-				this.map.updateSize();
+				this.map.height = value;
 			else
 				this._creationHeight = value;
 		

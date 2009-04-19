@@ -41,7 +41,7 @@ package org.openscales.core.handler.mouse {
 	        var deltaX:Number  = size.w/2 - this.map.mouseX;
 	        var deltaY:Number  = size.h/2 - this.map.mouseY;
 	        var newRes:Number  = this.map.baseLayer.resolutions[newZoom];
-	        var zoomPoint:LonLat = this.map.getLonLatFromPixel(new Pixel(this.map.mouseX, this.map.mouseY));
+	        var zoomPoint:LonLat = this.map.getLonLatFromMapPx(new Pixel(this.map.mouseX, this.map.mouseY));
 	        var newCenter:LonLat = new LonLat(
 	                            zoomPoint.lon + deltaX * newRes,
 	                            zoomPoint.lat - deltaY * newRes );

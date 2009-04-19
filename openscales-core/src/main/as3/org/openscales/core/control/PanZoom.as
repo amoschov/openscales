@@ -120,10 +120,10 @@ package org.openscales.core.control
 	                this.map.pan(100, 0, Map.tween);
 	                break;
 	            case "zoomin": 
-	                this.map.zoomIn(); 
+	                this.map.zoom++; 
 	                break;
 	            case "zoomout": 
-	                this.map.zoomOut(); 
+	                this.map.zoom--; 
 	                break;
 	            case "zoomworld": 
 	                this.map.zoomToMaxExtent(); 
