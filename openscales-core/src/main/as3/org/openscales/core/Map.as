@@ -4,12 +4,12 @@ package org.openscales.core
 	
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
-	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.control.IControl;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
@@ -20,13 +20,16 @@ package org.openscales.core
 	import org.openscales.proj.projections.EPSG4326;
 	
 	/**
-	 * Class: OpenLayers.Map
-	 * Instances of OpenLayers.Map are interactive maps embedded in a web page.
+	 * Instances of Map are interactive maps that can be embedded in a web pages or in
+	 * Flex or AIR applications.
+	 * 
 	 * Create a new map with the Map constructor.
 	 * 
-	 * On their own maps do not provide much functionality.  To extend a map
-	 * it's necessary to add controls (Control) and 
-	 * layers (Layer) to the map. 
+	 * To extend a map, it's necessary to add controls (Control), handlers (Handler) and 
+	 * layers (Layer) to the map.
+	 * 
+	 * Map is a pure ActionScript class. Flex wrapper and components can be found in the
+	 * openscales-fx module.
 	 */
 	public class Map extends Sprite
 	{
@@ -36,7 +39,7 @@ package org.openscales.core
 		public var DEFAULT_NUM_ZOOM_LEVELS:Number = 16;
 		public var DEFAULT_MAX_RESOLUTION:Number = 1.40625;
 		public var DEFAULT_PROJECTION:IProjection = new EPSG4326();
-		public var DEFAULT_UNITS:String = "degrees";
+		public var DEFAULT_UNITS:String = Unit.DEGREE;
 		
 		/**
 		 * Proxy (usually a PHP, Python, or Java script) used to request remote servers like 
@@ -132,8 +135,7 @@ package org.openscales.core
 		private var _projection:IProjection;
 		
 		/**
-		 * The map units.  Defaults to 'degrees'.  Possible values are
-         *  'degrees' (or 'dd'), 'm', 'ft', 'km', 'mi', 'inches'
+		 * The map units. Check possible values in the Unit class.
       	 */		
 		private var _units:String;
 		

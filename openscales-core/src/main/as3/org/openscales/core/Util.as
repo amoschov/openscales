@@ -4,10 +4,9 @@ package org.openscales.core
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.xml.XMLNode;
-		
+	
 	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.basetypes.Unit;
 	
 	public class Util
 	{
@@ -63,20 +62,7 @@ package org.openscales.core
 		
 		    return [valueL, valueT];
 		}
-		
-		public static var INCHES_PER_UNIT:Object = { 
-		    'inches': 1.0,
-		    'ft': 12.0,
-		    'mi': 63360.0,
-		    'm': 39.3701,
-		    'km': 39370.1,
-		    'dd': 4374754
-		};
-		INCHES_PER_UNIT["in"] = INCHES_PER_UNIT.inches;
-		INCHES_PER_UNIT["degrees"] = INCHES_PER_UNIT.dd;
-		
-		public static var DOTS_PER_INCH:int = 72;
-		
+			
 		public function normalizeScale(scale:Number):Number {
 		    var normScale:Number = (scale > 1.0) ? (1.0 / scale) 
                               : scale;
@@ -86,23 +72,23 @@ package org.openscales.core
 		public function getResolutionFromScale(scale:Number, units:String = null):Number {
 			
 		    if (units == null) {
-		        units = "degrees";
+		        units = Unit.DEGREE;
 		    }
 		
 		    var normScale:Number = this.normalizeScale(scale);
 		
-		    var resolution:Number = 1 / (normScale * Util.INCHES_PER_UNIT[units]
-		                                    * Util.DOTS_PER_INCH);
+		    var resolution:Number = 1 / (normScale * Unit.getInchesPerUnit(units)
+		                                    * Unit.DOTS_PER_INCH);
 		    return resolution;
 		}
 		
 		public static function getScaleFromResolution(resolution:Number, units:String):Number {
 			if (units == null) {
-		        units = "degrees";
+		        units = Unit.DEGREE;
 		    }
 		
-		    var scale:Number = resolution * Util.INCHES_PER_UNIT[units] *
-		                    Util.DOTS_PER_INCH;
+		    var scale:Number = resolution * Unit.getInchesPerUnit(units) *
+		                    Unit.DOTS_PER_INCH;
 		    return scale;
 		}
 		
@@ -173,10 +159,6 @@ package org.openscales.core
 		    return val;
 		}
 		
-		public static function getImagesLocation():String {
-			return "org/openscales/core/img/";
-		}
-		
 		public static function getBBOXStringFromUrl(url:String):String {
 			var startpos:int = url.indexOf("BBOX=") + 5;
 			if (startpos < 5) {
@@ -202,16 +184,6 @@ package org.openscales.core
 		
 		    return [globalPoint.x, globalPoint.y];
 		}
-		
-		/* public static function bringCanvasToFront(inCanvas:CanvasOL, container:CanvasOL):int {
-			var zPos:int = container.getChildIndex(inCanvas);
-			container.setChildIndex(inCanvas, container.numChildren - 1);
-			return zPos;
-		}
-		
-		public static function putCanvasBack(inCanvas:CanvasOL, container:CanvasOL, zPos:int):void {
-			container.setChildIndex(inCanvas, zPos);
-		} */
 		
 		public static function mouseLeft(evt:MouseEvent, can:DisplayObject):Boolean {
 		    var target:Object = evt.currentTarget

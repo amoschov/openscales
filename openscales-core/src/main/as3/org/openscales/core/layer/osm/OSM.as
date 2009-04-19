@@ -2,6 +2,7 @@ package org.openscales.core.layer.osm
 {
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.layer.TMS;
 	import org.openscales.proj.projections.EPSG4326;
 	
@@ -11,7 +12,7 @@ package org.openscales.core.layer.osm
 		{
 			options = Util.extend({
             	maxResolution: 156543.0339,
-            	units: "m",
+            	units: Unit.DEGREE,
             	projection: new EPSG4326()
 			}, options);
 			super(name, url, options);
