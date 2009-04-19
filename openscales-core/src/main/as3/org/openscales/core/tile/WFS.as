@@ -12,7 +12,7 @@ package org.openscales.core.tile
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.format.GML;
 	import org.openscales.core.layer.Layer;
-	import org.openscales.core.layer.WFS;
+	import org.openscales.core.layer.ogc.WFS;
 	
 	/**
 	 * WFS single tile
@@ -56,7 +56,7 @@ package org.openscales.core.tile
 		public function requestSuccess(event:Event):void {
 			var loader:URLLoader = event.target as URLLoader;
 			var doc:XML =  new XML(loader.data);;
-			var wfsLayer:org.openscales.core.layer.WFS = this.layer as org.openscales.core.layer.WFS;
+			var wfsLayer:org.openscales.core.layer.ogc.WFS = this.layer as org.openscales.core.layer.ogc.WFS;
 			
 			if (wfsLayer && wfsLayer.vectorMode) {
 				wfsLayer.destroyFeatures();
@@ -73,7 +73,7 @@ package org.openscales.core.tile
 		}
 		
 		public function addResults(results:Object):void {
-			var wfsLayer:org.openscales.core.layer.WFS = this.layer as org.openscales.core.layer.WFS;
+			var wfsLayer:org.openscales.core.layer.ogc.WFS = this.layer as org.openscales.core.layer.ogc.WFS;
 			for (var i:int=0; i < results.length; i++) {
 	            var feature:Object = new wfsLayer.featureClass(this.layer, results[i]);
 	            this.features.push(feature);

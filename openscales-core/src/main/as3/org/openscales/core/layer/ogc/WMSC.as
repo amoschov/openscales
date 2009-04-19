@@ -1,5 +1,5 @@
 
-package org.openscales.core.layer
+package org.openscales.core.layer.ogc
 {
 	import org.openscales.core.Util;
 	

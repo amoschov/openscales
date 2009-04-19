@@ -1,6 +1,6 @@
 package org.openscales.fx.layer
 {
-	import org.openscales.core.layer.WMSC;
+	import org.openscales.core.layer.ogc.WMSC;
 
 	public class FxWMSC extends FxWMS
 	{

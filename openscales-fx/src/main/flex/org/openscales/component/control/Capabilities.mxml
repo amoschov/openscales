@@ -3,7 +3,7 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.layer.WFS;
+			import org.openscales.core.layer.ogc.WFS;
 			import mx.controls.Text;
 			import mx.controls.Alert;
 			import org.openscales.core.basetypes.maps.HashMap;

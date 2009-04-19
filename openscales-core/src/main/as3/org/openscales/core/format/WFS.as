@@ -4,14 +4,14 @@ package org.openscales.core.format
 	
 	import org.openscales.core.feature.State;
 	import org.openscales.core.feature.Vector;
-	import org.openscales.core.layer.WFS;
+	import org.openscales.core.layer.ogc.WFS;
 	
 	public class WFS extends GML
 	{
 		
-		private var _layer:org.openscales.core.layer.WFS = null;
+		private var _layer:org.openscales.core.layer.ogc.WFS = null;
     	
-    	public function WFS(options:Object, layer:org.openscales.core.layer.WFS):void {
+    	public function WFS(options:Object, layer:org.openscales.core.layer.ogc.WFS):void {
     		super(options);
 	        this.layer = layer;
 	        if (this.layer.featureNS) {
@@ -20,7 +20,7 @@ package org.openscales.core.format
 	        if (layer.geometryColumn) {
 	            this._geometryName = layer.geometryColumn;
 	        }
-	        var wfsLayer:org.openscales.core.layer.WFS = this.layer as org.openscales.core.layer.WFS;
+	        var wfsLayer:org.openscales.core.layer.ogc.WFS = this.layer as org.openscales.core.layer.ogc.WFS;
 	        if (wfsLayer.typename) {
 	            this._featureName = wfsLayer.typename;
 	        }
@@ -117,11 +117,11 @@ package org.openscales.core.format
         	this.layer = null;
     	}
     	
-    	public function get layer():org.openscales.core.layer.WFS {
+    	public function get layer():org.openscales.core.layer.ogc.WFS {
 			return this._layer;
 		}
 		
-		public function set layer(value:org.openscales.core.layer.WFS):void {
+		public function set layer(value:org.openscales.core.layer.ogc.WFS):void {
 			this._layer = value;
 		}
 		

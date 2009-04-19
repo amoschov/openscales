@@ -1,4 +1,4 @@
-package org.openscales.core.layer
+package org.openscales.core.layer.ogc
 {	
 	import flash.events.Event;
 	import flash.net.URLLoader;
@@ -15,6 +15,8 @@ package org.openscales.core.layer
 	import org.openscales.core.feature.Vector;
 	import org.openscales.core.format.Format;
 	import org.openscales.core.format.WFS;
+	import org.openscales.core.layer.Grid;
+	import org.openscales.core.layer.Vector;
 	import org.openscales.core.layer.capabilities.GetCapabilities;
 	import org.openscales.core.tile.WFS;
 	import org.openscales.proj.IProjection;

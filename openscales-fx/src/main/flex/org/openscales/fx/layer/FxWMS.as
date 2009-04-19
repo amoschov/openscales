@@ -1,6 +1,6 @@
 package org.openscales.fx.layer
 {
-	import org.openscales.core.layer.WMS;
+	import org.openscales.core.layer.ogc.WMS;
 
 	public class FxWMS extends FxGrid
 	{

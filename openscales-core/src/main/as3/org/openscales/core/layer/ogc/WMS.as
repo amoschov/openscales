@@ -1,9 +1,10 @@
-package org.openscales.core.layer
+package org.openscales.core.layer.ogc
 {
 	
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.layer.Grid;
 	import org.openscales.core.tile.Image;
 	import org.openscales.core.tile.Tile;
 	import org.openscales.proj.IProjection;
