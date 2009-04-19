@@ -8,6 +8,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.proj.IProjection;
 	
 	public class Layer extends Sprite
 	{
@@ -41,12 +42,10 @@ package org.openscales.core.layer
 	     */
 		private var _gutter:Number = 0;
 		
-		private var _projection:String = null;
+		private var _projection:IProjection = null;
 		
 		private var _units:String = null;
-		
-		private var _scales:Array = null;
-		
+				
 		private var _resolutions:Array = null;
 		
 		private var _maxExtent:Bounds = null;
@@ -56,10 +55,6 @@ package org.openscales.core.layer
 		private var _minResolution:Number;
 		
 		private var _numZoomLevels:int;
-		
-		private var _minScale:Number;
-		
-		private var _maxScale:Number;
 		
 		private var _minZoomLevel:Number;		
 
@@ -137,11 +132,8 @@ package org.openscales.core.layer
 		public function initResolutions():void {
 			
 	        var props:Array = new Array(
-	          'projection', 'units',
-	          'scales', 'resolutions',
-	          'maxScale', 'minScale', 
-	          'maxResolution', 'minResolution', 
-	          'maxExtent',
+	          'projection', 'units', 'resolutions',
+	          'maxResolution', 'minResolution', 'maxExtent',
 	          'numZoomLevels'
 	        );
 	
@@ -210,17 +202,7 @@ package org.openscales.core.layer
 	        this.resolutions = confProps.resolutions;
 	        this.maxResolution = confProps.resolutions[0];
 	        var lastIndex:int = confProps.resolutions.length - 1;
-	        this.minResolution = confProps.resolutions[lastIndex];
-	        
-	        this.scales = new Array();
-	        for(i = 0; i < confProps.resolutions.length; i++) {
-	            this.scales[i] = 
-	               Util.getScaleFromResolution(confProps.resolutions[i], 
-	                                                      confProps.units);
-	        }
-	        this.minScale = this.scales[0];
-	        this.maxScale = this.scales[this.scales.length - 1];
-	        
+	        this.minResolution = confProps.resolutions[lastIndex];        
 	        this.numZoomLevels = confProps.numZoomLevels;
 
 		}
@@ -358,22 +340,6 @@ package org.openscales.core.layer
 			this._minZoomLevel = value; 
 		}
 		
-		public function get maxScale():Number {
-			return this._maxScale; 
-		}
-		
-		public function set maxScale(value:Number):void {
-			this._maxScale = value; 
-		}
-		
-		public function get minScale():Number {
-			return this._minScale; 
-		}
-		
-		public function set minScale(value:Number):void {
-			this._minScale = value; 
-		}
-		
 		public function get numZoomLevels():int {
 			return this._numZoomLevels; 
 		}
@@ -414,14 +380,6 @@ package org.openscales.core.layer
 			this._resolutions = value; 
 		}
 		
-		public function get scales():Array {
-			return this._scales; 
-		}
-		
-		public function set scales(value:Array):void {
-			this._scales = value; 
-		}
-		
 		public function get units():String {
 			return this._units; 
 		}
@@ -430,11 +388,11 @@ package org.openscales.core.layer
 			this._units = value; 
 		}
 		
-		public function get projection():String {
+		public function get projection():IProjection {
 			return this._projection; 
 		}
 		
-		public function set projection(value:String):void {
+		public function set projection(value:IProjection):void {
 			this._projection = value; 
 		}
 		

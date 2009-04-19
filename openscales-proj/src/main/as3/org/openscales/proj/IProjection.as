@@ -6,7 +6,7 @@ package org.openscales.proj
 	/**
 	 * Class for coordinate transforms between coordinate systems.
 	 */
-	public interface Projection
+	public interface IProjection
 	{
 		
 		/**

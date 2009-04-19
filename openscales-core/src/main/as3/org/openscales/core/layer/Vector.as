@@ -208,15 +208,6 @@ package org.openscales.core.layer
 	        return feature;
 	    }
 	    
-	    public function clearSelection():void {
-	    	var vectorLayer:Vector = this.map.vectorLayer as Vector;
-	        for (var i:int = 0; i < this.map.featureSelection.length; i++) {
-	            var featureSelection:org.openscales.core.feature.Vector = this.map.featureSelection[i];
-	            vectorLayer.drawFeature(featureSelection, vectorLayer.style);
-	        }
-	        this.map.featureSelection = [];
-	    }
-	    
 	    public function get features():Array {
 			return this._features;
 		}

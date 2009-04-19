@@ -16,6 +16,8 @@ package org.openscales.core
 	import org.openscales.core.handler.IHandler;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Popup;
+	import org.openscales.proj.IProjection;
+	import org.openscales.proj.projections.EPSG4326;
 	
 	/**
 	 * Class: OpenLayers.Map
@@ -33,34 +35,117 @@ package org.openscales.core
 		public var DEFAULT_TILE_HEIGHT:Number = 256;
 		public var DEFAULT_NUM_ZOOM_LEVELS:Number = 16;
 		public var DEFAULT_MAX_RESOLUTION:Number = 1.40625;
-		public var DEFAULT_PROJECTION:String = "EPSG:4326";
+		public var DEFAULT_PROJECTION:IProjection = new EPSG4326();
 		public var DEFAULT_UNITS:String = "degrees";
 		
-		public static var proxy:String;
+		/**
+		 * Proxy (usually a PHP, Python, or Java script) used to request remote servers like 
+		 * WFS servers in order to allow crossdomain requests. Remote servers can be used without 
+		 * proxy script by using crossdomain.xml file like http://openscales.org/crossdomain.xml
+		 */		
+		public static var proxy:String = "";
+
+		/**
+		 * Enable tween effects. 
+		 */
 		public static var tween:Boolean = true;
 						
-		private var _featureSelection:Array = null;
-		private var _layerContainerOrigin:LonLat = null;
-		private var _vectorLayer:Layer = null;
-		private var _layerContainer:Sprite = null;
+		/**
+		 * The currently selected base layer.
+		 * A BaseLayer is a special kind of Layer, it determines min/max zoom level,
+		 * projection, etc.
+		 */		
 		private var _baseLayer:Layer = null;
-		private var _controls:Array = null;
-		private var _handlers:Array = null;
-		private var _size:Size = null;
-		private var _tileSize:Size = null;
-		private var _center:LonLat = null;
-		private var _zoom:Number = 0;
-		private var _maxExtent:Bounds = null;
-		private var _maxResolution:Number;
-		private var _minResolution:Number;
-		private var _numZoomLevels:int;
-		private var _scales:Array;
-		private var _resolutions:Array;
-		private var _projection:String;
-		private var _units:String;
-		private var _maxScale:Number;
-		private var _minScale:Number;
 		
+		/**
+		 * Layer container where layers are added. It is used for panning, scaling layers. 
+		 */
+		private var _layerContainer:Sprite = null;
+		
+		/**
+		 * Layer controls
+		 */
+		private var _controls:Array = null;
+		
+		/**
+		 * Layer handlers
+		 */
+		private var _handlers:Array = null;
+		
+		/**
+		 * Default tile size. 
+		 */
+		private var _tileSize:Size = null;
+		
+		/**
+		 * Map size. 
+		 */
+		private var _size:Size = null;
+		
+		/**
+		 * Map center coordinates.
+		 */
+		private var _center:LonLat = null;
+		
+		/**
+		 * Current map zoom level. 
+		 */
+		private var _zoom:Number = 0;
+		
+		/**
+		 * The maximum extent for the map. Defaults to the whole world in decimal degrees 
+     	 * (-180, -90, 180, 90). Specify a different extent in the map options if you are
+     	 * not using a geographic projection and displaying the whole world. 
+		 */		
+		private var _maxExtent:Bounds = null;
+		
+		/**
+		 * Default max is 360 deg / 256 px, which corresponds to zoom level 0 on gmaps.
+		 * Specify a different value in the map options if you are not using 
+		 * a geographic projection and displaying the whole world. 
+		 */		
+		private var _maxResolution:Number;
+		
+		/**
+		 * Minimum resolution. 
+		 */		
+		private var _minResolution:Number;
+		
+		/**
+		 * Number of zoom levels for the map. Defaults to 16.  Set a different value in 
+		 * the map options if needed. 
+		 */
+		private var _numZoomLevels:int;
+		
+		/**
+		 * A list of map resolutions (map units per pixel) in descending order. If this 
+		 * is not set in the layer constructor, it will be set based on other resolution
+		 * related properties (maxExtent, maxResolution, maxScale, etc.). 
+		 */
+		private var _resolutions:Array;
+		
+		/**
+		 * Set in the map options to override the default projection.
+		 * Also set maxExtent, maxResolution, and units if appropriate.
+		 * Default is "EPSG:4326". 
+		 */		
+		private var _projection:IProjection;
+		
+		/**
+		 * The map units.  Defaults to 'degrees'.  Possible values are
+         *  'degrees' (or 'dd'), 'm', 'ft', 'km', 'mi', 'inches'
+      	 */		
+		private var _units:String;
+		
+		private var _layerContainerOrigin:LonLat = null;
+		
+		/**
+		 * Map constructor
+		 *  
+		 * @param width the map width
+		 * @param height the map height
+		 * @param options use to easily specify optional properties
+		 */
 		public function Map(width:Number=600, height:Number=400, options:Object = null):void {
 			
 			super();
@@ -110,7 +195,7 @@ package org.openscales.core
 		
 		/**
 		 * Add a new layer to the map.
-		 * Throw a LayerEvent.LAYER_ADDED event.
+		 * A LayerEvent.LAYER_ADDED event is triggered.
 		 *  
 		 * @param layer The layer to add.
 		 * @return true if the layer have been added, false if it has not.
@@ -139,8 +224,17 @@ package org.openscales.core
 	        this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_ADDED, layer));
 	        
 	        return true;        
-		} 
+		}
 		
+		/**
+		 * Add a group of layers. 
+		 * @param layers to add.
+		 */
+		public function addLayers(layers:Array):void {
+	         for (var i:int = 0; i <  layers.length; i++) {
+	            this.addLayer(layers[i]);
+	        } 
+		}
 		
 		/**
 		 * Get a layer from its name. 
@@ -159,15 +253,17 @@ package org.openscales.core
 			return foundLayer;
 		}
 		
-		 
-		 
-		
-		public function addLayers(layers:Array):void {
-	         for (var i:int = 0; i <  layers.length; i++) {
-	            this.addLayer(layers[i]);
-	        } 
-		}
-		
+		/**
+		 * Removes a layer from the map by removing its visual element , then removing 
+		 * it from the map's internal list of layers, setting the layer's map property
+		 * to null. 
+	     * 
+	     * A LayerEvent.LAYER_REMOVED event is triggered.
+	     * 
+		 * @param layer the layer to remove.
+		 * @param setNewBaseLayer if set to true, a new base layer will be set if the removed 
+		 * 	layer was a based layer
+		 */
 		public function removeLayer(layer:Layer, setNewBaseLayer:Boolean = true):void {
 			this._layerContainer.removeChild(layer);
 			layer.map = null;
@@ -187,6 +283,14 @@ package org.openscales.core
 	        this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_REMOVED, layer));	
 		}
 		
+		/**
+		 * Add a new control to the map.
+		 *  
+		 * @param control the control to add.
+		 * @param attach if true, the control will be added as child component of the map. This
+		 *  parameter may be for example set to false when adding a Flex component displayed
+		 *  outside the map.
+		 */		
 		public function addControl(control:IControl, attach:Boolean=true):void {
 			this._controls.push(control);
         	control.map = this;
@@ -195,6 +299,11 @@ package org.openscales.core
         		this.addChild( control as Sprite );
 		}
 		
+		/**
+		 * Add and activate a new handler to the map.
+		 *  
+		 * @param handler the handler to add.
+		 */		
 		public function addHandler(handler:IHandler):void {
 			this._handlers.push(handler);
         	handler.map = this;
@@ -581,19 +690,6 @@ package org.openscales.core
 	        return this._layerContainer;
 		}
 		
-		public function get vectorLayer():Layer {
-	        return this._vectorLayer;
-		}
-		
-		public function set featureSelection(value:Array):void
-		{
-			this._featureSelection= value;
-		}
-		
-		public function get featureSelection():Array {
-	        return this._featureSelection;
-		}
-						
 		public function set units(value:String):void {
 			this._units = value;
 		}
@@ -606,12 +702,12 @@ package org.openscales.core
 	        return units;
 		}
 		
-		public function set projection(value:String):void {
+		public function set projection(value:IProjection):void {
 			this._projection = value;
 		}
 		
-		public function get projection():String {
-	        var projection:String = _projection;
+		public function get projection():IProjection {
+	        var projection:IProjection = _projection;
 	        if (this.baseLayer != null) {
 	            projection = this.baseLayer.projection;
 	        }
@@ -629,31 +725,6 @@ package org.openscales.core
 	        }
 	        return minResolution;
 		}
-		
-		public function set maxScale(value:Number):void {
-			this._maxScale = value;
-		}
-		
-		public function get maxScale():Number {
-	        var maxScale:Number = _maxScale;
-	        if (this.baseLayer != null) {
-	            maxScale = this.baseLayer.maxScale;
-	        }
-	        return maxScale;
-		}
-		
-		public function set minScale(value:Number):void {
-			this._minScale = value;
-		}
-		
-		public function get minScale():Number {
-	        var minScale:Number = _minScale;
-	        if (this.baseLayer != null) {
-	            minScale = this.baseLayer.minScale;
-	        }
-	        return minScale;
-		}
-		
 		
 		public function set maxResolution(value:Number):void {
 			this._maxResolution = value;
@@ -677,18 +748,6 @@ package org.openscales.core
 	            resolutions = this.baseLayer.resolutions;
 	        }
 	        return resolutions;
-		}		
-		
-		public function set scales(value:Array):void {
-			this._scales = value;
-		}
-		
-		public function get scales():Array {
-	        var scales:Array = _scales;
-	        if (this.baseLayer != null) {
-	            scales = this.baseLayer.scales;
-	        }
-	        return scales;
 		}		
 		
 		public function set maxExtent(value:Bounds):void {

@@ -9,7 +9,7 @@ package org.openscales.proj
 			
 		}
 		
-		public function transform(source:Projection, dest:Projection, pos:IDirectPosition):IDirectPosition {
+		public function transform(source:IProjection, dest:IProjection, pos:IDirectPosition):IDirectPosition {
 			// TODO : use Projections to tranform points
 			
 			return pos;

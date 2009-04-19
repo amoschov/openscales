@@ -6,12 +6,12 @@ package org.openscales.proj.projections
 	/**
 	 * Identity projection for testing purpose
 	 */
-	public class Identity implements IProjection
+	public class EPSG4326 implements IProjection
 	{
 		
-		private var PROJECTION_NAME:String = "identity";
+		private var PROJECTION_NAME:String = "EPSG:4326";
 		
-		public function Identity()
+		public function EPSG4326()
 		{
 		}
 

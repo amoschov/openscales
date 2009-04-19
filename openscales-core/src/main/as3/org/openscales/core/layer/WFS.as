@@ -17,6 +17,7 @@ package org.openscales.core.layer
 	import org.openscales.core.format.WFS;
 	import org.openscales.core.layer.capabilities.GetCapabilities;
 	import org.openscales.core.tile.WFS;
+	import org.openscales.proj.IProjection;
 	
 	public class WFS extends org.openscales.core.layer.Vector
 	{
@@ -194,8 +195,8 @@ package org.openscales.core.layer
 	    }
 	    
 		public function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
-	        var projection:String = this.map.projection;
-	        this.params.SRS = (projection == "none") ? null : projection;
+	        var projection:IProjection = this.map.projection;
+	        this.params.SRS = (projection == null) ? null : projection.code;
 	
 	        return new Grid(this.name, this.url, this.params).getFullRequestString(newParams, altUrl);
 		}

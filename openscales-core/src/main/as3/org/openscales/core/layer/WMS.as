@@ -6,6 +6,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.tile.Image;
 	import org.openscales.core.tile.Tile;
+	import org.openscales.proj.IProjection;
 	
 	public class WMS extends Grid
 	{
@@ -56,8 +57,8 @@ package org.openscales.core.layer
        	}
        	
        	override public function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
-	        var projection:String = this.map.projection;
-	        this.params.SRS = (projection == "none") ? null : projection;
+	        var projection:IProjection = this.map.projection;
+	        this.params.SRS = (projection == null) ? null : projection.code;
 	
 	        return super.getFullRequestString(newParams, altUrl);
        	}
