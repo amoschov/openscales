@@ -93,8 +93,6 @@ package org.openscales.core
 		private function destroy():Boolean {	
 	        if (this.layers != null) {
 	            for (var i:int = this.layers.length - 1; i>=0; i--) {
-	                //pass 'false' to destroy so that map wont try to set a new 
-	                // baselayer after each baselayer is removed
 	                this.layers[i].destroy(false);
 	            } 
 	        }
@@ -108,17 +106,15 @@ package org.openscales.core
 	        return true;
 		}
 		
-		public function getLayerByName(name:String):Layer {
-			var foundLayer:Layer = null;
-			for (var i:int = 0; i < this.layers.length; i++) {
-				var layer:Layer = this.layers[i];
-				if (layer.name == name) {
-					foundLayer = layer;
-				}
-			}
-			return foundLayer;
-		}
+		// Layer management
 		
+		/**
+		 * Add a new layer to the map.
+		 * Throw a LayerEvent.LAYER_ADDED event.
+		 *  
+		 * @param layer The layer to add.
+		 * @return true if the layer have been added, false if it has not.
+		 */
 		public function addLayer(layer:Layer):Boolean {
 			for(var i:int=0; i < this.layers.length; i++) {
 	            if (this.layers[i] == layer) {
@@ -143,7 +139,27 @@ package org.openscales.core
 	        this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_ADDED, layer));
 	        
 	        return true;        
-		}  
+		} 
+		
+		
+		/**
+		 * Get a layer from its name. 
+		 * @param name the layer name to find.
+		 * @return the found layer. Null if no layer have been found. 
+		 * 
+		 */
+		public function getLayerByName(name:String):Layer {
+			var foundLayer:Layer = null;
+			for (var i:int = 0; i < this.layers.length; i++) {
+				var layer:Layer = this.layers[i];
+				if (layer.name == name) {
+					foundLayer = layer;
+				}
+			}
+			return foundLayer;
+		}
+		
+		 
 		 
 		
 		public function addLayers(layers:Array):void {
