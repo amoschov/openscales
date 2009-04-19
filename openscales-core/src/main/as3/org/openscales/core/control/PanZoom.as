@@ -4,6 +4,7 @@ package org.openscales.core.control
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
+	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.ui.Button;
@@ -107,16 +108,16 @@ package org.openscales.core.control
 	
 	        switch (btn.name) {
 	            case "panup": 
-	                this.map.pan(0, -50);
+	                this.map.pan(0, -100, Map.tween);
 	                break;
 	            case "pandown": 
-	                this.map.pan(0, 50);
+	                this.map.pan(0, 100, Map.tween);
 	                break;
 	            case "panleft": 
-	                this.map.pan(-50, 0);
+	                this.map.pan(-100, 0, Map.tween);
 	                break;
 	            case "panright": 
-	                this.map.pan(50, 0);
+	                this.map.pan(100, 0, Map.tween);
 	                break;
 	            case "zoomin": 
 	                this.map.zoomIn(); 

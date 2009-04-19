@@ -1,5 +1,7 @@
 package org.openscales.core
 {
+	import com.gskinner.motion.GTweeny;
+	
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.net.URLRequestMethod;
@@ -35,6 +37,7 @@ package org.openscales.core
 		public var DEFAULT_UNITS:String = "degrees";
 		
 		public static var proxy:String;
+		public static var tween:Boolean = true;
 						
 		private var _featureSelection:Array = null;
 		private var _layerContainerOrigin:LonLat = null;
@@ -230,8 +233,6 @@ package org.openscales.core
 	    }
 		
 		public function updateSize():void { 
-
-				
 				
 				this.graphics.clear();
 				this.graphics.beginFill(0xFFFFFF);
@@ -278,7 +279,7 @@ package org.openscales.core
 	        return extent;
 		}
 		
-		public function pan(dx:int, dy:int):void {
+		public function pan(dx:int, dy:int, tween:Boolean=false):void {
 			var centerPx:Pixel = this.getViewPortPxFromLonLat(this.center);
 	
 	        // adjust
@@ -287,11 +288,11 @@ package org.openscales.core
 	        // only call setCenter if there has been a change
 	        if (!newCenterPx.equals(centerPx)) {
 	            var newCenterLonLat:LonLat = this.getLonLatFromViewPortPx(newCenterPx);
-	            this.setCenter(newCenterLonLat);
+	            this.setCenter(newCenterLonLat, NaN, false, false, tween);
 	        }
 		}
 		
-		public function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false):void {
+		public function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false):void {
 			if (!this.center && !this.isValidLonLat(lonlat)) {
 	            lonlat = this.maxExtent.centerLonLat;
 	        }
@@ -313,7 +314,7 @@ package org.openscales.core
 	
 	            if (centerChanged) {
 	                if ((!zoomChanged) && (this.center)) { 
-	                    this.center_layerContainer(lonlat);
+	                    this.centerLayerContainer(lonlat, dragTween);
 	                }
 	                this.center = lonlat.clone();
 	                
@@ -364,13 +365,19 @@ package org.openscales.core
 	        }
 		}
 		
-		public function center_layerContainer(lonlat:LonLat):void {
+		public function centerLayerContainer(lonlat:LonLat, tween:Boolean = false):void {
 			var originPx:Pixel = this.getViewPortPxFromLonLat(this._layerContainerOrigin);
 	        var newPx:Pixel = this.getViewPortPxFromLonLat(lonlat);
 	
 	        if ((originPx != null) && (newPx != null)) {
-	            this._layerContainer.x = (originPx.x - newPx.x);
-	            this._layerContainer.y  = (originPx.y - newPx.y);
+	        	if(tween) {
+		        	new GTweeny(this._layerContainer, 0.5, {x:(originPx.x - newPx.x)});
+		        	new GTweeny(this._layerContainer, 0.5, {y:(originPx.y - newPx.y)});
+	        	}
+	        	else {
+	        		this._layerContainer.x = (originPx.x - newPx.x);
+	            	this._layerContainer.y  = (originPx.y - newPx.y); 
+	        	}
 	        }
 		}
 		
@@ -407,10 +414,12 @@ package org.openscales.core
 		}
 			
 		public function zoomIn():void{
+			//new GTweeny(this.layerContainer, 1, {scaleX:2,scaleY:2});
 			this.zoom = this.zoom + 1;
 		}
 		
 		public function zoomOut():void {
+			//new GTweeny(this.layerContainer, 1, {scaleX:0.5,scaleY:0.5});
 			this.zoom = this.zoom - 1;
 		}
 		
@@ -557,10 +566,6 @@ package org.openscales.core
 		public function get layerContainer():Sprite {
 	        return this._layerContainer;
 		}
-		
-		/* public function get popupContainer():Sprite {
-	        return this._popupContainer;
-		} */
 		
 		public function get vectorLayer():Layer {
 	        return this._vectorLayer;

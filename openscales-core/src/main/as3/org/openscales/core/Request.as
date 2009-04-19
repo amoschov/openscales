@@ -23,7 +23,7 @@ package org.openscales.core
 		}
 		
 		public function set options(options:Object):void {
-			this.options = {
+			this._options = {
 			  method:       URLRequestMethod.POST,
 			  parameters:   ''
 			}
