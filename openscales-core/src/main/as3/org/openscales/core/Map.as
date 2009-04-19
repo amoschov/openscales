@@ -52,97 +52,27 @@ package org.openscales.core
 		 * Enable tween effects. 
 		 */
 		public static var tween:Boolean = true;
-						
-		/**
-		 * The currently selected base layer.
-		 * A BaseLayer is a special kind of Layer, it determines min/max zoom level,
-		 * projection, etc.
-		 */		
-		private var _baseLayer:Layer = null;
-		
-		/**
-		 * Layer container where layers are added. It is used for panning, scaling layers. 
-		 */
-		private var _layerContainer:Sprite = null;
-		
-		/**
-		 * Layer controls
-		 */
-		private var _controls:Array = null;
-		
-		/**
-		 * Layer handlers
-		 */
-		private var _handlers:Array = null;
-		
-		/**
-		 * Default tile size. 
-		 */
-		private var _tileSize:Size = null;
-		
-		/**
-		 * Map size. 
-		 */
-		private var _size:Size = null;
-		
-		/**
-		 * Map center coordinates.
-		 */
-		private var _center:LonLat = null;
-		
-		/**
-		 * Current map zoom level. 
-		 */
-		private var _zoom:Number = 0;
-		
-		/**
-		 * The maximum extent for the map. Defaults to the whole world in decimal degrees 
-     	 * (-180, -90, 180, 90). Specify a different extent in the map options if you are
-     	 * not using a geographic projection and displaying the whole world. 
-		 */		
-		private var _maxExtent:Bounds = null;
-		
-		/**
-		 * Default max is 360 deg / 256 px, which corresponds to zoom level 0 on gmaps.
-		 * Specify a different value in the map options if you are not using 
-		 * a geographic projection and displaying the whole world. 
-		 */		
-		private var _maxResolution:Number;
-		
-		/**
-		 * Minimum resolution. 
-		 */		
-		private var _minResolution:Number;
-		
-		/**
-		 * Number of zoom levels for the map. Defaults to 16.  Set a different value in 
-		 * the map options if needed. 
-		 */
-		private var _numZoomLevels:int;
-		
-		/**
-		 * A list of map resolutions (map units per pixel) in descending order. If this 
-		 * is not set in the layer constructor, it will be set based on other resolution
-		 * related properties (maxExtent, maxResolution, maxScale, etc.). 
-		 */
-		private var _resolutions:Array;
-		
-		/**
-		 * Set in the map options to override the default projection.
-		 * Also set maxExtent, maxResolution, and units if appropriate.
-		 * Default is "EPSG:4326". 
-		 */		
-		private var _projection:IProjection;
-		
-		/**
-		 * The map units. Check possible values in the Unit class.
-      	 */		
-		private var _units:String;
 		
 		/**
 		 * The lonlat at which the later container was re-initialized (on-zoom) 
-		 */		
+		 */	
 		private var _layerContainerOrigin:LonLat = null;
+						
+		private var _baseLayer:Layer = null;
+		private var _layerContainer:Sprite = null;
+		private var _controls:Array = null;
+		private var _handlers:Array = null;
+		private var _tileSize:Size = null;
+		private var _size:Size = null;
+		private var _center:LonLat = null;
+		private var _zoom:Number = 0;
+		private var _maxExtent:Bounds = null;
+		private var _maxResolution:Number;
+		private var _minResolution:Number;
+		private var _numZoomLevels:int;
+		private var _resolutions:Array;
+		private var _projection:IProjection;
+		private var _units:String;
 		
 		/**
 		 * Map constructor
@@ -277,6 +207,11 @@ package org.openscales.core
 			}
 		}
 		
+		/**
+		 * The currently selected base layer.
+		 * A BaseLayer is a special kind of Layer, it determines min/max zoom level,
+		 * projection, etc.
+		 */	
 		public function get baseLayer():Layer {
 	        return this._baseLayer;
 		}
@@ -686,6 +621,9 @@ package org.openscales.core
 
 		// Getters & setters as3
 		
+		/**
+		 * Map center coordinates.
+		 */
 		public function get center():LonLat
 		{
 			return _center;
@@ -695,6 +633,9 @@ package org.openscales.core
 			_center = newCenter;
 		}
 		
+		/**
+		 * Default tile size. 
+		 */
 		public function get tileSize():Size
 		{
 			return _tileSize;
@@ -704,6 +645,9 @@ package org.openscales.core
 			_tileSize = newTileSize;
 		}
 		
+		/**
+		 * Current map zoom level. 
+		 */
 		public function get zoom():Number
 		{
 			return _zoom;
@@ -715,6 +659,9 @@ package org.openscales.core
 	        }
 		}
 		
+		/**
+		 * Map size. 
+		 */
 		public function get size():Size
 		{
 			var size:Size = null;
@@ -741,10 +688,23 @@ package org.openscales.core
 			this.updateSize();			
 		}
 				
+		/**
+		 * Layer controls
+		 */
 		public function get controls():Array {
 	        return this._controls;
 		}
 		
+		/**
+		 * Layer handlers
+		 */
+		 public function get handlers():Array {
+	        return this._handlers;
+		}
+		
+		/**
+		 * Layer container where layers are added. It is used for panning, scaling layers. 
+		 */
 		public function get layerContainer():Sprite {
 	        return this._layerContainer;
 		}
@@ -753,6 +713,9 @@ package org.openscales.core
 			this._units = value;
 		}
 		
+		/**
+		 * The map units. Check possible values in the Unit class.
+      	 */	
 		public function get units():String {
 	        var units:String = _units;
 	        if (this.baseLayer != null) {
@@ -765,6 +728,11 @@ package org.openscales.core
 			this._projection = value;
 		}
 		
+		/**
+		 * Set in the map options to override the default projection.
+		 * Also set maxExtent, maxResolution, and units if appropriate.
+		 * Default is "EPSG:4326". 
+		 */		
 		public function get projection():IProjection {
 	        var projection:IProjection = _projection;
 	        if (this.baseLayer != null) {
@@ -777,6 +745,9 @@ package org.openscales.core
 			this._minResolution = value;
 		}
 		
+		/**
+		 * Minimum resolution. 
+		 */	
 		public function get minResolution():Number {
 	        var minResolution:Number = _minResolution;
 	        if (this.baseLayer != null) {
@@ -789,6 +760,11 @@ package org.openscales.core
 			this._maxResolution = value;
 		}
 		
+		/**
+		 * Default max is 360 deg / 256 px, which corresponds to zoom level 0 on gmaps.
+		 * Specify a different value in the map options if you are not using 
+		 * a geographic projection and displaying the whole world. 
+		 */	
 		public function get maxResolution():Number {
 	        var maxResolution:Number = _maxResolution;
 	        if (this.baseLayer != null) {
@@ -801,6 +777,11 @@ package org.openscales.core
 			this._resolutions = value;
 		}
 		
+		/**
+		 * A list of map resolutions (map units per pixel) in descending order. If this 
+		 * is not set in the layer constructor, it will be set based on other resolution
+		 * related properties (maxExtent, maxResolution, maxScale, etc.). 
+		 */
 		public function get resolutions():Array {
 	        var resolutions:Array = _resolutions;
 	        if (this.baseLayer != null) {
@@ -813,6 +794,11 @@ package org.openscales.core
 			this._maxExtent = value;
 		}
 		
+		/**
+		 * The maximum extent for the map. Defaults to the whole world in decimal degrees 
+     	 * (-180, -90, 180, 90). Specify a different extent in the map options if you are
+     	 * not using a geographic projection and displaying the whole world. 
+		 */		
 		public function get maxExtent():Bounds {
 	        var maxExtent:Bounds = _maxExtent;
 	        if (this.baseLayer != null) {
@@ -825,6 +811,10 @@ package org.openscales.core
 			this._numZoomLevels = value;
 		}
 		
+		/**
+		 * Number of zoom levels for the map. Defaults to 16.  Set a different value in 
+		 * the map options if needed. 
+		 */
 		public function get numZoomLevels():int {	
 	        var numZoomLevels:int = _numZoomLevels;
 	        if (this.baseLayer != null) {
