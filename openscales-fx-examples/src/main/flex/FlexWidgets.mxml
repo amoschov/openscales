@@ -84,7 +84,7 @@
 	</resize:ResizableWindow>
 	
 	<resize:ResizableWindow title="Capabilities" movable="true" x="34" y="418" width="440" height="339">
-		<os:CapabilitiesComponent width="100%" height="100%" />
+		<os:CapabilitiesComponent width="100%" height="100%" map="{map}"/>
 	</resize:ResizableWindow>
 		
 	<resize:ResizableWindow title="LayerSwitcher" movable="true" x="800" width="300" height="400">
