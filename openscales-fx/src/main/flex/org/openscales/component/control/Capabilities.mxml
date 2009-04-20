@@ -9,10 +9,12 @@
 			import org.openscales.core.basetypes.maps.HashMap;
 			import org.openscales.core.layer.Layer;
 			import org.openscales.core.layer.capabilities.GetCapabilities;
+			import org.openscales.core.Map;
 			
 			private var listDataProvider:Array = null;
 			private var capabilities:HashMap = null;
 			private var featureCap:HashMap = null;
+			private var addedLayers:HashMap = new HashMap();
 			private var url:String = null;
 						
 			public function onButtonClick(event:MouseEvent):void{
@@ -23,7 +25,6 @@
 			public function onChangeListElement(event:Event):void {
 				// We show to user the informations about the layer
 				featureCap = capabilities.getValue(this.list.selectedItem);
-				
 				var info:String = "\tInformation about the layer: \n\n";
 				info += "Title: " + featureCap.getValue("Title") + "\n";
 				info += "Description: " + featureCap.getValue("Abstract") + "\n";
@@ -33,17 +34,24 @@
 			}
 			
 			public function onDblClickListElement(event:MouseEvent):void {
-				// We add the layer to the layer switcher
+
+				//We add the layer to the map
+				if (!addedLayers.containsKey(this.list.selectedItem)) {
+					var params:Object = new Object();
+					params.typename = this.list.selectedItem;
+					params.SRS = capabilities.getValue(this.list.selectedItem).getValue("SRS");
+					params.VERSION = "1.0.0";
+					var newLayer:WFS = new WFS(this.list.selectedItem as String,this.url,params,null,capabilities.getValue(this.list.selectedItem));
+					newLayer.isBaseLayer = false;
+					newLayer.minZoomLevel = this.map.numZoomLevels;
+					
+					this.map.addLayer(newLayer);
+					addedLayers.put(this.list.selectedItem,null);
+				}
+				else {
+					Alert.show("This layer is already added", "Message");
+				}
 				
-				Alert.show("You can't add a layer for now...", 'Message');
-				/*var params:Object = new Object();
-				params.typename = this.list.selectedItem;
-				params.SRS = capabilities.getValue(this.list.selectedItem).getValue("SRS");
-				params.VERSION = "1.1.0";
-				var newLayer:WFS = new WFS(this.list.selectedItem as String,this.url,params);
-				newLayer.isBaseLayer = false;
-								
-				this.map.addLayer(newLayer);*/
 				
 			}
 			
@@ -57,6 +65,11 @@
 				
 				this.list.dataProvider = capabilities.getKeys().sort();	
 						
+			}
+			
+			override public function set map(value:Map):void
+			{
+				super.map = value;
 			}
 		]]>
 	</mx:Script>

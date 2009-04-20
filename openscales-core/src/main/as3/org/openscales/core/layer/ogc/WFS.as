@@ -50,9 +50,11 @@ package org.openscales.core.layer.ogc
 		
 		private var _capabilities:HashMap = null;
 			                    
-	    public function WFS(name:String, url:String, params:Object, options:Object = null):void {
+	    public function WFS(name:String, url:String, params:Object, options:Object = null, capabilities:HashMap=null):void {
 	    	
-	    	if (url != null && url != "") {
+	    	this.capabilities = capabilities;
+	    	
+	    	if (url != null && url != "" && this.capabilities == null) {
 	    		var getCap:GetCapabilities = new GetCapabilities("wfs", url, this.capabilitiesGetter);
 	    	}
 		    	
