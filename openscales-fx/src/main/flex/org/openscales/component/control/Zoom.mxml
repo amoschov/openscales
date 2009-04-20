@@ -10,12 +10,14 @@
 					
 			private function onZoomOutClick(event:MouseEvent):void{
 				this.map.zoom--;
+				this.zoomSlider.value--;
 				// For client zoom
 				//scaleOnCenter(map.layerContainer, 0.5, new Point(map.x + (map.width/2), map.y + (map.height/2)));
 			}
 			
 			private function onZoomInClick(event:MouseEvent):void{
 				this.map.zoom++;
+				this.zoomSlider.value++;
 				// For client zoom
 				//scaleOnCenter(map.layerContainer, 2, new Point(map.x + (map.width/2), map.y + (map.height/2)));
 			}
