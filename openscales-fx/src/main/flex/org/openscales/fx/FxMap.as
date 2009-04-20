@@ -1,8 +1,11 @@
 package org.openscales.fx {
 	
 	import flash.display.DisplayObject;
+	import flash.events.Event;
 	
 	import mx.core.Container;
+	import mx.events.FlexEvent;
+	import mx.events.ResizeEvent;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
@@ -33,6 +36,17 @@ package org.openscales.fx {
 				
 		public function FxMap() {
 			super();
+			
+			this.addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
+		}
+		
+		private function onCreationComplete(event:Event):void {
+			this.addEventListener(ResizeEvent.RESIZE, onResize);
+		}
+		
+		private function onResize(event:ResizeEvent):void {
+			var o:DisplayObject = event.target as DisplayObject;
+			this.map.size = new Size(o.width, o.height);
 		}
 		
 		override protected function createChildren():void
