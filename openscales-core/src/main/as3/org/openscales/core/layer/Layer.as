@@ -10,62 +10,33 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.proj.IProjection;
 	
+	
+	/**
+	 * A Layer display image of vector datas on the map, usually loaded from a remote datasource. 
+	 * @author Bouiaw
+	 */
 	public class Layer extends Sprite
 	{
 			
-		/**
-		 * Whether or not the layer is a base layer. This should be set
-		 * individually by all subclasses. Default is false
-		 */
 		private var _isBaseLayer:Boolean = false;
-										
-		/**
-		 * Rhe current map resolution is within the layer's min/max range.
-		 * This is set in <Map.setCenter> whenever the zoom changes.
-		 */
 		private var _inRange:Boolean = false;
-		
-		/**
-		 * For layers with a gutter, the image offset represents displacement due 
-		 * to the gutter
-		 */
 		private var _imageOffset:Pixel = null;
-		
-		 /**
- 	     * Determines the width (in pixels) of the gutter around image
- 	     *     tiles to ignore.  By setting this property to a non-zero value,
- 	     *     images will be requested that are wider and taller than the tile
- 	     *     size by a value of 2 x gutter.  This allows artifacts of rendering
- 	     *     at tile edges to be ignored.  Set a gutter value that is equal to
- 	     *     half the size of the widest symbol that needs to be displayed.
-	     *     Defaults to zero.  Non-tiled layers always have zero gutter.
-	     */
 		private var _gutter:Number = 0;
-		
 		private var _projection:IProjection = null;
-		
 		private var _units:String = null;
-				
 		private var _resolutions:Array = null;
-		
 		private var _maxExtent:Bounds = null;
-		
 		private var _maxResolution:Number;
-		
 		private var _minResolution:Number;
-		
 		private var _numZoomLevels:int;
-		
 		private var _minZoomLevel:Number;		
-
 		private var _displayOutsideMaxExtent:Boolean = false;		
-		
 		protected var _imageSize:Size = null;
-		
-		private var _buffer:Number;
-		
 		private var _map:Map = null;
 		
+		/**
+		 * Layer constructor 
+		 */		
 		public function Layer(name:String, options:Object = null):void {
 			
 			Util.extend(this, options);
@@ -87,6 +58,11 @@ package org.openscales.core.layer
 			
 		}
 		
+		/**
+		 * Redraws the layer.
+		 * @return Returns true if the layer was redrawn, false if not
+		 * 
+		 */		
 		public function redraw():Boolean {
 			var redrawn:Boolean = false;
 	        if (this.map) {
@@ -105,6 +81,10 @@ package org.openscales.core.layer
 	        return redrawn;
 		}
 		
+		/**
+		 * Set the map where this layer is attached.
+		 * Here we take care to bring over any of the necessary default properties from the map. 
+		 */
 		public function set map(map:Map):void {
 			if (this._map == null) {
         
@@ -129,6 +109,12 @@ package org.openscales.core.layer
 			return this._map;
 		}		
 		
+		/**
+		 * This method's responsibility is to set up the 'resolutions' array 
+     	 * for the layer -- this array is what the layer will use to interface
+     	 * between the zoom levels of the map and the resolution display 
+    	 * of the layer.
+		 */
 		public function initResolutions():void {
 			
 	        var props:Array = new Array(
@@ -207,6 +193,9 @@ package org.openscales.core.layer
 
 		}
 		
+		/**
+		 * An exact clone of this Layer
+		 */
 		public function clone(obj:Object):Object {
 			if (obj == null) {
 	            obj = new Layer(this.name);
@@ -219,6 +208,9 @@ package org.openscales.core.layer
 	        return obj;
 		}
 		
+		/**
+		 * A Bounds object which represents the lon/lat bounds of the current viewPort.
+		 */
 		public function get extent():Bounds {
 			return this.map.extent;
 		}
@@ -231,6 +223,11 @@ package org.openscales.core.layer
 	        return this.getZoomForResolution(idealResolution);
 		}
 		
+		/**
+		 * Return The index of the zoomLevel (entry in the resolutions array) 
+     	 * that corresponds to the best fit resolution given the passed in 
+     	 * value and the 'closest' specification.
+		 */
 		public function getZoomForResolution(resolution:Number):Number {
 			for(var i:int=1; i < this.resolutions.length; i++) {
 	            if ( this.resolutions[i] < resolution) {
@@ -240,6 +237,10 @@ package org.openscales.core.layer
 	        return (i - 1);
 		}
 		
+		/**
+		 * Return a LonLat which is the passed-in map Pixel, translated into 
+		 * lon/lat by the layer.
+		 */
 		public function getLonLatFromMapPx(viewPortPx:Pixel):LonLat {
 			var lonlat:LonLat = null;
 	        if (viewPortPx != null) {
@@ -258,6 +259,9 @@ package org.openscales.core.layer
 	        return lonlat;
 		}
 		
+		/**
+		 * Return a Pixel which is the passed-in LonLat,translated into map pixels.
+		 */
 		public function getMapPxFromLonLat(lonlat:LonLat):Pixel {
 			var px:Pixel = null; 
 	        if (lonlat != null) {
@@ -289,6 +293,9 @@ package org.openscales.core.layer
 	        return inRange;
 		}
 		
+		/**
+		 * Adjust the extent of a bounds in map units by the layer's gutter in pixels.
+		 */
 		public function adjustBoundsByGutter(bounds:Bounds):Bounds {
 			var mapGutter:Number = this.gutter * this.map.resolution;
 	        bounds = new Bounds(bounds.left - mapGutter,
@@ -298,6 +305,10 @@ package org.openscales.core.layer
 	        return bounds;
 		}
 		
+		/**
+		 * The currently selected resolution of the map, taken from the
+     	 * resolutions array, indexed by current zoom level
+		 */
 		public function get resolution():Number {	
 	        var zoom:Number = this.map.zoom;
 	        return this.resolutions[zoom];
@@ -307,6 +318,10 @@ package org.openscales.core.layer
 			return null;
 		}
 		
+		/**
+		 * For layers with a gutter, the image is larger than 
+     	 * the tile by twice the gutter in each dimension.
+		 */
 		public function get imageSize():Size {
 			return this._imageSize; 
 		}
@@ -324,6 +339,10 @@ package org.openscales.core.layer
 			this.parent.setChildIndex(this, value);
 	    }
 	    
+	    /**
+	     * Request map tiles that are completely outside of the max 
+     	 * extent for this layer. Defaults to false. 
+	     */
 	    public function get displayOutsideMaxExtent():Boolean {
 	    	return this._displayOutsideMaxExtent;
 	    }
@@ -340,6 +359,9 @@ package org.openscales.core.layer
 			this._minZoomLevel = value; 
 		}
 		
+		/**
+		 * Number of zoom levels
+		 */
 		public function get numZoomLevels():int {
 			return this._numZoomLevels; 
 		}
@@ -364,6 +386,12 @@ package org.openscales.core.layer
 			this._minResolution = value; 
 		}
 		
+		/**
+		 * The center of these bounds will not stray outside
+     	 * of the viewport extent during panning.  In addition, if
+     	 * <displayOutsideMaxExtent> is set to false, data will not be
+     	 * requested that falls completely outside of these bounds.
+     	 */
 		public function get maxExtent():Bounds {
 			return this._maxExtent; 
 		}
@@ -372,6 +400,11 @@ package org.openscales.core.layer
 			this._maxExtent = value; 
 		}
 		
+		/** 
+		 * A list of map resolutions (map units per pixel) in descending
+     	 * order. If this is not set in the layer constructor, it will be set
+     	 * based on other resolution related properties (maxExtent, maxResolution, etc.).
+     	 */
 		public function get resolutions():Array {
 			return this._resolutions; 
 		}
@@ -380,6 +413,9 @@ package org.openscales.core.layer
 			this._resolutions = value; 
 		}
 		
+		/**
+		 * The layer units. Check possible values in the Unit class.
+      	 */	
 		public function get units():String {
 			return this._units; 
 		}
@@ -388,6 +424,10 @@ package org.openscales.core.layer
 			this._units = value; 
 		}
 		
+		/**
+		 * Override the default projection. You should also set maxExtent,
+     	 * maxResolution, and units if appropriate.  
+		 */
 		public function get projection():IProjection {
 			return this._projection; 
 		}
@@ -396,6 +436,15 @@ package org.openscales.core.layer
 			this._projection = value; 
 		}
 		
+		/**
+ 	     * Determines the width (in pixels) of the gutter around image
+ 	     *     tiles to ignore.  By setting this property to a non-zero value,
+ 	     *     images will be requested that are wider and taller than the tile
+ 	     *     size by a value of 2 x gutter.  This allows artifacts of rendering
+ 	     *     at tile edges to be ignored.  Set a gutter value that is equal to
+ 	     *     half the size of the widest symbol that needs to be displayed.
+	     *     Defaults to zero.  Non-tiled layers always have zero gutter.
+	     */
 		public function get gutter():Number {
 			return this._gutter; 
 		}
@@ -404,6 +453,10 @@ package org.openscales.core.layer
 			this._gutter = value; 
 		}
 		
+		/**
+		 * For layers with a gutter, the image offset represents displacement due 
+		 * to the gutter
+		 */
 		public function get imageOffset():Pixel {
 			return this._imageOffset; 
 		}
@@ -412,6 +465,10 @@ package org.openscales.core.layer
 			this._imageOffset = value; 
 		}
 		
+		/**
+		 * The current map resolution is within the layer's min/max range.
+		 * This is set in <Map.center> whenever the zoom changes.
+		 */
 		public function get inRange():Boolean {
 	    	return this._inRange;
 	    }
@@ -420,6 +477,10 @@ package org.openscales.core.layer
 	    	this._inRange = value;
 	    }
 	    
+	    /**
+		 * Whether or not the layer is a base layer. This should be set
+		 * individually by all subclasses. Default is false
+		 */
 	    public function get isBaseLayer():Boolean {
 	    	return this._isBaseLayer;
 	    }
@@ -427,14 +488,6 @@ package org.openscales.core.layer
 		public function set isBaseLayer(value:Boolean):void {
 	    	this._isBaseLayer = value;
 	    }
-	    
-	    public function get buffer():Number {
-			return this._buffer; 
-		}
-		
-		public function set buffer(value:Number):void {
-			this._buffer = value; 
-		}
 	    
 		
 	}

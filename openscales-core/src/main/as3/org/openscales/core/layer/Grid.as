@@ -26,6 +26,8 @@ package org.openscales.core.layer
 				
 		private var _tileSize:Size = null;
 		
+		private var _buffer:Number;
+		
 		public function Grid(name:String = null, url:String = null, params:Object = null, options:Object = null):void {
 			super(name, url, params, options);
 			
@@ -619,6 +621,19 @@ package org.openscales.core.layer
 		
 		public function set numLoadingTiles(value:int):void {
 			this._numLoadingTiles = value;
+		}
+		
+		/**
+		 * Used only when in gridded mode, this specifies the number of
+		 * extra rows and colums of tiles on each side which will
+     	 * surround the minimum grid tiles to cover the map.
+     	 */
+		public function get buffer():Number {
+			return this._buffer; 
+		}
+		
+		public function set buffer(value:Number):void {
+			this._buffer = value; 
 		}
 		
 	}

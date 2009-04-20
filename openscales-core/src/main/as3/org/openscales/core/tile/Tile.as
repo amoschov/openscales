@@ -2,7 +2,6 @@ package org.openscales.core.tile
 {
 	import flash.display.Sprite;
 	
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -48,7 +47,7 @@ package org.openscales.core.tile
         	return ((this.layer.displayOutsideMaxExtent
                 || (this.layer.maxExtent
                     && this.bounds.intersectsBounds(this.layer.maxExtent, false)))
-                  && !(this.layer.buffer == 0
+                  && !((this.layer as Grid != null) && ((this.layer as Grid).buffer == 0)
                      && !this.bounds.intersectsBounds(this.layer.map.extent, false)));
 		}
 		
