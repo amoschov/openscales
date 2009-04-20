@@ -9,9 +9,14 @@ package org.openscales.core.handler.mouse {
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.handler.Handler;
 	
-	
+	/**
+	 * Used to handle click and double click. By default, double click zoom the map.
+	 */
 	public class ClickHandler extends Handler {
 		
+		/**
+		 * We use a timer to detect double click, without throwing a click before.
+		 */
 		private var _timer:Timer = new Timer(250,1);
 		
 		private var _clickNum:Number = 0;

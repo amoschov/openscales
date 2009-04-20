@@ -10,8 +10,7 @@ package org.openscales.core.control
 	import org.openscales.core.events.MapEvent;
 	
 	/**
-	 * Controls affect the display or behavior of the map.
-	 * They allow everything from panning and zooming to displaying a scale indicator.
+	 * Control base class
 	 */
 	public class Control extends Sprite implements IControl
 	{

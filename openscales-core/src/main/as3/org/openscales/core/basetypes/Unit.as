@@ -1,5 +1,10 @@
 package org.openscales.core.basetypes
 {
+	/**
+	 * The map unit
+	 *  
+	 * @author Bouiaw
+	 */	
 	public class Unit
 	{
 		public static var DEGREE:String = "degree";

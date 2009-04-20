@@ -7,7 +7,9 @@ package org.openscales.core.handler.mouse {
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.handler.Handler;
 	
-	
+	/**
+	 * Drag handler is used to pan the map 
+	 */
 	public class DragHandler extends Handler {
 		
 		private var _startCenter:LonLat = null;

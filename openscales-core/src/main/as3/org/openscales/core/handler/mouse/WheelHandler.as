@@ -8,7 +8,9 @@ package org.openscales.core.handler.mouse {
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.handler.Handler;
 	
-	
+	/**
+	 * Handler use to zoom in and zoom out the map thanks to the mouse wheel.
+	 */
 	public class WheelHandler extends Handler {
 			
 		public function WheelHandler(target:Map = null, active:Boolean = false){

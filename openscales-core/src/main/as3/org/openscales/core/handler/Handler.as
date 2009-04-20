@@ -2,6 +2,9 @@ package org.openscales.core.handler
 {
 	import org.openscales.core.Map;
 
+	/**
+	 * Handler base class
+	 */
 	public class Handler implements IHandler
 	{
 		private var _map:Map;

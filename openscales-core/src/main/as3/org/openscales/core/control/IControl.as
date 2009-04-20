@@ -3,6 +3,10 @@ package org.openscales.core.control {
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Pixel;
 	
+	/**
+	 * Controls affect the display or behavior of the map.
+	 * They allow everything from panning and zooming to displaying a scale indicator.
+	 */
 	public interface IControl{
 		
 		function get map():Map;

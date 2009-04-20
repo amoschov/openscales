@@ -1,5 +1,8 @@
 package org.openscales.core.feature
 {
+	/**
+	 * Style describe graphical attributes used to render vectors. 
+	 */
 	public class Style
 	{
 		

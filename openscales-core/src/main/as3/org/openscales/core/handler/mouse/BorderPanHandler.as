@@ -6,6 +6,9 @@ package org.openscales.core.handler.mouse {
 	import org.openscales.core.Map;
 	import org.openscales.core.handler.Handler;
 	
+	/**
+	 * Handler that pan the map when the mouse cursor is close of the borders
+	 */
 	public class BorderPanHandler extends Handler {
 		
 		private var _ratio:int;
