@@ -6,6 +6,11 @@ package org.openscales.core.layer.osm
 	import org.openscales.core.layer.TMS;
 	import org.openscales.proj.projections.EPSG4326;
 	
+	/**
+	 * Base class for Open Streert Map layers
+	 *  
+	 * @author Bouiaw
+	 */	
 	public class OSM extends TMS
 	{
 		public function OSM(name:String, url:String, options:Object):void

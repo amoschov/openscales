@@ -11,6 +11,11 @@ package org.openscales.core.layer
 	import org.openscales.core.tile.Image;
 	import org.openscales.core.tile.Tile;
 	
+	/**
+	 * Base class for layers that use a lattice of tiles.
+	 * 
+	 * @author Bouiaw
+	 */
 	public class Grid extends HTTPRequest
 	{
 				

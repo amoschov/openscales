@@ -14,6 +14,11 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.feature.Feature;
 	
+	/**
+	 * Add GeoRSS Point features to your map.
+	 * 
+	 * @author Bouiaw
+	 */	
 	public class GeoRSS extends Markers
 	{
 	

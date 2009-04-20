@@ -2,6 +2,10 @@ package org.openscales.core.layer
 {
 	import org.openscales.core.Util;
 	
+	
+	/**
+	 * Base class for layers based on a remote image server
+	 */
 	public class HTTPRequest extends Layer
 	{
 		

@@ -7,6 +7,13 @@ package org.openscales.core.layer
 	import org.openscales.core.tile.Image;
 	import org.openscales.core.tile.Tile;
 	
+	/**
+	 * The Tiled Web Service provides access to resources, in particular, to rendered 
+	 * cartographic tiles at fixed scales.
+	 * 
+	 * More informations on http://wiki.osgeo.org/wiki/Tile_Map_Service_Specification
+	 * 
+	 */
 	public class TMS extends Grid
 	{
 		
@@ -14,8 +21,10 @@ package org.openscales.core.layer
 			
 		private var _tileOrigin:LonLat = null;
 		
-		/* A list of all resolutions available on the server. Only set this property
-		if the map resolutions differs from the server */
+		/** 
+		 * A list of all resolutions available on the server.
+		 * Only set this property if the map resolutions differs from the server
+		 */
 		private var _serverResolutions:Array = null;
 		
 		public function TMS(name:String, url:String, options:Object = null):void

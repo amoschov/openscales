@@ -21,6 +21,11 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.tile.WFS;
 	import org.openscales.proj.IProjection;
 	
+	/**
+	 * Instances of WFS are used to display data from OGC Web Feature Services.
+	 *  
+	 * @author Bouiaw
+	 */
 	public class WFS extends org.openscales.core.layer.Vector
 	{
 		

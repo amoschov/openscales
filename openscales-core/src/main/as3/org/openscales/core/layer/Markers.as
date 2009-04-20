@@ -5,6 +5,11 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 
+	/**
+	 * A layer composed of markers
+	 *  
+	 * @author Bouiaw
+	 */	
 	public class Markers extends Layer
 	{
 		

@@ -2,6 +2,12 @@ package org.openscales.core.layer.osm
 {
 	import org.openscales.core.Util;
 	
+	/**
+	 * Mapnik OpenStreetMap layer
+	 * 
+	 * More informations on 
+	 * http://wiki.openstreetmap.org/index.php/Mapnik
+	 */
 	public class Maplint extends OSM
 	{
 		public function Maplint(name:String="", options:Object=null)
