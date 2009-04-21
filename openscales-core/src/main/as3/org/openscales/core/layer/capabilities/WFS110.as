@@ -66,6 +66,7 @@ package org.openscales.core.layer.capabilities
 				lowerCorner = feature.WGS84BoundingBox.LowerCorner;
 				upperCorner = feature.WGS84BoundingBox.UpperCorner;
 				bounds = lowerCorner.replace(" ",",");
+				bounds += ",";
 				bounds += upperCorner.replace(" ",",");
 				latLon = new Bounds().fromString(bounds);
 				featureCapabilities.put("LatLon", latLon);

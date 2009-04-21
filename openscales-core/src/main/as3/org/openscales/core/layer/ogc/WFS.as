@@ -205,7 +205,7 @@ package org.openscales.core.layer.ogc
 	    
 		public function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
 	        var projection:IProjection = this.map.projection;
-	        this.params.SRS = (projection == null) ? null : projection.code;
+	        this.params.SRS = (projection == null) ? null : projection.name;
 	
 	        return new Grid(this.name, this.url, this.params).getFullRequestString(newParams, altUrl);
 		}
