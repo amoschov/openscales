@@ -163,7 +163,7 @@ package org.openscales.core.layer.ogc
 			            	if ( !this.featuresBbox.containsBounds(tileBounds)) {
 				     			
 				     			if (this.capabilities != null && 
-				     				!this.featuresBbox.containsBounds(this.capabilities.getValue("LatLon"))) {
+				     				!this.featuresBbox.containsBounds(this.capabilities.getValue("Extent"))) {
 									
 									this.featuresBbox.extendFromBounds((tileBounds));
 				                

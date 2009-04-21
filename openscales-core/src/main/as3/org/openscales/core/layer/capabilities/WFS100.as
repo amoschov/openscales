@@ -66,7 +66,7 @@ package org.openscales.core.layer.capabilities
 				maxx = feature.LatLongBoundingBox.@maxx;
 				maxy = feature.LatLongBoundingBox.@maxy;
 				latLon = new Bounds(minx, miny, maxx, maxy);
-				featureCapabilities.put("LatLon", latLon);
+				featureCapabilities.put("Extent", latLon);
 				
 				this._capabilities.put(name, featureCapabilities);
 				

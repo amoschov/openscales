@@ -118,7 +118,7 @@
 			
 			private function setLayerExtent(event:MouseEvent):void {
 				var layerName:String = (event.target as Button).id.split("::")[1];
-				var bounds:Bounds = (this.map.getLayerByName(layerName) as WFS).capabilities.getValue("LatLon");
+				var bounds:Bounds = (this.map.getLayerByName(layerName) as WFS).capabilities.getValue("Extent");
 				if (bounds != null) {trace(bounds);
 					this.map.zoomToExtent(bounds);
 				}
