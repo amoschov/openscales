@@ -22,6 +22,15 @@ package org.openscales.core.handler.mouse {
 		private var _clickNum:Number = 0;
 		
 		private var _mouseEvent:MouseEvent = null;
+		
+		/**
+		 * callback function oneclick(evt:MouseEvent):void
+		 */
+		public var click:Function = null;
+		/**
+		 * callback function doubleClick(evt:MouseEvent):void
+		 */
+		public var doubleClick:Function = null;
 			
 		public function ClickHandler(target:Map = null, active:Boolean = false){
 			super(target,active);
@@ -58,14 +67,10 @@ package org.openscales.core.handler.mouse {
 		        _clickNum=0
 		    }
 		}
-		
-		public function click(evt:MouseEvent):void {
-			
-		}
-		
-		public function doubleClick(evt:MouseEvent):void {
+				
+	/*	public function doubleClick(evt:MouseEvent):void {
 			var newCenter:LonLat = this.map.getLonLatFromMapPx( new Pixel(this.map.mouseX, this.map.mouseY) ); 
         	this.map.setCenter(newCenter, this.map.zoom + 1);
-		}	
+		}	*/
 	}
 }

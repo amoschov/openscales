@@ -8,7 +8,7 @@ package org.openscales.core.renderer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Vector;
-	import org.openscales.core.geometry.Collection;
+	import org.openscales.core.geometry.Geometry;
 	
 	/**
 	 * This is the base class for all renderers.
@@ -90,7 +90,7 @@ package org.openscales.core.renderer
 	        }
 		}*/
 		
-		public function eraseGeometry(geometry:Collection):void {
+		public function eraseGeometry(geometry:Geometry):void {
 			
 		}
 		

@@ -130,7 +130,7 @@ package org.openscales.core.format
 		public var parse:Object = {
 			
         'point': function(str:String):Vector {
-            var coords:Array = StringUtils.trim(str).split(this.regExes.spaces);
+            var coords:Array = StringUtils.trim(str).split(this._regExes.spaces);
             return new Vector(
                 new Point(coords[0], coords[1])
             );
@@ -160,10 +160,10 @@ package org.openscales.core.format
 
         'multilinestring': function(str:String):Vector {
             var line:String;
-            var lines:Array = StringUtils.trim(str).split(this.regExes.parenComma);
+            var lines:Array = StringUtils.trim(str).split(this._regExes.parenComma);
             var components:Array = [];
             for(var i:int=0; i<lines.length; ++i) {
-                line = lines[i].replace(this.regExes.trimParens, '$1');
+                line = lines[i].replace(this._regExes.trimParens, '$1');
                 components.push(this.parse.linestring.apply(this, [line]).geometry);
             }
             return new Vector(
@@ -173,10 +173,10 @@ package org.openscales.core.format
         
         'polygon': function(str:String):Vector {
             var ring:String, linestring:String, linearring:LinearRing;
-            var rings:Array = StringUtils.trim(str).split(this.regExes.parenComma);
+            var rings:Array = StringUtils.trim(str).split(this._regExes.parenComma);
             var components:Array = [];
             for(var i:int=0; i<rings.length; ++i) {
-                ring = rings[i].replace(this.regExes.trimParens, '$1');
+                ring = rings[i].replace(this._regExes.trimParens, '$1');
                 linestring = this.parse.linestring.apply(this, [ring]).geometry;
                 linearring = new LinearRing(linestring.components)
                 components.push(linearring);
@@ -188,10 +188,10 @@ package org.openscales.core.format
 
         'multipolygon': function(str:String):Vector {
             var polygon:String;
-            var polygons:Array = StringUtils.trim(str).split(this.regExes.doubleParenComma);
+            var polygons:Array = StringUtils.trim(str).split(this._regExes.doubleParenComma);
             var components:Array = [];
             for(var i:int=0; i<polygons.length; ++i) {
-                polygon = polygons[i].replace(this.regExes.trimParens, '$1');
+                polygon = polygons[i].replace(this._regExes.trimParens, '$1');
                 components.push(this.parse.polygon.apply(this, [polygon]).geometry);
             }
             return new Vector(

@@ -4,7 +4,7 @@ package org.openscales.core.geometry
 	{
 		
 		public function MultiLineString(components:Object = null):void {
-			this.componentTypes = ["org.openscalescore.geometry::LineString"];
+			this.componentTypes = ["org.openscales.core.geometry::LineString"];
 			super(components);
 		}
 		

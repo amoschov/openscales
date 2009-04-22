@@ -6,10 +6,10 @@ package org.openscales.core.renderer
 	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.control.Control;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.feature.Style;
+	import org.openscales.core.geometry.Collection;
+	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.geometry.LinearRing;
 	
 	/**
 	 * Flash Sprite based renderer.
@@ -274,22 +274,33 @@ package org.openscales.core.renderer
 			return (type == node.type);
 		} */
 		
-		override public function eraseGeometry(geometry:Collection):void {
-
+		override public function eraseGeometry(geometry:Geometry):void {
+			
 			if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
-	            for (var i:int = 0; i < geometry.components.length; i++) {
-	                this.eraseGeometry(geometry.components[i]);
+	            for (var i:int = 0; i < (geometry as Collection).components.length; i++) {
+	                this.eraseGeometry((geometry as Collection).components[i]);
 	            }
-	        } else {    
-	            if(geometry) {
-	            	var element:Object = this.container.getChildByName(geometry.id);
-	            	element.parent.removeChild(element);
-	            }
+	        } 
+	        else 
+	        {
+	        	var element:Object = this.container.getChildByName(geometry.id);
+	            element.parent.removeChild(element);
 	        }
+	        
 		}
 		
+		/**
+	 * This function erases simple features which are not  collections like  
+	 * Point LineString or Polygon
+	 */
+	/*	private function eraseFeature(geometry:Geometry):void{
+			if(geometry) {	            	
+	            	
+	            }
+		}*/
+	
 		override public function clearNode(node:Object):void {
 			node.graphics.clear();
 		}

@@ -158,7 +158,7 @@ package org.openscales.core.layer
 	            this.features = Util.removeItem(this.features, feature);
 	
 	            if (feature.geometry) {
-	                this.renderer.eraseGeometry(feature.geometry as Collection);
+	                this.renderer.eraseGeometry(feature.geometry);
 	            }
 
 	            if (Util.indexOf(this.selectedFeatures, feature) != -1){
@@ -172,6 +172,7 @@ package org.openscales.core.layer
 	    	var destroyed:org.openscales.core.feature.Vector = null;
 	        while(this.features.length > 0) {
 	            destroyed = this.features.shift();
+	            this.renderer.eraseGeometry(destroyed.geometry as Collection);
 	            destroyed.destroy();
 	            destroyed = null;
 	        }
