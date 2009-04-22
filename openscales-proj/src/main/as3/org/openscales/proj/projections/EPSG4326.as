@@ -27,7 +27,7 @@ package org.openscales.proj.projections
 		
 		public function get code():String
 		{
-			return "";
+			return this.PROJECTION_NAME;
 		}
 		
 		public function get units():String
