@@ -1,136 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*">
 
-	<mx:Script>
-		<![CDATA[
-			import org.openscales.core.basetypes.Bounds;
-			import mx.controls.Button;
-			import org.openscales.core.layer.ogc.WFS;
-			import mx.containers.VBox;
-			import mx.controls.HSlider;
-			import mx.controls.CheckBox;
-			import mx.controls.Label;
-			import mx.containers.HBox;
-			import org.openscales.core.events.LayerEvent;
-			import org.openscales.core.layer.Layer;
-			import org.openscales.core.Map;
-			import flash.utils.getQualifiedClassName;
-			
-			private var vboxX:int = 0;
+<mx:Script>
+	<![CDATA[
+		import org.openscales.core.layer.Layer;
+		import org.openscales.core.Map;
+		
+		[Bindable]
+		private var layerArray:Array;
 		
 		override public function set map(value:Map):void
 		{
-			
-			super.map = value;
-			this.CreateVbox((this.map.layers[0] as Layer).name);
-			/* this.displayControl.label = (this.map.layers[0] as Layer).name; */
-			this.map.addEventListener(LayerEvent.LAYER_ADDED,updateLayer);
-			
+			super.map = value;		
 		}
-			/* public function layerName(numIndex:int):String
-			{
-				return (this.map.layers[numIndex] as Layer).name;
-			} */
-			
-			/* public function layerVisible(layerName:String):void
-			{
-				var layer:Layer = this.map.getLayerByName(layerName);
-				layer.visible = !layer.visible;
-				displayControl.selected = layer.visible;
-			}
-			
-			public function layerOpacity(layerName:String):void
-			{
-				var layer:Layer = this.map.getLayerByName(layerName);
-				layer.alpha = opacityControl.value;
-			} */
-			
-			public function updateLayer(event:LayerEvent):void
-			{
-				this.CreateVbox(event.layer.name);
-			}
-			
-			public function layerVisible2(event:Event):void
-			{
-				var layer:Layer = this.map.getLayerByName((event.target as CheckBox).label);
-				layer.visible = !layer.visible;
-				(event.target as CheckBox).selected = layer.visible;
-			}
-			
-			public function layerOpacity2(event:Event):void
-			{
-				var layer:Layer = this.map.getLayerByName((event.target as HSlider).id);
-				layer.alpha = (event.target as HSlider).value;
-			}
-			
-			public function CreateVbox(layerName:String):void
-			{
-				
-				var hasCapabilities:Boolean = false;
-				var layer:Layer = null;
-				layer = this.map.getLayerByName(layerName);
-				
-				/* For now we only support WFS capabilities.
-					If the layer has capabilities then we'll add a button to set the map extent at
-					capabilities extent
-				*/
-				if (getQualifiedClassName(layer) == "org.openscales.core.layer.ogc::WFS" &&
-					(layer as WFS).capabilities != null) {
-					hasCapabilities = true;
-				}
-				var Vbox:VBox = new VBox();
-				Vbox.y = Vbox.y + this.vboxX;
-				this.vboxX+=60;
-				this.addChild(Vbox);
-				
-				var checkBox:CheckBox = new CheckBox();
-				checkBox.label = layerName;
-				checkBox.selected = true;
-				checkBox.addEventListener(Event.CHANGE,layerVisible2);
-				Vbox.addChild(checkBox);
-				
-				var hBox:HBox = new HBox();
-				hBox.percentWidth = 100;
-				Vbox.addChild(hBox);
-				
-				var label:Label = new Label();
-				label.text = "Opacité";
-				hBox.addChild(label);
-				var slider:HSlider = new HSlider();
-				slider.percentWidth = 50;
-				slider.id = layerName;
-				slider.minimum = 0;
-				slider.maximum = 1;
-				slider.labels = ['0%','100%'];
-				slider.value = 1;
-				slider.liveDragging = true;
-				slider.addEventListener(Event.CHANGE,layerOpacity2);
-				hBox.addChild(slider);
-				
-				if (hasCapabilities) {
-					var button:Button = new Button();
-					button.id = "btn::" + layerName;
-					button.label = "ZoomTo";
-					button.addEventListener(MouseEvent.CLICK, this.setLayerExtent);
-					hBox.addChild(button);
-				}
-			}
-			
-			private function setLayerExtent(event:MouseEvent):void {
-				var layerName:String = (event.target as Button).id.split("::")[1];
-				var bounds:Bounds = (this.map.getLayerByName(layerName) as WFS).capabilities.getValue("Extent");
-				if (bounds != null) {trace(bounds);
-					this.map.zoomToExtent(bounds);
-				}
-			}
-		]]>
-	</mx:Script>
-<!--<mx:VBox id="Vbox">
-	<mx:CheckBox id="displayControl" label="" width="100%" height="100%" selected="true" change="layerVisible(displayControl.label)"/>
-	<mx:HBox width="100%">		
-		<mx:Label text="Opacité"/>
-		<mx:HSlider width="50%" id="opacityControl" minimum="0" maximum="1" labels="{['0%','100%']}" value="1" liveDragging="true" change="layerOpacity(displayControl.label)" />
-	</mx:HBox>
-</mx:VBox>-->
+		
+		public function set lArray(value:Array):void
+		{
+			layerArray = value;
+		}
+		
+	]]>
+</mx:Script>
+
+	<mx:List id="displayedLayers" height="300" width="250" dataProvider="{layerArray}" itemRenderer="org.openscales.component.control.VBoxLayerSwitcher"	labelField="name"/>
+
 </control:Control>
 

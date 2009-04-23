@@ -62,6 +62,9 @@
 				
 				map.addControl(pan, false);
 				map.addControl(zoom, false);
+
+				this.layerSwitcher.lArray = map.layers;
+
 				
 				
 				map = fxmap.map;
