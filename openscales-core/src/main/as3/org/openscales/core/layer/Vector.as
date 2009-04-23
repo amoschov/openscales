@@ -172,7 +172,7 @@ package org.openscales.core.layer
 	    	var destroyed:org.openscales.core.feature.Vector = null;
 	        while(this.features.length > 0) {
 	            destroyed = this.features.shift();
-	            this.renderer.eraseGeometry(destroyed.geometry as Collection);
+	            this.renderer.eraseGeometry(destroyed.geometry);
 	            destroyed.destroy();
 	            destroyed = null;
 	        }
