@@ -3,11 +3,12 @@
 
 <mx:Script>
 	<![CDATA[
+		import mx.events.IndexChangedEvent;
 		import org.openscales.core.layer.Layer;
 		import org.openscales.core.Map;
 		
 		[Bindable]
-		private var layerArray:Array;
+		private var layerArray:Array = new Array();
 		
 		override public function set map(value:Map):void
 		{
@@ -17,12 +18,48 @@
 		public function set lArray(value:Array):void
 		{
 			layerArray = value;
+			displayedBaseLayers.dataProvider = GetBaseLayer();
+			displayedBaseLayers.height = (GetBaseLayer().length)*100;
+			displayedOverlays.dataProvider = GetOverlays();
+			displayedOverlays.height = (GetOverlays().length)*100;
+		}
+		
+		 public function GetBaseLayer():Array
+		{
+			var baseLayerArray:Array = new Array();;
+			
+			for(var i:int=0;i<layerArray.length;i++)
+			{
+				var layer:Layer = layerArray[i] as Layer;
+				if(layer.isBaseLayer == true)
+					baseLayerArray.push(layer);
+			}
+			baseLayerArray.length;
+			return baseLayerArray;
+			
+		} 
+		
+		public function GetOverlays():Array
+		{
+			var overlaysArray:Array = new Array();;
+			
+			for(var k:int=0;k<layerArray.length;k++)
+			{
+				var layer:Layer = layerArray[k] as Layer;
+				if(layer.isBaseLayer == false)
+					overlaysArray.push(layer);
+			}
+			return overlaysArray;
 		}
 		
 	]]>
 </mx:Script>
 
-	<mx:List id="displayedLayers" height="300" width="250" dataProvider="{layerArray}" itemRenderer="org.openscales.component.control.VBoxLayerSwitcher"	labelField="name"/>
-
+	<mx:Text id="baseLayer" text="Base Layer"/>
+	
+	<mx:List id="displayedBaseLayers" y="{baseLayer.y + 30}" height="{100}" width="250" dataProvider="{GetBaseLayer()}" itemRenderer="org.openscales.component.control.VBoxLayerSwitcher" labelField="BaseLayer"/>
+	
+	<mx:Text id="overlays" text="Overlays" y="{displayedBaseLayers.height + 50}"/>
+	<mx:List id="displayedOverlays" y="{displayedBaseLayers.height + 80}" width="250" dataProvider="{GetOverlays()}" itemRenderer="org.openscales.component.control.VBoxLayerSwitcher" labelField="Overlays" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true"/>
 </control:Control>
 

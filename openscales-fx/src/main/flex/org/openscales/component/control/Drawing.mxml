@@ -36,7 +36,7 @@
 			}
 			
 			public function onPathClick(event:Event):void {
-				Alert.show("Not implemented yet...", "Message");
+				 Alert.show("Not implemented yet...", "Message"); 
 			}
 			
 			public function onPolygonClick(event:Event):void {

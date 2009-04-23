@@ -54,7 +54,7 @@
 			
 			private function initMap():void
 			{
-				map = fxmap.map;
+			 	 map = fxmap.map;
 				map.size=new Size(fxmap.width, fxmap.height);
 				
 				
@@ -67,12 +67,12 @@
 
 				
 				
-				map = fxmap.map;
-				map.size=new Size(fxmap.width, fxmap.height);
+				  map = fxmap.map;
+				map.size=new Size(fxmap.width, fxmap.height); 
 				
-				map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735));
-					
+				map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735)); 									
 			}
+						
 			private function showPopup(e:MouseEvent):void
 			{				
 				var pop:Popup = feature.createPopup();			
@@ -106,6 +106,11 @@
 
 		<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
 
+		<os:WFS name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="topp:poi" srs="EPSG:4326" version="1.0.0"
+				isBaseLayer="false" minZoomLevel="21">
+			<os:Style fillColor="0xff0000" fillOpacity="0.8" strokeColor="0x0000ff" strokeWidth="2" />
+			
+		</os:WFS>
 		
 		<!--Still an issue with ox:Extent tag that call map.zoomToExtent ... -->
 		<!--os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" /-->
@@ -117,7 +122,5 @@
 		<os:WheelHandler />
 	</os:Map>
 	</resize:ResizableWindow>
-	
-	
 	
 </mx:Panel>
