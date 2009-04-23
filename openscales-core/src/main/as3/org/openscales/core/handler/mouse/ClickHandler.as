@@ -5,8 +5,6 @@ package org.openscales.core.handler.mouse {
 	import flash.utils.Timer;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.handler.Handler;
 	
 	/**
@@ -26,14 +24,19 @@ package org.openscales.core.handler.mouse {
 		/**
 		 * callback function oneclick(evt:MouseEvent):void
 		 */
-		public var click:Function = null;
+		public var _click:Function = null;
 		/**
 		 * callback function doubleClick(evt:MouseEvent):void
 		 */
-		public var doubleClick:Function = null;
+		public var _doubleClick:Function = null;
 			
-		public function ClickHandler(target:Map = null, active:Boolean = false){
+		public function ClickHandler(target:Map = null, active:Boolean = false,options:Object=null){
 			super(target,active);
+			if(options!=null)
+			{
+			if(options.click is Function) this.click=options.click;
+			if(options.doubleclick is Function) this.doubleclick=options.doubleclick;
+			}
 		}
 		
 		override protected function registerListeners():void{
@@ -55,19 +58,37 @@ package org.openscales.core.handler.mouse {
 		
 		private function chooseClick(event:TimerEvent):void{
 			if(_clickNum == 1) {
-		        if(click != null)
-		        	click(_mouseEvent);
+		        if(_click != null)
+		        	_click(_mouseEvent);
 		        _timer.stop()
 		        _clickNum=0
 		    }    
 		    else {
-		        if(doubleClick != null)
-		        	doubleClick(_mouseEvent);
+		        if(_doubleClick != null)
+		        	_doubleClick(_mouseEvent);
 		        _timer.stop()
 		        _clickNum=0
 		    }
 		}
-				
+		public function set click(Click:Function):void
+		{
+			this._click=Click;
+		}
+		public function set doubleclick(doubleclick:Function):void
+		{
+			this._doubleClick=doubleclick;
+		}
+		
+		public function get click():Function
+		{
+			return this._click;
+		}
+		public function get doubleclick():Function
+		{
+			return this._doubleClick;
+		}
+		
+		
 	/*	public function doubleClick(evt:MouseEvent):void {
 			var newCenter:LonLat = this.map.getLonLatFromMapPx( new Pixel(this.map.mouseX, this.map.mouseY) ); 
         	this.map.setCenter(newCenter, this.map.zoom + 1);
