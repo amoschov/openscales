@@ -58,15 +58,16 @@
 				map.size=new Size(fxmap.width, fxmap.height);
 				
 				
-				var markers:Markers = new Markers("Markers");
-				feature = new Feature(markers,new LonLat(lon,lat),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
-				mark = feature.createMarker();
-				mark.addEventListener(MouseEvent.CLICK, showPopup); 
-				markers.addMarker(mark);
-				map.addLayer(markers);
+				
 				
 				map.addControl(pan, false);
 				map.addControl(zoom, false);
+				
+				
+				map = fxmap.map;
+				map.size=new Size(fxmap.width, fxmap.height);
+				
+				map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735));
 					
 			}
 			private function showPopup(e:MouseEvent):void
@@ -84,25 +85,36 @@
 	</resize:ResizableWindow>
 	
 	<resize:ResizableWindow title="Capabilities" movable="true" x="34" y="418" width="440" height="339">
-		<os:CapabilitiesComponent width="100%" height="100%" map="{map}"/>
+		<os:CapabilitiesComponent width="100%" height="100%" map="{map}" />
 	</resize:ResizableWindow>
 		
 	<resize:ResizableWindow title="LayerSwitcher" movable="true" x="800" width="300" height="400">
 		<os:LayerSwitcherComponent id="layerSwitcher" map="{map}"/>
 	</resize:ResizableWindow>
 	
-	<resize:ResizableWindow x="100" width="600" height="400" title="OpenScales" movable="true">
-		<os:Map id="fxmap" width="100%" height="100%"
-				  maxResolution="1" numZoomLevels="21" zoom="9"
-				  lon="-43.584918945312495" lat="-3.5397294921874973">
-			
-			<os:Mapnik name="Mapnik"/>
-			
-			<os:DragHandler />
-			<os:WheelHandler />
-		<os:WheelHandler />
-		</os:Map>	
+	<resize:ResizableWindow title="Drawing" movable="true" x="546" y="418" width="282" height="247">
+		<control:Drawing map="{map}">
+		</control:Drawing>
+	
 	</resize:ResizableWindow>
+	
+	<resize:ResizableWindow x="100" width="600" height="400" title="OpenScales" movable="true">
+		<os:Map id="fxmap" height="100%" width="100%" >
+
+		<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
+
+		
+		<!--Still an issue with ox:Extent tag that call map.zoomToExtent ... -->
+		<!--os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" /-->
+			
+		<os:MousePosition />
+		
+		<os:DragHandler />
+		<os:ClickHandler />
+		<os:WheelHandler />
+	</os:Map>
+	</resize:ResizableWindow>
+	
 	
 	
 </mx:Panel>

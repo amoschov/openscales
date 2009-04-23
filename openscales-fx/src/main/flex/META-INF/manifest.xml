@@ -24,10 +24,12 @@
 	<component id="ClickHandler" class="org.openscales.fx.handler.mouse.FxClickHandler" />
 	<component id="DragHandler" class="org.openscales.fx.handler.mouse.FxDragHandler" />
 	<component id="WheelHandler" class="org.openscales.fx.handler.mouse.FxWheelHandler" />
+	<component id="DrawPointHandler" class="org.openscales.fx.handler.sketch.FxDrawPointHandler" />
 	
 	<component id="PanComponent" class="org.openscales.component.control.Pan" />
 	<component id="ZoomComponent" class="org.openscales.component.control.Zoom" />
 	<component id="LayerSwitcherComponent" class="org.openscales.component.control.LayerSwitcher" />
 	<component id="CapabilitiesComponent" class="org.openscales.component.control.Capabilities" />
+	<component id="DrawingComponent" class="org.openscales.component.control.Drawing" />
 	
 </componentPackage>
