@@ -40,6 +40,8 @@ package org.openscales.core.control
 	    private var _percentageTextFieldTemp:TextField = null;
 	    
 	    private var _layerSwitcherState:String;
+	    
+	    private var _firstOverlays:Boolean = true;
 	    	    
 	    [Embed(source="/org/openscales/core/img/layer-switcher-maximize.png")]
         private var _layerSwitcherMaximizeImg:Class;
@@ -215,12 +217,13 @@ package org.openscales.core.control
 				// Display overlays				
 				var layerArray:Array = this.map.layers;
 				
-				 for(i=0;i<layerArray.length;i++) {
+				 for(i=layerArray.length-1;i>=0;i--) {
 					layer = layerArray[i] as Layer;
 					if(layer.isBaseLayer==false) {
-						if(i == 1)
+						if(_firstOverlays == true)
 						{
 							y+=this._textOffset-15;
+							_firstOverlays = false;
 						}
 						else
 						{
@@ -332,6 +335,7 @@ package org.openscales.core.control
 		
 		private function RadioButtonClick(event:MouseEvent):void
 		{
+			_firstOverlays = true;
 			var i:int = 0;
 			var layer2:Layer = this.map.getLayerByName((event.target as RadioButton).layerName);
 			if((event.target as RadioButton).status == false)
@@ -424,24 +428,31 @@ package org.openscales.core.control
 		private function ArrowClick(event:MouseEvent):void
 		{
 			var layer:Layer = this.map.getLayerByName((event.target as Arrow).layerName);
-			var numLayers:int = this.map.layers.length;
-			
-			if((event.target as Arrow).state == "UP")
+			var numLayersOverlays:int = 0;
+			for(var i:int=0;i<this.map.layers.length;i++)
 			{
-				if((layer.zindex-1)>=1)
+				var layerLength:Layer = this.map.layers[i] as Layer;
+				if(layerLength.isBaseLayer != true) numLayersOverlays++;
+			}
+			
+			var numBaseLayer:int = this.map.layers.length - numLayersOverlays;
+			_firstOverlays = true;
+			
+			if((event.target as Arrow).state == "DOWN")
+			{
+				if((layer.zindex-1)>numBaseLayer - 1)
 				{
 					layer.zindex = layer.zindex-1;
-					this.draw();
 				}	
 			}
 			else
 			{
-				if((layer.zindex+1)<=numLayers-1)
+				if((layer.zindex+1)<=(this.map.layers.length-1))
 				{
-					layer.zindex = layer.zindex+1;
-					this.draw();
+					layer.zindex = layer.zindex+1;	
 				}	
 			}
+			this.draw();
 		}
 		
 		private function layerswitcherStopPropagation(event:MouseEvent):void
