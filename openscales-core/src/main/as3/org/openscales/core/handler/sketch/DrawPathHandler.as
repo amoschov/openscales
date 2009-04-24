@@ -1,6 +1,6 @@
 package org.openscales.core.handler.sketch
 {
-	import flash.events.MouseEvent; 
+	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
@@ -17,7 +17,7 @@ package org.openscales.core.handler.sketch
 		private var _drawLayer:org.openscales.core.layer.Vector = null;				
 		private var _id:Number = 0;
 		private var _p:Point = null;
-		private var _points:Array = null; 
+		private var _points:Array = null;
 				
 		public function DrawPathHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.Vector=null)
 		{
@@ -25,7 +25,8 @@ package org.openscales.core.handler.sketch
 			this.drawLayer = drawLayer;
 		}
 		override protected function registerListeners():void{
-			this.map.addEventListener(MouseEvent.CLICK, this.mouseClick);
+			 this.map.addEventListener(MouseEvent.CLICK, this.mouseClick); 
+			/* this.map.addEventListener(MouseEvent.DOUBLE_CLICK, this.mouseDoubleClick); */
 		}
 		
 		override protected function unregisterListeners():void{
@@ -41,12 +42,18 @@ package org.openscales.core.handler.sketch
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
 			
-			if (points == null){
+			if(points == null){				
 				points = new Array();
 				points[id]=point;
-				id++;							
+				id++;
+				feature.geometry = point;
+				drawLayer.addFeatures(feature);						
 			}
 			else {
+				/* if (drawLayer.features.length == 2 && points.length < 3) {
+						drawLayer.removeFeatures(drawLayer.features[0]);
+						points[0] = null;
+				} */			
 				feature.id = id.toString(); 			
 				points[id] = point;
 				id++;
@@ -56,6 +63,26 @@ package org.openscales.core.handler.sketch
 				drawLayer.addFeatures(feature);
 			}							
 		}
+		
+		/* public function mouseDoubleClick(event:MouseEvent):void {
+			var feature:org.openscales.core.feature.Vector;
+			feature = new org.openscales.core.feature.Vector();
+			
+			var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
+			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
+			var point:Point = new Point(lonlat.lon,lonlat.lat);
+			
+			if(points != null)
+			{
+				points[id]=point;
+				id++;
+				feature.geometry = point;
+				drawLayer.addFeatures(feature);
+			}
+			else{
+				
+			}
+		} */
 		
 		public function get drawLayer():org.openscales.core.layer.Vector {
 			return _drawLayer;

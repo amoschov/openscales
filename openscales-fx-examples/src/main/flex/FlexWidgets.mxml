@@ -95,7 +95,7 @@
 		<os:LayerSwitcherComponent id="layerSwitcher" map="{map}"/>
 	</resize:ResizableWindow>
 	
-	<resize:ResizableWindow title="Drawing" movable="true" x="546" y="418" width="282" height="247">
+	<resize:ResizableWindow title="Drawing" movable="true" x="546" y="418" width="250" height="220">
 		<control:Drawing map="{map}">
 		</control:Drawing>
 	
