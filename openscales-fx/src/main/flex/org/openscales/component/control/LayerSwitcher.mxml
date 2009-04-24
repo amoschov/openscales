@@ -3,6 +3,8 @@
 
 <mx:Script>
 	<![CDATA[
+		import org.openscales.core.events.MapEvent;
+		import org.openscales.core.events.LayerEvent;
 		import mx.events.IndexChangedEvent;
 		import org.openscales.core.layer.Layer;
 		import org.openscales.core.Map;
@@ -12,8 +14,19 @@
 		
 		override public function set map(value:Map):void
 		{
-			super.map = value;		
+			super.map = value;	
+			if(map != null)
+			{
+				this.map.addEventListener(LayerEvent.LAYER_ADDED,this.refresh);
+				this.map.addEventListener(LayerEvent.LAYER_CHANGED,this.refresh);
+				this.map.addEventListener(LayerEvent.LAYER_REMOVED,this.refresh);
+			}
 		}
+		
+	 	public function refresh(event:LayerEvent):void
+		{
+			this.lArray = this.map.layers;
+		} 
 		
 		public function set lArray(value:Array):void
 		{

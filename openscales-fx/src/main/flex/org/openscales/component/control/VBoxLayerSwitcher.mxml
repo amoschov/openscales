@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" height="85">
 
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.Map;
+			import org.openscales.core.layer.ogc.WFS;
+			import mx.controls.Button;
+			import org.openscales.core.basetypes.Bounds;
+			import mx.controls.CheckBox;
+			import mx.controls.RadioButtonGroup;
+			import mx.controls.RadioButton;
 			import org.openscales.core.layer.Layer;
 			import mx.events.PropertyChangeEvent;
 			import mx.binding.utils.ChangeWatcher;
@@ -19,10 +26,76 @@
 				layer.alpha = (event.target as HSlider).value;
 			}
 			
+			public function ButtonChoice(data:Object):void
+			{
+				 if(this.data != null)
+				{ 
+					if(data.isBaseLayer == true)
+					{
+						var radioButtonGroup:RadioButtonGroup = new RadioButtonGroup();
+					//	this.addChild(radioButtonGroup);
+						var radioButton:RadioButton = new RadioButton();
+						//radioButton.groupName = "radioButtonGroup";
+						radioButton.id = this.data.name;
+						radioButton.percentHeight = 100;
+						radioButton.percentWidth = 100;
+						radioButton.label = this.data.name;
+						radioButton.selected = this.data.visible;
+						radioButton.addEventListener(Event.CHANGE,layerVisible);
+						displayControl.addChild(radioButton);
+						
+					}
+					else
+					{
+						var checkBox:CheckBox = new CheckBox();
+						checkBox.id = this.data.name;
+						checkBox.percentHeight = 100;
+						checkBox.percentWidth = 100;
+						checkBox.label = this.data.name;
+						checkBox.selected = this.data.visible;
+						checkBox.addEventListener(Event.CHANGE,layerVisible);
+						displayControl.addChild(checkBox);
+						
+					}
+					
+					var hasCapabilities:Boolean = false;
+					/* For now we only support WFS capabilities.
+					If the layer has capabilities then we'll add a button to set the map extent at
+					capabilities extent
+				*/
+					if (getQualifiedClassName(data) == "org.openscales.core.layer.ogc::WFS" &&	(data as WFS).capabilities != null) 
+					{
+						hasCapabilities = true;
+					}
+				
+					if (hasCapabilities) 
+					{
+						var button:Button = new Button();
+						button.id = "btn::" + data.name;
+						button.label = "ZoomTo";
+						button.addEventListener(MouseEvent.CLICK, this.setLayerExtent);
+						this.addChild(button);
+					}
+
+
+			 	} 
+			}
+			
+			private function setLayerExtent(event:MouseEvent):void {
+				var layerName:String = (event.target as Button).id.split("::")[1];
+				var bounds:Bounds = ((data as Layer) as WFS).capabilities.getValue("Extent");
+				if (bounds != null) {trace(bounds);
+					(data as Layer).map.zoomToExtent(bounds);
+				
+				}
+			}
+
+			
 		]]>
 	</mx:Script>
 	
-	<mx:CheckBox id="displayControl" textAlign="center"	width="100%" height="100%" label="{this.data.name}"	selected="{this.data.visible}" change="layerVisible(event)"/>
+	<!--<mx:CheckBox id="displayControl" textAlign="center"	width="100%" height="100%" label="{this.data.name}"	selected="{this.data.visible}" change="layerVisible(event)"/>-->
+	<mx:Canvas id="displayControl" textAlign="center" width="{opacityControl.width}" height="{opacityControl.height}" creationComplete="ButtonChoice(data);"/>
 	<mx:HBox width="100%">		
 		<mx:Label text="Opacité"/>
 		<mx:HSlider width="100%" id="opacityControl" minimum="0" maximum="1" labels="{['0%','100%']}" value="{data.alpha}" change="layerOpacity(event)" liveDragging="true"/>
