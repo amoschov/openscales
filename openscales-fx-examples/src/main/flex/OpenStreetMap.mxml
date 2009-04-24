@@ -30,8 +30,12 @@
 			
 			public static var lon:Number=-43.584918945312495;
 			public static var lat:Number=-3.5397294921874973;
+			
+			public static var lon2:Number=-48.56441;
+			public static var lat2:Number=-1.32635;
         	
         	public var mark:Marker;
+        	public var markLyon:Marker;
 			
 			private function initMap():void
 			{
@@ -40,6 +44,12 @@
 				var markers:Markers = new Markers("Markers");
 				feature = new Feature(markers,new LonLat(lon,lat),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
 				mark = feature.createMarker();
+				
+				markLyon = feature.createMarker();
+				markLyon.addEventListener(MouseEvent.CLICK,showPopup);
+				
+				markers.addMarker(markLyon);
+				
 				mark.addEventListener(MouseEvent.CLICK, showPopup); 
 				markers.addMarker(mark);
 				map.addLayer(markers);
