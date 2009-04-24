@@ -49,7 +49,21 @@
 				if(layer.isBaseLayer == false)
 					overlaysArray.push(layer);
 			}
-			return overlaysArray;
+			return (overlaysArray.reverse());
+		}
+		
+		public function ChangeLayerOrder(overlaysArray:Array):void
+		{
+			var ecart:int = displayedOverlays.calculateDropIndex() - displayedOverlays.selectedIndex;
+			
+			if(ecart > 0)
+			{
+				(displayedOverlays.selectedItem as Layer).zindex = (displayedOverlays.selectedItem as Layer).zindex - (ecart-1);
+			}
+			if(ecart < 0)			
+			{
+				(displayedOverlays.selectedItem as Layer).zindex = (displayedOverlays.selectedItem as Layer).zindex + ecart +2;
+			}
 		}
 		
 	]]>
@@ -60,6 +74,6 @@
 	<mx:List id="displayedBaseLayers" y="{baseLayer.y + 30}" height="{100}" width="250" dataProvider="{GetBaseLayer()}" itemRenderer="org.openscales.component.control.VBoxLayerSwitcher" labelField="BaseLayer"/>
 	
 	<mx:Text id="overlays" text="Overlays" y="{displayedBaseLayers.height + 50}"/>
-	<mx:List id="displayedOverlays" y="{displayedBaseLayers.height + 80}" width="250" dataProvider="{GetOverlays()}" itemRenderer="org.openscales.component.control.VBoxLayerSwitcher" labelField="Overlays" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true"/>
+	<mx:List id="displayedOverlays" y="{displayedBaseLayers.height + 80}" width="250" dataProvider="{GetOverlays()}" itemRenderer="org.openscales.component.control.VBoxLayerSwitcher" labelField="Overlays" dragEnabled="true" dropEnabled="true" dragMoveEnabled="true" dragDrop="ChangeLayerOrder(GetOverlays())"/>
 </control:Control>
 
