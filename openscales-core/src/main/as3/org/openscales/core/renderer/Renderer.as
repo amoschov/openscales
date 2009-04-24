@@ -60,18 +60,18 @@ package org.openscales.core.renderer
 			this.moveGeometry(feature.geometry);
 		}
 		
-		public function drawGeometry(geometry:Object, style:Style, featureId:String):Object {
+		public function drawGeometry(geometry:Geometry, style:Style, featureId:String):SpriteElement {
 			return null;
 		}
 		
-		public function redrawGeometry(node:*, geometry:Object, style:Style, featureId:String):Object {
+		public function redrawGeometry(node:SpriteElement, geometry:Geometry, style:Style, featureId:String):SpriteElement {
 			return null;
 		}
 		
-		public function moveGeometry(geometry:Object):void {
+		public function moveGeometry(geometry:Geometry):void {
 		}
 		
-		public function clearNode(node:Object):void {
+		public function clearNode(node:SpriteElement):void {
 			
 		}
 		
