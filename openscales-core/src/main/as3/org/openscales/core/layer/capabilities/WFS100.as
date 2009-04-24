@@ -5,7 +5,7 @@ package org.openscales.core.layer.capabilities
 	/**
 	 * WFS 1.0.0 capabilities parser
 	 */
-	internal class WFS100 extends CapabilitiesParser
+	public class WFS100 extends CapabilitiesParser
 	{
 		import org.openscales.core.basetypes.maps.HashMap
 		

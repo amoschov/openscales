@@ -2,7 +2,7 @@ package org.openscales.core.layer.capabilities
 {
 	import org.openscales.core.basetypes.Bounds;
 	
-	internal class WFS110 extends CapabilitiesParser
+	public class WFS110 extends CapabilitiesParser
 	{
 		import org.openscales.core.basetypes.maps.HashMap;
 		private namespace _wfsns = "http://www.opengis.net/wfs";

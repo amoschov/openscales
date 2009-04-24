@@ -3,6 +3,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.sketch.DrawPolygonHandler;
 			import org.openscales.core.handler.sketch.DrawPathHandler;
 			import mx.controls.Alert;
 			import org.openscales.core.layer.Vector;
@@ -15,6 +16,7 @@
 			
 			public var drawLayer:Vector = new Vector("Sketch");			
 			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
+			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
 			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
 			
 			
@@ -24,9 +26,11 @@
 			public function onDeleteAllClick(event:Event):void {
 				drawLayer.destroyFeatures();
 				drawLayer.renderer.clear();
+				
 				switch(drawType)
 				{
-					case "path":{pathHandler.points = null;}
+					case "path":{pathHandler.points = null; break;}
+					case "polygon":{polygonHandler.firstCall = true; break;}
 				}
 			}
 			
@@ -34,14 +38,20 @@
 				var last:Number = drawLayer.features.length - 1;
 				
 				if (last >= 0) {
-					drawLayer.removeFeatures(drawLayer.features[last]); 
+					
 					switch(drawType)
 					{
-						case "path":
-						{							
+						case "path":		
+							drawLayer.removeFeatures(drawLayer.features[last]);					
 							pathHandler.points[last+1]=null;
-							pathHandler.id--;							
-						}
+							pathHandler.id--;	
+							break;						
+						case "polygon":
+							Alert.show("Not implemented yet...", "Message");
+							break;
+						case "point":
+							drawLayer.removeFeatures(drawLayer.features[last]);
+							break;
 					}   
 				}
 				else {
@@ -65,7 +75,21 @@
 			}
 			
 			public function onPolygonClick(event:Event):void {
-				Alert.show("Not implemented yet...", "Message");
+				if(drawType != "polygon") {
+					drawType = "polygon"
+					
+					polygonHandler.active = true;
+					
+					btnPath.enabled = false;
+					btnPoint.enabled = false;
+				}
+				else {
+					drawType = "";
+					polygonHandler.active = false;
+					
+					btnPath.enabled = true;
+					btnPoint.enabled = true;
+				}
 			}
 			
 			public function onPointClick(event:Event):void {
@@ -91,7 +115,8 @@
 				
 				if (this.map != null) {
 					pointHandler.map = this.map;
-					pathHandler.map = pointHandler.map;
+					pathHandler.map = this.map;
+					polygonHandler.map = this.map
 					this.map.addLayer(drawLayer);
 				}
 				
@@ -101,7 +126,7 @@
 	<mx:Button x="10" y="10" label="Point" id="btnPoint" click="this.onPointClick(event)" toggle="true" width="72"/>
 	<mx:Button x="146" y="69" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="88"/>
 	<mx:Button x="10" y="69" label="Path" id="btnPath" width="72" click="this.onPathClick(event)" toggle="true"/>
-	<mx:Button x="10" y="124" label="Polygon" id="btnPolygon" click="this.onPolygonClick(event)"/>
+	<mx:Button x="10" y="124" label="Polygon" id="btnPolygon" click="this.onPolygonClick(event)" toggle="true"/>
 	<mx:Button x="146" y="10" label="DeleteLast" width="88" id="btnDeleteLast" click="this.onDeleteLastClick(event)"/>
 	
 

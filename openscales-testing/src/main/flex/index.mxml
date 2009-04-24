@@ -3,12 +3,14 @@
 	<mx:Script>
 	<![CDATA[
 		import org.openscales.proj4as.projections.IdentityTest;
+		import org.openscales.coretest.layer.capabilities.ParsingTest;
 	import flexunit.framework.TestSuite;
 			
 	private function init():void
 	{
  		var ts:TestSuite = new TestSuite();
  		ts.addTestSuite(IdentityTest);
+ 		ts.addTestSuite(ParsingTest);
  		testRunner.test = ts;
  		testRunner.startTest();
  	}

@@ -1,6 +1,6 @@
 package org.openscales.core.handler.sketch
 {
-	import flash.events.MouseEvent;
+	import flash.events.MouseEvent; 
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
