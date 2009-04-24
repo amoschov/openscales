@@ -2,10 +2,10 @@ package org.openscales.coretest.layer.capabilities
 {
 	import flexunit.framework.TestCase;
 	
-	import org.openscales.core.basetypes.Bounds;
+	/*import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.layer.capabilities.WFS100;
-	import org.openscales.core.layer.capabilities.WFS110;
+	import org.openscales.core.layer.capabilities.WFS110;*/
 	
 	public class ParsingTest extends TestCase
 	{
