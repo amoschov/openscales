@@ -72,41 +72,41 @@
 		<os:PanComponent id="pan" map="{map}"/>
 		<os:ZoomComponent id="zoom" map="{map}"/>
 	</resize:ResizableWindow>
-	
-	<resize:ResizableWindow title="Capabilities" movable="true" x="34" y="418" width="440" height="339">
-		<os:CapabilitiesComponent width="100%" height="100%" map="{map}" />
-	</resize:ResizableWindow>
-		
-	<resize:ResizableWindow title="LayerSwitcher" movable="true" x="800" width="300" height="400">
+			
+	<resize:ResizableWindow title="LayerSwitcher" movable="true" x="850" width="300" height="360">
 		<os:LayerSwitcherComponent id="layerSwitcher" map="{map}"/>
 	</resize:ResizableWindow>
 	
-	<resize:ResizableWindow title="Drawing" movable="true" x="546" y="418" width="250" height="220">
-		<control:Drawing map="{map}">
-		</control:Drawing>
-	
+	<resize:ResizableWindow title="Drawing" movable="true" x="850" y="370" width="300" height="210">
+		<mx:TabNavigator width="100%" height="100%">
+			<control:Drawing map="{map}" width="100%" height="100%" label="Draw" />
+			<os:CapabilitiesComponent width="100%" height="100%" map="{map}" label="Capabilities" />
+		</mx:TabNavigator>
 	</resize:ResizableWindow>
 	
-	<resize:ResizableWindow x="100" width="600" height="400" title="OpenScales" movable="true">
+	<resize:ResizableWindow x="100" width="740" height="100%" title="OpenScales" movable="true">
 		<os:Map id="fxmap" height="100%" width="100%" >
 
-		<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
-
-		<os:WFS name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="topp:poi" srs="EPSG:4326" version="1.0.0"
-				isBaseLayer="false" minZoomLevel="21">
-			<os:Style fillColor="0xff0000" fillOpacity="0.8" strokeColor="0x0000ff" strokeWidth="2" />
+			<!--<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />-->
 			
-		</os:WFS>
-		
-		<!--Still an issue with ox:Extent tag that call map.zoomToExtent ... -->
-		<!--os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" /-->
+			<os:WMSC name="Metacarta" url="http://labs.metacarta.com/wms-c/Basic.py"
+							   layers="satellite" format="image/jpeg" isBaseLayer="true"/>
+							   
+			<os:WFS name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="topp:poi" srs="EPSG:4326" version="1.0.0"
+					isBaseLayer="false" minZoomLevel="21">
+				<os:Style fillColor="0xff0000" fillOpacity="0.8" strokeColor="0x0000ff" strokeWidth="2" />
+				
+			</os:WFS>
 			
-		<os:MousePosition />
-		
-		<os:DragHandler />
-		<os:ClickHandler />
-		<os:WheelHandler />
-	</os:Map>
+			<!--Still an issue with ox:Extent tag that call map.zoomToExtent ... -->
+			<!--os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" /-->
+				
+			<os:MousePosition />
+			
+			<os:DragHandler />
+			<os:ClickHandler />
+			<os:WheelHandler />
+		</os:Map>
 	</resize:ResizableWindow>
 	
 </mx:Panel>

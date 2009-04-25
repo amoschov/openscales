@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*" implements="org.openscales.core.control.IControl" width="220" height="136">
+<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:control="org.openscales.component.control.*"
+	width="124" height="136">
 	
 	<mx:Script>
 		<![CDATA[
@@ -124,10 +126,10 @@
 		]]>
 	</mx:Script>
 	<mx:Button x="10" y="10" id="btnPoint" icon="@Embed('/org/openscales/component/images/IconeDessinPoint.swf')" click="this.onPointClick(event)" toggle="true" height="30" width="30"/>
-	<mx:Button x="84" y="71" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="88"/>
-	<mx:Button x="10" y="48" id="btnPath" icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" click="this.onPathClick(event)" toggle="true" height="30" width="30"/>
-	<mx:Button x="10" y="87" id="btnPolygon" icon="@Embed('/org/openscales/component/images/IconeDessinPoly.swf')" click="this.onPolygonClick(event)" toggle="true" height="30" width="30"/>
-	<mx:Button x="84" y="22" label="DeleteLast" width="88" id="btnDeleteLast" click="this.onDeleteLastClick(event)"/>
+	<mx:Button x="10" y="78" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="104"/>
+	<mx:Button x="48" y="10" id="btnPath" icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" click="this.onPathClick(event)" toggle="true" height="30" width="30"/>
+	<mx:Button x="84" y="10" id="btnPolygon" icon="@Embed('/org/openscales/component/images/IconeDessinPoly.swf')" click="this.onPolygonClick(event)" toggle="true" height="30" width="30"/>
+	<mx:Button x="10" y="48" label="DeleteLast" width="104" id="btnDeleteLast" click="this.onDeleteLastClick(event)"/>
 	
 
 </control:Control>

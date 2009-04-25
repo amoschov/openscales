@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*" implements="org.openscales.core.control.IControl">
+<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:control="org.openscales.component.control.*" >
 	
 	<mx:Script>
 		<![CDATA[
