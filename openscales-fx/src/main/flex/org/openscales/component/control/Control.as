@@ -24,6 +24,7 @@ package org.openscales.component.control
 		public function set map(value:Map):void
 		{
 			this._map = value;
+			this.active = true;
 		}
 		
 		public function get active():Boolean

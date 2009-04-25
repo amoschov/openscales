@@ -4,6 +4,8 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.events.MapEvent;
+			import org.openscales.core.events.LayerEvent;
 			import org.openscales.core.basetypes.Pixel;
 			import org.openscales.core.Map;
 			import com.gskinner.motion.GTweeny;
@@ -11,14 +13,14 @@
 					
 			private function onZoomOutClick(event:MouseEvent):void{
 				this.map.zoom--;
-				this.zoomSlider.value--;
+
 				// For client zoom
 				//scaleOnCenter(map.layerContainer, 0.5, new Point(map.x + (map.width/2), map.y + (map.height/2)));
 			}
 			
 			private function onZoomInClick(event:MouseEvent):void{
 				this.map.zoom++;
-				this.zoomSlider.value++;
+
 				// For client zoom
 				//scaleOnCenter(map.layerContainer, 2, new Point(map.x + (map.width/2), map.y + (map.height/2)));
 			}
@@ -37,22 +39,11 @@
 				tween.addEventListener(Event.CHANGE, function onProgress(evt:Event):void { o.transform.matrix = currentMatrix });
 			}
 			
-			public function onZoomSliderThumbPress(event:SliderEvent):void{
-				
-				
-			}
-			
-			public function onZoomSliderThumbDrag(event:SliderEvent):void{
-				
-			}
-						
 			public function onZoomSliderThumbRelease(event:SliderEvent):void{
 				map.zoom = zoomSlider.value;
 			}
 			
-			override public function set map(value:Map):void
-			{
-				super.map = value;
+			private function initializeZoomLevels(event:Event = null):void {
 				var zoomLevels:Array = new Array();
 				for(var i:int = 0; i<map.resolutions.length; i++) {
 					zoomLevels.push(map.getZoomForResolution(map.resolutions[i]));
@@ -60,6 +51,24 @@
 				zoomSlider.tickValues = zoomLevels;
 				zoomSlider.maximum = map.getZoomForResolution(map.minResolution);
 				zoomSlider.minimum = map.getZoomForResolution(map.maxResolution);
+				zoomSlider.value = map.zoom;
+			}
+			
+			override public function set active(value:Boolean):void
+			{
+				if(value) {
+					initializeZoomLevels();
+					map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.initializeZoomLevels);
+					map.addEventListener(MapEvent.ZOOM_END, this.updateZoomLevels);
+				} else {
+					map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED, this.initializeZoomLevels);
+					map.removeEventListener(MapEvent.ZOOM_END, this.updateZoomLevels);
+				}
+				
+				super.active = value;
+			}
+			
+			private function updateZoomLevels(event:Event = null):void {
 				zoomSlider.value = map.zoom;
 			}
 			
@@ -73,8 +82,6 @@
 			allowTrackClick="true"
 			tickInterval="1"
 			snapInterval="1"
-			thumbPress="this.onZoomSliderThumbPress(event)"
-			thumbDrag="this.onZoomSliderThumbDrag(event)"
 			thumbRelease="this.onZoomSliderThumbRelease(event)"/>
 		<mx:Button id="zoomOut" height="30" width="30" icon="@Embed('/org/openscales/component/images/zoomout.swf')" click="this.onZoomOutClick(event);" />
 	</mx:VBox>

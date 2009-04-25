@@ -68,10 +68,6 @@
 						
 			}
 			
-			override public function set map(value:Map):void
-			{
-				super.map = value;
-			}
 		]]>
 	</mx:Script>
 	<mx:Label x="10" y="10" text="WFS server URL:" id="lbUrl" enabled="false"/>
