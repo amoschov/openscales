@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml"
-	xmlns:control="org.openscales.component.control.*">
+	xmlns:control="org.openscales.component.control.*" >
 	
 	<mx:Script>
 		<![CDATA[
@@ -76,7 +76,7 @@
 	</mx:Script>
 
 	<mx:VBox horizontalAlign="center">
-		<mx:Button id="zoomIn" height="30" width="30" icon="@Embed('/org/openscales/component/images/zoomin.swf')" click="this.onZoomInClick(event);" />
+		<mx:Button id="zoomIn" height="30" width="30" alpha="1" icon="@Embed('/org/openscales/component/images/zoomin.swf')" click="this.onZoomInClick(event);" />
 		<mx:VSlider id="zoomSlider" 
 			liveDragging="true"
 			allowTrackClick="true"

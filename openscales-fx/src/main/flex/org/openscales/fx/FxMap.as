@@ -4,6 +4,7 @@ package org.openscales.fx {
 	import flash.events.Event;
 	
 	import mx.core.Container;
+	import mx.core.UIComponent;
 	import mx.events.FlexEvent;
 	import mx.events.ResizeEvent;
 	
@@ -83,6 +84,8 @@ package org.openscales.fx {
 					this.map.addControl(child as IControl, false);
 				} else if(child is FxHandler) {
 					this.map.addHandler((child as FxHandler).handler);
+				} else if ((child is UIComponent) && !(child is FxMaxExtent) && !(child is FxExtent) ){
+					this.parent.addChild(child);
 				}
 				
 			}

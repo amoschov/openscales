@@ -3,6 +3,7 @@
 
 	<mx:Script>
 		<![CDATA[
+			import mx.events.DragEvent;
 			import mx.binding.utils.BindingUtils;
 			import org.openscales.core.Map;
 			import org.openscales.core.layer.ogc.WFS;
@@ -78,6 +79,10 @@
 				
 				}
 			}
+			
+			private function onDrag(event:Event):void {
+				event.stopPropagation();
+			}
 
 			
 		]]>
@@ -91,7 +96,8 @@
 	</mx:HBox>
 	<mx:HBox width="100%">	
 		<mx:Label text="Opacity"/>
-		<mx:HSlider width="100%" id="opacityControl" minimum="0" maximum="1" labels="{['0%','100%']}" value="{this.data.alpha}" change="layerOpacity(event)" liveDragging="true"/>
+		<mx:HSlider width="100%" id="opacityControl" minimum="0" maximum="1" 
+			labels="{['0%','100%']}" value="{this.data.alpha}" change="layerOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
 	</mx:HBox>
 	
 </mx:VBox>

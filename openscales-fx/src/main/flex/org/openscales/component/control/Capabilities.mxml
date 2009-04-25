@@ -58,22 +58,24 @@
 			
 			public function capabilitiesGetter(getCap:GetCapabilities):void {
 				capabilities = getCap.getAllCapabilities();
-				
-				var lb:Label = new Label();
-				lb.text = "There are " + capabilities.size() + " features available on server:"
-				lb.x = 20; lb.y = 35;
-				this.addChild(lb);				
-				
+				lblFeatures.text = "There are " + capabilities.size() + " features available on server:"
 				this.list.dataProvider = capabilities.getKeys().sort();	
-						
 			}
 			
 		]]>
 	</mx:Script>
-	<mx:Label x="10" y="10" text="WFS server URL:" id="lbUrl" enabled="false"/>
-	<mx:TextInput x="116" y="8" width="217" id="txtUrl" text="http://sigma.openplans.org/geoserver/wfs" displayAsPassword="false" editable="true" enabled="true"/>
-	<mx:Button x="341" y="8" label="Go!" width="49" id="butGo" enabled="true" click="this.onButtonClick(event)"/>
-	<mx:List x="10" y="60" width="380" height="114" allowMultipleSelection="false" id="list" doubleClickEnabled="true" doubleClick="this.onDblClickListElement(event)" change="this.onChangeListElement(event)"></mx:List>
-	<mx:Text x="10" y="182" width="380" height="108" id="txtInfo" visible="true"/>
-
+	
+	<mx:VBox width="100%">
+		<mx:Label text="WFS server URL:" />
+		<mx:Label id="lblFeatures" enabled="false"/>
+		<mx:HBox width="100%">
+			<mx:TextInput width="100%" id="txtUrl" text="http://sigma.openplans.org/geoserver/wfs" displayAsPassword="false" editable="true" enabled="true"/>
+			<mx:Button label="Go!" id="butGo" enabled="true" click="this.onButtonClick(event)"/>	
+		</mx:HBox>
+		
+		<mx:List width="100%" height="114" allowMultipleSelection="false" id="list" doubleClickEnabled="true" doubleClick="this.onDblClickListElement(event)" change="this.onChangeListElement(event)"></mx:List>
+		<mx:Text width="100%" height="108" id="txtInfo" visible="true"/>
+	
+	</mx:VBox>
+	
 </control:Control>
