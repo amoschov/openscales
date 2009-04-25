@@ -28,7 +28,7 @@
 	
 	<component id="PanComponent" class="org.openscales.component.control.Pan" />
 	<component id="ZoomComponent" class="org.openscales.component.control.Zoom" />
-	<component id="LayerSwitcherComponent" class="org.openscales.component.control.LayerSwitcher" />
+	<component id="LayerSwitcherComponent" class="org.openscales.component.control.layer.LayerSwitcher" />
 	<component id="CapabilitiesComponent" class="org.openscales.component.control.Capabilities" />
 	<component id="DrawingComponent" class="org.openscales.component.control.Drawing" />
 	

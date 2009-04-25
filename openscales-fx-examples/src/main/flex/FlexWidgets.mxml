@@ -54,22 +54,8 @@
 			
 			private function initMap():void
 			{
-			 	 map = fxmap.map;
+	   			map = fxmap.map;
 				map.size=new Size(fxmap.width, fxmap.height);
-				
-				
-				
-				
-				map.addControl(pan, false);
-				map.addControl(zoom, false);
-
-				this.layerSwitcher.lArray = map.layers;
-
-				
-				
-				  map = fxmap.map;
-				map.size=new Size(fxmap.width, fxmap.height); 
-				
 				map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735)); 									
 			}
 						
@@ -83,8 +69,8 @@
 	</mx:Script>
 	
 	<resize:ResizableWindow title="Pan" movable="true" horizontalAlign="center">
-		<os:PanComponent id="pan" />
-		<os:ZoomComponent id="zoom" />
+		<os:PanComponent id="pan" map="{map}"/>
+		<os:ZoomComponent id="zoom" map="{map}"/>
 	</resize:ResizableWindow>
 	
 	<resize:ResizableWindow title="Capabilities" movable="true" x="34" y="418" width="440" height="339">
