@@ -102,8 +102,9 @@
 			<resize:ResizableWindow title="Tools" movable="true" id="tools" width="350" height="400" >
 				<mx:TabNavigator width="100%" height="100%">
 					<os:LayerSwitcherComponent id="layerSwitcher" map="{map}" label="Layers"/>
-					<control:Drawing map="{map}" width="100%" height="100%" label="Draw" />
+					<os:DrawingComponent map="{map}" width="100%" height="100%" label="Draw" />
 					<os:CapabilitiesComponent width="100%" height="100%" map="{map}" label="Capabilities" />
+					<os:YahooSearchComponent width="100%" height="100%" map="{map}" label="Search" appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é"/>
 				</mx:TabNavigator>
 			</resize:ResizableWindow>
 			

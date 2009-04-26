@@ -8,6 +8,7 @@
 <classEntry path="org.openscales.component.control.Zoom"/>
 <classEntry path="org.openscales.component.control.layer.LayerRenderer"/>
 <classEntry path="org.openscales.component.control.layer.LayerSwitcher"/>
+<classEntry path="org.openscales.component.control.search.YahooSearch"/>
 <classEntry path="org.openscales.fx.FxExtent"/>
 <classEntry path="org.openscales.fx.FxMap"/>
 <classEntry path="org.openscales.fx.FxMaxExtent"/>
