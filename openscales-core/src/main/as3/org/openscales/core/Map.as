@@ -387,7 +387,7 @@ package org.openscales.core
 	                if ((!zoomChanged) && (this.center)) { 
 	                    this.centerLayerContainer(lonlat, dragTween);
 	                }
-	                this.center = lonlat.clone();
+	                this._center = lonlat.clone();
 	                
 	            }
 
@@ -630,7 +630,7 @@ package org.openscales.core
 		}
 		public function set center(newCenter:LonLat):void
 		{
-			_center = newCenter;
+			this.setCenter(newCenter);
 		}
 		
 		/**
