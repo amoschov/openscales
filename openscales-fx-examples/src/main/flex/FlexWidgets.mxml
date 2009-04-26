@@ -92,18 +92,20 @@
 			<os:ClickHandler />
 			<os:WheelHandler />
 			
-			<mx:VBox id="panzoom" horizontalAlign="center">
-				<os:PanComponent id="pan" map="{map}"/>
-				<os:ZoomComponent id="zoom" map="{map}"/>
-			</mx:VBox>
+			<resize:ResizableWindow title="PanZoom" movable="true" id="panzoom">
+				<mx:VBox horizontalAlign="center">
+					<os:PanComponent id="pan" map="{map}"/>
+					<os:ZoomComponent id="zoom" map="{map}"/>
+				</mx:VBox>
+			</resize:ResizableWindow>
 						
-			<resize:ResizableCanvas id="tools" width="350" height="400" >
+			<resize:ResizableWindow title="Tools" movable="true" id="tools" width="350" height="400" >
 				<mx:TabNavigator width="100%" height="100%">
 					<os:LayerSwitcherComponent id="layerSwitcher" map="{map}" label="Layers"/>
 					<control:Drawing map="{map}" width="100%" height="100%" label="Draw" />
 					<os:CapabilitiesComponent width="100%" height="100%" map="{map}" label="Capabilities" />
 				</mx:TabNavigator>
-			</resize:ResizableCanvas>
+			</resize:ResizableWindow>
 			
 		</os:Map>
 	
