@@ -3,15 +3,15 @@ package org.openscales.core.format
 	import flash.xml.XMLNode;
 	
 	import org.openscales.core.feature.State;
-	import org.openscales.core.feature.Vector;
+	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.layer.ogc.WFS;
 	
-	public class WFS extends GML
+	public class WFSFormat extends GMLFormat
 	{
 		
 		private var _layer:org.openscales.core.layer.ogc.WFS = null;
     	
-    	public function WFS(options:Object, layer:org.openscales.core.layer.ogc.WFS):void {
+    	public function WFSFormat(options:Object, layer:org.openscales.core.layer.ogc.WFS):void {
     		super(options);
 	        this.layer = layer;
 	        if (this.layer.featureNS) {
@@ -44,7 +44,7 @@ package org.openscales.core.format
 	        return transaction;
     	}
     	
-    	override public function createFeatureXML(feature:Vector):XML {
+    	override public function createFeatureXML(feature:VectorFeature):XML {
 	        var geometryNode:XML = this.buildGeometryNode(feature.geometry);
 	        var geomContainer:XML = new XML("<" + this._featurePrefix + ":" + this._geometryName + " xmlns:" + this._featurePrefix + "=\"" + this._featureNS + "\"></" + this._featurePrefix + ":" + this._geometryName + ">");
 	        geomContainer.appendChild(geometryNode);
@@ -63,13 +63,13 @@ package org.openscales.core.format
 	        return featureContainer;
     	}
     	
-    	public function insert(feature:Vector):XML {
+    	public function insert(feature:VectorFeature):XML {
 	        var insertNode:XML = new XML("<" + this._wfsprefix + ":Insert xmlns:" + this._wfsprefix + "=\"" + this._wfsns + "\"></" + this._wfsprefix + ":Insert>");
 	        insertNode.appendChild(this.createFeatureXML(feature));
 	        return insertNode;
     	}
     	
-    	public function update(feature:Vector):XMLNode {
+    	public function update(feature:VectorFeature):XMLNode {
 	        if (!feature.id) { trace("Can't update a feature for which there is no FID."); }
 	        var updateNode:XMLNode = new XMLNode(1, "wfs:Update");
 	        updateNode.attributes.typeName = this._layerName;
@@ -96,7 +96,7 @@ package org.openscales.core.format
 	        return updateNode;
     	}
     	
-    	public function remove(feature:Vector):XMLNode {
+    	public function remove(feature:VectorFeature):XMLNode {
 	        if (!feature.attributes.fid) { 
 	            trace("Can't update a feature for which there is no FID."); 
 	            return null; 

@@ -12,13 +12,13 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.maps.HashMap;
-	import org.openscales.core.feature.Vector;
+	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.format.Format;
-	import org.openscales.core.format.WFS;
+	import org.openscales.core.format.WFSFormat;
 	import org.openscales.core.layer.Grid;
-	import org.openscales.core.layer.Vector;
+	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.layer.capabilities.GetCapabilities;
-	import org.openscales.core.tile.WFS;
+	import org.openscales.core.tile.WFSTile;
 	import org.openscales.proj.IProjection;
 	
 	/**
@@ -26,7 +26,7 @@ package org.openscales.core.layer.ogc
 	 *  
 	 * @author Bouiaw
 	 */
-	public class WFS extends org.openscales.core.layer.Vector
+	public class WFS extends org.openscales.core.layer.VectorLayer
 	{
 		
 		public var DEFAULT_PARAMS:Object = { service: "WFS",
@@ -41,7 +41,7 @@ package org.openscales.core.layer.ogc
 		
 		private var _url:String = null;
 		
-		private var _tile:org.openscales.core.tile.WFS = null;
+		private var _tile:org.openscales.core.tile.WFSTile = null;
 		
 		private var _writer:Format = null;
 		
@@ -67,14 +67,14 @@ package org.openscales.core.layer.ogc
 	        
 	        super(name, options)
 	        
-	        if (this.featureClass || !org.openscales.core.layer.Vector || !org.openscales.core.feature.Vector) {
+	        if (this.featureClass || !org.openscales.core.layer.VectorLayer || !org.openscales.core.feature.VectorFeature) {
 	            this.vectorMode = false;
 	        } 
 	        
 	        if (!this.renderer || !this.vectorMode) {
 	            this.vectorMode = false; 
 	            if (!this.featureClass) {
-	                this.featureClass = org.openscales.core.feature.WFS;
+	                this.featureClass = org.openscales.core.feature.WFSFeature;
 	            }   
 	        }
 	        
@@ -151,7 +151,7 @@ package org.openscales.core.layer.ogc
 			            url += "&" + Util.getParameterString(params);
 			
 			            if (!this.tile) {
-			                this.tile = new org.openscales.core.tile.WFS(this, pos, tileBounds, 
+			                this.tile = new org.openscales.core.tile.WFSTile(this, pos, tileBounds, 
 			                                                     url, tileSize);
 			                this.tile.draw();
 			               	this.featuresBbox = tileBounds;
@@ -212,7 +212,7 @@ package org.openscales.core.layer.ogc
 		
 		public function commit():void {
 			if (!this.writer) {
-	            this.writer = new org.openscales.core.format.WFS({},this);
+	            this.writer = new org.openscales.core.format.WFSFormat({},this);
 	        }
 	
 	        var data:Object = this.writer.write(this.features);
@@ -317,11 +317,11 @@ package org.openscales.core.layer.ogc
 			this._url = value;
 		}
 		
-		public function get tile():org.openscales.core.tile.WFS {
+		public function get tile():org.openscales.core.tile.WFSTile {
 			return this._tile;
 		}
 		
-		public function set tile(value:org.openscales.core.tile.WFS):void {
+		public function set tile(value:org.openscales.core.tile.WFSTile):void {
 			this._tile = value;
 		}
 		

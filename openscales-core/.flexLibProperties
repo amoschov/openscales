@@ -39,12 +39,12 @@
 <classEntry path="org.openscales.core.feature.Feature"/>
 <classEntry path="org.openscales.core.feature.State"/>
 <classEntry path="org.openscales.core.feature.Style"/>
-<classEntry path="org.openscales.core.feature.Vector"/>
-<classEntry path="org.openscales.core.feature.WFS"/>
+<classEntry path="org.openscales.core.feature.VectorFeature"/>
+<classEntry path="org.openscales.core.feature.WFSFeature"/>
 <classEntry path="org.openscales.core.format.Format"/>
-<classEntry path="org.openscales.core.format.GML"/>
-<classEntry path="org.openscales.core.format.WFS"/>
-<classEntry path="org.openscales.core.format.WKT"/>
+<classEntry path="org.openscales.core.format.GMLFormat"/>
+<classEntry path="org.openscales.core.format.WFSFormat"/>
+<classEntry path="org.openscales.core.format.WKTFormat"/>
 <classEntry path="org.openscales.core.geometry.Collection"/>
 <classEntry path="org.openscales.core.geometry.Curve"/>
 <classEntry path="org.openscales.core.geometry.Geometry"/>
@@ -72,7 +72,7 @@
 <classEntry path="org.openscales.core.layer.Layer"/>
 <classEntry path="org.openscales.core.layer.Markers"/>
 <classEntry path="org.openscales.core.layer.TMS"/>
-<classEntry path="org.openscales.core.layer.Vector"/>
+<classEntry path="org.openscales.core.layer.VectorLayer"/>
 <classEntry path="org.openscales.core.layer.capabilities.CapabilitiesParser"/>
 <classEntry path="org.openscales.core.layer.capabilities.GetCapabilities"/>
 <classEntry path="org.openscales.core.layer.capabilities.WFS100"/>
@@ -90,24 +90,24 @@
 <classEntry path="org.openscales.core.renderer.Renderer"/>
 <classEntry path="org.openscales.core.renderer.SpriteElement"/>
 <classEntry path="org.openscales.core.renderer.SpriteRenderer"/>
-<classEntry path="org.openscales.core.tile.Image"/>
+<classEntry path="org.openscales.core.tile.ImageTile"/>
 <classEntry path="org.openscales.core.tile.Tile"/>
-<classEntry path="org.openscales.core.tile.WFS"/>
+<classEntry path="org.openscales.core.tile.WFSTile"/>
 </includeClasses>
 <includeResources>
 <resourceEntry destPath="org/openscales/core/img/blank.gif" sourcePath="org/openscales/core/img/blank.gif"/>
-<resourceEntry destPath="org/openscales/core/img/layerDel.png" sourcePath="org/openscales/core/img/layerDel.png"/>
 <resourceEntry destPath="org/openscales/core/img/layerSave.png" sourcePath="org/openscales/core/img/layerSave.png"/>
-<resourceEntry destPath="org/openscales/core/img/panning-hand-off.png" sourcePath="org/openscales/core/img/panning-hand-off.png"/>
+<resourceEntry destPath="org/openscales/core/img/layerDel.png" sourcePath="org/openscales/core/img/layerDel.png"/>
 <resourceEntry destPath="org/openscales/core/img/north-mini.png" sourcePath="org/openscales/core/img/north-mini.png"/>
+<resourceEntry destPath="org/openscales/core/img/panning-hand-off.png" sourcePath="org/openscales/core/img/panning-hand-off.png"/>
 <resourceEntry destPath="org/openscales/core/img/drag-rectangle-off.png" sourcePath="org/openscales/core/img/drag-rectangle-off.png"/>
-<resourceEntry destPath="org/openscales/core/img/layerCancel.png" sourcePath="org/openscales/core/img/layerCancel.png"/>
 <resourceEntry destPath="org/openscales/core/img/layerSel.png" sourcePath="org/openscales/core/img/layerSel.png"/>
+<resourceEntry destPath="org/openscales/core/img/layerCancel.png" sourcePath="org/openscales/core/img/layerCancel.png"/>
 <resourceEntry destPath="org/openscales/core/img/layerViz.png" sourcePath="org/openscales/core/img/layerViz.png"/>
 <resourceEntry destPath="org/openscales/core/img/drag-rectangle-on.png" sourcePath="org/openscales/core/img/drag-rectangle-on.png"/>
 <resourceEntry destPath="org/openscales/core/img/marker.png" sourcePath="org/openscales/core/img/marker.png"/>
-<resourceEntry destPath="org/openscales/core/img/west-mini.png" sourcePath="org/openscales/core/img/west-mini.png"/>
 <resourceEntry destPath="org/openscales/core/img/zoom-plus-mini.png" sourcePath="org/openscales/core/img/zoom-plus-mini.png"/>
+<resourceEntry destPath="org/openscales/core/img/west-mini.png" sourcePath="org/openscales/core/img/west-mini.png"/>
 <resourceEntry destPath="org/openscales/core/img/marker-green.png" sourcePath="org/openscales/core/img/marker-green.png"/>
 <resourceEntry destPath="org/openscales/core/img/measuring-stick-off.png" sourcePath="org/openscales/core/img/measuring-stick-off.png"/>
 <resourceEntry destPath="org/openscales/core/img/zoom-minus-mini.png" sourcePath="org/openscales/core/img/zoom-minus-mini.png"/>
@@ -122,8 +122,8 @@
 <resourceEntry destPath="org/openscales/core/img/south-mini.png" sourcePath="org/openscales/core/img/south-mini.png"/>
 <resourceEntry destPath="org/openscales/core/img/close.gif" sourcePath="org/openscales/core/img/close.gif"/>
 <resourceEntry destPath="org/openscales/core/img/east-mini.png" sourcePath="org/openscales/core/img/east-mini.png"/>
-<resourceEntry destPath="org/openscales/core/img/measuring-stick-on.png" sourcePath="org/openscales/core/img/measuring-stick-on.png"/>
 <resourceEntry destPath="org/openscales/core/img/zoom-world-mini.png" sourcePath="org/openscales/core/img/zoom-world-mini.png"/>
+<resourceEntry destPath="org/openscales/core/img/measuring-stick-on.png" sourcePath="org/openscales/core/img/measuring-stick-on.png"/>
 <resourceEntry destPath="org/openscales/core/img/zoombar.png" sourcePath="org/openscales/core/img/zoombar.png"/>
 </includeResources>
 <namespaceManifests/>

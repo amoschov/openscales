@@ -4,7 +4,7 @@ package org.openscales.core.format
 	import flash.xml.XMLNode;
 	
 	import org.openscales.core.Util;
-	import org.openscales.core.feature.Vector;
+	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
@@ -17,7 +17,7 @@ package org.openscales.core.format
 	/**
 	 * Read/Wite GML. Supports the GML simple features profile.
 	 */
-	public class GML extends Format
+	public class GMLFormat extends Format
 	{
 		protected var _featureNS:String = "http://openscales.org/OpenScales";
 	    
@@ -43,7 +43,7 @@ package org.openscales.core.format
     	
     	private var _dim:Number;
     	
-    	public function GML(options:Object):void {
+    	public function GMLFormat(options:Object):void {
     		super(options);
     	}
     	
@@ -71,7 +71,7 @@ package org.openscales.core.format
 	        var features:Array = [];
 
 	        for (var i:int = 0; i < featureNodes.length(); i++) {
-	            var feature:Vector = this.parseFeature(featureNodes[i]);
+	            var feature:VectorFeature = this.parseFeature(featureNodes[i]);
 	
 	            if (feature) {
 	                features.push(feature);
@@ -80,11 +80,11 @@ package org.openscales.core.format
 	        return features;
     	}
     	
-    	public function parseFeature(xmlNode:XML):Vector {
+    	public function parseFeature(xmlNode:XML):VectorFeature {
     		var geom:Collection = null;
 	        var p:Array = new Array();
 	
-	        var feature:Vector = new Vector();
+	        var feature:VectorFeature = new VectorFeature();
 			feature.id = xmlNode..@fid;
 			
 	        if (xmlNode..*::the_geom.*::MultiPolygon.length() > 0) {
@@ -241,7 +241,7 @@ package org.openscales.core.format
 	        return featureCollection;
     	}
     	
-    	public function createFeatureXML(feature:Vector):XML {
+    	public function createFeatureXML(feature:VectorFeature):XML {
 	        var geometryNode:XML = this.buildGeometryNode(feature.geometry);
 	        var geomContainer:XML = new XML("<" + this._gmlprefix + ":" + this._geometryName + " xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":" + this._geometryName + ">");
 	        geomContainer.appendChild(geometryNode);

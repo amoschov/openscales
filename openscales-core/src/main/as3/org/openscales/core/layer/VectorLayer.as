@@ -7,7 +7,7 @@ package org.openscales.core.layer
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.feature.Style;
-	import org.openscales.core.feature.Vector;
+	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.renderer.Renderer;
 	import org.openscales.core.renderer.SpriteRenderer;
@@ -15,7 +15,7 @@ package org.openscales.core.layer
 	/**
 	 * Instances of Vector are used to render vector data from a variety of sources.
 	 */
-	public class Vector extends Layer
+	public class VectorLayer extends Layer
 	{
 	
 	    private var _features:Array = null;
@@ -36,7 +36,7 @@ package org.openscales.core.layer
 	    
 	    public var preFeatureInsert:Function = null;
 	    
-	    public function Vector(name:String, options:Object = null):void {
+	    public function VectorLayer(name:String, options:Object = null):void {
 	        this.style = new Style();
 	        
 	        this.onFeatureInsert = new Function();
@@ -108,7 +108,7 @@ package org.openscales.core.layer
 	        if (!this.drawn || zoomChanged) {
 	            this.drawn = true;
 	            for(var i:int = 0; i < this.features.length; i++) {
-	                var feature:org.openscales.core.feature.Vector = this.features[i];
+	                var feature:org.openscales.core.feature.VectorFeature = this.features[i];
 	                this.drawFeature(feature);
 	                
 	            }
@@ -121,7 +121,7 @@ package org.openscales.core.layer
 	        }
 
 	        for (var i:int = 0; i < features.length; i++) {
-	            var feature:org.openscales.core.feature.Vector = features[i];
+	            var feature:org.openscales.core.feature.VectorFeature = features[i];
 	            
 	            if (this.geometryType &&
 	                !(getQualifiedClassName(feature.geometry) == this.geometryType)) {
@@ -154,7 +154,7 @@ package org.openscales.core.layer
 	        }
 	
 	        for (var i:int = features.length - 1; i >= 0; i--) {
-	            var feature:org.openscales.core.feature.Vector = features[i];
+	            var feature:org.openscales.core.feature.VectorFeature = features[i];
 	            this.features = Util.removeItem(this.features, feature);
 	
 	            if (feature.geometry) {
@@ -169,7 +169,7 @@ package org.openscales.core.layer
 	    
 	    public function destroyFeatures():void {
 	    	this.selectedFeatures = new Array();
-	    	var destroyed:org.openscales.core.feature.Vector = null;
+	    	var destroyed:org.openscales.core.feature.VectorFeature = null;
 	        while(this.features.length > 0) {
 	            destroyed = this.features.shift();
 	            this.renderer.eraseGeometry(destroyed.geometry);
@@ -178,7 +178,7 @@ package org.openscales.core.layer
 	        }
 	    }
 	    
-	    public function drawFeature(feature:org.openscales.core.feature.Vector, style:Style = null):void {
+	    public function drawFeature(feature:org.openscales.core.feature.VectorFeature, style:Style = null):void {
 	    	if(style == null) {
 	            if(feature.style) {
 	                style = feature.style;
@@ -193,13 +193,13 @@ package org.openscales.core.layer
 	    	this.renderer.eraseFeatures(features);
 	    }*/
 	    
-	    public function getFeatureFromEvent(evt:MouseEvent):org.openscales.core.feature.Vector {
+	    public function getFeatureFromEvent(evt:MouseEvent):org.openscales.core.feature.VectorFeature {
 	    	var featureId:String = this.renderer.getFeatureIdFromEvent(evt);
         	return this.getFeatureById(featureId);
 	    }
 	    
-	    public function getFeatureById(featureId:String):org.openscales.core.feature.Vector {
-	    	var feature:org.openscales.core.feature.Vector = null;
+	    public function getFeatureById(featureId:String):org.openscales.core.feature.VectorFeature {
+	    	var feature:org.openscales.core.feature.VectorFeature = null;
 	        for(var i:int=0; i<this.features.length; ++i) {
 	            if(this.features[i].id == featureId) {
 	                feature = this.features[i];

@@ -5,10 +5,11 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.layer.VectorLayer;
 			import org.openscales.core.handler.sketch.DrawPolygonHandler;
 			import org.openscales.core.handler.sketch.DrawPathHandler;
 			import mx.controls.Alert;
-			import org.openscales.core.layer.Vector;
+			import org.openscales.core.layer.VectorLayer;
 			import org.openscales.core.handler.Handler;
 			import org.openscales.core.handler.sketch.DrawPointHandler;
 			import org.openscales.core.geometry.Geometry;
@@ -16,7 +17,7 @@
 			import org.openscales.core.Map;
 			
 			
-			public var drawLayer:Vector = new Vector("Sketch");			
+			public var drawLayer:VectorLayer = new VectorLayer("Sketch");			
 			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
 			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
 			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);

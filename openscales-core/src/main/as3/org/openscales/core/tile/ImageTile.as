@@ -19,13 +19,13 @@ package org.openscales.core.tile
 	 * Instances of OpenLayers.Tile.Image are used to manage the image tiles
 	 * used by various layers.
 	 */
-	public class Image extends Tile
+	public class ImageTile extends Tile
 	{
 		private var _queued:Boolean = false;
 		
 		private var _tileLoader:Loader = null;
 		
-		public function Image(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size):void {
+		public function ImageTile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size):void {
 			super(layer, position, bounds, url, size);
 			
 			// otherwise you'll get seams between tiles :(

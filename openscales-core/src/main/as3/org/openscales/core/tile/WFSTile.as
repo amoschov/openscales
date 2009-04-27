@@ -10,19 +10,19 @@ package org.openscales.core.tile
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.format.GML;
+	import org.openscales.core.format.GMLFormat;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.ogc.WFS;
 	
 	/**
 	 * WFS single tile
 	 */
-	public class WFS extends Tile
+	public class WFSTile extends Tile
 	{
 		
 		private var _features:Array = null;		
 		
-		public function WFS(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size):void {
+		public function WFSTile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size):void {
 			super(layer, position, bounds, url, size);
         	this.features = new Array();
 		}
@@ -64,7 +64,7 @@ package org.openscales.core.tile
 			}
 			
 	        if (wfsLayer && wfsLayer.vectorMode) {
-	            var gml:GML = new GML({extractAttributes: wfsLayer.extractAttributes});
+	            var gml:GMLFormat = new GMLFormat({extractAttributes: wfsLayer.extractAttributes});
 	            wfsLayer.addFeatures(gml.read(doc));
 	        } else {
 	            var resultFeatures:Object = doc..*::featureMember;

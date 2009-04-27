@@ -153,12 +153,6 @@ package org.openscales.core
 		    return args;
 		}
 		
-		public static function getXmlNodeValue(node:XMLNode):String {
-			var val:String = null;
-		    val = node.nodeValue;
-		    return val;
-		}
-		
 		public static function getBBOXStringFromUrl(url:String):String {
 			var startpos:int = url.indexOf("BBOX=") + 5;
 			if (startpos < 5) {

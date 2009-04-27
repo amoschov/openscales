@@ -5,20 +5,20 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.feature.Vector;
+	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.Handler;
-	import org.openscales.core.layer.Vector;
+	import org.openscales.core.layer.VectorLayer;
 
 	public class DrawPolygonHandler extends Handler
 	{
 		
 		// The layer in which we'll draw
-		private var _drawLayer:org.openscales.core.layer.Vector = null;
+		private var _drawLayer:org.openscales.core.layer.VectorLayer = null;
 
 		private var _lring:LinearRing = null;
 		private var _polygon:Polygon = null;
@@ -27,7 +27,7 @@ package org.openscales.core.handler.sketch
 		private var id:Number = 0;
 		
 		
-		public function DrawPolygonHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.Vector=null)
+		public function DrawPolygonHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
 		{
 			super(map, active);
 			this.drawLayer = drawLayer;
@@ -45,8 +45,8 @@ package org.openscales.core.handler.sketch
 		public function mouseClick(event:MouseEvent):void {
 			
 			if (drawLayer != null) {
-				var feature:org.openscales.core.feature.Vector;
-				feature = new org.openscales.core.feature.Vector();
+				var feature:org.openscales.core.feature.VectorFeature;
+				feature = new org.openscales.core.feature.VectorFeature();
 				feature.id = "point."+id.toString(); id++;
 				
 				var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
@@ -62,7 +62,7 @@ package org.openscales.core.handler.sketch
 					feature.geometry = polygon;
 					
 					// We create a point the first time to see were we have clicked
-					var featurePoint:org.openscales.core.feature.Vector = new org.openscales.core.feature.Vector;
+					var featurePoint:org.openscales.core.feature.VectorFeature = new org.openscales.core.feature.VectorFeature;
 					featurePoint.id = id.toString();id++;
 					featurePoint.geometry = point;
 					
@@ -84,11 +84,11 @@ package org.openscales.core.handler.sketch
 		}
 
 		
-		public function get drawLayer():org.openscales.core.layer.Vector {
+		public function get drawLayer():org.openscales.core.layer.VectorLayer {
 			return _drawLayer;
 		}
 
-		public function set drawLayer(drawLayer:org.openscales.core.layer.Vector):void {
+		public function set drawLayer(drawLayer:org.openscales.core.layer.VectorLayer):void {
 			_drawLayer = drawLayer;
 		}
 		

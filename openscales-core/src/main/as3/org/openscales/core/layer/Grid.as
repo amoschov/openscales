@@ -8,7 +8,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.events.TileEvent;
 	import org.openscales.core.feature.Style;
-	import org.openscales.core.tile.Image;
+	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	
 	/**
@@ -394,7 +394,7 @@ package org.openscales.core.layer
 	                    break;
 	            } 
 
-	            var tile:Image = null;
+	            var tile:ImageTile = null;
 	            if ((testRow < this.grid.length) && (testRow >= 0) &&
 	                (testCell < this.grid[0].length) && (testCell >= 0)) {
 	                tile = this.grid[testRow][testCell];

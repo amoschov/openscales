@@ -37,6 +37,7 @@
 			{
 				 if(this.layer != null)
 				{ 
+					opacityControl.value = this.layer.alpha;
 					if(this.layer.isBaseLayer == true)
 					{
 						var radioButtonGroup:RadioButtonGroup = new RadioButtonGroup();
@@ -88,7 +89,6 @@
 		]]>
 	</mx:Script>
 	
-	<!--<mx:CheckBox id="displayControl" textAlign="center"	width="100%" height="100%" label="{this.data.name}"	selected="{this.data.visible}" change="layerVisible(event)"/>-->
 	<mx:HBox width="100%">
 		<mx:Canvas id="displayControl" textAlign="center" width="100%" />
 		<mx:Spacer />
@@ -97,7 +97,7 @@
 	<mx:HBox width="100%">	
 		<mx:Label text="Opacity"/>
 		<mx:HSlider width="100%" id="opacityControl" minimum="0" maximum="1" 
-			labels="{['0%','100%']}" value="{this.data.alpha}" change="layerOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
+			labels="{['0%','100%']}" change="layerOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
 	</mx:HBox>
 	
 </mx:VBox>

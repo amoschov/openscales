@@ -5,7 +5,7 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.layer.Grid;
-	import org.openscales.core.tile.Image;
+	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	import org.openscales.proj.IProjection;
 	
@@ -53,7 +53,7 @@ package org.openscales.core.layer.ogc
        	
        	override public function addTile(bounds:Bounds, position:Pixel):Tile {
 	       	var url:String = this.getURL(bounds);
-	        return new Image(this, position, bounds, 
+	        return new ImageTile(this, position, bounds, 
 	                                             url, this.tileSize);
        	}
        	

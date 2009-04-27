@@ -8,10 +8,10 @@ package org.openscales.core.feature
 	 * WFS handling class, for use as a featureClass on the WFS layer for handling ‘point’
 	 * WFS types.  Good for subclassing when creating a custom WFS like XML application.
 	 */
-	public class WFS extends Feature
+	public class WFSFeature extends Feature
 	{
 		
-		public function WFS(layer:Layer, xmlNode:XML):void {
+		public function WFSFeature(layer:Layer, xmlNode:XML):void {
 	        var data:Object = this.processXMLNode(xmlNode);
 	        super(layer, data.lonlat, data);
 		}
@@ -22,7 +22,7 @@ package org.openscales.core.feature
 		
 		public function processXMLNode(xmlNode:XML):Object {
 	        var point:XMLList = xmlNode.elements("gml::Point");
-	        var text:String  = Util.getXmlNodeValue(point[0].elements("gml::coordinates")[0]);
+	        var text:String  = point[0].elements("gml::coordinates")[0].nodeValue;
 	        var floats:Array = text.split(",");
 	        return {lonlat: new LonLat(Number(floats[0]),
 	                                              Number(floats[1])),

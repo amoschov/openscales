@@ -5,22 +5,22 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.feature.Vector;
+	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.Handler;
-	import org.openscales.core.layer.Vector;
+	import org.openscales.core.layer.VectorLayer;
 	
 
 	public class DrawPointHandler extends Handler
 	{
 		
 		// The layer in which we'll draw
-		private var _drawLayer:org.openscales.core.layer.Vector = null;
+		private var _drawLayer:org.openscales.core.layer.VectorLayer = null;
 		
 		
 		private var id:Number = 0;
 		
-		public function DrawPointHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.Vector=null)
+		public function DrawPointHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
 		{
 			super(map, active);
 			this.drawLayer = drawLayer;
@@ -41,8 +41,8 @@ package org.openscales.core.handler.sketch
 		}
 		
 		public function drawPoint():void {
-			var feature:org.openscales.core.feature.Vector;
-			feature = new org.openscales.core.feature.Vector();
+			var feature:org.openscales.core.feature.VectorFeature;
+			feature = new org.openscales.core.feature.VectorFeature();
 			feature.id = id.toString(); id++;
 			var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
@@ -51,11 +51,11 @@ package org.openscales.core.handler.sketch
 			drawLayer.addFeatures(feature);
 		}
 		
-		public function get drawLayer():org.openscales.core.layer.Vector {
+		public function get drawLayer():org.openscales.core.layer.VectorLayer {
 			return _drawLayer;
 		}
 
-		public function set drawLayer(drawLayer:org.openscales.core.layer.Vector):void {
+		public function set drawLayer(drawLayer:org.openscales.core.layer.VectorLayer):void {
 			_drawLayer = drawLayer;
 		}
 		

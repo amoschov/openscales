@@ -9,7 +9,7 @@ package org.openscales.core.feature
 	 * They have an ‘attributes’ property, which is the data object, and a ‘style’ property,
 	 * the default values of which are defined in the OpenLayers.Feature.Vector.style objects
 	 */
-	public class Vector extends Feature
+	public class VectorFeature extends Feature
 	{
 		
 	    private var _geometry:Geometry = null;
@@ -20,7 +20,7 @@ package org.openscales.core.feature
 	    
 	    private var _originalStyle:Style = null;
 		
-		public function Vector(geometry:Geometry = null, data:Object = null, style:Style = null):void {
+		public function VectorFeature(geometry:Geometry = null, data:Object = null, style:Style = null):void {
 			super(null, null, data);
 	        this.lonlat = null;
 	        this.geometry = geometry;
@@ -44,7 +44,7 @@ package org.openscales.core.feature
 		
 		public function clone(obj:Object):Object {
 			if (obj == null) {
-	            obj = new Vector(this.geometry.clone(),this.data , this.style);
+	            obj = new VectorFeature(this.geometry.clone(),this.data , this.style);
 	        } 
 	        
 	        Util.applyDefaults(obj, this);

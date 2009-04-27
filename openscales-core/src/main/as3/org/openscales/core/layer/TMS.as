@@ -4,7 +4,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.tile.Image;
+	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	
 	/**
@@ -61,7 +61,7 @@ package org.openscales.core.layer
 		
 		override public function addTile(bounds:Bounds, position:Pixel):Tile
 		{
-			return new Image(this, position, bounds, null, this.tileSize);
+			return new ImageTile(this, position, bounds, null, this.tileSize);
 		}
 		
 		override public function set map(map:Map):void {

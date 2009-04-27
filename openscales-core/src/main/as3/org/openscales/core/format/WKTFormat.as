@@ -4,7 +4,7 @@ package org.openscales.core.format
 	
 	import org.openscales.core.StringUtils;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.feature.Vector;
+	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
@@ -14,12 +14,12 @@ package org.openscales.core.format
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	
-	public class WKT extends Format
+	public class WKTFormat extends Format
 	{
 		
 		private var _regExes:Object;
 		
-		public function WKT(options:Object = null):void {
+		public function WKTFormat(options:Object = null):void {
 			
 	        this._regExes = {
 	            'typeStr': /^\s*(\w+)\s*\(\s*(.*)\s*\)\s*$/,
@@ -129,36 +129,36 @@ package org.openscales.core.format
 		
 		public var parse:Object = {
 			
-        'point': function(str:String):Vector {
+        'point': function(str:String):VectorFeature {
             var coords:Array = StringUtils.trim(str).split(this._regExes.spaces);
-            return new Vector(
+            return new VectorFeature(
                 new Point(coords[0], coords[1])
             );
         },
 
-        'multipoint': function(str:String):Vector {
+        'multipoint': function(str:String):VectorFeature {
             var points:Array = StringUtils.trim(str).split(',');
             var components:Array = [];
             for(var i:int=0; i<points.length; ++i) {
                 components.push(this.parse.point.apply(this, [points[i]]).geometry);
             }
-            return new Vector(
+            return new VectorFeature(
             	new MultiPoint(components)
             );
         },
 
-        'linestring': function(str:String):Vector {
+        'linestring': function(str:String):VectorFeature {
             var points:Array = StringUtils.trim(str).split(',');
             var components:Array = [];
             for(var i:int=0; i<points.length; ++i) {
                 components.push(this.parse.point.apply(this, [points[i]]).geometry);
             }
-            return new Vector(
+            return new VectorFeature(
                 new LineString(components)
             );
         },
 
-        'multilinestring': function(str:String):Vector {
+        'multilinestring': function(str:String):VectorFeature {
             var line:String;
             var lines:Array = StringUtils.trim(str).split(this._regExes.parenComma);
             var components:Array = [];
@@ -166,12 +166,12 @@ package org.openscales.core.format
                 line = lines[i].replace(this._regExes.trimParens, '$1');
                 components.push(this.parse.linestring.apply(this, [line]).geometry);
             }
-            return new Vector(
+            return new VectorFeature(
             	new MultiLineString(components)
             );
         },
         
-        'polygon': function(str:String):Vector {
+        'polygon': function(str:String):VectorFeature {
             var ring:String, linestring:String, linearring:LinearRing;
             var rings:Array = StringUtils.trim(str).split(this._regExes.parenComma);
             var components:Array = [];
@@ -181,12 +181,12 @@ package org.openscales.core.format
                 linearring = new LinearRing(linestring.components)
                 components.push(linearring);
             }
-            return new Vector(
+            return new VectorFeature(
             	new Polygon(components)
             );
         },
 
-        'multipolygon': function(str:String):Vector {
+        'multipolygon': function(str:String):VectorFeature {
             var polygon:String;
             var polygons:Array = StringUtils.trim(str).split(this._regExes.doubleParenComma);
             var components:Array = [];
@@ -194,7 +194,7 @@ package org.openscales.core.format
                 polygon = polygons[i].replace(this._regExes.trimParens, '$1');
                 components.push(this.parse.polygon.apply(this, [polygon]).geometry);
             }
-            return new Vector(
+            return new VectorFeature(
                 new MultiPolygon(components)
             );
         },
@@ -204,7 +204,7 @@ package org.openscales.core.format
             var wktArray:Array = StringUtils.trim(str).split('|');
             var components:Array = [];
             for(var i:int=0; i<wktArray.length; ++i) {
-                components.push(new WKT().read([wktArray[i]]));
+                components.push(new WKTFormat().read([wktArray[i]]));
             }
             return components;
         }
