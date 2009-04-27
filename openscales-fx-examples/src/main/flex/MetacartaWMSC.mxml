@@ -7,7 +7,7 @@
 			import org.openscales.core.handler.mouse.DragHandler;
 			import mx.events.ResizeEvent;
 			import org.openscales.core.basetypes.Size;
-			import org.openscales.core.feature.Vector;
+			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.Util;
 			import org.openscales.core.control.MousePosition;
 			import org.openscales.core.basetypes.Pixel;
