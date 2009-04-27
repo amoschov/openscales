@@ -56,7 +56,7 @@ package org.openscales.core
 		      if (this.options.method == URLRequestMethod.GET && parameters.length > 0)
 		        this.url += (this.url.match(/\?/) ? '&' : '?') + parameters;
 		
-		      if (proxy != null) {
+		      if ((proxy != null) && (proxy != "")) {
 		      	this.url = proxy + encodeURIComponent(this.url);
 		      }
 		      var loader:URLLoader = new URLLoader();
