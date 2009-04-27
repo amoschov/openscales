@@ -1,7 +1,11 @@
 package org.openscales.core.renderer
 {
 	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	
+	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.Style;
+	import org.openscales.core.feature.VectorFeature;
 
 	/**
 	 * Sprite element used by the Sprite Renderer.
@@ -10,10 +14,18 @@ package org.openscales.core.renderer
 	{
 		
 		private var _style:Style = null;
-		private var _featureId:String = null;
+		//Sprite now knows his feature instead of his feature_id
+		//it's important for event's on feature
+		private var _feature:VectorFeature = null;
 		private var _options:Object = new Object();
 		private var _geometryClass:String = null;
 		private var _attributes:Object = new Object();
+		
+		private var _isSelect:Boolean=true;
+		
+		public function SpriteElement()
+		{		
+		}
 		
 		public function get style():Style {
 			return this._style;
@@ -23,12 +35,13 @@ package org.openscales.core.renderer
 			this._style = value;
 		}
 		
-		public function get featureId():String {
-			return this._featureId;
+		public function get feature():VectorFeature {
+			return this._feature;
 		}
 		
-		public function set featureId(value:String):void {
-			this._featureId = value;
+		public function set feature(value:VectorFeature):void {
+			this._feature = value;
+			this.addEventListener(MouseEvent.MOUSE_MOVE, OnMouseHover);
 		}
 		
 		public function get options():Object {
@@ -55,6 +68,16 @@ package org.openscales.core.renderer
 			this._attributes = value;
 		}
 		
+		
+		/**
+		 * Event Management
+		 * 
+		 */
+		 public function OnMouseHover(pevt:MouseEvent):void
+		 {
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_HOVER,this.feature,this._isSelect,pevt.stageX,pevt.stageY));
+		 	this._isSelect=!this._isSelect;
+		 }
 		
 	}
 }

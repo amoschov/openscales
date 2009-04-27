@@ -52,7 +52,7 @@ package org.openscales.core.renderer
 	            style = feature.style;
 	        }
 	        if(feature && feature.geometry) {
-	        	var node:Object = this.drawGeometry(feature.geometry, style, feature.id);
+	        	var node:Object = this.drawGeometry(feature.geometry, style, feature);
 	        }
 		}
 		
@@ -60,11 +60,11 @@ package org.openscales.core.renderer
 			this.moveGeometry(feature.geometry);
 		}
 		
-		public function drawGeometry(geometry:Geometry, style:Style, featureId:String):SpriteElement {
+		public function drawGeometry(geometry:Geometry, style:Style, feature:VectorFeature):SpriteElement {
 			return null;
 		}
 		
-		public function redrawGeometry(node:SpriteElement, geometry:Geometry, style:Style, featureId:String):SpriteElement {
+		public function redrawGeometry(node:SpriteElement, geometry:Geometry, style:Style, feature:VectorFeature):SpriteElement {
 			return null;
 		}
 		
@@ -79,7 +79,7 @@ package org.openscales.core.renderer
 			
 		}
 		
-		public function getFeatureIdFromEvent(evt:MouseEvent):String {
+		public function getFeatureFromEvent(evt:MouseEvent):VectorFeature {
 			return null;
 		}
 		

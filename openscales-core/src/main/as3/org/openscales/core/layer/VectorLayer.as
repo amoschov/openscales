@@ -8,7 +8,6 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
-	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.renderer.Renderer;
 	import org.openscales.core.renderer.SpriteRenderer;
 	
@@ -194,8 +193,7 @@ package org.openscales.core.layer
 	    }*/
 	    
 	    public function getFeatureFromEvent(evt:MouseEvent):org.openscales.core.feature.VectorFeature {
-	    	var featureId:String = this.renderer.getFeatureIdFromEvent(evt);
-        	return this.getFeatureById(featureId);
+	    	return  this.renderer.getFeatureFromEvent(evt);
 	    }
 	    
 	    public function getFeatureById(featureId:String):org.openscales.core.feature.VectorFeature {

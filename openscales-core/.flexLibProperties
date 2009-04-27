@@ -24,12 +24,14 @@
 <classEntry path="org.openscales.core.control.MousePosition"/>
 <classEntry path="org.openscales.core.control.PanZoom"/>
 <classEntry path="org.openscales.core.control.PanZoomBar"/>
+<classEntry path="org.openscales.core.control.SelectFeature"/>
 <classEntry path="org.openscales.core.control.ui.Arrow"/>
 <classEntry path="org.openscales.core.control.ui.Button"/>
 <classEntry path="org.openscales.core.control.ui.CheckBox"/>
 <classEntry path="org.openscales.core.control.ui.RadioButton"/>
 <classEntry path="org.openscales.core.control.ui.SliderHorizontal"/>
 <classEntry path="org.openscales.core.control.ui.SliderVertical"/>
+<classEntry path="org.openscales.core.events.FeatureEvent"/>
 <classEntry path="org.openscales.core.events.LayerEvent"/>
 <classEntry path="org.openscales.core.events.MapEvent"/>
 <classEntry path="org.openscales.core.events.MarkerEvent"/>
@@ -111,8 +113,8 @@
 <resourceEntry destPath="org/openscales/core/img/marker-green.png" sourcePath="org/openscales/core/img/marker-green.png"/>
 <resourceEntry destPath="org/openscales/core/img/measuring-stick-off.png" sourcePath="org/openscales/core/img/measuring-stick-off.png"/>
 <resourceEntry destPath="org/openscales/core/img/zoom-minus-mini.png" sourcePath="org/openscales/core/img/zoom-minus-mini.png"/>
-<resourceEntry destPath="org/openscales/core/img/panning-hand-on.png" sourcePath="org/openscales/core/img/panning-hand-on.png"/>
 <resourceEntry destPath="org/openscales/core/img/marker-blue.png" sourcePath="org/openscales/core/img/marker-blue.png"/>
+<resourceEntry destPath="org/openscales/core/img/panning-hand-on.png" sourcePath="org/openscales/core/img/panning-hand-on.png"/>
 <resourceEntry destPath="org/openscales/core/img/layer-switcher-minimize.png" sourcePath="org/openscales/core/img/layer-switcher-minimize.png"/>
 <resourceEntry destPath="org/openscales/core/img/slider.png" sourcePath="org/openscales/core/img/slider.png"/>
 <resourceEntry destPath="org/openscales/core/img/layer-switcher-maximize.png" sourcePath="org/openscales/core/img/layer-switcher-maximize.png"/>

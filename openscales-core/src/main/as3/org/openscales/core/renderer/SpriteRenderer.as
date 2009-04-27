@@ -7,6 +7,7 @@ package org.openscales.core.renderer
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.feature.Style;
+	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
@@ -320,12 +321,12 @@ package org.openscales.core.renderer
 	        }
 	    }
 	    
-	    override public function drawGeometry(geometry:Geometry, style:Style, featureId:String):SpriteElement {
+	    override public function drawGeometry(geometry:Geometry, style:Style, feature:VectorFeature):SpriteElement {
 		    if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
 	            for (var i:int = 0; i < (geometry as Collection).components.length; i++) {
-	                this.drawGeometry((geometry as Collection).components[i], style, featureId);
+	                this.drawGeometry((geometry as Collection).components[i], style, feature);
 	            }
 	            return null;
 	        };
@@ -333,7 +334,7 @@ package org.openscales.core.renderer
 	        //first we create the basic node and add it to the root
 	        var nodeType:String = this.getNodeType(geometry);
 	        var node:SpriteElement = this.nodeFactory(geometry.id, nodeType, geometry);
-	        node.featureId = featureId;
+	        node.feature = feature;
 	        node.geometryClass = getQualifiedClassName(geometry);
 	        node.style = style;
 	        this.container.addChild(node);
@@ -343,12 +344,12 @@ package org.openscales.core.renderer
 	        return node;
 	    }
 	    
-	    override public function redrawGeometry(node:SpriteElement, geometry:Geometry, style:Style, featureId:String):SpriteElement {
+	    override public function redrawGeometry(node:SpriteElement, geometry:Geometry, style:Style, feature:VectorFeature):SpriteElement {
 		    if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
 	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
 	            for (var i:int = 0; i < (geometry as Collection).components.length; i++) {
-	                this.redrawGeometry(node, (geometry as Collection).components[i], style, featureId);
+	                this.redrawGeometry(node, (geometry as Collection).components[i], style, feature);
 	            }
 	            return null;
 	        };
@@ -411,9 +412,9 @@ package org.openscales.core.renderer
 	        node.options = options; 
     	}
 		
-    	override public function getFeatureIdFromEvent(evt:MouseEvent):String {
+    	override public function getFeatureFromEvent(evt:MouseEvent):VectorFeature {
 	        var node:Object = evt.currentTarget;
-	        return node._featureId;
+	        return node._feature;
     	}
     		    
 	    public function nodeFactory(id:String, type:String, geometry:Geometry):SpriteElement {
