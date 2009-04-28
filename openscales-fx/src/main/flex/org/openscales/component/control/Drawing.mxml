@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:control="org.openscales.component.control.*"
-	width="124" height="136">
+	width="214" height="164">
 	
 	<mx:Script>
 		<![CDATA[
@@ -143,6 +143,7 @@
 	<mx:Button x="48" y="10" id="btnPath" icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" click="this.onPathClick(event)" toggle="true" height="30" width="30"/>
 	<mx:Button x="84" y="10" id="btnPolygon" icon="@Embed('/org/openscales/component/images/IconeDessinPoly.swf')" click="this.onPolygonClick(event)" toggle="true" height="30" width="30"/>
 	<mx:Button x="10" y="48" label="DeleteLast" width="104" id="btnDeleteLast" click="this.onDeleteLastClick(event)"/>
+	<mx:Text x="10" y="108" text="Tooltip : to finalize a path or a polygon just double click on map when you have finished it." width="194" height="46" fontStyle="italic"/>
 	
 
 </control:Control>

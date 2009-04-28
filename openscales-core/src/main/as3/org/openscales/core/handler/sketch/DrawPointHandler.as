@@ -5,6 +5,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.Handler;
@@ -41,9 +42,13 @@ package org.openscales.core.handler.sketch
 		}
 		
 		public function drawPoint():void {
+			var style:Style = new Style();
+			style.fillColor = 0x60FFE9;
+			style.strokeColor = 0x60FFE9;
 			var feature:org.openscales.core.feature.VectorFeature;
 			feature = new org.openscales.core.feature.VectorFeature();
 			feature.id = id.toString(); id++;
+			feature.style = style;
 			var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
