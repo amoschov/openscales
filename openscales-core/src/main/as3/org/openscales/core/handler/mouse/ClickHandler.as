@@ -24,11 +24,11 @@ package org.openscales.core.handler.mouse {
 		/**
 		 * callback function oneclick(evt:MouseEvent):void
 		 */
-		public var _click:Function = null;
+		private var _click:Function = null;
 		/**
 		 * callback function doubleClick(evt:MouseEvent):void
 		 */
-		public var _doubleClick:Function = null;
+		private var _doubleClick:Function = null;
 			
 		public function ClickHandler(target:Map = null, active:Boolean = false,options:Object=null){
 			super(target,active);

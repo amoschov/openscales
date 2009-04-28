@@ -1,17 +1,18 @@
 package org.openscales.core.handler.sketch
 {
 	import flash.events.MouseEvent;
+	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
-	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LinearRing;
-	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.Handler;
+	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
 
 	public class DrawPolygonHandler extends Handler
@@ -22,7 +23,8 @@ package org.openscales.core.handler.sketch
 
 		private var _lring:LinearRing = null;
 		private var _polygon:Polygon = null;
-		private var _firstCall:Boolean = true;
+		private var _newFeature:Boolean = true;
+		private var _dblClickHandler:ClickHandler = new ClickHandler();
 
 		private var id:Number = 0;
 		
@@ -31,14 +33,16 @@ package org.openscales.core.handler.sketch
 		{
 			super(map, active);
 			this.drawLayer = drawLayer;
-			
 		}
 		
 		override protected function registerListeners():void{
-			this.map.addEventListener(MouseEvent.CLICK, this.mouseClick);
+			this._dblClickHandler.active = true;
+			this._dblClickHandler.doubleclick = this.mouseDblClick;
+			this.map.addEventListener(MouseEvent.CLICK, this.mouseClick);			
 		}
 		
 		override protected function unregisterListeners():void{
+        	this._dblClickHandler.active = false;
         	this.map.removeEventListener(MouseEvent.CLICK, this.mouseClick);
 		}
 		
@@ -47,7 +51,7 @@ package org.openscales.core.handler.sketch
 			if (drawLayer != null) {
 				var feature:org.openscales.core.feature.VectorFeature;
 				feature = new org.openscales.core.feature.VectorFeature();
-				feature.id = "point."+id.toString(); id++;
+				feature.id = "polygon."+id.toString(); id++;
 				
 				var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
 				var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
@@ -55,7 +59,7 @@ package org.openscales.core.handler.sketch
 
 				
 				
-				if(firstCall) {
+				if(newFeature) {
 					
 					lring = new LinearRing([point]);
 					polygon = new Polygon(lring);
@@ -69,20 +73,43 @@ package org.openscales.core.handler.sketch
 					drawLayer.addFeatures(featurePoint);
 					drawLayer.addFeatures(feature);
 					
-					firstCall = false;
+					newFeature = false;
 				}
 				else {
 					//When we have at least a 2 points polygon, we can remove the first point
-					if (drawLayer.features.length == 2) {
-						drawLayer.removeFeatures(drawLayer.features[0]);
+					var featuresToRemove:Array = [];
+					
+					for each (var feat:VectorFeature in drawLayer.features) {
+						if(getQualifiedClassName(feat.geometry) == "org.openscales.core.geometry::Point") {
+							featuresToRemove.push(feat);
+						}
 					}
+					drawLayer.removeFeatures(featuresToRemove);
 					drawLayer.renderer.clear();
 					lring.addComponent(point);
 					drawLayer.redraw();
 				}
 			}		
 		}
-
+		
+		public function mouseDblClick(event:MouseEvent):void {
+				newFeature = true;
+				
+				//Change style of finished polygon
+				var style:Style = new Style();
+				style.fillColor = 0x60FFE9;
+				style.strokeColor = 0x60FFE9;
+				
+				var feature:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
+				feature.style = style;
+				drawLayer.renderer.clear();
+				drawLayer.redraw();
+		}
+		
+		override public function set map(value:Map):void {
+			super.map = value;
+			this._dblClickHandler.map = value;
+		}
 		
 		public function get drawLayer():org.openscales.core.layer.VectorLayer {
 			return _drawLayer;
@@ -108,13 +135,18 @@ package org.openscales.core.handler.sketch
 			_polygon = polygon;
 		}
 
-		public function get firstCall():Boolean {
-			return _firstCall;
+		public function get newFeature():Boolean {
+			return _newFeature;
 		}
 
-		public function set firstCall(firstCall:Boolean):void {
-			_firstCall = firstCall;
+		public function set newFeature(newFeature:Boolean):void {
+			_newFeature = newFeature;
 		}
+		
+		public function get clickHandler():ClickHandler {
+			return _dblClickHandler;
+		}
+
 		
 	}
 }

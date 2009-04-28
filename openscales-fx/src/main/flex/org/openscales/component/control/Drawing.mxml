@@ -5,6 +5,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import flash.utils.getQualifiedClassName;
 			import org.openscales.core.layer.VectorLayer;
 			import org.openscales.core.handler.sketch.DrawPolygonHandler;
 			import org.openscales.core.handler.sketch.DrawPathHandler;
@@ -32,8 +33,8 @@
 				
 				switch(drawType)
 				{
-					case "path":{pathHandler.points = null; break;}
-					case "polygon":{polygonHandler.firstCall = true; break;}
+					case "path":{pathHandler.newFeature = true; break;}
+					case "polygon":{polygonHandler.newFeature = true; break;}
 				}
 			}
 			
@@ -44,21 +45,32 @@
 					switch(drawType)
 					{
 						case "path":		
-							drawLayer.removeFeatures(drawLayer.features[last]);					
-							pathHandler.points[pathHandler.id]=null;
-							pathHandler.id--;	
+							drawLayer.removeFeatures(drawLayer.features[last]);
+							
+							if (last - 1 >= 0 && getQualifiedClassName(drawLayer.features[last-1].geometry) == "org.openscales.core.geometry::LineString") {
+								pathHandler.lastPoint = drawLayer.features[last-1].geometry.getLastPoint();
+							}
+							else {
+								pathHandler.newFeature = true;
+							}
 							break;						
 						case "polygon":
-							Alert.show("Not implemented yet...", "Message");
+							var featuresToRemove:Array = [];
+							featuresToRemove.push(drawLayer.features[last]);
+							if (last-1 >= 0 && getQualifiedClassName(drawLayer.features[last-1].geometry) == "org.openscales.core.geometry::Point") {
+								featuresToRemove.push(drawLayer.features[last-1]);
+							}
+							drawLayer.removeFeatures(featuresToRemove);
+							polygonHandler.newFeature = true;
+							
 							break;
-						case "point":
+						default:
 							drawLayer.removeFeatures(drawLayer.features[last]);
 							break;
 					}   
 				}
 				else {
 					Alert.show("There are not features to delete !", "Message");
-					pathHandler.points = null;
 				}
 			}
 			public function onPathClick(event:Event):void {			
