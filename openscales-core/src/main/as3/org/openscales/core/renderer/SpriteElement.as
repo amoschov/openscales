@@ -24,7 +24,7 @@ package org.openscales.core.renderer
 		private var _isSelect:Boolean=true;
 		
 		public function SpriteElement()
-		{		
+		{	
 		}
 		
 		public function get style():Style {
@@ -41,7 +41,10 @@ package org.openscales.core.renderer
 		
 		public function set feature(value:VectorFeature):void {
 			this._feature = value;
-			this.addEventListener(MouseEvent.MOUSE_MOVE, OnMouseHover);
+			this.addEventListener(MouseEvent.MOUSE_OVER, OnMouseHover);
+			this.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
+			this.addEventListener(MouseEvent.CLICK, onMouseClick);
+			this.addEventListener(MouseEvent.DOUBLE_CLICK, onMouseDoubleClick);			
 		}
 		
 		public function get options():Object {
@@ -75,9 +78,19 @@ package org.openscales.core.renderer
 		 */
 		 public function OnMouseHover(pevt:MouseEvent):void
 		 {
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_HOVER,this.feature,this._isSelect,pevt.stageX,pevt.stageY));
-		 	this._isSelect=!this._isSelect;
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER,this.feature));
 		 }
-		
+		  public function OnMouseOut(pevt:MouseEvent):void
+		 {
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT,this.feature));
+		 }
+		 public function onMouseClick(pevt:MouseEvent):void
+		 {
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK,this.feature));
+		 }
+		  public function onMouseDoubleClick(pevt:MouseEvent):void
+		 {
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DOUBLE_CLICK,this.feature));
+		 }
 	}
 }
