@@ -25,6 +25,7 @@ package org.openscales.core.handler.sketch
 		private var _polygon:Polygon = null;
 		private var _newFeature:Boolean = true;
 		private var _dblClickHandler:ClickHandler = new ClickHandler();
+		private var _firstPointRemoved:Boolean = false;
 
 		private var id:Number = 0;
 		
@@ -76,15 +77,12 @@ package org.openscales.core.handler.sketch
 					newFeature = false;
 				}
 				else {
-					//When we have at least a 2 points polygon, we can remove the first point
-					var featuresToRemove:Array = [];
-					
-					for each (var feat:VectorFeature in drawLayer.features) {
-						if(getQualifiedClassName(feat.geometry) == "org.openscales.core.geometry::Point") {
-							featuresToRemove.push(feat);
-						}
+					//When we have at least a 2 points polygon, we can remove the first point					
+					if(!_firstPointRemoved && getQualifiedClassName(drawLayer.features[drawLayer.features.length-2].geometry) == "org.openscales.core.geometry::Point") {
+						drawLayer.removeFeatures(drawLayer.features[drawLayer.features.length-2]);
+						_firstPointRemoved = true;
 					}
-					drawLayer.removeFeatures(featuresToRemove);
+
 					drawLayer.renderer.clear();
 					lring.addComponent(point);
 					drawLayer.redraw();
@@ -139,8 +137,11 @@ package org.openscales.core.handler.sketch
 			return _newFeature;
 		}
 
-		public function set newFeature(newFeature:Boolean):void {
-			_newFeature = newFeature;
+		public function set newFeature(value:Boolean):void {
+			if (value == true) {
+				_firstPointRemoved = false;
+			}
+			_newFeature = value;
 		}
 		
 		public function get clickHandler():ClickHandler {

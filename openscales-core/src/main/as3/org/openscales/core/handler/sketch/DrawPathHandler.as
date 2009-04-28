@@ -22,7 +22,6 @@ package org.openscales.core.handler.sketch
 		private var _id:Number = 0;
 		private var _lastPoint:Point = null;
 		private var _newFeature:Boolean = true;
-		private var _nbPaths:Number = 0;
 		
 		private var _dblClickHandler:ClickHandler = new ClickHandler();
 				
@@ -60,15 +59,12 @@ package org.openscales.core.handler.sketch
 				newFeature = false;			
 			}
 			else {
-				//When we have at least a 2 points path, we can remove the first point
-				var featuresToRemove:Array = [];
-				
-				for each (var feat:VectorFeature in drawLayer.features) {
-					if(getQualifiedClassName(feat.geometry) == "org.openscales.core.geometry::Point") {
-						featuresToRemove.push(feat);
-					}
+				//When we have at least a 2 points path, we can remove the first point				
+				if(getQualifiedClassName(drawLayer.features[drawLayer.features.length-1].geometry) == "org.openscales.core.geometry::Point") {
+					drawLayer.removeFeatures(drawLayer.features[drawLayer.features.length-1]);
 				}
-				drawLayer.removeFeatures(featuresToRemove);
+					
+					
 				drawLayer.renderer.clear();
 				var points:Array = new Array(2);
 				points.push(_lastPoint, point);
@@ -136,7 +132,7 @@ package org.openscales.core.handler.sketch
 
 		public function set newFeature(newFeature:Boolean):void {
 			if(newFeature == true) {
-				_nbPaths++;
+				_lastPoint = null;
 			}
 			_newFeature = newFeature;
 		}
