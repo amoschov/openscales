@@ -1,13 +1,18 @@
 package org.openscales.core.control
 {
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
+	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.VectorLayer;
-	
 	public class SelectFeature extends Control
 	{
 		private var _select:Function=null;
 		private var _unselect:Function=null;
 		private var _layer:VectorLayer;
+		private var _lastfeature:VectorFeature=null;
+		private var _currentfeature:VectorFeature=null;
 		//Accept hover or not
 		private var _hover:Boolean=true;
 		
@@ -25,14 +30,16 @@ package org.openscales.core.control
 			if(!this.active)
 			{
 				this.active=true;
-				this.map.addEventListener(FeatureEvent.FEATURE_HOVER,this.Onhover);
+				this.map.addEventListener(FeatureEvent.FEATURE_OVER,this.select);
+				this.map.addEventListener(FeatureEvent.FEATURE_OUT,this.unselect);
 			}
 			
 		}
 		public function deactivate():void
 		{
 			this.active=false;
-			this.removeEventListener(FeatureEvent.FEATURE_HOVER,this.Onhover);
+			this.removeEventListener(FeatureEvent.FEATURE_OVER,this.select);
+			this.removeEventListener(FeatureEvent.FEATURE_OUT,this.unselect);
 		}
 
 		public function  get select():Function
@@ -69,19 +76,22 @@ package org.openscales.core.control
 			this._hover=hover;
 		}
 		
-		
-		
-		
-		
-		
-		private function Onhover(pevt:FeatureEvent):void
+		public function  get lastfeature():VectorFeature
 		{
-			if(pevt.vectorfeature.layer==this.layer && this.hover) 
-			{
-				if(pevt.isselect) this.select(pevt);
-				else this.unselect(pevt);				
-			}
-			
+			return this._lastfeature;
+		}
+		public function set lastfeature(lastfeature:VectorFeature):void
+		{
+			this._lastfeature=lastfeature;
+		}
+		
+		public function  get currentfeature():VectorFeature
+		{
+			return this._currentfeature;
+		}
+		public function set currentfeature(currentfeature:VectorFeature):void
+		{
+			this._currentfeature=currentfeature;
 		}
 	}
 }
