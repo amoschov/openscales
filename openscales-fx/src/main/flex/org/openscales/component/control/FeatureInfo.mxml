@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:control="org.openscales.component.control.*"
+	width="282" height="168">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import org.openscales.core.events.FeatureEvent;
+			import org.openscales.core.Map;
+			import org.openscales.core.feature.Feature;
+			
+			private var attributes:ArrayCollection;
+		
+			public function showInfo(evt:FeatureEvent):void {
+				var properties:Array = [];
+				
+				for(var key:String in evt.vectorfeature.attributes) {
+					var property:Object = {};
+					property.Name = key;
+					property.Value = evt.vectorfeature.attributes[key];
+					properties.push(property);
+				}
+				
+				attributes = new ArrayCollection(properties);
+				this.dgFeatureInfo.dataProvider = this.attributes;
+				this.dgFeatureInfo.columns.sort();
+			}
+			
+			override public function set map(value:Map):void {
+				if (value != null) {
+					super.map = value;
+					
+					//We listen to the Feature Click event
+					this.map.addEventListener(FeatureEvent.FEATURE_CLICK, this.showInfo);
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:DataGrid x="10" y="10" width="262" height="148" id="dgFeatureInfo" editable="false">
+		<mx:columns>
+			<mx:DataGridColumn headerText="Property" dataField="Name" sortDescending="true"/>
+			<mx:DataGridColumn headerText="Value" dataField="Value"/>
+		</mx:columns>
+	</mx:DataGrid>
+
+	
+
+</control:Control>
