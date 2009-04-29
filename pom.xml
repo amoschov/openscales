@@ -215,6 +215,16 @@
 	</pluginRepositories>
 
 	 <distributionManagement>
+			<repository>
+				<id>openscales-repo</id>
+				<name>OpenScales Release repository</name>
+				<url>http://openscales.org/nexus/content/repositories/releases</url>
+			</repository>
+			<snapshotRepository>
+				<id>openscales-repo-snapshot</id>
+				<name>OpenScales Snapshot Repository</name>
+				<url>http://openscales.org/nexus/content/repositories/snapshots</url>
+			</snapshotRepository>
 			<site>
 					<id>openscales.org</id>
 					<url>${mvn.site}</url>
