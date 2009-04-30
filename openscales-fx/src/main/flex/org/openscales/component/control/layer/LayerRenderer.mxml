@@ -46,12 +46,12 @@
             override public function set data(value:Object):void 
             {
                 super.data = value;
-
-				displayControl.removeAllChildren();
 				
-				if(this.layer != null)
-				{ 
+				if((this.layer != null) && (displayControl != null))
+				{
+					displayControl.removeAllChildren();
 					opacityControl.value = this.layer.alpha;
+
 					if(this.layer.isBaseLayer == true)
 					{
 						var radioButtonGroup:RadioButtonGroup = new RadioButtonGroup();
@@ -77,14 +77,15 @@
 						displayControl.addChild(checkBox);
 						
 					}
+					
+					// TODO Refactor this, layer added should already have its extent property set
+				 	if (getQualifiedClassName(data) == "org.openscales.core.layer.ogc::WFS" &&	(data as WFS).capabilities != null) {
+						 zoomButton.visible = true; 
+						 deleteButton.visible = true;  
+						
+					}
 			 	}
 			 	
-			 	// TODO Refactor this, layer added should already have its extent property set
-			 	if (getQualifiedClassName(data) == "org.openscales.core.layer.ogc::WFS" &&	(data as WFS).capabilities != null) {
-					 zoomButton.visible = true; 
-					 deleteButton.visible = true;  
-					
-				}
 			}
 			
 			
