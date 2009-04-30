@@ -13,11 +13,8 @@ package org.openscales.core.feature
 	{
 		
 	    private var _geometry:Geometry = null;
-
-	    private var _state:String = null;
-	    
-	    private var _style:Style = null;
-	    
+	    private var _state:String = null;    
+	    private var _style:Style = null;	    
 	    private var _originalStyle:Style = null;
 		
 		public function VectorFeature(geometry:Geometry = null, data:Object = null, style:Style = null):void {

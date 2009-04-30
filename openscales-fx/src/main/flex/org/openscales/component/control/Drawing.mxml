@@ -6,6 +6,8 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.feature.Style;
+			import org.openscales.core.feature.Feature;
 			import flash.sampler.NewObjectSample;
 			import org.openscales.core.handler.mouse.DragHandler;
 			import mx.controls.ToggleButtonBar;
@@ -79,56 +81,29 @@
 					Alert.show("There are not features to delete !", "Message");
 				}
 			}
-			/* public function onPathClick(event:Event):void {			
-				if(drawType != "path"){
-					drawType = "path";
-					pathHandler.active = true;
-					
-					btnPoint.enabled = false;
-					btnPolygon.enabled = false;
-				}
-				else {
-					drawType = "";
-					pathHandler.active = false;
-					btnPoint.enabled = true;
-					btnPolygon.enabled = true;
-				}
-			} */
 			
-			/* public function onPolygonClick(event:Event):void {
-				if(drawType != "polygon") {
-					drawType = "polygon"
-					
-					polygonHandler.active = true;
-					
-					btnPath.enabled = false;
-					btnPoint.enabled = false;
+			public function selectFeature(event:FeatureEvent):void{
+				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active){
+					var newStyle:Style = new Style();
+					newStyle.fillColor = 0xFFFFFF;
+					newStyle.strokeColor = 0xFFFFFF;
+					/* var oldStyle:Style = new Style();
+					oldStyle.fillColor = 0x60FFE9;
+					oldStyle.strokeColor = 0x60FFE9; */
+				
+					var feat:org.openscales.core.feature.VectorFeature = event.vectorfeature;
+					/* for each(var f:Feature in feat){
+						if(f.selected){
+							feat.style = oldStyle;
+						}
+					}  */
+					feat.style = newStyle;
+					feat.selected = true;
+					drawLayer.renderer.clear();
+					drawLayer.redraw();
 				}
-				else {
-					drawType = "";
-					polygonHandler.active = false;
-					
-					btnPath.enabled = true;
-					btnPoint.enabled = true;
-				}
-			} */
-			
-			/* public function onPointClick(event:Event):void {
-				if(drawType != "point") {
-					drawType = "point";
-					pointHandler.active = true;
-					
-					btnPath.enabled = false;
-					btnPolygon.enabled = false;
-				}
-				else {
-					drawType = "";
-					pointHandler.active = false;
-					
-					btnPath.enabled = true;
-					btnPolygon.enabled = true;
-				}
-			} */
+				
+			}
 			
 			override public function set map(value:Map):void
 			{
@@ -140,7 +115,7 @@
 					polygonHandler.map = this.map
 					this.map.addLayer(drawLayer);
 				}
-				
+				this.map.addEventListener(FeatureEvent.FEATURE_CLICK, selectFeature);
 			}
 			
 			private function clickHandler(event:ItemClickEvent):void{
@@ -239,10 +214,8 @@
 	<mx:Button x="10" y="48" label="DeleteLast" width="104" id="btnDeleteLast" click="this.onDeleteLastClick(event)"/>
 		
 	<mx:Text x="160" y="5" text="Tooltip : to finalize a path or a polygon just double click on map." width="143" height="76" fontStyle="italic"/>
-	
-	
+		
 	<control:FeatureInfo id="featureInfo" x="10" y="108" width="310" height="166">
 	</control:FeatureInfo>
 	
-
 </control:Control>
