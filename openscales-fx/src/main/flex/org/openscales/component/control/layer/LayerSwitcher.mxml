@@ -28,13 +28,14 @@
 		
 	 	public function refresh(event:LayerEvent = null):void
 		{
+			
 			baseLayerList.dataProvider = this.baseLayers;
 			baseLayerList.rowCount = this.baseLayers.length;
 			overlayList.dataProvider = this.overlays;
 			overlayList.rowCount = this.overlays.length;
+
 		} 
-		
-		
+				
 		public function get baseLayers():Array
 		{
 			var layers:Array = this.map.layers;
@@ -54,7 +55,7 @@
 		public function get overlays():Array
 		{
 			var layers:Array = this.map.layers;
-			var overlaysArray:Array = new Array();;
+			var overlaysArray:Array = new Array();
 			
 			for(var k:int=0;k<layers.length;k++)
 			{
@@ -62,15 +63,24 @@
 				if(layer.isBaseLayer == false)
 					overlaysArray.push(layer);
 			}
-			
+			overlayList.height = overlaysArray.length *90;
 			return overlaysArray.reverse();
 		}
 		
 		public function changeLayerOrder(event:DragEvent):void
 		{
-			// new zIndex is overlay layer postion + 1 for the base layer
-			(overlayList.selectedItem as Layer).zindex = overlayList.calculateDropIndex(event) + 1;
+			
+			var ecart:int = overlayList.calculateDropIndex() - overlayList.selectedIndex;	
+			if(ecart > 0)
+			{
+				(overlayList.selectedItem as Layer).zindex = (overlayList.selectedItem as Layer).zindex - (ecart-1);
+			}
+			if(ecart < 0)			
+			{
+				(overlayList.selectedItem as Layer).zindex = (overlayList.selectedItem as Layer).zindex + ecart +2;
+			}
 		}
+		
 		
 	]]>
 </mx:Script>

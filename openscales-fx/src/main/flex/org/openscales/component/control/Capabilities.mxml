@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
-	xmlns:control="org.openscales.component.control.*" >
+	xmlns:control="org.openscales.component.control.*" creationComplete="this.map.addEventListener(LayerEvent.LAYER_REMOVED,deleteLayer);" >
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.events.LayerEvent;
 			import org.openscales.core.layer.ogc.WFS;
 			import mx.controls.Text;
 			import mx.controls.Alert;
@@ -18,6 +19,11 @@
 			private var addedLayers:HashMap = new HashMap();
 			private var url:String = null;
 						
+			public function deleteLayer(event:LayerEvent):void
+			{
+				addedLayers.remove((event.layer as Layer).name);
+			}
+					
 			public function onButtonClick(event:MouseEvent):void{
 				var getCap:GetCapabilities = new GetCapabilities("wfs", this.txtUrl.text,this.capabilitiesGetter);
 				url = this.txtUrl.text;

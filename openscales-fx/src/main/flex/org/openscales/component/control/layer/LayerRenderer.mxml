@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="75" creationComplete="onCreationComplete(event)">
-
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="75">
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Text;
+			import org.openscales.core.events.LayerEvent;
+			import mx.accessibility.ButtonAccImpl;
+			import mx.core.ButtonAsset;
+			import mx.skins.halo.ButtonSkin;
 			import mx.events.DragEvent;
 			import mx.binding.utils.BindingUtils;
 			import org.openscales.core.Map;
@@ -33,9 +37,19 @@
 				layer.alpha = (event.target as HSlider).value;
 			}
 			
-			public function onCreationComplete(event:Event):void
+			public function deleteLayer(event:Event):void
 			{
-				 if(this.layer != null)
+				 (data as Layer).map.removeLayer(data as Layer); 
+			}
+			
+			// Override the set method for the data property.
+            override public function set data(value:Object):void 
+            {
+                super.data = value;
+
+				displayControl.removeAllChildren();
+				
+				if(this.layer != null)
 				{ 
 					opacityControl.value = this.layer.alpha;
 					if(this.layer.isBaseLayer == true)
@@ -67,9 +81,12 @@
 			 	
 			 	// TODO Refactor this, layer added should already have its extent property set
 			 	if (getQualifiedClassName(data) == "org.openscales.core.layer.ogc::WFS" &&	(data as WFS).capabilities != null) {
-					zoomButton.visible = true;
+					 zoomButton.visible = true; 
+					 deleteButton.visible = true;  
+					
 				}
 			}
+			
 			
 			private function setLayerExtent(event:MouseEvent):void {
 					
@@ -90,14 +107,16 @@
 	</mx:Script>
 	
 	<mx:HBox width="100%">
-		<mx:Canvas id="displayControl" textAlign="center" width="100%" />
-		<mx:Spacer />
+		<mx:Canvas id="displayControl" textAlign="center" />
 		<mx:Button id="zoomButton" icon="@Embed('/org/openscales/component/images/zoomin.swf')" click="this.setLayerExtent(event)" visible="false"/>
+		<mx:Spacer width="100%" />
+		<mx:Button id="deleteButton" label="Remove" icon="@Embed('/org/openscales/component/images/cross.swf')" cornerRadius="12" width="10" height="10" click="deleteLayer(event)" visible="false"/>	
 	</mx:HBox>
 	<mx:HBox width="100%">	
 		<mx:Label text="Opacity"/>
 		<mx:HSlider width="100%" id="opacityControl" minimum="0" maximum="1" 
 			labels="{['0%','100%']}" change="layerOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
+
 	</mx:HBox>
 	
 </mx:VBox>

@@ -99,7 +99,7 @@
 				</mx:VBox>
 			</resize:ResizableWindow>
 						
-			<resize:ResizableWindow title="Tools" movable="true" id="tools" width="350" height="400" >
+			<resize:ResizableWindow title="Tools" movable="true" resizable="true" id="tools" width="350" height="500" >
 				<mx:TabNavigator width="100%" height="100%">
 					<os:LayerSwitcherComponent id="layerSwitcher" map="{map}" label="Layers"/>
 					<os:DrawingComponent map="{map}" width="100%" height="100%" label="Draw" />
