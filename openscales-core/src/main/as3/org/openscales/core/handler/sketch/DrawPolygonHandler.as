@@ -103,9 +103,11 @@ package org.openscales.core.handler.sketch
 			style.strokeColor = 0x60FFE9;
 				
 			var feature:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
-			feature.style = style;
-			drawLayer.renderer.clear();
-			drawLayer.redraw();
+			if(feature!=null){
+				feature.style = style;
+				drawLayer.renderer.clear();
+				drawLayer.redraw();
+			}		
 		}
 		
 		override public function set map(value:Map):void {
