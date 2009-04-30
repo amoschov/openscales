@@ -2,10 +2,10 @@ package org.openscales.coretest.layer.capabilities
 {
 	import flexunit.framework.TestCase;
 	
-	/*import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.layer.capabilities.WFS100;
-	import org.openscales.core.layer.capabilities.WFS110;*/
+	import org.openscales.core.layer.capabilities.WFS110;
 	
 	public class ParsingTest extends TestCase
 	{
@@ -18,7 +18,7 @@ package org.openscales.coretest.layer.capabilities
 			super(methodName);
 		}
 		
-		/*public function testWfs100():void {
+		public function testWfs100():void {
 			
 			var parser:WFS100 = new WFS100();
 			var capabilities:HashMap = parser.read(doc10);
@@ -66,7 +66,7 @@ package org.openscales.coretest.layer.capabilities
 			assertEquals("Tiger 2005fe water shorelines", featureCap.getValue("Title"));
 			assertEquals("This layer contains the shorelines for all water bodies in the United States.  It is derived from the TIGER dataset.", featureCap.getValue("Abstract"));
 			featureCap = null;
-		}*/
+		}
 		
 	}
 }
