@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
-	xmlns:control="org.openscales.component.control.*" creationComplete="this.featureInfo.map = this.map"
+	xmlns:control="org.openscales.component.control.*"
+	xmlns:os="http://openscales.org" creationComplete="this.featureInfo.map = this.map; this.tgBar.selectedIndex = -1"
 	width="330" height="284">
-	
+		
 	<mx:Script>
 		<![CDATA[
+			import flash.sampler.NewObjectSample;
+			import org.openscales.core.handler.mouse.DragHandler;
+			import mx.controls.ToggleButtonBar;
+			import mx.events.ItemClickEvent;
 			import org.openscales.core.events.FeatureEvent;
 			import flash.utils.getQualifiedClassName;
 			import org.openscales.core.layer.VectorLayer;
@@ -74,7 +79,7 @@
 					Alert.show("There are not features to delete !", "Message");
 				}
 			}
-			public function onPathClick(event:Event):void {			
+			/* public function onPathClick(event:Event):void {			
 				if(drawType != "path"){
 					drawType = "path";
 					pathHandler.active = true;
@@ -88,9 +93,9 @@
 					btnPoint.enabled = true;
 					btnPolygon.enabled = true;
 				}
-			}
+			} */
 			
-			public function onPolygonClick(event:Event):void {
+			/* public function onPolygonClick(event:Event):void {
 				if(drawType != "polygon") {
 					drawType = "polygon"
 					
@@ -106,9 +111,9 @@
 					btnPath.enabled = true;
 					btnPoint.enabled = true;
 				}
-			}
+			} */
 			
-			public function onPointClick(event:Event):void {
+			/* public function onPointClick(event:Event):void {
 				if(drawType != "point") {
 					drawType = "point";
 					pointHandler.active = true;
@@ -123,7 +128,7 @@
 					btnPath.enabled = true;
 					btnPolygon.enabled = true;
 				}
-			}
+			} */
 			
 			override public function set map(value:Map):void
 			{
@@ -137,14 +142,105 @@
 				}
 				
 			}
+			
+			private function clickHandler(event:ItemClickEvent):void{
+				var handler:Number = event.index;
+				var h:Handler;
+				for each(h in this.map.handlers){
+					if(h is DragHandler){
+						h.active = false;
+					}
+				}
+				switch(handler)
+				{
+					case 0:		//click on button point
+						if(drawType!="point"){
+							if(pathHandler.active){
+								pathHandler.drawFinalPath();
+								pathHandler.active = false;
+							}else if(polygonHandler.active){
+								polygonHandler.drawFinalPoly();
+								polygonHandler.active = false;
+							}												
+							pointHandler.active = true;
+							drawType = "point";
+						}
+						else{
+							drawType = "";
+							pointHandler.active = false;
+							this.tgBar.selectedIndex = -1;
+							for each(h in this.map.handlers){
+								if(h is DragHandler){
+									h.active = true;
+								}
+							}
+						}						
+						break;
+					
+					case 1:		//click on button path
+						if(drawType!="path"){
+							if(polygonHandler.active){
+								polygonHandler.drawFinalPoly();
+								polygonHandler.active = false;
+							}						
+							pointHandler.active = false;
+							pathHandler.active = true;
+							drawType = "path";
+						}
+						else{
+							drawType = "";
+							pathHandler.drawFinalPath();
+							pathHandler.active = false;
+							this.tgBar.selectedIndex = -1;
+							for each(h in this.map.handlers){
+								if(h is DragHandler){
+									h.active = true;
+								}
+							}
+						}
+						break;
+						
+					case 2:		//click on button polygon
+						if(drawType!="polygon"){
+							if(pathHandler.active){
+								pathHandler.drawFinalPath();
+								pathHandler.active = false;
+							}						
+							pointHandler.active = false;
+							polygonHandler.active = true;
+							drawType = "polygon";
+						}
+						else{
+							drawType = "";
+							polygonHandler.active = false;
+							polygonHandler.drawFinalPoly();
+							this.tgBar.selectedIndex = -1;
+							for each(h in this.map.handlers){
+								if(h is DragHandler){
+									h.active = true;
+								}
+							}
+						}
+						break;
+				}
+			}
 		]]>
 	</mx:Script>
-	<mx:Button x="10" y="10" id="btnPoint" icon="@Embed('/org/openscales/component/images/IconeDessinPoint.swf')" click="this.onPointClick(event)" toggle="true" height="30" width="30"/>
+	
+	<mx:ToggleButtonBar x="10" y="10" horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="-1" id="tgBar">
+		<mx:Array>
+			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoint.swf')" id="btnPoint"/>
+			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" id="btnPath"/>
+			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoly.swf')" id="btnPolygon"/>
+		</mx:Array>
+	</mx:ToggleButtonBar>	
+	
 	<mx:Button x="10" y="78" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="104"/>
-	<mx:Button x="48" y="10" id="btnPath" icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" click="this.onPathClick(event)" toggle="true" height="30" width="30"/>
-	<mx:Button x="84" y="10" id="btnPolygon" icon="@Embed('/org/openscales/component/images/IconeDessinPoly.swf')" click="this.onPolygonClick(event)" toggle="true" height="30" width="30"/>
 	<mx:Button x="10" y="48" label="DeleteLast" width="104" id="btnDeleteLast" click="this.onDeleteLastClick(event)"/>
-	<mx:Text x="135" y="10" text="Tooltip : to finalize a path or a polygon just double click on map." width="143" height="76" fontStyle="italic"/>
+		
+	<mx:Text x="160" y="5" text="Tooltip : to finalize a path or a polygon just double click on map." width="143" height="76" fontStyle="italic"/>
+	
+	
 	<control:FeatureInfo id="featureInfo" x="10" y="108" width="310" height="166">
 	</control:FeatureInfo>
 	

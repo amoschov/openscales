@@ -91,17 +91,21 @@ package org.openscales.core.handler.sketch
 		}
 		
 		public function mouseDblClick(event:MouseEvent):void {
-				newFeature = true;
+				drawFinalPoly();
+		}
+		
+		public function drawFinalPoly():void{
+			newFeature = true;
 				
-				//Change style of finished polygon
-				var style:Style = new Style();
-				style.fillColor = 0x60FFE9;
-				style.strokeColor = 0x60FFE9;
+			//Change style of finished polygon
+			var style:Style = new Style();
+			style.fillColor = 0x60FFE9;
+			style.strokeColor = 0x60FFE9;
 				
-				var feature:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
-				feature.style = style;
-				drawLayer.renderer.clear();
-				drawLayer.redraw();
+			var feature:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
+			feature.style = style;
+			drawLayer.renderer.clear();
+			drawLayer.redraw();
 		}
 		
 		override public function set map(value:Map):void {

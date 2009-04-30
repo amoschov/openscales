@@ -43,7 +43,14 @@ package org.openscales.core.handler.sketch
 		}
 		
 		public function mouseClick(event:MouseEvent):void {	 					
-			
+			this.drawLine();						
+		}
+		
+		 public function mouseDblClick(event:MouseEvent):void {
+			this.drawFinalPath();
+		} 
+		
+		private function drawLine():void{
 			var feature:org.openscales.core.feature.VectorFeature;
 			feature = new org.openscales.core.feature.VectorFeature();
 			feature.id = "path." + id.toString(); id++;
@@ -63,8 +70,7 @@ package org.openscales.core.handler.sketch
 				if(getQualifiedClassName(drawLayer.features[drawLayer.features.length-1].geometry) == "org.openscales.core.geometry::Point") {
 					drawLayer.removeFeatures(drawLayer.features[drawLayer.features.length-1]);
 				}
-					
-					
+									
 				drawLayer.renderer.clear();
 				var points:Array = new Array(2);
 				points.push(_lastPoint, point);
@@ -73,10 +79,10 @@ package org.openscales.core.handler.sketch
 				drawLayer.addFeatures(feature);
 				drawLayer.redraw();
 				_lastPoint = point;
-			}							
+			}
 		}
 		
-		 public function mouseDblClick(event:MouseEvent):void {
+		public function drawFinalPath():void{
 			newFeature = true;
 				
 			//Change style of finished path
@@ -105,7 +111,7 @@ package org.openscales.core.handler.sketch
 			
 			drawLayer.renderer.clear();
 			drawLayer.redraw();
-		} 
+		}
 		
 		override public function set map(value:Map):void {
 			super.map = value;
