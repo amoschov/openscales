@@ -292,7 +292,7 @@ package org.openscales.core.renderer
 	        else 
 	        {
 	        	var element:Object = this.container.getChildByName(geometry.id);
-	            element.parent.removeChild(element);
+	        	if(element!=null) element.parent.removeChild(element);
 	        }
 	        
 		}

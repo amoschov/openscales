@@ -41,10 +41,13 @@ package org.openscales.core.renderer
 		
 		public function set feature(value:VectorFeature):void {
 			this._feature = value;
-			this.addEventListener(MouseEvent.MOUSE_OVER, OnMouseHover);
-			this.addEventListener(MouseEvent.MOUSE_OUT, OnMouseOut);
-			this.addEventListener(MouseEvent.CLICK, onMouseClick);
-			this.addEventListener(MouseEvent.DOUBLE_CLICK, onMouseDoubleClick);			
+			this.addEventListener(MouseEvent.MOUSE_OVER, this.OnMouseHover);
+			this.addEventListener(MouseEvent.MOUSE_OUT, this.OnMouseOut);
+			this.addEventListener(MouseEvent.CLICK, this.onMouseClick);
+			this.addEventListener(MouseEvent.DOUBLE_CLICK, this.onMouseDoubleClick);	
+			this.addEventListener(MouseEvent.MOUSE_DOWN,this.onMouseDown);	
+			this.addEventListener(MouseEvent.MOUSE_UP,this.onMouseUp);
+			this.addEventListener(MouseEvent.MOUSE_MOVE,this.OnMouseMove);
 		}
 		
 		public function get options():Object {
@@ -73,24 +76,40 @@ package org.openscales.core.renderer
 		
 		
 		/**
-		 * Event Management
+		 * Events Management
 		 * 
 		 */
 		 public function OnMouseHover(pevt:MouseEvent):void
 		 {
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER,this.feature));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER,this.feature,pevt.stageX,pevt.stageY));
 		 }
 		  public function OnMouseOut(pevt:MouseEvent):void
 		 {
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT,this.feature));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT,this.feature,pevt.stageX,pevt.stageY));
 		 }
 		 public function onMouseClick(pevt:MouseEvent):void
 		 {
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK,this.feature));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK,this.feature,pevt.stageX,pevt.stageY));
 		 }
 		  public function onMouseDoubleClick(pevt:MouseEvent):void
 		 {
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DOUBLE_CLICK,this.feature));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DOUBLECLICK,this.feature,pevt.stageX,pevt.stageY));
+		 }
+		 
+		 public function onMouseDown(pevt:MouseEvent):void
+		 {
+		 	this.buttonMode=true;
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEDOWN,this.feature,pevt.stageX,pevt.stageY));
+		 }
+		 
+		  public function onMouseUp(pevt:MouseEvent):void
+		 {
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP,this.feature,pevt.stageX,pevt.stageY));
+		 }
+		 
+		 public function OnMouseMove(pevt:MouseEvent):void
+		 {
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEMOVE,this.feature,pevt.stageX,pevt.stageY));
 		 }
 	}
 }
