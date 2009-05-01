@@ -177,6 +177,11 @@
 					<sourceDir>${project.build.sourceDirectory}</sourceDir>
 				</configuration>
 		    </plugin>
+			<plugin>
+				<groupId>info.flex-mojos</groupId>
+				<artifactId>asdoc-mojo</artifactId>
+				<version>${asdoc.mojo.version}</version>
+			</plugin>
 		</plugins>
 		
 		<pluginManagement>
@@ -188,7 +193,7 @@
 						<sourceDir>${project.build.sourceDirectory}</sourceDir>
 					</configuration>
 			    </plugin>
-					<plugin>
+				<plugin>
 					<groupId>info.flex-mojos</groupId>
 					<artifactId>asdoc-mojo</artifactId>
 					<version>${asdoc.mojo.version}</version>
