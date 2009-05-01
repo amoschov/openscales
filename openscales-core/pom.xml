@@ -22,7 +22,7 @@
 		</dependency>
 	</dependencies>
 	
-	</build>
+	<build>
 		<plugins>
 			<plugin>
 		        <groupId>net.sf.flex-mvn-report</groupId>
