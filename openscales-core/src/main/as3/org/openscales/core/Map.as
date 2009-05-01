@@ -1,3 +1,4 @@
+package org.openscales.core
 {
 	import com.gskinner.motion.GTweeny;
 	
