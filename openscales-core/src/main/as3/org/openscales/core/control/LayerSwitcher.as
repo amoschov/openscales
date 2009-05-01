@@ -102,7 +102,7 @@ package org.openscales.core.control
 			
 			if(_minimized) {
 				this.addChild(_maximizeButton);
-				this.alpha = 0.7
+				this.alpha = 0.7;
 				this._layerSwitcherState = "Close";
 						
 			} else {

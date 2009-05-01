@@ -610,7 +610,7 @@ package org.openscales.core.basetypes.maps
             {
                 list.push( new HashMapEntry( key, map[key] ) );
             }
-            return list
+            return list;
         }
     }
 }

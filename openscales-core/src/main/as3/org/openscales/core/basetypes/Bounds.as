@@ -95,7 +95,7 @@ package org.openscales.core.basetypes
 						bounds = new Bounds(object.x, object.y, object.x, object.y);
 						break;
 					case "Bounds":
-						bounds = (Bounds)object;
+						bounds = object as Bounds;
 						break;
 				}
 				

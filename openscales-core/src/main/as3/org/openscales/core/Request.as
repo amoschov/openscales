@@ -27,7 +27,7 @@ package org.openscales.core
 			  method:       URLRequestMethod.POST,
 			  parameters:   ''
 			}
-			Util.extend(this.options, options || {});
+			Util.extend(this.options, options);
 		}
 
 		public function get options():Object {

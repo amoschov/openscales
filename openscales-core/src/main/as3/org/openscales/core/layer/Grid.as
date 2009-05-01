@@ -261,8 +261,7 @@ package org.openscales.core.layer
 	             
 	            tileoffsetlat -= tilelat;
 	            tileoffsety += this.tileSize.h;
-	        } while((tileoffsetlat >= bounds.bottom - tilelat * this.buffer)
-	                || rowidx < minRows)
+	        } while((tileoffsetlat >= bounds.bottom - tilelat * this.buffer) || rowidx < minRows)
 	        
 	        this.removeExcessTiles(rowidx, colidx);
 	

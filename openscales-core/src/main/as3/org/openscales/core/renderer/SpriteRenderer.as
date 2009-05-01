@@ -182,7 +182,7 @@ package org.openscales.core.renderer
 	        for (var j:int = 0; j < geometry.components.length; j++) {
 	            var linearRing:LinearRing = geometry.components[j];
 	            for (var i:int = 0; i < linearRing.components.length; i++) {
-	                var component:String = this.getShortString(linearRing.components[i])
+	                var component:String = this.getShortString(linearRing.components[i]);
 	                if (component) {
 	                	var coords:Array = component.split(",");
 	                	if (i==0) {

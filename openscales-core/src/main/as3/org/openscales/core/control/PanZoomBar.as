@@ -95,7 +95,7 @@ package org.openscales.core.control
 	        
 	        this.zoomBar = new zoombarImg();
 	        zoomBar.x = centered.x;
-	        zoomBar.y = centered.y
+	        zoomBar.y = centered.y;
 	        zoomBar.width = this.zoomStopWidth;
 	        zoomBar.height = this.zoomStopHeight * this.map.numZoomLevels;
 	        

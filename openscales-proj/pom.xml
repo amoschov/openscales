@@ -14,6 +14,18 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
+	<build>
+		<plugins>
+			<plugin>
+		        <groupId>net.sf.flex-mvn-report</groupId>
+		        <artifactId>flex-mvn-report</artifactId>
+				<configuration>
+					<sourceDir>${project.build.sourceDirectory}</sourceDir>
+				</configuration>
+		    </plugin>
+		</plugins>
+	</build>
+	
 	<reporting>
 		<plugins>
 			<plugin>
@@ -21,8 +33,15 @@
 				<artifactId>asdoc-mojo</artifactId>
 				<version>${asdoc.mojo.version}</version>
 			</plugin>
+			<plugin>
+				<groupId>net.sf.flex-mvn-report</groupId>
+				<artifactId>flex-mvn-report</artifactId>
+				<configuration>
+					<sourceDir>${project.build.sourceDirectory}</sourceDir>
+				</configuration>
+			</plugin>
 		</plugins>
-	</reporting>
-	
+			
+	</reporting>	
 	
 </project>

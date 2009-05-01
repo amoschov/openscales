@@ -52,7 +52,7 @@ package org.openscales.core.handler.mouse {
 		
 		private function mouseClick(event:MouseEvent):void{
 		    _mouseEvent = event;
-		    _clickNum++
+		    _clickNum++;
 		    _timer.start() 
 		}
 		
