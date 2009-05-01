@@ -65,7 +65,7 @@ package org.openscales.core.layer.ogc
 		    	
 	        if (options == null) { options = {}; } 
 	        
-	        super(name, options)
+	        super(name, options);
 	        
 	        if (this.featureClass || !org.openscales.core.layer.VectorLayer || !org.openscales.core.feature.VectorFeature) {
 	            this.vectorMode = false;

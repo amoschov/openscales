@@ -178,7 +178,7 @@ package org.openscales.core.layer
 	            }
 
  	            for (i=0; i < confProps.numZoomLevels; i++) {
-	                var res:Number = confProps.maxResolution / Math.pow(2, i)
+	                var res:Number = confProps.maxResolution / Math.pow(2, i);
 	                confProps.resolutions.push(res);
 	            }    
 	        }

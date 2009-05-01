@@ -1,4 +1,3 @@
-package org.openscales.core
 {
 	import com.gskinner.motion.GTweeny;
 	
@@ -869,7 +868,7 @@ package org.openscales.core
 	    	{
 	    		if(this.layerContainer.getChildAt(i) is Layer)
 	    		{
-	    				layerArray.push(this.layerContainer.getChildAt(i)) 			
+	    				layerArray.push(this.layerContainer.getChildAt(i));
 	    		}
 	    	}
 	    	return layerArray;

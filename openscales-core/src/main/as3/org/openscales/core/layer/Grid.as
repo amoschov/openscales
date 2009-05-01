@@ -257,8 +257,7 @@ package org.openscales.core.layer
 	     
 	                tileoffsetlon += tilelon;       
 	                tileoffsetx += this.tileSize.w;
-	            } while ((tileoffsetlon <= bounds.right + tilelon * this.buffer)
-	                     || colidx < minCols)  
+	            } while ((tileoffsetlon <= bounds.right + tilelon * this.buffer) || colidx < minCols)  
 	             
 	            tileoffsetlat -= tilelat;
 	            tileoffsety += this.tileSize.h;
