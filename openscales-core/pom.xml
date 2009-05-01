@@ -45,6 +45,9 @@
 			<plugin>
 				<groupId>net.sf.flex-mvn-report</groupId>
 				<artifactId>flex-mvn-report</artifactId>
+				<configuration>
+					<sourceDir>${project.build.sourceDirectory}</sourceDir>
+				</configuration>
 			</plugin>
 		</plugins>
 			
