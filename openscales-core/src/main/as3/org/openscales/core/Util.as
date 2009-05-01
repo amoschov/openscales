@@ -14,6 +14,10 @@ package org.openscales.core
 		private static var lastSeqID:Number = 0;
 		private var viewRequestID:Number = 0;
 		public static var MISSING_TILE_URL:String = "http://openstreetmap.org/openlayers/img/404.png";
+		
+		public function Util() {
+			
+		}
 	
 		public static function extend(destination:Object, source:Object):Object {
 		    for (var property:String in source) {

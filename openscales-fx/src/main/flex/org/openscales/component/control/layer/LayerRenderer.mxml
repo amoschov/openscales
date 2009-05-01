@@ -37,14 +37,11 @@
 				layer.alpha = (event.target as HSlider).value;
 			}
 			
-			public function deleteLayer(event:Event):void
-			{
+			public function deleteLayer(event:Event):void {
 				 (data as Layer).map.removeLayer(data as Layer); 
 			}
 			
-			// Override the set method for the data property.
-            override public function set data(value:Object):void 
-            {
+            override public function set data(value:Object):void {
                 super.data = value;
 				
 				if((this.layer != null) && (displayControl != null))

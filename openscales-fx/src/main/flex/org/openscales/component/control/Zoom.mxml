@@ -26,7 +26,6 @@
 			}
 			
 			private function scaleOnCenter(o:DisplayObject, scale:Number, center:Point):void{
-				// http://ryanbosinger.com/blog/2008/actionscript-30-scale-object-from-center-point/
 				var currentMatrix:Matrix=o.transform.matrix;
 				var endMatrix:Matrix=o.transform.matrix;
 				endMatrix.tx -= center.x;
@@ -34,9 +33,7 @@
 				endMatrix.scale(scale, scale);
 				endMatrix.tx += center.x;
 				endMatrix.ty += center.y;
-				var tween:GTweeny =  new GTweeny(currentMatrix, 0.5, {a: endMatrix.a, b: endMatrix.b, c: endMatrix.c,
-												 d: endMatrix.d, tx: endMatrix.tx, ty: endMatrix.ty});
-				tween.addEventListener(Event.CHANGE, function onProgress(evt:Event):void { o.transform.matrix = currentMatrix });
+				
 			}
 			
 			public function onZoomSliderThumbRelease(event:SliderEvent):void{

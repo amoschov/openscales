@@ -2,6 +2,9 @@ package org.openscales.core
 {
 	public class StringUtils
 	{
+		public function StringUtils() {
+			
+		}
 		
 		public static function startsWith(sStart:String):Boolean {
 			return (sStart.substr(0,sStart.length) == sStart);

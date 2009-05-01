@@ -82,31 +82,21 @@
 				}
 			}
 			
-			public function selectFeature(event:FeatureEvent):void{
-				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active){
+			public function selectFeature(event:FeatureEvent):void {
+				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active) {
 					var newStyle:Style = new Style();
 					newStyle.fillColor = 0xFFFFFF;
 					newStyle.strokeColor = 0xFFFFFF;
-					/* var oldStyle:Style = new Style();
-					oldStyle.fillColor = 0x60FFE9;
-					oldStyle.strokeColor = 0x60FFE9; */
-				
 					var feat:org.openscales.core.feature.VectorFeature = event.vectorfeature;
-					/* for each(var f:Feature in feat){
-						if(f.selected){
-							feat.style = oldStyle;
-						}
-					}  */
+
 					feat.style = newStyle;
 					feat.selected = true;
 					drawLayer.renderer.clear();
 					drawLayer.redraw();
 				}
-				
 			}
 			
-			override public function set map(value:Map):void
-			{
+			override public function set map(value:Map):void {
 				super.map = value;
 				
 				if (this.map != null) {

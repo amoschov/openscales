@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*"
-	width="100%">
+<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*" width="100%">
 
 <mx:Script>
 	<![CDATA[
@@ -12,12 +11,10 @@
 		import org.openscales.core.Map;
 
 		
-		override public function set map(value:Map):void
-		{
+		override public function set map(value:Map):void {
 			super.map = value;	
 
-			if(map != null)
-			{
+			if(map != null) {
 				this.map.addEventListener(LayerEvent.LAYER_ADDED,this.refresh);
 				this.map.addEventListener(LayerEvent.LAYER_CHANGED,this.refresh);
 				this.map.addEventListener(LayerEvent.LAYER_REMOVED,this.refresh);
@@ -26,9 +23,7 @@
 			this.refresh();
 		}
 		
-	 	public function refresh(event:LayerEvent = null):void
-		{
-			
+	 	public function refresh(event:LayerEvent = null):void {
 			baseLayerList.dataProvider = this.baseLayers;
 			baseLayerList.rowCount = this.baseLayers.length;
 			overlayList.dataProvider = this.overlays;

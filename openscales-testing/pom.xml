@@ -65,14 +65,4 @@
 		</dependency>
 	</dependencies>
 	
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>info.flex-mojos</groupId>
-				<artifactId>asdoc-mojo</artifactId>
-				<version>${asdoc.mojo.version}</version>
-			</plugin>
-		</plugins>
-	</reporting>
-	
 </project>

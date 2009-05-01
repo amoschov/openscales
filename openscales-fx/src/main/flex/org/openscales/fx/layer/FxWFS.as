@@ -49,7 +49,7 @@ package org.openscales.fx.layer
 			this._layer.isBaseLayer = this._isBaseLayer;
 			this._layer.minZoomLevel = this._minZoomLevel;
 			
-			return this._layer
+			return this._layer;
 		}
 				
 		public function set url(value:String):void {

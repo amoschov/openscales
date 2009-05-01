@@ -63,8 +63,8 @@
 			}
 			
 			public function capabilitiesGetter(getCap:GetCapabilities):void {
-				capabilities = getCap.getAllCapabilities();
-				lblFeatures.text = "There are " + capabilities.size() + " features available on server:"
+				this.capabilities = getCap.getAllCapabilities();
+				lblFeatures.text = "There are " + capabilities.size() + " features available on server:";
 				this.list.dataProvider = capabilities.getKeys().sort();	
 			}
 			
