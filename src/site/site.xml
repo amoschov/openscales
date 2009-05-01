@@ -16,6 +16,18 @@
 			<item name="Introduction" href="index.html"/>
 		</menu>
 		
+		<menu name="ASDoc">
+			<item name="openscales-core" href="openscales-core/asdoc/index.html"/>
+			<item name="openscales-proj" href="openscales-proj/asdoc/index.html"/>
+			<item name="openscales-fx" href="openscales-fx/asdoc/index.html"/>
+		</menu>
+		
+		<menu name="UML Diagrams">
+			<item name="openscales-core" href="openscales-core/asuml-maven-report.html"/>
+			<item name="openscales-proj" href="openscales-proj/asuml-maven-report.html"/>
+			<item name="openscales-fx" href="openscales-fx/asuml-maven-report.html"/>
+		</menu>
+		
 		<menu ref="modules" />
 		
 		<menu ref="reports" />

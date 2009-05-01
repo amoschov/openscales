@@ -29,7 +29,7 @@ package org.opengis.geometry {
 		function getCenter():IDirectPosition;
 		
 		/** The length of coordinate sequence (the number of entries) in this envelope. */
-		function get dimension():Number
+		function get dimension():Number;
 		
 		/** Returns the minimal ordinate along the specified dimension. */
 		function getMinimum(dimension:int):Number;
