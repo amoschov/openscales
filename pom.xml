@@ -178,24 +178,6 @@
 				</configuration>
 		    </plugin>
 		</plugins>
-		
-		<pluginManagement>
-	      <plugins>
-				<plugin>
-			        <groupId>net.sf.flex-mvn-report</groupId>
-			        <artifactId>flex-mvn-report</artifactId>
-					<configuration>
-						<sourceDir>${project.build.sourceDirectory}</sourceDir>
-					</configuration>
-			    </plugin>
-				<plugin>
-					<groupId>info.flex-mojos</groupId>
-					<artifactId>asdoc-mojo</artifactId>
-					<version>${asdoc.mojo.version}</version>
-				</plugin>
-	      </plugins>
-	    </pluginManagement>
-
 	</build>
 
 	<dependencies>
@@ -218,6 +200,11 @@
 		        <groupId>net.sf.flex-mvn-report</groupId>
 		        <artifactId>flex-mvn-report</artifactId>
 		    </plugin>
+			<plugin>
+				<groupId>info.flex-mojos</groupId>
+				<artifactId>asdoc-mojo</artifactId>
+				<version>${asdoc.mojo.version}</version>
+			</plugin>
 		</plugins>
   </reporting>
 
