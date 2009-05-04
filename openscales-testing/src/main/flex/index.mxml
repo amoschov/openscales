@@ -4,15 +4,18 @@
 	<![CDATA[
 		import org.openscales.proj4as.projections.IdentityTest;
 		import org.openscales.coretest.layer.capabilities.ParsingTest;
-	import flexunit.framework.TestSuite;
+		import org.openscales.fxtest.control.DrawTest;
+		import flexunit.framework.TestSuite;
 			
 	private function init():void
 	{
  		var ts:TestSuite = new TestSuite();
  		ts.addTestSuite(IdentityTest);
  		ts.addTestSuite(ParsingTest);
+ 		ts.addTestSuite(DrawTest);
  		testRunner.test = ts;
  		testRunner.startTest();
+ 		
  	}
 	]]>
 	</mx:Script>

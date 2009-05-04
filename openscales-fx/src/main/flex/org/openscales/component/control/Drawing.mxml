@@ -6,6 +6,8 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.feature.VectorFeature;
+			import org.openscales.core.geometry.Polygon;
 			import org.openscales.core.feature.Style;
 			import org.openscales.core.feature.Feature;
 			import flash.sampler.NewObjectSample;
@@ -48,32 +50,32 @@
 			
 			public function onDeleteLastClick(event:Event):void {
 				var last:Number = drawLayer.features.length - 1;
+				var lastFeature:VectorFeature = null;
 				
-				if (last >= 0) {				
+				if (last >= 0) {	
+					
+					lastFeature = drawLayer.features[last];
+					drawLayer.removeFeatures(drawLayer.features[last]);
+								
 					switch(drawType)
 					{
 						case "path":		
-							drawLayer.removeFeatures(drawLayer.features[last]);
-							
+													
 							if (last - 1 >= 0 && getQualifiedClassName(drawLayer.features[last-1].geometry) == "org.openscales.core.geometry::LineString") {
 								pathHandler.lastPoint = drawLayer.features[last-1].geometry.getLastPoint();
 							}
 							else {
 								pathHandler.newFeature = true;
 							}
-							break;						
+							break;	
+												
 						case "polygon":
-							var featuresToRemove:Array = [];
-							featuresToRemove.push(drawLayer.features[last]);
-							if (last-1 >= 0 && getQualifiedClassName(drawLayer.features[last-1].geometry) == "org.openscales.core.geometry::Point") {
-								featuresToRemove.push(drawLayer.features[last-1]);
+
+							if (last-1 >= 0 && !polygonHandler.firstPointRemoved && !polygonHandler.newFeature) {
+								drawLayer.removeFeatures(drawLayer.features[last - 1]);
 							}
-							drawLayer.removeFeatures(featuresToRemove);
 							polygonHandler.newFeature = true;
 							
-							break;
-						default:
-							drawLayer.removeFeatures(drawLayer.features[last]);
 							break;
 					}   
 				}
@@ -205,7 +207,6 @@
 		
 	<mx:Text x="160" y="5" text="Tooltip : to finalize a path or a polygon just double click on map." width="143" height="76" fontStyle="italic"/>
 		
-	<control:FeatureInfo id="featureInfo" x="10" y="108" width="310" height="166">
-	</control:FeatureInfo>
+	<control:FeatureInfo id="featureInfo" x="10" y="108" width="310" height="166"/>
 	
 </control:Control>

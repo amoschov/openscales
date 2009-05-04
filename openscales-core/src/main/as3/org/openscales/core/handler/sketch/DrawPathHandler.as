@@ -99,18 +99,21 @@ package org.openscales.core.handler.sketch
 				}
 			}
 			
-			//We create a MultiLineString with several LineStrings
-			var mlString:MultiLineString = new MultiLineString(lstrings);
-			var mlFeature:VectorFeature = new VectorFeature();
-			mlFeature.id = "path." + id.toString(); id++;
-			mlFeature.style = style;
-			mlFeature.geometry = mlString;
+			//We create a MultiLineString with several LineStrings (if there are line strings)
+			if (lstrings.length > 0) {
+				var mlString:MultiLineString = new MultiLineString(lstrings);
+				var mlFeature:VectorFeature = new VectorFeature();
+				mlFeature.id = "path." + id.toString(); id++;
+				mlFeature.style = style;
+				mlFeature.geometry = mlString;
+				
+				drawLayer.removeFeatures(featuresToRemove);
+				drawLayer.addFeatures(mlFeature);
+				
+				drawLayer.renderer.clear();
+				drawLayer.redraw();
+			}
 			
-			drawLayer.removeFeatures(featuresToRemove);
-			drawLayer.addFeatures(mlFeature);
-			
-			drawLayer.renderer.clear();
-			drawLayer.redraw();
 		}
 		
 		override public function set map(value:Map):void {

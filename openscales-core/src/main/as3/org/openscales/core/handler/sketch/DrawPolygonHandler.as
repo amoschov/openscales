@@ -142,6 +142,10 @@ package org.openscales.core.handler.sketch
 		public function get newFeature():Boolean {
 			return _newFeature;
 		}
+		
+		public function get firstPointRemoved():Boolean {
+			return _firstPointRemoved;
+		}
 
 		public function set newFeature(value:Boolean):void {
 			if (value == true) {
