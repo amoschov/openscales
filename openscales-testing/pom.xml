@@ -32,6 +32,12 @@
 			<type>swc</type>
 		</dependency>
 		<dependency>
+			<groupId>org.openscales</groupId>
+			<artifactId>openscales-fx</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>swc</type>
+		</dependency>
+		<dependency>
 	  		<groupId>com.adobe.flex.framework</groupId>
 	  		<artifactId>rpc</artifactId>
 	  		<version>${flex.version}</version>
