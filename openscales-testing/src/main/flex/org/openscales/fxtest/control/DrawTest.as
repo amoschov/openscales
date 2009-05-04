@@ -225,7 +225,6 @@ package org.openscales.fxtest.control
 			//Finally, we delete all features
 			_draw.btnDeleteAll.dispatchEvent(new MouseEvent(MouseEvent.CLICK,false,false,1,1,_draw.btnDeleteAll));
 			assertEquals("All features are deleted", 0, sketchLayer.features.length);
-			
 		}
 		
 		private function countGeometries():void {
