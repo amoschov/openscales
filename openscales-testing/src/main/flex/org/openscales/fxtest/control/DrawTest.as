@@ -11,6 +11,7 @@ package org.openscales.fxtest.control
 	import org.openscales.component.control.Drawing;
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.control.MousePosition;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.handler.mouse.ClickHandler;
@@ -43,6 +44,7 @@ package org.openscales.fxtest.control
 										"http://sigma.openplans.org/geoserver/wfs", 
 										{typename: "topp:poi", SRS: "EPSG:4326", VERSION: "1.0.0"}, 
 										{isBaseLayer: false, minZoomLevel: 21});
+			wfslayer1.capabilities = new HashMap();
 			
 			var wmslayer1:WMSC = new WMSC( "OpenLayers WMS",
                     						"http://labs.metacarta.com/wms-c/Basic.py",
