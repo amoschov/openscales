@@ -40,12 +40,6 @@ package org.openscales.fxtest.control
 			
 			Map.proxy="http://openscales.org/proxy.php?url=";
 			
-			//Layers init
-			var wfslayer1:WFS = new WFS("test", 
-										"http://sigma.openplans.org/geoserver/wfs", 
-										{typename: "topp:poi", SRS: "EPSG:4326", VERSION: "1.0.0"}, 
-										{isBaseLayer: false, minZoomLevel: 21},
-										new HashMap());
 			
 			var wmslayer1:WMSC = new WMSC( "OpenLayers WMS",
                     						"http://labs.metacarta.com/wms-c/Basic.py",
@@ -61,7 +55,7 @@ package org.openscales.fxtest.control
 			_map.addHandler(new ClickHandler());
 			_map.addControl(new MousePosition());
 			
-			_map.addLayers([wfslayer1, wmslayer1]);
+			_map.addLayer(wmslayer1);
 			
 			
 			_map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735));
@@ -82,11 +76,11 @@ package org.openscales.fxtest.control
 			//We added 3 handlers
 			assertEquals("Number of handlers assert",3,_map.handlers.length);
 			
-			//The map has 3 layers : WMS-C base layer, WFS and Vector sketching layer
-			assertEquals("Number of layers assert",3,_map.layers.length);
+			//The map has 3 layers : WMS-C base layer and Vector sketching layer
+			assertEquals("Number of layers assert",2,_map.layers.length);
 			
 			//We check if the last layer is up
-			var sketchLayer:VectorLayer = _map.layers[2];
+			var sketchLayer:VectorLayer = _map.layers[1];
 			assertEquals("Sketch layer presence","Sketch",sketchLayer.name);
 			
 			//Before sketching, we check that we have none features on sketch layer
