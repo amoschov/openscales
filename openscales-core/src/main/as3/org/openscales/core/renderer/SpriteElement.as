@@ -81,6 +81,7 @@ package org.openscales.core.renderer
 		 */
 		 public function OnMouseHover(pevt:MouseEvent):void
 		 {
+		 	this.buttonMode=true;
 		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER,this.feature,pevt.stageX,pevt.stageY));
 		 }
 		  public function OnMouseOut(pevt:MouseEvent):void
@@ -104,6 +105,7 @@ package org.openscales.core.renderer
 		 
 		  public function onMouseUp(pevt:MouseEvent):void
 		 {
+		 	this.buttonMode=false;
 		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP,this.feature,pevt.stageX,pevt.stageY));
 		 }
 		 
