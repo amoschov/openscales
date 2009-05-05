@@ -52,7 +52,7 @@ package org.openscales.fxtest.control
 			
 			//Map init
 			_map = new Map(1270,773);
-			
+			Map.proxy="http://openscales.org/proxy.php?url=";
 			
 			_map.addHandler(new DragHandler());
 			_map.addHandler(new WheelHandler());
