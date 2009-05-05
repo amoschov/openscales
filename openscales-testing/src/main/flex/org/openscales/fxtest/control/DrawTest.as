@@ -38,13 +38,14 @@ package org.openscales.fxtest.control
 		{
 			super(methodName);
 			
+			Map.proxy="http://openscales.org/proxy.php?url=";
 			
 			//Layers init
 			var wfslayer1:WFS = new WFS("test", 
 										"http://sigma.openplans.org/geoserver/wfs", 
 										{typename: "topp:poi", SRS: "EPSG:4326", VERSION: "1.0.0"}, 
-										{isBaseLayer: false, minZoomLevel: 21});
-			wfslayer1.capabilities = new HashMap();
+										{isBaseLayer: false, minZoomLevel: 21},
+										new HashMap());
 			
 			var wmslayer1:WMSC = new WMSC( "OpenLayers WMS",
                     						"http://labs.metacarta.com/wms-c/Basic.py",
@@ -54,7 +55,6 @@ package org.openscales.fxtest.control
 			
 			//Map init
 			_map = new Map(1270,773);
-			Map.proxy="http://openscales.org/proxy.php?url=";
 			
 			_map.addHandler(new DragHandler());
 			_map.addHandler(new WheelHandler());
