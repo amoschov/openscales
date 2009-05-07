@@ -45,14 +45,17 @@ package org.openscales.core.handler.sketch
 			var style:Style = new Style();
 			style.fillColor = 0x60FFE9;
 			style.strokeColor = 0x60FFE9;
+			
+			var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
+			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
+			var point:Point = new Point(lonlat.lon,lonlat.lat);
+			
 			var feature:org.openscales.core.feature.VectorFeature;
 			feature = new org.openscales.core.feature.VectorFeature();
 			feature.id = id.toString(); id++;
 			feature.style = style;
-			var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
-			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
-			var point:Point = new Point(lonlat.lon,lonlat.lat);
-			feature.geometry = point;
+			feature.attributes = {Lon:lonlat.lon, Lat:lonlat.lat, NAME:"point."+this.id};		
+			feature.geometry = point;		
 			drawLayer.addFeatures(feature);
 		}
 		

@@ -13,7 +13,7 @@
 			public function showInfo(evt:FeatureEvent):void {
 				var properties:Array = [];
 				
-				for(var key:String in evt.vectorfeature.attributes) {
+				for (var key:String in evt.vectorfeature.attributes) {
 					var property:Object = {};
 					property.Name = key;
 					property.Value = evt.vectorfeature.attributes[key];

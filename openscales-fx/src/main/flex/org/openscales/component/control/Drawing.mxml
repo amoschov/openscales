@@ -102,8 +102,8 @@
 						}
 					}										
 					var newStyle:Style = new Style();
-					newStyle.fillColor = 0xFFFFFF;
-					newStyle.strokeColor = 0xFFFFFF;
+					newStyle.fillColor = 0xFFD700;
+					newStyle.strokeColor = 0xFFD700;
 						
 					feat.style = newStyle;
 					feat.selected = true;

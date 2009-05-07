@@ -105,6 +105,7 @@ package org.openscales.core.handler.sketch
 			var feature:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
 			if(feature!=null){
 				feature.style = style;
+				feature.attributes = {NAME:feature.id};
 				drawLayer.renderer.clear();
 				drawLayer.redraw();
 			}		

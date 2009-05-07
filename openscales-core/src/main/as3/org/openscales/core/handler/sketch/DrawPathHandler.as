@@ -106,6 +106,7 @@ package org.openscales.core.handler.sketch
 				mlFeature.id = "path." + id.toString(); id++;
 				mlFeature.style = style;
 				mlFeature.geometry = mlString;
+				mlFeature.attributes = {NAME:mlFeature.id};
 				
 				drawLayer.removeFeatures(featuresToRemove);
 				drawLayer.addFeatures(mlFeature);
