@@ -84,10 +84,10 @@ package org.openscales.core.layer
 	        }
 	    }
 	    
-	    override public function onMapResize():void {
+	     /* override public function onMapResize():void {
 	    	super.onMapResize();
         	this.renderer.size = this.map.size;
-	    }
+	    } */ 
 	    
 	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
 	    	super.moveTo(bounds, zoomChanged, dragging);

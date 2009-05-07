@@ -16,6 +16,8 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.layer.ogc.WMSC;
+			import mx.effects.Resize;
 			import org.openscales.component.control.Control;
 			import org.openscales.core.events.LayerEvent;
 			import flex.utils.ui.resize.ResizableWindow;
@@ -57,7 +59,7 @@
 	   			map = fxmap.map;
 				map.size=new Size(fxmap.width, fxmap.height);
 				map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735));
-				tools.x = this.width - tools.width;								
+				tools.x = this.width - tools.width;						
 			}
 						
 			private function showPopup(e:MouseEvent):void
@@ -98,7 +100,7 @@
 					<os:ZoomComponent id="zoom" map="{map}"/>
 				</mx:VBox>
 			</resize:ResizableWindow>
-						
+			
 			<resize:ResizableWindow title="Tools" movable="true" resizable="true" id="tools" width="350" height="500" >
 				<mx:TabNavigator width="100%" height="100%">
 					<os:LayerSwitcherComponent id="layerSwitcher" map="{map}" label="Layers"/>
@@ -107,7 +109,7 @@
 					<os:YahooSearchComponent width="100%" height="100%" map="{map}" label="Search" appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é"/>
 				</mx:TabNavigator>
 			</resize:ResizableWindow>
-			
+						
 		</os:Map>
 	
 </mx:Panel>

@@ -183,11 +183,11 @@ package org.openscales.core.layer.ogc
 	        }
 	    }
 	    
-	    override public function onMapResize():void {	
+	     override public function onMapResize():void {	
 	        if(this.vectorMode) {
 	            super.onMapResize();
 	        }
-	    }
+	    } 
 	    
 	    override public function clone(obj:Object):Object {
 	        if (obj == null) {
