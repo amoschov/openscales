@@ -84,6 +84,24 @@
 				<os:Style fillColor="0xff0000" fillOpacity="0.8" strokeColor="0x0000ff" strokeWidth="2" />
 				
 			</os:WFS>
+							   
+			<resize:ResizableWindow title="PanZoom" movable="true" id="panzoom">
+				<mx:VBox horizontalAlign="center">
+					<os:PanComponent id="pan" map="{map}"/>
+					<os:ZoomComponent id="zoom" map="{map}"/>
+				</mx:VBox>
+			</resize:ResizableWindow>
+						   
+			<mx:Spacer/>
+
+			<resize:ResizableWindow title="Tools" movable="true" resizable="true" id="tools" width="350" height="500" >
+				<mx:TabNavigator width="100%" height="100%">
+					<os:LayerSwitcherComponent id="layerSwitcher" map="{map}" label="Layers"/>
+					<os:DrawingComponent map="{map}" width="100%" height="100%" label="Draw" />
+					<os:CapabilitiesComponent width="100%" height="100%" map="{map}" label="Capabilities" />
+					<os:YahooSearchComponent width="100%" height="100%" map="{map}" label="Search" appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é"/>
+				</mx:TabNavigator>
+			</resize:ResizableWindow>
 			
 			<!--Still an issue with ox:Extent tag that call map.zoomToExtent ... -->
 			<!--os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" /-->
@@ -93,22 +111,6 @@
 			<os:DragHandler />
 			<os:ClickHandler />
 			<os:WheelHandler />
-			
-			<resize:ResizableWindow title="PanZoom" movable="true" id="panzoom">
-				<mx:VBox horizontalAlign="center">
-					<os:PanComponent id="pan" map="{map}"/>
-					<os:ZoomComponent id="zoom" map="{map}"/>
-				</mx:VBox>
-			</resize:ResizableWindow>
-			
-			<resize:ResizableWindow title="Tools" movable="true" resizable="true" id="tools" width="350" height="500" >
-				<mx:TabNavigator width="100%" height="100%">
-					<os:LayerSwitcherComponent id="layerSwitcher" map="{map}" label="Layers"/>
-					<os:DrawingComponent map="{map}" width="100%" height="100%" label="Draw" />
-					<os:CapabilitiesComponent width="100%" height="100%" map="{map}" label="Capabilities" />
-					<os:YahooSearchComponent width="100%" height="100%" map="{map}" label="Search" appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é"/>
-				</mx:TabNavigator>
-			</resize:ResizableWindow>
 						
 		</os:Map>
 	
