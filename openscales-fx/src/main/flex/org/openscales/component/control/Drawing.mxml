@@ -85,12 +85,26 @@
 			}
 			
 			public function selectFeature(event:FeatureEvent):void {
+				
 				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active) {
+					var f:org.openscales.core.feature.VectorFeature;
+					var feat:org.openscales.core.feature.VectorFeature = event.vectorfeature;
+					for each(f in this.drawLayer.features){
+						if(f.selected){
+							f.selected = false;
+							var oldStyle:Style = new Style();
+							oldStyle.fillColor = 0x60FFE9;
+							oldStyle.strokeColor = 0x60FFE9;
+						
+							f.style = oldStyle;
+							drawLayer.renderer.clear();
+							drawLayer.redraw();
+						}
+					}										
 					var newStyle:Style = new Style();
 					newStyle.fillColor = 0xFFFFFF;
 					newStyle.strokeColor = 0xFFFFFF;
-					var feat:org.openscales.core.feature.VectorFeature = event.vectorfeature;
-
+						
 					feat.style = newStyle;
 					feat.selected = true;
 					drawLayer.renderer.clear();
@@ -111,7 +125,7 @@
 			}
 			
 			private function clickHandler(event:ItemClickEvent):void{
-				var handler:Number = event.index;
+				var handler:Number = event.index;		// handler is a number beacause of toggleButtonBar
 				var h:Handler;
 				for each(h in this.map.handlers){
 					if(h is DragHandler){
