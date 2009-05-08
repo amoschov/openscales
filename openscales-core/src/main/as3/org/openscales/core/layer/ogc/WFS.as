@@ -26,7 +26,7 @@ package org.openscales.core.layer.ogc
 	 *  
 	 * @author Bouiaw
 	 */
-	public class WFS extends org.openscales.core.layer.VectorLayer
+	public class WFS extends VectorLayer
 	{
 		
 		public var DEFAULT_PARAMS:Object = { service: "WFS",
@@ -60,7 +60,7 @@ package org.openscales.core.layer.ogc
 	    	this.capabilities = capabilities;
 	    	
 	    	if (url != null && url != "" && this.capabilities == null) {
-	    		var getCap:GetCapabilities = new GetCapabilities("wfs", url, this.capabilitiesGetter);
+	    		var getCap:GetCapabilities = new GetCapabilities("wfs", url, this.capabilitiesGetter, this.proxy);
 	    	}
 		    	
 	        if (options == null) { options = {}; } 
@@ -220,8 +220,8 @@ package org.openscales.core.layer.ogc
 	        var url:String = this.url;
 	        var proxy:String;
 	        
-	        if (Map.proxy && this.url.indexOf("http") == 0) {
-	            proxy = Map.proxy;
+	        if (this.proxy && this.url.indexOf("http") == 0) {
+	            proxy = this.proxy;
 	        }
 	
 	        var successfailure:Function = commitSuccessFailure;

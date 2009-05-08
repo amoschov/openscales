@@ -50,7 +50,7 @@ package org.openscales.core.tile
                      {   method: URLRequestMethod.GET, 
                          parameters: null,
                          onComplete: success
-                      }, Map.proxy);
+                      }, this.layer.proxy);
 		}
 		
 		public function requestSuccess(event:Event):void {

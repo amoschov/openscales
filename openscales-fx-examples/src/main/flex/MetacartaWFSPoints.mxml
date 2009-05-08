@@ -22,26 +22,17 @@
 			
 			private var map:Map;
 			
-			private function initMap():void {
-				Map.proxy="http://openscales.org/proxy.php?url=";
-				
+			private function initMap():void {				
 				map = fxmap.map;
 				map.size=new Size(fxmap.width, fxmap.height);
 				
 				map.zoomToExtent(new Bounds(-74.0118315772888,40.70754683896324,-74.00857344353275,40.711945649065406));
-				
-				this.addEventListener(ResizeEvent.RESIZE,ResizeMap);
-			}
-			
-			public function ResizeMap(event:ResizeEvent):void
-			{
-				this.map.width = fxmap.width;
-				this.map.height = fxmap.height;
+
 			}
 			
 		]]>
 	</mx:Script>
-	<os:Map id="fxmap" height="100%" width="100%">
+	<os:Map id="fxmap" height="100%" width="100%" proxy="http://openscales.org/proxy.php?url=">
 		
 		<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
 		

@@ -32,6 +32,7 @@ package org.openscales.core.layer
 		private var _minZoomLevel:Number;		
 		private var _displayOutsideMaxExtent:Boolean = false;		
 		protected var _imageSize:Size = null;
+		private var _proxy:String = null;
 		private var _map:Map = null;
 		
 		/**
@@ -487,6 +488,22 @@ package org.openscales.core.layer
 	    
 		public function set isBaseLayer(value:Boolean):void {
 	    	this._isBaseLayer = value;
+	    }
+	    
+	    /**
+		 * Proxy (usually a PHP, Python, or Java script) used to request remote servers like 
+		 * WFS servers in order to allow crossdomain requests. Remote servers can be used without 
+		 * proxy script by using crossdomain.xml file like http://openscales.org/crossdomain.xml
+		 */		
+	    public function get proxy():String {
+	    	if(this._proxy == "")
+	    		return this.map.proxy;
+	    	else
+	    		return this._proxy;
+	    }
+	    
+	    public function set proxy(value:String):void {
+	    	this._proxy = value;
 	    }
 	    
 		

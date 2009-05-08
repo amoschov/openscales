@@ -34,6 +34,8 @@ package org.openscales.fx {
 		private var _creationHeight:Number = NaN;
 		
 		private var _creationWidth:Number = NaN;
+		
+		private var _proxy:String = "";
 				
 		public function FxMap() {
 			super();
@@ -42,20 +44,12 @@ package org.openscales.fx {
 		}
 		
 		private function onCreationComplete(event:Event):void {
-			this.addEventListener(ResizeEvent.RESIZE, onResize);
-		}
-		
-		private function onResize(event:ResizeEvent):void {
-			var o:DisplayObject = event.target as DisplayObject;
-			this.map.size = new Size(o.width, o.height);
-		}
-		
-		override protected function createChildren():void
-		{
 			
 			this._map = new Map();
 			this.rawChildren.addChild(this._map);
-			super.createChildren();
+			
+			if(this._proxy != "")
+				this.map.proxy = this._proxy;
 						
 			if(!isNaN(this._maxResolution))
 				this.map.maxResolution = this._maxResolution;
@@ -109,7 +103,14 @@ package org.openscales.fx {
 				}
 			}
 			
+			//this.parent.addEventListener(ResizeEvent.RESIZE, onResize);
 		}
+		
+		private function onResize(event:ResizeEvent):void {
+			var o:DisplayObject = event.target as DisplayObject;
+			this.map.size = new Size(o.width, o.height);
+		}
+		
 						
 		public function get map():Map {
 			return this._map;
@@ -150,6 +151,10 @@ package org.openscales.fx {
 			else
 				this._creationHeight = value;
 		
+		}
+		
+		public function set proxy(value:String):void {
+			this._proxy = value;
 		}
 			
 	}

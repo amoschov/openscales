@@ -5,7 +5,6 @@ package org.openscales.core.layer.capabilities
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
 	
-	import org.openscales.core.Map;
 	import org.openscales.core.Request;
 	import org.openscales.core.basetypes.maps.HashMap;
 	
@@ -21,6 +20,7 @@ package org.openscales.core.layer.capabilities
 		private var _version:String = null;
 		private var _request:String = null;
 		private var _url:String = null;
+		private var _proxy:String = null;
 		
 		private var _parser:CapabilitiesParser = null;
 		
@@ -33,13 +33,14 @@ package org.openscales.core.layer.capabilities
 		/**
 		 * Class contructor
 		 */
-		public function GetCapabilities(service:String, url:String, cbkFunc:Function=null)
+		public function GetCapabilities(service:String, url:String, cbkFunc:Function=null, proxy:String = null)
 		{
 						
 			this._service = service.toUpperCase();
 			this._url = url;
 			this._request = "GetCapabilities";
-			this._capabilities = new HashMap(false);
+			this._capabilities = new HashMap(false)
+			this._proxy = proxy;
 			
 			this._cbkFunc = cbkFunc;
 			
@@ -94,7 +95,7 @@ package org.openscales.core.layer.capabilities
                      {   method: URLRequestMethod.GET, 
                          parameters: null,
                          onComplete: this.parseResult
-                      }, Map.proxy);
+                      }, this._proxy);
                       
 			return true;
 		}

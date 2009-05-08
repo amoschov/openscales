@@ -39,7 +39,7 @@ package org.openscales.core.layer
                      {   method: URLRequestMethod.GET, 
                          parameters: null,
                          onComplete: this.parseData
-                      }, Map.proxy);
+                      }, this.proxy);
 
     	}
 
