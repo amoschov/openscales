@@ -1,17 +1,16 @@
-package org.openscales.core.handler.mouse
-{
+package org.openscales.core.handler.mouse {
+	
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.handler.Handler;
-
-	public class ClickHandler extends Handler
-	{
-		private var _StartPixel:Pixel;
-		private var _tolerance:Number;
+	
+	/**
+	 * Used to handle click and double click. By default, double click zoom the map.
+	 */
+	public class ClickHandler extends Handler {
 		
 		/**
 		 * We use a timer to detect double click, without throwing a click before.
@@ -21,6 +20,7 @@ package org.openscales.core.handler.mouse
 		private var _clickNum:Number = 0;
 		
 		private var _mouseEvent:MouseEvent = null;
+		
 		/**
 		 * callback function oneclick(evt:MouseEvent):void
 		 */
@@ -29,51 +29,34 @@ package org.openscales.core.handler.mouse
 		 * callback function doubleClick(evt:MouseEvent):void
 		 */
 		private var _doubleClick:Function = null;
-		public function ClickHandler(map:Map=null, active:Boolean=false,options:Object=null)
-		{
-			super(map, active);
+			
+		public function ClickHandler(target:Map = null, active:Boolean = false,options:Object=null){
+			super(target,active);
 			if(options!=null)
 			{
-			this.click=(options.click is Function)?options.click:null;
-			this.doubleclick=(options.doubleclick is Function)?options.doubleclick:null;
-			this._tolerance=(!isNaN(options.tolerance)&&options.tolerance is Number)?options.tolerance:0;
+			if(options.click is Function) this.click=options.click;
+			if(options.doubleclick is Function) this.doubleclick=options.doubleclick;
 			}
-			
 		}
+		
 		override protected function registerListeners():void{
-			this.map.addEventListener(MouseEvent.MOUSE_DOWN,this.mouseDown);
-			this.map.addEventListener(MouseEvent.MOUSE_UP,this.mouseUp);
+			this.map.addEventListener(MouseEvent.CLICK, this.mouseClick);
 			_timer.addEventListener(TimerEvent.TIMER, chooseClick);
 		}
+		
 		override protected function unregisterListeners():void{
 			_timer.stop();
         	_timer.removeEventListener(TimerEvent.TIMER, chooseClick);
-			this.map.removeEventListener(MouseEvent.MOUSE_DOWN,this.mouseDown);
-			this.map.removeEventListener(MouseEvent.MOUSE_UP,this.mouseUp);
+        	this.map.removeEventListener(MouseEvent.CLICK, this.mouseClick);
 		}
-		 
-		 public function mouseDown(evt:MouseEvent):void
-		 {
-		 	this._StartPixel=new Pixel(evt.stageX,evt.stageY);
-		 }
-		 
-		 public function mouseUp(evt:MouseEvent):void
-		 {
-		 	var dx :Number = Math.abs(this._StartPixel.x-evt.stageX);
-		 	var dy :Number = Math.abs(this._StartPixel.y-evt.stageY);
-		 	if(dx<=this._tolerance && dy<=this._tolerance)
-		 	{
-		 		this.mouseClick(evt);
-		 	}
-		 }
-		 
-		 private function mouseClick(evt:MouseEvent):void
-		 {
-		 	 _mouseEvent = evt;
+		
+		private function mouseClick(event:MouseEvent):void{
+		    _mouseEvent = event;
 		    _clickNum++;
 		    _timer.start() 
-		 }
-		 private function chooseClick(event:TimerEvent):void{
+		}
+		
+		private function chooseClick(event:TimerEvent):void{
 			if(_clickNum == 1) {
 		        if(_click != null)
 		        	_click(_mouseEvent);
@@ -87,9 +70,7 @@ package org.openscales.core.handler.mouse
 		        _clickNum=0
 		    }
 		}
-		 //Properties
-		 
-		 public function set click(Click:Function):void
+		public function set click(Click:Function):void
 		{
 			this._click=Click;
 		}
@@ -106,15 +87,11 @@ package org.openscales.core.handler.mouse
 		{
 			return this._doubleClick;
 		}
-
-		public function set tolerance(toleranceY:Number):void
-		{
-			this._tolerance=tolerance;
-		}
-		public function get tolerance():Number
-		{
-			return this._tolerance;
-		}
 		
+		
+	/*	public function doubleClick(evt:MouseEvent):void {
+			var newCenter:LonLat = this.map.getLonLatFromMapPx( new Pixel(this.map.mouseX, this.map.mouseY) ); 
+        	this.map.setCenter(newCenter, this.map.zoom + 1);
+		}	*/
 	}
 }
