@@ -8,6 +8,6 @@
 		<os:GeovistaWMSCWFS label="WMS-C layer and 2 WFS"/>
 		<os:MetacartaWFSPolygons label="Metacarta WFS Polygons" />
 		<os:MetacartaWFSPoints label="Metacarta WFS Points" />
-		<os:GermanyWMS label="Pasda WMS" />
+		<os:GermanyWMS label="Germany WMS" />
 	</mx:TabNavigator>	
 </mx:Application>
