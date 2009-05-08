@@ -59,10 +59,6 @@ package org.openscales.core.layer.ogc
 	    	
 	    	this.capabilities = capabilities;
 	    	
-	    	if (url != null && url != "" && this.capabilities == null) {
-	    		var getCap:GetCapabilities = new GetCapabilities("wfs", url, this.capabilitiesGetter, this.proxy);
-	    	}
-		    	
 	        if (options == null) { options = {}; } 
 	        
 	        super(name, options);
@@ -98,6 +94,11 @@ package org.openscales.core.layer.ogc
 	    override public function set map(map:Map):void {
 	        if (this.vectorMode) {
 	            super.map = map;
+	            
+	            // GetCapabilities request made here in order to have the proxy set 
+	            if (url != null && url != "" && this.capabilities == null) {
+	    			var getCap:GetCapabilities = new GetCapabilities("wfs", url, this.capabilitiesGetter, this.proxy);
+	    		}
 	        }
 	    }
 	    

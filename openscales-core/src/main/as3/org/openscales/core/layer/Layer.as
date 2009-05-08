@@ -494,12 +494,11 @@ package org.openscales.core.layer
 		 * Proxy (usually a PHP, Python, or Java script) used to request remote servers like 
 		 * WFS servers in order to allow crossdomain requests. Remote servers can be used without 
 		 * proxy script by using crossdomain.xml file like http://openscales.org/crossdomain.xml
+		 * 
+		 * If not defined, use map proxy
 		 */		
 	    public function get proxy():String {
-	    	if(this._proxy == "")
-	    		return this.map.proxy;
-	    	else
-	    		return this._proxy;
+    		return this._proxy;
 	    }
 	    
 	    public function set proxy(value:String):void {

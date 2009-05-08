@@ -138,6 +138,9 @@ package org.openscales.core
 	        
 	        this._layerContainer.addChild(layer); 
 	        
+	        if(layer.proxy == null)
+	        	layer.proxy = this.proxy;
+	        
 	        layer.map = this;
 	        
 	        if (layer.isBaseLayer) {
@@ -148,7 +151,7 @@ package org.openscales.core
 				}
 	        } else {
 	        	layer.redraw();
-	        }
+	        }  
 	        
 	        this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_ADDED, layer));
 	        
