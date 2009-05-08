@@ -40,7 +40,7 @@
 			private function initMap():void
 			{
 				map = fxmap.map;
-				map.size=new Size(fxmap.width, fxmap.height);				
+	
 				var markers:Markers = new Markers("Markers");
 				feature = new Feature(markers,new LonLat(lon,lat),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
 				mark = feature.createMarker();

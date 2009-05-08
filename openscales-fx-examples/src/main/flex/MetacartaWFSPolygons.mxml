@@ -1,39 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap();">
-	<mx:Script>
-		<![CDATA[
-			import org.openscales.core.handler.IHandler;
-			import org.openscales.core.handler.mouse.DragHandler;
-			import org.openscales.core.handler.mouse.WheelHandler;
-			import mx.events.ResizeEvent;
-			import org.openscales.core.feature.Style;
-			import org.openscales.core.basetypes.Size;
-			import org.openscales.core.basetypes.LonLat;
-			import org.openscales.core.feature.VectorFeature;
-			import org.openscales.core.Util;
-			import org.openscales.core.basetypes.Pixel;
-			import org.openscales.core.control.LayerSwitcher;
-			import org.openscales.core.layer.ogc.WFS;
-			import org.openscales.core.control.PanZoomBar;
-			import org.openscales.core.layer.ogc.WMS;
-			import org.openscales.core.layer.ogc.WMSC;
-			import org.openscales.core.Map;
-			import org.openscales.core.basetypes.Bounds;
-			import mx.core.UIComponent;
-			
-
-			
-			private function initMap():void {
-								
-				/* map = fxmap.map;
-				map.size=new Size(fxmap.width, fxmap.height); */
-				
-				//map.zoomToExtent(new Bounds(-124.731422,24.955967,-66.969849,49.371735));			
-			}
-			
-			
-		]]>
-	</mx:Script>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org">
+	
 	<os:Map id="fxmap" height="100%" width="100%" proxy="http://openscales.org/proxy.php?url=">
 
 		<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
@@ -54,4 +21,5 @@
 		<os:ClickHandler />
 		<os:WheelHandler />
 	</os:Map>
+	
 </mx:Canvas>

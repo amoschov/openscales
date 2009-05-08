@@ -51,9 +51,7 @@ package org.openscales.core.control
     	public function redraw(evt:MouseEvent = null):void {
     		var lonLat:LonLat;
 
-	        if (evt == null) {
-	            lonLat = new LonLat(0, 0);
-	        } else {
+	        if (evt != null) {
 	            if (this.lastXy == null ||
 	                Math.abs(map.mouseX - this.lastXy.x) > this.granularity ||
 	                Math.abs(map.mouseY - this.lastXy.y) > this.granularity)
@@ -65,6 +63,9 @@ package org.openscales.core.control
 				this.lastXy = new Pixel(map.mouseX, map.mouseY);
 	            lonLat = this.map.getLonLatFromMapPx(this.lastXy);
 	        }
+	        
+	        if(lonLat == null)
+	        	lonLat = new LonLat(0, 0);
 	        
 	        var digits:int = int(this.numdigits);
 	        this.label.text =

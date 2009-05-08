@@ -46,7 +46,10 @@ package org.openscales.fx {
 		private function onCreationComplete(event:Event):void {
 			
 			this._map = new Map();
+						
 			this.rawChildren.addChild(this._map);
+			
+			this.map.size = new Size(this.width, this.height);
 			
 			if(this._proxy != "")
 				this.map.proxy = this._proxy;
@@ -97,13 +100,12 @@ package org.openscales.fx {
 			// not depend on declaration order
 			for(i=0; i < this.rawChildren.numChildren ; i++) {
 				child = this.rawChildren.getChildAt(i);
-				if(child is FxExtent) {
-					// FIXME : it works in the MXML code but not here. Called to early ???					
+				if(child is FxExtent) {			
 					this.map.zoomToExtent((child as FxExtent).bounds);
 				}
 			}
 			
-			//this.parent.addEventListener(ResizeEvent.RESIZE, onResize);
+			this.addEventListener(ResizeEvent.RESIZE, onResize);
 		}
 		
 		private function onResize(event:ResizeEvent):void {
