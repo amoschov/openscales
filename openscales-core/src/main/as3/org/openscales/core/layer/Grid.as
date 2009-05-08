@@ -50,7 +50,7 @@ package org.openscales.core.layer
 		public function clearGrid():void {
 			if (this.grid) {
 	            for(var iRow:int=0; iRow < this.grid.length; iRow++) {
-	                var row:String = this.grid[iRow];
+	                var row:Array = this.grid[iRow];
 	                for(var iCol:int=0; iCol < row.length; iCol++) {
 	                    var tile:Tile = row[iCol];
 	                    this.removeTileMonitoringHooks(tile);
