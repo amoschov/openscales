@@ -16,10 +16,15 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.Map;
 			
+			
+			[Bindable]
+			public var map:Map; 
 			
 			private function initMap():void
 			{
+	   			map = fxmap.map;
 				tools.x = this.width - tools.width;						
 			}
 						
@@ -42,8 +47,8 @@
 							   
 			<resize:ResizableWindow title="PanZoom" movable="true" id="panzoom">
 				<mx:VBox horizontalAlign="center">
-					<os:PanComponent id="pan" map="{fxmap.map}"/>
-					<os:ZoomComponent id="zoom" map="{fxmap.map}"/>
+					<os:PanComponent id="pan" map="{map}"/>
+					<os:ZoomComponent id="zoom" map="{map}"/>
 				</mx:VBox>
 			</resize:ResizableWindow>
 						   
@@ -51,10 +56,10 @@
 
 			<resize:ResizableWindow title="Tools" movable="true" resizable="true" id="tools" width="350" height="500" >
 				<mx:TabNavigator width="100%" height="100%">
-					<os:LayerSwitcherComponent id="layerSwitcher" map="{fxmap.map}" label="Layers"/>
-					<os:DrawingComponent map="{fxmap.map}" width="100%" height="100%" label="Draw" />
-					<os:CapabilitiesComponent width="100%" height="100%" map="{fxmap.map}" label="Capabilities" />
-					<os:YahooSearchComponent width="100%" height="100%" map="{fxmap.map}" label="Search" appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é"/>
+					<os:LayerSwitcherComponent id="layerSwitcher" map="{map}" label="Layers"/>
+					<os:DrawingComponent map="{map}" width="100%" height="100%" label="Draw" />
+					<os:CapabilitiesComponent width="100%" height="100%" map="{map}" label="Capabilities" />
+					<os:YahooSearchComponent width="100%" height="100%" map="{map}" label="Search" appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é"/>
 				</mx:TabNavigator>
 			</resize:ResizableWindow>
 			
