@@ -2,9 +2,11 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns="*" xmlns:flexunit="flexunit.flexui.*" creationComplete="init()">
 	<mx:Script>
 	<![CDATA[
+        import org.openscales.coretest.StringUtilsTest;
 		import org.openscales.proj4as.projections.IdentityTest;
 		import org.openscales.coretest.layer.capabilities.ParsingTest;
 		import org.openscales.fxtest.control.DrawTest;
+
 		import flexunit.framework.TestSuite;
 			
 	private function init():void
@@ -13,6 +15,7 @@
  		ts.addTestSuite(IdentityTest);
  		ts.addTestSuite(ParsingTest);
  		ts.addTestSuite(DrawTest);
+        ts.addTestSuite(StringUtilsTest);
  		testRunner.test = ts;
  		testRunner.startTest();
  		
