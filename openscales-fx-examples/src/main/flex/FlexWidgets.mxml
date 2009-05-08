@@ -32,7 +32,7 @@
 	</mx:Script>
 	
 		
-		<os:Map id="fxmap" x="0" y="0" height="100%" width="100%" >
+		<os:Map id="fxmap" x="0" y="0" height="100%" width="100%" proxy="http://openscales.org/proxy.php?url=">
 			
 			<!--<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />-->
 			
