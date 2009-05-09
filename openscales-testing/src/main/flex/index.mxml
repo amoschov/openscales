@@ -3,6 +3,8 @@
 	<mx:Script>
 	<![CDATA[
         import org.openscales.coretest.StringUtilsTest;
+        import org.openscales.coretest.i18n.PropertiesLoaderTest;
+
 		import org.openscales.proj4as.projections.IdentityTest;
 		import org.openscales.coretest.layer.capabilities.ParsingTest;
 		import org.openscales.fxtest.control.DrawTest;
@@ -12,10 +14,13 @@
 	private function init():void
 	{
  		var ts:TestSuite = new TestSuite();
+
+        ts.addTestSuite(StringUtilsTest);
+        ts.addTestSuite(PropertiesLoaderTest);
+
  		ts.addTestSuite(IdentityTest);
  		ts.addTestSuite(ParsingTest);
  		ts.addTestSuite(DrawTest);
-        ts.addTestSuite(StringUtilsTest);
  		testRunner.test = ts;
  		testRunner.startTest();
  		
