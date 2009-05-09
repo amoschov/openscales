@@ -3,12 +3,14 @@
 	<mx:Script>
 	<![CDATA[
         import org.openscales.coretest.StringUtilsTest;
+
         import org.openscales.coretest.i18n.PropertiesLoaderTest;
         import org.openscales.coretest.i18n.LangTest;
         import org.openscales.coretest.i18n.LocalizedPropertiesTest;
         import org.openscales.coretest.i18n.LocalizedClassPropertiesTest;
         import org.openscales.coretest.I18nTest;
 
+        import org.openscales.coretest.SexagecimalTest;
 		import org.openscales.proj4as.projections.IdentityTest;
 		import org.openscales.coretest.layer.capabilities.ParsingTest;
 		import org.openscales.fxtest.control.DrawTest;
@@ -26,6 +28,7 @@
         ts.addTestSuite(LocalizedClassPropertiesTest);
         ts.addTestSuite(I18nTest);
 
+        ts.addTestSuite(SexagecimalTest);
  		ts.addTestSuite(IdentityTest);
  		ts.addTestSuite(ParsingTest);
  		ts.addTestSuite(DrawTest);
