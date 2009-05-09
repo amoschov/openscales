@@ -5,8 +5,6 @@ package org.openscales.core
     import flash.geom.Point;
     import flash.xml.XMLNode;
 
-    import org.openscales.core.basetypes.Bounds;
-    import org.openscales.core.basetypes.Unit;
     import org.openscales.core.StringUtils;
 
     public class Util
@@ -68,33 +66,10 @@ package org.openscales.core
             return [valueL, valueT];
         }
 
-        public function normalizeScale(scale:Number):Number {
+        public static function normalizeScale(scale:Number):Number {
             var normScale:Number = (scale > 1.0) ? (1.0 / scale)
                               : scale;
             return normScale;
-        }
-
-        public function getResolutionFromScale(scale:Number, units:String = null):Number {
-
-            if (units == null) {
-                units = Unit.DEGREE;
-            }
-
-            var normScale:Number = this.normalizeScale(scale);
-
-            var resolution:Number = 1 / (normScale * Unit.getInchesPerUnit(units)
-                                            * Unit.DOTS_PER_INCH);
-            return resolution;
-        }
-
-        public static function getScaleFromResolution(resolution:Number, units:String):Number {
-            if (units == null) {
-                units = Unit.DEGREE;
-            }
-
-            var scale:Number = resolution * Unit.getInchesPerUnit(units) *
-                            Unit.DOTS_PER_INCH;
-            return scale;
         }
 
         public static function upperCaseObject(object:Object):Object {
@@ -156,24 +131,6 @@ package org.openscales.core
                 }
             }
             return args;
-        }
-
-        public static function getBBOXStringFromUrl(url:String):String {
-            var startpos:int = url.indexOf("BBOX=") + 5;
-            if (startpos < 5) {
-                startpos = url.indexOf("bbox=") + 5;
-            }
-            var endpos:int = url.indexOf("%26", startpos);
-            if (endpos < 0) {
-                endpos = url.length;
-            }
-            var tempbbox:String = url.substring(startpos, endpos);
-            var tempbboxArr:Array = tempbbox.split("%2C");
-            return tempbboxArr[0] + "," + tempbboxArr[1] + " " + tempbboxArr[2] + "," + tempbboxArr[3];
-        }
-
-        public static function getBBOXStringFromBounds(bounds:Bounds):String {
-            return bounds.left + "," + bounds.bottom + " " + bounds.right + "," + bounds.top;
         }
 
         public static function pagePosition(forElement:Object):Array {

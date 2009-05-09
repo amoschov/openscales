@@ -9,19 +9,20 @@ package org.openscales.core
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
-	
+    import org.openscales.core.basetypes.Bounds;
+
 	public class Request
 	{
 		public static var activeRequestCount:int = 0;
 		private var _url:String = null;
 		private var _options:Object = null;
-		
+
 		public function Request(url:String, options:Object, proxy:String = null):void {
-			
+
 			this.options = options;
 			this.request(url, proxy);
 		}
-		
+
 		public function set options(options:Object):void {
 			this._options = {
 			  method:       URLRequestMethod.POST,
@@ -33,10 +34,10 @@ package org.openscales.core
 		public function get options():Object {
         	return this._options;
         }
-		
+
 		private function request(url:String, proxy:String):void {
 			var parameters:Object = this.options.parameters || '';
-		
+
 		    try {
 		      var postBody:Object = null;
 		      if (parameters) {
@@ -46,7 +47,7 @@ package org.openscales.core
 		      if (body) {
 		      	this.options.method = URLRequestMethod.POST;
 		      	if (parameters.BBOX) {
-		      		var bbox:String = Util.getBBOXStringFromBounds(parameters.BBOX);
+		      		var bbox:String = Bounds.getBBOXStringFromBounds(parameters.BBOX);
 		      		body.*::Query.*::Filter.*::And.*::BBOX.*::Box.*::coordinates = bbox;
 		      		url = url.split("?")[0];
 		      	}
@@ -55,43 +56,43 @@ package org.openscales.core
 		      trace(this.url);
 		      if (this.options.method == URLRequestMethod.GET && parameters.length > 0)
 		        this.url += (this.url.match(/\?/) ? '&' : '?') + parameters;
-		
+
 		      if ((proxy != null) && (proxy != "")) {
 		      	this.url = proxy + encodeURIComponent(this.url);
 		      }
 		      var loader:URLLoader = new URLLoader();
 			  configureListeners(loader);
-			
+
 		      var urlRequest:URLRequest = new URLRequest(this.url);
 		      urlRequest.method = this.options.method;
-				
+
 			  if (this.options.method == URLRequestMethod.POST) {
 		      		urlRequest.data = body;
 		      		urlRequest.contentType = "application/xml";
 		      }
-		      
+
 		      if (this.options.onComplete) {
 		      	loader.addEventListener(Event.COMPLETE, this.options.onComplete);
 		      	/* loader.resultFormat = "e4x"; */
 		      }
-			  
-			  loader.load ( urlRequest );		      
-		      
-		
+
+			  loader.load ( urlRequest );
+
+
 		    } catch (e:Error) {
 		      trace(e.message);
 		    }
 		}
-		
+
 		public function get url():String {
         	return this._url;
         }
-        
+
         public function set url(value:String):void {
         	this._url = value;
         }
-		
-		
+
+
 		private function configureListeners(dispatcher:IEventDispatcher):void {
             /* dispatcher.addEventListener(Event.COMPLETE, completeHandler);
             dispatcher.addEventListener(Event.OPEN, openHandler);
@@ -126,7 +127,7 @@ package org.openscales.core
             trace("ioErrorHandler: " + event);
         }
 
-		
-		
+
+
 	}
 }
