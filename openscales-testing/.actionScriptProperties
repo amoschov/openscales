@@ -12,6 +12,7 @@
 <libraryPathEntry kind="3" linkType="1" path="/openscales-core/bin/openscales-core.swc" useDefaultLinkType="false"/>
 <libraryPathEntry kind="3" linkType="1" path="/openscales-fx/bin/openscales-fx.swc" useDefaultLinkType="false"/>
 <libraryPathEntry kind="3" linkType="1" path="/openscales-proj/bin/openscales-proj.swc" useDefaultLinkType="false"/>
+<libraryPathEntry kind="3" linkType="1" path="/openscales-i18n/bin/openscales-i18n.swc" useDefaultLinkType="false"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>

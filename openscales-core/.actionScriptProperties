@@ -9,6 +9,7 @@
 </excludedEntries>
 </libraryPathEntry>
 <libraryPathEntry kind="3" linkType="1" path="/openscales-proj/bin/openscales-proj.swc" useDefaultLinkType="false"/>
+<libraryPathEntry kind="3" linkType="1" path="/openscales-i18n/bin/openscales-i18n.swc" useDefaultLinkType="false"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>

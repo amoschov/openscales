@@ -42,13 +42,6 @@ package org.openscales.core
 		public var DEFAULT_UNITS:String = Unit.DEGREE;
 
 		/**
-		 * Proxy (usually a PHP, Python, or Java script) used to request remote servers like
-		 * WFS servers in order to allow crossdomain requests. Remote servers can be used without
-		 * proxy script by using crossdomain.xml file like http://openscales.org/crossdomain.xml
-		 */
-		public static var proxy:String = "";
-
-		/**
 		 * Enable tween effects.
 		 */
 		public static var tween:Boolean = true;
@@ -73,6 +66,7 @@ package org.openscales.core
 		private var _resolutions:Array;
 		private var _projection:IProjection;
 		private var _units:String;
+		private var _proxy:String = null;
 
 		/**
 		 * Map constructor
@@ -875,6 +869,19 @@ package org.openscales.core
 	    	return layerArray;
 
 	    }
+	    
+	    /**
+		 * Proxy (usually a PHP, Python, or Java script) used to request remote servers like
+		 * WFS servers in order to allow crossdomain requests. Remote servers can be used without
+		 * proxy script by using crossdomain.xml file like http://openscales.org/crossdomain.xml
+		 */
+		public function get proxy():String {
+			return this._proxy
+		}
+		
+		public function set proxy(value:String):void {
+			this._proxy = value;
+		}
 
 	}
 }

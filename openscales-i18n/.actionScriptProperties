@@ -8,7 +8,6 @@
 <libraryPathEntry kind="3" linkType="1" path="${PROJECT_FRAMEWORKS}/libs/player/9" useDefaultLinkType="false"/>
 </excludedEntries>
 </libraryPathEntry>
-<libraryPathEntry kind="3" linkType="1" path="/openscales-i18n/bin/openscales-i18n.swc" useDefaultLinkType="false"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>
