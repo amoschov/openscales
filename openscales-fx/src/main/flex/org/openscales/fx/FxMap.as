@@ -52,7 +52,7 @@ package org.openscales.fx {
 			this._map.size = new Size(this.width, this.height);
 			
 			if(this._proxy != "")
-				org.openscales.core.Map.proxy = this._proxy;
+				this._map.proxy = this._proxy;
 						
 			if(!isNaN(this._maxResolution))
 				this._map.maxResolution = this._maxResolution;
