@@ -6,6 +6,8 @@
         import org.openscales.coretest.i18n.PropertiesLoaderTest;
         import org.openscales.coretest.i18n.LangTest;
         import org.openscales.coretest.i18n.LocalizedPropertiesTest;
+        import org.openscales.coretest.i18n.LocalizedClassPropertiesTest;
+        import org.openscales.coretest.I18nTest;
 
 		import org.openscales.proj4as.projections.IdentityTest;
 		import org.openscales.coretest.layer.capabilities.ParsingTest;
@@ -21,6 +23,8 @@
         ts.addTestSuite(PropertiesLoaderTest);
         ts.addTestSuite(LangTest);
         ts.addTestSuite(LocalizedPropertiesTest);
+        ts.addTestSuite(LocalizedClassPropertiesTest);
+        ts.addTestSuite(I18nTest);
 
  		ts.addTestSuite(IdentityTest);
  		ts.addTestSuite(ParsingTest);
