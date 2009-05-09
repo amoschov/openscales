@@ -23,12 +23,12 @@ package org.openscales.proj.geometry {
 			return [x,y]; 
 		}
 		
-		public function get dimension():uint
+		public function get dimension():Number
 		{
 			return 2;
 		}
 		
-		public function getOrdinate(dimension:uint):Number
+		public function getOrdinate(dimension:Number):Number
 		{
 			switch (dimension) {
 				case 0: return x;
@@ -37,7 +37,7 @@ package org.openscales.proj.geometry {
 			return 0; 
 		}
 		
-		public function setOrdinate(dimension:uint, value:Number):void
+		public function setOrdinate(dimension:Number, value:Number):void
 		{
 			switch (dimension) {
 				case 0: x=value;

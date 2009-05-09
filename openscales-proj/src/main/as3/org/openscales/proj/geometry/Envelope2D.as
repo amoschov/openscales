@@ -23,14 +23,26 @@ package org.openscales.proj.geometry {
 			 }
 		}
 
-		public function getLowerCorner():IDirectPosition {
+        /**
+         * Returns the envelope coordinate reference system, or null if
+         * unknown. If non-null, it shall
+         * be the same as lower corner and upper corner CRS.
+         *
+         * @return The envelope CRS, or null if unknown.
+         */
+        public function get coordinateReferenceSystem ( ) : ICoordinateReferenceSystem {
+            return this._crs;
+        }
+
+		public function get lowerCorner():IDirectPosition {
 			return new DirectPosition2D(this.bottomRight.x, this.bottomRight.y, this._crs);
 		}
 		
-		public function getUpperCorner():IDirectPosition {
+		public function get upperCorner():IDirectPosition {
 			return new DirectPosition2D(this.topLeft.x, this.topLeft.y, this._crs);
 		}
 
+        /** deprecated */
 		public function getCenter():IDirectPosition {
 			return new DirectPosition2D(getMedian(0), getMedian(1), this._crs);
 		}
@@ -39,7 +51,7 @@ package org.openscales.proj.geometry {
 			return 2;
 		}
 		
-		public function getMinimum(dimension:int):Number {
+		public function getMinimum(dimension:Number):Number {
 			switch (dimension) {
 				case 0: return this.left;
 				case 1: return this.bottom;
@@ -47,7 +59,7 @@ package org.openscales.proj.geometry {
 			return 0;
 		}
 		
-		public function getMaximum(dimension:int):Number {
+		public function getMaximum(dimension:Number):Number {
 			switch (dimension) {
 				case 0: return this.right;
 				case 1: return this.top;
@@ -55,7 +67,7 @@ package org.openscales.proj.geometry {
 			return 0;
 		}
 		
-		public function getMedian(dimension:int):Number {
+		public function getMedian(dimension:Number):Number {
 			switch (dimension) {
 				case 0: return this.left + (width / 2);
 				case 1: return this.bottom + (height / 2);
@@ -63,7 +75,7 @@ package org.openscales.proj.geometry {
 			return 0;
 		}
 		
-		public function getSpan(dimension:int):Number {
+		public function getSpan(dimension:Number):Number {
 			switch (dimension) {
 				case 0: return this.width;
 				case 1: return this.height;

@@ -11,6 +11,10 @@
         import org.openscales.coretest.I18nTest;
 
         import org.openscales.coretest.SexagecimalTest;
+        import org.opengis.test.util.CodeListTest;
+        import org.opengis.test.metadata.citation.CitationCodeListTest;
+        import org.opengis.test.referencing.cs.ReferencingCsCodeListTest;
+
 		import org.openscales.proj4as.projections.IdentityTest;
 		import org.openscales.coretest.layer.capabilities.ParsingTest;
 		import org.openscales.fxtest.control.DrawTest;
@@ -22,6 +26,7 @@
  		var ts:TestSuite = new TestSuite();
 
         ts.addTestSuite(StringUtilsTest);
+
         ts.addTestSuite(PropertiesLoaderTest);
         ts.addTestSuite(LangTest);
         ts.addTestSuite(LocalizedPropertiesTest);
@@ -29,6 +34,10 @@
         ts.addTestSuite(I18nTest);
 
         ts.addTestSuite(SexagecimalTest);
+        ts.addTestSuite(CodeListTest);
+        ts.addTestSuite(CitationCodeListTest);
+        ts.addTestSuite(ReferencingCsCodeListTest);
+
  		ts.addTestSuite(IdentityTest);
  		ts.addTestSuite(ParsingTest);
  		ts.addTestSuite(DrawTest);
