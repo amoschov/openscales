@@ -32,6 +32,7 @@
 	</profiles>
 	
 	<modules>
+		<module>openscales-i18n</module>
 		<module>openscales-core</module>
 		<module>openscales-as-examples</module>
 		<module>openscales-fx-examples</module>
