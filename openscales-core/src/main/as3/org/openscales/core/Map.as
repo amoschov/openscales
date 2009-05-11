@@ -137,6 +137,9 @@ package org.openscales.core
 	        }
 
 	        this._layerContainer.addChild(layer);
+			
+			if(layer.proxy == null)
+				layer.proxy = this.proxy;
 
 	        layer.map = this;
 
