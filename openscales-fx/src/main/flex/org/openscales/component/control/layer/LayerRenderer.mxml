@@ -30,6 +30,12 @@
 			public function layerVisible(event:Event):void
 			{
 				layer.visible = !layer.visible;
+				
+				// If the layer was uncheck from the beggining, he hadn't load yet so we need
+				// to redraw it to load it.
+				if(layer.visible){
+					layer.redraw();
+				}
 			}
 			
 			public function layerOpacity(event:Event):void
