@@ -28,7 +28,7 @@ package org.openscales.core.feature
 		    _fillOpacity = 0.4;
 		    _strokeColor = 0x00ff00;
 		    _strokeOpacity = 1;
-		    _strokeWidth = 4;
+		    _strokeWidth = 2;
 		    _strokeLinecap = "round";
 		    _pointRadius = 6;
 		    _hoverFillColor = 0xffffff;
