@@ -35,6 +35,11 @@ package org.openscales.fx.layer
 	    	if(this.layer != null)
 	    		this.layer.minZoomLevel = value;
 	    }
+	    
+	    override public function set visible(value:Boolean):void {
+	    	if(this.layer != null)
+	    		this.layer.visible = value;
+	    }
 		
 	}
 }

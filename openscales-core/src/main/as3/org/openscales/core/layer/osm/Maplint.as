@@ -17,7 +17,7 @@ package org.openscales.core.layer.osm
         	var alturls : Array = [	"http://e.tah.openstreetmap.org/Tiles/maplint/",
             						"http://f.tah.openstreetmap.org/Tiles/maplint/"];
 
-        	options = Util.extend({ numZoomLevels: 18, isBaseLayer: false, visible: true }, options);
+        	options = Util.extend({ numZoomLevels: 18, isBaseLayer: false }, options);
         		
 			super(name, url, options);
 			this.altUrls=alturls;
