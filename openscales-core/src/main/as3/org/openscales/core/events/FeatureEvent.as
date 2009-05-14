@@ -12,7 +12,7 @@ package org.openscales.core.events
 		 */
 		private var _vectorfeature:VectorFeature = null;
 		
-		//features coocrdonnates
+		//features coordonnates
 		private var _stageX:Number=NaN;
 		private var _stageY:Number=NaN;
 			

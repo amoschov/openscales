@@ -30,7 +30,7 @@
 					super.map = value;
 					
 					//We listen to the Feature Click event
-					this.map.addEventListener(FeatureEvent.FEATURE_CLICK, this.showInfo);
+					/* this.map.addEventListener(FeatureEvent.FEATURE_CLICK, this.showInfo); */
 				}
 			}
 			

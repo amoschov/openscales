@@ -33,9 +33,16 @@
 			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
 			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
 			
+			public var oldFeature:org.openscales.core.feature.VectorFeature;
 			
-			private var drawType:String = "";
+			private var _drawType:String = "";
 			
+			public function get drawType():String{
+				return _drawType;
+			}
+			public function set drawType(value:String):void{
+				_drawType = value;
+			}
 
 			public function onDeleteAllClick(event:Event):void {
 				drawLayer.destroyFeatures();
@@ -86,29 +93,44 @@
 			
 			public function selectFeature(event:FeatureEvent):void {
 				
-				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active) {
+				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active && featureInfo != null) {
+					var currentFeature:org.openscales.core.feature.VectorFeature;				
 					var f:org.openscales.core.feature.VectorFeature;
-					var feat:org.openscales.core.feature.VectorFeature = event.vectorfeature;
+				
+					currentFeature = event.vectorfeature;
+					
+					var find:Boolean = false;
+					
+					var oldStyle:Style = new Style();
+					oldStyle.fillColor = 0x60FFE9;
+					oldStyle.strokeColor = 0x60FFE9;
+					
 					for each(f in this.drawLayer.features){
 						if(f.selected){
-							f.selected = false;
-							var oldStyle:Style = new Style();
-							oldStyle.fillColor = 0x60FFE9;
-							oldStyle.strokeColor = 0x60FFE9;
-						
+							f.selected = false;					
 							f.style = oldStyle;
+							event.vectorfeature.layer.redraw();
 							drawLayer.renderer.clear();
 							drawLayer.redraw();
+							find = true;
 						}
-					}										
+					}
+					if(!find && oldFeature != null){		
+						oldFeature.style = oldStyle;
+						event.vectorfeature.layer.redraw();
+					}
 					var newStyle:Style = new Style();
 					newStyle.fillColor = 0xFFD700;
 					newStyle.strokeColor = 0xFFD700;
-						
-					feat.style = newStyle;
-					feat.selected = true;
+					
+					currentFeature.style = newStyle;
+					currentFeature.selected = true; 								 
+					event.vectorfeature.layer.redraw();
 					drawLayer.renderer.clear();
-					drawLayer.redraw();
+					drawLayer.redraw(); 
+					this.featureInfo.showInfo(event);
+					
+					oldFeature = currentFeature;											
 				}
 			}
 			
@@ -125,7 +147,7 @@
 			}
 			
 			private function clickHandler(event:ItemClickEvent):void{
-				var handler:Number = event.index;		// handler is a number beacause of toggleButtonBar
+				var handler:Number = event.index;		// handler is a number because of toggleButtonBar
 				var h:Handler;
 				for each(h in this.map.handlers){
 					if(h is DragHandler){
@@ -137,11 +159,9 @@
 					case 0:		//click on button point
 						if(drawType!="point"){
 							if(pathHandler.active){
-								pathHandler.drawFinalPath();
-								pathHandler.active = false;
+								this.finishPath();
 							}else if(polygonHandler.active){
-								polygonHandler.drawFinalPoly();
-								polygonHandler.active = false;
+								this.finishPolygon();
 							}												
 							pointHandler.active = true;
 							drawType = "point";
@@ -150,19 +170,14 @@
 							drawType = "";
 							pointHandler.active = false;
 							this.tgBar.selectedIndex = -1;
-							for each(h in this.map.handlers){
-								if(h is DragHandler){
-									h.active = true;
-								}
-							}
+							this.activeDrag();
 						}						
 						break;
 					
 					case 1:		//click on button path
 						if(drawType!="path"){
 							if(polygonHandler.active){
-								polygonHandler.drawFinalPoly();
-								polygonHandler.active = false;
+								this.finishPolygon();
 							}						
 							pointHandler.active = false;
 							pathHandler.active = true;
@@ -170,22 +185,16 @@
 						}
 						else{
 							drawType = "";
-							pathHandler.drawFinalPath();
-							pathHandler.active = false;
+							finishPath();
 							this.tgBar.selectedIndex = -1;
-							for each(h in this.map.handlers){
-								if(h is DragHandler){
-									h.active = true;
-								}
-							}
+							activeDrag();
 						}
 						break;
 						
 					case 2:		//click on button polygon
 						if(drawType!="polygon"){
 							if(pathHandler.active){
-								pathHandler.drawFinalPath();
-								pathHandler.active = false;
+								this.finishPath();
 							}						
 							pointHandler.active = false;
 							polygonHandler.active = true;
@@ -193,16 +202,30 @@
 						}
 						else{
 							drawType = "";
-							polygonHandler.active = false;
-							polygonHandler.drawFinalPoly();
+							this.finishPolygon();
 							this.tgBar.selectedIndex = -1;
-							for each(h in this.map.handlers){
-								if(h is DragHandler){
-									h.active = true;
-								}
-							}
+							this.activeDrag();
 						}
 						break;
+				}
+			}
+			
+			public function finishPolygon():void{
+				polygonHandler.drawFinalPoly();
+				polygonHandler.active = false;
+			}
+			
+			public function finishPath():void{
+				pathHandler.drawFinalPath();
+				pathHandler.active = false;
+			}
+			
+			public function activeDrag():void{
+				var h:Handler;
+				for each(h in this.map.handlers){
+					if(h is DragHandler){
+						h.active = true;
+					}
 				}
 			}
 		]]>

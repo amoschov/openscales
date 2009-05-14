@@ -22,16 +22,24 @@
 			[Bindable]
 			public var map:Map; 
 			
-			private function initMap():void
-			{
+			private function initMap():void{
 	   			map = fxmap.map;
 				tools.x = this.width - tools.width;						
 			}
-						
+	
+			public function changingTab(event:Event):void{
+				if((tabNav.selectedIndex != 1) && (tabDraw.drawType != "")){
+					tabDraw.finishPath();
+					tabDraw.finishPolygon();
+					tabDraw.pointHandler.active = false;
+					tabDraw.tgBar.selectedIndex = -1;
+					tabDraw.drawType = "";
+					tabDraw.activeDrag();
+				}
+			}			
 		]]>
 	</mx:Script>
 	
-		
 		<os:Map id="fxmap" x="0" y="0" height="100%" width="100%" proxy="http://openscales.org/proxy.php?url=">
 			
 			<os:WMSC name="Metacarta" url="http://labs.metacarta.com/wms-c/Basic.py"
@@ -55,9 +63,10 @@
 			<mx:Spacer/>
 
 			<resize:ResizableWindow title="Tools" movable="true" resizable="true" id="tools" width="350" height="500" >
-				<mx:TabNavigator width="100%" height="100%">
+				
+				<mx:TabNavigator id="tabNav" width="100%" height="100%" change="changingTab(event)">
 					<os:LayerSwitcherComponent id="layerSwitcher" map="{map}" label="Layers"/>
-					<os:DrawingComponent map="{map}" width="100%" height="100%" label="Draw" />
+					<os:DrawingComponent id="tabDraw" map="{map}" width="100%" height="100%" label="Draw" />
 					<os:CapabilitiesComponent width="100%" height="100%" map="{map}" label="Capabilities" />
 					<os:YahooSearchComponent width="100%" height="100%" map="{map}" label="Search" appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é"/>
 				</mx:TabNavigator>
