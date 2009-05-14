@@ -3,6 +3,7 @@
 
 <mx:Script>
 	<![CDATA[
+		import mx.controls.RadioButton;
 		import mx.events.DragEvent;
 		import org.openscales.core.events.MapEvent;
 		import org.openscales.core.events.LayerEvent;
@@ -43,7 +44,7 @@
 					baseLayerArray.push(layer);
 			}
 			
-			return baseLayerArray.reverse();
+			return baseLayerArray;
 			
 		} 
 		
@@ -76,6 +77,25 @@
 			}
 		}
 		
+		public function changeVisibility (event:Event):void
+		{
+			var layer:Layer = event.currentTarget.selectedItem;
+			var baseLayerArray:Array = this.baseLayers;
+			for(var i:int=0;i<baseLayerArray.length;i++)
+			{
+				if((baseLayerArray[i] as Layer) != layer)
+				{
+					(baseLayerArray[i] as Layer).visible = false;
+				}
+				else
+				{
+					(baseLayerArray[i] as Layer).visible = true;
+					(baseLayerArray[i] as Layer).redraw();
+				}
+			}
+			 baseLayerList.dataProvider = baseLayerArray;
+		}
+		
 		
 	]]>
 </mx:Script>
@@ -83,7 +103,7 @@
 	<mx:VBox width="100%">
 		<mx:Text text="Base Layer" width="100%"/>
 		<mx:List id="baseLayerList" itemRenderer="org.openscales.component.control.layer.LayerRenderer" labelField="BaseLayer"
-			width="100%"/>
+			width="100%" click="changeVisibility(event)"/>
 	
 		<mx:Text text="Overlays" width="100%"/>
 		<mx:List id="overlayList" itemRenderer="org.openscales.component.control.layer.LayerRenderer" labelField="Overlays"

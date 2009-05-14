@@ -34,10 +34,10 @@
 		
 		<os:Map id="fxmap" x="0" y="0" height="100%" width="100%" proxy="http://openscales.org/proxy.php?url=">
 			
-			<!--<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />-->
-			
 			<os:WMSC name="Metacarta" url="http://labs.metacarta.com/wms-c/Basic.py"
-							   layers="satellite" format="image/jpeg" isBaseLayer="true"/>
+							   layers="satellite" format="image/jpeg" isBaseLayer="true" />
+							   
+			<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
 							   
 			<os:WFS name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="topp:poi" srs="EPSG:4326" version="1.0.0"
 					isBaseLayer="false" minZoomLevel="21">
