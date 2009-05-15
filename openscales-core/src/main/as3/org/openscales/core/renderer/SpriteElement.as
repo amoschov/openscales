@@ -82,36 +82,36 @@ package org.openscales.core.renderer
 		 public function OnMouseHover(pevt:MouseEvent):void
 		 {
 		 	this.buttonMode=true;
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER,this.feature,pevt.stageX,pevt.stageY));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER,this.feature));
 		 }
 		  public function OnMouseOut(pevt:MouseEvent):void
 		 {
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT,this.feature,pevt.stageX,pevt.stageY));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT,this.feature));
 		 }
 		 public function onMouseClick(pevt:MouseEvent):void
 		 {
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK,this.feature,pevt.stageX,pevt.stageY));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK,this.feature));
 		 }
 		  public function onMouseDoubleClick(pevt:MouseEvent):void
 		 {
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DOUBLECLICK,this.feature,pevt.stageX,pevt.stageY));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DOUBLECLICK,this.feature));
 		 }
 		 
 		 public function onMouseDown(pevt:MouseEvent):void
 		 {
 		 	this.buttonMode=true;
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEDOWN,this.feature,pevt.stageX,pevt.stageY));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEDOWN,this.feature));
 		 }
 		 
 		  public function onMouseUp(pevt:MouseEvent):void
 		 {
 		 	this.buttonMode=false;
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP,this.feature,pevt.stageX,pevt.stageY));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP,this.feature));
 		 }
 		 
 		 public function OnMouseMove(pevt:MouseEvent):void
 		 {
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEMOVE,this.feature,pevt.stageX,pevt.stageY));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEMOVE,this.feature));
 		 }
 	}
 }

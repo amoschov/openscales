@@ -23,8 +23,8 @@ package org.openscales.core.events
 		public static const FEATURE_MOUSEDOWN:String="openscales.feature.mousedown";
 		public static const FEATURE_MOUSEUP:String="openscales.feature.mouseup";
 		public static const FEATURE_MOUSEMOVE:String="openscales.feature.mousemove";
-		
-		public function FeatureEvent(type:String,vectorfeature:VectorFeature,stageX:Number=NaN,stageY:Number=NaN,bubbles:Boolean=false, cancelable:Boolean=false)
+		public static const FEATURE_DRAGGING:String="openscales.feature.dragging";
+		public function FeatureEvent(type:String,vectorfeature:VectorFeature,bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			super(type, bubbles, cancelable);
 			this.vectorfeature=vectorfeature;

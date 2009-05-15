@@ -1,5 +1,6 @@
-package org.openscales.core.handler.mouse {
-	
+package org.openscales.core.handler.mouse
+{
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
@@ -7,125 +8,97 @@ package org.openscales.core.handler.mouse {
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.handler.Handler;
 	
-	/**
-	 * Drag handler is used to pan the map 
-	 */
-	public class DragHandler extends Handler {
-		
-		private var _startCenter:LonLat = null;
-		
+	public class DragHandler extends Handler
+	{
+		private var _startCenter:LonLat = null;		
 		private var _start:Pixel = null;
 		
-		private var _last:Pixel = null;
+		private var _dragging:Boolean = false;	
 		
-		private var _dragging:Boolean = false;
-			
-		public function DragHandler(target:Map = null, active:Boolean = false){
-			super(target,active);
+		private var _onStart:Function=null;
+		private var _oncomplete:Function=null;
+		
+		public function DragHandler(map:Map=null,active:Boolean=false)
+		{
+			super(map,active);
 		}
-		
 		override protected function registerListeners():void{
 			this.map.addEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
 			this.map.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
-			this.map.addEventListener(MouseEvent.CLICK, this.onMouseUp);
+			
 		}
 		
 		override protected function unregisterListeners():void{
 			this.map.removeEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
-			this.map.removeEventListener(MouseEvent.CLICK, this.onMouseUp);
-           	this.map.removeEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);
-           	this.map.removeEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
-           	//this.map.removeEventListener(MouseEvent.MOUSE_OUT, this.onMouseUp);
+           	this.map.removeEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);         
 		}
 		
-		private function onMouseDown(event:MouseEvent):void {
-			this.start = new Pixel(event.stageX, event.stageY);
-			this.startCenter = this.map.center;
-	        this.last = new Pixel(event.stageX, event.stageY);
-	        this.map.useHandCursor = true;
-            this.map.buttonMode = true;
-           	this.map.addEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);
-           	this.down(new Pixel(event.stageX, event.stageY));
+		protected function onMouseDown(event:Event):void{
+			var element:Object = this.map.layerContainer;
+			element.startDrag();
+			this._start = new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY);
+			this._startCenter = this.map.center;
+			//this.map.useHandCursor=true;
+			this.map.buttonMode=true;
+			this.dragging=true;
+			if(this.onstart!=null) this.onstart(event as MouseEvent);
+		}
+		protected function onMouseUp(event:Event):void{			
+		//	this.map.useHandCursor=false;
+			var element:Object = this.map.layerContainer;
+			element.stopDrag();		
+			this.map.buttonMode=false;		
+            this.done(new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY));
+            
+			this.dragging=false;
+			if(this.oncomplete!=null) this.oncomplete(event as MouseEvent);
 		}
 		
-		private function onMouseMove(event:MouseEvent):void {
-            if(event.stageX != this.last.x || event.stageY != this.last.y) {
-                this.last = new Pixel(event.stageX, event.stageY);
-            	this.dragging = true;
-            	this.move(new Pixel(event.stageX, event.stageY));
-              	this.map.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
-	           	//this.map.addEventListener(MouseEvent.MOUSE_OUT, this.onMouseUp);
-            }
-	 	}
-	 	
-	 	protected function onMouseUp(event:MouseEvent):void {
-			this.map.removeEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);
-			
-			if (this._dragging) {
-                this.done(new Pixel(event.stageX, event.stageY));
-	        }
-	        this.map.useHandCursor = false;
-            this.map.buttonMode = false;
-            this._dragging = false;
-	 	}
-	 	
-	 	public function get start():Pixel {
-			return this._start;
-		}
-		
-		public function set start(value:Pixel):void {
-			this._start = value;
-		}
-		
-		public function get startCenter():LonLat {
-			return this._startCenter;
-		}
-		
-		public function set startCenter(value:LonLat):void {
-			this._startCenter = value;
-		}
-		
-		public function get last():Pixel {
-			return this._last;
-		}
-		
-		public function set last(value:Pixel):void {
-			this._last = value;
-		}
-	 	
-	 	public function get dragging():Boolean {
+		//properties
+		public function get dragging():Boolean
+		{
 			return this._dragging;
 		}
-		
-		public function set dragging(value:Boolean):void {
-			this._dragging = value;
+		public function set dragging(dragging:Boolean):void
+		{
+			this._dragging=dragging;	
+		}
+		public function set onstart(onstart:Function):void
+		{
+			this._onStart=onstart;
+		}
+		public function get onstart():Function
+		{
+			return this._onStart;
+		}
+		public function set oncomplete(oncomplete:Function):void
+		{
+			this._oncomplete=oncomplete;	
+		}
+		public function get oncomplete():Function
+		{
+			return this._oncomplete;
 		}
 		
-		public function down(xy:Pixel):void {
-			this.map.buttonMode = true;
-	        this.map.useHandCursor = true;
-		}
-	 	
-	 	public function move(xy:Pixel):void {
-            this.panMap(xy);
-	 	}
-		
-		public function done(xy:Pixel):void {
+		private function done(xy:Pixel):void {
             if(this.dragging) {
             	this.panMap(xy);
             	this.dragging = false;
             }
 	 	}
-	 	
-	 	private function panMap(xy:Pixel):void {
+		private function panMap(xy:Pixel):void {
 	 		this.dragging = true;
-	        var deltaX:Number = this.start.x - xy.x;
-	        var deltaY:Number = this.start.y - xy.y;
+	        var deltaX:Number = this._start.x - xy.x;
+	        var deltaY:Number = this._start.y - xy.y;
 	                
-	        var newCenter:LonLat = new LonLat(this.startCenter.lon + deltaX * this.map.resolution , this.startCenter.lat - deltaY * this.map.resolution);
+	        var newCenter:LonLat = new LonLat(this._startCenter.lon + deltaX * this.map.resolution , this._startCenter.lat - deltaY * this.map.resolution);
 	        
+<<<<<<< .mine
+	        this.map.center = newCenter;
+=======
 	        //this.map.setCenter(newCenter, NaN, this.dragging);
 	        this.map.center = newCenter;
+>>>>>>> .r416
 	 	}
 	}
 }
