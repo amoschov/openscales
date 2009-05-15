@@ -15,6 +15,9 @@ package org.openscales.core.events
 		//features coordonnates
 		private var _stageX:Number=NaN;
 		private var _stageY:Number=NaN;
+		
+		//Ctrl is pressed or not
+		private var _ctrlPressed:Boolean = false;
 			
 		public static const FEATURE_OVER:String="openscales.feature.over";
 		public static const FEATURE_OUT:String="openscales.feature.out";
@@ -24,12 +27,14 @@ package org.openscales.core.events
 		public static const FEATURE_MOUSEUP:String="openscales.feature.mouseup";
 		public static const FEATURE_MOUSEMOVE:String="openscales.feature.mousemove";
 		public static const FEATURE_DRAGGING:String="openscales.feature.dragging";
-		public function FeatureEvent(type:String,vectorfeature:VectorFeature,bubbles:Boolean=false, cancelable:Boolean=false)
+				
+		public function FeatureEvent(type:String,vectorfeature:VectorFeature,bubbles:Boolean=false,ctrlStatus:Boolean = false,cancelable:Boolean=false) 
 		{
 			super(type, bubbles, cancelable);
 			this.vectorfeature=vectorfeature;
 			this._stageX=stageX;
 			this._stageY=stageY;
+			this._ctrlPressed = ctrlStatus;
 		}
 	
 		//Properties
@@ -57,6 +62,10 @@ package org.openscales.core.events
 		public function get stageY():Number
 		{
 			return this._stageY;
+		}
+		public function get ctrlPressed():Boolean
+		{
+			return this._ctrlPressed;
 		}
 	}
 }

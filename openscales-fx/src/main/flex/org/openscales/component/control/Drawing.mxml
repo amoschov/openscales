@@ -6,6 +6,7 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import mx.events.CloseEvent;
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.geometry.Polygon;
 			import org.openscales.core.feature.Style;
@@ -34,6 +35,9 @@
 			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
 			
 			public var oldFeature:org.openscales.core.feature.VectorFeature;
+			public var oldStyle:Style = new Style();
+			public var selectStyle:Style = new Style();
+			public var first:Boolean = true;
 			
 			private var _drawType:String = "";
 			
@@ -44,9 +48,35 @@
 				_drawType = value;
 			}
 
+			public function onDeleteSelectedClick(event:Event):void {
+				Alert.show("Are you sure ?", "Warning", Alert.YES | Alert.NO, null, alertClickHandler);				
+			}
+			
+			private function alertClickHandler(event:CloseEvent):void {
+                if (event.detail==Alert.YES){
+                	deleteSelectedFeatures(); 
+                }                  
+            }
+			
+			private function deleteSelectedFeatures():void {
+				var feat:org.openscales.core.feature.VectorFeature;
+				var i:Number = 0;
+				for(i;i<drawLayer.features.length;i++){
+					feat = drawLayer.features[i];
+					if(feat.selected){
+						drawLayer.removeFeatures(drawLayer.features[i]);
+						i--;
+					}
+				}
+				drawLayer.renderer.clear();
+				drawLayer.redraw();
+				btnDeleteSelected.enabled = false;
+			}
+
 			public function onDeleteAllClick(event:Event):void {
 				drawLayer.destroyFeatures();
 				drawLayer.renderer.clear();
+				oldFeature = null;
 				
 				switch(drawType)
 				{
@@ -88,49 +118,48 @@
 				}
 				else {
 					Alert.show("There are not features to delete !", "Message");
+					oldFeature = null;
 				}
 			}
 			
 			public function selectFeature(event:FeatureEvent):void {
 				
 				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active && featureInfo != null) {
-					var currentFeature:org.openscales.core.feature.VectorFeature;				
-					var f:org.openscales.core.feature.VectorFeature;
-				
+					
+					btnDeleteSelected.enabled = true;
+					var currentFeature:org.openscales.core.feature.VectorFeature;
+					var f:org.openscales.core.feature.VectorFeature;				
 					currentFeature = event.vectorfeature;
 					
-					var find:Boolean = false;
-					
-					var oldStyle:Style = new Style();
-					oldStyle.fillColor = 0x60FFE9;
-					oldStyle.strokeColor = 0x60FFE9;
-					
-					for each(f in this.drawLayer.features){
-						if(f.selected){
-							f.selected = false;					
-							f.style = oldStyle;
-							event.vectorfeature.layer.redraw();
-							drawLayer.renderer.clear();
-							drawLayer.redraw();
-							find = true;
+					if(oldFeature != null && oldFeature != currentFeature){		
+						if(event.ctrlPressed){
+							oldFeature.selected = true;
+							currentFeature.selected = true;
 						}
+						else{
+							for each(f in drawLayer.features)
+							{
+								if(f.selected){
+									f.style = oldStyle;
+								}
+							}
+							oldFeature.style = oldStyle;
+							oldStyle = currentFeature.style;
+							oldFeature.layer.redraw();
+						}	
 					}
-					if(!find && oldFeature != null){		
-						oldFeature.style = oldStyle;
-						event.vectorfeature.layer.redraw();
-					}
-					var newStyle:Style = new Style();
-					newStyle.fillColor = 0xFFD700;
-					newStyle.strokeColor = 0xFFD700;
+					else if(first){first=false;oldStyle=currentFeature.style;}
+						
+					selectStyle.fillColor = 0xFFD700;
+					selectStyle.strokeColor = 0xFFD700;
 					
-					currentFeature.style = newStyle;
-					currentFeature.selected = true; 								 
-					event.vectorfeature.layer.redraw();
-					drawLayer.renderer.clear();
-					drawLayer.redraw(); 
+					currentFeature.style = selectStyle;							 
+					currentFeature.selected = true;
+					currentFeature.layer.redraw();
+				 
 					this.featureInfo.showInfo(event);
 					
-					oldFeature = currentFeature;											
+					oldFeature = currentFeature;															
 				}
 			}
 			
@@ -241,8 +270,9 @@
 	
 	<mx:Button x="10" y="78" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="104"/>
 	<mx:Button x="10" y="48" label="DeleteLast" width="104" id="btnDeleteLast" click="this.onDeleteLastClick(event)"/>
+	<mx:Button label="DeleteSelected" width="118" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" x="171" y="78" enabled="false"/>
 		
-	<mx:Text x="160" y="5" text="Tooltip : to finalize a path or a polygon just double click on map." width="143" height="76" fontStyle="italic"/>
+	<mx:Text x="160" y="5" text="Tooltip : to finalize a path or a polygon just double click on map." width="143" height="46" fontStyle="italic"/>
 		
 	<control:FeatureInfo id="featureInfo" x="10" y="108" width="310" height="166"/>
 	

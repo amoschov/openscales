@@ -90,7 +90,7 @@ package org.openscales.core.renderer
 		 }
 		 public function onMouseClick(pevt:MouseEvent):void
 		 {
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK,this.feature));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK,this.feature,pevt.ctrlKey));
 		 }
 		  public function onMouseDoubleClick(pevt:MouseEvent):void
 		 {
