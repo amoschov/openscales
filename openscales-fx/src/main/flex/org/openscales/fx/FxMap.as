@@ -88,7 +88,8 @@ package org.openscales.fx {
 			}
 			
 			if(!isNaN(this._lon) && !isNaN(this._lat))
-				this._map.setCenter(new LonLat(this._lon, this._lat), _zoom);
+				this._map.center = new LonLat(this._lon, this._lat);
+			
 				
 			if(!isNaN(this._creationWidth) && !isNaN(this._creationHeight))
 				this._map.size = new Size(this._creationWidth, this._creationHeight);

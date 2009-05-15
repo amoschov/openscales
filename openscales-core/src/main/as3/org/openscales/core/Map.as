@@ -360,7 +360,7 @@ package org.openscales.core
 		 * @param dragTween
 		 *
 		 */
-		public function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false):void {
+		private function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false):void {
 			if (!this.center && !this.isValidLonLat(lonlat)) {
 	            lonlat = this.maxExtent.centerLonLat;
 	        }
@@ -439,7 +439,7 @@ package org.openscales.core
 		 * @param lonlat the new layer container center
 		 * @param tween use tween effect is set to true
 		 */
-		public function centerLayerContainer(lonlat:LonLat, tween:Boolean = false):void {
+		private function centerLayerContainer(lonlat:LonLat, tween:Boolean = false):void {
 			var originPx:Pixel = this.getMapPxFromLonLat(this._layerContainerOrigin);
 	        var newPx:Pixel = this.getMapPxFromLonLat(lonlat);
 
@@ -462,7 +462,7 @@ package org.openscales.core
 		 * @return Whether or not the zoom level passed in is non-null and within the min/max
 		 * range of zoom levels.
 		 */
-		public function isValidZoomLevel(zoomLevel:Number):Boolean {
+		private function isValidZoomLevel(zoomLevel:Number):Boolean {
 			var isValid:Boolean = ( (!isNaN(zoomLevel)) &&
 	            (zoomLevel >= 0) &&
 	            (zoomLevel < this.numZoomLevels) );
@@ -475,7 +475,7 @@ package org.openscales.core
 		 * @param lonlat the coordinate to test
 		 * @return Whether or not the lonlat passed in is non-null and within the maxExtent bounds
 		 */
-		public function isValidLonLat(lonlat:LonLat):Boolean {
+		private function isValidLonLat(lonlat:LonLat):Boolean {
 	        var valid:Boolean = false;
 	        if (lonlat != null) {
 	            var maxExtent:Bounds = this.maxExtent;
@@ -492,7 +492,7 @@ package org.openscales.core
 		 * @return the matching zoom level
 		 *
 		 */
-		public function getZoomForExtent(bounds:Bounds):Number {
+		private function getZoomForExtent(bounds:Bounds):Number {
 			var zoom:int = -1;
 	        if (this.baseLayer != null) {
 	            zoom = this.baseLayer.getZoomForExtent(bounds);

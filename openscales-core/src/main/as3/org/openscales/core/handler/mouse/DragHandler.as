@@ -124,7 +124,8 @@ package org.openscales.core.handler.mouse {
 	                
 	        var newCenter:LonLat = new LonLat(this.startCenter.lon + deltaX * this.map.resolution , this.startCenter.lat - deltaY * this.map.resolution);
 	        
-	        this.map.setCenter(newCenter, NaN, this.dragging);
+	        //this.map.setCenter(newCenter, NaN, this.dragging);
+	        this.map.center = newCenter;
 	 	}
 	}
 }

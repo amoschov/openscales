@@ -36,9 +36,7 @@ package org.openscales.core.handler.mouse {
 			}
 			
 			var newZoom:int = this.map.zoom + deltaZ;
-	        if (!this.map.isValidZoomLevel(newZoom)) {
-	            return;
-	        }
+	       
 	        var size:Size    = this.map.size;
 	        var deltaX:Number  = size.w/2 - this.map.mouseX;
 	        var deltaY:Number  = size.h/2 - this.map.mouseY;
@@ -47,7 +45,8 @@ package org.openscales.core.handler.mouse {
 	        var newCenter:LonLat = new LonLat(
 	                            zoomPoint.lon + deltaX * newRes,
 	                            zoomPoint.lat - deltaY * newRes );
-	        this.map.setCenter( newCenter, newZoom );
+	        this.map.center = newCenter;
+	        this.map.zoom = newZoom;
 		}
 		
 	}
