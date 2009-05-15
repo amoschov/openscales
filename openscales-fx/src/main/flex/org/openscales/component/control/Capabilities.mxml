@@ -13,15 +13,39 @@
 			import org.openscales.core.layer.capabilities.GetCapabilities;
 			import org.openscales.core.Map;
 			
+			/**
+			 * Array used as data provider for the list.
+			 */
 			private var listDataProvider:Array = null;
+			
+			/**
+			 * Hash map containing the capabilities of all layers available on the WFS server.
+			 */
 			private var capabilities:HashMap = null;
+			
+			/**
+			 * Hash map containing the capabilities of selected layer
+			 */
 			private var featureCap:HashMap = null;
+			
+			/**
+			 * Hash map in which we'll store the layers added to the map from the
+			 * capabilities retriever component.
+			 */
 			private var addedLayers:HashMap = new HashMap();
+			
+			/**
+			 * The WFS server url on which we will retrieve the capabilities.
+			 */
 			private var url:String = null;
 						
+			/**
+			 * Called when a LAYER_REMOVED event is dispatched.
+			 * It will remove the layer from the added layers.
+			 */
 			public function deleteLayer(event:LayerEvent):void
 			{
-				addedLayers.remove((event.layer as Layer).name);
+				addedLayers.remove(event.layer.name);
 			}
 					
 			public function onButtonClick(event:MouseEvent):void{
@@ -29,6 +53,10 @@
 				url = this.txtUrl.text;
 			}
 			
+			/**
+			 * Method called when the user select an other list element (which is an available layer on server).
+			 * It will display the informations about the layer.
+			 */
 			public function onChangeListElement(event:Event):void {
 				// We show to user the informations about the layer
 				featureCap = capabilities.getValue(this.list.selectedItem);
@@ -40,6 +68,10 @@
 				this.txtInfo.text = info;
 			}
 			
+			/**
+			 * <p>Double click handler on a list element.</p>
+			 * <p>It will add the layer at the map (and so in the layer switcher).</p>
+			 */
 			public function onDblClickListElement(event:MouseEvent):void {
 
 				//We add the layer to the map
@@ -62,6 +94,13 @@
 				
 			}
 			
+			/**
+			 * TODO: Refactor this to use events
+			 * 
+			 * Callback method to retrieve the capabilities from the GetCapabilities instance.
+			 * 
+			 * @param getCap The GetCapabilities instance that received the capabilities.
+			 */
 			public function capabilitiesGetter(getCap:GetCapabilities):void {
 				this.capabilities = getCap.getAllCapabilities();
 				lblFeatures.text = "There are " + capabilities.size() + " features available on server:";

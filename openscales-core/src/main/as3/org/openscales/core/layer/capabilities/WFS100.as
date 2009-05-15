@@ -79,6 +79,8 @@ package org.openscales.core.layer.capabilities
 		
 		/**
 		 * Method to remove the additional namespaces of the XML capabilities file.
+		 * 
+		 * @param doc The XML file
 		 */
 		private function removeNamespaces(doc:XML):void {
 			var namespaces:Array = doc.inScopeNamespaces();

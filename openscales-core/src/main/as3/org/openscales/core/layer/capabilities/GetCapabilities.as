@@ -48,7 +48,12 @@ package org.openscales.core.layer.capabilities
 			
 		}
 		
-	
+		/**
+		 * Method which will request the capabilities
+		 * 
+		 * @param failedVersion The last WFS version protocol requested unsuported by the server
+		 * @return If the server was requested
+		 */
 		private function requestCapabilities(failedVersion:String = null):Boolean{
 			
 			if (this._service != "WFS" && this._service != "WMS"){

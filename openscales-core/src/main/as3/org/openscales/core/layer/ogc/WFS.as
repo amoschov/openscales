@@ -33,28 +33,59 @@ package org.openscales.core.layer.ogc
 	                      version: "1.1.0",
 	                      request: "GetFeature" };
 		
+		/**
+	     * The ratio of image/tile size to map size (this is the untiled
+	     *     buffer)
+	     */
 		private var _ratio:Number = 2;
-	                      
+	   	
+	   	/**
+	     *  Determines whether the layer is in vector mode or marker mode.
+	     */                   
 		private var _vectorMode:Boolean = true;
 		
 		private var _params:Object = null;
 		
 		private var _url:String = null;
 		
-		private var _tile:org.openscales.core.tile.WFSTile = null;
+		private var _tile:WFSTile = null;
 		
 		private var _writer:Format = null;
 		
+		/** 
+		 * TODO: is this attribute used ?!
+		 * 
+	     *  If featureClass is defined, an old-style markers
+	     *     based WFS layer is created instead of a new-style vector layer. If
+	     *     sent, this should be a subclass of OpenLayers.Feature
+	     */
 		private var _featureClass:Class = null;
 		
 		private var _featureNS:String = null;
 				
 		private var _geometryColumn:String = null;
 		
+		/**
+	     * 	 Should the WFS layer parse attributes from the retrieved
+	     *     GML? Defaults to false. If enabled, parsing is slower, but 
+	     *     attributes are available in the attributes property of 
+	     *     layer features.
+	     */
 		private var _extractAttributes:Boolean = true;
 		
+		/**
+		 * An HashMap containing the capabilities of the layer.
+		 */
 		private var _capabilities:HashMap = null;
-			                    
+		
+		/**
+		 * WFS class constructor
+		 * 
+		 * @param name Layer's name
+		 * @param url The WFS server url to request
+		 * @param params
+		 * @param options
+		 */	                    
 	    public function WFS(name:String, url:String, params:Object, options:Object = null, capabilities:HashMap=null):void {
 	    	
 	    	this.capabilities = capabilities;
@@ -102,6 +133,13 @@ package org.openscales.core.layer.ogc
 	        }
 	    }
 	    
+	    /**
+	    * Method called when we pan, drag or change zoom to move the layer.
+	    * 
+	    * @param bounds The new bounds delimiting the layer view
+	    * @param zoomChanged Zoom changed or not
+	    * @param dragging Drag action or not
+	    */
 	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
 	        if (this.vectorMode) {
 	            super.moveTo(bounds, zoomChanged, dragging);
@@ -109,13 +147,6 @@ package org.openscales.core.layer.ogc
 	        
 	        if (dragging) {
 	        } else {
-	        	
-		        //Commented to avoid the reload of vectorial features
-		      /*  if ( zoomChanged ) {
-		            if (this.vectorMode) {
-		                this.renderer.clear();
-		            }
-		        }*/
 	
 		        if (this.minZoomLevel && this.map.zoom < this.minZoomLevel) {
 
@@ -184,12 +215,18 @@ package org.openscales.core.layer.ogc
 	        }
 	    }
 	    
+	    /**
+	    * Method called on map resize
+	    */
 	     override public function onMapResize():void {	
 	        if(this.vectorMode) {
 	            super.onMapResize();
 	        }
 	    } 
 	    
+		/**
+		 * TODO: Has to be refactored
+		 */
 	    override public function clone(obj:Object):Object {
 	        if (obj == null) {
 	            obj = new WFS(this.name,
@@ -204,13 +241,22 @@ package org.openscales.core.layer.ogc
 	        return obj;
 	    }
 	    
-		public function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
+	    /** 
+	     * Combine the layer's url with its params and these newParams. 
+	     *
+	     * @param newParams
+	     * @param altUrl Use this as the url instead of the layer's url
+	     */
+		private function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
 	        var projection:IProjection = this.map.projection;
 	        this.params.SRS = (projection == null) ? null : projection.name;
 	
 	        return new Grid(this.name, this.url, this.params).getFullRequestString(newParams, altUrl);
 		}
 		
+		/**
+	     * Write out the data to a WFS server.
+	     */
 		public function commit():void {
 			if (!this.writer) {
 	            this.writer = new org.openscales.core.format.WFSFormat({},this);
@@ -236,6 +282,9 @@ package org.openscales.core.layer.ogc
 	                         );
 		}
 		
+		/**
+		 * Callback method for commit request
+		 */
 		public function commitSuccessFailure(event:Event):void {
 			var loader:URLLoader = event.target as URLLoader;
 			var response:String = loader.data as String;
@@ -253,15 +302,14 @@ package org.openscales.core.layer.ogc
 	        }
 		}
 		
-		public function commitFailure(response:Event):void {
-			
-		}
-		
+		/**
+		 * Called by the callback method to report the request result
+		 */
 		public function commitReport(string:String, response:String):void{
 			trace(string);
 		}
 		
-		public function refresh():void {
+		/*public function refresh():void {
 			if (this.tile) {
 	            if (this.vectorMode) {
 	                this.renderer.clear();
@@ -269,7 +317,7 @@ package org.openscales.core.layer.ogc
 	            }
 	            this.tile.draw();
 	        }
-		}
+		}*/
 		
 		public function set typename(value:String):void {
 			this.params.typename = value;
@@ -287,6 +335,13 @@ package org.openscales.core.layer.ogc
 			this._capabilities = value;
 		}
 		
+		/**
+		 * TODO: Refactor this to use events
+		 * 
+		 * Callback method called by the capabilities retriever.
+		 * 
+		 * @param caller The GetCapabilities instance which call it.
+		 */
 		public function capabilitiesGetter(caller:GetCapabilities):void {
 			if (this.params != null) {
 				this._capabilities = caller.getLayerCapabilities(this.params.typename);
