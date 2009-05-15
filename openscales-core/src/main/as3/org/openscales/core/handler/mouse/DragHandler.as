@@ -38,13 +38,11 @@ package org.openscales.core.handler.mouse
 			element.startDrag();
 			this._start = new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY);
 			this._startCenter = this.map.center;
-			//this.map.useHandCursor=true;
 			this.map.buttonMode=true;
 			this.dragging=true;
 			if(this.onstart!=null) this.onstart(event as MouseEvent);
 		}
 		protected function onMouseUp(event:Event):void{			
-		//	this.map.useHandCursor=false;
 			var element:Object = this.map.layerContainer;
 			element.stopDrag();		
 			this.map.buttonMode=false;		
