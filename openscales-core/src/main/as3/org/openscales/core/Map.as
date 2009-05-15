@@ -531,12 +531,14 @@ package org.openscales.core
 			this.zoomToExtent(this.maxExtent);
 		}
 
+
+		//Replaced by zoom setter
 		/**
 		 * Zoom to the passed in scale, recenter.
 		 *
 		 * @param bounds
 		 */
-		public function zoomToScale(scale:Number):void {
+		/*public function zoomToScale(scale:Number):void {
 			var res:Number = Unit.getResolutionFromScale(scale, this.baseLayer.units);
 	        var w_deg:Number = this.size.w * res;
 	        var h_deg:Number = this.size.h * res;
@@ -547,7 +549,7 @@ package org.openscales.core
 	                                           center.lon + w_deg / 2,
 	                                           center.lat + h_deg / 2);
 	        this.zoomToExtent(extent);
-		}
+		}*/
 
 
 		/**

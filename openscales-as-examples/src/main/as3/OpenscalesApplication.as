@@ -48,7 +48,8 @@ package {
                 var lon:Number=-43.584918945312495;
                 var zoom:Number=8;
                 var lonLat:LonLat = new LonLat(lon, lat);
-                _map.setCenter (lonLat, zoom);
+                _map.center = lonLat;
+                _map.zoom = zoom;
 
                         this.addChild(_map); 
 		}
