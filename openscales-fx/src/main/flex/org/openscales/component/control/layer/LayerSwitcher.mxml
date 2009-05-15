@@ -3,6 +3,7 @@
 
 <mx:Script>
 	<![CDATA[
+		import org.openscales.core.handler.mouse.ClickHandler;
 		import mx.controls.RadioButton;
 		import mx.events.DragEvent;
 		import org.openscales.core.events.MapEvent;
@@ -10,90 +11,121 @@
 		import mx.events.IndexChangedEvent;
 		import org.openscales.core.layer.Layer;
 		import org.openscales.core.Map;
-
 		
+		private var baseLayerArray:Array = new Array();
+		private var overlayArray:Array = new Array();
+		
+		/**
+		 * Get the existing map
+		 * 
+		 * @param value
+		 */
 		override public function set map(value:Map):void {
 			super.map = value;	
 
 			if(map != null) {
+				//Listening of layer event
 				this.map.addEventListener(LayerEvent.LAYER_ADDED,this.refresh);
 				this.map.addEventListener(LayerEvent.LAYER_CHANGED,this.refresh);
 				this.map.addEventListener(LayerEvent.LAYER_REMOVED,this.refresh);
+				
+				//stock layer by type : baselayer and overlays
+				for(var i:int=0;i<this.map.layers.length;i++)
+				{
+					var layer:Layer = this.map.layers[i] as Layer;
+					if(layer.isBaseLayer == true){
+						baseLayerArray.push(layer);
+					}
+					else{
+						overlayArray.push(layer);
+					}
+				}
+				overlayList.height = overlayArray.length *90;
+				baseLayerList.height = baseLayerArray.length * 80;
+				baseLayerList.dataProvider = baseLayerArray;
+				overlayList.dataProvider = overlayArray.reverse();
 			}
 			
 			this.refresh();
 		}
-		
+		/**
+		 * Refresh the LayerSwitcher when a layer is add, delete or update
+		 * 
+		 * @param event Layer event
+		 */
 	 	public function refresh(event:LayerEvent = null):void {
-			baseLayerList.dataProvider = this.baseLayers;
-			baseLayerList.rowCount = this.baseLayers.length;
-			overlayList.dataProvider = this.overlays;
-			overlayList.rowCount = this.overlays.length;
-
-		} 
-				
-		public function get baseLayers():Array
-		{
-			var layers:Array = this.map.layers;
-			var baseLayerArray:Array = new Array();;
-			
-			for(var i:int=0;i<layers.length;i++)
-			{
-				var layer:Layer = layers[i] as Layer;
-				if(layer.isBaseLayer == true)
-					baseLayerArray.push(layer);
+	 		
+	 		//Test the triggered event
+			if(event.type == "openscales.addlayer"){
+				if(event.layer.isBaseLayer == true){
+					baseLayerArray.push(event.layer); //add a new layer in the array
+					baseLayerList.height = baseLayerArray.length * 80;
+					baseLayerList.invalidateList(); //update the list
+				}
+				else{
+					overlayArray.reverse();
+					overlayArray.push(event.layer);
+					overlayList.height = overlayArray.length *90;
+					overlayArray.reverse();
+					overlayList.invalidateList();
+				}
 			}
-			
-			return baseLayerArray;
+			if(event.type == "openscales.removelayer"){
+				if(event.layer.isBaseLayer == true){
+					baseLayerArray.splice(baseLayerArray.indexOf(event.layer),1);//delete the layer remove in the array
+					baseLayerList.height = baseLayerArray.length * 80;
+					baseLayerList.invalidateList();
+				}
+				else{
+					
+					overlayArray.splice(overlayArray.indexOf(event.layer),1);
+					overlayList.height = overlayArray.length *90;
+					overlayList.invalidateList();
+				}
+			}
 			
 		} 
 		
-		public function get overlays():Array
-		{
-			var layers:Array = this.map.layers;
-			var overlaysArray:Array = new Array();
-			
-			for(var k:int=0;k<layers.length;k++)
-			{
-				var layer:Layer = layers[k] as Layer;
-				if(layer.isBaseLayer == false)
-					overlaysArray.push(layer);
-			}
-			overlayList.height = overlaysArray.length *90;
-			return overlaysArray.reverse();
-		}
-		
+		/**
+		 * Update layers order when a user change it
+		 * 
+		 * @param event Drag event
+		 */
 		public function changeLayerOrder(event:DragEvent):void
 		{
 			
 			var ecart:int = overlayList.calculateDropIndex() - overlayList.selectedIndex;	
-			if(ecart > 0)
+			if(ecart > 0) //if we drag and drop the layer down
 			{
 				(overlayList.selectedItem as Layer).zindex = (overlayList.selectedItem as Layer).zindex - (ecart-1);
 			}
-			if(ecart < 0)			
+			if(ecart < 0)	//if we drag and drop the layer up		
 			{
-				(overlayList.selectedItem as Layer).zindex = (overlayList.selectedItem as Layer).zindex + ecart +2;
+				(overlayList.selectedItem as Layer).zindex = (overlayList.selectedItem as Layer).zindex - ecart;
 			}
 		}
-		
-		public function changeVisibility (event:Event):void
+		/**
+		 * Switch the display base layer
+		 * 
+		 * @param event Click event
+		 */
+		public function changeVisibility (event:MouseEvent):void
 		{
 			var layer:Layer = event.currentTarget.selectedItem;
-			var baseLayerArray:Array = this.baseLayers;
 			for(var i:int=0;i<baseLayerArray.length;i++)
 			{
+				//if the layer in the Array isn't the layer selected
 				if((baseLayerArray[i] as Layer) != layer)
 				{
-					(baseLayerArray[i] as Layer).visible = false;
+					(baseLayerArray[i] as Layer).visible = false;//we hide the layer
 				}
 				else
 				{
 					(baseLayerArray[i] as Layer).visible = true;
-					(baseLayerArray[i] as Layer).redraw();
+					(baseLayerArray[i] as Layer).redraw();//we display the layer
 				}
 			}
-			 baseLayerList.dataProvider = baseLayerArray;
+			 baseLayerList.invalidateList();
 		}
 		
 		

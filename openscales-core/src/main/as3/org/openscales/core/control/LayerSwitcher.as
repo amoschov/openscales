@@ -18,6 +18,9 @@ package org.openscales.core.control
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;
 	
+	/**
+	 * Create a layerSwitcher that display all the layer load on the map
+	 */
 	public class LayerSwitcher extends Control
 	{
 		
@@ -49,6 +52,11 @@ package org.openscales.core.control
        	[Embed(source="/org/openscales/core/img/layer-switcher-minimize.png")]
         private var _layerSwitcherMinimizeImg:Class;
         
+        /**
+        * LayerSwitcher constructor
+        * 
+        * @param options
+        */
 		public function LayerSwitcher(options:Object = null):void {
 			super(options);
 			
@@ -56,6 +64,9 @@ package org.openscales.core.control
 			this._maximizeButton = new Button("maximize", new _layerSwitcherMaximizeImg(), this.position.add(-18,0));
 		}
 		
+		/**
+		 * Hide the LayerSwitcher
+		 */
 		override public function destroy():void {
 		
 			this._minimizeButton.removeEventListener(MouseEvent.CLICK, minMaxButtonClick);
@@ -68,6 +79,11 @@ package org.openscales.core.control
 	        super.destroy();
 		}
 		
+		/**
+		 * Resize the map
+		 * 
+		 * @param event MapEvent
+		 */
 		override public function resize(event:MapEvent):void {
 			this.x = this.map.size.w/2;
 			this.y = 0;
@@ -75,6 +91,12 @@ package org.openscales.core.control
 			super.resize(event);
 		}
 		
+		
+		/**
+		 * Get the existing map
+		 * 
+		 * @param map
+		 */
 		override public function set map(map:Map):void {
 			super.map = map;
 			
@@ -91,6 +113,9 @@ package org.openscales.core.control
 	        this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.layerUpdated);
 		}
 		
+		/**
+		 * Show the LayerSwitcher
+		 */
 		override public function draw():void {
 			super.draw();
 			
@@ -100,12 +125,13 @@ package org.openscales.core.control
 			this._maximizeButton.x = this.position.add(-18,0).x;
 			this._maximizeButton.y = this.position.add(-18,0).y;
 			
+			//if the layerswitcher is hide
 			if(_minimized) {
-				this.addChild(_maximizeButton);
+				this.addChild(_maximizeButton);//button to show the layerswitcher
 				this.alpha = 0.7;
 				this._layerSwitcherState = "Close";
 						
-			} else {
+			} else { //draw the layerswitcher
 				this.graphics.beginFill(this._activeColor);
 				this.graphics.drawRoundRectComplex(this.position.x-200,this.position.y,200,300, 20, 0, 20, 0);
 				this.graphics.endFill();
@@ -294,7 +320,7 @@ package org.openscales.core.control
 						
 					}
 				} 
-				if(this._layerSwitcherState == "Close")
+				if(this._layerSwitcherState == "Close")//add a tween effect
 				{
 					this.alpha = 0;
 					var tween:GTweeny = new GTweeny(this,0.5,{alpha:0.7});
@@ -307,16 +333,31 @@ package org.openscales.core.control
 			
 		}
 		
+		/**
+		 * Refresh the layerswitcher when a layer is add, remove or update
+		 * 
+		 * @param event LayerEvent
+		 */
 		private function layerUpdated(event:LayerEvent):void {
 			this.draw();
 		}
 		
+		/**
+		 * Hide or Show the layerswitcher
+		 * 
+		 * @param event MouseEvent
+		 */
 		private function minMaxButtonClick(event:MouseEvent):void 
 		{
 			this._minimized = !this._minimized;
 			this.draw();
 		}
 		
+		/**
+		 * Change overlays visibility
+		 * 
+		 * @param event MouseEvent send by a checkbox
+		 */
 		private function CheckButtonClick(event:MouseEvent):void
 		{
 			var i:int = 0;
@@ -333,6 +374,11 @@ package org.openscales.core.control
 			}
 		}
 		
+		/**
+		 * Display the base layer selected
+		 * 
+		 * @param event MouseEvent send by a radioButton
+		 */
 		private function RadioButtonClick(event:MouseEvent):void
 		{
 			_firstOverlays = true;
@@ -357,6 +403,11 @@ package org.openscales.core.control
 			}
 		}
 		
+		/**
+		 * Change the layer opacity and animate the slider
+		 * 
+		 * @param event MouseEvent send by the horizontal Slider
+		 */
 		private function SlideHorizontalClick(event:MouseEvent):void
 		{					
 			var childIndex:String = (event.target as Button).name;
@@ -367,7 +418,11 @@ package org.openscales.core.control
 			
 			var k:int = _slideHorizontalTemp.x+1;
 			var l:int = k+(_slideHorizontalTemp.width)-1;
-			_slideVerticalTemp.x = mouseX;
+			
+			//change the position of the vertical Slide to the click do by the user
+			var tween:GTweeny = new GTweeny(_slideVerticalTemp,0.5,{x:mouseX});
+			
+			//calulate the layer opacity
 			var resultAlpha:Number = (mouseX/(l-k)) - (k/(l-k))
 			var resultPercentage:int = resultAlpha*100;
 			var layer2:Layer = this.map.getLayerByName(_slideVerticalTemp.layerName);
@@ -381,6 +436,12 @@ package org.openscales.core.control
 			event.stopPropagation();
 				
 		}
+		
+		/**
+		 * Active a move event
+		 * 
+		 * @param event MouseEvent send by the vertical Slider
+		 */
 		private function SlideMouseClick(event:MouseEvent):void
 		{		
 			var childIndex:String = (event.target as Button).name;
@@ -397,11 +458,18 @@ package org.openscales.core.control
 				
 		}
 		
+		
+		/**
+		 * Change the layer opacity and animate the slider
+		 * 
+		 * @param event MouseEvent send by the vertical Slider
+		 */
 		private function SlideMouseMove(event:MouseEvent):void
 		{			
 			var k:int = _slideHorizontalTemp.x+1;
 			var l:int = k+(_slideHorizontalTemp.width)-1;
-			_slideVerticalTemp.x = mouseX;
+			 _slideVerticalTemp.x = mouseX; 
+			
 			var resultAlpha:Number = (mouseX/(l-k)) - (k/(l-k))
 			var resultPercentage:int = resultAlpha*100;
 			var layer2:Layer = this.map.getLayerByName(_slideVerticalTemp.layerName);
@@ -419,16 +487,29 @@ package org.openscales.core.control
 		
 				
 		}
+		
+		/**
+		 * stop the move event
+		 * 
+		 * @param event MouseEvent send by the vertical Slider
+		 */
 		private function SlideMouseUp(event:MouseEvent):void
 		{
 			_slideHorizontalTemp.removeEventListener(MouseEvent.MOUSE_MOVE,SlideMouseMove);
 			this.map.removeEventListener(MouseEvent.MOUSE_UP,SlideMouseUp);
 		}
 		
+		/**
+		 * Change the layer order
+		 * 
+		 * @param event MouseEvent send by an arrow
+		 */
 		private function ArrowClick(event:MouseEvent):void
 		{
 			var layer:Layer = this.map.getLayerByName((event.target as Arrow).layerName);
 			var numLayersOverlays:int = 0;
+			
+			//count of overlays
 			for(var i:int=0;i<this.map.layers.length;i++)
 			{
 				var layerLength:Layer = this.map.layers[i] as Layer;
@@ -438,7 +519,7 @@ package org.openscales.core.control
 			var numBaseLayer:int = this.map.layers.length - numLayersOverlays;
 			_firstOverlays = true;
 			
-			if((event.target as Arrow).state == "DOWN")
+			if((event.target as Arrow).state == "DOWN")//test the arrow clicked
 			{
 				if((layer.zindex-1)>numBaseLayer - 1)
 				{
@@ -452,9 +533,15 @@ package org.openscales.core.control
 					layer.zindex = layer.zindex+1;	
 				}	
 			}
-			this.draw();
+			this.draw();//refresh the layerswitcher
 		}
 		
+		
+		/**
+		 * stop the propagation of the event which allow pannning the map
+		 * 
+		 * @param event Click event
+		 */
 		private function layerswitcherStopPropagation(event:MouseEvent):void
 		{
 			event.stopPropagation();

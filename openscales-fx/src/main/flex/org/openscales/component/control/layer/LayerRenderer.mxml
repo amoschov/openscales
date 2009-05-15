@@ -24,10 +24,20 @@
 			[Bindable]
 			private var hasCapabilities:Boolean = false;
 			
+			/**
+			 * Get the layer that the List into the LayerSwitcher.mxml send to display it
+			 * 
+			 * @return return the layer
+			 */
 			private function get layer():Layer {
 				return (this.data) as Layer;
 			}
 			
+			/**
+			 * Change the layer visibility
+			 * 
+			 * @param event Change event
+			 */
 			public function layerVisible(event:Event):void
 			{
 				layer.visible = !layer.visible;
@@ -39,15 +49,30 @@
 				}
 			}
 			
+			/**
+			 * Change the opacity of the layer
+			 * 
+			 * @param event event send by a slide
+			 */
 			public function layerOpacity(event:Event):void
 			{
 				layer.alpha = (event.target as HSlider).value;
 			}
 			
-			public function deleteLayer(event:Event):void {
+			/**
+			 * Delete the layer on the map
+			 * 
+			 * @param event Click event
+			 */
+			public function deleteLayer(event:MouseEvent):void {
 				 (data as Layer).map.removeLayer(data as Layer); 
 			}
 			
+			/**
+			 * Set the data
+			 * 
+			 * @param value
+			 */
             override public function set data(value:Object):void {
                 super.data = value;
 				
@@ -56,7 +81,7 @@
 					displayControl.removeAllChildren();
 					opacityControl.value = this.layer.alpha;
 
-					if(this.layer.isBaseLayer == true)
+					if(this.layer.isBaseLayer == true)//if the layer is a base layer
 					{
 						var radioButtonGroup:RadioButtonGroup = new RadioButtonGroup();
 						var radioButton:RadioButton = new RadioButton();
@@ -91,7 +116,11 @@
 			 	
 			}
 			
-			
+			/**
+			 * Center the map on the layer
+			 * 
+			 * @param event Click event
+			 */
 			private function setLayerExtent(event:MouseEvent):void {
 					
 				var layerName:String = (event.target as Button).id.split("::")[1];
