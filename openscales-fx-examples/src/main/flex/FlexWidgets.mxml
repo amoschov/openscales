@@ -25,7 +25,7 @@
 			private function initMap():void{
 	   			map = fxmap.map;
 				tools.x = this.width - tools.width;		
-				dragfeature.target=[test.layer,tabDraw.drawLayer];					
+				//dragfeature.target=[test.layer,tabDraw.drawLayer];					
 			}
 	
 			public function changingTab(event:Event):void{

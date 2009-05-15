@@ -87,16 +87,9 @@ package org.openscales.core.handler.mouse
 		private function panMap(xy:Pixel):void {
 	 		this.dragging = true;
 	        var deltaX:Number = this._start.x - xy.x;
-	        var deltaY:Number = this._start.y - xy.y;
-	                
+	        var deltaY:Number = this._start.y - xy.y;	                
 	        var newCenter:LonLat = new LonLat(this._startCenter.lon + deltaX * this.map.resolution , this._startCenter.lat - deltaY * this.map.resolution);
-	        
-<<<<<<< .mine
 	        this.map.center = newCenter;
-=======
-	        //this.map.setCenter(newCenter, NaN, this.dragging);
-	        this.map.center = newCenter;
->>>>>>> .r416
 	 	}
 	}
 }
