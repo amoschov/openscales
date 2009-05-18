@@ -46,7 +46,7 @@ package org.openscales.core.layer.ogc
 	            bounds = this.adjustBoundsByGutter(bounds);
 	        }
 	        return this.getFullRequestString(
-	                     {BBOX:bounds.toBBOX(),
+	                     {BBOX:bounds.boundsToString(),
 	                      WIDTH:this.imageSize.w,
 	                      HEIGHT:this.imageSize.h});
        	}

@@ -1,5 +1,7 @@
 package org.openscales.core.basetypes
 {
+	import flash.utils.getQualifiedClassName;
+	
     /**
      * Instances of this class represent bounding boxes.
      * Data stored as left, bottom, right, top floats.
@@ -12,7 +14,15 @@ package org.openscales.core.basetypes
         private var _bottom:Number = 0.0;
         private var _right:Number = 0.0;
         private var _top:Number = 0.0;
-
+		
+		/**
+		 * Class constructor
+		 * 
+		 * @param left Left bound of Bounds instance
+		 * @param bottom Bottom bound of Bounds instance
+		 * @param right Right bound of Bounds instance
+		 * @param top Top bound of Bounds instance
+		 */
         public function Bounds(left:Number = NaN, bottom:Number = NaN, right:Number = NaN, top:Number = NaN):void {
             if (!isNaN(left)) {
                 this.left = left;
@@ -31,7 +41,13 @@ package org.openscales.core.basetypes
         public function clone():Bounds {
             return new Bounds(this.left, this.bottom, this.right, this.top);
         }
-
+		
+		/**
+		 * Determines if the bounds passed as param is equal to current instance
+		 * 
+		 * @param bounds Bounds to check equality
+		 * @return It is equal or not
+		 */
         public function equals(bounds:Bounds):Boolean {
             var equals:Boolean = false;
             if (bounds != null) {
@@ -47,8 +63,14 @@ package org.openscales.core.basetypes
             return "left-bottom=(" + this.left + "," + this.bottom + ")"
                  + " right-top=(" + this.right + "," + this.top + ")";
         }
-
-        public function toBBOX(decimal:Number = -1):String {
+		
+		/**
+		 * Return a bbox string separating the bounds, with the decimal number passed as param, by commas.
+		 * 
+		 * @param decimal Bounds number of decimals.
+		 * @return The bounds separated by commas.
+		 */  
+        public function boundsToString(decimal:Number = -1):String {
             if (decimal == -1) {
                 decimal = 6;
             }
@@ -79,60 +101,60 @@ package org.openscales.core.basetypes
         public function get centerLonLat():LonLat {
             return new LonLat((this.left + this.right) / 2, (this.bottom + this.top) / 2);
         }
-
+		
         public function add(x:Number, y:Number):Bounds {
             return new Bounds(this.left + x, this.bottom + y, this.right + x, this.top + y);
         }
-
-        public function extend(object:Object):void {
-            var bounds:Bounds = null;
-            if (object) {
-                switch(object.CLASS_NAME) {
-                    case "LonLat":
-                        bounds = new Bounds(object.lon, object.lat, object.lon, object.lat);
-                        break;
-                    case "Geometry.Point":
-                        bounds = new Bounds(object.x, object.y, object.x, object.y);
-                        break;
-                    case "Bounds":
-                        bounds = object as Bounds;
-                        break;
-                }
-
-                if (bounds) {
-                    this.left = (bounds.left < this.left) ? bounds.left
-                                                     : this.left;
-                       this.bottom = (bounds.bottom < this.bottom) ? bounds.bottom
-                                                           : this.bottom;
-                       this.right = (bounds.right > this.right) ? bounds.right
-                                                        : this.right;
-                       this.top = (bounds.top > this.top) ? bounds.top
-                                                  : this.top;
-                }
-            }
+		
+		/**
+		 * Extends the current instance of Bounds from a LonLat.
+		 * 
+		 * @param lonlat The LonLat which will extend the bounds.
+		 */
+        public function extendFromLonLat(lonlat:LonLat):void {
+        	this.extendFromBounds(new Bounds(lonlat.lon, lonlat.lat, lonlat.lon, lonlat.lat));
         }
-
+		
+		/**
+		 * Extends the current instance of Bounds from bounds.
+		 * 
+		 * @param bounds The bounds which will extend the current bounds.
+		 */
         public function extendFromBounds(bounds:Bounds):void {
 
-                    this.left = (bounds.left < this.left) ? bounds.left
-                                                     : this.left;
-                       this.bottom = (bounds.bottom < this.bottom) ? bounds.bottom
-                                                           : this.bottom;
-                       this.right = (bounds.right > this.right) ? bounds.right
-                                                        : this.right;
-                       this.top = (bounds.top > this.top) ? bounds.top
-                                                  : this.top;
+        	this.left = (bounds.left < this.left) ? bounds.left : this.left;
+	    	this.bottom = (bounds.bottom < this.bottom) ? bounds.bottom : this.bottom;
+	    	this.right = (bounds.right > this.right) ? bounds.right : this.right;
+	    	this.top = (bounds.top > this.top) ? bounds.top : this.top;
         }
-
+		
+		/**
+		 * Returns if the current bounds contains the LonLat passed as param
+		 * 
+		 * @param ll The Lonlat to check
+		 * @param inclusive It will include the border's bounds ?
+		 * @return Lonlat is contained or not by the bounds
+		 */
         public function containsLonLat(ll:LonLat, inclusive:Boolean = true):Boolean {
             return this.contains(ll.lon, ll.lat, inclusive);
         }
-
+		
+		/**
+		 * Returns if the current bounds contains the Pixel passed as param
+		 * 
+		 * @param px The Pixel to check
+		 * @param inclusive It will include the border's bounds ?
+		 * 
+		 * @return Lonlat is contained or not by the bounds
+		 */
         public function containsPixel(px:Pixel, inclusive:Boolean = true):Boolean {
             return this.contains(px.x, px.y, inclusive);
         }
-
-        public function contains(x:Number, y:Number, inclusive:Boolean = true):Boolean {
+		
+		/**
+		 * @private
+		 */
+        private function contains(x:Number, y:Number, inclusive:Boolean = true):Boolean {
 
             var contains:Boolean = false;
             if (inclusive) {
@@ -144,7 +166,15 @@ package org.openscales.core.basetypes
             }
             return contains;
         }
-
+		
+		/**
+		 * Determines if the bounds passed in param intersects the current bounds.
+		 * 
+		 * @param bounds The bounds to test intersection.
+		 * @param inclusive It will include the border's bounds ?
+		 * 
+		 * @return If the bounds intersects current bounds or not.
+		 */
         public function intersectsBounds(bounds:Bounds, inclusive:Boolean = true):Boolean {
             var inBottom:Boolean = (bounds.bottom == this.bottom && bounds.top == this.top) ?
                     true : (((bounds.bottom > this.bottom) && (bounds.bottom < this.top)) ||
@@ -163,7 +193,16 @@ package org.openscales.core.basetypes
                     bounds.containsBounds(this, true, inclusive) ||
                     ((inTop || inBottom ) && (inLeft || inRight )));
         }
-
+		
+		/**
+		 * Returns if the current bounds contains the bounds passed as param
+		 * 
+		 * @param bounds The bounds to check
+		 * @param partial Partial containing shoulds return true ?
+		 * @param inclusive It will include the border's bounds ?
+		 * 
+		 * @return Bounds are contained or not by the bounds
+		 */
         public function containsBounds(bounds:Bounds, partial:Boolean = false, inclusive:Boolean = true):Boolean {
             var inLeft:Boolean;
             var inTop:Boolean;
@@ -185,7 +224,14 @@ package org.openscales.core.basetypes
             return (partial) ? (inTop || inBottom ) && (inLeft || inRight )
                              : (inTop && inLeft && inBottom && inRight);
         }
-
+		
+		/**
+		 * Determines in which quadrant is placed the lonlat in relation to the current bounds.
+		 * 
+		 * @param lonlat The lonlat we want to know the quadrant
+		 * 
+		 * @return A string describing the quadrant (e.g. "bl" for Bottom-Left, "tr" for Top-Right etc.)
+		 */
         public function determineQuadrant(lonlat:LonLat):String {
             var quadrant:String = "";
             var center:LonLat = this.centerLonLat;
@@ -209,20 +255,49 @@ package org.openscales.core.basetypes
 
             return quadrant;
         }
-
-        public function fromString(str:String):Bounds {
+		
+		/**
+		 * Returns a bounds instance from a string following this format: "left,bottom,right,top".
+		 * 
+		 * @param str The string from which we want create a bounds instance.
+		 * 
+		 * @return An instance of bounds.
+		 */
+        public static function getBoundsFromString(str:String):Bounds {
             var bounds:Array = str.split(",");
-            return fromArray(bounds);
+            return Bounds.getBoundsFromArray(bounds);
         }
-
-        public function fromArray(bbox:Array):Bounds {
+		
+		/**
+		 * Returns a bounds instance from an array following this format: [left,bottom,right,top].
+		 * 
+		 * @param bbox The array from which we want create a bounds instance.
+		 * 
+		 * @return An instance of bounds.
+		 */
+        public static function getBoundsFromArray(bbox:Array):Bounds {
             return new Bounds(Number(bbox[0]), Number(bbox[1]), Number(bbox[2]), Number(bbox[3]));
         }
-
-        public function fromSize(size:Size):Bounds {
+		
+		/**
+		 * Returns a bounds instance from a size instance.
+		 * 
+		 * @param size The size instance from which we want create a bounds instance.
+		 * 
+		 * @return An instance of bounds.
+		 */
+        public static function getBoundsFromSize(size:Size):Bounds {
             return new Bounds(0, size.h, size.w, 0);
         }
-
+		
+		/**
+		 * Returns the opposite quadrant compared to the quadrant where is placed 
+		 * the lonlat in relation to the current bounds.
+		 * 
+		 * @param quadrant The quadrant to opposite
+		 * 
+		 * @return A string describing the opposite quadrant
+		 */
         public static function oppositeQuadrant(quadrant:String):String {
             var opp:String = "";
 
@@ -230,6 +305,36 @@ package org.openscales.core.basetypes
             opp += (quadrant.charAt(1) == 'l') ? 'r' : 'l';
 
             return opp;
+        }
+        
+        /**
+        * Returns a bounds string from an url containing the bbox param
+        * 
+        * @param url The url from which we want extract the bounds.
+        * @return A string describing the bounds contained by the url.
+        */
+        public static function getBBOXStringFromUrl(url:String):String {
+            var startpos:int = url.indexOf("BBOX=") + 5;
+            if (startpos < 5) {
+                startpos = url.indexOf("bbox=") + 5;
+            }
+            var endpos:int = url.indexOf("%26", startpos);
+            if (endpos < 0) {
+                endpos = url.length;
+            }
+            var tempbbox:String = url.substring(startpos, endpos);
+            var tempbboxArr:Array = tempbbox.split("%2C");
+            return tempbboxArr[0] + "," + tempbboxArr[1] + " " + tempbboxArr[2] + "," + tempbboxArr[3];
+        }
+		
+		/**
+        * Returns a bounds string from an instance of bounds
+        * 
+        * @param bounds The bounds from which we want a string
+        * @return A string describing the bounds.
+        */
+        public static function getBBOXStringFromBounds(bounds:Bounds):String {
+            return bounds.left + "," + bounds.bottom + " " + bounds.right + "," + bounds.top;
         }
 
         // Getters & setters : _left _bottom _right _top
@@ -268,24 +373,6 @@ package org.openscales.core.basetypes
         public function set top(newTop:Number):void
         {
             _top = newTop;
-        }
-
-        public static function getBBOXStringFromUrl(url:String):String {
-            var startpos:int = url.indexOf("BBOX=") + 5;
-            if (startpos < 5) {
-                startpos = url.indexOf("bbox=") + 5;
-            }
-            var endpos:int = url.indexOf("%26", startpos);
-            if (endpos < 0) {
-                endpos = url.length;
-            }
-            var tempbbox:String = url.substring(startpos, endpos);
-            var tempbboxArr:Array = tempbbox.split("%2C");
-            return tempbboxArr[0] + "," + tempbboxArr[1] + " " + tempbboxArr[2] + "," + tempbboxArr[3];
-        }
-
-        public static function getBBOXStringFromBounds(bounds:Bounds):String {
-            return bounds.left + "," + bounds.bottom + " " + bounds.right + "," + bounds.top;
         }
 
     }

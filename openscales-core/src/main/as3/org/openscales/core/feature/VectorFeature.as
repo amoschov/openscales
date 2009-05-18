@@ -6,8 +6,7 @@ package org.openscales.core.feature
 	
 	/**
 	 * Vector features use the Geometry classes as geometry description.
-	 * They have an ‘attributes’ property, which is the data object, and a ‘style’ property,
-	 * the default values of which are defined in the OpenLayers.Feature.Vector.style objects
+	 * They have an ‘attributes’ property, which is the data object, and a ‘style’ property.
 	 */
 	public class VectorFeature extends Feature
 	{
@@ -17,6 +16,13 @@ package org.openscales.core.feature
 	    private var _style:Style = null;	    
 	    private var _originalStyle:Style = null;
 		
+		/**
+		 * VectorFeature constructor
+		 * 
+		 * @param geometry The feature's geometry
+		 * @param data
+		 * @param style The feature's style
+		 */
 		public function VectorFeature(geometry:Geometry = null, data:Object = null, style:Style = null):void {
 			super(null, null, data);
 	        this.lonlat = null;
@@ -29,9 +35,11 @@ package org.openscales.core.feature
 	        this.style = style ? style : null; 
 		}
 		
+		/**
+		 * Destroys the VectorFeature
+		 */
 		override public function destroy():void {
 			if (this.layer) {
-	            //this.layer.destroy();
 	            this.layer = null;
 	        }
 	            
@@ -39,20 +47,23 @@ package org.openscales.core.feature
 	        //super.destroy();
 		}
 		
+		
 		public function clone(obj:Object):Object {
 			if (obj == null) {
 	            obj = new VectorFeature(this.geometry.clone(),this.data , this.style);
 	        } 
 	        
 	        Util.applyDefaults(obj, this);
-	        
 	        return obj;
 		}
-		
-		override public function onScreen():Boolean {
-			return false;
-		}
-		
+
+		/**
+		 * Determines if the feature is placed at the given point with a certain tolerance (or not).
+		 * 
+		 * @param lonlat The given point
+		 * @param toleranceLon The longitude tolerance
+		 * @param toleranceLat The latitude tolerance
+		 */
 		public function atPoint(lonlat:LonLat, toleranceLon:Number, toleranceLat:Number):Boolean {
 			var atPoint:Boolean = false;
 	        if(this.geometry) {
@@ -60,41 +71,6 @@ package org.openscales.core.feature
 	                                                    toleranceLat);
 	        }
 	        return atPoint;
-		}
-		
-		public function toState(state:String):void {
-			if (state == State.UPDATE) {
-	            switch (this.state) {
-	                case State.UNKNOWN:
-	                case State.DELETE:
-	                    this.state = state;
-	                    break;
-	                case State.UPDATE:
-	                case State.INSERT:
-	                    break;
-	            }
-	        } else if (state == State.INSERT) {
-	            switch (this.state) {
-	                case State.UNKNOWN:
-	                    break;
-	                default:
-	                    this.state = state;
-	                    break;
-	            }
-	        } else if (state == State.DELETE) {
-	            switch (this.state) {
-	                case State.INSERT:
-	                    break;
-	                case State.DELETE:
-	                    break;
-	                case State.UNKNOWN:
-	                case State.UPDATE:
-	                    this.state = state;
-	                    break;
-	            }
-	        } else if (state == State.UNKNOWN) {
-	            this.state = state;
-	        }
 		}
 		
 		public function get geometry():Geometry {
@@ -110,7 +86,39 @@ package org.openscales.core.feature
 		}
 		
 		public function set state(value:String):void {
-			this._state = value;
+			
+			if (value == State.UPDATE) {
+	            switch (this.state) {
+	                case State.UNKNOWN:
+	                case State.DELETE:
+	                    this._state = value;
+	                    break;
+	                case State.UPDATE:
+	                case State.INSERT:
+	                    break;
+	            }
+	        } else if (value == State.INSERT) {
+	            switch (this.state) {
+	                case State.UNKNOWN:
+	                    break;
+	                default:
+	                    this._state = value;
+	                    break;
+	            }
+	        } else if (value == State.DELETE) {
+	            switch (this.state) {
+	                case State.INSERT:
+	                    break;
+	                case State.DELETE:
+	                    break;
+	                case State.UNKNOWN:
+	                case State.UPDATE:
+	                    this._state = value;
+	                    break;
+	            }
+	        } else if (value == State.UNKNOWN) {
+	            this._state = value;
+	        }
 		}
 		
 		public function get style():Style {

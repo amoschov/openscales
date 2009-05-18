@@ -68,7 +68,7 @@ package org.openscales.core.layer.capabilities
 				bounds = lowerCorner.replace(" ",",");
 				bounds += ",";
 				bounds += upperCorner.replace(" ",",");
-				latLon = new Bounds().fromString(bounds);
+				latLon = Bounds.getBoundsFromString(bounds);
 				featureCapabilities.put("Extent", latLon);
 				
 				this._capabilities.put(name, featureCapabilities);

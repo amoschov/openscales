@@ -20,7 +20,11 @@ package org.openscales.core.feature
 		private var _hoverStrokeWidth:Number;
 		private var _hoverPointRadius:Number;
 
-		
+		/**
+		 * <p>Class constructor.</p>
+		 * 
+		 * <p>It defines default values for the attributes.</p>
+		 */
 		public function Style()
 		{
 			//Default values

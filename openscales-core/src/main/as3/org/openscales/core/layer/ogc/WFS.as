@@ -179,7 +179,7 @@ package org.openscales.core.layer.ogc
 		
 			            var url:String = this.getFullRequestString();
 			        
-			            var params:Object = { BBOX:tileBounds.toBBOX() };
+			            var params:Object = { BBOX:tileBounds.boundsToString() };
 			            url += "&" + Util.getParameterString(params);
 			
 			            if (!this.tile) {
@@ -200,7 +200,7 @@ package org.openscales.core.layer.ogc
 									this.featuresBbox.extendFromBounds((tileBounds));
 				                
 					                url = this.getFullRequestString();
-				            		params = { BBOX:this.featuresBbox.toBBOX() };
+				            		params = { BBOX:this.featuresBbox.boundsToString() };
 				            		url += "&" + Util.getParameterString(params);
 				            		
 				            		 

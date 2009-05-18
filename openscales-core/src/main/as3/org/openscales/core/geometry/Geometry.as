@@ -21,16 +21,25 @@ package org.openscales.core.geometry
 
 	    protected var _bounds:Bounds = null;
 		
+		/**
+		 * Geometry constructor
+		 */
 		public function Geometry():void {
 			this.id = Util.createUniqueID(getQualifiedClassName(this) + "_");
 		}
 		
+		/**
+		 * Destroys the geometry
+		 */
 		public function destroy():void {
 			this.id = null;
 
         	this._bounds = null;
 		}
 		
+		/**
+		 * Clones the geometry
+		 */
 		public function clone():Geometry {
 			var geometryClass:Class = Class(getDefinitionByName(getQualifiedClassName(this)));
 			var geometry:Geometry = new geometryClass();
@@ -40,6 +49,9 @@ package org.openscales.core.geometry
 	        return geometry;
 		}
 		
+		/**
+		 * Clear the geometry's bounds
+		 */
 		public function clearBounds():void {
 	        this._bounds = null;
 	        if (this._parent) {
@@ -47,12 +59,20 @@ package org.openscales.core.geometry
 	        } 
 		}
 		
+		/**
+		 * <p>Extends geometry's bounds</p>
+		 * 
+		 * <p>If bounds are not defined yet, it initializes the bounds. If bounds are already defined,
+		 * it extends them.</p>
+		 * 
+		 * @param newBounds Bounds to extend gemetry's bounds
+		 */
 		public function extendBounds(newBounds:Bounds):void {
 			var bounds:Bounds = this._bounds;
 	        if (!bounds) {
 	            this._bounds = newBounds;
 	        } else {
-	            this._bounds.extend(newBounds);
+	            this._bounds.extendFromBounds(newBounds);
 	        }
 		}
 		
@@ -62,6 +82,7 @@ package org.openscales.core.geometry
 	        }
 	        return this._bounds;
 		}
+		
 		
 		public function set bounds(value:Bounds):void {
 			if (bounds) {
@@ -73,6 +94,13 @@ package org.openscales.core.geometry
 			
 		}
 		
+		/**
+		 * Determines if the feature is placed at the given point with a certain tolerance (or not).
+		 * 
+		 * @param lonlat The given point
+		 * @param toleranceLon The longitude tolerance
+		 * @param toleranceLat The latitude tolerance
+		 */
 		public function atPoint(lonlat:LonLat, toleranceLon:Number, toleranceLat:Number):Boolean {
 			var atPoint:Boolean = false;
 	        var bounds:Bounds = this.bounds;
@@ -92,10 +120,16 @@ package org.openscales.core.geometry
 	        return atPoint;
 		}
 		
+		/**
+		 * Returns the geometry's length. Overrided by subclasses.
+		 */
 		public function get length():Number {
 			return 0.0;
 		}
 		
+		/**
+		 * Returns the geometry's area. Overrided by subclasses.
+		 */
 		public function get area():Number {
 			return 0.0;
 		}

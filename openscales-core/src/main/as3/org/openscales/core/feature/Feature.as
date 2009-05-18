@@ -33,6 +33,13 @@ package org.openscales.core.feature
 	    		
 		private var _selected:Boolean = false;
 		
+		/**
+		 * Constructor class
+		 * 
+		 * @param layer The layer containing the feature.
+		 * @param lonlat The lonlat position of the feature.
+		 * @param data
+		 */
 		public function Feature(layer:Layer, lonlat:LonLat, data:Object):void {
 			this.layer = layer;
 	        this.lonlat = lonlat;
@@ -46,6 +53,9 @@ package org.openscales.core.feature
 	        this.id = Util.createUniqueID(getQualifiedClassName(this) + "_"); 
 		}
 		
+		/**
+		 * Method to destroy a the feature instance.
+		 */
 		public function destroy():void {
 	        if ((this.layer != null) && (this.layer.map != null)) {
 	            if (this.popup != null) {
@@ -67,6 +77,9 @@ package org.openscales.core.feature
 	        }
 		}
 		
+		/**
+		 * Determines if the feature is visible on the screen
+		 */
 		public function onScreen():Boolean {
 			var onScreen:Boolean = false;
 	        if ((this.layer != null) && (this.layer.map != null)) {
@@ -76,6 +89,11 @@ package org.openscales.core.feature
 	        return onScreen;
 		}
 		
+		/**
+		 * Create a marker for the feature instance and returns it.
+		 * 
+		 * @return The created marker
+		 */
 		public function createMarker():Marker {
 			var marker:Marker = null;
 	        
@@ -86,10 +104,19 @@ package org.openscales.core.feature
 	        return this._marker;
 		}
 		
+		/**
+		 * Destroys the feature's marker
+		 */
 		public function destroyMarker():void {
 			this._marker.destroy();
 		}
 		
+		/**
+		 * Creates a popup for the feature
+		 * 
+		 * @param closeBox
+		 * @return The created popup
+		 */
 		public function createPopup(closeBox:Boolean = true):Popup {
 			if (this.lonlat != null) {
             
@@ -108,6 +135,9 @@ package org.openscales.core.feature
 	        return this.popup;
 		}
 		
+		/**
+		 * Destroys the popup
+		 */
 		public function destroyPopup():void {
 			this.popup.destroy();
 		}

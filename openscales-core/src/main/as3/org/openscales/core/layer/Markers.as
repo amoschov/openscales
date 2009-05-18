@@ -100,7 +100,7 @@ package org.openscales.core.layer
             	maxExtent = new Bounds();
             	for(var i:int=0; i < this.markers.length; i++) {
                 	var marker:Marker = this.markers[i];
-                	maxExtent.extend(marker.lonlat);
+                	maxExtent.extendFromLonLat(marker.lonlat);
             	}
         	}
 
