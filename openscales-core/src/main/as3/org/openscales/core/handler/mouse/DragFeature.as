@@ -10,21 +10,49 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.renderer.SpriteElement;
-
+	
+	/**
+	 * 
+	 * DragFeature is use to drag a feature
+	 * Create a new instance of  DragFeature with the constructor 
+	 * 
+	 * To use this handler, it's  necessary to add it to the map
+	 * DragFeature is a pure ActionScript class. Flex wrapper and components can be found in the
+	 * openscales-fx module FxDragFeature.
+	 */
+	 
 	public class DragFeature extends DragHandler
 	{
-		//Start position
+		/**
+		 * The Featue which is drag
+		 */
 		private var _Feature:VectorFeature = null;	
 					
-		//We can drag on many layers
+		/**
+		 * 
+		 * The Group  of layers with draggable features
+		 */
 		private var _layer:Array=null;
 		
-	
+		/**
+		 * 
+		 * The layer's number with dragging features
+		 */
 		private var _layer_number:Number=0;
 		
-		//dragged sprite 	
+		/**
+		 * 
+		 * dragged sprite
+		 */	
 		private var _elementDragging:SpriteElement=new SpriteElement();
-
+		
+		/**
+		 * DragFeature constructor
+		 *
+		 * @param map the ClickHandler map
+		 * @param active to determinates if the handler is active
+		 * @param target  use to specify the layers we can drag to it
+		 */
 		public function DragFeature(map:Map=null,target:Array=null,active:Boolean=false)
 		{
 			super(map,active);
@@ -41,6 +69,9 @@ package org.openscales.core.handler.mouse
 				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp);
 				
 			}
+		/**
+		 * The MouseDown Listener
+		 */
 		override  protected function onMouseDown(event:Event):void
 		{
 			var cpt:Number=0;
@@ -63,9 +94,14 @@ package org.openscales.core.handler.mouse
 			}
 			}
 		}
+		/**
+		 * This function is use to move the feature
+		 * 
+		 */
 		private function FeatureMove():void
 		{
 			var index:int=0;
+			//We start to differentiates MultiGeometries and simple geometry
 			if ((getQualifiedClassName(this.Feature.geometry) == "org.openscales.core.geometry::MultiPoint") ||
 	            (getQualifiedClassName(this.Feature.geometry) == "org.openscales.core.geometry::MultiLineString") ||
 	            (getQualifiedClassName(this.Feature.geometry) == "org.openscales.core.geometry::MultiPolygon")) {
@@ -84,7 +120,9 @@ package org.openscales.core.handler.mouse
 	           this.dragging=true;     
 	          }
 		}
-
+		/**
+		 * The MouseUp Listener
+		 */
 		override  protected function onMouseUp(event:Event):void
 		{
 			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,movefeatures);
@@ -94,7 +132,10 @@ package org.openscales.core.handler.mouse
 			this.layer_number=0;
 			this._elementDragging=new SpriteElement();
 		}
-		//Listener MouseMove
+		/**
+		 * This function is use to move the features during Multigeometries dragging
+		 * 
+		 */
 		private  function movefeatures(event:MouseEvent):void
 		{
 			var dx:Number=_elementDragging.x-event.stageX;
@@ -107,8 +148,10 @@ package org.openscales.core.handler.mouse
 				Sprite.y= event.stageY+dy;    	
 			}
 		}
-		//Properties
-		
+		// Getters & setters as3
+		/**
+		 * The Featue which is drag
+		 */
 		
 		public function set Feature(Feature:VectorFeature):void
 		{
@@ -118,7 +161,10 @@ package org.openscales.core.handler.mouse
 		{
 			return this._Feature;
 		}
-
+		/**
+		 * 
+		 * The Group  of layers with draggable features
+		 */
 		public function get layer():Array
 		{
 			return this._layer;
@@ -127,6 +173,10 @@ package org.openscales.core.handler.mouse
 		{
 			this._layer=layer;
 		}
+		/**
+		 * 
+		 * The layer's number with dragging features
+		 */
 		public function get layer_number():Number
 		{
 			return this._layer_number;

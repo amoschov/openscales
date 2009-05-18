@@ -7,13 +7,22 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.layer.VectorLayer;
 	
 	/**
-	 *	To Select a feature on a layer by click or hover 
-	 * 	You have to specify the layer  the select and unselect functions
-	 **/
+	 * 
+	 * SelectFeature is use to select feature by hover
+	 * Create a new instance of  SelectFeature with the constructor 
+	 * 
+	 * To use this handler, it's  necessary to add it to the map
+	 * SelectFeature is a pure ActionScript class. Flex wrapper and components can be found in the
+	 * openscales-fx module FxSelectFeature.
+	 */
 	public class SelectFeature extends Handler
 	{
+		/**
+		 * 
+		 */
 		private var _select:Function=null;
 		private var _unselect:Function=null;
+		
 		private var _layer:VectorLayer;
 		private var _lastfeature:VectorFeature=null;
 		private var _currentfeature:VectorFeature=null;

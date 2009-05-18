@@ -7,10 +7,24 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.handler.Handler;
-
+	
+	 /**
+	 * 
+	 * ClickHandler detects a click on the map
+	 * Create a new instance of  ClickHandler with the constructor 
+	 * 
+	 * To use this handler, it's  necessary to add it to the map
+	 * ClickHandler is a pure ActionScript class. Flex wrapper and components can be found in the
+	 * openscales-fx module FxClickHandler.
+	 * 
+	 */
 	public class ClickHandler extends Handler
 	{
 		private var _StartPixel:Pixel;
+		
+		/**
+		 * We use a tolerance to detect a drag or a click
+		 */
 		private var _tolerance:Number=0;
 		
 		/**
@@ -21,6 +35,7 @@ package org.openscales.core.handler.mouse
 		private var _clickNum:Number = 0;
 		
 		private var _mouseEvent:MouseEvent = null;
+		
 		/**
 		 * callback function oneclick(evt:MouseEvent):void
 		 */
@@ -29,6 +44,13 @@ package org.openscales.core.handler.mouse
 		 * callback function doubleClick(evt:MouseEvent):void
 		 */
 		private var _doubleClick:Function = null;
+		/**
+		 * ClickHandler constructor
+		 *
+		 * @param map the ClickHandler map
+		 * @param active to determinates if the handler is active
+		 * @param options use to easily specify optional properties
+		 */
 		public function ClickHandler(map:Map=null, active:Boolean=false,options:Object=null)
 		{
 			super(map, active);
@@ -51,14 +73,21 @@ package org.openscales.core.handler.mouse
 			this.map.removeEventListener(MouseEvent.MOUSE_DOWN,this.mouseDown);
 			this.map.removeEventListener(MouseEvent.MOUSE_UP,this.mouseUp);
 		}
-		 
-		 public function mouseDown(evt:MouseEvent):void
+		
+		 /**
+		 * The MouseDown Listener
+		 */
+		 private function mouseDown(evt:MouseEvent):void
 		 {
 		 	this._StartPixel=new Pixel(evt.stageX,evt.stageY);
 		 }
 		 
-		 public function mouseUp(evt:MouseEvent):void
+		 /**
+		 * MouseUp Listener
+		 */
+		 private function mouseUp(evt:MouseEvent):void
 		 {
+		 	//dx and dy variables are use to know if there was a drag or a click
 		 	var dx :Number = Math.abs(this._StartPixel.x-evt.stageX);
 		 	var dy :Number = Math.abs(this._StartPixel.y-evt.stageY);
 		 	if(dx<=this._tolerance && dy<=this._tolerance)
@@ -73,6 +102,9 @@ package org.openscales.core.handler.mouse
 		    _clickNum++;
 		    _timer.start() 
 		 }
+		 /**
+		 *To know if there was a double click or a click  
+		 */
 		 private function chooseClick(event:TimerEvent):void{
 			if(_clickNum == 1) {
 		        if(_click != null)
@@ -87,8 +119,10 @@ package org.openscales.core.handler.mouse
 		        _clickNum=0
 		    }
 		}
-		 //Properties
-		 
+		// Getters & setters as3
+		 /**
+		 * Click Function
+		 */
 		 public function set click(Click:Function):void
 		{
 			this._click=Click;
@@ -97,7 +131,9 @@ package org.openscales.core.handler.mouse
 		{
 			this._doubleClick=doubleclick;
 		}
-		
+		/**
+		 * Double Click Function
+		 */
 		public function get click():Function
 		{
 			return this._click;
@@ -106,7 +142,9 @@ package org.openscales.core.handler.mouse
 		{
 			return this._doubleClick;
 		}
-
+		/**
+		 * We use a tolerance to detect a drag or a click
+		 */
 		public function set tolerance(toleranceY:Number):void
 		{
 			this._tolerance=tolerance;
