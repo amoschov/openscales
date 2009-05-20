@@ -75,10 +75,20 @@ package org.openscales.core.handler.mouse
 		override  protected function onMouseDown(event:Event):void
 		{
 			var cpt:Number=0;
+			
+			
 			while(cpt!=this.layer.length)
 			{
 			if((event as FeatureEvent).vectorfeature.layer==this.layer[this.layer_number])
-			{			
+			{	
+			for each (var handler:* in this.map.handlers)
+			{
+				//We deactivate all Draghandler
+				if(getQualifiedClassName(handler)=="org.openscales.core.handler.mouse::DragHandler")
+				{
+					handler.active=false;
+				}
+			}		
 			this.Feature=(event as FeatureEvent).vectorfeature;
 			if(this.onstart!=null) this.onstart((event as FeatureEvent),this.Feature);
 	     	var index:int=0;
@@ -131,6 +141,14 @@ package org.openscales.core.handler.mouse
 			if(this.oncomplete!=null) this.oncomplete((event as FeatureEvent),this.Feature);
 			this.layer_number=0;
 			this._elementDragging=new SpriteElement();
+			for each (var handler:* in this.map.handlers)
+			{
+				//We reactivate all Draghandler				
+				if(getQualifiedClassName(handler)=="org.openscales.core.handler.mouse::DragHandler")
+				{
+					handler.active=true;
+				}
+			}
 		}
 		/**
 		 * This function is use to move the features during Multigeometries dragging

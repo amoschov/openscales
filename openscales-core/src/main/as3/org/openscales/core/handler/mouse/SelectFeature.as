@@ -18,7 +18,7 @@ package org.openscales.core.handler.mouse
 	public class SelectFeature extends Handler
 	{
 		/**
-		 * 
+		 * Callback's function
 		 */
 		private var _select:Function=null;
 		private var _unselect:Function=null;
@@ -29,7 +29,7 @@ package org.openscales.core.handler.mouse
 		//Accept hover or not
 		private var _hover:Boolean=true;
 		
-		public function SelectFeature(map:Map,layer:VectorLayer,active:Boolean=false,options:Object=null)
+		public function SelectFeature(map:Map=null,layer:VectorLayer=null,active:Boolean=false,options:Object=null)
 		{
 			super(map,active);
 			this.select=options.select;
@@ -49,25 +49,28 @@ package org.openscales.core.handler.mouse
 			this.map.removeEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
 		}
 	
-		private function OnOut(pevt:FeatureEvent):void
+		public function OnOut(pevt:FeatureEvent):void
 		{
 			if(pevt.vectorfeature.layer==this.layer)
 			{
-				this._unselect(pevt);
+				if(this._unselect!=null)this._unselect(pevt);
 			}
 		}
-		private function OnOver(pevt:FeatureEvent):void
+		public function OnOver(pevt:FeatureEvent):void
 		{
-			if(pevt.vectorfeature.layer==this.layer)
+			if(hover)
 			{
-				this._select(pevt);
+				if(pevt.vectorfeature.layer==this.layer)
+				{
+				if(this._select!=null) this._select(pevt);
+				}
 			}
 		}
-		private function OnClick(pevt:FeatureEvent):void
+		public function OnClick(pevt:FeatureEvent):void
 		{			
 			if(!this.hover)
 			{
-				OnOver(pevt);
+				if(this._select!=null)this._select(pevt);
 			}
 		}
 		

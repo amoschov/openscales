@@ -6,6 +6,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.handler.Handler;
 	
 	/**
@@ -44,7 +45,6 @@ package org.openscales.core.handler.mouse
 		override protected function registerListeners():void{
 			this.map.addEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
 			this.map.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
-			
 		}
 		
 		override protected function unregisterListeners():void{

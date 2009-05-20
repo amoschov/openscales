@@ -17,7 +17,7 @@ package org.openscales.core.events
 		
 
 		/**
-		 *event's types 
+		 * event's types 
 		 */
 		 	
 		//Ctrl is pressed or not
