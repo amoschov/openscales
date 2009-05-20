@@ -36,7 +36,7 @@ package org.openscales.core.layer
 	    
 	    public var preFeatureInsert:Function = null;
 	    
-	    public function VectorLayer(name:String, options:Object = null):void {
+	    public function VectorLayer(name:String, options:Object = null) {
 	        this.style = new Style();
 	        
 	        this.onFeatureInsert = new Function();

@@ -9,7 +9,7 @@ package org.openscales.core.basetypes
 		private var _lon:Number = 0.0;
 		private var _lat:Number = 0.0;
 		
-		public function LonLat(lon:Number, lat:Number):void {
+		public function LonLat(lon:Number, lat:Number) {
 			this.lon = lon;
 			this.lat = lat;
 		}

@@ -23,7 +23,8 @@ package org.openscales.core.basetypes
 		 * @param right Right bound of Bounds instance
 		 * @param top Top bound of Bounds instance
 		 */
-        public function Bounds(left:Number = NaN, bottom:Number = NaN, right:Number = NaN, top:Number = NaN):void {
+        public function Bounds(left:Number = NaN, bottom:Number = NaN, right:Number = NaN, top:Number = NaN)
+        {
             if (!isNaN(left)) {
                 this.left = left;
             }

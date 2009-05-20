@@ -28,11 +28,9 @@
 			
 			public var feature:Feature; 
 			
-			public static var lon:Number=-43.584918945312495;
-			public static var lat:Number=-3.5397294921874973;
-			
-			public static var lon2:Number=-48.56441;
-			public static var lat2:Number=-1.32635;
+			//Lyon (France) EPSG:900913
+			public static var lon:Number=538850.47459;
+			public static var lat:Number=5740916.1243;
         	
         	public var mark:Marker;
         	public var markLyon:Marker;
@@ -40,7 +38,24 @@
 			private function initMap():void
 			{
 				map = fxmap.map;
-	
+				
+								
+				//We configure the layer and the map to display EPSG:900913
+				var mapnik:Mapnik = new Mapnik("Mapnik");
+				mapnik.maxResolution = 156543.0339;
+				mapnik.minResolution = 0.5971642833709717;
+				mapnik.numZoomLevels = 20;
+				mapnik.maxExtent = new Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);
+				mapnik.isBaseLayer = true;
+				
+				map.maxExtent = new Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);
+				map.maxResolution = 156543.0339;
+				map.minResolution = 0.5971642833709717;
+				map.numZoomLevels = 20;				
+				
+				map.addLayer(mapnik);
+				
+				//We create a marker over Lyon (France)
 				var markers:Markers = new Markers("Markers");
 				feature = new Feature(markers,new LonLat(lon,lat),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
 				mark = feature.createMarker();
@@ -53,6 +68,10 @@
 				mark.addEventListener(MouseEvent.CLICK, showPopup); 
 				markers.addMarker(mark);
 				map.addLayer(markers);
+				
+				//We center the map and zoom at the wanted level
+				map.center = new LonLat(538850.47459,5740916.1243);
+				map.zoom = 9;
 			}
 			
 			private function showPopup(e:MouseEvent):void
@@ -63,12 +82,8 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%"
-					  maxResolution="1" numZoomLevels="21" zoom="9"
-					  lon="-43.584918945312495" lat="-3.5397294921874973">
+	<os:Map id="fxmap" width="100%" height="100%" >
 		
-		<os:Mapnik name="Mapnik"/>
-		<os:CycleMap name="CycleMap"/>
 		
 		<os:PanZoomBar />
 		<os:MousePosition />

@@ -23,7 +23,7 @@ package org.openscales.core.feature
 		 * @param data
 		 * @param style The feature's style
 		 */
-		public function VectorFeature(geometry:Geometry = null, data:Object = null, style:Style = null):void {
+		public function VectorFeature(geometry:Geometry = null, data:Object = null, style:Style = null) {
 			super(null, null, data);
 	        this.lonlat = null;
 	        this.geometry = geometry;
