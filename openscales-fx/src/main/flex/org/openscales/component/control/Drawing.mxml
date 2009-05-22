@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:control="org.openscales.component.control.*"
-	xmlns:os="http://openscales.org" creationComplete="initTab();"
+	xmlns:os="http://openscales.org" creationComplete="initTabDrawing();"
 	width="330" height="330">
 		
 	<mx:Script>
@@ -29,41 +29,60 @@
 			
 			import org.openscales.core.Map;
 			
-			
+			private var _drawType:String = "";
 			public var drawLayer:VectorLayer = new VectorLayer("Sketch");			
 			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
 			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
-			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
-					
-			public var oldFeature:org.openscales.core.feature.VectorFeature;
-			public var selectStyle:Style = new Style();
+			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);		
+			
+			//Params for feature selection
+			private var _selectStyle:Style = new Style();
 			public var oldStyle:Style = new Style();
-			public var first:Boolean = true;
-			
-			private var _drawType:String = "";
+			public var first:Boolean = true;		//To know if it's the first time you select feature
+				
+			//new mouse handler
+			public var selectFeatureHandler:SelectFeature;
+			public var dragHandler:DragHandler;
 			
 
-			public function initTab():void{
+			public function initTabDrawing():void{
 				this.featureInfo.map = this.map;
-				this.tgBar.selectedIndex = -1; 
+				//For unselect all button in the toggleBarButton
+				this.tgBar.selectedIndex = -1;
+				
+				//Properties for selectFeatureHandler
+				this.selectFeatureHandler = new SelectFeature(this.map,drawLayer,true);
+				this.selectFeatureHandler.select = onSelectFeature;
+				this.selectFeatureHandler.hover = false;
+				 
+				//Active select feature handler with the map
+				this.map.addHandler(selectFeatureHandler);
+				
+				//Define the style of a feature when it selected
+				this.selectStyle.fillColor = 0xFFD700;
+				this.selectStyle.strokeColor = 0xFFD700;
 			}
-
+			
+			/**
+		 	 * Show a warning message when you delete selected feature. User can cancel if it's a mistake
+		 	 */
 			public function onDeleteSelectedClick(event:Event):void {
 				Alert.show("Are you sure ?", "Warning", Alert.YES | Alert.NO, null, alertClickHandler);				
 			}
-			
 			private function alertClickHandler(event:CloseEvent):void {
+                // User click on "YES"
                 if (event.detail==Alert.YES){
                 	deleteSelectedFeatures(); 
                 }                  
             }
 			
+			// when you clik on delete selected feature button
 			private function deleteSelectedFeatures():void {
-				var feat:org.openscales.core.feature.VectorFeature;
+				var feature:org.openscales.core.feature.VectorFeature;
 				var i:Number = 0;
 				for(i;i<drawLayer.features.length;i++){
-					feat = drawLayer.features[i];
-					if(feat.selected){
+					feature = drawLayer.features[i];
+					if(feature.selected){
 						drawLayer.removeFeatures(drawLayer.features[i]);
 						i--;
 					}
@@ -73,10 +92,11 @@
 				btnDeleteSelected.enabled = false;
 			}
 
+			//When you click on delete all button
 			public function onDeleteAllClick(event:Event):void {
 				drawLayer.destroyFeatures();
 				drawLayer.renderer.clear();
-				oldFeature = null;
+				selectFeatureHandler.lastfeature = null;
 				
 				switch(drawType)
 				{
@@ -85,12 +105,12 @@
 				}
 			}
 			
+			//When you click on delete last feature button
 			public function onDeleteLastClick(event:Event):void {
 				var last:Number = drawLayer.features.length - 1;
 				var lastFeature:VectorFeature = null;
 				
-				if (last >= 0) {	
-					
+				if (last >= 0) {					
 					lastFeature = drawLayer.features[last];
 					drawLayer.removeFeatures(drawLayer.features[last]);
 								
@@ -101,9 +121,7 @@
 							if (last - 1 >= 0 && getQualifiedClassName(drawLayer.features[last-1].geometry) == "org.openscales.core.geometry::LineString") {
 								pathHandler.lastPoint = drawLayer.features[last-1].geometry.getLastPoint();
 							}
-							else {
-								pathHandler.newFeature = true;
-							}
+							else {pathHandler.newFeature = true;}
 							break;	
 												
 						case "polygon":
@@ -118,49 +136,40 @@
 				}
 				else {
 					Alert.show("There are not features to delete !", "Message");
-					oldFeature = null;
+					selectFeatureHandler.lastfeature = null;
 				}
 			}
 			
-			public function selectFeature(event:FeatureEvent):void {
-				
+			public function onSelectFeature(event:FeatureEvent):void {			
 				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active && featureInfo != null) {
-					
 					btnDeleteSelected.enabled = true;
-					var currentFeature:org.openscales.core.feature.VectorFeature;
-					var f:org.openscales.core.feature.VectorFeature;				
-					currentFeature = event.vectorfeature;
+					var f:org.openscales.core.feature.VectorFeature;
+					selectFeatureHandler.currentfeature = event.vectorfeature;				
 					
-					if(oldFeature != null && oldFeature != currentFeature){		
+					if(selectFeatureHandler.lastfeature != null && selectFeatureHandler.lastfeature != selectFeatureHandler.currentfeature){		
 						if(event.ctrlPressed){
-							oldFeature.selected = true;
-							currentFeature.selected = true;
+							selectFeatureHandler.lastfeature.selected = true;
+							selectFeatureHandler.currentfeature.selected = true;
+							oldStyle=selectFeatureHandler.currentfeature.style;
 						}
 						else{
 							for each(f in drawLayer.features)
 							{
-								if(f.selected){
-									f.style = oldStyle;
-								}
+								if(f.selected){f.style = oldStyle;}
 							}
-							oldFeature.style = oldStyle; 
-							oldStyle = currentFeature.style;
-							oldFeature.layer.redraw();
-							oldFeature.selected = false;
+							selectFeatureHandler.lastfeature.style = oldStyle;
+							oldStyle = selectFeatureHandler.currentfeature.style;
+							selectFeatureHandler.lastfeature.layer.redraw();
+							selectFeatureHandler.lastfeature.selected = false;
 						}	
 					}
-					else if(first){first=false;oldStyle=currentFeature.style;}
-						
-					selectStyle.fillColor = 0xFFD700;
-					selectStyle.strokeColor = 0xFFD700;
-					
-					currentFeature.style = selectStyle;							 
-					currentFeature.selected = true;
-					currentFeature.layer.redraw();
-				 
-					this.featureInfo.showInfo(event);
-					
-					oldFeature = currentFeature;															
+					else if(first){first=false;oldStyle=selectFeatureHandler.currentfeature.style;}
+										
+					selectFeatureHandler.currentfeature.style = selectStyle;							 
+					selectFeatureHandler.currentfeature.selected = true;
+					selectFeatureHandler.currentfeature.layer.redraw();
+					selectFeatureHandler.lastfeature = selectFeatureHandler.currentfeature;	
+					this.featureInfo.showInfo(event);		//Show information of the selected feature												
 				}
 			}
 			
@@ -173,27 +182,17 @@
 					polygonHandler.map = this.map
 					this.map.addLayer(drawLayer);
 				}
-				this.map.addEventListener(FeatureEvent.FEATURE_CLICK, selectFeature);
 			}
 			
 			private function clickHandler(event:ItemClickEvent):void{
 				var handler:Number = event.index;		// handler is a number because of toggleButtonBar
-				var h:Handler;
-				for each(h in this.map.handlers){
-					if(h is DragHandler){
-						h.active = false;
-					} 
-				}			
-				
+				this.deactiveDrag(); 				
 				switch(handler)
 				{
 					case 0:		//click on button point
 						if(drawType!="point"){
-							if(pathHandler.active){
-								this.finishPath();
-							}else if(polygonHandler.active){
-								this.finishPolygon();
-							}												
+							if(pathHandler.active){this.finishPath();}
+							else if(polygonHandler.active){this.finishPolygon();}												
 							pointHandler.active = true;
 							drawType = "point";
 						}
@@ -201,15 +200,13 @@
 							drawType = "";
 							pointHandler.active = false;
 							this.tgBar.selectedIndex = -1;
-							this.activeDrag();
+							this.activeDrag(); 
 						}						
 						break;
 					
 					case 1:		//click on button path
 						if(drawType!="path"){
-							if(polygonHandler.active){
-								this.finishPolygon();
-							}						
+							if(polygonHandler.active){this.finishPolygon();}						
 							pointHandler.active = false;
 							pathHandler.active = true;
 							drawType = "path";
@@ -218,15 +215,13 @@
 							drawType = "";
 							finishPath();
 							this.tgBar.selectedIndex = -1;
-							activeDrag(); 
+							this.activeDrag(); 
 						}
 						break;
 						
 					case 2:		//click on button polygon
 						if(drawType!="polygon"){
-							if(pathHandler.active){
-								this.finishPath();
-							}						
+							if(pathHandler.active){this.finishPath();}						
 							pointHandler.active = false;
 							polygonHandler.active = true;
 							drawType = "polygon";
@@ -235,7 +230,7 @@
 							drawType = "";
 							this.finishPolygon();
 							this.tgBar.selectedIndex = -1;
-							this.activeDrag(); 
+							this.activeDrag();   
 						}
 						break;
 				}
@@ -252,19 +247,35 @@
 			}
 			
 			public function activeDrag():void{
-				var h:Handler;
-				for each(h in this.map.handlers){
-					if(h is DragHandler){
-						h.active = true;
+				var handler:Handler;
+				for each(handler in this.map.handlers){
+					if(handler is DragHandler){
+						handler.active = true;
 					}
 				} 
 			}
+			public function deactiveDrag():void{
+				var handler:Handler;
+				for each(handler in this.map.handlers){
+					if(handler is DragHandler){
+						handler.active = false;
+					} 
+				}
+			}
 			
+			// Getters and setters AS3
 			public function get drawType():String{
 				return _drawType;
 			}
 			public function set drawType(value:String):void{
 				_drawType = value;
+			}
+			
+			public function get selectStyle():Style{
+				return _selectStyle;
+			}
+			public function set selectStyle(newStyle:Style):void{
+				_selectStyle = newStyle;
 			}
 		]]>
 	</mx:Script>
@@ -282,7 +293,7 @@
 	<mx:Button label="DeleteSelected" width="118" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" x="175" y="78" enabled="false"/>
 		
 	<mx:Text x="160" y="5" text="Tooltip : to finalize a path or a polygon just double click on map." width="143" height="46" fontStyle="italic"/>
-	<mx:Text text="For the moment, you can't delete WFS points, even if they are selected." fontStyle="italic" width="143" x="160" y="108" textAlign="center"/>
+	<mx:Text x="160" y="108" text="For the moment, you can't delete WFS points, even if they are selected." fontStyle="italic" width="143" textAlign="center"/>
 
 	<control:FeatureInfo id="featureInfo" x="10" y="155" width="310" height="165"/>
 	

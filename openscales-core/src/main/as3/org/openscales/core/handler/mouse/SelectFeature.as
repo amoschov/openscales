@@ -29,12 +29,9 @@ package org.openscales.core.handler.mouse
 		//Accept hover or not
 		private var _hover:Boolean=true;
 		
-		public function SelectFeature(map:Map=null,layer:VectorLayer=null,active:Boolean=false,options:Object=null)
+		public function SelectFeature(map:Map=null,layer:VectorLayer=null,active:Boolean=false)
 		{
 			super(map,active);
-			this.select=options.select;
-			this.unselect=options.unselect;
-			if(options.hover is Boolean) this.hover=options.hover;
 			this.layer=layer;
 		}
 		
