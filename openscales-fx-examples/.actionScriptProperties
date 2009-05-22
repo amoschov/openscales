@@ -10,7 +10,6 @@
 </libraryPathEntry>
 <libraryPathEntry kind="3" linkType="1" path="/openscales-core/bin/openscales-core.swc" useDefaultLinkType="false"/>
 <libraryPathEntry kind="3" linkType="1" path="/openscales-fx/bin/openscales-fx.swc" useDefaultLinkType="false"/>
-<libraryPathEntry kind="3" linkType="1" path="/openscales-proj4as/bin/openscales-proj4as.swc" useDefaultLinkType="false"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>
