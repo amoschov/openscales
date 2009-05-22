@@ -44,7 +44,7 @@ package org.openscales.core.events
 		 * @param active to determinates if the handler is active
 		 */
 
-		public function FeatureEvent(type:String,vectorfeature:VectorFeature,bubbles:Boolean=false,ctrlStatus:Boolean = false,cancelable:Boolean=false) 
+		public function FeatureEvent(type:String,vectorfeature:VectorFeature,ctrlStatus:Boolean = false,bubbles:Boolean=false,cancelable:Boolean=false) 
 		{
 			super(type, bubbles, cancelable);
 			this.vectorfeature=vectorfeature;

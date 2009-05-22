@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:control="org.openscales.component.control.*"
-	xmlns:os="http://openscales.org" creationComplete="this.featureInfo.map = this.map; this.tgBar.selectedIndex = -1"
-	width="330" height="284">
+	xmlns:os="http://openscales.org" creationComplete="initTab();"
+	width="330" height="330">
 		
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.mouse.SelectFeature;
 			import mx.events.CloseEvent;
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.geometry.Polygon;
@@ -33,19 +34,18 @@
 			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
 			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
 			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
-			
+					
 			public var oldFeature:org.openscales.core.feature.VectorFeature;
-			public var oldStyle:Style = new Style();
 			public var selectStyle:Style = new Style();
+			public var oldStyle:Style = new Style();
 			public var first:Boolean = true;
 			
 			private var _drawType:String = "";
 			
-			public function get drawType():String{
-				return _drawType;
-			}
-			public function set drawType(value:String):void{
-				_drawType = value;
+
+			public function initTab():void{
+				this.featureInfo.map = this.map;
+				this.tgBar.selectedIndex = -1; 
 			}
 
 			public function onDeleteSelectedClick(event:Event):void {
@@ -143,9 +143,10 @@
 									f.style = oldStyle;
 								}
 							}
-							oldFeature.style = oldStyle;
+							oldFeature.style = oldStyle; 
 							oldStyle = currentFeature.style;
 							oldFeature.layer.redraw();
+							oldFeature.selected = false;
 						}	
 					}
 					else if(first){first=false;oldStyle=currentFeature.style;}
@@ -181,8 +182,9 @@
 				for each(h in this.map.handlers){
 					if(h is DragHandler){
 						h.active = false;
-					}
-				}
+					} 
+				}			
+				
 				switch(handler)
 				{
 					case 0:		//click on button point
@@ -216,7 +218,7 @@
 							drawType = "";
 							finishPath();
 							this.tgBar.selectedIndex = -1;
-							activeDrag();
+							activeDrag(); 
 						}
 						break;
 						
@@ -233,7 +235,7 @@
 							drawType = "";
 							this.finishPolygon();
 							this.tgBar.selectedIndex = -1;
-							this.activeDrag();
+							this.activeDrag(); 
 						}
 						break;
 				}
@@ -255,7 +257,14 @@
 					if(h is DragHandler){
 						h.active = true;
 					}
-				}
+				} 
+			}
+			
+			public function get drawType():String{
+				return _drawType;
+			}
+			public function set drawType(value:String):void{
+				_drawType = value;
 			}
 		]]>
 	</mx:Script>
@@ -270,10 +279,11 @@
 	
 	<mx:Button x="10" y="78" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="104"/>
 	<mx:Button x="10" y="48" label="DeleteLast" width="104" id="btnDeleteLast" click="this.onDeleteLastClick(event)"/>
-	<mx:Button label="DeleteSelected" width="118" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" x="171" y="78" enabled="false"/>
+	<mx:Button label="DeleteSelected" width="118" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" x="175" y="78" enabled="false"/>
 		
 	<mx:Text x="160" y="5" text="Tooltip : to finalize a path or a polygon just double click on map." width="143" height="46" fontStyle="italic"/>
-		
-	<control:FeatureInfo id="featureInfo" x="10" y="108" width="310" height="166"/>
+	<mx:Text text="For the moment, you can't delete WFS points, even if they are selected." fontStyle="italic" width="143" x="160" y="108" textAlign="center"/>
+
+	<control:FeatureInfo id="featureInfo" x="10" y="155" width="310" height="165"/>
 	
 </control:Control>
