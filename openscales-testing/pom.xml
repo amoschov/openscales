@@ -17,6 +17,18 @@
 	<build>
 		<sourceDirectory>src/main/flex</sourceDirectory>
         <plugins>
+			<plugin>
+				<groupId>org.sonatype.flexmojos</groupId>
+				<artifactId>flexmojos-maven-plugin</artifactId>
+				<version>${flexmojos.version}</version>
+				<executions>
+					<execution>
+			            <goals>
+							<goal>asdoc</goal>
+			            </goals>
+					</execution>
+				</executions>
+			</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -49,20 +61,6 @@
 		</dependency>
 		<dependency>
 	  		<groupId>com.adobe.flex.framework</groupId>
-	  		<artifactId>rpc</artifactId>
-	  		<version>${flex.version}</version>
-	  		<type>rb.swc</type>
-			<classifier>en_US</classifier> 
-		</dependency>
-		<dependency>
-	  		<groupId>com.adobe.flex.framework</groupId>
-	  		<artifactId>framework</artifactId>
-	  		<version>${flex.version}</version>
-	  		<type>rb.swc</type>
-	  		<classifier>en_US</classifier>
-		</dependency>
-		<dependency>
-	  		<groupId>com.adobe.flex.framework</groupId>
 	  		<artifactId>flex-framework</artifactId>
 	  		<version>${flex.version}</version>
 	  		<type>pom</type>
@@ -74,21 +72,12 @@
 			<type>swc</type>
 		</dependency>
 		<dependency>
-			<groupId>info.flex-mojos</groupId>
-			<artifactId>testing-support</artifactId>
-			<version>${compiler.mojo.version}</version>
+			<groupId>org.sonatype.flexmojos</groupId>
+			<artifactId>flexmojos-unittest-support</artifactId>
+			<version>${flexmojos.version}</version>
 			<type>swc</type>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>info.flex-mojos</groupId>
-				<artifactId>asdoc-mojo</artifactId>
-				<version>${asdoc.mojo.version}</version>
-			</plugin>
-		</plugins>
-	</reporting>
-	
+		
 </project>

@@ -27,8 +27,9 @@
 		
 		<plugins>
 			<plugin>
-				<groupId>info.flex-mojos</groupId>
-				<artifactId>flex-compiler-mojo</artifactId>
+				<groupId>org.sonatype.flexmojos</groupId>
+				<artifactId>flexmojos-maven-plugin</artifactId>
+				<version>${flexmojos.version}</version>
 				<extensions>true</extensions>
 				<configuration>
 					<namespaces>
@@ -41,7 +42,13 @@
 						<namespaces>http://openscales.org</namespaces>
 					</includeNamespaces>
 				</configuration>
-				
+				<executions>
+					<execution>
+			            <goals>
+							<goal>asdoc</goal>
+			            </goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -55,34 +62,10 @@
 		</dependency>
 		<dependency>
 	  		<groupId>com.adobe.flex.framework</groupId>
-	  		<artifactId>rpc</artifactId>
-	  		<version>${flex.version}</version>
-	  		<type>rb.swc</type>
-			<classifier>en_US</classifier> 
-		</dependency>
-		<dependency>
-	  		<groupId>com.adobe.flex.framework</groupId>
-	  		<artifactId>framework</artifactId>
-	  		<version>${flex.version}</version>
-	  		<type>rb.swc</type>
-	  		<classifier>en_US</classifier>
-		</dependency>
-		<dependency>
-	  		<groupId>com.adobe.flex.framework</groupId>
 	  		<artifactId>flex-framework</artifactId>
 	  		<version>${flex.version}</version>
 	  		<type>pom</type>
 		</dependency>
 	</dependencies>
-	
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>info.flex-mojos</groupId>
-				<artifactId>asdoc-mojo</artifactId>
-				<version>${asdoc.mojo.version}</version>
-			</plugin>
-		</plugins>
-	</reporting>
-	
+
 </project>

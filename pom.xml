@@ -11,8 +11,7 @@
 	
 	<properties>
 		<flex.version>3.3.0.4852</flex.version>
-		<compiler.mojo.version>2.0.3</compiler.mojo.version>
-		<asdoc.mojo.version>2.0.1</asdoc.mojo.version>
+		<flexmojos.version>3.2.0</flexmojos.version>
 		<flex.target.player.version>9.0.0</flex.target.player.version>
 	</properties>
 	
@@ -151,23 +150,11 @@
 		<sourceDirectory>src/main/as3</sourceDirectory>
 		<plugins>
 			<plugin>
-				<groupId>info.flex-mojos</groupId>
-				<artifactId>flex-compiler-mojo</artifactId>
-				<version>${compiler.mojo.version}</version>
+				<groupId>org.sonatype.flexmojos</groupId>
+				<artifactId>flexmojos-maven-plugin</artifactId>
+				<version>${flexmojos.version}</version>
 				<extensions>true</extensions>
-				<dependencies>
-					<dependency>
-						<groupId>com.adobe.flex</groupId>
-						<artifactId>compiler</artifactId>
-						<version>${flex.version}</version>
-						<type>pom</type>
-					</dependency>
-				</dependencies> 
 				<configuration>
-					 <locales>
-						<locale>en_US</locale>
-					</locales>
-					<debug>false</debug>
 					<targetPlayer>${flex.target.player.version}</targetPlayer>
 				</configuration>
 			</plugin>
