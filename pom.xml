@@ -37,7 +37,6 @@
 		<module>openscales-fx-examples</module>
 		<module>openscales-fx</module>
 		<module>openscales-proj</module>
-		<module>openscales-testing</module>
 	</modules>
 	
 	<issueManagement>
@@ -148,6 +147,8 @@
 	
 	<build>
 		<sourceDirectory>src/main/as3</sourceDirectory>
+		<testSourceDirectory>src/test/as3</testSourceDirectory>
+
 		<plugins>
 			<plugin>
 				<groupId>org.sonatype.flexmojos</groupId>
@@ -156,6 +157,7 @@
 				<extensions>true</extensions>
 				<configuration>
 					<targetPlayer>${flex.target.player.version}</targetPlayer>
+					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -174,6 +176,13 @@
 			<artifactId>playerglobal</artifactId>
 			<version>9-${flex.version}</version>
 			<type>swc</type>
+		</dependency>
+		<dependency>
+			<groupId>org.sonatype.flexmojos</groupId>
+			<artifactId>flexmojos-unittest-support</artifactId>
+			<version>${flexmojos.version}</version>
+			<type>swc</type>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	
