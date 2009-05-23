@@ -14,6 +14,23 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.flexmojos</groupId>
+				<artifactId>flexmojos-maven-plugin</artifactId>
+				<version>${flexmojos.version}</version>
+				<executions>
+					<execution>
+			            <goals>
+							<goal>asdoc</goal>
+			            </goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.openscales</groupId>
@@ -22,16 +39,6 @@
 			<type>swc</type>
 		</dependency>
 	</dependencies>
-	
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>info.flex-mojos</groupId>
-				<artifactId>asdoc-mojo</artifactId>
-				<version>${asdoc.mojo.version}</version>
-			</plugin>
-		</plugins>
-	</reporting>
 	
 	
 	
