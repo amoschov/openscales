@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flexLibProperties version="1">
+<includeClasses>
+<classEntry path="com.gradoservice.proj4as.Datum"/>
+<classEntry path="com.gradoservice.proj4as.Proj4as"/>
+<classEntry path="com.gradoservice.proj4as.ProjConstants"/>
+<classEntry path="com.gradoservice.proj4as.ProjPoint"/>
+<classEntry path="com.gradoservice.proj4as.ProjProjection"/>
+<classEntry path="com.gradoservice.proj4as.proj.AbstractProjProjection"/>
+<classEntry path="com.gradoservice.proj4as.proj.IProjection"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjAea"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjAeqd"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjEqc"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjEqdc"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjEqui"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjGauss"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjGstmerc"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjLaea"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjLcc"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjLonglat"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjMerc"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjMill"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjMoll"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjNzmg"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjOmerc"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjOrtho"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjParams"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjSinu"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjSoMerc"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjStere"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjSterea"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjTmerc"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjUtm"/>
+<classEntry path="com.gradoservice.proj4as.proj.ProjVandg"/>
+</includeClasses>
+<includeResources/>
+<namespaceManifests/>
+</flexLibProperties>
