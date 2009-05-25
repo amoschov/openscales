@@ -37,6 +37,7 @@
 		<module>openscales-fx-examples</module>
 		<module>openscales-fx</module>
 		<module>openscales-proj</module>
+		<module>openscales-proj4as</module>
 	</modules>
 	
 	<issueManagement>
