@@ -18,6 +18,18 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.sonatype.flexmojos</groupId>
+				<artifactId>flexmojos-maven-plugin</artifactId>
+				<version>${flexmojos.version}</version>
+				<executions>
+					<execution>
+			            <goals>
+							<goal>asdoc</goal>
+			            </goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 		        <groupId>net.sf.flex-mvn-report</groupId>
 		        <artifactId>flex-mvn-report</artifactId>
 				<configuration>
@@ -29,11 +41,6 @@
 	
 	<reporting>
 		<plugins>
-			<plugin>
-				<groupId>info.flex-mojos</groupId>
-				<artifactId>asdoc-mojo</artifactId>
-				<version>${asdoc.mojo.version}</version>
-			</plugin>
 			<plugin>
 				<groupId>net.sf.flex-mvn-report</groupId>
 				<artifactId>flex-mvn-report</artifactId>
