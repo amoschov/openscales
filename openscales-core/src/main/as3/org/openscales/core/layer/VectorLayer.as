@@ -1,5 +1,7 @@
 package org.openscales.core.layer
 {
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
@@ -9,7 +11,6 @@ package org.openscales.core.layer
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.renderer.Renderer;
-	import org.openscales.core.renderer.SpriteElement;
 	import org.openscales.core.renderer.SpriteRenderer;
 	
 	/**
@@ -83,6 +84,13 @@ package org.openscales.core.layer
 	            this.renderer.map = this.map;
 	            this.renderer.size = this.map.size;
 	        }
+	        
+	        if (this.features.length > 0 && this.map != null && this.projection.srsCode != this.map.projection.srsCode) {
+				for each (var f:VectorFeature in this.features) {
+					f.geometry.transform(this.projection, this.map.projection);
+				}
+			}
+	       
 	    }
 	    
 	      override public function onMapResize():void {
@@ -140,7 +148,13 @@ package org.openscales.core.layer
 	                                    getQualifiedClassName(this.geometryType);
 	                    throw throwStr;
 	                }
-	
+				
+				if (this.map != null && this.map.projection != null && this.projection != null && 
+					this.projection.srsCode != this.map.projection.srsCode) {
+						
+					feature.geometry.transform(this.projection, this.map.projection);
+				}
+				
 	            this.features.push(feature);
 	            
 	            feature.layer = this;
@@ -197,6 +211,7 @@ package org.openscales.core.layer
 	                style = this.style;
 	            }
 	        }
+	        
 	        this.renderer.drawFeature(feature, style);
 	    }
 	    
@@ -273,6 +288,18 @@ package org.openscales.core.layer
 		
 		public function set drawn(value:Boolean):void {
 			this._drawn = value;
+		}
+		
+		override public function set projection(value:ProjProjection):void {
+			super.projection = value;
+			var f:VectorFeature;
+
+			if (this.features.length > 0 && this.map != null && this.map.projection != null &&
+				this.projection.srsCode != this.map.projection.srsCode) {
+				for each (f in this.features) {
+					f.geometry.transform(this.projection, this.map.projection);
+				}
+			}
 		}
 	    
 	}

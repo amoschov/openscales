@@ -1,5 +1,7 @@
 package org.openscales.core.layer.ogc
 {	
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
@@ -19,7 +21,6 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.layer.capabilities.GetCapabilities;
 	import org.openscales.core.tile.WFSTile;
-	import org.openscales.proj.IProjection;
 	
 	/**
 	 * Instances of WFS are used to display data from OGC Web Feature Services.
@@ -30,7 +31,7 @@ package org.openscales.core.layer.ogc
 	{
 		
 		public var DEFAULT_PARAMS:Object = { service: "WFS",
-	                      version: "1.1.0",
+	                      version: "1.0.0",
 	                      request: "GetFeature" };
 		
 		/**
@@ -86,7 +87,7 @@ package org.openscales.core.layer.ogc
 		 * @param params
 		 * @param options
 		 */	                    
-	    public function WFS(name:String, url:String, params:Object, options:Object = null, capabilities:HashMap=null):void {
+	    public function WFS(name:String, url:String, params:Object, options:Object = null, capabilities:HashMap=null) {
 	    	
 	    	this.capabilities = capabilities;
 	    	
@@ -248,8 +249,9 @@ package org.openscales.core.layer.ogc
 	     * @param altUrl Use this as the url instead of the layer's url
 	     */
 		private function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
-	        var projection:IProjection = this.map.projection;
-	        this.params.SRS = (projection == null) ? null : projection.name;
+	        var projection:ProjProjection = this.projection;
+	        if (projection != null || this.map.projection != null)
+	        	this.params.SRS = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
 	
 	        return new Grid(this.name, this.url, this.params).getFullRequestString(newParams, altUrl);
 		}
@@ -346,6 +348,9 @@ package org.openscales.core.layer.ogc
 			if (this.params != null) {
 				this._capabilities = caller.getLayerCapabilities(this.params.typename);
 				
+			}
+			if (this._capabilities != null) {
+				this.projection = new ProjProjection(this._capabilities.getValue("SRS"));
 			}
         }
         

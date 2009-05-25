@@ -1,10 +1,11 @@
 package org.openscales.core.layer.osm
 {
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.layer.TMS;
-	import org.openscales.proj.projections.EPSG4326;
 	
 	/**
 	 * Base class for Open Streert Map layers
@@ -17,8 +18,8 @@ package org.openscales.core.layer.osm
 		{
 			options = Util.extend({
             	maxResolution: 156543.0339,
-            	units: Unit.DEGREE,
-            	projection: new EPSG4326()
+            	units: Unit.METER,
+            	projection: new ProjProjection("EPSG:900913")
 			}, options);
 			super(name, url, options);
 		}

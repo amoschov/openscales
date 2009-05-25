@@ -1,5 +1,7 @@
 package org.openscales.core.format
 {
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	import org.openscales.core.Util;
 	
 	/**
@@ -8,6 +10,9 @@ package org.openscales.core.format
 	 */
 	public class Format
 	{
+		
+		protected var _internalProj:ProjProjection = null;
+		protected var _externalProj:ProjProjection = null;
 		
 		public function Format(options:Object = null):void {
 			Util.extend(this, options);

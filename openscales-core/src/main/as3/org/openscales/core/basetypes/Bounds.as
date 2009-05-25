@@ -1,6 +1,8 @@
 package org.openscales.core.basetypes
 {
-	import flash.utils.getQualifiedClassName;
+	import com.gradoservice.proj4as.Proj4as;
+	import com.gradoservice.proj4as.ProjPoint;
+	import com.gradoservice.proj4as.ProjProjection;
 	
     /**
      * Instances of this class represent bounding boxes.
@@ -337,6 +339,21 @@ package org.openscales.core.basetypes
         public static function getBBOXStringFromBounds(bounds:Bounds):String {
             return bounds.left + "," + bounds.bottom + " " + bounds.right + "," + bounds.top;
         }
+        
+        /**
+		 * Method to convert the bounds from a projection system to an other.
+		 * 
+		 * @param source The source projection
+		 * @param dest The destination projection
+		 */
+        public function transform(source:ProjProjection, dest:ProjProjection):void {
+			var pLB:ProjPoint = new ProjPoint(this._left, this._bottom);
+			var pRT:ProjPoint = new ProjPoint(this._right, this._top);
+			Proj4as.transform(source, dest, pLB);
+			Proj4as.transform(source, dest, pRT);
+			this._left = pLB.x; this._bottom = pLB.y;
+			this._right = pRT.x; this._top = pRT.y;
+		}
 
         // Getters & setters : _left _bottom _right _top
 

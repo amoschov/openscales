@@ -1,5 +1,7 @@
 package org.openscales.fx.control
 {
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	import org.openscales.core.control.MousePosition;
 
 	public class FxMousePosition extends FxControl
@@ -8,6 +10,11 @@ package org.openscales.fx.control
 		{
 			this.control = new MousePosition();
 			super();
+		}
+		
+		public function set displayProjection(value:String):void {
+			if (this.control != null && value != null)
+				(this.control as MousePosition).displayProjection = new ProjProjection(value);
 		}
 		
 	}

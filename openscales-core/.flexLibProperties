@@ -114,8 +114,8 @@
 <resourceEntry destPath="org/openscales/core/img/marker-green.png" sourcePath="org/openscales/core/img/marker-green.png"/>
 <resourceEntry destPath="org/openscales/core/img/measuring-stick-off.png" sourcePath="org/openscales/core/img/measuring-stick-off.png"/>
 <resourceEntry destPath="org/openscales/core/img/zoom-minus-mini.png" sourcePath="org/openscales/core/img/zoom-minus-mini.png"/>
-<resourceEntry destPath="org/openscales/core/img/panning-hand-on.png" sourcePath="org/openscales/core/img/panning-hand-on.png"/>
 <resourceEntry destPath="org/openscales/core/img/marker-blue.png" sourcePath="org/openscales/core/img/marker-blue.png"/>
+<resourceEntry destPath="org/openscales/core/img/panning-hand-on.png" sourcePath="org/openscales/core/img/panning-hand-on.png"/>
 <resourceEntry destPath="org/openscales/core/img/layer-switcher-minimize.png" sourcePath="org/openscales/core/img/layer-switcher-minimize.png"/>
 <resourceEntry destPath="org/openscales/core/img/slider.png" sourcePath="org/openscales/core/img/slider.png"/>
 <resourceEntry destPath="org/openscales/core/img/layer-switcher-maximize.png" sourcePath="org/openscales/core/img/layer-switcher-maximize.png"/>

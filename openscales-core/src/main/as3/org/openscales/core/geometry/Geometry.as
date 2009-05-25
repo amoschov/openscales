@@ -1,5 +1,7 @@
 package org.openscales.core.geometry
 {
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
@@ -36,6 +38,17 @@ package org.openscales.core.geometry
 
         	this._bounds = null;
 		}
+		
+		/**
+		 * Method to convert the lon/lat (x/y) value of the geometry from a projection sysrtem to an other.
+		 * 
+		 * @param source The source projection
+		 * @param dest The destination projection
+		 */
+		 public function transform(source:ProjProjection, dest:ProjProjection):void {
+		 	
+		 }
+		
 		
 		/**
 		 * Clones the geometry

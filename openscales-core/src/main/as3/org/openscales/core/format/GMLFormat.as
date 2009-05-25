@@ -1,5 +1,9 @@
 package org.openscales.core.format
 {
+	import com.gradoservice.proj4as.Proj4as;
+	import com.gradoservice.proj4as.ProjPoint;
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	import flash.utils.getQualifiedClassName;
 	import flash.xml.XMLNode;
 	
@@ -226,7 +230,10 @@ package org.openscales.core.format
 	            for(var i:int = 0; i < nums.length; i = i + this.dim) {
 	                x = Number(nums[i]);
 	                y = Number(nums[i+1]);
-	                points.push(new Point(x, y));
+	                var p:Point = new Point(x, y);
+	                if (this._internalProj != null, this._externalProj != null)
+	                	p.transform(this.externalProj, this.internalProj);
+	                points.push(p);
 	            }
 	            return points
 	        }
@@ -331,10 +338,18 @@ package org.openscales.core.format
 	        var path:String = "";
 	        if (points) {
 	            for (var i:int = 0; i < points.length; i++) {
+	            	if (this.internalProj != null && this.externalProj != null)
+	            		(points[i] as Point).transform(this.internalProj, this.externalProj);
 	                path += points[i].x + "," + points[i].y + " ";
 	            }
 	        } else {
-	           path += geometry.x + "," + geometry.y + " ";
+	        	if (this.internalProj != null && this.externalProj != null) {
+	            	var p:ProjPoint = new ProjPoint(geometry.x, geometry.y);
+					Proj4as.transform(internalProj, externalProj, p);
+					geometry.x = p.x;
+					geometry.y = p.y;
+	         	}
+	           	path += geometry.x + "," + geometry.y + " ";
 	        }    
 	        
 	        coordinatesNode.appendChild(path);
@@ -356,6 +371,22 @@ package org.openscales.core.format
 		
 		public function set dim(value:Number):void {
 			this._dim = value;
+		}
+		
+		public function get internalProj():ProjProjection {
+			return this._internalProj;
+		}
+		
+		public function set internalProj(value:ProjProjection):void {
+			this._internalProj = value;
+		}
+		
+		public function get externalProj():ProjProjection {
+			return this._externalProj;
+		}
+		
+		public function set externalProj(value:ProjProjection):void {
+			this._externalProj = value;
 		}
 		
 	}

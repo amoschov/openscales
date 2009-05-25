@@ -2,6 +2,10 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap();" >
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.layer.ogc.WFS;
+			import com.gradoservice.proj4as.ProjProjection;
+			import org.openscales.core.feature.VectorFeature;
+			import org.openscales.core.layer.VectorLayer;
 			import org.openscales.core.handler.IHandler;
 			import org.openscales.core.handler.mouse.DragHandler;
 			import org.openscales.core.handler.mouse.WheelHandler;
@@ -23,14 +27,11 @@
 			import org.openscales.core.layer.osm.Maplint;
 			import org.openscales.core.layer.osm.Mapnik;
 			import org.openscales.core.layer.osm.Osmarender;
+			import org.openscales.core.geometry.Point;
 			
 			public var map:Map; 
 			
 			public var feature:Feature; 
-			
-			//Lyon (France) EPSG:900913
-			public static var lon:Number=538850.47459;
-			public static var lat:Number=5740916.1243;
         	
         	public var mark:Marker;
         	public var markLyon:Marker;
@@ -55,9 +56,9 @@
 				
 				map.addLayer(mapnik);
 				
-				//We create a marker over Lyon (France)
+				//We create a marker over Lyon (France) with EPSG:900913 projection
 				var markers:Markers = new Markers("Markers");
-				feature = new Feature(markers,new LonLat(lon,lat),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
+				feature = new Feature(markers,new LonLat(538850.47459,5740916.1243),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
 				mark = feature.createMarker();
 				
 				markLyon = feature.createMarker();
@@ -68,6 +69,16 @@
 				mark.addEventListener(MouseEvent.CLICK, showPopup); 
 				markers.addMarker(mark);
 				map.addLayer(markers);
+				
+				
+				/* We create a vector layer with a point near to Lyon (France)
+				with EPSG:4326 projection.*/
+				var vect:VectorLayer = new VectorLayer("vector");
+				var p:org.openscales.core.geometry.Point = new org.openscales.core.geometry.Point(4.8,45.7);
+				vect.addFeatures(new VectorFeature(p));
+				vect.projection = new ProjProjection("EPSG:4326");
+				map.addLayer(vect);
+
 				
 				//We center the map and zoom at the wanted level
 				map.center = new LonLat(538850.47459,5740916.1243);
@@ -82,11 +93,12 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%" >
+	<os:Map id="fxmap" width="100%" height="100%" proxy="http://openscales.org/proxy.php?url=">
 		
 		
 		<os:PanZoomBar />
-		<os:MousePosition />
+		<!-- We choose EPSG:4326 as displayed projection in this control-->
+		<os:MousePosition displayProjection="EPSG:4326"/>
 		<os:LayerSwitcher />
 		
 		<os:DragHandler />

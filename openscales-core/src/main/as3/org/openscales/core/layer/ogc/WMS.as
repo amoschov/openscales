@@ -8,6 +8,7 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	import org.openscales.proj.IProjection;
+	import com.gradoservice.proj4as.ProjProjection;
 	
 	/**
 	 * Instances of WMS are used to display data from OGC Web Mapping Services.
@@ -63,8 +64,9 @@ package org.openscales.core.layer.ogc
        	}
        	
        	override public function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
-	        var projection:IProjection = this.map.projection;
-	        this.params.SRS = (projection == null) ? null : projection.code;
+	         var projection:ProjProjection = this.projection;
+	         if (projection != null || this.map.projection != null)
+	        	this.params.SRS = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
 	
 	        return super.getFullRequestString(newParams, altUrl);
        	}

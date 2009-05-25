@@ -62,9 +62,13 @@ package org.openscales.core.tile
 				wfsLayer.destroyFeatures();
 				wfsLayer.renderer.clear();
 			}
-			
+						
 	        if (wfsLayer && wfsLayer.vectorMode) {
 	            var gml:GMLFormat = new GMLFormat({extractAttributes: wfsLayer.extractAttributes});
+	            if (this.layer.map.projection != null && this.layer.projection != null && this.layer.projection.srsCode != this.layer.map.projection.srsCode) {
+	            	gml.externalProj = this.layer.projection;
+	            	gml.internalProj = this.layer.map.projection;
+        		}
 	            wfsLayer.addFeatures(gml.read(doc));
 	        } else {
 	            var resultFeatures:Object = doc..*::featureMember;

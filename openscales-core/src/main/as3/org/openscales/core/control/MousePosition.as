@@ -1,5 +1,7 @@
 package org.openscales.core.control
 {
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -25,6 +27,8 @@ package org.openscales.core.control
     	private var _granularity:int = 10;
     	
     	private var _lastXy:Pixel = null;
+    	
+    	private var _displayProjection:ProjProjection = null;
     	  	
     	public function MousePosition(options:Object = null):void {
     		super(options);
@@ -66,6 +70,10 @@ package org.openscales.core.control
 	        
 	        if(lonLat == null)
 	        	lonLat = new LonLat(0, 0);
+	    
+	        if (this._displayProjection) {
+	            lonLat.transform(this.map.projection, this._displayProjection );
+	        }    
 	        
 	        var digits:int = int(this.numdigits);
 	        this.label.text =
@@ -82,7 +90,7 @@ package org.openscales.core.control
 			
 			this.x = this.map.size.w - 150;
 			this.y = this.map.size.h - 20;
-			
+						
 			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
 		}
 		
@@ -146,6 +154,15 @@ package org.openscales.core.control
 		public function set lastXy(newLastXy:Pixel):void
 		{
 			_lastXy = newLastXy;
+		}
+		
+		public function get displayProjection():ProjProjection
+		{
+			return _displayProjection;
+		}
+		public function set displayProjection(value:ProjProjection):void
+		{
+			_displayProjection = value;
 		}
 		
 		public function get label():TextField

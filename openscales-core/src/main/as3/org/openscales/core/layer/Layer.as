@@ -1,15 +1,16 @@
 package org.openscales.core.layer
 {
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	import flash.display.Sprite;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-    import org.openscales.core.basetypes.Size;
-    import org.openscales.core.basetypes.Unit;
-	import org.openscales.proj.IProjection;
+	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.basetypes.Unit;
 
 
 	/**
@@ -23,7 +24,7 @@ package org.openscales.core.layer
 		private var _inRange:Boolean = false;
 		private var _imageOffset:Pixel = null;
 		private var _gutter:Number = 0;
-		private var _projection:IProjection = null;
+		private var _projection:ProjProjection = null;
 		private var _units:String = null;
 		private var _resolutions:Array = null;
 		private var _maxExtent:Bounds = null;
@@ -39,7 +40,7 @@ package org.openscales.core.layer
 		/**
 		 * Layer constructor
 		 */
-		public function Layer(name:String, options:Object = null):void {
+		public function Layer(name:String, options:Object = null) {
 
 			Util.extend(this, options);
 
@@ -93,7 +94,7 @@ package org.openscales.core.layer
 	            this._map = map;
 
 	            this.maxExtent = this.maxExtent || this.map.maxExtent;
-	            this.projection = this.projection || this.map.projection;
+	           // this.projection = this.projection || this.map.projection;
 	            this.units = this.units || this.map.units;
 
 	            this.initResolutions();
@@ -428,11 +429,11 @@ package org.openscales.core.layer
 		 * Override the default projection. You should also set maxExtent,
      	 * maxResolution, and units if appropriate.
 		 */
-		public function get projection():IProjection {
+		public function get projection():ProjProjection {
 			return this._projection;
 		}
 
-		public function set projection(value:IProjection):void {
+		public function set projection(value:ProjProjection):void {
 			this._projection = value;
 		}
 

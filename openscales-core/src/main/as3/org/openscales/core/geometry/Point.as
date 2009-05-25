@@ -1,5 +1,9 @@
 package org.openscales.core.geometry
 {
+	import com.gradoservice.proj4as.Proj4as;
+	import com.gradoservice.proj4as.ProjPoint;
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	
@@ -10,7 +14,7 @@ package org.openscales.core.geometry
 
 		private var _y:Number = NaN;
 				
-		public function Point(x:Number = NaN, y:Number = NaN):void {
+		public function Point(x:Number = NaN, y:Number = NaN) {
 			super();
         
 	        this.x = x;
@@ -58,6 +62,19 @@ package org.openscales.core.geometry
 		public function move(x:Number, y:Number):void {
 			this.x = this.x + x;
 	        this.y = this.y + y;
+		}
+		
+		/**
+		 * Method to convert the point (x/y) from a projection sysrtem to an other.
+		 * 
+		 * @param source The source projection
+		 * @param dest The destination projection
+		 */
+		override public function transform(source:ProjProjection, dest:ProjProjection):void {
+			var p:ProjPoint = new ProjPoint(this.x, this.y);
+			Proj4as.transform(source, dest, p);
+			this.x = p.x;
+			this.y = p.y;
 		}
 		
 		public function get x():Number {

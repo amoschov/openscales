@@ -1,5 +1,9 @@
 package org.openscales.core.basetypes
 {
+	import com.gradoservice.proj4as.Proj4as;
+	import com.gradoservice.proj4as.ProjPoint;
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	/**
 	 * This class represents a longitude and latitude pair.
 	 */
@@ -20,6 +24,19 @@ package org.openscales.core.basetypes
 		
 		public function toShortString():String {
 			return this.lon + ", " + this.lat;
+		}
+		
+		/**
+		 * Reprojection method => this method will convert the lonlat from source projection to dest projection.
+		 * 
+		 * @param source Source projection
+		 * @param dest Destination projection
+		 */
+		public function transform(source:ProjProjection, dest:ProjProjection):void {
+			var p:ProjPoint = new ProjPoint(this.lon, this.lat);
+			Proj4as.transform(source, dest, p);
+			this.lon = p.x;
+			this.lat = p.y;
 		}
 		
 		public function clone():LonLat {

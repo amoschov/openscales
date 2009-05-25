@@ -1,5 +1,7 @@
 package org.openscales.core.geometry
 {
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
 	
@@ -153,6 +155,20 @@ package org.openscales.core.geometry
 	            }
 	        }
 	        return equivalent;
+		}
+		
+		 /**
+		 * Method to convert the collection from a projection system to an other.
+		 * 
+		 * @param source The source projection
+		 * @param dest The destination projection
+		 */
+		override public function transform(source:ProjProjection, dest:ProjProjection):void {
+			if (this.components.length > 0) {
+				for each (var geom:Geometry in this.components) {
+					geom.transform(source, dest);
+				}
+			}
 		}
 		
 		public function get components():Array {

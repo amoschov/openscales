@@ -1,10 +1,11 @@
 package org.openscales.core
 {
+	import com.gradoservice.proj4as.ProjProjection;
 	import com.gskinner.motion.GTweeny;
-
+	
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
-
+	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -16,8 +17,6 @@ package org.openscales.core
 	import org.openscales.core.handler.IHandler;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Popup;
-	import org.openscales.proj.IProjection;
-	import org.openscales.proj.projections.EPSG4326;
 
 	/**
 	 * Instances of Map are interactive maps that can be embedded in a web pages or in
@@ -38,7 +37,7 @@ package org.openscales.core
 		public var DEFAULT_TILE_HEIGHT:Number = 256;
 		public var DEFAULT_NUM_ZOOM_LEVELS:Number = 16;
 		public var DEFAULT_MAX_RESOLUTION:Number = 1.40625;
-		public var DEFAULT_PROJECTION:IProjection = new EPSG4326();
+		public var DEFAULT_PROJECTION:ProjProjection = new ProjProjection("EPSG:4326");
 		public var DEFAULT_UNITS:String = Unit.DEGREE;
 
 		/**
@@ -64,7 +63,7 @@ package org.openscales.core
 		private var _minResolution:Number;
 		private var _numZoomLevels:int;
 		private var _resolutions:Array;
-		private var _projection:IProjection;
+		private var _projection:ProjProjection;
 		private var _units:String;
 		private var _proxy:String = null;
 
@@ -723,7 +722,7 @@ package org.openscales.core
 	        return units;
 		}
 
-		public function set projection(value:IProjection):void {
+		public function set projection(value:ProjProjection):void {
 			this._projection = value;
 		}
 
@@ -732,8 +731,8 @@ package org.openscales.core
 		 * Also set maxExtent, maxResolution, and units if appropriate.
 		 * Default is "EPSG:4326".
 		 */
-		public function get projection():IProjection {
-	        var projection:IProjection = _projection;
+		public function get projection():ProjProjection {
+	        var projection:ProjProjection = _projection;
 	        if (this.baseLayer != null) {
 	            projection = this.baseLayer.projection;
 	        }
