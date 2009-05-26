@@ -38,23 +38,7 @@
 			
 			private function initMap():void
 			{
-				map = fxmap.map;
-				
-								
-				//We configure the layer and the map to display EPSG:900913
-				var mapnik:Mapnik = new Mapnik("Mapnik");
-				mapnik.maxResolution = 156543.0339;
-				mapnik.minResolution = 0.5971642833709717;
-				mapnik.numZoomLevels = 20;
-				mapnik.maxExtent = new Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);
-				mapnik.isBaseLayer = true;
-				
-				map.maxExtent = new Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);
-				map.maxResolution = 156543.0339;
-				map.minResolution = 0.5971642833709717;
-				map.numZoomLevels = 20;				
-				
-				map.addLayer(mapnik);
+				map = fxmap.map;							
 				
 				//We create a marker over Lyon (France) with EPSG:900913 projection
 				var markers:Markers = new Markers("Markers");
@@ -92,9 +76,19 @@
 			}  
 		]]>
 	</mx:Script>
-	
-	<os:Map id="fxmap" width="100%" height="100%" proxy="http://openscales.org/proxy.php?url=">
+
+	<os:Map id="fxmap" width="100%" height="100%" proxy="http://openscales.org/proxy.php?url=" maxResolution="156543.0339"
+			numZoomLevels="20" maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34" minResolution="0.5971642833709717">
 		
+		<!-- A EPSG:900913 baselayer (OSM) -->
+		<os:Mapnik name="Mapnik"  maxResolution="156543.0339" minResolution="0.5971642833709717" numZoomLevels="20"
+					maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34" isBaseLayer="true"/>
+					
+		<!-- A WFS EPSG:4326 layer -->
+		<os:WFS name="States" url="http://sigma.openplans.org/geoserver/wfs" typename="topp:states" srs="EPSG:4326" version="1.0.0"
+				isBaseLayer="false" minZoomLevel="21" visible="true">
+			<os:Style fillColor="0xff0000" fillOpacity="0.8" strokeColor="0x0000ff" strokeWidth="2" />
+		</os:WFS>
 		
 		<os:PanZoomBar />
 		<!-- We choose EPSG:4326 as displayed projection in this control-->

@@ -9,6 +9,7 @@ package org.openscales.fx {
 	import mx.events.ResizeEvent;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.IControl;
@@ -23,7 +24,11 @@ package org.openscales.fx {
 			
 		private var _maxResolution:Number = NaN;
 		
+		private var _minResolution:Number = NaN;
+		
 		private var _numZoomLevels:Number = NaN;
+		
+		private var _maxExtent:Bounds = null;
 		
 		private var _zoom:Number = NaN;
 		
@@ -57,8 +62,14 @@ package org.openscales.fx {
 			if(!isNaN(this._maxResolution))
 				this._map.maxResolution = this._maxResolution;
 				
+			if(!isNaN(this._minResolution))
+				this._map.minResolution = this._minResolution;
+				
 			if(!isNaN(this._numZoomLevels))
 				this._map.numZoomLevels = this._numZoomLevels;
+				
+			if(this._maxExtent != null)
+				this._map.maxExtent = this._maxExtent;
 				
 			// Some operations must be done at the beginning, in order to do
 			// not depend on declaration order
@@ -123,8 +134,16 @@ package org.openscales.fx {
 			this._maxResolution = value;
 		}
 		
+		public function set minResolution(value:Number):void {
+			this._minResolution = value;
+		}
+		
 		public function set numZoomLevels(value:Number):void {
 			this._numZoomLevels = value;
+		}
+		
+		public function set maxExtent(value:String):void {
+			this._maxExtent = Bounds.getBoundsFromString(value);
 		}
 		
 		public function set zoom(value:Number):void {

@@ -150,7 +150,7 @@ package org.openscales.core.layer
 	                }
 				
 				if (this.map != null && this.map.projection != null && this.projection != null && 
-					this.projection.srsCode != this.map.projection.srsCode) {
+					getQualifiedClassName(this).split("::")[1] != "WFS" && this.projection.srsCode != this.map.projection.srsCode) {
 						
 					feature.geometry.transform(this.projection, this.map.projection);
 				}

@@ -1,5 +1,7 @@
 package org.openscales.fx.layer
 {
+	import com.gradoservice.proj4as.ProjProjection;
+	
 	import flash.display.DisplayObject;
 	
 	import org.openscales.core.feature.Style;
@@ -18,6 +20,8 @@ package org.openscales.fx.layer
 		private var _minZoomLevel:Number;
 		
 		private var _isBaseLayer:Boolean;
+		
+		private var _projection:ProjProjection;
 		
 		
 		public function FxWFS()
@@ -48,7 +52,8 @@ package org.openscales.fx.layer
 				(this._layer as WFS).style = this._style;
 			this._layer.isBaseLayer = this._isBaseLayer;
 			this._layer.minZoomLevel = this._minZoomLevel;
-			
+			this._layer.projection = this._projection;
+						
 			return this._layer;
 		}
 				
@@ -66,6 +71,9 @@ package org.openscales.fx.layer
 	    
 	    public function set srs(value:String):void {
 	    	this._params.SRS = value;
+	    	if (value != null) {
+	    		this._projection = new ProjProjection(value);
+	    	}
 	    }
 	    
 	    public function set version(value:String):void {
