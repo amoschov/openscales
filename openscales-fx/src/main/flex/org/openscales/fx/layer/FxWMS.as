@@ -15,12 +15,12 @@ package org.openscales.fx.layer
 		
 		public function set layers(value:String):void {
 	    	if(this.layer != null)
-	    		(this.layer as WMS).params.layers = value;
+    		(this.layer as WMS).params.LAYERS = value;
 	    }
 	    
 	    public function set format(value:String):void {
 	    	if(this.layer != null)
-	    		(this.layer as WMS).params.format = value;
+	    		(this.layer as WMS).params.FORMAT = value;
 	    }
 		
 	}
