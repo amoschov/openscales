@@ -1,7 +1,7 @@
 package org.openscales.fx.layer
 {
+	import org.openscales.core.Util;
 	import org.openscales.core.layer.HTTPRequest;
-	import org.openscales.fx.layer.FxLayer;
 
 	public class FxHTTPRequest extends FxLayer
 	{
@@ -22,7 +22,7 @@ package org.openscales.fx.layer
 	    
 	    public function set params(value:Object):void {
 	    	if(this.layer != null)
-	    		(this.layer as HTTPRequest).params = value;
+	    		Util.extend((this.layer as HTTPRequest).params, value);
 	    }
 	}
 }
