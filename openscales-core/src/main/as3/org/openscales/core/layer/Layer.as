@@ -46,7 +46,9 @@ package org.openscales.core.layer
 
 			this.name = name;
 			this.doubleClickEnabled = true;
-
+			
+			if (this._projection == null)
+				this._projection = new ProjProjection("EPSG:4326");
 		}
 
 		public function destroy(setNewBaseLayer:Boolean = true):void {
@@ -94,7 +96,6 @@ package org.openscales.core.layer
 	            this._map = map;
 
 	            this.maxExtent = this.maxExtent || this.map.maxExtent;
-	           // this.projection = this.projection || this.map.projection;
 	            this.units = this.units || this.map.units;
 
 	            this.initResolutions();

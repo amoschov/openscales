@@ -1,12 +1,12 @@
 package org.openscales.core.handler.mouse
 {
+	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.handler.Handler;
 	
 	/**
@@ -56,7 +56,7 @@ package org.openscales.core.handler.mouse
 		 * The MouseDown Listener
 		 */
 		protected function onMouseDown(event:Event):void{
-			var element:Object = this.map.layerContainer;
+			var element:Sprite = this.map.layerContainer;
 			element.startDrag();
 			this._start = new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY);
 			this._startCenter = this.map.center;
@@ -70,7 +70,7 @@ package org.openscales.core.handler.mouse
 		 */
 		 
 		protected function onMouseUp(event:Event):void{			
-			var element:Object = this.map.layerContainer;
+			var element:Sprite = this.map.layerContainer;
 			element.stopDrag();		
 			this.map.buttonMode=false;		
             this.done(new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY));
