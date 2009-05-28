@@ -117,7 +117,7 @@ package org.openscales.core.feature
 		 * @param closeBox
 		 * @return The created popup
 		 */
-		public function createPopup(closeBox:Boolean = true):Popup {
+		public function createPopup(closeBox:Boolean=true):Popup {
 			if (this.lonlat != null) {
             
 	            var id:String = this.id + "_popup";

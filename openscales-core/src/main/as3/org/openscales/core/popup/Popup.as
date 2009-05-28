@@ -25,22 +25,17 @@ package org.openscales.core.popup
 		public static var BORDER:Number = 2;
 	    
 	    private var _id:String = "";
-
 	    private var _lonlat:LonLat = null;
-	
-	    private var _size:Size = null;    
-	    	    
-	    private var _border:Number;
-    
-	    private var _map:Map = null;
-	        
-	    private var _textfield:TextField = null;
-	    
-	    private var _feature:Feature = null;
-	    
-	    private var _htmlText:String = null;
-	    
+	    private var _size:Size = null;    	    	    
+	    private var _border:Number;    
+	    private var _map:Map = null;	        
+	    private var _textfield:TextField = null;	    
+	    private var _feature:Feature = null;	    
+	    private var _htmlText:String = null;	    
 	    private var _closeBox:Boolean;
+	    
+	    [Embed(source="/org/openscales/core/img/marker-blue.png")]
+        private var _markerImg:Class;
 	    
 	    	    
 	    [Embed(source="/org/openscales/core/img/close.gif")]
@@ -146,9 +141,11 @@ package org.openscales.core.popup
 	    }
 	    
 		public function set position(px:Pixel):void {
+			var markerImg:Bitmap = new this._markerImg();
+			
 			if (px != null) {
-	            this.x = px.x;
-	            this.y = px.y;
+	            this.x = px.x-markerImg.width/2;
+	            this.y = px.y-markerImg.height;
 	        }
 		}
 		

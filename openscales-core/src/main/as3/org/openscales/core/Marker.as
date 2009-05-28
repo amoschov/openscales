@@ -21,7 +21,7 @@ package org.openscales.core
 	    
 	    private var _popup:Popup;
 	    
-	  	[Embed(source="/org/openscales/core/img/marker.png")]
+	  	[Embed(source="/org/openscales/core/img/marker-blue.png")]
         private var _markerImg:Class;
 	    
 	    public function Marker(url:String = null, size:Size = null, offset:Pixel = null, calculateOffset:Function = null):void {
@@ -67,8 +67,8 @@ package org.openscales.core
  	        if(url == null) {
  	        	var defaultMarker:Bitmap = new this._markerImg();
  	        	if(px != null) {
- 	        		defaultMarker.x = px.x;
- 	        		defaultMarker.y = px.y;
+ 	        		defaultMarker.x = px.x-defaultMarker.width/2;
+ 	        		defaultMarker.y = px.y-defaultMarker.height;
  	        	}
  	        	if(this.numChildren==1) {
  	        		this.removeChildAt(0);
