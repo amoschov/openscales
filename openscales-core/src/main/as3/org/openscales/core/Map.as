@@ -291,6 +291,12 @@ package org.openscales.core
 	    * @param {Boolean} exclusive If true, closes all other popups first
 	    **/
 	    public function addPopup(popup:Popup, exclusive:Boolean = true):void {
+	        var i:Number;
+	        if(exclusive){
+	        	for(i=this._layerContainer.numChildren-1;i>=0;i--){
+	        		if(this._layerContainer.getChildAt(i) is Popup){this._layerContainer.removeChildAt(i);}
+	        	}  	
+	        }
 	        popup.map = this;
 	        popup.draw();
 	        this._layerContainer.addChild(popup);
