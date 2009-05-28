@@ -37,8 +37,9 @@
 			
 			//Params for feature selection
 			private var _selectStyle:Style = new Style();
-			public var oldStyle:Style = new Style();
-			public var first:Boolean = true;		//To know if it's the first time you select feature
+			public var firstFeature:Boolean = true;		//To know if it's the first time you select feature
+			public var selectFeatures:Array = new Array();  //Array witch keep all selectFeature (with ctrl key)
+			private var _n:Number = 0;
 				
 			//new mouse handler
 			public var selectFeatureHandler:SelectFeature;
@@ -70,7 +71,7 @@
 				Alert.show("Are you sure ?", "Warning", Alert.YES | Alert.NO, null, alertClickHandler);				
 			}
 			private function alertClickHandler(event:CloseEvent):void {
-                // User click on "YES"
+                // User click on "YES", he wants to apply changes
                 if (event.detail==Alert.YES){
                 	deleteSelectedFeatures(); 
                 }                  
@@ -147,26 +148,23 @@
 					selectFeatureHandler.currentfeature = event.vectorfeature;				
 					
 					if(selectFeatureHandler.lastfeature != null && selectFeatureHandler.lastfeature != selectFeatureHandler.currentfeature){		
-						if(event.ctrlPressed){
-							selectFeatureHandler.lastfeature.selected = true;
-							selectFeatureHandler.currentfeature.selected = true;
-							oldStyle=selectFeatureHandler.currentfeature.style;
-						}
-						else{
-							for each(f in drawLayer.features)
-							{
-								if(f.selected){f.style = oldStyle;}
+						if(!event.ctrlPressed){
+							for each(f in selectFeatures){
+								if(f.selected){f.style = f.originalStyle;f.selected=false;f.layer.redraw();}
 							}
-							selectFeatureHandler.lastfeature.style = oldStyle;
-							oldStyle = selectFeatureHandler.currentfeature.style;
-							selectFeatureHandler.lastfeature.layer.redraw();
+							n=0;
 							selectFeatureHandler.lastfeature.selected = false;
-						}	
+							selectFeatureHandler.lastfeature.style = selectFeatureHandler.lastfeature.originalStyle; 
+							selectFeatureHandler.lastfeature.layer.redraw();
+						}
+						else{n++;selectFeatures[n]=selectFeatureHandler.currentfeature;}
 					}
-					else if(first){first=false;oldStyle=selectFeatureHandler.currentfeature.style;}
-										
+					else if(firstFeature){firstFeature=false;}
+					
+					selectFeatureHandler.currentfeature.originalStyle=selectFeatureHandler.currentfeature.style;					
 					selectFeatureHandler.currentfeature.style = selectStyle;							 
 					selectFeatureHandler.currentfeature.selected = true;
+					selectFeatures[n]=selectFeatureHandler.currentfeature;
 					selectFeatureHandler.currentfeature.layer.redraw();
 					selectFeatureHandler.lastfeature = selectFeatureHandler.currentfeature;	
 					this.featureInfo.showInfo(event);		//Show information of the selected feature												
@@ -276,6 +274,13 @@
 			}
 			public function set selectStyle(newStyle:Style):void{
 				_selectStyle = newStyle;
+			}
+			
+			public function get n():Number{
+				return _n;
+			}
+			public function set n(value:Number):void{
+				_n = value;
 			}
 		]]>
 	</mx:Script>
