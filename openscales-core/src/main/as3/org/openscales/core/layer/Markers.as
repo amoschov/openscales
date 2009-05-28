@@ -17,6 +17,12 @@ package org.openscales.core.layer
 	
 	    private var _drawn:Boolean = false;
 	    
+	    /**
+	     * Create a Markers layer.
+	     *
+	     * @aram name
+	     * @param options
+	     */
 	    public function Markers(name:String, options:Object = null):void {
 	    	super(name, options);
 	    	this.markers = [];
@@ -41,6 +47,13 @@ package org.openscales.core.layer
         	}
 	    }
 	    
+	    /** 
+	     * moveTo
+	     * 
+	     * @param bounds
+	     * @param zoomChanged 
+	     * @param dragging
+	     */
 	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean=false):void {
 	    	super.moveTo(bounds, zoomChanged, dragging);
 
@@ -68,6 +81,10 @@ package org.openscales.core.layer
 	        }
 	    }
 	    
+	     /**
+	     * This method removes all markers from a layer. The markers are not
+	     * destroyed by this function, but are removed from the list of markers.
+	     */
 	    public function clearMarkers():void {
 	    	if (this.markers != null) {
 	            while(this.markers.length > 0) {
@@ -76,6 +93,12 @@ package org.openscales.core.layer
 	        }
 	    }
 	    
+	    /** 
+	     * Calculate the pixel location for the marker, create it, and 
+	     *    add it
+	     *
+	     * @param marker
+	     */
 	    public function drawMarker(marker:Marker):void {
 	    	var px:Pixel = this.map.getLayerPxFromLonLat(marker.lonlat);
 	        if (px == null) {
@@ -93,6 +116,11 @@ package org.openscales.core.layer
 	    	this.setChildIndex(marker, this.numChildren-1);
 	    }
 	    
+	    /** 
+	     * Calculates the max extent which includes all of the markers.
+	     * 
+	     * @return bounds
+	     */
 	    public function getDataExtent():Bounds {
 	    	var maxExtent:Bounds = null;
         
@@ -111,6 +139,7 @@ package org.openscales.core.layer
 	    	return true;
 	    }
 	    
+	    //Getters and Setters
 	    public function get markers():Array {
 	    	return this._markers;
 	    }

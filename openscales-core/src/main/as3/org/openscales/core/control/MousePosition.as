@@ -52,6 +52,11 @@ package org.openscales.core.control
 
     	}
     	
+    	/**
+    	 * Display the coordinate where is the mouse
+    	 * 
+    	 * @param evt
+    	 */
     	public function redraw(evt:MouseEvent = null):void {
     		var lonLat:LonLat;
 

@@ -94,6 +94,7 @@ package org.openscales.core.renderer
 			
 		}
 		
+		//Getters and Setters
 		public function get container():Sprite {
 			return this._container;
 		}

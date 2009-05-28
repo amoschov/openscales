@@ -33,6 +33,14 @@ package org.openscales.core.layer
 		
 		private var _buffer:Number;
 		
+		/**
+	     * Create a new grid layer
+	     *
+	     * @param name
+	     * @param url
+	     * @param params
+	     * @param options
+	     */
 		public function Grid(name:String = null, url:String = null, params:Object = null, options:Object = null):void {
 			super(name, url, params, options);
 			
@@ -47,6 +55,10 @@ package org.openscales.core.layer
 	        super.destroy(); 
 		}
 		
+		/**
+	     * Go through and remove all tiles from the grid, calling
+	     *    destroy() on each of them to kill circular references
+	     */
 		public function clearGrid():void {
 			if (this.grid) {
 	            for(var iRow:int=0; iRow < this.grid.length; iRow++) {
@@ -61,6 +73,13 @@ package org.openscales.core.layer
 	        }
 		}
 		
+		 /**
+	     * Create a clone of this layer
+	     *
+	     * @param obj
+	     * 
+	     * @return An exact clone
+	     */
 		override public function clone(obj:Object):Object {
 			if (obj == null) {
 	            obj = new Grid(this.name,
@@ -82,6 +101,15 @@ package org.openscales.core.layer
 	        }
 		}
 		
+		/**
+	     * This function is called whenever the map is moved. All the moving
+	     * of actual 'tiles' is done by the map, but moveTo's role is to accept
+	     * a bounds and make sure the data that bounds requires is pre-loaded.
+	     *
+	     * @param bounds
+	     * @param zoomChanged
+	     * @param dragging
+	     */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
 			super.moveTo(bounds, zoomChanged, dragging);
 	        
@@ -110,6 +138,12 @@ package org.openscales.core.layer
 	        }
 		}
 		
+		/**
+	     * Check if we are in singleTile mode and if so, set the size as a ratio
+	     *     of the map size
+	     * 
+	     * @param size
+	     */
 		public function set tileSize(size:Size):void {
 	        if (this.singleTile) {
 	            var size:Size = this.map.size;
@@ -123,6 +157,11 @@ package org.openscales.core.layer
 			return this._tileSize;
 		}		
 		
+		/**
+		 * Get Grid bounds
+		 * 
+	     * @return A Bounds object representing the bounds of all the currently loaded tiles
+	     */
 		private function getGridBounds():Bounds {
 			var bottom:int = this.grid.length - 1;
 		    var bottomLeftTile:Tile = this.grid[bottom][0];
@@ -136,6 +175,11 @@ package org.openscales.core.layer
 		                                 topRightTile.bounds.top);
 		}
 		
+		/**
+	     * Return the bounds of the tile grid.
+	     *
+	     * @return A Bounds object representing the bounds of all the currently loaded tiles 
+	     */
 		public function getTilesBounds():Bounds {
 	        var bounds:Bounds = null; 
 	        
@@ -155,6 +199,11 @@ package org.openscales.core.layer
 	        return bounds;
 		}
 		
+		/**
+	     * Initialization singleTile
+	     * 
+	     * @param bounds
+	     */
 		public function initSingleTile(bounds:Bounds):void {
 	        var center:LonLat = bounds.centerLonLat;
 	        var tileWidth:Number = bounds.width * this.ratio;
@@ -263,8 +312,10 @@ package org.openscales.core.layer
 	            tileoffsety += this.tileSize.h;
 	        } while((tileoffsetlat >= bounds.bottom - tilelat * this.buffer) || rowidx < minRows)
 	        
+	        //shave off exceess rows and colums
 	        this.removeExcessTiles(rowidx, colidx);
-	
+			
+			//now actually draw the tiles
 	        this.spiralTileLoad();
 		}
 		
@@ -362,6 +413,15 @@ package org.openscales.core.layer
 	        this.spiralTileLoad();
 		}
 		
+		/**
+	     *   Starts at the top right corner of the grid and proceeds in a spiral 
+	     *    towards the center, adding tiles one at a time to the beginning of a 
+	     *    queue. 
+	     * 
+	     *   Once all the grid's tiles have been added to the queue, we go back 
+	     *    and iterate through the queue (thus reversing the spiral order from 
+	     *    outside-in to inside-out), calling draw() on each tile. 
+	     */
 		private function spiralTileLoad():void {
 			var tileQueue:Array = new Array();
  
@@ -391,7 +451,9 @@ package org.openscales.core.layer
 	                    testRow--;
 	                    break;
 	            } 
-
+				
+				// if the test grid coordinates are within the bounds of the 
+            //  grid, get a reference to the tile.
 	            var tile:ImageTile = null;
 	            if ((testRow < this.grid.length) && (testRow >= 0) &&
 	                (testCell < this.grid[0].length) && (testCell >= 0)) {
@@ -399,21 +461,26 @@ package org.openscales.core.layer
 	            }
 	            
 	            if ((tile != null) && (!tile.queued)) {
+	            	 //add tile to beginning of queue, mark it as queued.
 	                tileQueue.unshift(tile);
 	                tile.queued = true;
-
+					
+					//restart the directions counter and take on the new coords
 	                directionsTried = 0;
 	                iRow = testRow;
 	                iCell = testCell;
 	            } else {
+	            	//need to try to load a tile in a different direction
 	                direction = (direction + 1) % 4;
 	                directionsTried++;
 	            }
 	        } 
-
+			
+			// now we go through and draw the tiles in forward order
 	        for(var i:int=0; i < tileQueue.length; i++) {
 	            tile = tileQueue[i]
 	            tile.draw();
+	            //mark tile as unqueued for the next time (since tiles are reused)
 	            tile.queued = false;       
 	        }
 		}
@@ -422,6 +489,12 @@ package org.openscales.core.layer
 			return null;
 		}
 		
+		/** 
+	     * This function takes a tile as input and adds the appropriate hooks to 
+	     *     the tile so that the layer can keep track of the loading tiles.
+	     * 
+	     * @param tile
+	     */
 		public function addTileMonitoringHooks(tile:Tile):void {
 			tile.onLoadStart = function():void {
 	            //if that was first tile then trigger a 'loadstart' on the layer
@@ -490,6 +563,12 @@ package org.openscales.core.layer
 	        }
 		}
 		
+		/**
+	     * Shifty grid work
+	     *
+	     * @param prepend if true, prepend to beginning.
+	     *                          if false, then append to end
+	     */
 		private function shiftRow(prepend:Boolean):void {
 			var modelRowIndex:int = (prepend) ? 0 : (this.grid.length - 1);
 	        var modelRow:Array = this.grid[modelRowIndex];
@@ -517,6 +596,12 @@ package org.openscales.core.layer
 	        }
 		}
 		
+		/**
+	     * Shift grid work in the other dimension
+	     *
+	     * @param prepend if true, prepend to beginning.
+	     *                          if false, then append to end
+	     */
 		private function shiftColumn(prepend:Boolean):void {
 			var deltaX:Number = (prepend) ? -this.tileSize.w : this.tileSize.w;
 	        var resolution:Number = this.map.resolution;
@@ -543,6 +628,13 @@ package org.openscales.core.layer
 	        }
 		}
 		
+		/**
+	     * When the size of the map or the buffer changes, we may need to
+	     *     remove some excess rows and columns.
+	     * 
+	     * @param rows Maximum number of rows we want our grid to have.
+	     * @param colums Maximum number of columns we want our grid to have.
+	     */
 		public function removeExcessTiles(rows:int, columns:int):void {
 	        while (this.grid.length > rows) {
 	            var row:Array = this.grid.pop();
@@ -563,6 +655,10 @@ package org.openscales.core.layer
 	        }
 		}
 		
+		/**
+	     * For singleTile layers, this will set a new tile size according to the
+	     * dimensions of the map pane.
+	     */
 		override public function onMapResize():void {
 			if (this.singleTile) {
 				this.clearGrid();
@@ -571,6 +667,13 @@ package org.openscales.core.layer
 			}			
 		}
 		
+		/**
+	     * Returns The tile bounds for a layer given a pixel location.
+	     *
+	     * @param viewPortPx The location in the viewport.
+	     *
+	     * @return Bounds of the tile at the given pixel location.
+	     */
 		public function getTileBounds(viewPortPx:Pixel):Bounds {
 	        var maxExtent:Bounds = this.maxExtent;
 	        var resolution:Number = this.resolution;
@@ -590,6 +693,7 @@ package org.openscales.core.layer
 	                                     tileBottom + tileMapHeight);
 		}
 		
+		//Getters and Setters
 		override public function get imageSize():Size {
 			return (this._imageSize || this.tileSize); 
 		}

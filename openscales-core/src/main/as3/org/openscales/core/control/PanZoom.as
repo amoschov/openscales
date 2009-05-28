@@ -84,6 +84,15 @@ package org.openscales.core.control
 	        
 		}
 		
+		/**
+		 * Add button
+		 * 
+		 * @param name
+		 * @param image
+		 * @param xy
+		 * @param sz
+		 * @param alt
+		 */
 		public function _addButton(name:String, image:Bitmap, xy:Pixel, sz:Size, alt:String = null):void {
 	        
 	        var btn:Button = new Button(name, image, xy, sz);
@@ -95,6 +104,8 @@ package org.openscales.core.control
         	
 	        this.buttons.push(btn);
 		}
+		
+		//Events
 		
 		public function doubleClick(evt:Event):Boolean {
 			evt.stopPropagation();
@@ -130,6 +141,8 @@ package org.openscales.core.control
 	                break;
 	        }
 		}
+		
+		//Getters and setters.
 		
 		public function get slideFactor():int {
 			return this._slideFactor;   

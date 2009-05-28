@@ -194,6 +194,7 @@ package org.openscales.core.layer
 	        } 
 		}
 		
+		//Getters and Setters
 		public function get location():String {
 			return this._location;
 		}

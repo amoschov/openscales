@@ -17,14 +17,31 @@ package org.openscales.core
         public function Util() {
 
         }
-
+		
+		/**
+		 * Copy all properties of a source object to a destination object.
+		 * Modifies the passed in destination object.
+		 * 
+		 * @param destination The object that will be modified
+		 * @param source The object with properties to be set on the destination
+		 *
+		 * @return The destination object
+		 */
         public static function extend(destination:Object, source:Object):Object {
             for (var property:String in source) {
               destination[property] = source[property];
             }
             return destination;
         }
-
+		
+		/**
+		 * Remove an item of an array
+		 * 
+		 * @param array the array containnig items
+		 * @param item item to remove
+		 * 
+		 * @return the new array
+		 */
         public static function removeItem(array:Array, item:Object):Array {
             for(var i:int=0; i < array.length; i++) {
                 if(array[i] == item) {
@@ -33,18 +50,38 @@ package org.openscales.core
             }
             return array;
         }
-
+		
+		/**
+		 * Remove an array
+		 * 
+		 * @param array array to remove
+		 */
         public static function clearArray(array:Array):void {
             array.length = 0;
         }
-
+		
+		/**
+		 * Get the index of an object in an array
+		 * 
+		 * @param array array containning items
+		 * @param obj Item that we find index
+		 * 
+		 * @return index of the item
+		 */
         public static function indexOf(array:Array, obj:Object):int {
             for(var i:int=0; i < array.length; i++) {
                 if (array[i] == obj) return i;
             }
             return -1;
         }
-
+		
+		/**
+		 * Generate unique ids
+		 * 
+		 * @param prefix
+		 * 
+		 * @return the unique ID
+		 */
         public static function createUniqueID(prefix:String):String {
             if (prefix == null) {
                 prefix = "id_";
@@ -52,8 +89,9 @@ package org.openscales.core
             lastSeqID += 1;
             return prefix + lastSeqID;
         }
+		
 
-        public function pagePosition(forElement:Object):Array {
+       /*  public function pagePosition(forElement:Object):Array {
             var valueT:Number = 0, valueL:Number = 0;
 
             var element:Object = forElement;
@@ -64,14 +102,28 @@ package org.openscales.core
             valueT = pt.y;
 
             return [valueL, valueT];
-        }
-
+        } */
+		
+		/**
+		 * Normalise scale
+		 * 
+		 * @param scale
+		 * 
+		 * @return return a normalized scale value, in 1 / X format
+		 */
         public static function normalizeScale(scale:Number):Number {
             var normScale:Number = (scale > 1.0) ? (1.0 / scale)
                               : scale;
             return normScale;
         }
-
+		
+		/** 
+		 * Store all the keys of the Object in uppercase
+		 * 
+		 * @param object
+		 * 
+		 * @return a new Object with all the same keys but uppercased
+		 */
         public static function upperCaseObject(object:Object):Object {
             var uObject:Object = new Object();
             for (var key:String in object) {
@@ -79,7 +131,16 @@ package org.openscales.core
             }
             return uObject;
         }
-
+		
+		/** 
+		 * Copies any properties of an object that don't exist from
+		 *     another properties
+		 * 
+		 * @param toO The destination object.
+		 * @param fromO The source object
+		 *
+		 * @return A reference to the to object
+		 */
         public static function applyDefaults(toO:Object, fromO:Object):void {
             for (var key:String in fromO) {
                 if (toO[key] == null) {
@@ -87,7 +148,14 @@ package org.openscales.core
                 }
             }
         }
-
+		
+		/**
+		 * Get parameter
+		 * 
+		 * @param params
+		 * 
+		 * @return A concatenation of the properties of an object in http parameter notation
+		 */
         public static function getParameterString(params:Object):String {
             var paramsArray:Array = new Array();
 
@@ -113,7 +181,14 @@ package org.openscales.core
 
             return paramsArray.join("&");
         }
-
+		
+		/**
+		 * Get Ags
+		 * 
+		 * @param url
+		 * 
+		 * @return An object of key/value pairs from the query string
+		 */
         public static function getArgs(url:String = null):Object {
             if (url == null) {
                 url = "";

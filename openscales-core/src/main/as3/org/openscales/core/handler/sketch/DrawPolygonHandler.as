@@ -116,6 +116,7 @@ package org.openscales.core.handler.sketch
 			this._dblClickHandler.map = value;
 		}
 		
+		//Getters and Setters
 		public function get drawLayer():org.openscales.core.layer.VectorLayer {
 			return _drawLayer;
 		}

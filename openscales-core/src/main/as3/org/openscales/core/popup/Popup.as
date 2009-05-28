@@ -140,6 +140,7 @@ package org.openscales.core.popup
 	  		var tween:GTweeny = new GTweeny(this, 0.5, {alpha:1});
 	    }
 	    
+	    //Getters and Setters
 		public function set position(px:Pixel):void {
 			var markerImg:Bitmap = new this._markerImg();
 			

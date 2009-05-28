@@ -19,6 +19,13 @@ package org.openscales.core.format
 		
 		private var _regExes:Object;
 		
+		/**
+	     * Create a new parser for WKT
+	     *
+	     * @param options An optional object whose properties will be set on this instance
+	     *
+	     * @return A new WKT parser.
+	     */
 		public function WKTFormat(options:Object = null):void {
 			
 	        this._regExes = {
@@ -31,6 +38,14 @@ package org.openscales.core.format
 	        super(options);
 		}
 		
+		/**
+	     * Deserialize a WKT string and return a vector feature or an
+	     * array of vector features
+	     *
+	     * @param wkt A WKT string
+	     *
+	     * @return A feature or array of features for GEOMETRYCOLLECTION WKT.
+	     */
 		override public function read(wkt:Object):Object {
 			var features:Object, type:String, str:String;
 	        var matches:Array = this._regExes.typeStr.exec(wkt);
@@ -44,6 +59,13 @@ package org.openscales.core.format
 	        return features;
 		}
 		
+		/**
+	     * Serialize a feature or array of features into a WKT string.
+	     *
+	     * @param features A feature or array of features
+	     *
+	     * @return The WKT string representation of the input geometries
+	     */
 		override public function write(features:Object):Object {
 			var collection:Object, geometry:Geometry, type:String, data:Object, isCollection:Boolean;
 	        if(features.constructor == Array) {

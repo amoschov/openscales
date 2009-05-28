@@ -23,6 +23,15 @@ package org.openscales.core
 	    
 	    private var _iconLoader:Loader = null;
 	    
+	    /**
+	    *  Icon constructor
+	    * 
+	    * @param url
+		* @param size
+		* @param offset
+		* @param calculateOffset
+		* 
+	    */
 	    public function Icon(url:String, size:Size = null, offset:Pixel = null, calculateOffset:Function = null):void {	
 	        this.url = url;
 	        this.size = (size) ? size : new Size(20,20);
@@ -36,7 +45,11 @@ package org.openscales.core
 	    public function destroy():void {
 		   	
 	    }
-	    
+	    /**
+	    * Copy the icon
+	    * 
+	    * @return a copy of the icon
+	    */
 	    public function clone():Icon {
         	return new Icon(this.url, 
                                    this.size, 
@@ -44,18 +57,38 @@ package org.openscales.core
                                    this.calculateOffset);
      	}
      	
+     	/**
+     	 * Get the current offset
+     	 * 
+     	 * @return Pixel
+     	 */
      	public function get offset():Pixel {
         	return this._offset;
         }
         
+        /**
+        * Set a new offset
+        * 
+        * @param value new offset to set
+        */
         public function set offset(value:Pixel):void {
         	this._offset = value;
         }
      	
+     	/**
+     	 * Get the current size
+     	 * 
+     	 * @return Size
+     	 */
      	public function get size():Size {
         	return this._size;
         }
      	
+     	/**
+     	 * Set a new size
+     	 * 
+     	 * @param value the new size to set
+     	 */
      	public function set size(value:Size):void {
 	        if (value != null) {
 	            this._size = value;
@@ -63,10 +96,20 @@ package org.openscales.core
 	        this.draw();
      	}
      	
+     	/**
+     	 * Get the current url
+     	 * 
+     	 * @return String
+     	 */
      	public function get url():String {
         	return this._url;
         }
-     	
+        
+     	/**
+     	 * Set an url
+     	 * 
+     	 * @param value the url to set
+     	 */
      	public function set url(value:String):void {
      		if (value != null) {
      			 this._url = value;
@@ -74,6 +117,11 @@ package org.openscales.core
      		this.draw();	
      	}
      	
+     	/**
+     	 * Move the div to the given pixel
+     	 * 
+     	 * @param px 
+     	 */
      	public function draw(px:Pixel = null):void {
  	        _iconLoader.load(new URLRequest(this.url));
 	        _iconLoader.name=this.url;
@@ -90,12 +138,22 @@ package org.openscales.core
 			this.addChild(loader);
 		}
 		
+		/**
+		 * indicates there is an error when loading a url
+		 * 
+		 * @param event a IOErrorEvent
+		 */
 		private function onIconLoadError(event:IOErrorEvent):void
 		{
 			trace("Error when loading icon " + this.url);
 
 		}
      	
+     	/**
+     	 * Set a position
+     	 * 
+     	 * @param px
+     	 */
      	public function set position(px:Pixel):void {
 			if (px != null) {
 	            this.x = px.x;
@@ -111,6 +169,11 @@ package org.openscales.core
                 	        
 		}
 		
+		/**
+		 * Get the position
+		 * 
+		 * @return Pixel
+		 */
 		public function get position():Pixel {
 			return new Pixel(this.x, this.y);
 		}

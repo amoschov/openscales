@@ -16,13 +16,25 @@ package org.openscales.core
 		public static var activeRequestCount:int = 0;
 		private var _url:String = null;
 		private var _options:Object = null;
-
+		
+		/**
+		 * Request constructor
+		 * 
+		 * @param url
+		 * @param option
+		 * @param proxy
+		 */
 		public function Request(url:String, options:Object, proxy:String = null):void {
 
 			this.options = options;
 			this.request(url, proxy);
 		}
-
+		
+		/**
+		 * Set request option
+		 * 
+		 * @param options
+		 */
 		public function set options(options:Object):void {
 			this._options = {
 			  method:       URLRequestMethod.POST,
@@ -30,11 +42,15 @@ package org.openscales.core
 			}
 			Util.extend(this.options, options);
 		}
-
+		
+		/***
+		 * Get the current options
+		 */
 		public function get options():Object {
         	return this._options;
         }
-
+		
+		
 		private function request(url:String, proxy:String):void {
 			var parameters:Object = this.options.parameters || '';
 

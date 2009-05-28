@@ -24,6 +24,14 @@ package org.openscales.core
 	  	[Embed(source="/org/openscales/core/img/marker-blue.png")]
         private var _markerImg:Class;
 	    
+	    /**
+	    * Marker constructor
+	    * 
+	    * @param url
+	    * @param size size of the marker
+	    * @param offset offset of the marker
+	    * @param calculateOffset
+	    */
 	    public function Marker(url:String = null, size:Size = null, offset:Pixel = null, calculateOffset:Function = null):void {
 	    	super(url, size, offset, calculateOffset);
 	    	this.lonlat = lonlat;
@@ -37,7 +45,11 @@ package org.openscales.core
 	    	this.map = null;	        
 	    }
 	    
-	  	    
+	  	/**
+	  	 * Set a new position to the marker
+	  	 * 
+	  	 * @param px
+	  	 */    
 	    override public function set position(px:Pixel):void {
 	        super.position = px;        
 	        if ( this.map )
@@ -46,6 +58,11 @@ package org.openscales.core
 	        }
      	}
      	
+     	/**
+     	 * Visibility of the marker
+     	 * 
+     	 * @return Boolean
+     	 */
      	public function onScreen():Boolean {
 	     	var onScreen:Boolean = false;
 	        if (this.map) {
@@ -55,6 +72,11 @@ package org.openscales.core
 	        return onScreen;
      	}
      	
+     	/**
+     	 * Change the marker size
+     	 * 
+     	 * @param inflate inflate of the marker
+     	 */
      	public function inflate(inflate:Number):void {
      	
 	       var newSize:Size = new Size(this.size.w * inflate, this.size.h * inflate);
@@ -62,6 +84,11 @@ package org.openscales.core
 
      	}
      	
+     	/**
+     	 * Draw the marker
+     	 * 
+     	 * @param px
+     	 */
      	override public function draw(px:Pixel = null):void {
  	        
  	        if(url == null) {
@@ -80,6 +107,9 @@ package org.openscales.core
  	        }
      	}
      	
+     	/**
+     	 * Getters and setters
+     	 */
      	public function get lonlat():LonLat {
         	return this._lonlat;
         }

@@ -45,11 +45,22 @@ package org.openscales.core.control
 	        super.destroy();
 	    }
 	    
+	    
+	    /**
+		 * Get the existing map
+		 * 
+		 * @param value
+		 */
 	    override public function set map(map:Map):void {
 	    	super.map = map;
 	    	this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED,this.redraw);
 	    }
 	    
+	    /**
+	    * Refresh
+	    * 
+	    * @param obt
+	    */
 	    public function redraw(obt:Object = null):void {
 	    	if (this != null) {
 	    		while (numChildren > 0) {
@@ -59,6 +70,9 @@ package org.openscales.core.control
 	    	this.draw();
 	    }
 	    
+	    /**
+	    * Draw buttons for zoom and pan of the map
+	    */
 	    override public function draw():void {
 
 	        this.buttons = [];
@@ -78,6 +92,13 @@ package org.openscales.core.control
 	        
 	    }
 	    
+	    /**
+	    * Add zoom bar (slider)
+	    * 
+	    * @param centered
+	    * 
+	    * @return Pixel
+	    */
 	    public function _addZoomBar(centered:Pixel):Pixel {
         
 	        var zoomsToEnd:int = this.map.numZoomLevels - 1 - this.map.zoom;
@@ -114,6 +135,8 @@ package org.openscales.core.control
 	            this.zoomStopHeight * this.map.numZoomLevels);
 	        return centered; 
 	    }
+	    
+	    //Slide Event
 	    
 	    public function passEventToSlider(evt:MouseEvent):void {
 	    	//this.sliderEvents.handleBrowserEvent(evt);
@@ -174,6 +197,8 @@ package org.openscales.core.control
 	            this.zoomStopHeight + this.startTop + 1;
 	        this.slider.y = newTop;
 	    }
+	    
+	    //Getters and setters
 	    
 	    public function get zoomStopWidth():Number {
 			return this._zoomStopWidth;   

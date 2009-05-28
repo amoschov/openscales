@@ -42,6 +42,12 @@ package org.openscales.core.tile
 
 		}
 		
+		/**
+	     * Clear whatever is currently in the tile, then return whether or not 
+	     *     it should actually be re-drawn.
+	     * 
+	     * @return Whether or not the tile should actually be drawn.
+	     */
 		public function draw():Boolean {
 	        this.clear();
         	return ((this.layer.displayOutsideMaxExtent
@@ -51,6 +57,13 @@ package org.openscales.core.tile
                      && !this.bounds.intersectsBounds(this.layer.map.extent, false)));
 		}
 		
+		/** 
+	     * Reposition the tile.
+	     *
+	     * @param bounds
+	     * @param position
+	     * @param redraw
+	     */
 		public function moveTo(bounds:Bounds, position:Pixel, redraw:Boolean = true):void {
 	
 	        this.clear();
@@ -66,6 +79,14 @@ package org.openscales.core.tile
 			this.drawn = false;
 		}
 		
+		/**   
+	     * Take the pixel locations of the corner of the tile, and pass them to 
+	     *     the base layer and ask for the location of those pixels
+	     *
+	     * @param position
+	     *
+	     * @return bounds
+	     */
 		public function getBoundsFromBaseLayer(position:Pixel):Bounds {
 			var topLeft:LonLat = this.layer.map.getLonLatFromLayerPx(position); 
 	        var bottomRightPx:Pixel = position.clone();
@@ -95,6 +116,7 @@ package org.openscales.core.tile
 			}
 		}
 		
+		//Getters and Setters
 		public function get layer():Layer {
         	return this._layer;
         }

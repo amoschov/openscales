@@ -25,6 +25,7 @@ package org.openscales.core.control
 			this.layer=layer;
 		}
 		
+		
 		public  function activate():void
 		{
 			if(!this.active)
@@ -41,7 +42,9 @@ package org.openscales.core.control
 			this.removeEventListener(FeatureEvent.FEATURE_OVER,this.select);
 			this.removeEventListener(FeatureEvent.FEATURE_OUT,this.unselect);
 		}
-
+		
+		//Getters and setters
+		
 		public function  get select():Function
 		{
 			return this._select;

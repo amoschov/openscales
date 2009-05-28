@@ -35,6 +35,13 @@ package org.openscales.core.layer
 			super.destroy(setNewBaseLayer);
 		}
 		
+		/**
+	     * Create a clone
+	     *
+	     * @param obj
+	     * 
+	     * @return An exact clone
+	     */
 		override public function clone(obj:Object):Object {
 			if (obj == null) {
 	            obj = new HTTPRequest(this.name,
@@ -47,10 +54,28 @@ package org.openscales.core.layer
 	        return obj;
 		}
 		
+		/**
+	     * merge New Params
+	     * 
+	     * @param newParams
+	     */
 		public function mergeNewParams(newParams:Array):void {
 			this.params = Util.extend(this.params, newParams);
 		}
 		
+		/**
+	     * selectUrl() implements the standard floating-point multiplicative
+	     *     hash function described by Knuth, and hashes the contents of the 
+	     *     given param string into a float between 0 and 1. This float is then
+	     *     scaled to the size of the provided urls array, and used to select
+	     *     a URL.
+	     *
+	     * @param paramString
+	     * @param urls
+	     * 
+	     * @return An entry from the urls array, deterministically selected based
+	     *          on the paramString.
+	     */
 		public function selectUrl(paramString:String, urls:Array):String {
 			var product:Number = 1;
 	        for (var i:int = 0, len:int=paramString.length; i < len; i++) { 
@@ -61,6 +86,17 @@ package org.openscales.core.layer
 	        return urls[Math.floor(product * urls.length)];
 		}
 		
+		/** 
+	     * Combine url with layer's params and these newParams. 
+	     *   
+	     *    does checking on the serverPath variable, allowing for cases when it 
+	     *     is supplied with trailing ? or &, as well as cases where not. 
+	     *
+	     * @param newParams
+	     * @param altUrl Use this as the url instead of the layer's url
+	     *   
+	     * @return return in formatted string
+	     */
 		public function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
 	        var url:String = altUrl || this.url;
 	        

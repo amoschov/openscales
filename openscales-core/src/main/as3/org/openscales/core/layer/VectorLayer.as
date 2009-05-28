@@ -109,6 +109,16 @@ package org.openscales.core.layer
         //	this.renderer.size = this.map.size;
 	    }  
 	    
+	    /**
+	     *  Reset the vector so that it once again is lined up with 
+	     *   the map. Notify the renderer of the change of extent, and in the
+	     *   case of a change of zoom level (resolution), have the 
+	     *   renderer redraw features.
+	     * 
+	     * @param bounds
+	     * @param zoomChanged
+	     * @param dragging
+	     */
 	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
 	    	super.moveTo(bounds, zoomChanged, dragging);
 	    	
@@ -134,6 +144,12 @@ package org.openscales.core.layer
 	        }
 	    }
 	    
+	    /**
+	     * Add Features to the layer.
+	     *
+	     * @param features
+	     * @param options
+	     */
 	    public function addFeatures(features:Object):void {
 	    	if (!(features is Array)) {
 	            features = [features];
@@ -192,6 +208,12 @@ package org.openscales.core.layer
 	        }
 	    }
 	    
+	    /**
+     * Erase and destroy features on the layer.
+     *
+     * @param features 
+     * @param options
+     */
 	    public function destroyFeatures():void {
 	    	this.selectedFeatures = new Array();
 	    	var destroyed:org.openscales.core.feature.VectorFeature = null;
@@ -203,6 +225,12 @@ package org.openscales.core.layer
 	        }
 	    }
 	    
+	    /**
+	     * Draw (or redraw) a feature on the layer
+	     * 
+	     * @param feature
+	     * @param style
+	     */
 	    public function drawFeature(feature:org.openscales.core.feature.VectorFeature, style:Style = null):void {
 	    	if(style == null) {
 	            if(feature.style) {
@@ -234,6 +262,7 @@ package org.openscales.core.layer
 	        return feature;
 	    }
 	    
+	    //Getters and setters
 	    public function get features():Array {
 			return this._features;
 		}
