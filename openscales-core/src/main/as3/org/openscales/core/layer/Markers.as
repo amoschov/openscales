@@ -21,7 +21,10 @@ package org.openscales.core.layer
 	     * Create a Markers layer.
 	     *
 	     * @aram name
-	     * @param options
+	     * @param isBaseLayer
+	     * @param visible
+	     * @param projection
+	     * @param proxy
 	     */
 	    public function Markers(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
 	    						projection:String = null, proxy:String = null) {

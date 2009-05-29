@@ -85,7 +85,11 @@ package org.openscales.core.layer.ogc
 		 * @param name Layer's name
 		 * @param url The WFS server url to request
 		 * @param params
-		 * @param options
+		 * @param isBaseLayer
+		 * @param visible
+		 * @param projection
+		 * @param capabilities
+		 * @param proxy
 		 */	                    
 	    public function WFS(name:String, url:String, params:Object, isBaseLayer:Boolean = false, visible:Boolean = true, 
 									projection:String = null, capabilities:HashMap=null, proxy:String = null) {

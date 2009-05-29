@@ -39,7 +39,10 @@ package org.openscales.core.layer
 	     * @param name
 	     * @param url
 	     * @param params
-	     * @param options
+	     * @param isBaseLayer
+	     * @param visible
+	     * @param projection
+	     * @param proxy
 	     */
 		public function Grid(name:String, url:String, params:Object = null, isBaseLayer:Boolean = false, 
 								visible:Boolean = true, projection:String = null, proxy:String = null) {

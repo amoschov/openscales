@@ -150,7 +150,6 @@ package org.openscales.core.layer
 	     * Add Features to the layer.
 	     *
 	     * @param features
-	     * @param options
 	     */
 	    public function addFeatures(features:Object):void {
 	    	if (!(features is Array)) {
@@ -213,8 +212,6 @@ package org.openscales.core.layer
 	    /**
      * Erase and destroy features on the layer.
      *
-     * @param features 
-     * @param options
      */
 	    public function destroyFeatures():void {
 	    	this.selectedFeatures = new Array();
