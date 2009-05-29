@@ -21,7 +21,7 @@ package org.openscales.fx.layer
 		
 		private var _isBaseLayer:Boolean;
 		
-		private var _projection:ProjProjection;
+		private var _projection:String;
 		
 		
 		public function FxWFS()
@@ -47,12 +47,11 @@ package org.openscales.fx.layer
 		}
 		
 		override public function getInstance():Layer {
-			this._layer = new WFS("", this._url, this._params);
+			this._layer = new WFS("", this._url, this._params, this._isBaseLayer, true, this._projection);
 			if (this._style != null)
 				(this._layer as WFS).style = this._style;
-			this._layer.isBaseLayer = this._isBaseLayer;
+				
 			this._layer.minZoomLevel = this._minZoomLevel;
-			this._layer.projection = this._projection;
 						
 			return this._layer;
 		}
@@ -70,10 +69,10 @@ package org.openscales.fx.layer
 	    }
 	    
 	    public function set srs(value:String):void {
-	    	this._params.SRS = value;
 	    	if (value != null) {
-	    		this._projection = new ProjProjection(value);
-	    	}
+	    		this._params.SRS = value;
+	    		this._projection = value;
+	    	}	    	
 	    }
 	    
 	    public function set version(value:String):void {

@@ -30,9 +30,12 @@ package org.openscales.core.layer
 
     	private var _icon:Icon = null;
     	
-    	public function GeoRSS(name:String, location:String, options:Object = null):void {
-	        super(name, options);
-	        this.location = location;
+    	public function GeoRSS(name:String, url:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
+    							projection:String = null, proxy:String = null) {
+    		
+	        super(name, isBaseLayer, visible, projection, proxy);
+	        
+	        this.location = url;
 	        this.features = [];
 	     	
 			new Request(location,

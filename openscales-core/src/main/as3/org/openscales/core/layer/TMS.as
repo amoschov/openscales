@@ -27,10 +27,11 @@ package org.openscales.core.layer
 		 */
 		private var _serverResolutions:Array = null;
 		
-		public function TMS(name:String, url:String, options:Object = null):void
-		{
-			this.isBaseLayer = true;
-			super(name, url, null, options);
+		public function TMS(name:String, url:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
+							projection:String = null, proxy:String = null) {
+								
+			super(name, url, params, isBaseLayer, visible, projection, proxy);
+
 		}
 		
 		override public function clone(obj:Object):Object

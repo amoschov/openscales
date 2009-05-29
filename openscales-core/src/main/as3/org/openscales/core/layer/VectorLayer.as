@@ -37,13 +37,15 @@ package org.openscales.core.layer
 	    
 	    public var preFeatureInsert:Function = null;
 	    
-	    public function VectorLayer(name:String, options:Object = null) {
+	    public function VectorLayer(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
+									projection:String = null, proxy:String = null) {
+										
 	        this.style = new Style();
 	        
 	        this.onFeatureInsert = new Function();
 	        this.preFeatureInsert = new Function();
 	
-	        super(name, options);
+	        super(name, isBaseLayer, visible, projection, proxy);
 	        
 	        if (!this.renderer) {  
 	            this.assignRenderer();

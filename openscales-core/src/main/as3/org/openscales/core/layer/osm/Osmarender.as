@@ -10,17 +10,18 @@ package org.openscales.core.layer.osm
 	 */
 	public class Osmarender extends OSM
 	{
-		public function Osmarender(name:String="", options:Object = null)
+		public function Osmarender(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
+									projection:String = null, proxy:String = null)
 		{
-        	var url :String= "http://a.tah.openstreetmap.org/Tiles/tile/";
+        	var url:String= "http://a.tah.openstreetmap.org/Tiles/tile/";
         	
-        	var alturls : Array = [	"http://b.tah.openstreetmap.org/Tiles/tile/",
-        							"http://c.tah.openstreetmap.org/Tiles/tile/"];
-
-        	options = Util.extend({ numZoomLevels: 18 }, options);
+        	var alturls:Array = [	"http://b.tah.openstreetmap.org/Tiles/tile/",
+        							"http://c.tah.openstreetmap.org/Tiles/tile/"];        	
 			
-			super(name, url, options);
+			super(name, url, isBaseLayer, visible, projection, proxy);
+			
 			this.altUrls = alturls;
+			this.numZoomLevels = 18;
 		}
 		
 

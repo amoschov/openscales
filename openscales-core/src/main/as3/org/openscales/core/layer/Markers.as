@@ -23,8 +23,10 @@ package org.openscales.core.layer
 	     * @aram name
 	     * @param options
 	     */
-	    public function Markers(name:String, options:Object = null):void {
-	    	super(name, options);
+	    public function Markers(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
+	    						projection:String = null, proxy:String = null) {
+	    							
+	    	super(name, isBaseLayer, visible, projection, proxy);
 	    	this.markers = [];
 	    	
 	    	// For better performances

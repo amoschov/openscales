@@ -23,8 +23,11 @@ package org.openscales.core.layer
 		
 		private var _params:Object = null;
 		
-		public function HTTPRequest(name:String, url:String, params:Object = null, options:Object = null):void {
-	        super(name, options);
+		public function HTTPRequest(name:String, url:String, params:Object = null, isBaseLayer:Boolean = false, 
+									visible:Boolean = true, projection:String = null, proxy:String = null) {
+	       
+	        super(name, isBaseLayer, visible, projection, proxy);
+	        
 	        this.url = url;
 	        this.params = Util.extend( new Object(), params);
 		}
@@ -42,7 +45,7 @@ package org.openscales.core.layer
 	     * 
 	     * @return An exact clone
 	     */
-		override public function clone(obj:Object):Object {
+	/*	override public function clone(obj:Object):Object {
 			if (obj == null) {
 	            obj = new HTTPRequest(this.name,
                                        this.url,
@@ -52,7 +55,7 @@ package org.openscales.core.layer
 	        obj = new Layer(this.name, arguments).clone([obj]);
 	        
 	        return obj;
-		}
+		}*/
 		
 		/**
 	     * merge New Params

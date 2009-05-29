@@ -87,17 +87,12 @@ package org.openscales.core.layer.ogc
 		 * @param params
 		 * @param options
 		 */	                    
-	    public function WFS(name:String, url:String, params:Object, options:Object = null, capabilities:HashMap=null) {
+	    public function WFS(name:String, url:String, params:Object, isBaseLayer:Boolean = false, visible:Boolean = true, 
+									projection:String = null, capabilities:HashMap=null, proxy:String = null) {
 	    	
 	    	this.capabilities = capabilities;
-	    	
-	        if (options == null) { options = {}; } 
 	        
-	        super(name, options);
-	        
-	        if (this.featureClass || !org.openscales.core.layer.VectorLayer || !org.openscales.core.feature.VectorFeature) {
-	            this.vectorMode = false;
-	        } 
+	        super(name, isBaseLayer, visible, projection, proxy);
 	        
 	        if (!this.renderer || !this.vectorMode) {
 	            this.vectorMode = false; 
@@ -112,9 +107,8 @@ package org.openscales.core.layer.ogc
 	        
 	        this.params = params;
 	        Util.applyDefaults(this.params, Util.upperCaseObject(this.DEFAULT_PARAMS));
-	        this.url = url;
 	        
-	        
+	        this.url = url;	        
 	    }
 	    
 	    override public function destroy(setNewBaseLayer:Boolean = true):void {

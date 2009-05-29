@@ -40,15 +40,22 @@ package org.openscales.core.layer
 		/**
 		 * Layer constructor
 		 */
-		public function Layer(name:String, options:Object = null) {
-
-			Util.extend(this, options);
+		public function Layer (name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
+								projection:String = null, proxy:String = null) {
 
 			this.name = name;
 			this.doubleClickEnabled = true;
+			this.isBaseLayer = isBaseLayer;
+			this.visible = visible;
 			
-			if (this._projection == null)
+			/* If projection string is null or empty, we init the layer's projection
+			with EPSG:4326 */
+			if (projection != null && projection != "")
+				this._projection = new ProjProjection(projection);
+			else
 				this._projection = new ProjProjection("EPSG:4326");
+				
+			this._proxy = proxy;
 		}
 
 		public function destroy(setNewBaseLayer:Boolean = true):void {

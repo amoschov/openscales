@@ -10,17 +10,18 @@ package org.openscales.core.layer.osm
 	 */
 	public class Maplint extends OSM
 	{
-		public function Maplint(name:String="", options:Object=null)
+		public function Maplint(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
+									projection:String = null, proxy:String = null)
 		{
 			var url :String = "http://d.tah.openstreetmap.org/Tiles/maplint/";
             	        	
         	var alturls : Array = [	"http://e.tah.openstreetmap.org/Tiles/maplint/",
             						"http://f.tah.openstreetmap.org/Tiles/maplint/"];
-
-        	options = Util.extend({ numZoomLevels: 18, isBaseLayer: false }, options);
-        		
-			super(name, url, options);
-			this.altUrls=alturls;
+			
+        	super(name, url, isBaseLayer, visible, projection, proxy);
+			
+			this.altUrls = alturls;
+			this.numZoomLevels = 20;
 		}
 		
 	}

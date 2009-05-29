@@ -14,14 +14,19 @@ package org.openscales.core.layer.osm
 	 */	
 	public class OSM extends TMS
 	{
-		public function OSM(name:String, url:String, options:Object):void
-		{
-			options = Util.extend({
-            	maxResolution: 156543.0339,
-            	units: Unit.METER,
-            	projection: new ProjProjection("EPSG:900913")
-			}, options);
-			super(name, url, options);
+		public function OSM(name:String, url:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
+							projection:String = null, proxy:String = null) {
+			
+			/* If projection string is null or empty, we init the layer's projection
+			with EPSG:900913 (default value to OpenStreetMap layers) */
+			if (projection == null || projection == "")
+				projection = "EPSG:900913";
+			
+			super(name, url, isBaseLayer, visible, projection, proxy);
+			
+			this.maxResolution = 156543.0339;
+			this.units = Unit.METER;
+			
 		}
 		
 		override public function getURL(bounds:Bounds):String

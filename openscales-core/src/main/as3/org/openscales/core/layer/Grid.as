@@ -41,8 +41,10 @@ package org.openscales.core.layer
 	     * @param params
 	     * @param options
 	     */
-		public function Grid(name:String = null, url:String = null, params:Object = null, options:Object = null):void {
-			super(name, url, params, options);
+		public function Grid(name:String, url:String, params:Object = null, isBaseLayer:Boolean = false, 
+								visible:Boolean = true, projection:String = null, proxy:String = null) {
+									
+			super(name, url, params, isBaseLayer, visible, projection, proxy);
 			
 			this.grid = new Array();
 			

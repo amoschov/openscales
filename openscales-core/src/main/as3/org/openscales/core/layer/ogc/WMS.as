@@ -28,18 +28,18 @@ package org.openscales.core.layer.ogc
                      
        	private var _reproject:Boolean = true;
        	
-       	public function WMS(name:String, url:String, params:Object, options:Object = null):void {       		
-	        super(name, url, params, options);
+       	public function WMS(name:String, url:String, params:Object = null, isBaseLayer:Boolean = false, 
+									visible:Boolean = true, projection:String = null, proxy:String = null) {
+										   		
+	        super(name, url, params, isBaseLayer, visible, projection, proxy);
+	        
 	        this.singleTile = true;
+	        
 	        Util.applyDefaults(
 	                       this.params, 
 	                       Util.upperCaseObject(this.DEFAULT_PARAMS)
 	                       );
 
-	        if (options == null || options.isBaseLayer == null) {
-	            this.isBaseLayer = ((this.params.TRANSPARENT != "true") && 
-	                                (this.params.TRANSPARENT != true));
-	        }
        	}
        	
        	override public function getURL(bounds:Bounds):String {
