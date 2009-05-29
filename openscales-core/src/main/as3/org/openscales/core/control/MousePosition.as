@@ -93,15 +93,15 @@ package org.openscales.core.control
 		override public function set map(map:Map):void {
 			super.map = map;
 			
-			this.x = this.map.size.w - 150;
-			this.y = this.map.size.h - 20;
+			if (!this.x) this.x = this.map.size.w - 150;
+			if (!this.y) this.y = this.map.size.h - 20;
 						
 			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
 		}
 		
 		override public function resize(event:MapEvent):void {
-			this.x = this.map.size.w - 150;
-			this.y = this.map.size.h - 20;
+			if (!this.x) this.x = this.map.size.w - 150;
+			if (!this.y) this.y = this.map.size.h - 20;
 			super.resize(event);
 		}
 		
