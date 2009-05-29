@@ -16,6 +16,9 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.feature.VectorFeature;
+			import mx.events.CloseEvent;
+			import mx.controls.Alert;
 			import org.openscales.core.Map;
 			
 			
@@ -29,15 +32,63 @@
 			}
 	
 			public function changingTab(event:Event):void{
-				if((tabNav.selectedIndex != 1) && (tabDraw.drawType != "")){
-					tabDraw.finishPath();
-					tabDraw.finishPolygon();
-					tabDraw.pointHandler.active = false;
-					tabDraw.tgBar.selectedIndex = -1;
-					tabDraw.drawType = "";
-					tabDraw.activeDrag();
+				var f:org.openscales.core.feature.VectorFeature;
+				var selectedFeature:Boolean = false;
+				
+				//User is on Drawing Tab, and wants to switch			
+				if(tabNav.selectedIndex != 1 && tabDraw.tgBar != null){
+					//Check if some feature are selected
+					for each(f in tabDraw.selectFeatures){
+						if(f != null){if(f.selected){selectedFeature=true;}}
+					}
+					
+					//if one (or more) feature is selected, we warn user
+					if(selectedFeature){
+						Alert.okLabel = "Continue";
+						Alert.buttonWidth=200;
+						Alert.show("One (or more) feature is selected. If you continue, all selection will be lost.", "Warning", Alert.OK | Alert.CANCEL, null, alertClickHandler);
+					}
+					else{
+						tabDraw.finishPath(); 
+						tabDraw.finishPolygon(); 
+						tabDraw.pointHandler.active = false;
+						tabDraw.tgBar.selectedIndex = -1;
+						tabDraw.drawType = "";
+						tabDraw.activeDrag();
+					}			
 				}
-			}			
+				else{
+					//in case of first click on drawing tab
+					if(tabDraw.selectFeatureHandler != null){tabDraw.selectFeatureHandler.active = true;}
+				}
+			}
+				
+			private function alertClickHandler(event:CloseEvent):void {
+            	var i:Number = 0;
+            	var f:org.openscales.core.feature.VectorFeature;
+            	// User click "Continue", he wants to continue
+            	if (event.detail==Alert.OK){
+               		if(tabDraw.drawType != ""){
+						tabDraw.finishPath(); 
+						tabDraw.finishPolygon(); 
+						tabDraw.pointHandler.active = false;
+						tabDraw.tgBar.selectedIndex = -1;
+						tabDraw.drawType = "";
+						tabDraw.activeDrag();
+					}
+					else if(tabDraw.selectFeatureHandler != null){
+						tabDraw.selectFeatureHandler.active=false;
+					}
+					for(i;i<tabDraw.selectFeatures.length;i++){
+							f=tabDraw.selectFeatures[i];
+							if(f != null){if(f.selected){f.selected = false;f.style = f.originalStyle;f.layer.redraw();}}
+						}	
+						tabDraw.selectFeatures = null;
+            	}
+            	else{
+            		tabNav.selectedIndex = 1;
+            	}                 
+        	}			
 		]]>
 	</mx:Script>
 	
