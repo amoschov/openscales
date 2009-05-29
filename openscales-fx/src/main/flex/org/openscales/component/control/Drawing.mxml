@@ -6,6 +6,7 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import mx.effects.easing.Elastic;
 			import org.openscales.core.handler.mouse.SelectFeature;
 			import mx.events.CloseEvent;
 			import org.openscales.core.feature.VectorFeature;
@@ -38,7 +39,7 @@
 			//Params for feature selection
 			private var _selectStyle:Style = new Style();
 			public var selectFeatures:Array = new Array();  //Array witch keep all selectFeature (with ctrl key)
-			private var _n:Number = 0;
+			private var _iteratorFeatures:Number = 0;	//indicate the iterate for feature
 				
 			//new mouse handler
 			public var selectFeatureHandler:SelectFeature;
@@ -142,7 +143,7 @@
 			
 			public function onSelectFeature(event:FeatureEvent):void {			
 				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active && featureInfo != null) {					
-					var i:Number = 0;
+					var i:Number = 0;	// to iterate
 					var f:org.openscales.core.feature.VectorFeature;					
 					selectFeatureHandler.currentfeature = event.vectorfeature;
 					btnDeleteSelected.enabled = true;							
@@ -157,11 +158,11 @@
 										if(f.selected){f.style = f.originalStyle;f.selected=false;f.layer.redraw();}
 									}							
 								}
-								n=0;
+								iteratorFeatures=0;
 								selectFeatureHandler.currentfeature.originalStyle=selectFeatureHandler.currentfeature.style;					
 								selectFeatureHandler.currentfeature.style = selectStyle;							 
 								selectFeatureHandler.currentfeature.selected = true;
-								selectFeatures[n]=selectFeatureHandler.currentfeature;
+								selectFeatures[iteratorFeatures]=selectFeatureHandler.currentfeature;
 								selectFeatureHandler.currentfeature.layer.redraw();
 								selectFeatureHandler.lastfeature = selectFeatureHandler.currentfeature;	
 								this.featureInfo.showInfo(event);		//Show information of the selected feature
@@ -171,7 +172,7 @@
 								selectFeatureHandler.currentfeature.originalStyle=selectFeatureHandler.currentfeature.style;							
 								selectFeatureHandler.currentfeature.style = selectStyle;							 
 								selectFeatureHandler.currentfeature.selected = true;
-								n++;selectFeatures[n]=selectFeatureHandler.currentfeature;
+								iteratorFeatures++;selectFeatures[iteratorFeatures]=selectFeatureHandler.currentfeature;
 								selectFeatureHandler.currentfeature.layer.redraw();	
 							}
 						}
@@ -179,16 +180,23 @@
 						else{
 							//ctrl key isn't pressed
 							if(!event.ctrlPressed){
-								selectFeatureHandler.currentfeature.style = selectFeatureHandler.currentfeature.originalStyle;												 
-								selectFeatureHandler.currentfeature.selected = false;
-								selectFeatures[n]=null;	
-								selectFeatureHandler.lastfeature = null;
-								selectFeatureHandler.currentfeature.layer.redraw();	
+								var others:Boolean = false;
+								for(i=0;i<=selectFeatures.length;i++){
+									f=selectFeatures[i];
+									if(f!=null && f.selected && f!=selectFeatureHandler.currentfeature){others=true;f.selected = false;f.style = f.originalStyle;f.layer.redraw();selectFeatures[i]=null;}
+								}			
+								if(!others){
+									selectFeatureHandler.currentfeature.style = selectFeatureHandler.currentfeature.originalStyle;												 
+									selectFeatureHandler.currentfeature.selected = false;
+									selectFeatures[iteratorFeatures]=null;	
+									selectFeatureHandler.lastfeature = null;
+									selectFeatureHandler.currentfeature.layer.redraw();	
 								
-								this.featureInfo.showInfo(event);					//Show information of the selected feature
-								btnDeleteSelected.enabled = false;			
-								this.featureInfo.dgFeatureInfo.dataProvider=null;   //clear the information tab
-							}
+									this.featureInfo.showInfo(event);					//Show information of the selected feature
+									btnDeleteSelected.enabled = false;			
+									this.featureInfo.dgFeatureInfo.dataProvider=null;   //clear the information tab						
+								}
+							}							
 							//ctrl key is pressed
 							else{
 								selectFeatureHandler.currentfeature.style = selectFeatureHandler.currentfeature.originalStyle;												 
@@ -198,7 +206,7 @@
 									if(f == selectFeatureHandler.currentfeature){selectFeatures[i]=null;}
 								}
 								selectFeatureHandler.currentfeature.layer.redraw();
-							}
+							}							
 						}
 					}
 					//This is the first selection
@@ -206,7 +214,7 @@
 						selectFeatureHandler.currentfeature.originalStyle=selectFeatureHandler.currentfeature.style;					
 						selectFeatureHandler.currentfeature.style = selectStyle;							 
 						selectFeatureHandler.currentfeature.selected = true;
-						selectFeatures[n]=selectFeatureHandler.currentfeature;						
+						selectFeatures[iteratorFeatures]=selectFeatureHandler.currentfeature;						
 						selectFeatureHandler.currentfeature.layer.redraw();
 						selectFeatureHandler.lastfeature = selectFeatureHandler.currentfeature;	
 						this.featureInfo.showInfo(event);		//Show information of the selected feature
@@ -319,12 +327,13 @@
 				_selectStyle = newStyle;
 			}
 			
-			public function get n():Number{
-				return _n;
+			public function get iteratorFeatures():Number{
+				return _iteratorFeatures;
 			}
-			public function set n(value:Number):void{
-				_n = value;
+			public function set iteratorFeatures(value:Number):void{
+				_iteratorFeatures = value;
 			}
+			
 		]]>
 	</mx:Script>
 	

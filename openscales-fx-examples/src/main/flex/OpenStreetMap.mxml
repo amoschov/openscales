@@ -92,7 +92,7 @@
 		
 		<os:PanZoomBar />
 		<!-- We choose EPSG:4326 as displayed projection in this control-->
-		<os:MousePosition displayProjection="EPSG:4326"/>
+		<os:MousePosition displayProjection="EPSG:900913"/>
 		<os:LayerSwitcher />
 		
 		<os:DragHandler />
