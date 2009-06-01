@@ -1,6 +1,6 @@
 package org.openscales.core
 {
-	import com.gradoservice.proj4as.ProjProjection;
+	import org.openscales.proj4as.ProjProjection;
 	import com.gskinner.motion.GTweeny;
 	
 	import flash.display.Sprite;

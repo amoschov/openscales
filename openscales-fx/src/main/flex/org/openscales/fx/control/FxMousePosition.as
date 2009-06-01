@@ -1,6 +1,6 @@
 package org.openscales.fx.control
 {
-	import com.gradoservice.proj4as.ProjProjection;
+	import org.openscales.proj4as.ProjProjection;
 	
 	import org.openscales.core.control.MousePosition;
 

@@ -1,8 +1,8 @@
 package org.openscales.core.format
 {
-	import com.gradoservice.proj4as.Proj4as;
-	import com.gradoservice.proj4as.ProjPoint;
-	import com.gradoservice.proj4as.ProjProjection;
+	import org.openscales.proj4as.Proj4as;
+	import org.openscales.proj4as.ProjPoint;
+	import org.openscales.proj4as.ProjProjection;
 	
 	import flash.utils.getQualifiedClassName;
 	import flash.xml.XMLNode;

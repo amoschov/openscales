@@ -8,7 +8,7 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	import org.openscales.proj.IProjection;
-	import com.gradoservice.proj4as.ProjProjection;
+	import org.openscales.proj4as.ProjProjection;
 	
 	/**
 	 * Instances of WMS are used to display data from OGC Web Mapping Services.

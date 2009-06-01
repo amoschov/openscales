@@ -1,6 +1,6 @@
 package org.openscales.core.format
 {
-	import com.gradoservice.proj4as.ProjProjection;
+	import org.openscales.proj4as.ProjProjection;
 	
 	import org.openscales.core.Util;
 	

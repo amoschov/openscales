@@ -1,6 +1,6 @@
 package org.openscales.core.geometry
 {
-	import com.gradoservice.proj4as.ProjProjection;
+	import org.openscales.proj4as.ProjProjection;
 	
 	public class MultiPoint extends Collection
 	{				

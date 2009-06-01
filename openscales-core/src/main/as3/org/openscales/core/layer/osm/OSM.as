@@ -1,6 +1,6 @@
 package org.openscales.core.layer.osm
 {
-	import com.gradoservice.proj4as.ProjProjection;
+	import org.openscales.proj4as.ProjProjection;
 	
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;

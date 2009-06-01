@@ -1,6 +1,6 @@
 package org.openscales.core.layer
 {
-	import com.gradoservice.proj4as.ProjProjection;
+	import org.openscales.proj4as.ProjProjection;
 	
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;

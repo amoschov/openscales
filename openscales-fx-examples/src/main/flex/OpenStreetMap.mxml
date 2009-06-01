@@ -3,7 +3,7 @@
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.layer.ogc.WFS;
-			import com.gradoservice.proj4as.ProjProjection;
+			import org.openscales.proj4as.ProjProjection;
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.layer.VectorLayer;
 			import org.openscales.core.handler.IHandler;

@@ -1,6 +1,6 @@
 package org.openscales.core.geometry
 {
-	import com.gradoservice.proj4as.ProjProjection;
+	import org.openscales.proj4as.ProjProjection;
 	
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;

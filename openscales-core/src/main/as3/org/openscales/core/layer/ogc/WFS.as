@@ -1,6 +1,6 @@
 package org.openscales.core.layer.ogc
 {	
-	import com.gradoservice.proj4as.ProjProjection;
+	import org.openscales.proj4as.ProjProjection;
 	
 	import flash.events.Event;
 	import flash.net.URLLoader;
