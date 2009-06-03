@@ -2,7 +2,34 @@ Introduction
 
 	OpenScales is a user-friendly and fast interface designed to manipulate spatial data : geographic raster viewing, data-vector editing, management of smooth transitions between scales and positions, ...
 	
-	It has been build from {{{http://code.google.com/p/flexlayers/}FlexLayers}} source code donated by Scott Pezanowski.
+	It is has been build from {{{http://code.google.com/p/flexlayers/}FlexLayers}} source code donated by Scott Pezanowski.
+	
+Reports
+
+	OpenScales AsDoc reports :
+	
+	* {{{/openscales-core/asdoc/index.html}openscales-core}}
+	
+	* {{{/openscales-fx/asdoc/index.html}openscales-fx}}
+	
+	* {{{/openscales-proj4as/asdoc/index.html}openscales-proj4as}}
+	
+	* {{{/openscales-proj/asdoc/index.html}openscales-proj}}
+	
+	* {{{/openscales-i18n/asdoc/index.html}openscales-i18n}}
+	
+	OpenScales UML diagrams :
+	
+	* {{{/openscales-core/asuml-maven-report.html}openscales-core}}
+	
+	* {{{/openscales-fx/asuml-maven-report.html}openscales-fx}}
+	
+	* {{{/openscales-proj4as/asuml-maven-report.html}openscales-proj4as}}
+	
+	* {{{/openscales-proj/asuml-maven-report.html}openscales-proj}}
+	
+	* {{{/openscales-i18n/asuml-maven-report.html}openscales-i18n}}
+	
 	
 Continuous integration
 
