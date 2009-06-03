@@ -65,7 +65,9 @@ package org.openscales.core.tile
 	        if(this.url == null)
 	        	this.url = this.layer.getURL(this.bounds);
 	        	
-	        _tileLoader.load(new URLRequest(this.url));
+	        //We add the proxy to the url (to avoid crossdomain issue in case of zoom tween effect (bitmapdata.draw))
+	        var urlProxy:String = this.layer.proxy + encodeURIComponent(this.url);
+	        _tileLoader.load(new URLRequest(urlProxy));
 	        _tileLoader.name=this.url;
 	        _tileLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onTileLoadEnd, false, 0, true);
 			_tileLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onTileLoadError, false, 0, true);
