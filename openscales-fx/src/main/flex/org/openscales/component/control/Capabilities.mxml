@@ -80,7 +80,7 @@
 					params.typename = this.list.selectedItem;
 					params.SRS = capabilities.getValue(this.list.selectedItem).getValue("SRS");
 					params.VERSION = "1.0.0";
-					var newLayer:WFS = new WFS(this.list.selectedItem as String,this.url,params,false,true,null,capabilities.getValue(this.list.selectedItem as String));
+					var newLayer:WFS = new WFS(this.list.selectedItem as String,this.url,params,false,true,null,null,true,capabilities.getValue(this.list.selectedItem as String));
 					newLayer.isBaseLayer = false;
 					newLayer.minZoomLevel = this.map.numZoomLevels;
 					

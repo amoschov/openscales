@@ -713,28 +713,15 @@ package org.openscales.core
 				// We hide the layerContainer (to avoid zooming out issues)
 				this.layerContainer.alpha = 0;
 				
-				//If we are zooming in
-				if (resMult > 1) {
-					//We calculate the bitmapTransition position
-					var x:Number = this.bitmapTransition.x-((resMult-1)*this.bitmapTransition.width)/2;
-					var y:Number = this.bitmapTransition.y-((resMult-1)*this.bitmapTransition.height)/2;
-					//The tween effect to scale and re-position the bitmapTransition
-					tween = new GTweeny(this.bitmapTransition,0.2,{scaleX: resMult,
-														 scaleY: resMult,
-														 x: x,
-														 y: y});
-				}
-				// If we are zooming out
-				else {
-					//We calculate the bitmapTransition position
-					var x:Number = this.bitmapTransition.x-((resMult-1)*this.bitmapTransition.width)/2;
-					var y:Number = this.bitmapTransition.y-((resMult-1)*this.bitmapTransition.height)/2;
-					//The tween effect to scale and re-position the bitmapTransition
-					tween = new GTweeny(this.bitmapTransition,0.2,{scaleX: resMult,
-														 scaleY: resMult,
-														 x: x,
-														 y: y});
-				}
+				//We calculate the bitmapTransition position
+				var x:Number = this.bitmapTransition.x-((resMult-1)*this.bitmapTransition.width)/2;
+				var y:Number = this.bitmapTransition.y-((resMult-1)*this.bitmapTransition.height)/2;
+				//The tween effect to scale and re-position the bitmapTransition
+				tween = new GTweeny(this.bitmapTransition,0.2,{scaleX: resMult,
+													 scaleY: resMult,
+													 x: x,
+													 y: y});
+													 
 				tween.addEventListener(Event.COMPLETE,clbZoomTween);
 				this.setChildIndex(this.layerContainer,1);
 			}

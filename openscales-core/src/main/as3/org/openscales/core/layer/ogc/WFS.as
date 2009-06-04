@@ -1,7 +1,5 @@
 package org.openscales.core.layer.ogc
 {	
-	import org.openscales.proj4as.ProjProjection;
-	
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
@@ -14,13 +12,14 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.maps.HashMap;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.WFSFeature;
 	import org.openscales.core.format.Format;
 	import org.openscales.core.format.WFSFormat;
 	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.layer.capabilities.GetCapabilities;
 	import org.openscales.core.tile.WFSTile;
+	import org.openscales.proj4as.ProjProjection;
 	
 	/**
 	 * Instances of WFS are used to display data from OGC Web Feature Services.
@@ -80,6 +79,11 @@ package org.openscales.core.layer.ogc
 		private var _capabilities:HashMap = null;
 		
 		/**
+		 * Do we get capabilities ?
+		 */
+		private var _useCapabilities:Boolean = false;
+		
+		/**
 		 * WFS class constructor
 		 * 
 		 * @param name Layer's name
@@ -88,20 +92,22 @@ package org.openscales.core.layer.ogc
 		 * @param isBaseLayer
 		 * @param visible
 		 * @param projection
-		 * @param capabilities
 		 * @param proxy
+		 * @param capabilities
+		 * @param useCapabilities
 		 */	                    
 	    public function WFS(name:String, url:String, params:Object, isBaseLayer:Boolean = false, visible:Boolean = true, 
-									projection:String = null, capabilities:HashMap=null, proxy:String = null) {
+							projection:String = null, proxy:String = null, useCapabilities:Boolean=false, capabilities:HashMap=null) {
 	    	
 	    	this.capabilities = capabilities;
+	    	this.useCapabilities = useCapabilities;
 	        
 	        super(name, isBaseLayer, visible, projection, proxy);
 	        
 	        if (!this.renderer || !this.vectorMode) {
 	            this.vectorMode = false; 
 	            if (!this.featureClass) {
-	                this.featureClass = org.openscales.core.feature.WFSFeature;
+	                this.featureClass = WFSFeature;
 	            }   
 	        }
 	        
@@ -126,7 +132,7 @@ package org.openscales.core.layer.ogc
 	            super.map = map;
 	            
 	            // GetCapabilities request made here in order to have the proxy set 
-	            if (url != null && url != "" && this.capabilities == null) {
+	            if (url != null && url != "" && this.capabilities == null && useCapabilities == true) {
 	    			var getCap:GetCapabilities = new GetCapabilities("wfs", url, this.capabilitiesGetter, this.proxy);
 	    		}
 	        }
@@ -422,6 +428,14 @@ package org.openscales.core.layer.ogc
 		
 		public function set extractAttributes(value:Boolean):void {
 			this._extractAttributes = value;
+		}
+		
+		public function get useCapabilities():Boolean {
+			return this._useCapabilities;
+		}
+		
+		public function set useCapabilities(value:Boolean):void {
+			this._useCapabilities = value;
 		}
 		
 	}

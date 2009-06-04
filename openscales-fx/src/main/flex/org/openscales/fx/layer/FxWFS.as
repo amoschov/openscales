@@ -1,7 +1,5 @@
 package org.openscales.fx.layer
 {
-	import org.openscales.proj4as.ProjProjection;
-	
 	import flash.display.DisplayObject;
 	
 	import org.openscales.core.feature.Style;
@@ -22,6 +20,8 @@ package org.openscales.fx.layer
 		private var _isBaseLayer:Boolean;
 		
 		private var _projection:String;
+		
+		private var _useCapabilities:Boolean = false;
 		
 		
 		public function FxWFS()
@@ -47,7 +47,7 @@ package org.openscales.fx.layer
 		}
 		
 		override public function getInstance():Layer {
-			this._layer = new WFS("", this._url, this._params, this._isBaseLayer, true, this._projection);
+			this._layer = new WFS("", this._url, this._params, this._isBaseLayer, true, this._projection,null,_useCapabilities);
 			if (this._style != null)
 				(this._layer as WFS).style = this._style;
 				
@@ -77,6 +77,10 @@ package org.openscales.fx.layer
 	    
 	    public function set version(value:String):void {
 	    	this._params.VERSION = value;
+	    }
+	    
+	    public function set useCapabilities(value:Boolean):void {
+	    	this._useCapabilities = value;
 	    }
 	    
 	    override public function set minZoomLevel(value:Number):void {
