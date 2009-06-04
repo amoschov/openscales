@@ -703,7 +703,7 @@ package org.openscales.core
 				// We add the bitmap to the map		
 				this.addChild(bitmapTransition);
 				// We put it just ahead the layer container (in order to hide it and to be behind the controls)
-			 	this.swapChildren(bitmapTransition,this.getChildAt(0)); 
+			 	this.swapChildren(bitmapTransition,this.layerContainer);
 				
 				// We calculate de scale multiplicator according to the actual and new resolution
 				var resMult:Number = this.resolution / this.resolutions[newZoom];
@@ -736,13 +736,14 @@ package org.openscales.core
 														 y: y});
 				}
 				tween.addEventListener(Event.COMPLETE,clbZoomTween);
+				this.setChildIndex(this.layerContainer,1);
 			}
 			
 			// The zoom tween callback method defined here to avoid a class attribute for newZoom
 			function clbZoomTween(evt:Event):void {
 				layerContainer.alpha = 1;
 				setCenter(null, newZoom);
-				/* swapChildren(bitmapTransition,layerContainer); */
+				  
 			} 
 		}
 		
