@@ -17,7 +17,7 @@ package org.openscales.core.renderer
 		//Sprite now knows his feature instead of his feature_id
 		//it's important for event's on feature
 		private var _feature:VectorFeature = null;
-		private var _options:Object = new Object();
+
 		private var _geometryClass:String = null;
 		private var _attributes:Object = new Object();
 		
@@ -48,14 +48,6 @@ package org.openscales.core.renderer
 			this.addEventListener(MouseEvent.MOUSE_DOWN,this.onMouseDown);	
 			this.addEventListener(MouseEvent.MOUSE_UP,this.onMouseUp);
 			this.addEventListener(MouseEvent.MOUSE_MOVE,this.OnMouseMove);
-		}
-		
-		public function get options():Object {
-			return this._options;
-		}
-		
-		public function set options(value:Object):void {
-			this._options = value;
 		}
 		
 		public function get geometryClass():String {

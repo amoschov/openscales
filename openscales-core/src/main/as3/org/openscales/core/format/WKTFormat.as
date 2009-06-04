@@ -22,8 +22,6 @@ package org.openscales.core.format
 		/**
 	     * Create a new parser for WKT
 	     *
-	     * @param options An optional object whose properties will be set on this instance
-	     *
 	     * @return A new WKT parser.
 	     */
 		public function WKTFormat():void {

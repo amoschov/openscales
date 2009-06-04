@@ -107,21 +107,16 @@ package org.openscales.core.renderer
 	        return nodeType;
 		}
 		
-		public function setStyle(node:SpriteElement, style:Style, options:Object):void {	
+		public function setStyle(node:SpriteElement, style:Style):void {	
 	        style = style  || node.style;
-	        options = options || node.options;
-	
-	        /*if (node.geometryClass == "org.openscales.core.geometry::Point") {
-	            node.attributes.r = style.pointRadius;
-	        }*/
 	        
-	        if (options.isFilled) {
+	        if (style.isFilled) {
 	            node.graphics.beginFill(style.fillColor, style.fillOpacity);
 	        } else {
 	            node.graphics.endFill();
 	        }
 	
-	        if (options.isStroked) {
+	        if (style.isStroked) {
 	        	node.graphics.lineStyle(style.strokeWidth, style.strokeColor, style.strokeOpacity, false, "normal", style.strokeLinecap);
 	        } else {
 	            //don't draw the line
@@ -136,11 +131,10 @@ package org.openscales.core.renderer
 	        }*/
 		}
 		
-		public function removeStyle(node:SpriteElement, style:Style, options:Object):void {
+		public function removeStyle(node:SpriteElement, style:Style):void {
 	        style = style  || node.style;
-	        options = options || node.options;
 	        
-	        if (options.isFilled) {
+	        if (style.isFilled) {
 	            node.graphics.beginFill(style.fillColor, style.fillOpacity);
 	        }
 	        
@@ -371,17 +365,12 @@ package org.openscales.core.renderer
     
     	public function drawGeometryNode(node:SpriteElement, geometry:Geometry, style:Style = null):void {
     		style = style || node.style;
-
-	        var options:Object = {
-	            'isFilled': true,
-	            'isStroked': true
-	        };
 	        
 	        if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::LineString") {
-	        	options.isFilled = false;
+	        	style.isFilled = false;
 	        }
 	        
-	        this.setStyle(node, style, options);
+	        this.setStyle(node, style);
 
 	        switch (getQualifiedClassName(geometry)) {
 	            case "org.openscales.core.geometry::Point":
@@ -406,10 +395,9 @@ package org.openscales.core.renderer
 	                break;
 	        }
 	        
-	        this.removeStyle(node, style, options);
+	        this.removeStyle(node, style);
 	
-	        node.style = style; 
-	        node.options = options; 
+	        node.style = style;
     	}
 		
     	override public function getFeatureFromEvent(evt:MouseEvent):VectorFeature {

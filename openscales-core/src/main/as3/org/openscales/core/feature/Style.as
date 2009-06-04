@@ -19,6 +19,9 @@ package org.openscales.core.feature
 		private var _hoverStrokeOpacity:Number;
 		private var _hoverStrokeWidth:Number;
 		private var _hoverPointRadius:Number;
+		
+		private var _isFilled:Boolean;
+		private var _isStroked:Boolean;
 
 		/**
 		 * <p>Class constructor.</p>
@@ -41,6 +44,8 @@ package org.openscales.core.feature
 			_hoverStrokeOpacity = 1;
 			_hoverStrokeWidth = 0.2;
 			_hoverPointRadius = 1;
+			_isFilled = true;
+			_isStroked = true;
 			
 		}
 		
@@ -101,6 +106,22 @@ package org.openscales.core.feature
 
 		public function set pointRadius(pointRadius:Number):void {
 			_pointRadius = pointRadius;
+		}
+		
+		public function get isFilled():Boolean {
+			return _isFilled;
+		}
+
+		public function set isFilled(value:Boolean):void {
+			_isFilled = value;
+		}
+		
+		public function get isStroked():Boolean {
+			return _isStroked;
+		}
+
+		public function set isStroked(value:Boolean):void {
+			_isStroked = value;
 		}
 
 	}
