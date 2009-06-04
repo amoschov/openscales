@@ -279,13 +279,7 @@ package org.openscales.core.layer.ogc
 	
 	        var successfailure:Function = commitSuccessFailure;
 	        
-	        new Request(url, 
-	                         {   method:URLRequestMethod.POST, 
-	                             postBody: data,
-	                             onComplete: successfailure
-	                          },
-	                          proxy
-	                         );
+	        new Request(url, URLRequestMethod.POST, successfailure, data, null, proxy);
 		}
 		
 		/**

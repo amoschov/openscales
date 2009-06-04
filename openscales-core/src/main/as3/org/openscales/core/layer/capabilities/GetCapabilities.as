@@ -96,11 +96,7 @@ package org.openscales.core.layer.capabilities
 			
 			var urlRequest:String = this.buildRequestUrl(); 
 			
-			new Request(urlRequest,
-                     {   method: URLRequestMethod.GET, 
-                         parameters: null,
-                         onComplete: this.parseResult
-                      }, this._proxy);
+			new Request(urlRequest, URLRequestMethod.GET, this.parseResult, null, null, this._proxy);
                       
 			return true;
 		}

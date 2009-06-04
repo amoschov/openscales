@@ -5,7 +5,6 @@ package org.openscales.core.tile
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
 	
-	import org.openscales.core.Map;
 	import org.openscales.core.Request;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
@@ -70,11 +69,7 @@ package org.openscales.core.tile
 	    * @param failure
 	    */
 		public function loadFeaturesForRegion(success:Function):void {
-			new Request(this.url,
-                     {   method: URLRequestMethod.GET, 
-                         parameters: null,
-                         onComplete: success
-                      }, this.layer.proxy);
+			new Request(this.url, URLRequestMethod.GET, success, null, null, this.layer.proxy);
 		}
 		
 		/**

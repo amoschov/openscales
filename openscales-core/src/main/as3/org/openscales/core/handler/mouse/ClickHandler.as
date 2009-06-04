@@ -49,18 +49,10 @@ package org.openscales.core.handler.mouse
 		 *
 		 * @param map the ClickHandler map
 		 * @param active to determinates if the handler is active
-		 * @param options use to easily specify optional properties
 		 */
-		public function ClickHandler(map:Map=null, active:Boolean=false,options:Object=null)
+		public function ClickHandler(map:Map=null, active:Boolean=false)
 		{
 			super(map, active);
-			if(options!=null)
-			{
-			this.click=(options.click is Function)?options.click:null;
-			this.doubleclick=(options.doubleclick is Function)?options.doubleclick:null;
-			this._tolerance=(!isNaN(options.tolerance)&&options.tolerance is Number)?options.tolerance:0;
-			}
-			this._tolerance=0;
 		}
 		override protected function registerListeners():void{
 			this.map.addEventListener(MouseEvent.MOUSE_DOWN,this.mouseDown);

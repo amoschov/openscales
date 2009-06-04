@@ -56,7 +56,7 @@ package org.openscales.core.control
         /**
         * LayerSwitcher constructor
         * 
-        * @param options
+        * @param position
         */
 		public function LayerSwitcher(position:Pixel = null) {
 			super(position);

@@ -77,13 +77,10 @@ package org.openscales.core
 		 *
 		 * @param width the map width
 		 * @param height the map height
-		 * @param options use to easily specify optional properties
 		 */
-		public function Map(width:Number=600, height:Number=400, options:Object = null):void {
+		public function Map(width:Number=600, height:Number=400) {
 
 			super();
-
-			Util.extend(this, options);
 
 			this._controls = new Array();
 			this._handlers = new Array();

@@ -6,7 +6,6 @@ package org.openscales.core.layer
 	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Icon;
-	import org.openscales.core.Map;
 	import org.openscales.core.Marker;
 	import org.openscales.core.Request;
 	import org.openscales.core.Util;
@@ -38,11 +37,7 @@ package org.openscales.core.layer
 	        this.location = url;
 	        this.features = [];
 	     	
-			new Request(location,
-                     {   method: URLRequestMethod.GET, 
-                         parameters: null,
-                         onComplete: this.parseData
-                      }, this.proxy);
+			new Request(location, URLRequestMethod.GET, this.parseData, null , null, this.proxy);
 
     	}
 
