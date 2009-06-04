@@ -27,7 +27,7 @@ package org.openscales.core.handler.mouse {
 		
 		private function onMouseWheel(event:MouseEvent):void{
 			
-			var deltaZ:int;
+			/* var deltaZ:int;
 			
 			if(event.delta > 0) {
 				deltaZ = 1;
@@ -46,7 +46,13 @@ package org.openscales.core.handler.mouse {
 	                            zoomPoint.lon + deltaX * newRes,
 	                            zoomPoint.lat - deltaY * newRes );
 	        this.map.center = newCenter;
-	        this.map.zoom = newZoom;
+	        this.map.zoom = newZoom; */
+	        if(event.delta > 0) {
+				this.map.zoom++;
+			} else {
+				this.map.zoom--;
+			}
+	        
 		}
 		
 	}

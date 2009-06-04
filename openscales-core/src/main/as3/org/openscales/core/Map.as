@@ -703,7 +703,7 @@ package org.openscales.core
 				// We add the bitmap to the map		
 				this.addChild(bitmapTransition);
 				// We put it just ahead the layer container (in order to hide it and to be behind the controls)
-				this.swapChildren(bitmapTransition,this.getChildAt(1));
+			 	this.swapChildren(bitmapTransition,this.getChildAt(0)); 
 				
 				// We calculate de scale multiplicator according to the actual and new resolution
 				var resMult:Number = this.resolution / this.resolutions[newZoom];
@@ -742,9 +742,8 @@ package org.openscales.core
 			function clbZoomTween(evt:Event):void {
 				layerContainer.alpha = 1;
 				setCenter(null, newZoom);
-				swapChildren(bitmapTransition,layerContainer);
+				/* swapChildren(bitmapTransition,layerContainer); */
 			} 
-			
 		}
 		
 		
