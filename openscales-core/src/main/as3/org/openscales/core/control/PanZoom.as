@@ -44,7 +44,7 @@ package org.openscales.core.control
         [Embed(source="/org/openscales/core/img/zoombar.png")]
         protected var zoombarImg:Class;
 		
-		public function PanZoom(options:Object = null):void {
+		public function PanZoom(options:Object = null) {
 		    
 		    super(options);
 		}

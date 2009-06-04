@@ -18,7 +18,7 @@ package org.openscales.core.control
 		protected var _map:Map = null;
 		protected var _active:Boolean = false;
 		
-		public function Control(options:Object = null):void {
+		public function Control(options:Object = null) {
 								
 			if (options != null && options.position != null) {
 		    	this.position = (options.position as Pixel);

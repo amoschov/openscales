@@ -28,7 +28,7 @@ package org.openscales.core.control
 	    
 	    private var _zoomStart:Pixel = null;
 	    
-	    public function PanZoomBar(options:Object = null):void {
+	    public function PanZoomBar(options:Object = null) {
 	    	super(options);
 	    }
 	    

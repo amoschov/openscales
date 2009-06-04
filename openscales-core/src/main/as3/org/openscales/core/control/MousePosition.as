@@ -30,7 +30,7 @@ package org.openscales.core.control
     	
     	private var _displayProjection:ProjProjection = null;
     	  	
-    	public function MousePosition(options:Object = null):void {
+    	public function MousePosition(options:Object = null) {
     		super(options);
     		
     		this.label = new TextField();

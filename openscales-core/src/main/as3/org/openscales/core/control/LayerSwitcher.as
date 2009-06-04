@@ -57,7 +57,7 @@ package org.openscales.core.control
         * 
         * @param options
         */
-		public function LayerSwitcher(options:Object = null):void {
+		public function LayerSwitcher(options:Object = null) {
 			super(options);
 			
 			this._minimizeButton = new Button("minimize", new _layerSwitcherMinimizeImg(), this.position.add(-18,0));
