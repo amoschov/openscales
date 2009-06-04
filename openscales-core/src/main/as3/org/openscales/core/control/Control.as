@@ -5,7 +5,6 @@ package org.openscales.core.control
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
 	
@@ -18,17 +17,14 @@ package org.openscales.core.control
 		protected var _map:Map = null;
 		protected var _active:Boolean = false;
 		
-		public function Control(options:Object = null) {
-								
-			if (options != null && options.position != null) {
-		    	this.position = (options.position as Pixel);
-		    } else {
-		    	this.position = new Pixel(0,0);
-		    }
+		public function Control(position:Pixel = null) {
+			
+			if (position != null)
+				this.position = position
+			else					
+				this.position = new Pixel(0,0);
 
 			this.name = getQualifiedClassName(this).split('::')[1];
-			
-			Util.extend(this, options);
 		}
 		
 		public function destroy():void {  

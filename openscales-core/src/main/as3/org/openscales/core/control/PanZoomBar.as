@@ -28,8 +28,8 @@ package org.openscales.core.control
 	    
 	    private var _zoomStart:Pixel = null;
 	    
-	    public function PanZoomBar(options:Object = null) {
-	    	super(options);
+	    public function PanZoomBar(position:Pixel = null) {
+	    	super(position);
 	    }
 	    
 	    override public function destroy():void {

@@ -8,6 +8,7 @@ package org.openscales.core.control
 	import flash.text.TextFormat;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.control.ui.Arrow;
 	import org.openscales.core.control.ui.Button;
 	import org.openscales.core.control.ui.CheckBox;
@@ -57,8 +58,8 @@ package org.openscales.core.control
         * 
         * @param options
         */
-		public function LayerSwitcher(options:Object = null) {
-			super(options);
+		public function LayerSwitcher(position:Pixel = null) {
+			super(position);
 			
 			this._minimizeButton = new Button("minimize", new _layerSwitcherMinimizeImg(), this.position.add(-18,0));
 			this._maximizeButton = new Button("maximize", new _layerSwitcherMaximizeImg(), this.position.add(-18,0));
