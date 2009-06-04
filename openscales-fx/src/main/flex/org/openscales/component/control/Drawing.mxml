@@ -6,6 +6,9 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import mx.containers.TabNavigator;
+			import mx.events.IndexChangedEvent;
+			import org.openscales.core.handler.mouse.DragFeature;
 			import mx.effects.easing.Elastic;
 			import org.openscales.core.handler.mouse.SelectFeature;
 			import mx.events.CloseEvent;
@@ -34,7 +37,8 @@
 			public var drawLayer:VectorLayer = new VectorLayer("Sketch");			
 			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
 			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
-			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);		
+			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
+			private var _indexTabDrawing:Number = -1;	
 			
 			//Params for feature selection
 			private var _selectStyle:Style = new Style();
@@ -45,6 +49,8 @@
 			public var selectFeatureHandler:SelectFeature;
 			public var dragHandler:DragHandler;
 			
+			//TO do dragfeature			
+			public var dragfeature:DragFeature;
 
 			public function initTabDrawing():void{
 				this.featureInfo.map = this.map;
@@ -56,12 +62,18 @@
 				this.selectFeatureHandler.select = onSelectFeature;
 				this.selectFeatureHandler.hover = false;
 				 
+				 
+				this.dragfeature=new DragFeature(this.map,[drawLayer],true);
 				//Active select feature handler with the map
 				this.map.addHandler(selectFeatureHandler);
 				
 				//Define the style of a feature when it selected
 				this.selectStyle.fillColor = 0xFFD700;
-				this.selectStyle.strokeColor = 0xFFD700;
+				this.selectStyle.strokeColor = 0xFFD700;			
+				
+				//Manage switching tab
+				this.parent.addEventListener(Event.CHANGE,changingTab);
+				indexTabDrawing = (this.parent as TabNavigator).selectedIndex;
 			}
 			
 			/**
@@ -175,6 +187,7 @@
 								selectFeatureHandler.currentfeature.selected = true;
 								iteratorFeatures++;selectFeatures[iteratorFeatures]=selectFeatureHandler.currentfeature;
 								selectFeatureHandler.currentfeature.layer.redraw();	
+								this.featureInfo.showInfo(event);		//Show information of the selected feature
 							}
 						}
 						//Feature is already selected
@@ -286,6 +299,62 @@
 				}
 			}
 			
+			private function changingTab(event:Event):void{
+				var f:org.openscales.core.feature.VectorFeature;
+				var selectedFeature:Boolean = false;
+				
+				//User is on Drawing Tab, and wants to switch	
+				if((event.target as TabNavigator).selectedIndex != indexTabDrawing){						
+					//Check if some feature are selected
+					for each(f in selectFeatures){
+						if(f != null){if(f.selected){selectedFeature=true;}}
+					}				
+					//if one (or more) feature is selected, we warn user
+					if(selectedFeature){
+						Alert.okLabel = "Continue";
+						Alert.buttonWidth=200;
+						Alert.show("One (or more) feature is selected. If you continue, all selection will be lost.", "Warning", Alert.OK | Alert.CANCEL, null, alertContinueHandler);
+					}
+					else{
+						finishPath(); 
+						finishPolygon(); 
+						pointHandler.active = false;
+						tgBar.selectedIndex = -1;
+						drawType = "";
+						activeDrag();
+						selectFeatureHandler.active = false;
+					}			
+				}
+				else{
+					selectFeatureHandler.active = true;
+				}
+			}		
+			
+			private function alertContinueHandler(event:CloseEvent):void {
+            	var i:Number = 0;
+            	var f:org.openscales.core.feature.VectorFeature;
+            	// User click "Continue", he wants to continue
+            	if (event.detail==Alert.OK){
+               		if(drawType != ""){
+						finishPath(); 
+						finishPolygon(); 
+						pointHandler.active = false;
+						tgBar.selectedIndex = -1;
+						drawType = "";
+						activeDrag();
+					}
+					else if(selectFeatureHandler != null){
+						selectFeatureHandler.active=false;
+					}
+					for(i;i<selectFeatures.length;i++){
+							f=selectFeatures[i];
+							if(f != null){if(f.selected){f.selected = false;f.style = f.originalStyle;f.layer.redraw();}}
+						}	
+						selectFeatures = null;
+            	}
+            	else{(this.parent as TabNavigator).selectedIndex = indexTabDrawing;}
+			}
+			
 			public function finishPolygon():void{
 				polygonHandler.drawFinalPoly();
 				polygonHandler.active = false;
@@ -335,6 +404,12 @@
 				_iteratorFeatures = value;
 			}
 			
+			public function get indexTabDrawing():Number{
+				return _indexTabDrawing;
+			}
+			public function set indexTabDrawing(value:Number):void{
+				_indexTabDrawing = value;
+			}
 		]]>
 	</mx:Script>
 	

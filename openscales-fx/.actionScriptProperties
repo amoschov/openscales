@@ -10,6 +10,8 @@
 </compiler>
 <applications>
 <application path="flexcomponent.as"/>
+<application path="testDran.mxml"/>
+<application path="testDraw.mxml"/>
 </applications>
 <modules/>
 <buildCSSFiles/>
