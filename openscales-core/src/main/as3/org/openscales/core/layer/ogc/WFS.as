@@ -265,7 +265,7 @@ package org.openscales.core.layer.ogc
 	     */
 		public function commit():void {
 			if (!this.writer) {
-	            this.writer = new org.openscales.core.format.WFSFormat({},this);
+	            this.writer = new WFSFormat(this);
 	        }
 	
 	        var data:Object = this.writer.write(this.features);

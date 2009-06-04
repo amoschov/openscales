@@ -26,7 +26,7 @@ package org.openscales.core.format
 	     *
 	     * @return A new WKT parser.
 	     */
-		public function WKTFormat(options:Object = null):void {
+		public function WKTFormat():void {
 			
 	        this._regExes = {
 	            'typeStr': /^\s*(\w+)\s*\(\s*(.*)\s*\)\s*$/,
@@ -35,7 +35,7 @@ package org.openscales.core.format
 	            'doubleParenComma': /\)\s*\)\s*,\s*\(\s*\(/,
 	            'trimParens': /^\s*\(?(.*?)\)?\s*$/
 	        };
-	        super(options);
+
 		}
 		
 		/**

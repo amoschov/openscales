@@ -1,9 +1,5 @@
 package org.openscales.core.format
 {
-	import org.openscales.proj4as.Proj4as;
-	import org.openscales.proj4as.ProjPoint;
-	import org.openscales.proj4as.ProjProjection;
-	
 	import flash.utils.getQualifiedClassName;
 	import flash.xml.XMLNode;
 	
@@ -17,6 +13,9 @@ package org.openscales.core.format
 	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
+	import org.openscales.proj4as.Proj4as;
+	import org.openscales.proj4as.ProjPoint;
+	import org.openscales.proj4as.ProjProjection;
 	
 	/**
 	 * Read/Wite GML. Supports the GML simple features profile.
@@ -47,8 +46,8 @@ package org.openscales.core.format
     	
     	private var _dim:Number;
     	
-    	public function GMLFormat(options:Object):void {
-    		super(options);
+    	public function GMLFormat(extractAttributes:Boolean = true) {
+			this.extractAttributes = extractAttributes;
     	}
     	
     	override public function read(data:Object):Object {

@@ -14,8 +14,8 @@ package org.openscales.core.format
 		protected var _internalProj:ProjProjection = null;
 		protected var _externalProj:ProjProjection = null;
 		
-		public function Format(options:Object = null):void {
-			Util.extend(this, options);
+		public function Format() {
+
 		}
 		
 		public function read(data:Object):Object {

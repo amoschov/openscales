@@ -9,10 +9,10 @@ package org.openscales.core.format
 	public class WFSFormat extends GMLFormat
 	{
 		
-		private var _layer:org.openscales.core.layer.ogc.WFS = null;
+		private var _layer:WFS = null;
     	
-    	public function WFSFormat(options:Object, layer:org.openscales.core.layer.ogc.WFS):void {
-    		super(options);
+    	public function WFSFormat(layer:WFS) {
+
 	        this.layer = layer;
 	        if (this.layer.featureNS) {
 	            this._featureNS = this.layer.featureNS;
@@ -20,7 +20,7 @@ package org.openscales.core.format
 	        if (layer.geometryColumn) {
 	            this._geometryName = layer.geometryColumn;
 	        }
-	        var wfsLayer:org.openscales.core.layer.ogc.WFS = this.layer as org.openscales.core.layer.ogc.WFS;
+	        var wfsLayer:WFS = this.layer as WFS;
 	        if (wfsLayer.typename) {
 	            this._featureName = wfsLayer.typename;
 	        }
@@ -117,11 +117,11 @@ package org.openscales.core.format
         	this.layer = null;
     	}
     	
-    	public function get layer():org.openscales.core.layer.ogc.WFS {
+    	public function get layer():WFS {
 			return this._layer;
 		}
 		
-		public function set layer(value:org.openscales.core.layer.ogc.WFS):void {
+		public function set layer(value:WFS):void {
 			this._layer = value;
 		}
 		

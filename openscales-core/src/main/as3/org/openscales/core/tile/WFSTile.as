@@ -88,7 +88,7 @@ package org.openscales.core.tile
 			}
 						
 	        if (wfsLayer && wfsLayer.vectorMode) {
-	            var gml:GMLFormat = new GMLFormat({extractAttributes: wfsLayer.extractAttributes});
+	            var gml:GMLFormat = new GMLFormat(wfsLayer.extractAttributes);
 	            if (this.layer.map.projection != null && this.layer.projection != null && this.layer.projection.srsCode != this.layer.map.projection.srsCode) {
 	            	gml.externalProj = this.layer.projection;
 	            	gml.internalProj = this.layer.map.projection;
