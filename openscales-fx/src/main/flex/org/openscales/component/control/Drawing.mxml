@@ -34,36 +34,42 @@
 			import org.openscales.core.Map;
 			
 			private var _drawType:String = "";
+			private var _indexTabDrawing:Number = -1;
 			public var drawLayer:VectorLayer = new VectorLayer("Sketch");			
 			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
 			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
 			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
-			private var _indexTabDrawing:Number = -1;	
 			
-			//Params for feature selection
+			/**
+			 * Params for feature selection
+			 */
 			private var _selectStyle:Style = new Style();
 			public var selectFeatures:Array = new Array();  //Array witch keep all selectFeature (with ctrl key)
 			private var _iteratorFeatures:Number = 0;	//indicate the iterate for feature
 				
-			//new mouse handler
-			public var selectFeatureHandler:SelectFeature;
-			public var dragHandler:DragHandler;
-			
-			//TO do dragfeature			
-			public var dragfeature:DragFeature;
+			/**
+			 * Mouse handlers
+			 */
+			public var selectFeatureHandler:SelectFeature; //to select features
+			public var dragHandler:DragHandler;		//to pan on the map
+			public var dragfeature:DragFeature;		//to drag features
 
+			/**
+			 * Initialisation of map and params
+			 */
 			public function initTabDrawing():void{
 				this.featureInfo.map = this.map;
-				//For unselect all button in the toggleBarButton
+				//To unselect all button in the toggleBarButton
 				this.tgBar.selectedIndex = -1;
 				
-				//Properties for selectFeatureHandler
+				//Properties of selectFeatureHandler
 				this.selectFeatureHandler = new SelectFeature(this.map,drawLayer,true);
 				this.selectFeatureHandler.select = onSelectFeature;
 				this.selectFeatureHandler.hover = false;
-				 
-				 
-				this.dragfeature=new DragFeature(this.map,[drawLayer],true);
+				 				 
+				//Active drag feature
+				this.dragfeature = new DragFeature(this.map,[drawLayer],true);
+				
 				//Active select feature handler with the map
 				this.map.addHandler(selectFeatureHandler);
 				
@@ -82,6 +88,8 @@
 			public function onDeleteSelectedClick(event:Event):void {
 				Alert.show("Are you sure ?", "Warning", Alert.YES | Alert.NO, null, alertClickHandler);				
 			}
+			
+			//check the user answer
 			private function alertClickHandler(event:CloseEvent):void {
                 // User click on "YES", he wants to apply changes
                 if (event.detail==Alert.YES){
@@ -89,7 +97,9 @@
                 }                  
             }
 			
-			// when user cliks on delete selected feature button
+			/**
+			 * User clicks on delete selected feature button
+			 */
 			private function deleteSelectedFeatures():void {
 				var feature:org.openscales.core.feature.VectorFeature;
 				var i:Number = 0;
@@ -103,14 +113,16 @@
 				drawLayer.renderer.clear();
 				drawLayer.redraw();
 				btnDeleteSelected.enabled = false;
+				this.featureInfo.dgFeatureInfo.dataProvider=null;
 			}
 
-			//When user clicks on delete all button
-			public function onDeleteAllClick(event:Event):void {
+			/**
+			 * User clicks on delete all button
+			 */
+			private function onDeleteAllClick(event:Event):void {
 				drawLayer.destroyFeatures();
 				drawLayer.renderer.clear();
-				selectFeatureHandler.lastfeature = null;
-				
+				selectFeatureHandler.lastfeature = null;				
 				switch(drawType)
 				{
 					case "path":{pathHandler.newFeature = true; break;}
@@ -118,7 +130,9 @@
 				}
 			}
 			
-			//When user clicks on delete last feature button
+			/**
+			 * User clicks on delete last feature button
+			 */
 			public function onDeleteLastClick(event:Event):void {
 				var last:Number = drawLayer.features.length - 1;
 				var lastFeature:VectorFeature = null;
@@ -129,8 +143,7 @@
 								
 					switch(drawType)
 					{
-						case "path":		
-													
+						case "path":														
 							if (last - 1 >= 0 && getQualifiedClassName(drawLayer.features[last-1].geometry) == "org.openscales.core.geometry::LineString") {
 								pathHandler.lastPoint = drawLayer.features[last-1].geometry.getLastPoint();
 							}
@@ -138,12 +151,10 @@
 							break;	
 												
 						case "polygon":
-
 							if (last-1 >= 0 && !polygonHandler.firstPointRemoved && !polygonHandler.newFeature) {
 								drawLayer.removeFeatures(drawLayer.features[last - 1]);
 							}
-							polygonHandler.newFeature = true;
-							
+							polygonHandler.newFeature = true;							
 							break;
 					}   
 				}
@@ -153,7 +164,10 @@
 				}
 			}
 			
-			public function onSelectFeature(event:FeatureEvent):void {			
+			/**
+			 * On select feature
+			 */
+			private function onSelectFeature(event:FeatureEvent):void {			
 				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active && featureInfo != null) {					
 					var i:Number = 0;	// to iterate
 					var f:org.openscales.core.feature.VectorFeature;					
@@ -247,9 +261,12 @@
 				}
 			}
 			
+			/**
+			 * Click on the togglebarbutton. Index button starts from 0.
+			 */ 		
 			private function clickHandler(event:ItemClickEvent):void{
 				var handler:Number = event.index;		// handler is a number because of toggleButtonBar
-				this.deactiveDrag(); 				
+				this.deactiveDrag();			
 				switch(handler)
 				{
 					case 0:		//click on button point
@@ -298,7 +315,10 @@
 						break;
 				}
 			}
-			
+			/**
+			 * Manage switching tab
+			 * To prevent a feature selection. If user isn't on drawing tab, he can't select a feature
+			 */
 			private function changingTab(event:Event):void{
 				var f:org.openscales.core.feature.VectorFeature;
 				var selectedFeature:Boolean = false;
@@ -315,6 +335,7 @@
 						Alert.buttonWidth=200;
 						Alert.show("One (or more) feature is selected. If you continue, all selection will be lost.", "Warning", Alert.OK | Alert.CANCEL, null, alertContinueHandler);
 					}
+					//no feature is selected
 					else{
 						finishPath(); 
 						finishPolygon(); 
@@ -325,11 +346,13 @@
 						selectFeatureHandler.active = false;
 					}			
 				}
+				//user switches to drawing tab
 				else{
 					selectFeatureHandler.active = true;
 				}
 			}		
 			
+			//check if the user wants to continue
 			private function alertContinueHandler(event:CloseEvent):void {
             	var i:Number = 0;
             	var f:org.openscales.core.feature.VectorFeature;
@@ -355,16 +378,28 @@
             	else{(this.parent as TabNavigator).selectedIndex = indexTabDrawing;}
 			}
 			
+			/**
+			 * Finish a polygon
+			 * Force to finalyse a polygon (even it's not finished)
+			 */
 			public function finishPolygon():void{
 				polygonHandler.drawFinalPoly();
 				polygonHandler.active = false;
 			}
 			
+			/**
+			 * Finish a path
+			 * Force to finalyse a path (event it's not finished)
+			 */
 			public function finishPath():void{
 				pathHandler.drawFinalPath();
 				pathHandler.active = false;
 			}
 			
+			/**
+			 * Active draging
+			 * User can drag the map
+			 */
 			public function activeDrag():void{
 				var handler:Handler;
 				for each(handler in this.map.handlers){
@@ -373,6 +408,10 @@
 					}
 				} 
 			}
+			/**
+			 * Deactive draging
+			 * User can't drag map anymore
+			 */
 			public function deactiveDrag():void{
 				var handler:Handler;
 				for each(handler in this.map.handlers){
