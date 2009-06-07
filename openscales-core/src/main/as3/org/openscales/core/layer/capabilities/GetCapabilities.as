@@ -163,6 +163,14 @@ package org.openscales.core.layer.capabilities
 			return this._capabilities;
 		}
 		
+		public function set proxy(value:String):void {
+			this._proxy = value;
+		}
+		
+		public function get proxy():String {
+			return this._proxy;
+		}
+		
 
 	}
 }
