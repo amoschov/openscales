@@ -13,6 +13,7 @@ package org.openscales.core.tile
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.events.TileEvent;
 	import org.openscales.core.layer.Layer;
 	
 	/**
@@ -67,6 +68,8 @@ package org.openscales.core.tile
 	        	
 	        //We add the proxy to the url (to avoid crossdomain issue in case of zoom tween effect (bitmapdata.draw))
 	        var urlProxy:String = this.layer.proxy + encodeURIComponent(this.url);
+	        //We dispatch a TILE_LOAD_START event in order to know how many tiles are loading
+	        this.layer.map.dispatchEvent(new TileEvent(TileEvent.TILE_LOAD_START,this));
 	        _tileLoader.load(new URLRequest(urlProxy));
 	        _tileLoader.name=this.url;
 	        _tileLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onTileLoadEnd, false, 0, true);
@@ -77,6 +80,10 @@ package org.openscales.core.tile
 		
 		public function onTileLoadEnd(event:Event):void
 		{
+			
+			// We dispatch à TILE_LOAD_END event
+			this.layer.map.dispatchEvent(new TileEvent(TileEvent.TILE_LOAD_END,this));
+			
 			if(this.layer) {
 				var loaderInfo:LoaderInfo = event.target as LoaderInfo;
 				var loader:Loader = loaderInfo.loader as Loader;
@@ -95,6 +102,8 @@ package org.openscales.core.tile
 		
 		private function onTileLoadError(event:IOErrorEvent):void
 		{
+			// We dispatch à TILE_LOAD_END event
+			this.layer.map.dispatchEvent(new TileEvent(TileEvent.TILE_LOAD_END,this));
 			trace("Error when loading tile " + this.url);
 
 		}

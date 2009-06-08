@@ -7,7 +7,6 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.events.TileEvent;
-	import org.openscales.core.feature.Style;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	
@@ -231,7 +230,6 @@ package org.openscales.core.layer
 	        if (!tile) {
 	            tile = this.addTile(tileBounds, px);
 	            
-	            this.addTileMonitoringHooks(tile);
 	            tile.draw();
 	            this.grid[0][0] = tile;
 	        } else {
@@ -242,6 +240,8 @@ package org.openscales.core.layer
 		}
 		
 		public function initGriddedTiles(bounds:Bounds):void {
+			
+			this.addTileMonitoringHooks();
 	        var viewSize:Size = this.map.size;
 	        var minRows:Number = Math.ceil(viewSize.h/this.tileSize.h) + 
 	                      Math.max(1, 2 * this.buffer);
@@ -303,7 +303,6 @@ package org.openscales.core.layer
 	                var tile:Tile = row[colidx++];
 	                if (!tile) {
 	                    tile = this.addTile(tileBounds, px);
-	                    this.addTileMonitoringHooks(tile);
 	                    row.push(tile);
 	                } else {
 	                    tile.moveTo(tileBounds, px, false);
@@ -495,31 +494,24 @@ package org.openscales.core.layer
 		}
 		
 		/** 
-	     * This function takes a tile as input and adds the appropriate hooks to 
-	     *     the tile so that the layer can keep track of the loading tiles.
+	     * This function adds listener to the TILE_LOAD_START and TILE_LOAD_END events
 	     * 
-	     * @param tile
 	     */
-		public function addTileMonitoringHooks(tile:Tile):void {
-			tile.onLoadStart = function():void {
-	            //if that was first tile then trigger a 'loadstart' on the layer
-	            if (this.numLoadingTiles == 0) {
-	                this.events.triggerEvent("loadstart");
-	            }
-	            this.numLoadingTiles++;
-	        };
-	        this.addEventListener(TileEvent.TILE_LOAD_START, tile.onLoadStart);
-	      
-	        tile.onLoadEnd = function():void {
-	            this.numLoadingTiles--;
-	            this.events.triggerEvent("tileloaded");
-	            //if that was the last tile, then trigger a 'loadend' on the layer
-	            if (this.numLoadingTiles == 0) {
-	                this.events.triggerEvent("loadend");
-	            }
+		public function addTileMonitoringHooks():void {
+			
+			var onLoadStart:Function = function():void {
+	            numLoadingTiles++;
 	        };
 	        
-	        this.addEventListener(TileEvent.TILE_LOAD_END, tile.onLoadEnd);
+	        this.map.addEventListener(TileEvent.TILE_LOAD_START, onLoadStart);
+	      
+	        var onLoadEnd:Function = function():void {
+	            numLoadingTiles--;
+	            if (numLoadingTiles < 2 && map.bitmapTransition != null)
+	            	map.bitmapTransition.alpha = 0;
+	        };
+	        
+	        this.map.addEventListener(TileEvent.TILE_LOAD_END, onLoadEnd);
 
 		}
 		
@@ -733,6 +725,7 @@ package org.openscales.core.layer
 		
 		public function set numLoadingTiles(value:int):void {
 			this._numLoadingTiles = value;
+			trace(this.numLoadingTiles);
 		}
 		
 		/**
