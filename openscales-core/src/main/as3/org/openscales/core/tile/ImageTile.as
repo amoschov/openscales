@@ -66,8 +66,6 @@ package org.openscales.core.tile
 	        if(this.url == null)
 	        	this.url = this.layer.getURL(this.bounds);
 	        
-	        //We dispatch a TILE_LOAD_START event in order to know how many tiles are loading
-	        this.layer.map.dispatchEvent(new TileEvent(TileEvent.TILE_LOAD_START,this));
 	        //We add the proxy to the url (to avoid crossdomain issue in case of zoom tween effect (bitmapdata.draw))
 	        if (this.layer.proxy != null) {
 	        	var urlProxy:String = this.layer.proxy + encodeURIComponent(this.url);
@@ -86,10 +84,7 @@ package org.openscales.core.tile
 		
 		public function onTileLoadEnd(event:Event):void
 		{
-			
-			// We dispatch à TILE_LOAD_END event
-			this.layer.map.dispatchEvent(new TileEvent(TileEvent.TILE_LOAD_END,this));
-			
+						
 			if(this.layer) {
 				var loaderInfo:LoaderInfo = event.target as LoaderInfo;
 				var loader:Loader = loaderInfo.loader as Loader;
@@ -108,10 +103,7 @@ package org.openscales.core.tile
 		
 		private function onTileLoadError(event:IOErrorEvent):void
 		{
-			// We dispatch à TILE_LOAD_END event
-			this.layer.map.dispatchEvent(new TileEvent(TileEvent.TILE_LOAD_END,this));
 			trace("Error when loading tile " + this.url);
-
 		}
 		
 		override public function clear():void {

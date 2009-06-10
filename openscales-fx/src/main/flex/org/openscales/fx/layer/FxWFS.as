@@ -5,13 +5,14 @@ package org.openscales.fx.layer
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.ogc.WFS;
+	import org.openscales.core.layer.ogc.params.WFSParams;
 	import org.openscales.fx.feature.FxStyle;
 
 	public class FxWFS extends FxLayer
 	{
 		private var _url:String;
 		
-		private var _params:Object;
+		private var _params:WFSParams;
 		
 		private var _style:Style;
 		
@@ -27,7 +28,7 @@ package org.openscales.fx.layer
 		public function FxWFS()
 		{
 			super();
-			this._params = new Object();
+			this._params = new WFSParams("");
 			this._isBaseLayer = false;
 		}
 		
@@ -60,7 +61,7 @@ package org.openscales.fx.layer
 	    	this._url = value;
 	    }
 	    
-	    public function set params(value:Object):void {
+	    public function set params(value:WFSParams):void {
 	    	this._params = value;
 	    }
 		
@@ -70,13 +71,13 @@ package org.openscales.fx.layer
 	    
 	    public function set srs(value:String):void {
 	    	if (value != null) {
-	    		this._params.SRS = value;
+	    		this._params.srs = value;
 	    		this._projection = value;
 	    	}	    	
 	    }
 	    
 	    public function set version(value:String):void {
-	    	this._params.VERSION = value;
+	    	this._params.version = value;
 	    }
 	    
 	    public function set useCapabilities(value:Boolean):void {

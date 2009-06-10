@@ -6,7 +6,6 @@ package org.openscales.core.layer.ogc
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Request;
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -15,9 +14,9 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.feature.WFSFeature;
 	import org.openscales.core.format.Format;
 	import org.openscales.core.format.WFSFormat;
-	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.layer.capabilities.GetCapabilities;
+	import org.openscales.core.layer.ogc.params.WFSParams;
 	import org.openscales.core.tile.WFSTile;
 	import org.openscales.proj4as.ProjProjection;
 	
@@ -28,11 +27,7 @@ package org.openscales.core.layer.ogc
 	 */
 	public class WFS extends VectorLayer
 	{
-		
-		public var DEFAULT_PARAMS:Object = { service: "WFS",
-	                      version: "1.0.0",
-	                      request: "GetFeature" };
-		
+	
 		/**
 	     * The ratio of image/tile size to map size (this is the untiled
 	     *     buffer)
@@ -44,7 +39,7 @@ package org.openscales.core.layer.ogc
 	     */                   
 		private var _vectorMode:Boolean = true;
 		
-		private var _params:Object = null;
+		private var _params:WFSParams = null;
 		
 		private var _url:String = null;
 		
@@ -96,7 +91,7 @@ package org.openscales.core.layer.ogc
 		 * @param capabilities
 		 * @param useCapabilities
 		 */	                    
-	    public function WFS(name:String, url:String, params:Object, isBaseLayer:Boolean = false, visible:Boolean = true, 
+	    public function WFS(name:String, url:String, params:WFSParams = null, isBaseLayer:Boolean = false, visible:Boolean = true, 
 							projection:String = null, proxy:String = null, useCapabilities:Boolean=false, capabilities:HashMap=null) {
 	    	
 	    	this.capabilities = capabilities;
@@ -115,8 +110,10 @@ package org.openscales.core.layer.ogc
 	            this.geometryColumn = "the_geom";
 	        }    
 	        
-	        this.params = params;
-	        Util.applyDefaults(this.params, Util.upperCaseObject(this.DEFAULT_PARAMS));
+	        if (params != null)
+	       		this.params = params;
+	       	else
+	       		this.params = new WFSParams("");
 	        
 	        this.url = url;	        
 	    }
@@ -181,12 +178,10 @@ package org.openscales.core.layer.ogc
 		
 			            var ul:LonLat = new LonLat(tileBounds.left, tileBounds.top);
 			            var pos:Pixel = this.map.getLayerPxFromLonLat(ul);
-		
+						
+						this.params.bbox = tileBounds.boundsToString();
 			            var url:String = this.getFullRequestString();
 			        
-			            var params:Object = { BBOX:tileBounds.boundsToString() };
-			            url += "&" + Util.getParameterString(params);
-			
 			            if (!this.tile) {
 			                this.tile = new org.openscales.core.tile.WFSTile(this, pos, tileBounds, 
 			                                                     url, tileSize);
@@ -203,11 +198,9 @@ package org.openscales.core.layer.ogc
 				     				!this.featuresBbox.containsBounds(this.capabilities.getValue("Extent"))) {
 									
 									this.featuresBbox.extendFromBounds((tileBounds));
-				                
-					                url = this.getFullRequestString();
-				            		params = { BBOX:this.featuresBbox.boundsToString() };
-				            		url += "&" + Util.getParameterString(params);
-				            		
+									
+				                	this.params.bbox = this.featuresBbox.boundsToString();
+					                url = this.getFullRequestString();				            		
 				            		 
 				            		this.tile.url = url;			            		
 				            		this.tile.loadFeaturesForRegion(this.tile.requestSuccess);
@@ -252,12 +245,37 @@ package org.openscales.core.layer.ogc
 	     * @param newParams
 	     * @param altUrl Use this as the url instead of the layer's url
 	     */
-		private function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
+		private function getFullRequestString(altUrl:String = null):String {
+			
+			var url:String;
+			
+			if (altUrl != null)
+				url = altUrl;
+			else
+				url = this.url;
+				
+			var requestString:String = url;
+			
 	        var projection:ProjProjection = this.projection;
 	        if (projection != null || this.map.projection != null)
-	        	this.params.SRS = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
+	        	this.params.srs = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
 	
-	        return new Grid(this.name, this.url, this.params).getFullRequestString(newParams, altUrl);
+	
+			var lastServerChar:String = url.charAt(url.length - 1);
+            if ((lastServerChar == "&") || (lastServerChar == "?")) {
+                requestString += this.params.toGETString();
+            } 
+            else {
+                if (url.indexOf('?') == -1) {
+                    requestString += '?' + this.params.toGETString();
+                } 
+                else {
+                    requestString += '&' + this.params.toGETString();
+                }
+            }
+			
+			
+	        return requestString;
 		}
 		
 		/**
@@ -360,11 +378,11 @@ package org.openscales.core.layer.ogc
 			this._vectorMode = value;
 		}
 		
-		public function get params():Object {
+		public function get params():WFSParams {
 			return this._params;
 		}
 		
-		public function set params(value:Object):void {
+		public function set params(value:WFSParams):void {
 			this._params = value;
 		}
 		

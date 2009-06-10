@@ -499,7 +499,7 @@ package org.openscales.core.layer
 	     */
 		public function addTileMonitoringHooks():void {
 			
-			var onLoadStart:Function = function():void {
+			/*var onLoadStart:Function = function():void {
 	            numLoadingTiles++;
 	        };
 	        
@@ -511,13 +511,13 @@ package org.openscales.core.layer
 	            	map.bitmapTransition.alpha = 0;
 	        };
 	        
-	        this.map.addEventListener(TileEvent.TILE_LOAD_END, onLoadEnd);
+	        this.map.addEventListener(TileEvent.TILE_LOAD_END, onLoadEnd);*/
 
 		}
 		
 		public function removeTileMonitoringHooks(tile:Tile):void {
-			this.removeEventListener(TileEvent.TILE_LOAD_START, tile.onLoadStart);
-			this.removeEventListener(TileEvent.TILE_LOAD_END, tile.onLoadEnd);
+			/*this.removeEventListener(TileEvent.TILE_LOAD_START, tile.onLoadStart);
+			this.removeEventListener(TileEvent.TILE_LOAD_END, tile.onLoadEnd);*/
 		}
 		
 		public function moveGriddedTiles(bounds:Bounds):void {
