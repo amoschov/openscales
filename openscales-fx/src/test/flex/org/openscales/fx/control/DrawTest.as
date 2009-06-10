@@ -4,22 +4,19 @@ package org.openscales.fx.control
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
-	import flexunit.framework.TestCase;
-	
 	import mx.events.ItemClickEvent;
 	
 	import org.openscales.component.control.Drawing;
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.control.MousePosition;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.handler.mouse.DragHandler;
 	import org.openscales.core.handler.mouse.WheelHandler;
 	import org.openscales.core.layer.VectorLayer;
-	import org.openscales.core.layer.ogc.WFS;
 	import org.openscales.core.layer.ogc.WMSC;
+	import org.openscales.core.layer.params.ogc.WMSParams;
 	
 	
 	public class DrawTest extends TestCase
@@ -40,8 +37,8 @@ package org.openscales.fx.control
 			
 			var wmslayer1:WMSC = new WMSC( "OpenLayers WMS",
                     						"http://labs.metacarta.com/wms-c/Basic.py",
-                    						{layers: 'basic'} , 
-                    						{isBaseLayer: true});
+                    						new WMSParams("basic"),
+                    						true);
 			
 			
 			//Map init
