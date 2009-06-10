@@ -24,7 +24,7 @@
 	
 	<build>
 		<sourceDirectory>src/main/flex</sourceDirectory>
-		<testSourceDirectory>src/test/flex</testSourceDirectory>
+		<!--testSourceDirectory>src/test/flex</testSourceDirectory-->
 		
 		<plugins>
 			<plugin>
