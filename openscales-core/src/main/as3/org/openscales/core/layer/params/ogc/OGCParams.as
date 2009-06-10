@@ -1,4 +1,4 @@
-package org.openscales.core.layer.ogc.params
+package org.openscales.core.layer.params.ogc
 {
 	import org.openscales.core.basetypes.maps.HashMap;
 		

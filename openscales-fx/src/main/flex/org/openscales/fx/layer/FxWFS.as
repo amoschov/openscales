@@ -5,7 +5,7 @@ package org.openscales.fx.layer
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.ogc.WFS;
-	import org.openscales.core.layer.ogc.params.WFSParams;
+	import org.openscales.core.layer.params.ogc.WFSParams;
 	import org.openscales.fx.feature.FxStyle;
 
 	public class FxWFS extends FxLayer

@@ -4,7 +4,7 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.layer.ogc.params.WFSParams;
+			import org.openscales.core.layer.params.ogc.WFSParams;
 			import org.openscales.core.events.LayerEvent;
 			import org.openscales.core.layer.ogc.WFS;
 			import mx.controls.Text;
