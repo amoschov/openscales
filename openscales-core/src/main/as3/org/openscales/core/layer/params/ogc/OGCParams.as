@@ -1,9 +1,10 @@
 package org.openscales.core.layer.params.ogc
 {
 	import org.openscales.core.basetypes.maps.HashMap;
+	import org.openscales.core.layer.params.IHttpParams;
 		
 	
-	internal class OGCParams 
+	internal class OGCParams implements IHttpParams
 	{
 		
 		private var _service:String;

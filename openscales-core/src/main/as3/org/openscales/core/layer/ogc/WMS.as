@@ -1,13 +1,12 @@
 package org.openscales.core.layer.ogc
 {
 	
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.layer.Grid;
+	import org.openscales.core.layer.params.ogc.WMSParams;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
-	import org.openscales.proj.IProjection;
 	import org.openscales.proj4as.ProjProjection;
 	
 	/**
@@ -17,28 +16,18 @@ package org.openscales.core.layer.ogc
 	 */	
 	public class WMS extends Grid
 	{
-		
-		public var DEFAULT_PARAMS:Object = { service: "WMS",
-                      version: "1.1.1",
-                      request: "GetMap",
-                      styles: "",
-                      exceptions: "application/vnd.ogc.se_inimage",
-                      format: "image/jpeg"
-                      };
                      
        	private var _reproject:Boolean = true;
        	
-       	public function WMS(name:String, url:String, params:Object = null, isBaseLayer:Boolean = false, 
+       	public function WMS(name:String, url:String, params:WMSParams = null, isBaseLayer:Boolean = false, 
 									visible:Boolean = true, projection:String = null, proxy:String = null) {
+										
+			if (params == null)
+				params = new WMSParams("");
 										   		
 	        super(name, url, params, isBaseLayer, visible, projection, proxy);
 	        
 	        this.singleTile = true;
-	        
-	        Util.applyDefaults(
-	                       this.params, 
-	                       Util.upperCaseObject(this.DEFAULT_PARAMS)
-	                       );
 
        	}
        	
@@ -46,10 +35,12 @@ package org.openscales.core.layer.ogc
 	        if(this.gutter) {
 	            bounds = this.adjustBoundsByGutter(bounds);
 	        }
-	        return this.getFullRequestString(
-	                     {BBOX:bounds.boundsToString(),
-	                      WIDTH:this.imageSize.w,
-	                      HEIGHT:this.imageSize.h});
+	        
+	        (this.params as WMSParams).bbox = bounds.boundsToString();
+	        (this.params as WMSParams).width = this.imageSize.w;
+	        (this.params as WMSParams).height = this.imageSize.h;
+	        
+	        return this.getFullRequestString();
        	}
        	
        	override public function addTile(bounds:Bounds, position:Pixel):Tile {
@@ -58,17 +49,12 @@ package org.openscales.core.layer.ogc
 	                                             url, this.tileSize);
        	}
        	
-       	override public function mergeNewParams(newParams:Array):void {
-	       	var upperParams:Array = Util.upperCaseObject(newParams) as Array;
-	        super.mergeNewParams(upperParams);
-       	}
-       	
-       	override public function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
+       	override public function getFullRequestString(altUrl:String = null):String {
 	         var projection:ProjProjection = this.projection;
 	         if (projection != null || this.map.projection != null)
-	        	this.params.SRS = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
+	        	(this.params as WMSParams).srs = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
 	
-	        return super.getFullRequestString(newParams, altUrl);
+	        return super.getFullRequestString(altUrl);
        	}
        	
        	public function get reproject():Boolean {

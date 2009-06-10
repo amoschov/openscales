@@ -6,7 +6,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.events.TileEvent;
+	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	
@@ -43,7 +43,7 @@ package org.openscales.core.layer
 	     * @param projection
 	     * @param proxy
 	     */
-		public function Grid(name:String, url:String, params:Object = null, isBaseLayer:Boolean = false, 
+		public function Grid(name:String, url:String, params:IHttpParams = null, isBaseLayer:Boolean = false, 
 								visible:Boolean = true, projection:String = null, proxy:String = null) {
 									
 			super(name, url, params, isBaseLayer, visible, projection, proxy);
@@ -552,14 +552,7 @@ package org.openscales.core.layer
 	        }
 		}
 		
-		override public function mergeNewParams(newArguments:Array):void {
-	        super.mergeNewParams([newArguments]);
-	
-	        if (this.map != null) {
-	            this._initTiles();
-	        }
-		}
-		
+				
 		/**
 	     * Shifty grid work
 	     *

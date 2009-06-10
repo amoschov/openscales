@@ -1,6 +1,7 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.Util;
+	import org.openscales.core.layer.params.IHttpParams;
 	
 	
 	/**
@@ -21,15 +22,15 @@ package org.openscales.core.layer
 		 */
 		private var _altUrls:Array = null;
 		
-		private var _params:Object = null;
+		private var _params:IHttpParams = null;
 		
-		public function HTTPRequest(name:String, url:String, params:Object = null, isBaseLayer:Boolean = false, 
+		public function HTTPRequest(name:String, url:String, params:IHttpParams = null, isBaseLayer:Boolean = false, 
 									visible:Boolean = true, projection:String = null, proxy:String = null) {
 	       
 	        super(name, isBaseLayer, visible, projection, proxy);
 	        
 	        this.url = url;
-	        this.params = Util.extend( new Object(), params);
+	        this.params = params;
 		}
 		
 		override public function destroy(setNewBaseLayer:Boolean = true):void {
@@ -56,15 +57,7 @@ package org.openscales.core.layer
 	        
 	        return obj;
 		}*/
-		
-		/**
-	     * merge New Params
-	     * 
-	     * @param newParams
-	     */
-		public function mergeNewParams(newParams:Array):void {
-			this.params = Util.extend(this.params, newParams);
-		}
+
 		
 		/**
 	     * selectUrl() implements the standard floating-point multiplicative
@@ -100,25 +93,14 @@ package org.openscales.core.layer
 	     *   
 	     * @return return in formatted string
 	     */
-		public function getFullRequestString(newParams:Object = null, altUrl:String = null):String {
+		public function getFullRequestString(altUrl:String = null):String {
 	        var url:String = altUrl || this.url;
 	        
-	        var allParams:Object = Util.extend(new Object(), this.params);
-	        allParams = Util.extend(allParams, newParams);
-	        var paramsString:String = Util.getParameterString(allParams);
+	        var paramsString:String = this.params.toGETString();
 	        
    	        if (this.altUrls != null) {
 	            url = this.selectUrl(paramsString, this.getUrls());
 	        }  
-
-	        var urlParams:Object = 
-	            Util.upperCaseObject(Util.getArgs(url));
-	        for(var key:String in allParams) {
-	            if(key.toUpperCase() in urlParams) {
-	                delete allParams[key];
-	            }
-	        }
-	        paramsString = Util.getParameterString(allParams);
 	        
 	        var requestString:String = url;        
 	        
@@ -175,12 +157,12 @@ package org.openscales.core.layer
 			this._altUrls = value;
 		}
 		
-		public function get params():Object
+		public function get params():IHttpParams
 		{
 			return this._params;
 		}
 		
-		public function set params(value:Object):void
+		public function set params(value:IHttpParams):void
 		{
 			this._params = value;
 		}	
