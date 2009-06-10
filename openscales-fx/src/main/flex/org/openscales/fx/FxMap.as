@@ -74,6 +74,7 @@ package org.openscales.fx {
 			// Some operations must be done at the beginning, in order to do
 			// not depend on declaration order
 			for(var i:int=0; i < this.rawChildren.numChildren ; i++) {
+				
 				var child:DisplayObject = this.rawChildren.getChildAt(i);
 				if(child is FxMaxExtent) {
 					this._map.maxExtent = (child as FxMaxExtent).bounds;
