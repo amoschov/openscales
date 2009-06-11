@@ -102,6 +102,7 @@ package org.openscales.core
 			this._layerContainer.width = this.size.w;
 			this._layerContainer.height = this.size.h;
 			this.addChild(this._layerContainer);
+			Trace.map = this;
 
 		}
 
@@ -354,7 +355,7 @@ package org.openscales.core
 	            this.setCenter(newCenterLonLat, NaN, false, false, tween);
 	        }
 		}
-
+		
 		/**
 		 * Set the map center (and optionally, the zoom level).
 		 *
@@ -632,8 +633,6 @@ package org.openscales.core
 	    	var px:Pixel = this.getMapPxFromLonLat(lonlat);
 	    	return this.getLayerPxFromMapPx(px);
 		}
-		
-		
 
 		// Getters & setters as3
 

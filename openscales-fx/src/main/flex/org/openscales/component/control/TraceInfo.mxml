@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="200" height="300">
+	
+		<mx:Script>
+		<![CDATA[
+			import org.openscales.core.events.TraceEvent;
+			import org.openscales.core.Map;
+			
+			override public function set map(value:Map):void {
+					super.map = value;
+					
+					this.map.addEventListener(TraceEvent.TRACE,traceInfo);
+				}
+				
+			public function traceInfo(event:TraceEvent):void 
+			{
+				 textarea.text += "\n"+event.text;
+			}
+				
+				
+		]]>
+		</mx:Script>
+	<mx:TextArea id="textarea" width="100%" height="100%" text="Output Console :"/>
+	
+</Control>

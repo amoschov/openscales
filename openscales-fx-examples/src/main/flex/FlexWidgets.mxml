@@ -16,6 +16,16 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.Trace;
+			import org.openscales.core.events.TraceEvent;
+			import mx.charts.LogAxis;
+			import mx.logging.LogLogger;
+			import mx.logging.LogEvent;
+			import mx.logging.targets.TraceTarget;
+			import mx.logging.Log;
+			import mx.logging.LogEventLevel;
+			import mx.logging.ILoggingTarget;
+			import mx.logging.ILogger;
 			import org.openscales.core.Map;
 					
 			[Bindable]
@@ -23,8 +33,10 @@
 			
 			private function initMap():void{
 	   			map = fxmap.map;
-				tools.x = this.width - tools.width;		
-				//dragfeature.target=[test.layer,tabDraw.drawLayer];		
+				tools.x = this.width - tools.width;
+
+				//dragfeature.target=[test.layer,tabDraw.drawLayer];
+	
 			}
 			
 		]]>
@@ -47,6 +59,7 @@
 				<mx:VBox horizontalAlign="center">
 					<os:PanComponent id="pan" map="{map}"/>
 					<os:ZoomComponent id="zoom" map="{map}"/>
+					<!--<os:TraceInfo id="trace" map="{map}"/>-->
 				</mx:VBox>
 			</resize:ResizableWindow>
 						   

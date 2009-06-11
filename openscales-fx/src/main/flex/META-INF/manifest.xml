@@ -35,5 +35,6 @@
 	<component id="DrawingComponent" class="org.openscales.component.control.Drawing" />
 	<component id="FeatureInfoComponent" class="org.openscales.component.control.FeatureInfo" />
 	<component id="YahooSearchComponent" class="org.openscales.component.control.search.YahooSearch" />
+	<component id="TraceInfo" class="org.openscales.component.control.TraceInfo" />
 	
 </componentPackage>

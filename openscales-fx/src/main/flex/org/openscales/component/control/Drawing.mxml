@@ -6,6 +6,7 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.Trace;
 			import mx.containers.TabNavigator;
 			import mx.events.IndexChangedEvent;
 			import org.openscales.core.handler.mouse.DragFeature;
