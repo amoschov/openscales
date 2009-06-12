@@ -16,8 +16,7 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.Trace;
-			import org.openscales.core.events.TraceEvent;
+
 			import org.openscales.core.Map;
 					
 			[Bindable]
@@ -48,7 +47,7 @@
 				<mx:VBox horizontalAlign="center">
 					<os:PanComponent id="pan" map="{map}"/>
 					<os:ZoomComponent id="zoom" map="{map}"/>
-					<!--<os:TraceInfo id="trace" map="{map}"/>-->
+					<!--os:TraceInfo id="trace" map="{map}"/-->
 				</mx:VBox>
 			</resize:ResizableWindow>
 						   

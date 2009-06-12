@@ -4,6 +4,8 @@ package org.openscales.core.renderer
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.events.FeatureEvent;
+	import org.openscales.core.events.SpriteCursorEvent;
+	import org.openscales.core.events.TraceEvent;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 
@@ -22,9 +24,17 @@ package org.openscales.core.renderer
 		private var _attributes:Object = new Object();
 		
 		private var _isSelect:Boolean=true;
-		
+	
 		public function SpriteElement()
 		{	
+			/* this.useHandCursor = false; */
+		}
+		
+		private function hideHand(event:SpriteCursorEvent):void{
+			this.useHandCursor=false;
+		}
+		private function showHand(event:SpriteCursorEvent):void{
+			this.useHandCursor = true;
 		}
 		
 		public function get style():Style {
@@ -48,6 +58,10 @@ package org.openscales.core.renderer
 			this.addEventListener(MouseEvent.MOUSE_DOWN,this.onMouseDown);	
 			this.addEventListener(MouseEvent.MOUSE_UP,this.onMouseUp);
 			this.addEventListener(MouseEvent.MOUSE_MOVE,this.OnMouseMove);
+			
+			this.feature.layer.map.addEventListener(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND, hideHand);
+			this.feature.layer.map.addEventListener(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND, showHand);
+			
 		}
 		
 		public function get geometryClass():String {
@@ -78,6 +92,7 @@ package org.openscales.core.renderer
 		 }
 		  public function OnMouseOut(pevt:MouseEvent):void
 		 {
+		 	this.buttonMode=false;
 		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT,this.feature));
 		 }
 		 public function onMouseClick(pevt:MouseEvent):void
@@ -91,13 +106,13 @@ package org.openscales.core.renderer
 		 
 		 public function onMouseDown(pevt:MouseEvent):void
 		 {
-		 	this.buttonMode=true;
+		 	/* this.buttonMode=true; */
 		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEDOWN,this.feature));
 		 }
 		 
 		  public function onMouseUp(pevt:MouseEvent):void
 		 {
-		 	this.buttonMode=false;
+		 	/* this.buttonMode=false; */
 		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP,this.feature));
 		 }
 		 

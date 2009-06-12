@@ -79,7 +79,7 @@ package org.openscales.core.tile
 	    */
 		public function requestSuccess(event:Event):void {
 			var loader:URLLoader = event.target as URLLoader;
-			var doc:XML =  new XML(loader.data);;
+			var doc:XML =  new XML(loader.data);
 			var wfsLayer:org.openscales.core.layer.ogc.WFS = this.layer as org.openscales.core.layer.ogc.WFS;
 			
 			if (wfsLayer && wfsLayer.vectorMode) {

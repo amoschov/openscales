@@ -6,6 +6,7 @@
 		
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.events.SpriteCursorEvent;
 			import org.openscales.core.Trace;
 			import mx.containers.TabNavigator;
 			import mx.events.IndexChangedEvent;
@@ -59,6 +60,7 @@
 			 * Initialisation of map and params
 			 */
 			public function initTabDrawing():void{
+				
 				this.featureInfo.map = this.map;
 				//To unselect all button in the toggleBarButton
 				this.tgBar.selectedIndex = -1;
@@ -81,6 +83,8 @@
 				//Manage switching tab
 				this.parent.addEventListener(Event.CHANGE,changingTab);
 				indexTabDrawing = (this.parent as TabNavigator).selectedIndex;
+				
+				this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND));
 			}
 			
 			/**
@@ -345,11 +349,13 @@
 						drawType = "";
 						activeDrag();
 						selectFeatureHandler.active = false;
-					}			
+					}
+					this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));	
 				}
 				//user switches to drawing tab
 				else{
 					selectFeatureHandler.active = true;
+					this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND));
 				}
 			}		
 			
