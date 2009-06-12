@@ -18,14 +18,6 @@
 		<![CDATA[
 			import org.openscales.core.Trace;
 			import org.openscales.core.events.TraceEvent;
-			import mx.charts.LogAxis;
-			import mx.logging.LogLogger;
-			import mx.logging.LogEvent;
-			import mx.logging.targets.TraceTarget;
-			import mx.logging.Log;
-			import mx.logging.LogEventLevel;
-			import mx.logging.ILoggingTarget;
-			import mx.logging.ILogger;
 			import org.openscales.core.Map;
 					
 			[Bindable]
@@ -35,8 +27,6 @@
 	   			map = fxmap.map;
 				tools.x = this.width - tools.width;
 
-				//dragfeature.target=[test.layer,tabDraw.drawLayer];
-	
 			}
 			
 		]]>
