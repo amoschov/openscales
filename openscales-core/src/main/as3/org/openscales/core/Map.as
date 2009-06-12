@@ -39,7 +39,7 @@ package org.openscales.core
 
 		public var DEFAULT_TILE_WIDTH:Number = 256;
 		public var DEFAULT_TILE_HEIGHT:Number = 256;
-		public var DEFAULT_NUM_ZOOM_LEVELS:Number = 16;
+		public var DEFAULT_NUM_ZOOM_LEVELS:Number = 20;
 		public var DEFAULT_MAX_RESOLUTION:Number = 1.40625;
 		public var DEFAULT_PROJECTION:ProjProjection = new ProjProjection("EPSG:4326");
 		public var DEFAULT_UNITS:String = Unit.DEGREE;
@@ -712,20 +712,24 @@ package org.openscales.core
 				//We calculate the bitmapTransition position
 				var x:Number = this.bitmapTransition.x-((resMult-1)*this.bitmapTransition.width)/2;
 				var y:Number = this.bitmapTransition.y-((resMult-1)*this.bitmapTransition.height)/2;
+				
+				this.setChildIndex(this.layerContainer,1);
 				//The tween effect to scale and re-position the bitmapTransition
-				tween = new GTweeny(this.bitmapTransition,0.2,{scaleX: resMult,
+				tween = new GTweeny(this.bitmapTransition,0.4,{scaleX: resMult,
 													 scaleY: resMult,
 													 x: x,
 													 y: y});
 													 
 				tween.addEventListener(Event.COMPLETE,clbZoomTween);
-				this.setChildIndex(this.layerContainer,1);
+				
+				
 			}
 			
 			// The zoom tween callback method defined here to avoid a class attribute for newZoom
 			function clbZoomTween(evt:Event):void {
-				layerContainer.alpha = 1;
+				
 				setCenter(null, newZoom);
+				layerContainer.alpha = 1;
 				  
 			} 
 		}

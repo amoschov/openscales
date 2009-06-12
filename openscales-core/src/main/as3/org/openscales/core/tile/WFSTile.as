@@ -6,6 +6,7 @@ package org.openscales.core.tile
 	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Request;
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
@@ -79,7 +80,14 @@ package org.openscales.core.tile
 	    */
 		public function requestSuccess(event:Event):void {
 			var loader:URLLoader = event.target as URLLoader;
-			var doc:XML =  new XML(loader.data);
+			
+			// To avoid errors in case of the WFS server is dead
+			try {
+				var doc:XML =  new XML(loader.data);;
+			}
+			catch(error:Error) {
+				//Trace.log(error.message);
+			}
 			var wfsLayer:org.openscales.core.layer.ogc.WFS = this.layer as org.openscales.core.layer.ogc.WFS;
 			
 			if (wfsLayer && wfsLayer.vectorMode) {
