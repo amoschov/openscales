@@ -29,6 +29,16 @@ package org.openscales.core.layer
 
     	private var _icon:Icon = null;
     	
+    	/**
+    	 * GeoRSS constructor
+    	 * 
+    	 * @param name
+    	 * @param url
+    	 * @param isBseLayer
+    	 * @param visible
+    	 * @param projection
+    	 * @param proxy
+    	 */
     	public function GeoRSS(name:String, url:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
     							projection:String = null, proxy:String = null) {
     		
@@ -181,7 +191,9 @@ package org.openscales.core.layer
 	            markerClicked.layer.map.addPopup(popup); 
 	        }
 		}
-		
+		/**
+		 * Remove features
+		 */
 		public function clearFeatures():void {
 			if (this.features != null) {
 	            while(this.features.length > 0) {

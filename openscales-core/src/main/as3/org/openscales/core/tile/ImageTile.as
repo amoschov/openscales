@@ -53,6 +53,11 @@ package org.openscales.core.tile
 	        super.destroy();
 		}
 		
+		/**
+	     * Check that a tile should be drawn, and draw it.
+	     * 
+	     * @return Always returns true.
+	     */
 		override public function draw():Boolean {
 			
 			this.clear();
@@ -106,6 +111,9 @@ package org.openscales.core.tile
 			trace("Error when loading tile " + this.url);
 		}
 		
+		/** 
+	     *  Clear the tile of any bounds/position-related data
+	     */
 		override public function clear():void {
 			super.clear();
 	        this.alpha = 0;
@@ -115,6 +123,7 @@ package org.openscales.core.tile
 	        graphics.clear();
         }
         
+        //Getters and Setters
         public function get queued():Boolean {
         	return this._queued;
         }

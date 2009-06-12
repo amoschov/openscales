@@ -24,12 +24,20 @@ package org.openscales.core.handler.sketch
 		private var _newFeature:Boolean = true;
 		
 		private var _dblClickHandler:ClickHandler = new ClickHandler();
-				
+		
+		/**
+		 * DrawPathHandler constructor
+		 * 
+		 * @param map
+		 * @param active
+		 * @param drawLayer
+		 */
 		public function DrawPathHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
 		{
 			super(map, active);
 			this.drawLayer = drawLayer;
 		}
+		
 		override protected function registerListeners():void{
 			this._dblClickHandler.active = true;
 			this._dblClickHandler.doubleclick = this.mouseDblClick;

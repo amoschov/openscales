@@ -46,10 +46,23 @@ package org.openscales.core.format
     	
     	private var _dim:Number;
     	
+    	/**
+    	 * GMLFormat constructor
+    	 * 
+    	 * @param extractAttributes
+    	 * 
+    	 */
     	public function GMLFormat(extractAttributes:Boolean = true) {
 			this.extractAttributes = extractAttributes;
     	}
     	
+    	/**
+	     * Read data 
+	     * 
+	     * @param data data to read/parse.
+	     *
+	     * @return features.
+	     */
     	override public function read(data:Object):Object {
     		var dataXML:XML = null;
     		if (typeof data == "string") { 
@@ -83,6 +96,14 @@ package org.openscales.core.format
 	        return features;
     	}
     	
+    	/**
+	     *    It creates the geometries that are then attached to the returned
+	     *    feature, and calls parseAttributes() to get attribute data out.
+	     *    
+	     * @param node A XML feature node.
+	     * 
+	     * @return A vetor of feature 
+	     */
     	public function parseFeature(xmlNode:XML):VectorFeature {
     		var geom:Collection = null;
 	        var p:Array = new Array();
@@ -159,6 +180,13 @@ package org.openscales.core.format
 		      }
     	}
     	
+    	/**
+    	 * Parse attributes
+	     *
+	     * @param node A XML feature node.
+	     *
+	     * @return An attributes object.
+	     */
     	public function parseAttributes(xmlNode:XML):Object {
     		var nodes:XMLList = xmlNode.children();
 	        var attributes:Object = {};
@@ -179,6 +207,13 @@ package org.openscales.core.format
 	        return attributes;
     	}
     	
+    	/**
+         * Given a GML node representing a polygon geometry
+         *
+         * @param node
+         *
+         * @return A polygon geometry.
+         */
     	public function parsePolygonNode(polygonNode:Object):Polygon {
     		var linearRings:XMLList = polygonNode..*::LinearRing;
 	        
@@ -239,6 +274,13 @@ package org.openscales.core.format
 	        return points;
     	}
     	
+    	/**
+	     * Generate a GML document object given a list of features. 
+	     * 
+	     * @param features List of features to serialize into an object.
+	     *
+	     * @return An object representing the GML document.
+	     */
     	override public function write(features:Object):Object {
     		var featureCollection:XML = new XML("<" + this._wfsprefix + ":" + this._collectionName + " xmlns:" + this._wfsprefix + "=\"" + this._wfsns + "\"></" + this._wfsprefix + ":" + this._collectionName + ">");
 	        for (var i:int=0; i < features.length; i++) {
@@ -247,6 +289,13 @@ package org.openscales.core.format
 	        return featureCollection;
     	}
     	
+    	/** 
+	     * Accept a Vector feature, and build a GML node for it.
+	     *
+	     * @param feature The feature to be built as GML.
+	     *
+	     * @return A node reprensting the feature in GML.
+	     */
     	public function createFeatureXML(feature:VectorFeature):XML {
 	        var geometryNode:XML = this.buildGeometryNode(feature.geometry);
 	        var geomContainer:XML = new XML("<" + this._gmlprefix + ":" + this._geometryName + " xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":" + this._geometryName + ">");
@@ -268,6 +317,13 @@ package org.openscales.core.format
 	        return featureNode;
     	}
     	
+    	/**
+    	 * create a GML Object
+    	 * 
+    	 * @param geometry
+    	 * 
+    	 * @return an XML
+    	 */
     	public function buildGeometryNode(geometry:Object):XML {
 	        var gml:XML;
 	        if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon"
@@ -321,6 +377,13 @@ package org.openscales.core.format
 	        return gml; 
     	}
     	
+    	/**
+	     * Builds the coordinates XmlNode
+	     * 
+	     * @param geometry
+	     *
+	     * @return created xmlNode
+	     */
     	public function buildCoordinatesNode(geometry:Object):XML {
     		var coordinatesNode:XML = new XML("<" + this._gmlprefix + ":coordinates xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":coordinates>");
 	        coordinatesNode.@decimal = ".";
@@ -355,6 +418,9 @@ package org.openscales.core.format
 	        
 	        return coordinatesNode;
     	}
+    	
+    	
+    	//Getters and Setters
     	
     	public function get extractAttributes():Boolean {
 			return this._extractAttributes;

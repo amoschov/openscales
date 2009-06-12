@@ -11,6 +11,11 @@ package org.openscales.core.format
 		
 		private var _layer:WFS = null;
     	
+    	/**
+    	 * WFSFormat constructor
+    	 * 
+    	 * @param layer
+    	 */
     	public function WFSFormat(layer:WFS) {
 
 	        this.layer = layer;
@@ -26,6 +31,11 @@ package org.openscales.core.format
 	        }
     	}
     	
+    	/**
+	     * Takes a feature list, and generates a WFS-T Transaction 
+	     *
+	     * @param features
+	     */
     	override public function write(features:Object):Object {
     		var transaction:XML = new XML("<?xml version=\"1.0\" encoding=\"UTF-8\"?><" + this._wfsprefix + ":Transaction service=\"WFS\" version=\"1.0.0\" outputFormat=\"GML2\" xmlns:" + this._wfsprefix + "=\"" + this._wfsns + "\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.opengis.net/wfs http://schemas.opengis.net/wfs/1.0.0/WFS-basic.xsd\"></" + this._wfsprefix + ":Transaction>");
 	        for (var i:int=0; i < features.length; i++) {
@@ -44,6 +54,11 @@ package org.openscales.core.format
 	        return transaction;
     	}
     	
+    	/**
+    	 * Create an XML feature
+    	 * 
+    	 * @param feature A vectorfeature
+    	 */
     	override public function createFeatureXML(feature:VectorFeature):XML {
 	        var geometryNode:XML = this.buildGeometryNode(feature.geometry);
 	        var geomContainer:XML = new XML("<" + this._featurePrefix + ":" + this._geometryName + " xmlns:" + this._featurePrefix + "=\"" + this._featureNS + "\"></" + this._featurePrefix + ":" + this._geometryName + ">");
@@ -63,12 +78,22 @@ package org.openscales.core.format
 	        return featureContainer;
     	}
     	
+    	/**
+	     * Takes a feature, and generates a WFS-T Transaction "Insert" 
+	     *
+	     * @param feature 
+	     */
     	public function insert(feature:VectorFeature):XML {
 	        var insertNode:XML = new XML("<" + this._wfsprefix + ":Insert xmlns:" + this._wfsprefix + "=\"" + this._wfsns + "\"></" + this._wfsprefix + ":Insert>");
 	        insertNode.appendChild(this.createFeatureXML(feature));
 	        return insertNode;
     	}
     	
+    	/**
+	     * Takes a feature, and generates a WFS-T Transaction "Update" 
+	     *
+	     * @param feature 
+	     */
     	public function update(feature:VectorFeature):XMLNode {
 	        if (!feature.id) { trace("Can't update a feature for which there is no FID."); }
 	        var updateNode:XMLNode = new XMLNode(1, "wfs:Update");
@@ -96,6 +121,11 @@ package org.openscales.core.format
 	        return updateNode;
     	}
     	
+    	/**
+	     * Takes a feature, and generates a WFS-T Transaction "Delete" 
+	     *
+	     * @param feature 
+	     */
     	public function remove(feature:VectorFeature):XMLNode {
 	        if (!feature.attributes.fid) { 
 	            trace("Can't update a feature for which there is no FID."); 
@@ -117,6 +147,7 @@ package org.openscales.core.format
         	this.layer = null;
     	}
     	
+    	//Getters and Setters
     	public function get layer():WFS {
 			return this._layer;
 		}
