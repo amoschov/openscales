@@ -6,6 +6,7 @@ package org.openscales.core.layer.ogc
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Request;
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -324,7 +325,7 @@ package org.openscales.core.layer.ogc
 		 * Called by the callback method to report the request result
 		 */
 		public function commitReport(string:String, response:String):void{
-			trace(string);
+			Trace.log(string,Trace.INFO);
 		}
 		
 		/*public function refresh():void {

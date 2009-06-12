@@ -4,6 +4,7 @@ package org.openscales.core.renderer
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.feature.Style;
@@ -232,11 +233,11 @@ package org.openscales.core.renderer
 		}
 		
 		public function drawLinearRing(node:SpriteElement, geometry:LinearRing):void {
-			trace("drawLinearRing : To be implemented");
+			Trace.log("drawLinearRing : To be implemented",Trace.WARNING);
 		}
 		
 		 public function drawSurface(node:SpriteElement, geometry:Surface):void {
-		 	trace("drawSurface : To be implemented");
+		 	Trace.log("drawSurface : To be implemented",Trace.WARNING);
 		 }
 		
 		public function getComponentsString(components:Collection):String {

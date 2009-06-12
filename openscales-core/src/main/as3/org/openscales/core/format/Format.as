@@ -1,8 +1,7 @@
 package org.openscales.core.format
 {
+	import org.openscales.core.Trace;
 	import org.openscales.proj4as.ProjProjection;
-	
-	import org.openscales.core.Util;
 	
 	/**
 	 * Base class for format reading/writing a variety of formats.
@@ -19,12 +18,12 @@ package org.openscales.core.format
 		}
 		
 		public function read(data:Object):Object {
-			trace("Read not implemented.");
+			Trace.log("Read not implemented.",Trace.WARNING);
 			return null;
 		}
 		
 		public function write(features:Object):Object {
-			trace("Write not implemented.");
+			Trace.log("Write not implemented.",Trace.WARNING);
 			return null;
 		}
 		

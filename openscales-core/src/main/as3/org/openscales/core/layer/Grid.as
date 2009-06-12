@@ -1,6 +1,7 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -718,7 +719,7 @@ package org.openscales.core.layer
 		
 		public function set numLoadingTiles(value:int):void {
 			this._numLoadingTiles = value;
-			trace(this.numLoadingTiles);
+			Trace.log(this.numLoadingTiles.toString(),Trace.INFO);
 		}
 		
 		/**

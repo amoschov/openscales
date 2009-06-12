@@ -7,7 +7,6 @@ package org.openscales.core
 	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
 	
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	
@@ -145,7 +144,7 @@ package org.openscales.core
 		 */
 		private function onIconLoadError(event:IOErrorEvent):void
 		{
-			trace("Error when loading icon " + this.url);
+			Trace.log("Error when loading icon " + this.url,Trace.ERROR);
 
 		}
      	

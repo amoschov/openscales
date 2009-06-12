@@ -6,6 +6,7 @@ package org.openscales.core.layer.capabilities
 	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Request;
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.maps.HashMap;
 	
 	/**
@@ -57,12 +58,12 @@ package org.openscales.core.layer.capabilities
 		private function requestCapabilities(failedVersion:String = null):Boolean{
 			
 			if (this._service != "WFS" && this._service != "WMS"){
-				trace("Bad service for GetCapabilities: " + this._service);
+				Trace.log("Bad service for GetCapabilities: " + this._service,Trace.ERROR);
 				return false;
 			}
 			
 			if (this._url == null) {
-				trace("GetCapabilities: URL must not be null");
+				Trace.log("GetCapabilities: URL must not be null",Trace.ERROR);
 				return false;
 			}
 			
@@ -80,7 +81,7 @@ package org.openscales.core.layer.capabilities
 				}
 				
 				if (!foundVersion) {
-					trace("GetCapabilities: Not found server compatible version");
+					Trace.log("GetCapabilities: Not found server compatible version",Trace.ERROR);
 					return false;
 				}
 				else {
@@ -90,7 +91,7 @@ package org.openscales.core.layer.capabilities
 				}
 			}
 			else if (this._service == "WMS") {
-				trace("WMS parser not implemented yet");
+				Trace.log("WMS parser not implemented yet",Trace.WARNING);
 				return false;
 			}
 			

@@ -63,7 +63,7 @@ package org.openscales.core
 		      	}
 		      }
 
-		      trace(this.url);
+		      Trace.log(this.url,Trace.INFO);
 		      
 		      if (this._method == URLRequestMethod.GET && parameters.length > 0)
 		        this.url += (this.url.match(/\?/) ? '&' : '?') + Util.getParameterString(parameters);
@@ -91,7 +91,7 @@ package org.openscales.core
 
 
 		    } catch (e:Error) {
-		      trace(e.message);
+		      Trace.log(e.message,Trace.ERROR);
 		    }
 		}
 
@@ -115,27 +115,27 @@ package org.openscales.core
 
         private function completeHandler(event:Event):void {
             var loader:URLLoader = URLLoader(event.target);
-            trace("completeHandler: " + loader.data);
+            Trace.log("completeHandler: " + loader.data,Trace.INFO);
         }
 
         private function openHandler(event:Event):void {
-            trace("openHandler: " + event);
+            Trace.log("openHandler: " + event,Trace.INFO);
         }
 
         private function progressHandler(event:ProgressEvent):void {
-            trace("progressHandler loaded:" + event.bytesLoaded + " total: " + event.bytesTotal);
+            Trace.log("progressHandler loaded:" + event.bytesLoaded + " total: " + event.bytesTotal,Trace.INFO);
         }
 
         private function securityErrorHandler(event:SecurityErrorEvent):void {
-            trace("securityErrorHandler: " + event);
+            Trace.log("securityErrorHandler: " + event,Trace.INFO);
         }
 
         private function httpStatusHandler(event:HTTPStatusEvent):void {
-            trace("httpStatusHandler: " + event);
+            Trace.log("httpStatusHandler: " + event,Trace.INFO);
         }
 
         private function ioErrorHandler(event:IOErrorEvent):void {
-            trace("ioErrorHandler: " + event);
+            Trace.log("ioErrorHandler: " + event,Trace.INFO);
         }
 
 

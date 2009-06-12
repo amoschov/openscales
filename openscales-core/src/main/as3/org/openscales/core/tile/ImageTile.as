@@ -10,10 +10,10 @@ package org.openscales.core.tile
 	import flash.net.URLRequest;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.events.TileEvent;
 	import org.openscales.core.layer.Layer;
 	
 	/**
@@ -45,7 +45,7 @@ package org.openscales.core.tile
 	    				Loader(child).unload();
 	    			}
 	    			catch (error:Error) {
-	    				trace("Error when unloading tile " + this.url);
+	    				Trace.log("Error when unloading tile " + this.url,Trace.ERROR);
 	    			}
 	    		}
 	    	}
@@ -108,7 +108,7 @@ package org.openscales.core.tile
 		
 		private function onTileLoadError(event:IOErrorEvent):void
 		{
-			trace("Error when loading tile " + this.url);
+			Trace.log("Error when loading tile " + this.url,Trace.ERROR);
 		}
 		
 		/** 
