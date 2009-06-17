@@ -1,155 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="75">
-	<mx:Script>
-		<![CDATA[
-			import mx.controls.List;
-			import mx.controls.Text;
-			import org.openscales.core.events.LayerEvent;
-			import mx.accessibility.ButtonAccImpl;
-			import mx.core.ButtonAsset;
-			import mx.skins.halo.ButtonSkin;
-			import mx.events.DragEvent;
-			import mx.binding.utils.BindingUtils;
-			import org.openscales.core.Map;
-			import org.openscales.core.layer.ogc.WFS;
-			import mx.controls.Button;
-			import org.openscales.core.basetypes.Bounds;
-			import mx.controls.CheckBox;
-			import mx.controls.RadioButtonGroup;
-			import mx.controls.RadioButton;
-			import org.openscales.core.layer.Layer;
-			import mx.events.PropertyChangeEvent;
-			import mx.binding.utils.ChangeWatcher;
-			
-			[Bindable]
-			private var hasCapabilities:Boolean = false;
-			
-			/**
-			 * Get the layer that the List into the LayerSwitcher.mxml send to display it
-			 * 
-			 * @return return the layer
-			 */
-			private function get layer():Layer {
-				return (this.data) as Layer;
-			}
-			
-			/**
-			 * Change the layer visibility
-			 * 
-			 * @param event Change event
-			 */
-			public function layerVisible(event:Event):void
-			{
-				layer.visible = !layer.visible;
-				
-				// If the layer was uncheck from the beggining, he hadn't load yet so we need
-				// to redraw it to load it.
-				if(layer.visible){
-					layer.redraw();
-				}
-			}
-			
-			/**
-			 * Change the opacity of the layer
-			 * 
-			 * @param event event send by a slide
-			 */
-			public function layerOpacity(event:Event):void
-			{
-				layer.alpha = (event.target as HSlider).value;
-			}
-			
-			/**
-			 * Delete the layer on the map
-			 * 
-			 * @param event Click event
-			 */
-			public function deleteLayer(event:MouseEvent):void {
-				 (data as Layer).map.removeLayer(data as Layer); 
-			}
-			
-			/**
-			 * Set the data
-			 * 
-			 * @param value
-			 */
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="75" paddingRight="17">
+  <mx:Script>
+    <![CDATA[
+      import mx.controls.List;
+      import mx.controls.Text;
+      import org.openscales.core.events.LayerEvent;
+      import mx.accessibility.ButtonAccImpl;
+      import mx.core.ButtonAsset;
+      import mx.skins.halo.ButtonSkin;
+      import mx.events.DragEvent;
+      import mx.binding.utils.BindingUtils;
+      import org.openscales.core.Map;
+      import org.openscales.core.layer.ogc.WFS;
+      import mx.controls.Button;
+      import org.openscales.core.basetypes.Bounds;
+      import mx.controls.CheckBox;
+      import mx.controls.RadioButtonGroup;
+      import mx.controls.RadioButton;
+      import org.openscales.core.layer.Layer;
+      import mx.events.PropertyChangeEvent;
+      import mx.binding.utils.ChangeWatcher;
+
+      [Bindable]
+      private var hasCapabilities:Boolean = false;
+
+      /**
+       * Get the layer that the List into the LayerSwitcher.mxml send to display it
+       *
+       * @return return the layer
+       */
+      private function get layer():Layer {
+        return (this.data) as Layer;
+      }
+
+      /**
+       * Change the layer visibility
+       *
+       * @param event Change event
+       */
+      public function layerVisible(event:Event):void
+      {
+        layer.visible = !layer.visible;
+
+        // If the layer was uncheck from the beggining, he hadn't load yet so we need
+        // to redraw it to load it.
+        if(layer.visible){
+          layer.redraw();
+        }
+      }
+
+      /**
+       * Change the opacity of the layer
+       *
+       * @param event event send by a slide
+       */
+      public function layerOpacity(event:Event):void
+      {
+        layer.alpha = (event.target as HSlider).value;
+      }
+
+      /**
+       * Delete the layer on the map
+       *
+       * @param event Click event
+       */
+      public function deleteLayer(event:MouseEvent):void {
+         (data as Layer).map.removeLayer(data as Layer);
+      }
+
+      /**
+       * Set the data
+       *
+       * @param value
+       */
             override public function set data(value:Object):void {
                 super.data = value;
-				
-				if((this.layer != null) && (displayControl != null))
-				{
-					displayControl.removeAllChildren();
-					opacityControl.value = this.layer.alpha;
 
-					if(this.layer.isBaseLayer == true)//if the layer is a base layer
-					{
-						var radioButtonGroup:RadioButtonGroup = new RadioButtonGroup();
-						var radioButton:RadioButton = new RadioButton();
-						radioButton.id = this.layer.name;
-						radioButton.percentHeight = 100;
-						radioButton.percentWidth = 100;
-						radioButton.label = this.layer.name;
-						radioButton.selected = this.layer.visible;
-						displayControl.addChild(radioButton);
-						
-					}
-					else
-					{
-						var checkBox:CheckBox = new CheckBox();
-						checkBox.id = this.layer.name;
-						checkBox.percentHeight = 100;
-						checkBox.percentWidth = 100;
-						checkBox.label = this.layer.name;
-						checkBox.selected = this.layer.visible;
-						checkBox.addEventListener(Event.CHANGE,layerVisible);
-						displayControl.addChild(checkBox);
-						
-					}
-					
-					// TODO Refactor this, layer added should already have its extent property set
-				 	if (getQualifiedClassName(data) == "org.openscales.core.layer.ogc::WFS" &&	(data as WFS).capabilities != null) {
-						 zoomButton.visible = true; 
-						 deleteButton.visible = true;  
-						
-					}
-			 	}
-			 	
-			}
-			
-			/**
-			 * Center the map on the layer
-			 * 
-			 * @param event Click event
-			 */
-			private function setLayerExtent(event:MouseEvent):void {
-					
-				var layerName:String = (event.target as Button).id.split("::")[1];
-				var bounds:Bounds = ((data as Layer) as WFS).capabilities.getValue("Extent");
-				if (bounds != null) {trace(bounds);
-					(data as Layer).map.zoomToExtent(bounds);
-				
-				}
-			}
-			
-			private function onDrag(event:Event):void {
-				event.stopPropagation();
-			}
+        if((this.layer != null) && (displayControl != null))
+        {
+          displayControl.removeAllChildren();
+          opacityControl.value = this.layer.alpha;
 
-			
-		]]>
-	</mx:Script>
-	
-	<mx:HBox width="100%">
-		<mx:Canvas id="displayControl" textAlign="center" />
-		<mx:Button id="zoomButton" icon="@Embed('/org/openscales/component/images/zoomin.swf')" click="this.setLayerExtent(event)" visible="false"/>
-		<mx:Spacer width="100%" />
-		<mx:Button id="deleteButton" label="Remove" icon="@Embed('/org/openscales/component/images/cross.swf')" cornerRadius="12" width="10" height="10" click="deleteLayer(event)" visible="false"/>	
-	</mx:HBox>
-	<mx:HBox width="100%">	
-		<mx:Label text="Opacity"/>
-		<mx:HSlider width="100%" id="opacityControl" minimum="0" maximum="1" 
-			labels="{['0%','100%']}" change="layerOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
+          if(this.layer.isBaseLayer == true)//if the layer is a base layer
+          {
+            //var radioButtonGroup:RadioButtonGroup = new RadioButtonGroup();
+            var radioButton:RadioButton = new RadioButton();
+            radioButton.id = this.layer.name;
+            radioButton.percentHeight = 100;
+            radioButton.percentWidth = 100;
+            radioButton.label = this.layer.name;
+            radioButton.selected = this.layer.visible;
+            displayControl.addChild(radioButton);
 
-	</mx:HBox>
-	
+          }
+          else
+          {
+            var checkBox:CheckBox = new CheckBox();
+            checkBox.id = this.layer.name;
+            checkBox.percentHeight = 100;
+            checkBox.percentWidth = 100;
+            checkBox.label = this.layer.name;
+            checkBox.selected = this.layer.visible;
+            checkBox.addEventListener(Event.CHANGE,layerVisible);
+            displayControl.addChild(checkBox);
+
+          }
+
+          // TODO Refactor this, layer added should already have its extent property set
+           /*if (getQualifiedClassName(data) == "org.openscales.core.layer.ogc::WFS" &&	(data as WFS).capabilities != null) {
+             zoomButton.visible = true;
+             deleteButton.visible = true;
+
+          }*/
+         }
+
+      }
+
+      /**
+       * Center the map on the layer
+       *
+       * @param event Click event
+       */
+      private function setLayerExtent(event:MouseEvent):void
+      {
+        var bounds:Bounds = (data as Layer).maxExtent;
+        if (bounds != null) {
+          trace(bounds);
+          (data as Layer).map.zoomToExtent(bounds);
+
+        }
+      }
+
+      private function onDrag(event:Event):void {
+        event.stopPropagation();
+      }
+
+
+    ]]>
+  </mx:Script>
+
+  <mx:HBox width="100%">
+    <mx:Canvas id="displayControl" textAlign="left" width="100%"/>
+    <mx:Button id="zoomButton" toolTip="Center Map" icon="@Embed('/org/openscales/component/images/zoomin.swf')" click="this.setLayerExtent(event)"/>
+    <mx:Button id="deleteButton" toolTip="Delete" icon="@Embed('/org/openscales/component/images/cross.swf')" click="deleteLayer(event)"/>
+  </mx:HBox>
+  <mx:HBox width="100%">
+        <mx:Label text="Opacity"/>
+    <mx:HSlider width="100%" id="opacityControl" minimum="0" maximum="1"
+      labels="{['0%','100%']}" change="layerOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
+
+  </mx:HBox>
+
 </mx:VBox>

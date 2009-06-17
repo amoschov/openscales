@@ -1,5 +1,7 @@
-package org.openscales.core.popup
+package org.openscales.fx.popup
 {
+  import mx.core.UIComponent;
+
   import org.openscales.core.basetypes.Bounds;
   import org.openscales.core.basetypes.LonLat;
   import org.openscales.core.basetypes.Pixel;
@@ -8,7 +10,7 @@ package org.openscales.core.popup
   /**
    * Anchored popup
    */
-  public class Anchored extends Popup
+  public class FxAnchored extends FxPopup
   {
     /**
        * Relative position of the popup ("br", "tr", "tl" or "bl").
@@ -28,8 +30,8 @@ package org.openscales.core.popup
        */
       private var _anchor:Object = null;
 
-      public function Anchored(id:String, lonlat:LonLat, background:uint, border:Number, size:Size, contentHTML:String, anchor:Object, closeBox:Boolean):void {
-          super(id, lonlat, background, border, size, contentHTML, closeBox);
+      public function FxAnchored(id:String, lonlat:LonLat, size:Size, content:UIComponent, anchor:Object, closeBox:Boolean):void {
+          super(id, lonlat, size, content, closeBox);
 
           this._anchor = anchor;
       }
@@ -37,7 +39,7 @@ package org.openscales.core.popup
       override public function draw(px:Pixel=null):void {
         if (px == null) {
               if ((this.lonlat != null) && (this.map != null)) {
-                  px = this.map.getLayerPxFromLonLat(this.lonlat);
+                  px = this.map.getMapPxFromLonLat(this.lonlat);
               }
           }
 

@@ -1,26 +1,27 @@
 package org.openscales.core
 {
-	import com.gskinner.motion.GTweeny;
-	
-	import flash.display.Bitmap;
-	import flash.display.BitmapData;
-	import flash.display.Sprite;
-	import flash.events.Event;
-	import flash.geom.Matrix;
-	import flash.geom.Rectangle;
-	
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.basetypes.Unit;
-	import org.openscales.core.control.IControl;
-	import org.openscales.core.events.LayerEvent;
-	import org.openscales.core.events.MapEvent;
-	import org.openscales.core.handler.IHandler;
-	import org.openscales.core.layer.Layer;
-	import org.openscales.core.popup.Popup;
-	import org.openscales.proj4as.ProjProjection;
+  import com.gskinner.motion.GTweeny;
+
+  import flash.display.Bitmap;
+  import flash.display.BitmapData;
+  import flash.display.DisplayObject;
+  import flash.display.Sprite;
+  import flash.events.Event;
+  import flash.geom.Matrix;
+  import flash.geom.Rectangle;
+
+  import org.openscales.core.basetypes.Bounds;
+  import org.openscales.core.basetypes.LonLat;
+  import org.openscales.core.basetypes.Pixel;
+  import org.openscales.core.basetypes.Size;
+  import org.openscales.core.basetypes.Unit;
+  import org.openscales.core.control.IControl;
+  import org.openscales.core.events.LayerEvent;
+  import org.openscales.core.events.MapEvent;
+  import org.openscales.core.handler.IHandler;
+  import org.openscales.core.layer.Layer;
+  import org.openscales.core.popup.Popup;
+  import org.openscales.proj4as.ProjProjection;
 
 	/**
 	 * Instances of Map are interactive maps that can be embedded in a web pages or in
@@ -289,26 +290,33 @@ package org.openscales.core
         	handler.active = true;
 		}
 
-		/**
-	    * @param {OpenLayers.Popup} popup
-	    * @param {Boolean} exclusive If true, closes all other popups first
-	    **/
-	    public function addPopup(popup:Popup, exclusive:Boolean = true):void {
-	        var i:Number;
-	        if(exclusive){
-	        	for(i=this._layerContainer.numChildren-1;i>=0;i--){
-	        		if(this._layerContainer.getChildAt(i) is Popup){this._layerContainer.removeChildAt(i);}
-	        	}  	
-	        }
-	        popup.map = this;
-	        popup.draw();
-	        this._layerContainer.addChild(popup);
-	    }
+    /**
+      * @param {OpenLayers.Popup} popup
+      * @param {Boolean} exclusive If true, closes all other popups first
+      **/
+      public function addPopup(popup:Popup, exclusive:Boolean = true):void {
+          var i:Number;
+          if(exclusive){
+            var child:DisplayObject;
+            for(i=this._layerContainer.numChildren-1;i>=0;i--){
+              child = this._layerContainer.getChildAt(i);
+              if(child is Popup){
+               this.removePopup(child as Popup);
+              }
+            }
+          }
+          if (popup != null){
+            popup.map = this;
+            popup.draw();
+            this._layerContainer.addChild(popup);
+          }
+      }
 
-	    public function removePopup(popup:Popup):void {
-	        this._layerContainer.removeChild(popup);
-	        popup.map = null;
-	    }
+      public function removePopup(popup:Popup):void {
+          popup.map = null;
+          popup.destroy();
+          this._layerContainer.removeChild(popup);
+      }
 
 		/**
 		 * Update map content after a resize
@@ -712,7 +720,7 @@ package org.openscales.core
 				//We calculate the bitmapTransition position
 				var x:Number = this.bitmapTransition.x-((resMult-1)*this.bitmapTransition.width)/2;
 				var y:Number = this.bitmapTransition.y-((resMult-1)*this.bitmapTransition.height)/2;
-				
+
 				this.setChildIndex(this.layerContainer,1);
 				//The tween effect to scale and re-position the bitmapTransition
 				tween = new GTweeny(this.bitmapTransition,0.4,{scaleX: resMult,

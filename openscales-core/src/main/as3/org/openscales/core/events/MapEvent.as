@@ -20,7 +20,7 @@ package org.openscales.core.events{
 		
 		public static const ZOOM_END:String="openscales.zoomend";
 		
-		public static const DRAG:String="openscales.drag";
+		public static const DRAG_START:String="openscales.dragstart";
 		
 		public static const DRAG_END:String="openscales.dragend";
 		

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<control:Control xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:control="org.openscales.component.control.*"
+    xmlns:os="http://openscales.org"
+    width="150" height="20">
+<mx:Script>
+  <![CDATA[
+    import org.openscales.core.basetypes.Pixel;
+    import org.openscales.core.Map;
+    import org.openscales.proj4as.ProjProjection;
+    import org.openscales.core.basetypes.LonLat;
+
+        private var _prefix:String = "";
+
+        private var _separator:String = ", ";
+
+        private var _suffix:String = "";
+
+        private var _numdigits:Number = 5;
+
+        private var _granularity:int = 10;
+
+        private var _lastXy:Pixel = null;
+
+        private var _displayProjection:ProjProjection = null;
+
+      override public function set map(value:Map):void {
+        super.map = value;
+
+        if (this.map != null) {
+          this.map.addEventListener(MouseEvent.MOUSE_MOVE, recompute);
+        }
+      }
+
+        /**
+         * Display the coordinate where is the mouse
+         *
+         * @param evt
+         */
+        private function recompute(evt:MouseEvent = null):void {
+            var lonLat:LonLat;
+
+            if (evt != null) {
+                if (this.lastXy == null ||
+                    Math.abs(map.mouseX - this.lastXy.x) > this.granularity ||
+                    Math.abs(map.mouseY - this.lastXy.y) > this.granularity)
+                {
+                    this.lastXy = new Pixel(map.mouseX, map.mouseY);
+                    return;
+                }
+
+                this.lastXy = new Pixel(map.mouseX, map.mouseY);
+                lonLat = this.map.getLonLatFromMapPx(this.lastXy);
+            }
+
+            if(lonLat == null)
+                lonLat = new LonLat(0, 0);
+
+            if (this._displayProjection) {
+                lonLat.transform(this.map.projection, this._displayProjection );
+            }
+
+            var digits:int = int(this.numdigits);
+            this.theLabel.text =
+                this.prefix +
+                lonLat.lon.toFixed(digits) +
+                this.separator +
+                lonLat.lat.toFixed(digits) +
+                this.suffix;
+
+        }
+
+        // Getters & setters
+
+        public function get prefix():String
+        {
+            return _prefix;
+        }
+        public function set prefix(newPrefix:String):void
+        {
+            _prefix = newPrefix;
+        }
+
+        public function get separator():String
+        {
+            return _separator;
+        }
+        public function set separator(newSeparator:String):void
+        {
+            _separator = newSeparator;
+        }
+
+        public function get suffix():String
+        {
+            return _suffix;
+        }
+        public function set suffix(newSuffix:String):void
+        {
+            _suffix = newSuffix;
+        }
+
+        public function get numdigits():Number
+        {
+            return _numdigits;
+        }
+        public function set numdigits(newNumDigits:Number):void
+        {
+            _numdigits = newNumDigits;
+        }
+
+        public function get granularity():int
+        {
+            return _granularity;
+        }
+        public function set granularity(newGranularity:int):void
+        {
+            _granularity = newGranularity;
+        }
+
+        public function get lastXy():Pixel
+        {
+            return _lastXy;
+        }
+        public function set lastXy(newLastXy:Pixel):void
+        {
+            _lastXy = newLastXy;
+        }
+
+        public function get displayProjection():String
+        {
+            return _displayProjection.srsCode;
+        }
+        public function set displayProjection(value:String):void
+        {
+            if (value != null && value != "")
+                _displayProjection = new ProjProjection(value);;
+        }
+  ]]>
+</mx:Script>
+    <mx:Text horizontalCenter="0" verticalCenter="0" id="theLabel"/>
+</control:Control>

@@ -37,7 +37,7 @@
 			
 			private var _drawType:String = "";
 			private var _indexTabDrawing:Number = -1;
-			public var drawLayer:VectorLayer = new VectorLayer("Sketch");			
+			public var drawLayer:VectorLayer = new VectorLayer("Drawings");			
 			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
 			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
 			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);

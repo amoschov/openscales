@@ -1,7 +1,5 @@
 package org.openscales.core.layer
 {
-	import org.openscales.proj4as.ProjProjection;
-	
 	import flash.display.Sprite;
 	
 	import org.openscales.core.Map;
@@ -11,6 +9,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.Unit;
+	import org.openscales.proj4as.ProjProjection;
 
 
 	/**
@@ -19,6 +18,7 @@ package org.openscales.core.layer
 	 */
 	public class Layer extends Sprite
 	{
+		private const RESOLUTION_TOLERANCE:Number = 0.000001;
 
 		private var _isBaseLayer:Boolean = false;
 		private var _inRange:Boolean = false;
@@ -239,7 +239,7 @@ package org.openscales.core.layer
 		 */
 		public function getZoomForResolution(resolution:Number):Number {
 			for(var i:int=1; i < this.resolutions.length; i++) {
-	            if ( this.resolutions[i] < resolution) {
+	            if (this.resolutions[i] < resolution && Math.abs(this.resolutions[i] - resolution) > RESOLUTION_TOLERANCE) {
 	                break;
 	            }
 	        }
