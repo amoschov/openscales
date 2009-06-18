@@ -441,13 +441,13 @@ package org.openscales.core
 	                    if (layer.inRange != inRange) {
 	                        layer.inRange = inRange;
 	                        moveLayer = true;
-	                        this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_CHANGED, layer));
+	                         this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_CHANGED, layer)); 
 	                    } else {
 	                        moveLayer = (layer.visible && layer.inRange);
 	                    }
 
 	                    if (moveLayer) {
-	                        layer.moveTo(bounds, zoomChanged, dragging);
+	                         layer.moveTo(bounds, zoomChanged, dragging); 
 	                    }
 	                }
 	            }

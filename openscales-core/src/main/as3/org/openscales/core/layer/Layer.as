@@ -9,6 +9,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.Unit;
+	import org.openscales.core.events.LayerEvent;
 	import org.openscales.proj4as.ProjProjection;
 
 
@@ -288,11 +289,11 @@ package org.openscales.core.layer
 		}
 
 		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
-			var display:Boolean = this.visible;
+			  var display:Boolean = this.visible;  
 	        if (!this.isBaseLayer) {
 	            display = display && this.inRange;
 	        }
-	        this.visible = display;
+	       	this.visible = display;
 		}
 
 		public function calculateInRange():Boolean {
@@ -487,6 +488,14 @@ package org.openscales.core.layer
 
 		public function set inRange(value:Boolean):void {
 	    	this._inRange = value;
+	    	if(this._inRange == true)
+	    	{
+	    		this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_IN_RANGE, this));
+	    	}
+	    	else
+	    	{
+	    		this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_OUT_RANGE, this));
+	    	}
 	    }
 
 	    /**

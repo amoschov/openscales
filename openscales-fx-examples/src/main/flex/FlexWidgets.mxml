@@ -35,6 +35,9 @@
 			<os:WMSC name="Metacarta" url="http://labs.metacarta.com/wms-c/Basic.py"
 							   layers="satellite" format="image/jpeg" isBaseLayer="true" />
 							   
+							   <os:Mapnik name="Mapnik"  maxResolution="156543.0339" minResolution="0.5971642833709717" numZoomLevels="20"
+					maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34" isBaseLayer="true"/>	
+							   
 			<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
 							   
 			<os:WFS id="test" name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="topp:poi" srs="EPSG:4326" version="1.0.0"

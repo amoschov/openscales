@@ -20,6 +20,10 @@ package org.openscales.core.events
 		
 		public static const BASE_LAYER_CHANGED:String="openscales.changebaselayer";
 		
+		public static const LAYER_IN_RANGE:String="openscales.layerinrange";
+		
+		public static const LAYER_OUT_RANGE:String="openscales.layeroutrange";
+		
 		public function LayerEvent(type:String, layer:Layer, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			this._layer = layer;

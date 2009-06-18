@@ -38,7 +38,7 @@
        *
        * @param event Change event
        */
-      public function layerVisible(event:Event):void
+       public function layerVisible(event:MouseEvent):void
       {
         layer.visible = !layer.visible;
 
@@ -47,7 +47,7 @@
         if(layer.visible){
           layer.redraw();
         }
-      }
+      } 
 
       /**
        * Change the opacity of the layer
@@ -67,7 +67,29 @@
       public function deleteLayer(event:MouseEvent):void {
          (data as Layer).map.removeLayer(data as Layer);
       }
-
+	
+	
+	public function inOutRange(event:LayerEvent):void {
+		
+		if(event.layer.isBaseLayer == false)
+		{
+			var checkBox:Array = displayControl.getChildren();
+			if(checkBox[0] is CheckBox)
+			{
+				if(event.type == LayerEvent.LAYER_OUT_RANGE)
+		        {	
+		             	(checkBox[0] as CheckBox).enabled = false;
+		        }
+		        else
+		        {
+		          	 (checkBox[0] as CheckBox).enabled = true;
+		          	event.layer.visible = (checkBox[0] as CheckBox).selected; 
+		        }
+			}
+			
+		}  
+	}
+	
       /**
        * Set the data
        *
@@ -78,12 +100,16 @@
 
         if((this.layer != null) && (displayControl != null))
         {
-          displayControl.removeAllChildren();
-          opacityControl.value = this.layer.alpha;
+        	
+        	(data as Layer).map.addEventListener(LayerEvent.LAYER_IN_RANGE,inOutRange);
+        	(data as Layer).map.addEventListener(LayerEvent.LAYER_OUT_RANGE,inOutRange);
+        	
+          	displayControl.removeAllChildren();
+          	opacityControl.value = this.layer.alpha;
 
           if(this.layer.isBaseLayer == true)//if the layer is a base layer
           {
-            //var radioButtonGroup:RadioButtonGroup = new RadioButtonGroup();
+       
             var radioButton:RadioButton = new RadioButton();
             radioButton.id = this.layer.name;
             radioButton.percentHeight = 100;
@@ -100,8 +126,8 @@
             checkBox.percentHeight = 100;
             checkBox.percentWidth = 100;
             checkBox.label = this.layer.name;
-            checkBox.selected = this.layer.visible;
-            checkBox.addEventListener(Event.CHANGE,layerVisible);
+             checkBox.selected = this.layer.visible;
+             checkBox.addEventListener(MouseEvent.CLICK,layerVisible); 
             displayControl.addChild(checkBox);
 
           }
