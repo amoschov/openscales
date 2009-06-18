@@ -1,17 +1,19 @@
 package org.openscales.core.layer
 {
-	import org.openscales.proj4as.ProjProjection;
-	
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.renderer.Renderer;
 	import org.openscales.core.renderer.SpriteRenderer;
+	import org.openscales.proj4as.Proj4as;
+	import org.openscales.proj4as.ProjPoint;
+	import org.openscales.proj4as.ProjProjection;
 	
 	/**
 	 * Instances of Vector are used to render vector data from a variety of sources.
@@ -37,6 +39,8 @@ package org.openscales.core.layer
 	    
 	    public var preFeatureInsert:Function = null;
 	    
+	    private var _temporaryProjection:ProjProjection = null;
+	    
 	    public function VectorLayer(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
 									projection:String = null, proxy:String = null) {
 										
@@ -56,6 +60,8 @@ package org.openscales.core.layer
 	        this.featuresBbox = new Bounds();
 	        // For better performances
 	        this.cacheAsBitmap = true;
+	        this._temporaryProjection = this.projection;
+	        
 	    }
 	    
 	    override public function destroy(setNewBaseLayer:Boolean = true):void {
@@ -87,12 +93,24 @@ package org.openscales.core.layer
 	            this.renderer.size = this.map.size;
 	        }
 	        
-	        if (this.features.length > 0 && this.map != null && this.projection.srsCode != this.map.projection.srsCode) {
-				for each (var f:VectorFeature in this.features) {
-					f.geometry.transform(this.projection, this.map.projection);
-				}
-			}
+	      	this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.checkProjection);
+	        
+	        checkProjection();
 	       
+	    }
+	    
+	    private function checkProjection(evt:LayerEvent = null):void {
+	    	if (this.features.length > 0 && this.map != null && this._temporaryProjection.srsCode != this.map.projection.srsCode) {
+				for each (var f:VectorFeature in this.features) {
+					f.geometry.transform(this._temporaryProjection, this.map.projection);
+				}
+				var resProj:ProjPoint = new ProjPoint(this.minResolution, this.maxResolution);
+				resProj = Proj4as.transform(this._temporaryProjection, map.projection, resProj);
+				this.minResolution = resProj.x;
+				this.maxResolution = resProj.y;
+				this._temporaryProjection = map.projection;
+				this.redraw();
+			}
 	    }
 	    
 	      override public function onMapResize():void {
