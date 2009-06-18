@@ -182,11 +182,26 @@ package org.openscales.core
 			if (this.baseLayer != null) {
 				oldExtent = this.baseLayer.extent;
 			}
-
+			
+			if (this.bitmapTransition != null)
+				this.bitmapTransition.alpha = 0;
+				
 			if (newBaseLayer != this.baseLayer) {
 
 				if (Util.indexOf(this.layers, newBaseLayer) != -1) {
-
+					
+					if (this.projection.srsCode != newBaseLayer.projection.srsCode) {
+						this.center.transform(this.projection, newBaseLayer.projection);
+						oldExtent = null;
+						this._layerContainerOrigin.transform(this.projection, newBaseLayer.projection);
+						this.projection = newBaseLayer.projection;
+						this.maxResolution = newBaseLayer.maxResolution;
+						this.numZoomLevels = newBaseLayer.numZoomLevels;
+						this.maxExtent = newBaseLayer.maxExtent;
+						this.minResolution = newBaseLayer.minResolution;
+						this.resolutions = null;
+					}
+					
 					this._baseLayer = newBaseLayer;
 					this.baseLayer.visible = true;
 
@@ -723,7 +738,7 @@ package org.openscales.core
 
 				this.setChildIndex(this.layerContainer,1);
 				//The tween effect to scale and re-position the bitmapTransition
-				tween = new GTweeny(this.bitmapTransition,0.4,{scaleX: resMult,
+				tween = new GTweeny(this.bitmapTransition,0.3,{scaleX: resMult,
 													 scaleY: resMult,
 													 x: x,
 													 y: y});
@@ -827,11 +842,11 @@ package org.openscales.core
 		 * Default is "EPSG:4326".
 		 */
 		public function get projection():ProjProjection {
-	        var projection:ProjProjection = _projection;
+	        /*var projection:ProjProjection = _projection;
 	        if (this.baseLayer != null) {
 	            projection = this.baseLayer.projection;
-	        }
-	        return projection;
+	        }*/
+	        return _projection;
 		}
 
 		public function set minResolution(value:Number):void {

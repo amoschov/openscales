@@ -45,7 +45,7 @@ package org.openscales.core.tile
 	    				Loader(child).unload();
 	    			}
 	    			catch (error:Error) {
-	    				Trace.log("Error when unloading tile " + this.url,Trace.ERROR);
+	    				Trace.error("Error when unloading tile " + this.url);
 	    			}
 	    		}
 	    	}
@@ -68,8 +68,10 @@ package org.openscales.core.tile
 	        if (!super.draw()) {
 	            return false;    
 	        }
-	        if(this.url == null)
+	        if(this.url == null) {
 	        	this.url = this.layer.getURL(this.bounds);
+	        }
+	        	
 	        
 	        //We add the proxy to the url (to avoid crossdomain issue in case of zoom tween effect (bitmapdata.draw))
 	        if (this.layer.proxy != null) {
@@ -108,7 +110,7 @@ package org.openscales.core.tile
 		
 		private function onTileLoadError(event:IOErrorEvent):void
 		{
-			Trace.log("Error when loading tile " + this.url,Trace.ERROR);
+			Trace.error("Error when loading tile " + this.url);
 		}
 		
 		/** 

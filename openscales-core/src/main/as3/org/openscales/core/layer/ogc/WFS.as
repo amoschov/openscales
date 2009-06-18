@@ -325,7 +325,7 @@ package org.openscales.core.layer.ogc
 		 * Called by the callback method to report the request result
 		 */
 		public function commitReport(string:String, response:String):void{
-			Trace.log(string,Trace.INFO);
+			Trace.info(string);
 		}
 		
 		/*public function refresh():void {

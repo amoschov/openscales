@@ -137,8 +137,11 @@ package org.openscales.core.layer
 	        var confProps:Object = new Object();
 	        for(var i:int=0; i < props.length; i++) {
 	            var property:String = props[i];
-	            confProps[property] = this.map[property];
+	            confProps[property] = this[property] || this.map[property];
 	        }
+	        
+	        if (this.projection.srsCode != map.projection.srsCode)
+	        	confProps["resolutions"] = null;
 
 	        if ( (!confProps.numZoomLevels) && (confProps.maxZoomLevel) ) {
 	            confProps.numZoomLevels = confProps.maxZoomLevel + 1;

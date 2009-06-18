@@ -96,7 +96,7 @@ package org.openscales.core.format
 	     * @param feature 
 	     */
     	public function update(feature:VectorFeature):XMLNode {
-	        if (!feature.id) { Trace.log("Can't update a feature for which there is no FID.",Trace.ERROR); }
+	        if (!feature.id) { Trace.error("Can't update a feature for which there is no FID."); }
 	        var updateNode:XMLNode = new XMLNode(1, "wfs:Update");
 	        updateNode.attributes.typeName = this._layerName;
 	
@@ -129,7 +129,7 @@ package org.openscales.core.format
 	     */
     	public function remove(feature:VectorFeature):XMLNode {
 	        if (!feature.attributes.fid) { 
-	            Trace.log("Can't update a feature for which there is no FID.",Trace.ERROR); 
+	            Trace.error("Can't update a feature for which there is no FID."); 
 	            return null; 
 	        }
 	        var deleteNode:XMLNode = new XMLNode(1, "wfs:Delete");

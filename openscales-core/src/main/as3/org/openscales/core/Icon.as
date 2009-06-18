@@ -151,7 +151,7 @@ package org.openscales.core
      */
     private function onIconLoadError(event:IOErrorEvent):void
     {
-			Trace.log("Error when loading icon " + this.url,Trace.ERROR);
+			Trace.error("Error when loading icon " + this.url);
     }
 
        /**

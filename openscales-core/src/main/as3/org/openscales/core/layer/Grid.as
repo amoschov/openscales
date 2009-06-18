@@ -2,7 +2,6 @@ package org.openscales.core.layer
 {
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -10,6 +9,8 @@ package org.openscales.core.layer
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
+	import org.openscales.proj4as.Proj4as;
+	import org.openscales.proj4as.ProjPoint;
 	
 	/**
 	 * Base class for layers that use a lattice of tiles.
@@ -116,6 +117,11 @@ package org.openscales.core.layer
 	     * @param dragging
 	     */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
+			
+			//If projection is different from map projection, we translate the bounds
+			/*if (this.projection.srsCode != this.map.projection.srsCode)
+				bounds.transform(this.map.projection,this.projection);*/
+			
 			super.moveTo(bounds, zoomChanged, dragging);
 	        
 	        if (bounds == null) {
@@ -592,7 +598,7 @@ package org.openscales.core.layer
 		
 		public function set numLoadingTiles(value:int):void {
 			this._numLoadingTiles = value;
-			Trace.log(this.numLoadingTiles.toString(),Trace.INFO);
+			Trace.info(this.numLoadingTiles.toString());
 		}
 		
 		/**

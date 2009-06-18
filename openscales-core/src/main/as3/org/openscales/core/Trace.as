@@ -13,22 +13,29 @@ package org.openscales.core
 		{
 		}
 		
-		public static function log(text:String,type:String):void
+		public static function info(text:String):void
 		{
 			if(map != null)
 			{
-				if(type == Trace.ERROR)
-				{
-					map.dispatchEvent(new TraceEvent(TraceEvent.ERROR,text));
-				}
-				if(type == Trace.WARNING)
-				{
-					map.dispatchEvent(new TraceEvent(TraceEvent.WARNING,text));
-				}
-				if(type == Trace.INFO)
-				{
-					map.dispatchEvent(new TraceEvent(TraceEvent.INFO,text));
-				}	
+				map.dispatchEvent(new TraceEvent(TraceEvent.INFO,text));					
+			}
+			trace(text);
+		}
+		
+		public static function warning(text:String):void
+		{
+			if(map != null)
+			{
+				map.dispatchEvent(new TraceEvent(TraceEvent.WARNING,text));					
+			}
+			trace(text);
+		}
+		
+		public static function error(text:String):void
+		{
+			if(map != null)
+			{
+				map.dispatchEvent(new TraceEvent(TraceEvent.ERROR,text));					
 			}
 			trace(text);
 		}

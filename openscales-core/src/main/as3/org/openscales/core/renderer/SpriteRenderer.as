@@ -233,11 +233,11 @@ package org.openscales.core.renderer
 		}
 		
 		public function drawLinearRing(node:SpriteElement, geometry:LinearRing):void {
-			Trace.log("drawLinearRing : To be implemented",Trace.WARNING);
+			Trace.warning("drawLinearRing : To be implemented");
 		}
 		
 		 public function drawSurface(node:SpriteElement, geometry:Surface):void {
-		 	Trace.log("drawSurface : To be implemented",Trace.WARNING);
+		 	Trace.warning("drawSurface : To be implemented");
 		 }
 		
 		public function getComponentsString(components:Collection):String {

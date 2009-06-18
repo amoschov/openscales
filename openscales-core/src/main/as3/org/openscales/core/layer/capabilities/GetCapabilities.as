@@ -58,12 +58,12 @@ package org.openscales.core.layer.capabilities
 		private function requestCapabilities(failedVersion:String = null):Boolean{
 			
 			if (this._service != "WFS" && this._service != "WMS"){
-				Trace.log("Bad service for GetCapabilities: " + this._service,Trace.ERROR);
+				Trace.error("Bad service for GetCapabilities: " + this._service);
 				return false;
 			}
 			
 			if (this._url == null) {
-				Trace.log("GetCapabilities: URL must not be null",Trace.ERROR);
+				Trace.error("GetCapabilities: URL must not be null");
 				return false;
 			}
 			
@@ -81,7 +81,7 @@ package org.openscales.core.layer.capabilities
 				}
 				
 				if (!foundVersion) {
-					Trace.log("GetCapabilities: Not found server compatible version",Trace.ERROR);
+					Trace.error("GetCapabilities: Not found server compatible version");
 					return false;
 				}
 				else {
@@ -91,7 +91,7 @@ package org.openscales.core.layer.capabilities
 				}
 			}
 			else if (this._service == "WMS") {
-				Trace.log("WMS parser not implemented yet",Trace.WARNING);
+				Trace.warning("WMS parser not implemented yet");
 				return false;
 			}
 			
