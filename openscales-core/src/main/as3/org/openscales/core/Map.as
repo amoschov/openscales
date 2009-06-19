@@ -190,10 +190,16 @@ package org.openscales.core
 
 				if (Util.indexOf(this.layers, newBaseLayer) != -1) {
 					
+					// if we set a baselayer with a diferent projection, we change the map's projection datas
 					if (this.projection.srsCode != newBaseLayer.projection.srsCode) {
-						this.center.transform(this.projection, newBaseLayer.projection);
+						
+						if (this.center != null)
+							this.center.transform(this.projection, newBaseLayer.projection);
+						
+						if (this._layerContainerOrigin != null)
+							this._layerContainerOrigin.transform(this.projection, newBaseLayer.projection);
+							
 						oldExtent = null;
-						this._layerContainerOrigin.transform(this.projection, newBaseLayer.projection);
 						this.projection = newBaseLayer.projection;
 						this.maxResolution = newBaseLayer.maxResolution;
 						this.numZoomLevels = newBaseLayer.numZoomLevels;
