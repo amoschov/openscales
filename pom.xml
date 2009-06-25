@@ -25,7 +25,7 @@
 				</property>
 			</activation>
             <properties>
-				<mvn.site>file:///home/www/openscales.org/mvn-site</mvn.site>
+				<mvn.site>file:///WEBS/pht/openscales.org/docs/mvn-site</mvn.site>
             </properties>
         </profile>
 	</profiles>
