@@ -5,6 +5,8 @@ package org.openscales.core.handler.mouse
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
@@ -24,24 +26,21 @@ package org.openscales.core.handler.mouse
 	public class DragFeature extends DragHandler
 	{
 		/**
-		 * The Featue which is drag
+		 * The Feature which is drag
 		 */
 		private var _Feature:VectorFeature = null;	
 					
 		/**
-		 * 
 		 * The Group  of layers with draggable features
 		 */
 		private var _layer:Array=null;
 		
 		/**
-		 * 
 		 * The layer's number with dragging features
 		 */
 		private var _layer_number:Number=0;
 		
 		/**
-		 * 
 		 * dragged sprite
 		 */	
 		private var _elementDragging:SpriteElement=new SpriteElement();
@@ -75,38 +74,31 @@ package org.openscales.core.handler.mouse
 		override  protected function onMouseDown(event:Event):void
 		{
 			var cpt:Number=0;
-			
-			
+		
 			while(cpt!=this.layer.length)
 			{
-			if((event as FeatureEvent).vectorfeature.layer==this.layer[this.layer_number])
-			{	
-			for each (var handler:* in this.map.handlers)
-			{
-				//We deactivate all Draghandler
-				if(getQualifiedClassName(handler)=="org.openscales.core.handler.mouse::DragHandler")
-				{
-					handler.active=false;
+				if((event as FeatureEvent).vectorfeature.layer==this.layer[this.layer_number])
+				{	
+					for each (var handler:* in this.map.handlers)
+					{
+						//We deactivate all Draghandler
+						if(getQualifiedClassName(handler)=="org.openscales.core.handler.mouse::DragHandler")
+						{
+							handler.active=false;
+						}
+					}		
+					this.Feature=(event as FeatureEvent).vectorfeature;
+					if(this.onstart!=null){this.onstart((event as FeatureEvent));}
+	     			var index:int=0;
+	     	  		this.FeatureMove();
+					this.dragging=true;	
+					cpt=this.layer.length;	
 				}
-			}		
-			this.Feature=(event as FeatureEvent).vectorfeature;
-			if(this.onstart!=null) this.onstart((event as FeatureEvent),this.Feature);
-	     	var index:int=0;
-	        this.FeatureMove();
-	       
-			this.dragging=true;	
-			cpt=this.layer.length;	
-			}
-			else
-			{
-			cpt++;
-			this.layer_number++;
-			}
+				else{cpt++;this.layer_number++;}
 			}
 		}
 		/**
 		 * This function is use to move the feature
-		 * 
 		 */
 		private function FeatureMove():void
 		{
@@ -128,7 +120,7 @@ package org.openscales.core.handler.mouse
 	           this._elementDragging=this.layer[layer_number].renderer.container.getChildByName(Feature.geometry.id);
 	           this._elementDragging.startDrag();   
 	           this.dragging=true;     
-	          }
+	          }	         
 		}
 		/**
 		 * The MouseUp Listener
@@ -138,7 +130,13 @@ package org.openscales.core.handler.mouse
 			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,movefeatures);
 			this._elementDragging.stopDrag();			
 			this.dragging=false;
-			if(this.oncomplete!=null) this.oncomplete((event as FeatureEvent),this.Feature);
+			if(this.oncomplete!=null) this.oncomplete((event as FeatureEvent));
+			 
+			/* Test */			
+			 var ll:LonLat = this.map.getLonLatFromMapPx(new Pixel(this.map.mouseX, this.map.mouseY));
+			(event as FeatureEvent).vectorfeature.lonlat = ll; 
+			/* End Test */
+			
 			this.layer_number=0;
 			this._elementDragging=new SpriteElement();
 			for each (var handler:* in this.map.handlers)
@@ -165,10 +163,11 @@ package org.openscales.core.handler.mouse
 				Sprite.x=event.stageX+dx;
 				Sprite.y= event.stageY+dy;    	
 			}
+			/* this.Feature.lonlat = this.map.getLonLatFromMapPx(new Pixel(event.stageX+dx,event.stageY+dy)); */
 		}
 		// Getters & setters as3
 		/**
-		 * The Featue which is drag
+		 * The Feature which is drag
 		 */
 		
 		public function set Feature(Feature:VectorFeature):void

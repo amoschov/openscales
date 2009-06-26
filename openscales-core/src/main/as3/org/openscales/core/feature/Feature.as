@@ -1,9 +1,10 @@
 package org.openscales.core.feature
 {
   import flash.utils.getQualifiedClassName;
-
+  
   import org.openscales.core.Icon;
   import org.openscales.core.Marker;
+  import org.openscales.core.Trace;
   import org.openscales.core.Util;
   import org.openscales.core.basetypes.Bounds;
   import org.openscales.core.basetypes.LonLat;

@@ -2,7 +2,7 @@
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:control="org.openscales.component.control.*"
 	xmlns:os="http://openscales.org" creationComplete="initTabDrawing();"
-	width="330" height="330">
+	width="330" height="416">
 		
 	<mx:Script>
 		<![CDATA[
@@ -48,6 +48,7 @@
 			private var _selectStyle:Style = new Style();
 			public var selectFeatures:Array = new Array();  //Array witch keep all selectFeature (with ctrl key)
 			private var _iteratorFeatures:Number = 0;	//indicate the iterate for feature
+			private var _isDragging:Boolean = false;	//To know if the feature is dragging
 				
 			/**
 			 * Mouse handlers
@@ -71,9 +72,9 @@
 				this.selectFeatureHandler.hover = false;
 				 				 
 				//Active drag feature
-				this.dragfeature = new DragFeature(this.map,[drawLayer],true);
+				/* this.dragfeature = new DragFeature(this.map,[drawLayer],true); */
 				
-				//Active select feature handler with the map
+				//Add select feature handler to the map
 				this.map.addHandler(selectFeatureHandler);
 				
 				//Define the style of a feature when it selected
@@ -84,7 +85,10 @@
 				this.parent.addEventListener(Event.CHANGE,changingTab);
 				indexTabDrawing = (this.parent as TabNavigator).selectedIndex;
 				
+				//Show the handcursor when mouse is hover a feature
 				this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND));
+				
+				this.map.addEventListener(FeatureEvent.FEATURE_DRAGGING, onDragingFeature);
 			}
 			
 			/**
@@ -94,7 +98,7 @@
 				Alert.show("Are you sure ?", "Warning", Alert.YES | Alert.NO, null, alertClickHandler);				
 			}
 			
-			//check the user answer
+			//check the user's answer
 			private function alertClickHandler(event:CloseEvent):void {
                 // User click on "YES", he wants to apply changes
                 if (event.detail==Alert.YES){
@@ -133,6 +137,7 @@
 					case "path":{pathHandler.newFeature = true; break;}
 					case "polygon":{polygonHandler.newFeature = true; break;}
 				}
+				this.featureInfo.dgFeatureInfo.dataProvider=null; //clear the information tab
 			}
 			
 			/**
@@ -173,9 +178,9 @@
 			 * On select feature
 			 */
 			private function onSelectFeature(event:FeatureEvent):void {			
-				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active && featureInfo != null) {					
+				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active && featureInfo != null && !isDragging) {					
 					var i:Number = 0;	// to iterate
-					var f:org.openscales.core.feature.VectorFeature;					
+					var f:org.openscales.core.feature.VectorFeature;										
 					selectFeatureHandler.currentfeature = event.vectorfeature;
 					btnDeleteSelected.enabled = true;
 					if(selectFeatures == null){selectFeatures = new Array();}							
@@ -253,6 +258,7 @@
 						this.featureInfo.showInfo(event);		//Show information of the selected feature
 					}
 				}
+				else{isDragging=false;}
 			}
 			
 			override public function set map(value:Map):void {
@@ -350,11 +356,13 @@
 						activeDrag();
 						selectFeatureHandler.active = false;
 					}
+					//hide handcursor
 					this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));	
 				}
 				//user switches to drawing tab
 				else{
 					selectFeatureHandler.active = true;
+					//show handcursor
 					this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND));
 				}
 			}		
@@ -404,8 +412,8 @@
 			}
 			
 			/**
-			 * Active draging
-			 * User can drag the map
+			 * Active paning
+			 * User can pan the map
 			 */
 			public function activeDrag():void{
 				var handler:Handler;
@@ -416,8 +424,8 @@
 				} 
 			}
 			/**
-			 * Deactive draging
-			 * User can't drag map anymore
+			 * Deactive paning
+			 * User can't pan map anymore
 			 */
 			public function deactiveDrag():void{
 				var handler:Handler;
@@ -426,6 +434,10 @@
 						handler.active = false;
 					} 
 				}
+			}
+			
+			private function onDragingFeature(evt:FeatureEvent):void{
+				isDragging = true;
 			}
 			
 			// Getters and setters AS3
@@ -456,10 +468,17 @@
 			public function set indexTabDrawing(value:Number):void{
 				_indexTabDrawing = value;
 			}
+			
+			public function get isDragging():Boolean{
+				return _isDragging;
+			}
+			public function set isDragging(value:Boolean):void{
+				_isDragging = value;
+			}
 		]]>
 	</mx:Script>
 	
-	<mx:ToggleButtonBar x="10" y="10" horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="-1" id="tgBar">
+	<mx:ToggleButtonBar x="100" y="10" horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="-1" id="tgBar">
 		<mx:Array>
 			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoint.swf')" id="btnPoint"/>
 			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" id="btnPath"/>
@@ -467,13 +486,13 @@
 		</mx:Array>
 	</mx:ToggleButtonBar>	
 	
-	<mx:Button x="10" y="78" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="104"/>
-	<mx:Button x="10" y="48" label="DeleteLast" width="104" id="btnDeleteLast" click="this.onDeleteLastClick(event)"/>
-	<mx:Button label="DeleteSelected" width="118" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" x="175" y="78" enabled="false"/>
+	<mx:Button x="106" y="123" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="118" toolTip="Delete all drawing feature on the map"/>
+	<mx:Button x="106" y="84" label="DeleteLast" width="118" id="btnDeleteLast" click="this.onDeleteLastClick(event)" toolTip="Delete the last drawing feature"/>
+	<mx:Button label="DeleteSelected" width="118" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" x="106" y="161" enabled="false" toolTip="Delete all selected features"/>
 		
-	<mx:Text x="160" y="5" text="Tooltip : to finalize a path or a polygon just double click on map." width="143" height="46" fontStyle="italic"/>
-	<mx:Text x="160" y="108" text="For the moment, you can't delete WFS points, even if they are selected." fontStyle="italic" width="143" textAlign="center"/>
+	<mx:Text x="10" y="40" text="To finalize a path or a polygon, just double click on map." width="310" height="22" fontStyle="italic" textAlign="center" />
+	<mx:Text text="For the moment you can't delete WFS points, even if they are selected" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="190"/>
 
-	<control:FeatureInfo id="featureInfo" x="10" y="155" width="310" height="165"/>
+	<control:FeatureInfo id="featureInfo" x="10" y="232" width="310" height="165"/>
 	
 </control:Control>

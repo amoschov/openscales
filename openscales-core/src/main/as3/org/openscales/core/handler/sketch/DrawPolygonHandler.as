@@ -67,7 +67,7 @@ package org.openscales.core.handler.sketch
 					feature.geometry = polygon;
 					
 					// We create a point the first time to see were we have clicked
-					var featurePoint:org.openscales.core.feature.VectorFeature = new org.openscales.core.feature.VectorFeature;
+					var featurePoint:VectorFeature = new VectorFeature;
 					featurePoint.id = id.toString();id++;
 					featurePoint.geometry = point;
 					
@@ -82,7 +82,7 @@ package org.openscales.core.handler.sketch
 						drawLayer.removeFeatures(drawLayer.features[drawLayer.features.length-2]);
 						_firstPointRemoved = true;
 					}
-
+					
 					drawLayer.renderer.clear();
 					lring.addComponent(point);
 					drawLayer.redraw();
@@ -101,11 +101,11 @@ package org.openscales.core.handler.sketch
 			var style:Style = new Style();
 			style.fillColor = 0x60FFE9;
 			style.strokeColor = 0x60FFE9;
-				
+								
 			var feature:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
 			if(feature!=null){
+				//Apply the new style
 				feature.style = style;
-				feature.attributes = {NAME:feature.id};
 				drawLayer.renderer.clear();
 				drawLayer.redraw();
 			}		
@@ -159,7 +159,5 @@ package org.openscales.core.handler.sketch
 		public function get clickHandler():ClickHandler {
 			return _dblClickHandler;
 		}
-
-		
 	}
 }

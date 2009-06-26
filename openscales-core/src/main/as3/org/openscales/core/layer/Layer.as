@@ -73,7 +73,7 @@ package org.openscales.core.layer
 
 		/**
 		 * Redraws the layer.
-		 * @return Returns true if the layer was redrawn, false if not
+		 * @return true if the layer was redrawn, false if not
 		 *
 		 */
 		public function redraw():Boolean {

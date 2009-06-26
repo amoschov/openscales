@@ -41,7 +41,7 @@ package org.openscales.core.handler.sketch
 			}		
 		}
 		
-		public function drawPoint():void {
+		private function drawPoint():void {
 			var style:Style = new Style();
 			style.fillColor = 0x60FFE9;
 			style.strokeColor = 0x60FFE9;
@@ -50,11 +50,11 @@ package org.openscales.core.handler.sketch
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
 			
-			var feature:org.openscales.core.feature.VectorFeature;
-			feature = new org.openscales.core.feature.VectorFeature();
+			var feature:VectorFeature;
+			feature = new VectorFeature();
 			feature.id = id.toString(); id++;
 			feature.style = style;
-			feature.attributes = {Lon:lonlat.lon, Lat:lonlat.lat, NAME:"point."+this.id};		
+			feature.lonlat = lonlat; 		
 			feature.geometry = point;		
 			drawLayer.addFeatures(feature);
 		}

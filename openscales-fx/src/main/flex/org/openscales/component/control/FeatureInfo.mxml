@@ -3,6 +3,11 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.geometry.Polygon;
+			import org.openscales.core.geometry.LineString;
+			import org.openscales.core.feature.VectorFeature;
+			import org.openscales.core.geometry.MultiLineString;
+			import flash.utils.getQualifiedClassName;
 			import mx.collections.ArrayCollection;
 			import org.openscales.core.events.FeatureEvent;
 			import org.openscales.core.Map;
@@ -14,34 +19,113 @@
 			private var attributes:ArrayCollection;
 			
 			/**
-			 * Method which display the feature properties
+			 * Params
+			 * currentPoint : keep the current point in Path or polygon
+			 * lastP : To prevent to show the same point twice (because of LineString)
+			 */
+			public var currentPoint:org.openscales.core.geometry.Point;
+			public var lastP:org.openscales.core.geometry.Point;		
+			
+			/**
+			 * Method which display the feature properties. We differenciate information with the feature : 
+			 * with a point, we only have to show its name and Lon/Lat.
+			 * with path, its name and all coordinates of each point in the path
+			 * with polygon, same as path
 			 */
 			public function showInfo(evt:FeatureEvent):void {
 				var properties:Array = [];
+				var name:Object;
+				var pointNum:Number = 1; //indicate the number of the point (because point.id is too long)
+				var first:Boolean = true; //indicate if it's the first point
 				
-				for (var key:String in evt.vectorfeature.attributes) {
-					var property:Object = {};
-					property.Name = key;
-					property.Value = evt.vectorfeature.attributes[key];
-					properties.push(property);
+				//point informations
+				if(getQualifiedClassName(evt.vectorfeature.geometry) == "org.openscales.core.geometry::Point"){
+					name = {};
+					name.Name = "Name";
+					
+					//we separate Lon and Lat only with point feature
+					var coordinateLon:Object = {};
+					var coordinateLat:Object = {};
+									
+					name.Value = "Point_" + evt.vectorfeature.id;
+									
+					coordinateLon.Name = "Lon";
+					coordinateLon.Value = evt.vectorfeature.lonlat.lon;
+					coordinateLat.Name = "Lat";
+					coordinateLat.Value = evt.vectorfeature.lonlat.lat;
+					
+					//Add properties to array
+					properties.push(name,coordinateLon,coordinateLat);				
 				}
 				
-				attributes = new ArrayCollection(properties);
-				this.dgFeatureInfo.dataProvider = this.attributes;
+				//path informations
+				else if(getQualifiedClassName(evt.vectorfeature.geometry) == "org.openscales.core.geometry::MultiLineString"){					
+					//Add the property NAME
+					name = {};
+					name.Name = "Name";					
+					name.Value = evt.vectorfeature.id;
+					properties.push(name);
+					
+					//MultiLineString = several LineString and LineString = 2 points
+					for each(var ls:org.openscales.core.geometry.LineString in (evt.vectorfeature.geometry as MultiLineString).components){
+						for each(currentPoint in ls.components){
+							//To prevent twice the same point
+							var pointPath:Object = {};
+							if(first){
+								lastP = currentPoint; first = false;
+								pointPath.Name = "Point_" + pointNum; pointNum++;
+								pointPath.Value = currentPoint.x + ";" + currentPoint.y;
+								properties.push(pointPath);
+							}
+							else if(lastP != currentPoint){							
+								pointPath.Name = "Point_" + pointNum; pointNum++;
+								pointPath.Value = currentPoint.x + ";" + currentPoint.y;
+								properties.push(pointPath);
+								lastP = currentPoint;
+							}
+						}	
+					}
+					pointNum=1;		
+				}
+				//polygon informations
+				else if(getQualifiedClassName(evt.vectorfeature.geometry) == "org.openscales.core.geometry::Polygon"){
+					name = {};
+					name.Name = "Name";
+					name.Value = evt.vectorfeature.id;
+					properties.push(name);
+					
+					for each(var lr:org.openscales.core.geometry.LinearRing in (evt.vectorfeature.geometry as Polygon).components){
+						for each(currentPoint in lr.components){
+							var pointPoly:Object = {};
+							pointPoly.Name = "Point_" + pointNum; pointNum++;
+							pointPoly.Value = currentPoint.x + ";" + currentPoint.y;
+							properties.push(pointPoly);
+						}
+					}
+					pointNum = 1; 	 									
+				}
+				else{
+					// Only for WFS features (for the moment)
+					for (var key:String in evt.vectorfeature.attributes) {	
+						var property:Object = {};
+						property.Name = key;
+						property.Value = evt.vectorfeature.attributes[key];
+						properties.push(property);				
+					}
+				}				
+								
+				attributes = new ArrayCollection(properties); 
+				this.dgFeatureInfo.dataProvider = attributes;
 				this.dgFeatureInfo.columns.sort();
 			}
 			
 			/**
-			 * Map setter
-			 * 
+			 * Map setter 
 			 * @param value The map
 			 */
 			override public function set map(value:Map):void {
 				if (value != null) {
-					super.map = value;
-					
-					//We listen to the Feature Click event
-					/* this.map.addEventListener(FeatureEvent.FEATURE_CLICK, this.showInfo); */
+					super.map = value;				
 				}
 			}
 			
@@ -49,7 +133,7 @@
 	</mx:Script>
 	<mx:DataGrid x="10" y="10" width="262" height="148" id="dgFeatureInfo" editable="false">
 		<mx:columns>
-			<mx:DataGridColumn headerText="Property" dataField="Name" sortDescending="true"/>
+			<mx:DataGridColumn headerText="Property" dataField="Name" sortDescending="true" width="90"/>
 			<mx:DataGridColumn headerText="Value" dataField="Value"/>
 		</mx:columns>
 	</mx:DataGrid>

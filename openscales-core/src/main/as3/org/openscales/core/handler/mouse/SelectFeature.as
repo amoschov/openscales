@@ -1,6 +1,8 @@
 package org.openscales.core.handler.mouse
 {
 	import org.openscales.core.Map;
+	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.control.ui.CheckBox;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.handler.Handler;
@@ -29,6 +31,8 @@ package org.openscales.core.handler.mouse
 		//Accept hover or not
 		private var _hover:Boolean=true;
 		
+		private var _startPixel:Pixel=null;
+		
 		public function SelectFeature(map:Map=null,layer:VectorLayer=null,active:Boolean=false)
 		{
 			super(map,active);
@@ -38,12 +42,17 @@ package org.openscales.core.handler.mouse
 		override protected function registerListeners():void{
 			this.map.addEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
 			this.map.addEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);
-			this.map.addEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
+			//this.map.addEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
+			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
+			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp);	
+			
 		}
 		override protected function unregisterListeners():void{
 			this.map.removeEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
 			this.map.removeEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);
-			this.map.removeEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
+		//	this.map.removeEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
+			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
+			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp);
 		}
 	
 		public function OnOut(pevt:FeatureEvent):void
@@ -63,15 +72,32 @@ package org.openscales.core.handler.mouse
 				}
 			}
 		}
-		public function OnClick(pevt:FeatureEvent):void
+		
+		/*public function OnClick(pevt:FeatureEvent):void
 		{			
 			if(!this.hover)
 			{
 				if(this._select!=null)this._select(pevt);
 			}
+		}*/
+		public function onMouseUp(pevt:FeatureEvent):void
+		{
+			if(!this.hover)
+			{
+				if((this._startPixel.x-pevt.vectorfeature.layer.mouseX==0)&&(this._startPixel.y-pevt.vectorfeature.layer.mouseY==0))
+				{
+					if(this._select!=null)this._select(pevt);
+				}						
+			}
 		}
-		
-		
+		public function onMouseDown(pevt:FeatureEvent):void
+		{
+			if(!this.hover)
+			{
+				this._startPixel=new Pixel(pevt.vectorfeature.layer.mouseX,pevt.vectorfeature.layer.mouseY);		
+			}
+		}
+	
 		//Properties
 		public function  get select():Function
 		{

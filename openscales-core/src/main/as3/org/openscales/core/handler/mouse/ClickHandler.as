@@ -82,7 +82,7 @@ package org.openscales.core.handler.mouse
 		 	//dx and dy variables are use to know if there was a drag or a click
 		 	var dx :Number = Math.abs(this._StartPixel.x-evt.stageX);
 		 	var dy :Number = Math.abs(this._StartPixel.y-evt.stageY);
-		 	if(dx<=this._tolerance && dy<=this._tolerance)
+		 	if(dx<=this.tolerance && dy<=this.tolerance)
 		 	{
 		 		this.mouseClick(evt);
 		 	}
@@ -137,7 +137,7 @@ package org.openscales.core.handler.mouse
 		/**
 		 * We use a tolerance to detect a drag or a click
 		 */
-		public function set tolerance(toleranceY:Number):void
+		public function set tolerance(tolerance:Number):void
 		{
 			this._tolerance=tolerance;
 		}

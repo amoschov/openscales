@@ -68,10 +68,10 @@ package org.openscales.core.handler.sketch
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
 			
 			if(newFeature){				
-				_lastPoint = point;
+				lastPoint = point;
 				feature.geometry = point;
 				drawLayer.addFeatures(feature);
-				newFeature = false;			
+				newFeature = false;				
 			}
 			else {
 				//When we have at least a 2 points path, we can remove the first point				
@@ -81,12 +81,12 @@ package org.openscales.core.handler.sketch
 									
 				drawLayer.renderer.clear();
 				var points:Array = new Array(2);
-				points.push(_lastPoint, point);
+				points.push(lastPoint, point);
 				var lstring:LineString = new LineString(points);
 				feature.geometry = lstring;
 				drawLayer.addFeatures(feature);
 				drawLayer.redraw();
-				_lastPoint = point;
+				lastPoint = point;
 			}
 		}
 		
@@ -114,7 +114,6 @@ package org.openscales.core.handler.sketch
 				mlFeature.id = "path." + id.toString(); id++;
 				mlFeature.style = style;
 				mlFeature.geometry = mlString;
-				mlFeature.attributes = {NAME:mlFeature.id};
 				
 				drawLayer.removeFeatures(featuresToRemove);
 				drawLayer.addFeatures(mlFeature);
@@ -151,7 +150,7 @@ package org.openscales.core.handler.sketch
 
 		public function set newFeature(newFeature:Boolean):void {
 			if(newFeature == true) {
-				_lastPoint = null;
+				lastPoint = null;
 			}
 			_newFeature = newFeature;
 		}
@@ -159,7 +158,6 @@ package org.openscales.core.handler.sketch
 		public function get lastPoint():Point {
 			return _lastPoint;
 		}
-
 		public function set lastPoint(value:Point):void {
 			_lastPoint = value;
 		}
