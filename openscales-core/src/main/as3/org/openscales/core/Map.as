@@ -11,6 +11,7 @@ package org.openscales.core
   import flash.geom.Rectangle;
 
   import org.openscales.core.basetypes.Bounds;
+  import org.openscales.core.basetypes.DraggableSprite;
   import org.openscales.core.basetypes.LonLat;
   import org.openscales.core.basetypes.Pixel;
   import org.openscales.core.basetypes.Size;
@@ -56,7 +57,7 @@ package org.openscales.core
 		private var _layerContainerOrigin:LonLat = null;
 
 		private var _baseLayer:Layer = null;
-		private var _layerContainer:Sprite = null;
+		private var _layerContainer:DraggableSprite = null;
 		private var _controls:Array = null;
 		private var _handlers:Array = null;
 		private var _tileSize:Size = null;
@@ -71,7 +72,7 @@ package org.openscales.core
 		private var _projection:ProjProjection;
 		private var _units:String;
 		private var _proxy:String = null;
-		private var _bitmapTransition:Bitmap;
+		private var _bitmapTransition:DraggableSprite;
 
 		/**
 		 * Map constructor
@@ -94,7 +95,7 @@ package org.openscales.core
 			this.numZoomLevels = this.DEFAULT_NUM_ZOOM_LEVELS;
 			this.units = this.DEFAULT_UNITS;
 
-			this._layerContainer = new Sprite();
+			this._layerContainer = new DraggableSprite();
 
 			this._layerContainer.graphics.beginFill(0xFFFFFF,0);
 			this._layerContainer.graphics.drawRect(0,0,this.size.w,this.size.h);
@@ -722,9 +723,10 @@ package org.openscales.core
 				// We intsanciate a bitmapdata with map's size
 				var bitmapData:BitmapData = new BitmapData(this.width,this.height);
 				// We draw it with the layer container contents transformed by the transformation matrix
-				bitmapData.draw(this.layerContainer,m);
+				try { bitmapData.draw(this.layerContainer,m); } catch (e:Error) { Trace.error("Error zooming image: " + e); }
 				// We create the bitmap from the bitmap data
-				this.bitmapTransition = new Bitmap(bitmapData);		
+				this.bitmapTransition = new DraggableSprite();
+				this.bitmapTransition.addChild(new Bitmap(bitmapData));		
 				// We add the bitmap to the map		
 				this.addChild(bitmapTransition);
 				// We put it just ahead the layer container (in order to hide it and to be behind the controls)
@@ -811,15 +813,15 @@ package org.openscales.core
 		/**
 		 * Layer container where layers are added. It is used for panning, scaling layers.
 		 */
-		public function get layerContainer():Sprite {
+		public function get layerContainer():DraggableSprite {
 	        return this._layerContainer;
 		}
 		
-		public function get bitmapTransition():Bitmap {
+		public function get bitmapTransition():DraggableSprite {
 	        return this._bitmapTransition;
 		}
 		
-		public function set bitmapTransition(value:Bitmap):void {
+		public function set bitmapTransition(value:DraggableSprite):void {
 	        this._bitmapTransition = value;
 		}
 

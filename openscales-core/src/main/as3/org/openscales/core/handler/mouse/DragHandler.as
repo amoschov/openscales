@@ -56,9 +56,12 @@ package org.openscales.core.handler.mouse
     /**
      * The MouseDown Listener
      */
-    protected function onMouseDown(event:Event):void{
-      var element:Sprite = this.map.layerContainer;
-      element.startDrag();
+    protected function onMouseDown(event:Event):void
+    {
+      this.map.layerContainer.startDrag();
+      if (this.map.bitmapTransition != null)
+      	this.map.bitmapTransition.startDrag();
+
       this._start = new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY);
       this._startCenter = this.map.center;
       this.map.buttonMode=true;
@@ -71,9 +74,11 @@ package org.openscales.core.handler.mouse
      *The MouseUp Listener
      */
 
-    protected function onMouseUp(event:Event):void{
-      var element:Sprite = this.map.layerContainer;
-      element.stopDrag();
+    protected function onMouseUp(event:Event):void
+    {
+      this.map.layerContainer.stopDrag();
+      this.map.bitmapTransition.stopDrag();
+      
       this.map.buttonMode=false;
       this.done(new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY));
       this._dragging=false;
