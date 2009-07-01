@@ -64,6 +64,7 @@ package org.openscales.core
 		private var _size:Size = null;
 		private var _center:LonLat = null;
 		private var _zoom:Number = 0;
+		private var _zooming:Boolean = false;
 		private var _maxExtent:Bounds = null;
 		private var _maxResolution:Number;
 		private var _minResolution:Number;
@@ -472,33 +473,41 @@ package org.openscales.core
 		}
 
 		/**
-		 * This function takes care to recenter the layerContainer.
+		 * This function takes care to recenter the layerContainer and bitmapTransition.
 		 *
 		 * @param lonlat the new layer container center
 		 * @param tween use tween effect is set to true
 		 */
-		private function centerLayerContainer(lonlat:LonLat, tween:Boolean = false):void {
+		private function centerLayerContainer(lonlat:LonLat, tween:Boolean = false):void
+		{
 			var originPx:Pixel = this.getMapPxFromLonLat(this._layerContainerOrigin);
 	        var newPx:Pixel = this.getMapPxFromLonLat(lonlat);
+	        
+	        if (originPx == null || newPx == null) return;
+	        
+	        // X and Y positions for the layer container and bitmap transition, respectively.
+	        var lx:Number = originPx.x - newPx.x;
+	        var ly:Number = originPx.y - newPx.y;
+	        if (bitmapTransition != null) {
+		        var bx:Number = bitmapTransition.x + lx - _layerContainer.x;
+		        var by:Number = bitmapTransition.y + ly - _layerContainer.y;
+			}
 
-	        if ((originPx != null) && (newPx != null)) {
-	        	if(tween) {
-		        	new GTweeny(this._layerContainer, 0.5, {x:(originPx.x - newPx.x)});
-		        	new GTweeny(this._layerContainer, 0.5, {y:(originPx.y - newPx.y)});
-		        	if(bitmapTransition != null){
-		        		new GTweeny(bitmapTransition, 0.5, {x: (originPx.x - newPx.x)});
-		        		new GTweeny(bitmapTransition, 0.5, {y: (originPx.y - newPx.y)});
-		        	}
+        	if(tween) {
+	        	new GTweeny(this._layerContainer, 0.5, {x: lx});
+	        	new GTweeny(this._layerContainer, 0.5, {y: ly});
+	        	if(bitmapTransition != null) {
+	        		new GTweeny(bitmapTransition, 0.5, {x: bx });
+	        		new GTweeny(bitmapTransition, 0.5, {y: by });
 	        	}
-	        	else {
-	        		this._layerContainer.x = (originPx.x - newPx.x);
-	            	this._layerContainer.y  = (originPx.y - newPx.y);
-	            	if(bitmapTransition != null){
-		        		bitmapTransition.x = (originPx.x - newPx.x);
-		        		bitmapTransition.y = (originPx.y - newPx.y);
-		        	}
+        	} else {
+        		this._layerContainer.x = lx;
+            	this._layerContainer.y = ly;
+            	if(bitmapTransition != null) {
+	        		bitmapTransition.x = bx;
+	        		bitmapTransition.y = by;
 	        	}
-	        }
+        	}
 		}
 
 		/**
@@ -699,12 +708,7 @@ package org.openscales.core
 		}
 		public function set zoom(newZoom:Number):void 
 		{
-			if (this.isValidZoomLevel(newZoom)) {
-				
-				// We remove the last bitmap transition if there is one
-				if(bitmapTransition != null)
-					this.removeChild(bitmapTransition);
-					
+			if (this.isValidZoomLevel(newZoom)) {					
 				this.zoomTransition(newZoom);
 
 	        }
@@ -715,27 +719,33 @@ package org.openscales.core
 		 */
 		private function zoomTransition(newZoom:Number = -1):void {
 			
-			if (newZoom >= 0) {
-				// We instanciate and modify a transformation matrix to bitmap the right layerContainer rectangle
-				var m:Matrix = new Matrix();
-				m.tx = this.layerContainer.x;
-				m.ty = this.layerContainer.y;
-				// We intsanciate a bitmapdata with map's size
-				var bitmapData:BitmapData = new BitmapData(this.width,this.height);
-				// We draw it with the layer container contents transformed by the transformation matrix
-				try { bitmapData.draw(this.layerContainer,m); } catch (e:Error) { Trace.error("Error zooming image: " + e); }
-				// We create the bitmap from the bitmap data
-				this.bitmapTransition = new DraggableSprite();
-				this.bitmapTransition.addChild(new Bitmap(bitmapData));		
-				// We add the bitmap to the map		
-				this.addChild(bitmapTransition);
-				// We put it just ahead the layer container (in order to hide it and to be behind the controls)
-			 	this.swapChildren(bitmapTransition,this.layerContainer);
+			if (!_zooming && newZoom >= 0) {
+				// Disable more zooming until this zooming is complete 
+				this._zooming = true;
 				
 				// We calculate de scale multiplicator according to the actual and new resolution
 				var resMult:Number = this.resolution / this.resolutions[newZoom];
+				// We intsanciate a bitmapdata with map's size
+				var bitmapData:BitmapData = new BitmapData(this.width,this.height);
+				// We draw the old transition before drawing the better-fitting tiles on top and removing the old transition. 
+				if(this.bitmapTransition != null) {
+					bitmapData.draw(this.bitmapTransition, bitmapTransition.transform.matrix);
+					this.removeChild(this.bitmapTransition);
+				}
 				
-				var tween:GTweeny;
+				// We draw the loaded tiles onto the background transition.
+				try {
+					// Can sometimes throw a security exception.
+					bitmapData.draw(this.layerContainer, this.layerContainer.transform.matrix);
+				} catch (e:Error) {
+					Trace.error("Error zooming image: " + e);
+				}
+				
+				// We create the background layer from the bitmap data
+				this.bitmapTransition = new DraggableSprite();
+				this.bitmapTransition.addChild(new Bitmap(bitmapData));		
+				
+				this.addChildAt(bitmapTransition, 0);				
 				
 				// We hide the layerContainer (to avoid zooming out issues)
 				this.layerContainer.alpha = 0;
@@ -744,21 +754,22 @@ package org.openscales.core
 				var x:Number = this.bitmapTransition.x-((resMult-1)*this.bitmapTransition.width)/2;
 				var y:Number = this.bitmapTransition.y-((resMult-1)*this.bitmapTransition.height)/2;
 
-				this.setChildIndex(this.layerContainer,1);
 				//The tween effect to scale and re-position the bitmapTransition
-				tween = new GTweeny(this.bitmapTransition,0.3,{scaleX: resMult,
-													 scaleY: resMult,
-													 x: x,
-													 y: y});
+				var tween:GTweeny = new GTweeny(this.bitmapTransition,0.3,
+									{
+										scaleX: resMult,
+										scaleY: resMult,
+										x: x,
+										y: y
+									});
 													 
 				tween.addEventListener(Event.COMPLETE,clbZoomTween);
-				
-				
 			}
 			
 			// The zoom tween callback method defined here to avoid a class attribute for newZoom
 			function clbZoomTween(evt:Event):void {
 				
+				_zooming = false;
 				setCenter(null, newZoom);
 				layerContainer.alpha = 1;
 				  

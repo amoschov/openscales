@@ -59,8 +59,7 @@ package org.openscales.core.handler.mouse
     protected function onMouseDown(event:Event):void
     {
       this.map.layerContainer.startDrag();
-      if (this.map.bitmapTransition != null)
-      	this.map.bitmapTransition.startDrag();
+      if (this.map.bitmapTransition) this.map.bitmapTransition.startDrag();
 
       this._start = new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY);
       this._startCenter = this.map.center;
@@ -77,7 +76,7 @@ package org.openscales.core.handler.mouse
     protected function onMouseUp(event:Event):void
     {
       this.map.layerContainer.stopDrag();
-      this.map.bitmapTransition.stopDrag();
+      if (this.map.bitmapTransition) this.map.bitmapTransition.stopDrag();
       
       this.map.buttonMode=false;
       this.done(new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY));

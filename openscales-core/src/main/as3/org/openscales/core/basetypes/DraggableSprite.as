@@ -8,12 +8,19 @@ package org.openscales.core.basetypes
 	public class DraggableSprite extends Sprite
 	{
 		private var _dragging:Boolean = false;
-		private var _start:Point;
+		private var _prev:Point;
 		
 		override public function startDrag(lockCenter:Boolean = false, bounds:Rectangle = null):void
 		{
 			_dragging = true;
-			_start = new Point(mouseX, mouseY);
+			_prev = new Point(stage.mouseX, stage.mouseY);
+			
+			if (lockCenter) {
+				// Untested
+				this.x += this.mouseX * this.scaleX;
+				this.y += this.mouseY * this.scaleY;
+			}
+			
 			registerListeners();
 		}
 		
@@ -25,8 +32,8 @@ package org.openscales.core.basetypes
 		
 		private function onMouseMove(event:MouseEvent):void
 		{
-			this.x += mouseX - _start.x;
-			this.y += mouseY - _start.y;
+			this.x += - _prev.x + (_prev.x = stage.mouseX);
+			this.y += - _prev.y + (_prev.y = stage.mouseY);
 		}
 		
 		private function registerListeners():void
