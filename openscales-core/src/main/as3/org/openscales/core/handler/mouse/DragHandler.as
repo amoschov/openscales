@@ -73,7 +73,7 @@ package org.openscales.core.handler.mouse
      *The MouseUp Listener
      */
 
-    protected function onMouseUp(event:Event):void
+    public function onMouseUp(event:Event):void
     {
       this.map.layerContainer.stopDrag();
       if (this.map.bitmapTransition) this.map.bitmapTransition.stopDrag();

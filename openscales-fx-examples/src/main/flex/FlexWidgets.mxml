@@ -16,6 +16,8 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.mouse.DragHandler;
+			import org.openscales.core.Trace;
 
 			import org.openscales.core.Map;
 					
@@ -25,6 +27,8 @@
 			private function initMap():void{
 	   			map = fxmap.map;
 				tools.x = this.width - tools.width;
+				panzoom.addEventListener(MouseEvent.MOUSE_UP, (dragHandler.handler as DragHandler).onMouseUp);
+				tools.addEventListener(MouseEvent.MOUSE_UP, (dragHandler.handler as DragHandler).onMouseUp);
 			}
 			
 		]]>
@@ -70,7 +74,7 @@
 				
 			<os:MousePosition />
 			
-			<os:DragHandler />
+			<os:DragHandler id="dragHandler"/>
 			<os:ClickHandler />
 			<os:WheelHandler />
 			<!--os:DragFeature id="dragfeature" map="{this.map}"/-->					

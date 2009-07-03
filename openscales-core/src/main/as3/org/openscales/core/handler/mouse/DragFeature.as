@@ -125,7 +125,7 @@ package org.openscales.core.handler.mouse
 		/**
 		 * The MouseUp Listener
 		 */
-		override  protected function onMouseUp(event:Event):void
+		override public function onMouseUp(event:Event):void
 		{
 			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,movefeatures);
 			this._elementDragging.stopDrag();			
