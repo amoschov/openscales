@@ -27,10 +27,7 @@
 			private function initMap():void{
 	   			map = fxmap.map;
 				tools.x = this.width - tools.width;
-				panzoom.addEventListener(MouseEvent.MOUSE_UP, (dragHandler.handler as DragHandler).onMouseUp);
-				tools.addEventListener(MouseEvent.MOUSE_UP, (dragHandler.handler as DragHandler).onMouseUp);
 			}
-			
 		]]>
 	</mx:Script>
 	

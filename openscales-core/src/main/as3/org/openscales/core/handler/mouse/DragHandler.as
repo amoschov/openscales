@@ -1,9 +1,8 @@
 package org.openscales.core.handler.mouse
 {
-  import flash.display.Sprite;
   import flash.events.Event;
   import flash.events.MouseEvent;
-
+  
   import org.openscales.core.Map;
   import org.openscales.core.basetypes.LonLat;
   import org.openscales.core.basetypes.Pixel;
@@ -25,6 +24,8 @@ package org.openscales.core.handler.mouse
 
     private var _startCenter:LonLat = null;
     private var _start:Pixel = null;
+    
+    private var _firstDrag:Boolean = true;
 
     private var _dragging:Boolean = false;
     /**
@@ -58,22 +59,27 @@ package org.openscales.core.handler.mouse
      */
     protected function onMouseDown(event:Event):void
     {
-      this.map.layerContainer.startDrag();
-      if (this.map.bitmapTransition) this.map.bitmapTransition.startDrag();
+    	if (_firstDrag) {
+    		this.map.stage.addEventListener(MouseEvent.MOUSE_UP,this.onMouseUp);
+    		_firstDrag = false;
+    	}
+    	
+		this.map.layerContainer.startDrag();
+      	if (this.map.bitmapTransition) this.map.bitmapTransition.startDrag();
 
-      this._start = new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY);
-      this._startCenter = this.map.center;
-      this.map.buttonMode=true;
-      this._dragging=true;
-      this.map.dispatchEvent(new MapEvent(MapEvent.DRAG_START, this.map))
-      if(this.onstart!=null) this.onstart(event as MouseEvent);
+	    this._start = new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY);
+	    this._startCenter = this.map.center;
+	    this.map.buttonMode=true;
+	    this._dragging=true;
+	    this.map.dispatchEvent(new MapEvent(MapEvent.DRAG_START, this.map))
+	    if(this.onstart!=null) this.onstart(event as MouseEvent);
     }
 
      /**
      *The MouseUp Listener
      */
 
-    public function onMouseUp(event:Event):void
+    protected function onMouseUp(event:Event):void
     {
       this.map.layerContainer.stopDrag();
       if (this.map.bitmapTransition) this.map.bitmapTransition.stopDrag();
