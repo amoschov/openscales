@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication layout="absolute" xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap();" >
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.layer.ogc.WFS;
+			import org.openscales.proj4as.ProjProjection;
+			import org.openscales.core.feature.VectorFeature;
+			import org.openscales.core.layer.VectorLayer;
+			import org.openscales.core.handler.IHandler;
+			import org.openscales.core.handler.mouse.DragHandler;
+			import org.openscales.core.handler.mouse.WheelHandler;
+			import mx.events.ResizeEvent;
+			import org.openscales.core.Map;
+			import org.openscales.core.popup.Popup;
+			import org.openscales.core.control.MousePosition;
+			import org.openscales.core.Marker;
+			import org.openscales.core.feature.Feature;
+			import org.openscales.core.layer.Markers;
+			import org.openscales.core.control.PanZoom;
+			import org.openscales.core.control.PanZoomBar;
+			import org.openscales.core.basetypes.Bounds;
+			import org.openscales.core.basetypes.LonLat;
+			import org.openscales.core.basetypes.Size;
+			import org.openscales.core.basetypes.Pixel;
+			import org.openscales.core.control.LayerSwitcher;
+			import org.openscales.core.layer.osm.OSM;
+			import org.openscales.core.layer.osm.Maplint;
+			import org.openscales.core.layer.osm.Mapnik;
+			import org.openscales.core.layer.osm.Osmarender;
+			import org.openscales.core.geometry.Point;
+			
+			public var map:Map; 
+			
+			public var feature:Feature; 
+        	
+        	public var mark:Marker;
+        	public var markLyon:Marker;
+			
+			private function initMap():void
+			{
+				map = fxmap.map;							
+				
+				//We create a marker over Lyon (France) with EPSG:900913 projection
+				var markers:Markers = new Markers("Markers");
+				feature = new Feature(markers,new LonLat(538850.47459,5740916.1243),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
+				mark = feature.createMarker();
+				
+				markLyon = feature.createMarker();
+				markLyon.addEventListener(MouseEvent.CLICK,showPopup);
+				
+				markers.addMarker(markLyon);
+				
+				mark.addEventListener(MouseEvent.CLICK, showPopup); 
+				markers.addMarker(mark);
+				map.addLayer(markers);
+				
+				
+				/* We create a vector layer with a point near to Lyon (France)
+				with EPSG:4326 projection.*/
+				var vect:VectorLayer = new VectorLayer("vector");
+				var p:org.openscales.core.geometry.Point = new org.openscales.core.geometry.Point(4.8,45.7);
+				vect.addFeatures(new VectorFeature(p));
+				vect.projection = new ProjProjection("EPSG:4326");
+				map.addLayer(vect);
+
+				
+				//We center the map and zoom at the wanted level
+				map.center = new LonLat(538850.47459,5740916.1243);
+				map.zoom = 9;
+			}
+			
+			private function showPopup(e:MouseEvent):void
+			{				
+				var pop:Popup = feature.createPopup();			
+				map.addPopup(pop, true);
+			}  
+		]]>
+	</mx:Script>
+
+	<os:Map id="fxmap" width="100%" height="100%" proxy="http://openscales.org/proxy.php?url=" maxResolution="156543.0339"
+			numZoomLevels="20" maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34" minResolution="0.5971642833709717">
+		
+		<!-- A EPSG:900913 baselayer (OSM) -->
+		<os:Mapnik name="Mapnik"  maxResolution="156543.0339" minResolution="0.5971642833709717" numZoomLevels="20"
+					maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34" isBaseLayer="true"/>
+					
+		<!-- A WFS EPSG:4326 layer -->
+		<os:WFS name="States" url="http://sigma.openplans.org/geoserver/wfs" typename="topp:states" srs="EPSG:4326" version="1.0.0"
+				isBaseLayer="false" minZoomLevel="21" visible="true">
+			<os:Style fillColor="0xff0000" fillOpacity="0.8" strokeColor="0x0000ff" strokeWidth="2" />
+		</os:WFS>
+		
+		<os:PanZoomBar />
+		<!-- We choose EPSG:4326 as displayed projection in this control-->
+		<os:MousePosition displayProjection="EPSG:900913"/>
+		<os:LayerSwitcher />
+		
+		<os:DragHandler />
+		<os:ClickHandler />
+		<os:WheelHandler />
+	</os:Map>
+
+</mx:WindowedApplication>
