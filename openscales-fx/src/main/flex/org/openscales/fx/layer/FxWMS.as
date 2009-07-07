@@ -2,6 +2,7 @@ package org.openscales.fx.layer
 {
   import org.openscales.core.layer.ogc.WMS;
   import org.openscales.core.layer.params.ogc.WMSParams;
+  import org.openscales.proj4as.ProjProjection;
 
   public class FxWMS extends FxGrid
   {
@@ -19,14 +20,21 @@ package org.openscales.fx.layer
           ((this.layer as WMS).params as WMSParams).layers = value;
       }
 
+    public function set styles(value:String):void {
+        if(this.layer != null)
+          ((this.layer as WMS).params as WMSParams).styles = value;
+      }
+
       public function set format(value:String):void {
         if(this.layer != null)
           ((this.layer as WMS).params as WMSParams).format = value;
       }
 
       public function set srs(value:String):void {
-        if(this.layer != null)
+        if(this.layer != null) {
           ((this.layer as WMS).params as WMSParams).srs = value;
+		  this.layer.projection = new ProjProjection(value);
+		}
       }
 
       public function set transparent(value:Boolean):void {
