@@ -14,6 +14,7 @@ package mx.core
 
 import flash.display.BitmapData;
 import mx.core.FlexBitmap;
+import mx.core.mx_internal;
 
 /**
  *  BitmapAsset is a subclass of the flash.display.Bitmap class
@@ -88,7 +89,13 @@ import mx.core.FlexBitmap;
 public class BitmapAsset extends FlexBitmap
                          implements IFlexAsset, IFlexDisplayObject
 {
-    include "../core/Version.as";
+    /**
+	 *  @private
+	 *  Version string for this class.
+	 */
+
+    mx_internal static const VERSION:String = "3.3.0.0";
+
 
     //--------------------------------------------------------------------------
     //

@@ -15,6 +15,7 @@ package mx.utils
 import flash.display.DisplayObject;
 import flash.utils.getQualifiedClassName;
 import mx.core.IRepeaterClient;
+import mx.core.mx_internal;
 
 /**
  *  The NameUtil utility class defines static methods for
@@ -25,7 +26,12 @@ import mx.core.IRepeaterClient;
  */
 public class NameUtil
 {
-	include "../core/Version.as";
+    /**
+	 *  @private
+	 *  Version string for this class.
+	 */
+
+    mx_internal static const VERSION:String = "3.3.0.0";
 
 	//--------------------------------------------------------------------------
 	//

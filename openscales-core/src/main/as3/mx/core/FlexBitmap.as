@@ -15,6 +15,7 @@ package mx.core
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import mx.utils.NameUtil;
+import mx.core.mx_internal;
 
 /**
  *  FlexBitmap is a subclass of the Player's Bitmap class.
@@ -24,7 +25,12 @@ import mx.utils.NameUtil;
  */
 public class FlexBitmap extends Bitmap
 {
-    include "../core/Version.as";
+    /**
+	 *  @private
+	 *  Version string for this class.
+	 */
+
+    mx_internal static const VERSION:String = "3.3.0.0";
 
 	//--------------------------------------------------------------------------
 	//

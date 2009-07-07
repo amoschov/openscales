@@ -3,6 +3,12 @@
 <includeClasses>
 <classEntry path="com.gskinner.motion.GTweeny"/>
 <classEntry path="mx.core.BitmapAsset"/>
+<classEntry path="mx.core.FlexBitmap"/>
+<classEntry path="mx.core.IFlexAsset"/>
+<classEntry path="mx.core.IFlexDisplayObject"/>
+<classEntry path="mx.core.IRepeaterClient"/>
+<classEntry path="mx.core.mx_internal"/>
+<classEntry path="mx.utils.NameUtil"/>
 <classEntry path="org.openscales.core.Icon"/>
 <classEntry path="org.openscales.core.Map"/>
 <classEntry path="org.openscales.core.Marker"/>
