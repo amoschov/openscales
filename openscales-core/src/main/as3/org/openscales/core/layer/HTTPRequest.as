@@ -166,5 +166,10 @@ package org.openscales.core.layer
 		{
 			this._params = value;
 		}	
+		
+		public function mergeNewParams(param:String, value:String):Boolean {
+			this._params.setAdditionalParam(param, value)
+			return this.redraw();
+		}
 	}
 }
