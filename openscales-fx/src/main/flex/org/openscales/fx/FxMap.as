@@ -50,7 +50,10 @@ package org.openscales.fx {
 
     public function FxMap() {
       super();
-
+	
+	  // Fix for issue 114: Error at startup when window is too small
+	  this.clipContent = false;
+	  
       this.addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
     }
 
@@ -81,7 +84,7 @@ package org.openscales.fx {
 
       if(this._maxExtent != null)
         this._map.maxExtent = this._maxExtent;
-
+        
       // Some operations must be done at the beginning, in order to do
       // not depend on declaration order
       for(var i:int=0; i < this.rawChildren.numChildren ; i++) {
