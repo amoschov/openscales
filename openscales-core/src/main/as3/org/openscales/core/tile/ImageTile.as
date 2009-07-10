@@ -14,6 +14,7 @@ package org.openscales.core.tile
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.Layer;
 	
 	/**
@@ -71,30 +72,52 @@ package org.openscales.core.tile
 	        if(this.url == null) {
 	        	this.url = this.layer.getURL(this.bounds);
 	        }
-	        	
 	        
-	        //We add the proxy to the url (to avoid crossdomain issue in case of zoom tween effect (bitmapdata.draw))
-	        if (this.layer.proxy != null) {
-	        	var urlProxy:String = this.layer.proxy + encodeURIComponent(this.url);
-	        	_tileLoader.load(new URLRequest(urlProxy));
-	        }
+	        var cachedLoader:Loader = null;	
+	        
+	        //If the tile (loader) was already loaded and is in the cache, we draw it
+	        if (this.layer is Grid && (cachedLoader=(this.layer as Grid).getTileCache(this.url)) != null)
+	        	drawLoader(cachedLoader,true);
 	        else {
-	        	_tileLoader.load(new URLRequest(this.url));
+	        	//We instanciate a new Loader to avoid the cached loader loss
+		        _tileLoader = new Loader();
+		        	
+		        //We add the proxy to the url (to avoid crossdomain issue in case of zoom tween effect (bitmapdata.draw))
+		        if (this.layer.proxy != null) {
+		        	var urlProxy:String = this.layer.proxy + encodeURIComponent(this.url);
+		        	_tileLoader.load(new URLRequest(urlProxy));
+		        }
+		        else {
+		        	_tileLoader.load(new URLRequest(this.url));
+		        }
+		        
+		        _tileLoader.name=this.url;
+		        _tileLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onTileLoadEnd, false, 0, true);
+				_tileLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onTileLoadError, false, 0, true);
 	        }
 	        
-	        _tileLoader.name=this.url;
-	        _tileLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onTileLoadEnd, false, 0, true);
-			_tileLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onTileLoadError, false, 0, true);
+	       
 			
 	        return true;
 		}
 		
 		public function onTileLoadEnd(event:Event):void
 		{
-						
+			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
+			var loader:Loader = loaderInfo.loader as Loader;
+			drawLoader(loader, false);
+		}
+		
+		/**
+		 * Method to draw the loader (recetly loaded or cached)
+		 * 
+		 * @param loader The loader to draw
+		 * @param cached Cached loader or not
+		 */
+		private function drawLoader(loader:Loader, cached:Boolean):void {
+			
 			if(this.layer) {
-				var loaderInfo:LoaderInfo = event.target as LoaderInfo;
-				var loader:Loader = loaderInfo.loader as Loader;
+
 				this.addChild(loader);
 				
 				// Tween tile effect 
@@ -105,6 +128,10 @@ package org.openscales.core.tile
 					this.alpha = 1;
 				} 
 				this.drawn = true;
+				
+				//We put the loader into the cache if it's a recently loaded
+				if (this.layer is Grid && !cached)
+					(this.layer as Grid).addTileCache(loader.name,loader);
 			}
 		}
 		
@@ -119,10 +146,15 @@ package org.openscales.core.tile
 		override public function clear():void {
 			super.clear();
 	        this.alpha = 0;
-	        this.removeEventListener(Event.COMPLETE, onTileLoadEnd);
-	        this.removeEventListener(IOErrorEvent.IO_ERROR, onTileLoadError);
 	        
-	        graphics.clear();
+	        try {_tileLoader.close();}catch(e:Error){};
+	        
+	        _tileLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onTileLoadEnd);
+	        _tileLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onTileLoadError);
+	        
+	        if (this.numChildren >0)
+	        	this.removeChildAt(0);
+	        //graphics.clear();
         }
         
         //Getters and Setters

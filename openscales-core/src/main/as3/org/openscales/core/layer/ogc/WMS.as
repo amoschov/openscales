@@ -44,6 +44,7 @@ package org.openscales.core.layer.ogc
        	}
        	
        	override public function addTile(bounds:Bounds, position:Pixel):Tile {
+       		trace("addTile");
 	       	var url:String = this.getURL(bounds);
 	        return new ImageTile(this, position, bounds, 
 	                                             url, this.tileSize);

@@ -1,15 +1,14 @@
 package org.openscales.core
 {
   import com.gskinner.motion.GTweeny;
-
+  
   import flash.display.Bitmap;
   import flash.display.BitmapData;
   import flash.display.DisplayObject;
   import flash.display.Sprite;
   import flash.events.Event;
-  import flash.geom.Matrix;
   import flash.geom.Rectangle;
-
+  
   import org.openscales.core.basetypes.Bounds;
   import org.openscales.core.basetypes.DraggableSprite;
   import org.openscales.core.basetypes.LonLat;
@@ -736,7 +735,7 @@ package org.openscales.core
 				// We draw the loaded tiles onto the background transition.
 				try {
 					// Can sometimes throw a security exception.
-					bitmapData.draw(this.layerContainer, this.layerContainer.transform.matrix);
+					bitmapData.draw(this.baseLayer, this.layerContainer.transform.matrix);
 				} catch (e:Error) {
 					Trace.error("Error zooming image: " + e);
 				}

@@ -1,16 +1,16 @@
 package org.openscales.core.layer
 {
+	import flash.display.Loader;
+	
 	import org.openscales.core.Map;
-	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
-	import org.openscales.proj4as.Proj4as;
-	import org.openscales.proj4as.ProjPoint;
 	
 	/**
 	 * Base class for layers that use a lattice of tiles.
@@ -34,6 +34,13 @@ package org.openscales.core.layer
 		
 		private var _buffer:Number;
 		
+		private const CACHE_SIZE:int = 256;
+		
+		private var cachedTiles:HashMap = null;
+		private var cachedTilesUrl:Array = null;
+		private var cptCached:int = 0;
+		
+		
 		/**
 	     * Create a new grid layer
 	     *
@@ -53,6 +60,9 @@ package org.openscales.core.layer
 			this.grid = new Array();
 			
 			this.buffer = 1;
+			
+			cachedTiles = new HashMap();
+			cachedTilesUrl = new Array(CACHE_SIZE);
 		}
 		
 		override public function destroy(newBaseLayer:Boolean = true):void {
@@ -77,6 +87,36 @@ package org.openscales.core.layer
 	            }
 	            this.grid = [];
 	        }
+		}
+		
+		
+		/**
+		 * Methodd to cache a tile
+		 */
+		public function addTileCache(url:String,loader:Loader):void {
+			//We check if there's space in the cache
+			if(cachedTiles.size() < CACHE_SIZE) {
+				cachedTiles.put(url,loader);
+				cachedTilesUrl[cptCached] = url;
+			}
+			//Otherwise, we remove from the cache the older cached tile
+			else {
+				var oldUrl:String = cachedTilesUrl[cptCached];
+				cachedTiles.remove(oldUrl);
+				cachedTilesUrl[cptCached] = url;
+				cachedTiles.put(url,loader);
+			}
+			cptCached++; if(cptCached == CACHE_SIZE) cptCached = 0;
+		}
+		
+		/**
+		 * Method to get a cached tile by its url
+		 */
+		public function getTileCache(url:String):Loader {
+			
+			var loader:Loader = cachedTiles.getValue(url);
+			
+			return loader;
 		}
 		
 		 /**
@@ -117,10 +157,6 @@ package org.openscales.core.layer
 	     * @param dragging
 	     */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
-			
-			//If projection is different from map projection, we translate the bounds
-			/*if (this.projection.srsCode != this.map.projection.srsCode)
-				bounds.transform(this.map.projection,this.projection);*/
 			
 			super.moveTo(bounds, zoomChanged, dragging);
 	        
@@ -229,7 +265,7 @@ package org.openscales.core.layer
 		}
 		
 		public function initGriddedTiles(bounds:Bounds):void {
-			//Trace.log("initGriddedTiles");
+
 	        var viewSize:Size = this.map.size;
 	        var minRows:Number = Math.ceil(viewSize.h/this.tileSize.h) + 
 	                      Math.max(1, 2 * this.buffer);
@@ -303,7 +339,7 @@ package org.openscales.core.layer
 	            tileoffsetlat -= tilelat;
 	            tileoffsety += this.tileSize.h;
 	        } while((tileoffsetlat >= bounds.bottom - tilelat * this.buffer) || rowidx < minRows)
-	        //Trace.log("lignes: "+rowidx+" -- col: "+colidx);
+
 	        //shave off exceess rows and colums
 	        this.removeExcessTiles(rowidx, colidx);
 			
@@ -337,19 +373,15 @@ package org.openscales.core.layer
 	
 	            switch (directions[direction]) {
 	                case "right":
-	                	//Trace.log("right");
 	                    testCell++;
 	                    break;
 	                case "down":
-	                	//Trace.log("down");
 	                    testRow++;
 	                    break;
 	                case "left":
-	                	//Trace.log("left");
 	                    testCell--;
 	                    break;
 	                case "up":
-	                	//Trace.log("up");
 	                    testRow--;
 	                    break;
 	            } 
@@ -506,7 +538,6 @@ package org.openscales.core.layer
 		public function removeExcessTiles(rows:int, columns:int):void {
 	        while (this.grid.length > rows) {
 	            var row:Array = this.grid.pop();
-	            //Trace.log("Remove excess tiles");
 	            for (var i:int=0, l:int=row.length; i<l; i++) {
 	                var tile:Tile = row[i];
 	                this.removeTileMonitoringHooks(tile)
@@ -515,7 +546,6 @@ package org.openscales.core.layer
 	        }
 	        
 	        while (this.grid[0].length > columns) {
-	        	//Trace.log("Remove excess tiles");
 	            for (i=0, l=this.grid.length; i<l; i++) {
 	                row = this.grid[i];
 	                tile = row.pop();
@@ -598,7 +628,6 @@ package org.openscales.core.layer
 		
 		public function set numLoadingTiles(value:int):void {
 			this._numLoadingTiles = value;
-			Trace.info(this.numLoadingTiles.toString());
 		}
 		
 		/**
