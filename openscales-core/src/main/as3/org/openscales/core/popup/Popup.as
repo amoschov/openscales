@@ -78,8 +78,8 @@ package org.openscales.core.popup
       public function closePopup(evt:MouseEvent):void {
           var target:Sprite = (evt.target as Sprite);
           target.removeEventListener(evt.type, closePopup);
-            destroy();
-            evt.stopPropagation();
+          destroy();
+          evt.stopPropagation();
         }
 
       public function destroy():void {

@@ -323,7 +323,11 @@ package org.openscales.core
             for(i=this._layerContainer.numChildren-1;i>=0;i--){
               child = this._layerContainer.getChildAt(i);
               if(child is Popup){
-               this.removePopup(child as Popup);
+              	if(child != popup) {
+              		trace("Popup already displayed so escape");
+              		return;
+              	}
+                this.removePopup(child as Popup);
               }
             }
           }
