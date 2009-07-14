@@ -19,6 +19,7 @@
 	<component id="MousePosition" class="org.openscales.fx.control.FxMousePosition" />
 	<component id="PanZoom" class="org.openscales.fx.control.FxPanZoom" />
 	<component id="PanZoomBar" class="org.openscales.fx.control.FxPanZoomBar" />
+	<component id="WMSGetFeatureInfo" class="org.openscales.fx.control.FxWMSGetFeatureInfo" />
 	
 	<component id="BorderPanHandler" class="org.openscales.fx.handler.mouse.FxBorderPanHandler" />
 	<component id="ClickHandler" class="org.openscales.fx.handler.mouse.FxClickHandler" />

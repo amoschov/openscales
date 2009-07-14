@@ -20,6 +20,7 @@ package org.openscales.core
 		private var _onComplete:Function = null;
 		private var _postBody:Object = null;
 		private var _parameters:Object = null;
+		private var _loader:URLLoader;
 		
 		/**
 		 * Request constructor
@@ -71,8 +72,8 @@ package org.openscales.core
 		      if ((proxy != null) && (proxy != "")) {
 		      	this.url = proxy + encodeURIComponent(this.url);
 		      }
-		      var loader:URLLoader = new URLLoader();
-			  configureListeners(loader);
+		      _loader = new URLLoader();
+			  configureListeners(_loader);
 
 		      var urlRequest:URLRequest = new URLRequest(this.url);
 		      urlRequest.method = this._method;
@@ -83,11 +84,10 @@ package org.openscales.core
 		      }
 
 		      if (this._onComplete != null) {
-		      	loader.addEventListener(Event.COMPLETE, this._onComplete);
-		      	/* loader.resultFormat = "e4x"; */
+		      	_loader.addEventListener(Event.COMPLETE, this._onComplete);
+		      	/* _loader.resultFormat = "e4x"; */
 		      }
-
-			  loader.load ( urlRequest );
+			  _loader.load ( urlRequest );
 
 
 		    } catch (e:Error) {
@@ -114,8 +114,8 @@ package org.openscales.core
         }
 
         private function completeHandler(event:Event):void {
-            var loader:URLLoader = URLLoader(event.target);
-            Trace.info("completeHandler: " + loader.data);
+            _loader = URLLoader(event.target);
+            Trace.info("completeHandler: " + _loader.data);
         }
 
         private function openHandler(event:Event):void {
@@ -138,7 +138,9 @@ package org.openscales.core
             Trace.info("ioErrorHandler: " + event);
         }
 
-
+		public function get loader():URLLoader {
+			return _loader;
+		}
 
 	}
 }
