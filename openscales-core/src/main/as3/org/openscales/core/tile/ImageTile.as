@@ -10,6 +10,7 @@ package org.openscales.core.tile
 	import flash.net.URLRequest;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.OpenScales;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
@@ -23,6 +24,8 @@ package org.openscales.core.tile
 	 */
 	public class ImageTile extends Tile
 	{
+		private var _attempt:Number = 0;
+		
 		private var _queued:Boolean = false;
 		
 		private var _tileLoader:Loader = null;
@@ -95,7 +98,7 @@ package org.openscales.core.tile
 		        _tileLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onTileLoadEnd, false, 0, true);
 				_tileLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onTileLoadError, false, 0, true);
 	        }
-	        
+			
 	       
 			
 	        return true;
@@ -137,7 +140,22 @@ package org.openscales.core.tile
 		
 		private function onTileLoadError(event:IOErrorEvent):void
 		{
-			Trace.error("Error when loading tile " + this.url);
+			
+			if (++this._attempt > OpenScales.IMAGE_RELOAD_ATTEMPTS) {
+				Trace.error("Error when loading tile " + this.url);
+				return;
+			}
+			
+			// retry load
+			Trace.info("Retry " + this._attempt + " tile " + this.url);
+			this.url = this.layer.getURL(this.bounds);
+	        if (this.layer.proxy != null) {
+	        	var urlProxy:String = this.layer.proxy + encodeURIComponent(this.url);
+	        	this._tileLoader.load(new URLRequest(urlProxy));
+	        }
+	        else {
+	        	this._tileLoader.load(new URLRequest(this.url));
+	        }
 		}
 		
 		/** 
