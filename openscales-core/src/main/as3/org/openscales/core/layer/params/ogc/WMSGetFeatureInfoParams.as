@@ -13,6 +13,7 @@ package org.openscales.core.layer.params.ogc
 		private var _maxFeatures:Number;
 		private var _x:Number;
 		private var _y:Number;
+		private var _srs:String;
 		
 		
 		public function WMSGetFeatureInfoParams(layers:String, format:String = "text/xml", styles:String = null)
@@ -32,7 +33,7 @@ package org.openscales.core.layer.params.ogc
 			var str:String = super.toGETString();
 			
 			if (this._format != null)
-				str += "FORMAT=" + this._format + "&";
+				str += "INFO_FORMAT=" + this._format + "&";
 				
 			if (this._exceptions != null)
 				str += "EXCEPTIONS=" + this._exceptions + "&";
@@ -45,12 +46,18 @@ package org.openscales.core.layer.params.ogc
 				
 			if (this._styles != null)
 				str += "STYLES=" + this._styles + "&";
+			else
+				str += "STYLES=&";
+				
+			if (this._srs != null)
+				str += "SRS=" + this._srs + "&";
 				
 			str += "X=" + this._x + "&";
 			str += "Y=" + this._y + "&";
 				
 			str += "WIDTH=" + this._width + "&";
 			str += "HEIGHT=" + this._height + "&";
+			str += "FEATURE_COUNT=" + this._maxFeatures + "&";
 			
 			return str.substr(0, str.length-1);
 		}

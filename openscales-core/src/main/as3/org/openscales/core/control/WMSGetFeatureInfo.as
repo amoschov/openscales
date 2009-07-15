@@ -23,6 +23,7 @@ package org.openscales.core.control
 		private var _url:String;
 		private var _layers:String;
 		private var _request:Request;
+		private var _srs:String;
     	  	
     	public function WMSGetFeatureInfo(position:Pixel = null) {
     		super(position);
@@ -67,6 +68,10 @@ package org.openscales.core.control
 			_layers = layers;
 		}
 		
+		public function set srs(srs:String):void {
+			_srs = srs;
+		}
+		
 		private function getInfoForClick(event:MouseEvent):void {
 			// get layers and styles
 			var layerNames:String = _layers;
@@ -90,7 +95,10 @@ package org.openscales.core.control
 			// setup params for call
 			var infoParams:WMSGetFeatureInfoParams = new WMSGetFeatureInfoParams(layerNames, _format, layerStyles);
 			infoParams.bbox = this.map.extent.boundsToString();
-            infoParams.srs = this.map.projection.srsCode;
+			if (_srs == null)
+				infoParams.srs = this.map.projection.srsCode;
+			else
+				infoParams.srs = _srs;
             infoParams.maxFeatures = _maxFeatures;
             infoParams.x = event.stageX;
             infoParams.y = event.stageY;

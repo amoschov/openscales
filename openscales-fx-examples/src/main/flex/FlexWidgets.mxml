@@ -18,6 +18,7 @@
 		<![CDATA[
 			import org.openscales.core.handler.mouse.DragHandler;
 			import org.openscales.core.Trace;
+            import org.openscales.core.events.GetFeatureInfoEvent;
 
 			import org.openscales.core.Map;
 					
@@ -27,7 +28,14 @@
 			private function initMap():void{
 	   			map = fxmap.map;
 				tools.x = this.width - tools.width;
+                
+                // setup click handler
+                map.addEventListener(GetFeatureInfoEvent.GET_FEATURE_INFO_DATA, this.onFeatureInfoData);
 			}
+            
+            private function onFeatureInfoData(event:GetFeatureInfoEvent):void {
+                Trace.info("Data="+event.data);
+            }
 		]]>
 	</mx:Script>
 	
@@ -41,7 +49,7 @@
 			<os:Mapnik name="Mapnik"  maxResolution="156543.0339" minResolution="0.5971642833709717" numZoomLevels="20"
 					maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34" isBaseLayer="true"/>
 							   
-			<os:WFS id="test" name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="topp:poi" srs="EPSG:4326" version="1.0.0"
+			<os:WFS id="test" name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="tiger:poi" srs="EPSG:4326" version="1.0.0"
 					isBaseLayer="false" minZoomLevel="21">
 				<os:Style fillColor="0xff0000" fillOpacity="0.8" strokeColor="0x0000ff" strokeWidth="2" />
 				
@@ -52,7 +60,6 @@
 					<os:PanComponent id="pan" map="{map}"/>
 					<os:ZoomComponent id="zoom" map="{map}"/>
 					<os:ZoomBoxComponent id="zoombox" map="{map}"/>		
-					<!--os:TraceInfo id="trace" map="{map}"/-->
 				</mx:VBox>
 			</resize:ResizableWindow>
 						   
@@ -64,6 +71,7 @@
 					<os:DrawingComponent id="tabDraw" map="{map}" width="100%" height="100%" label="Draw" />
 					<os:CapabilitiesComponent width="100%" height="100%" map="{map}" label="Capabilities" />
 					<os:YahooSearchComponent width="100%" height="100%" map="{map}" label="Search" appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é"/>
+					<os:TraceInfo id="trace" width="100%" height="100%" map="{map}" label="Trace"/>
 					<!--os:MarkerManagerComponent id="markerManag" width="100%" height="100%" map="{map}" label="Marker"/-->
 				</mx:TabNavigator>
 			</resize:ResizableWindow>
@@ -75,6 +83,7 @@
 			<os:DragHandler id="dragHandler"/>
 			<os:ClickHandler />
 			<os:WheelHandler />
+            <os:WMSGetFeatureInfo url="http://sigma.openplans.org/geoserver/wms" layers="tiger:poi" />
 			<!--os:DragFeature id="dragfeature" map="{this.map}"/-->					
 		</os:Map>
 	

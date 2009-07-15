@@ -19,5 +19,17 @@ package org.openscales.fx.control
 			(this.control as WMSGetFeatureInfo).layers = layers;
 		}
 		
+		public function set srs(srs:String):void {
+			(this.control as WMSGetFeatureInfo).srs = srs;
+		}
+		
+		public function set format(format:String):void {
+			(this.control as WMSGetFeatureInfo).format = format;
+		}
+		
+		public function set maxFeatures(maxFeatures:Number):void {
+			(this.control as WMSGetFeatureInfo).maxFeatures = maxFeatures;
+		}
+		
 	}
 }
