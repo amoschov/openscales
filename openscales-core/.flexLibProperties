@@ -12,6 +12,7 @@
 <classEntry path="org.openscales.core.Icon"/>
 <classEntry path="org.openscales.core.Map"/>
 <classEntry path="org.openscales.core.Marker"/>
+<classEntry path="org.openscales.core.OpenScales"/>
 <classEntry path="org.openscales.core.Request"/>
 <classEntry path="org.openscales.core.Trace"/>
 <classEntry path="org.openscales.core.Util"/>
@@ -31,6 +32,7 @@
 <classEntry path="org.openscales.core.control.MousePosition"/>
 <classEntry path="org.openscales.core.control.PanZoom"/>
 <classEntry path="org.openscales.core.control.PanZoomBar"/>
+<classEntry path="org.openscales.core.control.WMSGetFeatureInfo"/>
 <classEntry path="org.openscales.core.control.ui.Arrow"/>
 <classEntry path="org.openscales.core.control.ui.Button"/>
 <classEntry path="org.openscales.core.control.ui.CheckBox"/>
@@ -38,6 +40,7 @@
 <classEntry path="org.openscales.core.control.ui.SliderHorizontal"/>
 <classEntry path="org.openscales.core.control.ui.SliderVertical"/>
 <classEntry path="org.openscales.core.events.FeatureEvent"/>
+<classEntry path="org.openscales.core.events.GetFeatureInfoEvent"/>
 <classEntry path="org.openscales.core.events.LayerEvent"/>
 <classEntry path="org.openscales.core.events.MapEvent"/>
 <classEntry path="org.openscales.core.events.MarkerEvent"/>
@@ -100,6 +103,7 @@
 <classEntry path="org.openscales.core.layer.params.IHttpParams"/>
 <classEntry path="org.openscales.core.layer.params.ogc.OGCParams"/>
 <classEntry path="org.openscales.core.layer.params.ogc.WFSParams"/>
+<classEntry path="org.openscales.core.layer.params.ogc.WMSGetFeatureInfoParams"/>
 <classEntry path="org.openscales.core.layer.params.ogc.WMSParams"/>
 <classEntry path="org.openscales.core.popup.Anchored"/>
 <classEntry path="org.openscales.core.popup.Popup"/>
