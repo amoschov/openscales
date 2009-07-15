@@ -1,7 +1,7 @@
 package org.openscales.fx.layer
 {
   import mx.core.Container;
-
+  
   import org.openscales.core.Map;
   import org.openscales.core.basetypes.Bounds;
   import org.openscales.core.layer.Layer;
@@ -79,6 +79,11 @@ package org.openscales.fx.layer
       public function set maxExtent(value:String):void {
         if(this.layer != null)
           this.layer.maxExtent = Bounds.getBoundsFromString(value);
+      }
+      
+      public function set proxy(value:String):void {
+      	if(this.layer != null)
+      		this.layer.proxy = value;
       }
 
       override public function set visible(value:Boolean):void {

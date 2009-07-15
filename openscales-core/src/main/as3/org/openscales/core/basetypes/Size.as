@@ -8,7 +8,7 @@ package org.openscales.core.basetypes
 		private var _w:Number = 0.0;
 		private var _h:Number = 0.0;
 		
-		public function Size(w:Number = NaN, h:Number = NaN):void {
+		public function Size(w:Number = NaN, h:Number = NaN) {
 			this.w = w;
 			this.h = h;
 		}

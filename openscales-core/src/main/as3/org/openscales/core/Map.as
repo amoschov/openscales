@@ -711,8 +711,11 @@ package org.openscales.core
 		}
 		public function set zoom(newZoom:Number):void 
 		{
-			if (this.isValidZoomLevel(newZoom)) {					
-				this.zoomTransition(newZoom);
+			if (this.isValidZoomLevel(newZoom)) {
+				if (Map.tween)					
+					this.zoomTransition(newZoom);
+				else
+					setCenter(null, newZoom);
 
 	        }
 		}
