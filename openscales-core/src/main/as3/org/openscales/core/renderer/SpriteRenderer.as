@@ -45,10 +45,10 @@ package org.openscales.core.renderer
 	        
 	        var resolution:Number = this.resolution;
 
-	        if (!this._localResolution || resolution != this._localResolution) {
+	    //TO resolve resizing problems  //  if (!this._localResolution || resolution != this._localResolution) {
 	            this._left = -extent.left / resolution;
 	            this._top = extent.top / resolution;
-	        }
+	      //  }
 	
 	        
 	        var left:Number = 0;

@@ -59,8 +59,7 @@ package org.openscales.fx {
 
     private function onCreationComplete(event:Event):void {
 
-      this._map = new Map();
-      this._map.size = new Size(this.width, this.height);
+      this._map = new Map(this.width, this.height);
 
       this.rawChildren.addChild(this._map);
 
