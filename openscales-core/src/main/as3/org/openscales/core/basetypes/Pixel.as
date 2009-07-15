@@ -9,7 +9,7 @@ package org.openscales.core.basetypes
     private var _x:Number = 0.0;
     private var _y:Number = 0.0;
 
-    public function Pixel(x:Number = NaN, y:Number = NaN):void {
+    public function Pixel(x:Number = NaN, y:Number = NaN) {
       this.x = x;
       this.y = y;
     }

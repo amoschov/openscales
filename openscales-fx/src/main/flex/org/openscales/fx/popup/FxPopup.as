@@ -39,7 +39,7 @@ package org.openscales.fx.popup
       [Embed(source="/org/openscales/fx/img/close.gif")]
         private var _closeImg:Class;
 
-      public function FxPopup(id:String, lonlat:LonLat, size:Size = null, content:UIComponent = null, closeBox:Boolean = true):void {
+      public function FxPopup(id:String, lonlat:LonLat, size:Size = null, content:UIComponent = null, closeBox:Boolean = true) {
         if (id == null) {
               id = Util.createUniqueID(getQualifiedClassName(this) + "_");
           }

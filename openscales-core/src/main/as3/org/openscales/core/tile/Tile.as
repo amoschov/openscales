@@ -26,7 +26,7 @@ package org.openscales.core.tile
 		private var _onLoadStart:Function = null;
 		private var _onLoadEnd:Function = null;
 		
-		public function Tile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size):void {
+		public function Tile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size) {
 			this.layer = layer;
 	        this.position = position;
 	        this.bounds = bounds;

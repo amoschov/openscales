@@ -30,7 +30,7 @@ package org.openscales.core.tile
 		
 		private var _tileLoader:Loader = null;
 		
-		public function ImageTile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size):void {
+		public function ImageTile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size) {
 			super(layer, position, bounds, url, size);
 			
 			// otherwise you'll get seams between tiles :(

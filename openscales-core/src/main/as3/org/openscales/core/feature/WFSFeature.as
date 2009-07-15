@@ -11,7 +11,7 @@ package org.openscales.core.feature
 	public class WFSFeature extends Feature
 	{
 		
-		public function WFSFeature(layer:Layer, xmlNode:XML):void {
+		public function WFSFeature(layer:Layer, xmlNode:XML) {
 	        var data:Object = this.processXMLNode(xmlNode);
 	        super(layer, data.lonlat, data);
 		}

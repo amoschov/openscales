@@ -38,7 +38,7 @@ package org.openscales.fx.feature
      * @param lonlat The lonlat position of the feature.
      * @param data
      */
-    public function FxFeature(layer:Sprite, lonlat:LonLat, data:Object=null, map:FxMap=null):void {
+    public function FxFeature(layer:Sprite, lonlat:LonLat, data:Object=null, map:FxMap=null) {
       this.id = Util.createUniqueID(getQualifiedClassName(this) + "_");
 
       if (layer is FxLayer){

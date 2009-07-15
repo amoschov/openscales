@@ -3,7 +3,7 @@ package org.openscales.core.geometry
 	public class Curve extends MultiPoint
 	{
 			
-		public function Curve(points:Object):void {
+		public function Curve(points:Object) {
 			this.componentTypes = ["org.openscales.core.geometry::Point"];
 			super(points);
 		}

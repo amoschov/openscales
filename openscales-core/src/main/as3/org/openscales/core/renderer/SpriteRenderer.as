@@ -32,7 +32,7 @@ package org.openscales.core.renderer
 		private var _bottom:Number;
 		private var _maxPixel:Number;
 		
-		public function SpriteRenderer(container:Sprite):void {
+		public function SpriteRenderer(container:Sprite) {
 			super(container);
 		}
 		

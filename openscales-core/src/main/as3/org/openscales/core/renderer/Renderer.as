@@ -35,7 +35,7 @@ package org.openscales.core.renderer
 
 	    private var _map:Map = null;
 	    
-	    public function Renderer(container:Sprite):void {
+	    public function Renderer(container:Sprite) {
 	    	this.container = container;
 	    }
 	    

@@ -3,7 +3,7 @@ package org.openscales.core.geometry
 	public class LineString extends Curve
 	{
 		
-		public function LineString(points:Object = null):void {
+		public function LineString(points:Object = null) {
 			super(points);
 		}
 		

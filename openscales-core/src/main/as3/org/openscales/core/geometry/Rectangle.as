@@ -13,7 +13,7 @@ package org.openscales.core.geometry
 
 	    private var _height:Number = NaN;
 	    
-	    public function Rectangle(x:Number, y:Number, width:Number, heigth:Number):void {
+	    public function Rectangle(x:Number, y:Number, width:Number, heigth:Number) {
 	    	super();
 	    	
 	    	this.x = x;

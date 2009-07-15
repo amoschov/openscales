@@ -27,7 +27,7 @@ package org.openscales.core.geometry
 		
     	private var _componentTypes:Array = null;
     	
-    	public function Collection(components:Object):void {
+    	public function Collection(components:Object) {
     		super();
 	        this.components = new Array();
 	        if (components != null) {

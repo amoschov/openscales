@@ -3,7 +3,7 @@ package org.openscales.core.geometry
 	public class Surface extends Geometry
 	{
 		
-		public function Surface():void {
+		public function Surface() {
 			super();
 		}
 		

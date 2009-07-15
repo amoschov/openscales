@@ -38,7 +38,7 @@ package org.openscales.core.popup
       [Embed(source="/org/openscales/core/img/close.gif")]
         private var _closeImg:Class;
 
-      public function Popup(id:String, lonlat:LonLat, background:uint = 0, border:Number = NaN, size:Size = null, htmlText:String = "", closeBox:Boolean = true):void {
+      public function Popup(id:String, lonlat:LonLat, background:uint = 0, border:Number = NaN, size:Size = null, htmlText:String = "", closeBox:Boolean = true) {
         if (id == null) {
               id = Util.createUniqueID(getQualifiedClassName(this) + "_");
           }

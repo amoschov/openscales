@@ -31,7 +31,7 @@ package org.openscales.core.tile
 	     * @param url
 	     * @param size
 	     */ 
-		public function WFSTile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size):void {
+		public function WFSTile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size) {
 			super(layer, position, bounds, url, size);
         	this.features = new Array();
 		}

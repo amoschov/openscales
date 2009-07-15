@@ -43,7 +43,7 @@ package org.openscales.core.feature
      * @param lonlat The lonlat position of the feature.
      * @param data
      */
-    public function Feature(layer:Layer, lonlat:LonLat, data:Object=null):void {
+    public function Feature(layer:Layer, lonlat:LonLat, data:Object=null) {
       this.layer = layer;
           this.lonlat = lonlat;
           if (data != null){

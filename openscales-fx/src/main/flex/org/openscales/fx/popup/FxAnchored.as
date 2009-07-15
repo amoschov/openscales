@@ -30,7 +30,7 @@ package org.openscales.fx.popup
        */
       private var _anchor:Object = null;
 
-      public function FxAnchored(id:String, lonlat:LonLat, size:Size, content:UIComponent, anchor:Object, closeBox:Boolean):void {
+      public function FxAnchored(id:String, lonlat:LonLat, size:Size, content:UIComponent, anchor:Object, closeBox:Boolean) {
           super(id, lonlat, size, content, closeBox);
 
           this._anchor = anchor;

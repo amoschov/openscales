@@ -4,7 +4,7 @@ package org.openscales.core.geometry
 	
 	public class MultiPoint extends Collection
 	{				
-		public function MultiPoint(components:Object = null):void {
+		public function MultiPoint(components:Object = null) {
 			this.componentTypes = ["org.openscales.core.geometry::Point"];
 			super(components);
 		}

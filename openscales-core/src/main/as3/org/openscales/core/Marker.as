@@ -35,7 +35,7 @@ package org.openscales.core
       * @param offset offset of the marker
       * @param calculateOffset
       */
-      public function Marker(url:String = null, size:Size = null, offset:Pixel = null, calculateOffset:Function = null):void {
+      public function Marker(url:String = null, size:Size = null, offset:Pixel = null, calculateOffset:Function = null) {
         super(url, size, offset, calculateOffset);
         this.lonlat = lonlat;
 

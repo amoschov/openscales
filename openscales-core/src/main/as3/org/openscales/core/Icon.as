@@ -32,7 +32,7 @@ package org.openscales.core
     * @param calculateOffset
     *
       */
-      public function Icon(url:String, size:Size = null, offset:Pixel = null, calculateOffset:Function = null):void {
+      public function Icon(url:String, size:Size = null, offset:Pixel = null, calculateOffset:Function = null) {
           this.url = url;
           this.size = (size) ? size : new Size(20,20);
           this.offset = offset ? offset : new Pixel(-(this.size.w/2), -(this.size.h/2));

@@ -28,7 +28,7 @@ package org.openscales.core.popup
        */
       private var _anchor:Object = null;
 
-      public function Anchored(id:String, lonlat:LonLat, background:uint, border:Number, size:Size, contentHTML:String, anchor:Object, closeBox:Boolean):void {
+      public function Anchored(id:String, lonlat:LonLat, background:uint, border:Number, size:Size, contentHTML:String, anchor:Object, closeBox:Boolean) {
           super(id, lonlat, background, border, size, contentHTML, closeBox);
 
           this._anchor = anchor;

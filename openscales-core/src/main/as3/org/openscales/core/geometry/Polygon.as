@@ -3,7 +3,7 @@ package org.openscales.core.geometry
 	public class Polygon extends Collection
 	{
 		
-		public function Polygon(components:Object = null):void {
+		public function Polygon(components:Object = null) {
 			this.componentTypes = ["org.openscales.core.geometry::LinearRing"];
 			super(components);
 		}

@@ -24,7 +24,7 @@ package org.openscales.core.format
 	     *
 	     * @return A new WKT parser.
 	     */
-		public function WKTFormat():void {
+		public function WKTFormat() {
 			
 	        this._regExes = {
 	            'typeStr': /^\s*(\w+)\s*\(\s*(.*)\s*\)\s*$/,
