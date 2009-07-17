@@ -34,7 +34,7 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <outputDirectory>${basedir}/target/</outputDirectory>
+                    <outputDirectory>${basedir}/target/test-classes/</outputDirectory>
                 </configuration>
             </plugin>
 		</plugins>
