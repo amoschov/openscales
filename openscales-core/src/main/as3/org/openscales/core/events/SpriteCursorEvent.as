@@ -1,6 +1,8 @@
 package org.openscales.core.events
 {
-	
+	/**
+	 * Event related to sprite cursors
+	 */
 	public class SpriteCursorEvent extends OpenScalesEvent
 	{		
 		

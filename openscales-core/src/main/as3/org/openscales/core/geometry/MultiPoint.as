@@ -2,6 +2,10 @@ package org.openscales.core.geometry
 {
 	import org.openscales.proj4as.ProjProjection;
 	
+	/**
+	 * Class to represent a multi point geometry.
+	 * It's a collection of points.
+	 */
 	public class MultiPoint extends Collection
 	{				
 		public function MultiPoint(components:Object = null) {

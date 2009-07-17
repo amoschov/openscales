@@ -16,7 +16,7 @@ package org.openscales.core.feature
 
   /**
    * Features are combinations of geography and attributes. The Feature
-    * class specifically combines a marker and a lonlat.
+   * class specifically combines a marker and a lonlat.
    */
   public class Feature
   {

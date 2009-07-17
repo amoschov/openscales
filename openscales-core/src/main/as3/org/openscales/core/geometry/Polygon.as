@@ -1,5 +1,9 @@
 package org.openscales.core.geometry
 {
+	/**
+	 * Class to represent a polygon geometry.
+	 * It's a collection of linear rings.
+	 */
 	public class Polygon extends Collection
 	{
 		

@@ -1,5 +1,9 @@
 package org.openscales.core.geometry
 {
+	/**
+	 * Class to represent a curve.
+	 * Extends MultiPoint class.
+	 */
 	public class Curve extends MultiPoint
 	{
 			

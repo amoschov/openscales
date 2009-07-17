@@ -5,7 +5,11 @@ package org.openscales.core.control.ui
 	
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-
+	
+	/**
+	 * Class extending Sprite.
+	 * It allows to create a button in pure AS3.
+	 */
 	public class Button extends Sprite
 	{
 		private var _image:Bitmap = null;

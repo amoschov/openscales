@@ -7,6 +7,10 @@ package org.openscales.core.format
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.layer.ogc.WFS;
 	
+	/**
+	 * WFS writer extending GML format.
+	 * Useful to WFS-T functionality.
+	 */
 	public class WFSFormat extends GMLFormat
 	{
 		

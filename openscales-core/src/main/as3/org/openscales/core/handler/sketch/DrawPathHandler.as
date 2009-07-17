@@ -15,6 +15,9 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
 	
+	/**
+	 * Handler to draw paths (multi line strings)
+	 */
 	public class DrawPathHandler extends Handler
 	{		
 		// The layer in which we'll draw

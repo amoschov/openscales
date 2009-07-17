@@ -14,6 +14,9 @@ package org.openscales.core.format
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	
+	/**
+	 * Read/Wite WKT.
+	 */
 	public class WKTFormat extends Format
 	{
 		

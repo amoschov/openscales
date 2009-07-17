@@ -11,7 +11,9 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.layer.VectorLayer;
 	
-
+	/**
+	 * Handler to draw points.
+	 */
 	public class DrawPointHandler extends Handler
 	{
 		

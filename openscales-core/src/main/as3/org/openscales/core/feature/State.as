@@ -1,5 +1,8 @@
 package org.openscales.core.feature
 {
+	/**
+	 * "Enumeration" of vector features states
+	 */ 
 	public class State
 	{
 		public static var UNKNOWN:String = "Unknown";

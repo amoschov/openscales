@@ -1,5 +1,9 @@
 package org.openscales.core.geometry
 {	
+	/**
+	 * Class to represent a linear ring.
+	 * A linear ring is a collection of points.
+	 */
 	public class LinearRing extends LineString
 	{
 		

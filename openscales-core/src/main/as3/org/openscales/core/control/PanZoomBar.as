@@ -11,6 +11,10 @@ package org.openscales.core.control
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
 	
+	/**
+	 * As the PanZoom control, it allows to pan and zoom in/out the map.
+	 * It adds a vertical slider for zooming functionality
+	 */
 	public class PanZoomBar extends PanZoom
 	{
 		

@@ -15,6 +15,9 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
 
+	/**
+	 * Handler to draw polygons.
+	 */
 	public class DrawPolygonHandler extends Handler
 	{
 		

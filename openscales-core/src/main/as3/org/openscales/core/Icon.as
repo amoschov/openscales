@@ -10,7 +10,12 @@ package org.openscales.core
 
   import org.openscales.core.basetypes.Pixel;
   import org.openscales.core.basetypes.Size;
-
+	
+/**
+ * Class to represent an icon (image).
+ * It's used for Markers.
+ * Extends Sprite class.
+ */
   public class Icon extends Sprite
   {
       private var _url:String = null;

@@ -1,5 +1,9 @@
 package org.openscales.core.geometry
-{
+{	
+	/**
+	 * Class to represent a multi polygon geometry.
+	 * It's a collection of polygons.
+	 */
 	public class MultiPolygon extends Collection
 	{
 				

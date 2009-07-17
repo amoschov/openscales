@@ -7,6 +7,9 @@ package org.openscales.core.geometry
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	
+	/**
+	 * Class to represent a point geometry.
+	 */
 	public class Point extends Geometry
 	{
 		

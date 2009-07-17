@@ -3,7 +3,11 @@ package org.openscales.core.control.ui
 	import flash.display.Bitmap;
 	
 	import org.openscales.core.basetypes.Pixel;
-
+	
+	/**
+	 * Classes to represent an arrow in pure AS3.
+	 * Extends Button class.
+	 */
 	public class Arrow extends Button
 	{
 		

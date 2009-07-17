@@ -3,7 +3,11 @@ package org.openscales.core.control.ui
 	import flash.display.Bitmap;
 	
 	import org.openscales.core.basetypes.Pixel;
-
+	
+	/**
+	 * CheckBox class allows to create checkbox intsances in pure AS3.
+	 * Extends Button class.
+	 */
 	public class CheckBox extends Button
 	{
  

@@ -4,7 +4,13 @@ package org.openscales.core.basetypes
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-
+	
+	/**
+	 * DraggableSprite inherits from Sprite.
+	 * It adds specific methods to be able to drag it from mouse events (Down, Move, Up).
+	 * It was created to be able to drag several sprites at same time on the contrary of native
+	 * dragging methods of Sprite.
+	 */
 	public class DraggableSprite extends Sprite
 	{
 		private var _dragging:Boolean = false;

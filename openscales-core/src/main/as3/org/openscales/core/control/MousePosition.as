@@ -10,7 +10,10 @@ package org.openscales.core.control
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
-
+	
+	/**
+	 * Control displaying the coordinates (Lon, Lat) of the current mouse position.
+	 */
 	public class MousePosition extends Control
 	{
 				

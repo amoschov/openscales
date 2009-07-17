@@ -3,7 +3,10 @@ package org.openscales.core.layer.params.ogc
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.layer.params.IHttpParams;
 		
-	
+	/**
+	 * Implementation of IHttpParams interface.
+	 * It represents the common OGC requests params.
+	 */
 	internal class OGCParams implements IHttpParams
 	{
 		

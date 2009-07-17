@@ -9,6 +9,9 @@ package org.openscales.core.control
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.ui.Button;
 	
+	/**
+	 * Control showing some arrows to be able to pan the map and zoom in/out.
+	 */
 	public class PanZoom extends Control
 	{
 		

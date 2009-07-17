@@ -16,6 +16,10 @@ package org.openscales.core.popup
   import org.openscales.core.control.ui.Button;
   import org.openscales.core.feature.Feature;
 
+/**
+ * Class to create a Popup.
+ * Extends Sprite.
+ */
   public class Popup extends Sprite
   {
 

@@ -9,6 +9,12 @@ package org.openscales.core
   import org.openscales.core.feature.Feature;
   import org.openscales.core.popup.Popup;
 
+/**
+ * Instances of OpenLayers.Marker are a combination of a 
+ * LonLat and an Icon.  
+ *
+ * Markers are generally added to a special layer called Markers.
+ */
   public class Marker extends Icon
   {
 

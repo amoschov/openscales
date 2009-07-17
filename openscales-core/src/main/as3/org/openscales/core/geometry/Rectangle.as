@@ -2,6 +2,9 @@ package org.openscales.core.geometry
 {
 	import org.openscales.core.basetypes.Bounds;
 	
+	/**
+	 * Class to represent a rectangle geometry.
+	 */
 	public class Rectangle extends Geometry
 	{
 		

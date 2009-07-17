@@ -3,7 +3,11 @@ package org.openscales.core.control.ui
 	import flash.display.Bitmap;
 	
 	import org.openscales.core.basetypes.Pixel;
-
+	
+	/**
+	 * RadioButton class allows to create radiobutton intsances in pure AS3.
+	 * Extends Button class.
+	 */
 	public class RadioButton extends Button
 	{
 		

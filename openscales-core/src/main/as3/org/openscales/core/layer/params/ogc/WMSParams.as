@@ -1,5 +1,10 @@
 package org.openscales.core.layer.params.ogc
 {
+	/**
+	 * Implementation of IHttpParams interface.
+	 * Extends OGCParams.
+	 * It adds specific WMS request params.
+	 */
 	public class WMSParams extends OGCParams
 	{
 				

@@ -2,6 +2,9 @@ package org.openscales.core.layer.capabilities
 {
 	import org.openscales.core.basetypes.Bounds;
 	
+	/**
+	 * WFS 1.1.0 capabilities parser
+	 */
 	public class WFS110 extends CapabilitiesParser
 	{
 		import org.openscales.core.basetypes.maps.HashMap;

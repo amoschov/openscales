@@ -13,7 +13,10 @@ package org.openscales.core.control
 	import org.openscales.core.layer.ogc.WMS;
 	import org.openscales.core.layer.params.ogc.WMSGetFeatureInfoParams;
 	import org.openscales.core.layer.params.ogc.WMSParams;
-
+	
+	/**
+	 * Class allowing to get information about a WMS feature when we click on it.
+	 */
 	public class WMSGetFeatureInfo extends Control
 	{
 	

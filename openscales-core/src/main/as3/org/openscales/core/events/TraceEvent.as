@@ -1,5 +1,8 @@
 package org.openscales.core.events
 {
+	/**
+	 * Event related to trace messages
+	 */
 	public class TraceEvent extends OpenScalesEvent
 	{
 		private var _text:String = null;
