@@ -17,6 +17,9 @@ package org.openscales.core.layer.capabilities
 		private const VERSIONS:Array = new Array("1.1.0","1.0.0");
 		private const PARSERS:Array = new Array(WFS110, WFS100);
 		
+		private var versionsToUse:Array = null;
+		private var parsersToUse:Array = null;
+		
 		private var _service:String = null;
 		private var _version:String = null;
 		private var _request:String = null;
@@ -31,12 +34,16 @@ package org.openscales.core.layer.capabilities
 		
 		private var _cbkFunc:Function = null;
 		
+		private var _use100:Boolean = true;
+		
+		private var _use110:Boolean = true;
+		
 		/**
 		 * Class contructor
 		 */
-		public function GetCapabilities(service:String, url:String, cbkFunc:Function=null, proxy:String = null)
-		{
-						
+		public function GetCapabilities(service:String, url:String, cbkFunc:Function=null, use100:Boolean=true,
+										use110:Boolean=true, proxy:String = null)
+		{			
 			this._service = service.toUpperCase();
 			this._url = url;
 			this._request = "GetCapabilities";
@@ -44,6 +51,12 @@ package org.openscales.core.layer.capabilities
 			this._proxy = proxy;
 			
 			this._cbkFunc = cbkFunc;
+			
+			this.versionsToUse = [];
+			this.parsersToUse = []
+			
+			this.use110 = use110;
+			this.use100 = use100;
 			
 			this.requestCapabilities();
 			
@@ -70,9 +83,9 @@ package org.openscales.core.layer.capabilities
 			if (this._service == "WFS") {
 				var foundVersion:Boolean = false;
 				var i:Number = -1;
-				while (!foundVersion && i < VERSIONS.length) {
+				while (!foundVersion && i < versionsToUse.length) {
 					i += 1;
-					if (failedVersion != null && VERSIONS[i] != failedVersion) {
+					if (failedVersion != null && versionsToUse[i] != failedVersion) {
 						foundVersion = true;
 					}
 					else if (failedVersion == null) {
@@ -85,9 +98,9 @@ package org.openscales.core.layer.capabilities
 					return false;
 				}
 				else {
-					var parser:Class = PARSERS[i];
+					var parser:Class = parsersToUse[i];
 					this._parser = new parser;
-					this._version = VERSIONS[i];
+					this._version = versionsToUse[i];
 				}
 			}
 			else if (this._service == "WMS") {
@@ -170,6 +183,28 @@ package org.openscales.core.layer.capabilities
 		
 		public function get proxy():String {
 			return this._proxy;
+		}
+		
+		public function set use100(value:Boolean):void {
+			this._use100 = value;
+			if (value) {
+				var index:Number = VERSIONS.indexOf("1.0.0");
+				if(index >= 0) {
+					this.versionsToUse.push(VERSIONS[index]);
+					this.parsersToUse.push(PARSERS[index]);
+				}
+			}
+		}
+		
+		public function set use110(value:Boolean):void {
+			this._use110 = value;
+			if (value) {
+				var index:Number = VERSIONS.indexOf("1.1.0");
+				if(index >= 0) {
+					this.versionsToUse.push(VERSIONS[index]);
+					this.parsersToUse.push(PARSERS[index]);
+				}
+			}
 		}
 		
 

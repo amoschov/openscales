@@ -79,6 +79,10 @@ package org.openscales.core.layer.ogc
 		 */
 		private var _useCapabilities:Boolean = false;
 		
+		private var _use100Capabilities:Boolean = true;
+    
+    	private var _use110Capabilities:Boolean = true;
+		
 		/**
 		 * WFS class constructor
 		 * 
@@ -131,7 +135,8 @@ package org.openscales.core.layer.ogc
 	            
 	            // GetCapabilities request made here in order to have the proxy set 
 	            if (url != null && url != "" && this.capabilities == null && useCapabilities == true) {
-	    			var getCap:GetCapabilities = new GetCapabilities("wfs", url, this.capabilitiesGetter, this.proxy);
+	    			var getCap:GetCapabilities = new GetCapabilities("wfs", url, this.capabilitiesGetter,
+	    															use100Capabilities, use110Capabilities, this.proxy);
 	    		}
 	        }
 	    }
@@ -450,6 +455,22 @@ package org.openscales.core.layer.ogc
 		public function set useCapabilities(value:Boolean):void {
 			this._useCapabilities = value;
 		}
+		
+		public function set use100Capabilities(value:Boolean):void {
+        this._use100Capabilities = value;
+      }
+      
+      public function set use110Capabilities(value:Boolean):void {
+        this._use110Capabilities = value;
+      }
+      
+      public function get use100Capabilities():Boolean {
+        return this._use100Capabilities;
+      }
+      
+      public function get use110Capabilities():Boolean {
+        return this._use110Capabilities;
+      }
 		
 	}
 }

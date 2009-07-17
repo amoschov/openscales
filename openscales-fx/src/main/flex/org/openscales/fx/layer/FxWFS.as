@@ -1,7 +1,7 @@
 package org.openscales.fx.layer
 {
   import flash.display.DisplayObject;
-
+  
   import org.openscales.core.feature.Style;
   import org.openscales.core.layer.Layer;
   import org.openscales.core.layer.ogc.WFS;
@@ -24,6 +24,10 @@ package org.openscales.fx.layer
     private var _projection:String;
 
     private var _useCapabilities:Boolean = false;
+    
+    private var _use100Capabilities:Boolean = true;
+    
+    private var _use110Capabilities:Boolean = true;
 
 
     public function FxWFS()
@@ -59,6 +63,8 @@ package org.openscales.fx.layer
       (this._layer as WFS).url = this._url;
       (this._layer as WFS).params = this._params;
       (this._layer as WFS).useCapabilities = this._useCapabilities;
+      (this._layer as WFS).use100Capabilities = this._use100Capabilities;
+      (this._layer as WFS).use110Capabilities = this._use110Capabilities;
 
       return this._layer;
     }
@@ -88,6 +94,14 @@ package org.openscales.fx.layer
 
       public function set useCapabilities(value:Boolean):void {
         this._useCapabilities = value;
+      }
+      
+      public function set use100Capabilities(value:Boolean):void {
+        this._use100Capabilities = value;
+      }
+      
+      public function set use110Capabilities(value:Boolean):void {
+        this._use110Capabilities = value;
       }
 
   }

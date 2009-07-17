@@ -50,7 +50,7 @@
 			}
 					
 			public function onButtonClick(event:MouseEvent):void{
-				var getCap:GetCapabilities = new GetCapabilities("wfs", this.txtUrl.text,this.capabilitiesGetter,map.proxy);
+				var getCap:GetCapabilities = new GetCapabilities("wfs", this.txtUrl.text,this.capabilitiesGetter,true, true,map.proxy);
 				url = this.txtUrl.text;
 			}
 			

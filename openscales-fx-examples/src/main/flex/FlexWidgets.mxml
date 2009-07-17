@@ -50,7 +50,7 @@
 					maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34" isBaseLayer="true"/>
 							   
 			<os:WFS id="test" name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="tiger:poi" srs="EPSG:4326" version="1.0.0"
-					isBaseLayer="false" minZoomLevel="21">
+					isBaseLayer="false" minZoomLevel="21" useCapabilities="true" use110Capabilities="false">
 				<os:Style fillColor="0xff0000" fillOpacity="0.8" strokeColor="0x0000ff" strokeWidth="2" />
 				
 			</os:WFS>
