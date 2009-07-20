@@ -378,6 +378,9 @@ package org.openscales.core.renderer
 	        if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::LineString") {
 	        	style.isFilled = false;
 	        }
+	        else {
+	        	style.isFilled = true;
+	        }
 	        
 	        this.setStyle(node, style);
 
