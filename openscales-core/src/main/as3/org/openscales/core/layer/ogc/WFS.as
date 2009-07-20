@@ -148,9 +148,9 @@ package org.openscales.core.layer.ogc
 	    * @param zoomChanged Zoom changed or not
 	    * @param dragging Drag action or not
 	    */
-	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
+	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 	        if (this.vectorMode) {
-	            super.moveTo(bounds, zoomChanged, dragging);
+	            super.moveTo(bounds, zoomChanged, dragging,resizing);
 	        }  
 	        
 	        if (dragging) {

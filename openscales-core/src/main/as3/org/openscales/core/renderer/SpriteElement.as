@@ -113,7 +113,7 @@ package org.openscales.core.renderer
 		  public function onMouseUp(pevt:MouseEvent):void
 		 {
 		 	/* this.buttonMode=false; */
-		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP,this.feature));
+		 	this.feature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP,this.feature,pevt.ctrlKey));
 		 }
 		 
 		 public function OnMouseMove(pevt:MouseEvent):void

@@ -288,7 +288,7 @@ package org.openscales.core.layer
 	        return px;
 		}
 
-		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
+		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 			  var display:Boolean = this.visible;  
 	        if (!this.isBaseLayer) {
 	            display = display && this.inRange;

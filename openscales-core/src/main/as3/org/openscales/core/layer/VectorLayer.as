@@ -139,8 +139,8 @@ package org.openscales.core.layer
 	     * @param zoomChanged
 	     * @param dragging
 	     */
-	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
-	    	super.moveTo(bounds, zoomChanged, dragging);
+	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
+	    	super.moveTo(bounds, zoomChanged, dragging,resizing);
 	    	
 	    	/*if (zoomChanged) {
 	    		this.eraseFeatures(this.features);
@@ -151,6 +151,10 @@ package org.openscales.core.layer
 	            //this.y = - int(this.map.layerContainer.y);
 	            var extent:Bounds = this.map.extent;
 	            this.renderer.extent = extent;
+	            if(resizing)
+	            {
+	            	(this.renderer as SpriteRenderer).onMapresize();
+	            }
 	            
 	        }
 	

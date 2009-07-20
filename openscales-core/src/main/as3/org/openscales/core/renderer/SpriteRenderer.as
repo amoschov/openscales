@@ -7,6 +7,7 @@ package org.openscales.core.renderer
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
@@ -40,17 +41,24 @@ package org.openscales.core.renderer
 			super.destroy();
 		}
 		
+		override  public function  onMapresize():void
+		{
+			//if(extent!=null && resolution!=NaN)
+			//{
+			    this._left = -extent.left / resolution;
+	            this._top = extent.top / resolution;
+	  			//}
+		}
 		override public function set extent(extent:Bounds):void {
 			super.extent = extent;
 	        
 	        var resolution:Number = this.resolution;
 
-	    //TO resolve resizing problems  //  if (!this._localResolution || resolution != this._localResolution) {
+	    //TO resolve resizing problems  //  
+	    if (!this._localResolution || resolution != this._localResolution) {
 	            this._left = -extent.left / resolution;
 	            this._top = extent.top / resolution;
-	      //  }
-	
-	        
+	        }
 	        var left:Number = 0;
 	        var top:Number = 0;
 	

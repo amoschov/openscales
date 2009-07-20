@@ -46,7 +46,8 @@ package org.openscales.core.renderer
 	        this.resolution = NaN;
 	        this.map = null;
 	    }
-		
+		public function  onMapresize():void{
+		}
 		public function drawFeature(feature:VectorFeature, style:Style):void {
 			if(style == null) {
 	            style = feature.style;

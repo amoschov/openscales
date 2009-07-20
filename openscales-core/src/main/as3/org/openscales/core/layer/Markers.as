@@ -59,8 +59,8 @@ package org.openscales.core.layer
        * @param zoomChanged
        * @param dragging
        */
-      override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean=false):void {
-        super.moveTo(bounds, zoomChanged, dragging);
+      override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean=false,resizing:Boolean=false):void {
+        super.moveTo(bounds, zoomChanged, dragging,resizing);
 
           if (zoomChanged || !this.drawn) {
               for(var i:int=0; i < this.markers.length; i++) {

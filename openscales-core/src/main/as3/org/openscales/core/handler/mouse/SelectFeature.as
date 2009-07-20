@@ -42,7 +42,6 @@ package org.openscales.core.handler.mouse
 		override protected function registerListeners():void{
 			this.map.addEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
 			this.map.addEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);
-			//this.map.addEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
 			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
 			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp);	
 			
@@ -50,7 +49,6 @@ package org.openscales.core.handler.mouse
 		override protected function unregisterListeners():void{
 			this.map.removeEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
 			this.map.removeEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);
-		//	this.map.removeEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
 			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
 			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp);
 		}
@@ -73,13 +71,7 @@ package org.openscales.core.handler.mouse
 			}
 		}
 		
-		/*public function OnClick(pevt:FeatureEvent):void
-		{			
-			if(!this.hover)
-			{
-				if(this._select!=null)this._select(pevt);
-			}
-		}*/
+
 		public function onMouseUp(pevt:FeatureEvent):void
 		{
 			if(!this.hover)
@@ -95,6 +87,7 @@ package org.openscales.core.handler.mouse
 			if(!this.hover)
 			{
 				this._startPixel=new Pixel(pevt.vectorfeature.layer.mouseX,pevt.vectorfeature.layer.mouseY);		
+				if(this._unselect!=null)this._unselect(pevt);
 			}
 		}
 	

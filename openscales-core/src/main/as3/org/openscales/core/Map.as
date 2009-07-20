@@ -365,7 +365,7 @@ package org.openscales.core
 	                var center:Pixel = new Pixel(this.size.w /2, this.size.h / 2);
 	                var centerLL:LonLat = this.getLonLatFromMapPx(center);
 	                var zoom:int = this.zoom;
-	           		this.setCenter(null,zoom,false,true);
+	           		this.setCenter(null,zoom,false,true,false,true);
 	            }
 		}
 
@@ -401,7 +401,7 @@ package org.openscales.core
 		 * @param dragTween
 		 *
 		 */
-		private function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false):void {
+		private function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false,resizing:Boolean=false):void {
 			if (!this.center && !this.isValidLonLat(lonlat)) {
 	            lonlat = this.maxExtent.centerLonLat;
 	        }
@@ -457,7 +457,7 @@ package org.openscales.core
 	                    }
 
 	                    if (moveLayer) {
-	                         layer.moveTo(bounds, zoomChanged, dragging); 
+	                         layer.moveTo(bounds, zoomChanged, dragging,resizing); 
 	                    }
 	                }
 	            }

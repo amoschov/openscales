@@ -156,9 +156,9 @@ package org.openscales.core.layer
 	     * @param zoomChanged
 	     * @param dragging
 	     */
-		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
+		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 			
-			super.moveTo(bounds, zoomChanged, dragging);
+			super.moveTo(bounds, zoomChanged, dragging,resizing);
 	        
 	        if (bounds == null) {
 	            bounds = this.map.extent;
