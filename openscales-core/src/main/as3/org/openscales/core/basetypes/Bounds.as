@@ -75,7 +75,7 @@ package org.openscales.core.basetypes
 		 */  
         public function boundsToString(decimal:Number = -1):String {
             if (decimal == -1) {
-                decimal = 6;
+                decimal = 9;
             }
             var mult:Number = Math.pow(10, decimal);
             var bbox:String = Math.round(this.left * mult) / mult + "," +
