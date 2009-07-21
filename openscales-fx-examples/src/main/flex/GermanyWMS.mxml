@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org">
 
-	<os:Map id="fxmap" height="100%" width="100%" maxResolution="1" numZoomLevels="18" >
+	<os:Map id="fxmap" height="100%" width="100%" maxResolution="1" numZoomLevels="18" proxy="http://openscales.org/proxy.php?url=">
 		
 		<os:MaxExtent left="5.60075" bottom="47.2441" right="15.425" top="55.0317" />
 				
