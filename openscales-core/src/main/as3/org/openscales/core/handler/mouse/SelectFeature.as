@@ -42,15 +42,17 @@ package org.openscales.core.handler.mouse
 		override protected function registerListeners():void{
 			this.map.addEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
 			this.map.addEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);
-			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
-			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp);	
+			this.map.addEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
+			/* this.map.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
+			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp); */	
 			
 		}
 		override protected function unregisterListeners():void{
 			this.map.removeEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
-			this.map.removeEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);
-			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
-			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp);
+			this.map.removeEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);			
+			this.map.removeEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
+			/* this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
+			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp); */
 		}
 	
 		public function OnOut(pevt:FeatureEvent):void
@@ -71,8 +73,17 @@ package org.openscales.core.handler.mouse
 			}
 		}
 		
+		public function OnClick(pevt:FeatureEvent):void
+		{			
+			if(!this.hover)
+			{
+				if(this._select!=null)this._select(pevt);
+			}
+		}
 
-		public function onMouseUp(pevt:FeatureEvent):void
+		// There is a problem with the function, so we rollback to the old version of selection (with Onclick)
+		
+		/* public function onMouseUp(pevt:FeatureEvent):void
 		{
 			if(!this.hover)
 			{
@@ -89,7 +100,7 @@ package org.openscales.core.handler.mouse
 				this._startPixel=new Pixel(pevt.vectorfeature.layer.mouseX,pevt.vectorfeature.layer.mouseY);		
 				if(this._unselect!=null)this._unselect(pevt);
 			}
-		}
+		} */
 	
 		//Properties
 		public function  get select():Function

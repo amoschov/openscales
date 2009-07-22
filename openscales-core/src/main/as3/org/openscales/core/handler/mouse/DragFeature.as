@@ -131,11 +131,11 @@ package org.openscales.core.handler.mouse
 			this._elementDragging.stopDrag();			
 			this.dragging=false;
 			if(this.oncomplete!=null) this.oncomplete((event as FeatureEvent));
-			 
-			/* Test */			
+			
+			/* 			
 			 var ll:LonLat = this.map.getLonLatFromMapPx(new Pixel(this.map.mouseX, this.map.mouseY));
 			(event as FeatureEvent).vectorfeature.lonlat = ll; 
-			/* End Test */
+			*/
 			
 			this.layer_number=0;
 			this._elementDragging=new SpriteElement();
@@ -163,7 +163,6 @@ package org.openscales.core.handler.mouse
 				Sprite.x=event.stageX+dx;
 				Sprite.y= event.stageY+dy;    	
 			}
-			/* this.Feature.lonlat = this.map.getLonLatFromMapPx(new Pixel(event.stageX+dx,event.stageY+dy)); */
 		}
 		// Getters & setters as3
 		/**

@@ -253,9 +253,9 @@
 						selectFeatureHandler.currentfeature.style = selectStyle;							 
 						selectFeatureHandler.currentfeature.selected = true;
 						selectFeatures[iteratorFeatures]=selectFeatureHandler.currentfeature;						
-						selectFeatureHandler.currentfeature.layer.redraw();
+						selectFeatureHandler.currentfeature.layer.redraw(); 
 						selectFeatureHandler.lastfeature = selectFeatureHandler.currentfeature;	
-						this.featureInfo.showInfo(event);		//Show information of the selected feature
+						this.featureInfo.showInfo(event); 	 //Show information of the selected feature
 					}
 				}
 				else{isDragging=false;}
