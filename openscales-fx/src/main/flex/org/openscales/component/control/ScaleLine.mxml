@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="200" height="100">
+<mx:Script>
+	<![CDATA[
+		import org.openscales.core.events.LayerEvent;
+		import mx.controls.Label;
+		import org.openscales.core.layer.osm.Maplint;
+		import org.openscales.core.events.MapEvent;
+		import org.openscales.core.basetypes.Unit;
+		import org.openscales.core.Map;
+	
+	
+	/**
+     * @param Maximum width of the scale line in pixels.  Default is 100.
+     */
+    private var scaleMaxWidth:int = 200;
+
+    /**
+     * @param Units for zoomed out on top bar.  Default is km.
+     */
+    private var topOutUnits:String = "km";
+    
+    /**
+     * @param Units for zoomed in on top bar.  Default is m.
+     */
+    private var topInUnits:String = "m";
+
+    /**
+     * @param Units for zoomed out on bottom bar.  Default is mi.
+     */
+    private var bottomOutUnits:String = "mi";
+
+
+    /**
+     * @param Units for zoomed in on bottom bar.  Default is ft.
+     */
+    private var bottomInUnits:String = "ft";
+
+	private var labelMiles:Label = null;
+	
+	private var labelKm:Label = null;
+
+
+	/**
+     * Get the existing map
+     *
+     * @param value
+     */
+    override public function set map(value:Map):void {
+      super.map = value;
+      if(map != null)
+      {
+      	this.updateScale();
+      	this.map.addEventListener(MapEvent.ZOOM_END,updateScaleLine);
+      	this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED,updateScaleLine);
+      }
+    }
+    
+    public function updateScaleLine(event:Event):void {
+    	this.updateScale();
+    }
+    
+    /** 
+     * Method: getBarLen
+     * Given a number, round it down to the nearest 1,2,5 times a power of 10.
+     * That seems a fairly useful set of number groups to use.
+     * 
+     * @param maxLen the number we're rounding down from
+     * 
+     * @return the rounded number (less than or equal to maxLen)
+     */
+    private function getBarLen(maxLen:Number):Number 
+    {
+        // nearest power of 10 lower than maxLen
+        var digits:Number = parseInt((Math.log(maxLen) / Math.log(10)).toString());
+        var pow10:Number = Math.pow(10, digits);
+        
+        // ok, find first character
+        var firstChar:Number = parseInt((maxLen / pow10).toString());
+
+        // right, put it into the correct bracket
+        var barLen:Number;
+        if(firstChar > 5) {
+            barLen = 5;
+        } else if(firstChar > 2) {
+            barLen = 2;
+        } else {
+            barLen = 1;
+        }
+
+        // scale it up the correct power of 10
+        return barLen * pow10;
+    }
+
+    /**
+     * Method: update
+     * Update the size of the bars, and the labels they contain.
+     */
+    private function updateScale():void
+    {
+        var res:Number = this.map.resolution;
+        if (!res) {
+            return;
+        }
+
+        var curMapUnits:String = this.map.units;
+
+        // convert scaleMaxWidth to map units
+        var maxSizeData = this.scaleMaxWidth * res * Unit.getInchesPerUnit(curMapUnits);  
+		
+        // decide whether to use large or small scale units     
+        var topUnits:String;
+        var bottomUnits:String;
+        if(maxSizeData > 100000) {
+            topUnits = this.topOutUnits;
+            bottomUnits = this.bottomOutUnits;
+        } else {
+            topUnits = this.topInUnits;
+            bottomUnits = this.bottomInUnits;
+        }
+
+        // and to map units units
+        var topMax:Number = maxSizeData / Unit.getInchesPerUnit(topUnits);
+        var bottomMax:Number = maxSizeData / Unit.getInchesPerUnit(bottomUnits);
+
+        // now trim this down to useful block length
+        var topRounded = this.getBarLen(topMax);
+        var bottomRounded = this.getBarLen(bottomMax);
+
+        // and back to display units
+        topMax = topRounded / Unit.getInchesPerUnit(curMapUnits) * Unit.getInchesPerUnit(topUnits);
+        bottomMax = bottomRounded / Unit.getInchesPerUnit(curMapUnits) * Unit.getInchesPerUnit(bottomUnits);
+
+        // and to pixel units
+        var topPx:Number = topMax / res;
+        var bottomPx:Number = bottomMax / res;
+        
+        this.graphics.clear();
+        this.graphics.beginFill(0x00000);
+        
+        //Draw the ScaleLine
+        if(Math.round(bottomPx)>Math.round(topPx))
+        {
+        	this.graphics.drawRect(this.position.x,this.position.y+50,Math.round(bottomPx),2);
+        	this.graphics.drawRect(this.position.x+Math.round(topPx),this.position.y+32,1,18);
+        	this.graphics.drawRect(this.position.x+Math.round(bottomPx),this.position.y+50,1,20);
+        }
+        else
+        {
+        	this.graphics.drawRect(this.position.x,this.position.y+50,Math.round(topPx),2);  	
+        	this.graphics.drawRect(this.position.x+Math.round(topPx),this.position.y+32,1,20);
+        	this.graphics.drawRect(this.position.x+Math.round(bottomPx),this.position.y+52,1,18);
+        }
+        
+        this.graphics.drawRect(this.position.x,this.position.y+32,1,20);
+        
+         this.graphics.drawRect(this.position.x,this.position.y+50,1,20);
+         
+         
+         this.graphics.endFill();
+		
+		
+		if(labelMiles != null)
+         {
+         	idScaleLine.removeChild(labelMiles);	
+         }
+         labelMiles = new Label();
+         labelMiles.text = bottomRounded + " " + bottomUnits ;
+         labelMiles.x=10;
+         labelMiles.y=55;
+         this.idScaleLine.addChild(labelMiles);
+         
+		if(labelKm != null)
+         {
+         	idScaleLine.removeChild(labelKm);	
+         }
+         labelKm = new Label();
+         labelKm.text = topRounded + " " + topUnits ;
+         labelKm.x=10;
+         labelKm.y=35;
+         this.idScaleLine.addChild(labelKm);
+
+        
+    }
+
+	]]>
+</mx:Script>
+	<mx:Canvas id="idScaleLine" width="100%" height="100%" />
+</Control>
