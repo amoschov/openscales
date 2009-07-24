@@ -124,8 +124,8 @@
         var bottomMax:Number = maxSizeData / Unit.getInchesPerUnit(bottomUnits);
 
         // now trim this down to useful block length
-        var topRounded = this.getBarLen(topMax);
-        var bottomRounded = this.getBarLen(bottomMax);
+        var topRounded:Number = this.getBarLen(topMax);
+        var bottomRounded:Number = this.getBarLen(bottomMax);
 
         // and back to display units
         topMax = topRounded / Unit.getInchesPerUnit(curMapUnits) * Unit.getInchesPerUnit(topUnits);

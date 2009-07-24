@@ -3,9 +3,10 @@
 	xmlns:control="org.openscales.component.control.*"
 	xmlns:os="http://openscales.org" creationComplete="initTabDrawing();"
 	width="330" height="416">
-		
+	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.sketch.DrawMultiPointHandler;
 			import org.openscales.core.events.SpriteCursorEvent;
 			import org.openscales.core.Trace;
 			import mx.containers.TabNavigator;
@@ -41,12 +42,14 @@
 			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
 			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
 			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
+			public var multiPointHandler:DrawMultiPointHandler = new DrawMultiPointHandler(null, false, drawLayer);
 			
 			/**
 			 * Params for feature selection
 			 */
 			private var _selectStyle:Style = new Style();
 			public var selectFeatures:Array = new Array();  //Array witch keep all selectFeature (with ctrl key)
+			public var selectFeauturesLength:int = 0;
 			private var _iteratorFeatures:Number = 0;	//indicate the iterate for feature
 			private var _isDragging:Boolean = false;	//To know if the feature is dragging
 				
@@ -168,11 +171,28 @@
 							break;
 					}   
 				}
-				else {
-					Alert.show("There are not features to delete !", "Message");
-					selectFeatureHandler.lastfeature = null;
-				}
+				
 			}
+			
+			private function OnMergeClick(event:MouseEvent):void {
+
+				multiPointHandler.map = this.map;
+				var feature:VectorFeature = multiPointHandler.buttonClicked(selectFeatures);
+				selectFeatureHandler.currentfeature = feature;
+				
+				selectFeatureHandler.currentfeature.originalStyle=selectFeatureHandler.currentfeature.style;					
+				selectFeatureHandler.currentfeature.style = selectStyle;							 
+				selectFeatureHandler.currentfeature.selected = true;
+				selectFeatures[iteratorFeatures]=selectFeatureHandler.currentfeature;						
+				selectFeatureHandler.currentfeature.layer.redraw(); 
+				selectFeatureHandler.lastfeature = selectFeatureHandler.currentfeature;	
+				selectFeauturesLength++;
+				
+				btnMerge.enabled = false;
+				
+			}
+			
+			
 			
 			/**
 			 * On select feature
@@ -183,13 +203,15 @@
 					var f:org.openscales.core.feature.VectorFeature;										
 					selectFeatureHandler.currentfeature = event.vectorfeature;
 					btnDeleteSelected.enabled = true;
-					if(selectFeatures == null){selectFeatures = new Array();}							
+					if(selectFeatures == null){selectFeatures = new Array();}	
+											
 					//It's not the first selection
 					if(selectFeatureHandler.lastfeature != null){		
 						//Feature is not already selected
 						if(!selectFeatureHandler.currentfeature.selected){
 							//ctrl key isn't pressed
 							if(!event.ctrlPressed){
+								selectFeauturesLength=0;
 								for each(f in selectFeatures){
 									if(f != null){
 										if(f.selected){f.style = f.originalStyle;f.selected=false;f.layer.redraw();}
@@ -213,11 +235,14 @@
 								selectFeatureHandler.currentfeature.layer.redraw();	
 								this.featureInfo.showInfo(event);		//Show information of the selected feature
 							}
+							if(selectFeatures.length > 1) {btnMerge.enabled = true;}
+							selectFeauturesLength++;
 						}
 						//Feature is already selected
 						else{
 							//ctrl key isn't pressed
 							if(!event.ctrlPressed){
+								selectFeauturesLength=0;
 								var others:Boolean = false;
 								for(i=0;i<=selectFeatures.length;i++){
 									f=selectFeatures[i];
@@ -226,7 +251,7 @@
 								if(!others){
 									selectFeatureHandler.currentfeature.style = selectFeatureHandler.currentfeature.originalStyle;												 
 									selectFeatureHandler.currentfeature.selected = false;
-									selectFeatures[iteratorFeatures]=null;	
+									selectFeatures[iteratorFeatures]=null;
 									selectFeatureHandler.lastfeature = null;
 									selectFeatureHandler.currentfeature.layer.redraw();	
 								
@@ -244,6 +269,7 @@
 									if(f == selectFeatureHandler.currentfeature){selectFeatures[i]=null;}
 								}
 								selectFeatureHandler.currentfeature.layer.redraw();
+								selectFeauturesLength--;
 							}							
 						}
 					}
@@ -256,9 +282,12 @@
 						selectFeatureHandler.currentfeature.layer.redraw(); 
 						selectFeatureHandler.lastfeature = selectFeatureHandler.currentfeature;	
 						this.featureInfo.showInfo(event); 	 //Show information of the selected feature
+						selectFeauturesLength++;
 					}
 				}
 				else{isDragging=false;}
+				if(selectFeauturesLength >= 2) {btnMerge.enabled = true;}
+				else{btnMerge.enabled = false;}
 			}
 			
 			override public function set map(value:Map):void {
@@ -270,6 +299,7 @@
 					polygonHandler.map = this.map
 					this.map.addLayer(drawLayer);
 				}
+				
 			}
 			
 			/**
@@ -486,13 +516,15 @@
 		</mx:Array>
 	</mx:ToggleButtonBar>	
 	
-	<mx:Button x="106" y="123" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="118" toolTip="Delete all drawing feature on the map"/>
-	<mx:Button x="106" y="84" label="DeleteLast" width="118" id="btnDeleteLast" click="this.onDeleteLastClick(event)" toolTip="Delete the last drawing feature"/>
-	<mx:Button label="DeleteSelected" width="118" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" x="106" y="161" enabled="false" toolTip="Delete all selected features"/>
+	<mx:Button x="106" y="74" label="Merge" id="btnMerge" click="this.OnMergeClick(event)" width="118" toolTip="Merge features selected" enabled="false"/>
+	<mx:Button x="106" y="152" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="118" toolTip="Delete all drawing feature on the map"/>
+	<mx:Button x="106" y="113" label="DeleteLast" width="118" id="btnDeleteLast" click="this.onDeleteLastClick(event)" toolTip="Delete the last drawing feature"/>
+	<mx:Button label="DeleteSelected" width="118" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" x="106" y="190" enabled="false" toolTip="Delete all selected features"/>
 		
 	<mx:Text x="10" y="40" text="To finalize a path or a polygon, just double click on map." width="310" height="22" fontStyle="italic" textAlign="center" />
-	<mx:Text text="For the moment you can't delete WFS points, even if they are selected" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="190"/>
+	<mx:Text text="For the moment you can't delete WFS points, even if they are selected" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="219"/>
+	<mx:Text text="Merge works only with Point in this moment" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="95"/>
 
-	<control:FeatureInfo id="featureInfo" x="10" y="232" width="310" height="165"/>
+	<control:FeatureInfo id="featureInfo" x="10" y="261" width="310" height="165"/>
 	
 </control:Control>

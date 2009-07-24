@@ -14,7 +14,7 @@ package org.openscales.core.geometry
 		}
 		
 		
-	    public function addPoint(point:Point, index:Number):void {
+	    public function addPoint(point:Point, index:Number=NaN):void {
 	        this.addComponent(point, index);
 	    }
 	    
