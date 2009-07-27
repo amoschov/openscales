@@ -15,12 +15,11 @@ package org.openscales.core.layer.params.ogc
 		private var _width:Number;
 		private var _height:Number;
 		private var _transparent:Boolean;
+		private var _bgcolor:String;
 		private var _tiled:Boolean;
-
-		
 		
 		public function WMSParams(layers:String, format:String = "image/jpeg", transparent:Boolean = false, 
-									tiled:Boolean = false, styles:String = null)
+									tiled:Boolean = false, styles:String = null, bgcolor:String = null)
 		{
 			super("WMS", "1.1.1", "GetMap");
 			
@@ -30,7 +29,8 @@ package org.openscales.core.layer.params.ogc
 			this._format = format;
 			this._transparent = transparent;
 			this._tiled = tiled;
-			this._styles = styles;			
+			this._styles = styles;	
+			this._bgcolor = bgcolor;		
 			
 		}
 		
@@ -53,6 +53,10 @@ package org.openscales.core.layer.params.ogc
 			str += "HEIGHT=" + this._height + "&";
 			str += "TILED=" + this._tiled + "&";
 			str += "TRANSPARENT=" + this._transparent + "&";
+			
+			if (this._bgcolor != null)
+				str += "BGCOLOR=" + this._bgcolor + "&";
+			
 			
 			return str.substr(0, str.length-1);
 		}
@@ -86,7 +90,7 @@ package org.openscales.core.layer.params.ogc
 		public function get styles():String {
 			return _styles;
 		}
-
+		
 		public function set styles(styles:String):void {
 			_styles = styles;
 		}
@@ -123,5 +127,12 @@ package org.openscales.core.layer.params.ogc
 			_tiled = tiled;
 		}
 		
+		public function get bgcolor():String {
+			return _bgcolor;
+		}
+		
+		public function set bgcolor(bgcolor:String):void {
+			_bgcolor = bgcolor;
+		}
 	}
 }
