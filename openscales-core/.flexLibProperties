@@ -5,6 +5,7 @@
 <classEntry path="org.openscales.core.geometry.Polygon"/>
 <classEntry path="org.openscales.core.renderer.Renderer"/>
 <classEntry path="org.openscales.core.layer.osm.Maplint"/>
+<classEntry path="org.openscales.core.handler.sketch.DrawMultiHandler"/>
 <classEntry path="org.openscales.core.Marker"/>
 <classEntry path="org.openscales.core.tile.WFSTile"/>
 <classEntry path="org.openscales.core.popup.Anchored"/>
@@ -24,7 +25,6 @@
 <classEntry path="org.openscales.core.basetypes.DraggableSprite"/>
 <classEntry path="org.openscales.core.control.IControl"/>
 <classEntry path="org.openscales.core.handler.sketch.DrawPathHandler"/>
-<classEntry path="org.openscales.core.handler.sketch.DrawMultiPointHandler"/>
 <classEntry path="org.openscales.core.layer.ogc.WMSC"/>
 <classEntry path="org.openscales.core.basetypes.maps.IMap"/>
 <classEntry path="org.openscales.core.layer.osm.OSM"/>

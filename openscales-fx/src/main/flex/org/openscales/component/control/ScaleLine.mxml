@@ -106,7 +106,7 @@
         var curMapUnits:String = this.map.units;
 
         // convert scaleMaxWidth to map units
-        var maxSizeData = this.scaleMaxWidth * res * Unit.getInchesPerUnit(curMapUnits);  
+        var maxSizeData:Number = this.scaleMaxWidth * res * Unit.getInchesPerUnit(curMapUnits);  
 		
         // decide whether to use large or small scale units     
         var topUnits:String;

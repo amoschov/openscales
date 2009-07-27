@@ -6,7 +6,11 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.handler.sketch.DrawMultiPointHandler;
+			import org.openscales.core.geometry.MultiPolygon;
+			import org.openscales.core.geometry.MultiLineString;
+			import org.openscales.core.geometry.MultiPoint;
+			import org.openscales.core.geometry.LineString;
+			import org.openscales.core.handler.sketch.DrawMultiHandler;
 			import org.openscales.core.events.SpriteCursorEvent;
 			import org.openscales.core.Trace;
 			import mx.containers.TabNavigator;
@@ -42,7 +46,7 @@
 			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
 			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
 			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
-			public var multiPointHandler:DrawMultiPointHandler = new DrawMultiPointHandler(null, false, drawLayer);
+			public var multiPointHandler:DrawMultiHandler = new DrawMultiHandler(null, false, drawLayer);
 			
 			/**
 			 * Params for feature selection
@@ -235,14 +239,14 @@
 								selectFeatureHandler.currentfeature.layer.redraw();	
 								this.featureInfo.showInfo(event);		//Show information of the selected feature
 							}
-							if(selectFeatures.length > 1) {btnMerge.enabled = true;}
+							/* if(selectFeatures.length > 1) {btnMerge.enabled = true;} */
 							selectFeauturesLength++;
 						}
 						//Feature is already selected
 						else{
 							//ctrl key isn't pressed
 							if(!event.ctrlPressed){
-								selectFeauturesLength=0;
+								selectFeauturesLength=1;
 								var others:Boolean = false;
 								for(i=0;i<=selectFeatures.length;i++){
 									f=selectFeatures[i];
@@ -251,13 +255,16 @@
 								if(!others){
 									selectFeatureHandler.currentfeature.style = selectFeatureHandler.currentfeature.originalStyle;												 
 									selectFeatureHandler.currentfeature.selected = false;
-									selectFeatures[iteratorFeatures]=null;
+									 selectFeatures[iteratorFeatures]= null;  
+
+
 									selectFeatureHandler.lastfeature = null;
 									selectFeatureHandler.currentfeature.layer.redraw();	
 								
 									this.featureInfo.showInfo(event);					//Show information of the selected feature
 									btnDeleteSelected.enabled = false;			
-									this.featureInfo.dgFeatureInfo.dataProvider=null;   //clear the information tab						
+									this.featureInfo.dgFeatureInfo.dataProvider=null;   //clear the information tab	
+									selectFeauturesLength--;					
 								}
 							}							
 							//ctrl key is pressed
@@ -282,11 +289,53 @@
 						selectFeatureHandler.currentfeature.layer.redraw(); 
 						selectFeatureHandler.lastfeature = selectFeatureHandler.currentfeature;	
 						this.featureInfo.showInfo(event); 	 //Show information of the selected feature
+
 						selectFeauturesLength++;
 					}
 				}
 				else{isDragging=false;}
-				if(selectFeauturesLength >= 2) {btnMerge.enabled = true;}
+				if(selectFeauturesLength >= 2) 
+				{
+					for(var k:int=0;k<selectFeatures.length;k++)
+					{
+						var l:int = 1;
+						if(selectFeatures[k] != null)
+						{
+							while(selectFeatures[k-l] == null)
+							{
+								if((k-l) <= 0)
+								{
+									l = 0;
+								}
+								else
+								{
+									l++;
+								}
+							}
+							if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::Point") || (getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPoint")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::Point") ||(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPoint")))))
+							{
+								btnMerge.enabled = true;
+							}
+							else if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::LineString") || (getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::LineString") ||(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString")))))
+							{
+								btnMerge.enabled = true;
+							}
+							else if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::Polygon") || (getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPolygon")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::Polygon") ||(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPolygon")))))
+							{
+								if((selectFeatures[k] as VectorFeature).selected ==true)
+								{
+									btnMerge.enabled = true;
+								}
+							}
+							else
+							{
+								btnMerge.enabled = false;
+								return;
+							}
+						}
+					}
+					
+				}
 				else{btnMerge.enabled = false;}
 			}
 			
