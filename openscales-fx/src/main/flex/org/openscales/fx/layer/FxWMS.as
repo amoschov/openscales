@@ -41,6 +41,11 @@ package org.openscales.fx.layer
         if(this.layer != null)
           ((this.layer as WMS).params as WMSParams).transparent = value;
       }
+      
+      public function set bgcolor(value:String):void {
+      	if(this.layer != null)
+      	  ((this.layer as WMS).params as WMSParams).bgcolor = value;
+      }
 
       public function set tiled(value:Boolean):void {
         if(this.layer != null)
