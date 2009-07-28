@@ -52,7 +52,7 @@ package org.openscales.core.layer.params.ogc
 			str += "WIDTH=" + this._width + "&";
 			str += "HEIGHT=" + this._height + "&";
 			str += "TILED=" + this._tiled + "&";
-			str += "TRANSPARENT=" + this._transparent + "&";
+			str += "TRANSPARENT=" + this._transparent.toString().toUpperCase() + "&";
 			
 			if (this._bgcolor != null)
 				str += "BGCOLOR=" + this._bgcolor + "&";
