@@ -11,19 +11,14 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
-	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
 
 	/**
 	 * Handler to draw polygons.
 	 */
-	public class DrawPolygonHandler extends Handler
+	public class DrawPolygonHandler extends AbstractDrawHandler
 	{
-		
-		// The layer in which we'll draw
-		private var _drawLayer:org.openscales.core.layer.VectorLayer = null;
-
 		private var _lring:LinearRing = null;
 		private var _polygon:Polygon = null;
 		private var _newFeature:Boolean = true;
@@ -35,14 +30,13 @@ package org.openscales.core.handler.sketch
 		
 		public function DrawPolygonHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
 		{
-			super(map, active);
-			this.drawLayer = drawLayer;
+			super(map, active, drawLayer);
 		}
 		
 		override protected function registerListeners():void{
 			this._dblClickHandler.active = true;
 			this._dblClickHandler.doubleclick = this.mouseDblClick;
-			this.map.addEventListener(MouseEvent.CLICK, this.mouseClick);			
+			this.map.addEventListener(MouseEvent.CLICK, this.mouseClick);	
 		}
 		
 		override protected function unregisterListeners():void{
@@ -60,11 +54,8 @@ package org.openscales.core.handler.sketch
 				var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
 				var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
 				var point:Point = new Point(lonlat.lon,lonlat.lat);
-
 				
-				
-				if(newFeature) {
-					
+				if(newFeature) {					
 					lring = new LinearRing([point]);
 					polygon = new Polygon(lring);
 					feature.geometry = polygon;
@@ -120,13 +111,6 @@ package org.openscales.core.handler.sketch
 		}
 		
 		//Getters and Setters
-		public function get drawLayer():org.openscales.core.layer.VectorLayer {
-			return _drawLayer;
-		}
-
-		public function set drawLayer(drawLayer:org.openscales.core.layer.VectorLayer):void {
-			_drawLayer = drawLayer;
-		}
 		
 		public function get lring():LinearRing {
 			return _lring;

@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="initFeatureDrawing();">
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.handler.mouse.DragHandler;
+			import org.openscales.core.handler.Handler;
+			import mx.controls.Alert;
+			import org.openscales.core.feature.VectorFeature;
+			import org.openscales.core.handler.mouse.SelectFeature;
+			import org.openscales.core.handler.sketch.DrawMultiHandler;
+			import org.openscales.core.handler.sketch.DrawPathHandler;
+			import org.openscales.core.handler.sketch.DrawPolygonHandler;
+			import org.openscales.core.handler.sketch.DrawPointHandler;
+			import org.openscales.core.layer.VectorLayer;
+			import org.openscales.core.Map;
+			import org.openscales.core.feature.Style;
+			import org.openscales.core.events.FeatureEvent;
+			import mx.events.CloseEvent;
+			import mx.events.ItemClickEvent;
+			
+			private var _drawType:String = "";
+			private var _indexTabDrawing:Number = -1;
+			public var drawLayer:VectorLayer = new VectorLayer("Drawings");			
+			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
+			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
+			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
+			public var multiPointHandler:DrawMultiHandler = new DrawMultiHandler(null, false, drawLayer);
+			
+			private var _isDragging:Boolean = false;	//To know if the feature is dragging
+				
+			/**
+			 * Mouse handlers
+			 */
+			public var selectFeatureHandler:SelectFeature; //to select features
+			
+			/**
+			 * Initiate properties and handlers
+			 */
+			public function initFeatureDrawing():void{	
+				//To unselect all button in the toggleBarButton
+				this.tgBar.selectedIndex = -1;
+				
+				//Properties of selectFeatureHandler
+				this.selectFeatureHandler = new SelectFeature(this.map,drawLayer,true);
+				this.selectFeatureHandler.select = onSelectFeature;
+				this.selectFeatureHandler.hover = false;
+				
+				//Properties of MultiHandler
+				this.multiPointHandler.map = this.map;
+				 				 
+				//Active drag feature
+				/* this.dragfeature = new DragFeature(this.map,[drawLayer],true); */
+				
+				//Add select feature handler to the map
+				this.map.addHandler(selectFeatureHandler);
+			}
+			
+			/**
+			 * Allow you to merge different selected feature in one.
+			 * You can't merge a polygon and a point (for example), All features must be the same geometry
+			 */
+			private function OnMergeClick(event:MouseEvent):void {
+				
+				/*TO DO
+				
+					Passe le tableau des features sÃ©lectionnÃ© en argument, 
+					et retourne une multi gÃ©omÃ©trie des features en question
+					
+				END TODO*/
+				var feature:VectorFeature = multiPointHandler.buttonClicked(selectFeatureHandler.selectFeatures);
+				selectFeatureHandler.currentfeature = feature;				
+				selectFeatureHandler.OnSelection();
+				selectFeatureHandler.selectFeauturesLength++;
+				btnMerge.enabled = false;
+				
+			}
+			
+			/**
+		 	 * Show a warning message when you delete selected feature. User can cancel if it's a mistake
+		 	 */
+			public function onDeleteSelectedClick(event:Event):void {
+				Alert.show("Are you sure ?", "Warning", Alert.YES | Alert.NO, null, alertClickHandler);				
+			}
+			
+			//check the user's answer
+			private function alertClickHandler(event:CloseEvent):void {
+                // User click on "YES", he wants to apply changes
+                if (event.detail==Alert.YES){
+                	deleteSelectedFeatures(); 
+                }                  
+            }
+			
+			/**
+			 * User clicks on delete selected feature button
+			 */
+			private function deleteSelectedFeatures():void {
+				var feature:org.openscales.core.feature.VectorFeature;
+				var i:Number = 0;
+				for(i;i<drawLayer.features.length;i++){
+					feature = drawLayer.features[i];
+					if(feature.selected){
+						drawLayer.removeFeatures(drawLayer.features[i]);
+						i--;
+					}
+				}
+				drawLayer.renderer.clear();
+				drawLayer.redraw();
+				btnDeleteSelected.enabled = false;
+				/* this.featureInfo.dgFeatureInfo.dataProvider=null; */
+			}
+
+			/**
+			 * User clicks on delete all button
+			 */
+			private function onDeleteAllClick(event:Event):void {
+				drawLayer.destroyFeatures();
+				drawLayer.renderer.clear();
+				selectFeatureHandler.lastfeature = null;				
+				switch(drawType)
+				{
+					case "path":{pathHandler.newFeature = true; break;}
+					case "polygon":{polygonHandler.newFeature = true; break;}
+				}
+				/* this.featureInfo.dgFeatureInfo.dataProvider=null; */ //clear the information tab
+			}
+			
+			/**
+			 * User clicks on delete last feature button
+			 */
+			public function onDeleteLastClick(event:Event):void {
+				var last:Number = drawLayer.features.length - 1;
+				var lastFeature:VectorFeature = null;
+				
+				if (last >= 0) {					
+					lastFeature = drawLayer.features[last];
+					drawLayer.removeFeatures(drawLayer.features[last]);
+								
+					switch(drawType)
+					{
+						case "path":														
+							if (last - 1 >= 0 && getQualifiedClassName(drawLayer.features[last-1].geometry) == "org.openscales.core.geometry::LineString") {
+								pathHandler.lastPoint = drawLayer.features[last-1].geometry.getLastPoint();
+							}
+							else {pathHandler.newFeature = true;}
+							break;	
+												
+						case "polygon":
+							if (last-1 >= 0 && !polygonHandler.firstPointRemoved && !polygonHandler.newFeature) {
+								drawLayer.removeFeatures(drawLayer.features[last - 1]);
+							}
+							polygonHandler.newFeature = true;							
+							break;
+					}   
+				}				
+			}
+						
+			/**
+			 * On select feature
+			 */
+			private function onSelectFeature(event:FeatureEvent):void {			
+				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active && !isDragging) {										
+					selectFeatureHandler.currentfeature = event.vectorfeature;
+					btnDeleteSelected.enabled = true;
+					selectFeatureHandler.ctrl = event.ctrlPressed;					
+					selectFeatureHandler.OnSelection();
+					if(selectFeatureHandler.Comparison()){btnMerge.enabled = true;}
+					else{btnMerge.enabled = false;}
+				}
+			}
+					
+			/**
+			 * Click on the togglebarbutton. Index button starts from 0.
+			 */ 		
+			private function clickHandler(event:ItemClickEvent):void{
+				var handler:Number = event.index;		// handler is a number because of toggleButtonBar
+				this.deactiveDrag();			
+				switch(handler)
+				{
+					case 0:		//click on button point
+						if(drawType!="point"){
+							if(pathHandler.active){this.finishPath();}
+							else if(polygonHandler.active){this.finishPolygon();}												
+							pointHandler.active = true;
+							drawType = "point";
+						}
+						else{
+							drawType = "";
+							pointHandler.active = false;
+							this.tgBar.selectedIndex = -1;
+							this.activeDrag(); 
+						}						
+						break;
+					
+					case 1:		//click on button path
+						if(drawType!="path"){
+							if(polygonHandler.active){this.finishPolygon();}						
+							pointHandler.active = false;
+							pathHandler.active = true;
+							drawType = "path";
+						}
+						else{
+							drawType = "";
+							finishPath();
+							this.tgBar.selectedIndex = -1;
+							this.activeDrag(); 
+						}
+						break;
+						
+					case 2:		//click on button polygon
+						if(drawType!="polygon"){
+							if(pathHandler.active){this.finishPath();}						
+							pointHandler.active = false;
+							polygonHandler.active = true;
+							drawType = "polygon";
+						}
+						else{
+							drawType = "";
+							this.finishPolygon();
+							this.tgBar.selectedIndex = -1;
+							this.activeDrag();   
+						}
+						break;
+				}
+			}
+			
+			
+			/**
+			 * Finish a polygon
+			 * Force to finalyse a polygon (even it's not finished)
+			 */
+			public function finishPolygon():void{
+				polygonHandler.drawFinalPoly();
+				polygonHandler.active = false;
+			}
+			
+			/**
+			 * Finish a path
+			 * Force to finalyse a path (event it's not finished)
+			 */
+			public function finishPath():void{
+				pathHandler.drawFinalPath();
+				pathHandler.active = false;
+			}
+			
+			/**
+			 * Active paning
+			 * User can pan the map
+			 */
+			public function activeDrag():void{
+				var handler:Handler;
+				for each(handler in this.map.handlers){
+					if(handler is DragHandler){
+						handler.active = true;
+					}
+				} 
+			}
+			/**
+			 * Deactive paning
+			 * User can't pan map anymore
+			 */
+			public function deactiveDrag():void{
+				var handler:Handler;
+				for each(handler in this.map.handlers){
+					if(handler is DragHandler){
+						handler.active = false;
+					} 
+				}
+			}
+			
+			
+			//Getters and setters
+			public function get drawType():String{
+				return _drawType;
+			}
+			public function set drawType(value:String):void{
+				_drawType = value;
+			}
+			
+			public function get indexTabDrawing():Number{
+				return _indexTabDrawing;
+			}
+			public function set indexTabDrawing(value:Number):void{
+				_indexTabDrawing = value;
+			}
+			
+			public function get isDragging():Boolean{
+				return _isDragging;
+			}
+			public function set isDragging(value:Boolean):void{
+				_isDragging = value;
+			}
+			
+			
+			override public function set map(value:Map):void {
+				super.map = value;
+				
+				if (this.map != null) {
+					pointHandler.map = this.map;
+					pathHandler.map = this.map;
+					polygonHandler.map = this.map
+					this.map.addLayer(drawLayer);
+				}
+				
+			}		
+		]]>
+	</mx:Script>
+	
+	<mx:ToggleButtonBar x="100" y="10" horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="-1" id="tgBar">
+		<mx:Array>
+			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoint.swf')" id="btnPoint"/>
+			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" id="btnPath"/>
+			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoly.swf')" id="btnPolygon"/>
+		</mx:Array>
+	</mx:ToggleButtonBar>
+	
+	<mx:Button x="106" y="74" label="Merge" id="btnMerge" click="this.OnMergeClick(event)" width="118" toolTip="Merge features selected" enabled="false"/>
+	<mx:Button x="106" y="152" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="118" toolTip="Delete all drawing feature on the map"/>
+	<mx:Button x="106" y="113" label="DeleteLast" width="118" id="btnDeleteLast" click="this.onDeleteLastClick(event)" toolTip="Delete the last drawing feature"/>
+	<mx:Button label="DeleteSelected" width="118" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" x="106" y="190" enabled="false" toolTip="Delete all selected features"/>
+</Control>

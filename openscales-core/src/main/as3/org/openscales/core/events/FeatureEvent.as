@@ -35,6 +35,7 @@ package org.openscales.core.events
 		public static const FEATURE_MOUSEUP:String="openscales.feature.mouseup";
 		public static const FEATURE_MOUSEMOVE:String="openscales.feature.mousemove";
 		public static const FEATURE_DRAGGING:String="openscales.feature.dragging";
+		public static const FEATURE_SELECTED:String="openscales.feature.selected";
 
 		
 		/**

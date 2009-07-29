@@ -11,14 +11,13 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.Point;
-	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
 	
 	/**
 	 * Handler to draw paths (multi line strings)
 	 */
-	public class DrawPathHandler extends Handler
+	public class DrawPathHandler extends AbstractDrawHandler
 	{		
 		// The layer in which we'll draw
 		private var _drawLayer:org.openscales.core.layer.VectorLayer = null;				
@@ -37,15 +36,13 @@ package org.openscales.core.handler.sketch
 		 */
 		public function DrawPathHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
 		{
-			super(map, active);
-			this.drawLayer = drawLayer;
+			super(map, active, drawLayer);
 		}
 		
 		override protected function registerListeners():void{
 			this._dblClickHandler.active = true;
 			this._dblClickHandler.doubleclick = this.mouseDblClick;
 			this.map.addEventListener(MouseEvent.CLICK, this.mouseClick); 
-			/* this.map.addEventListener(MouseEvent.DOUBLE_CLICK, this.mouseDoubleClick); */
 		}
 		
 		override protected function unregisterListeners():void{
@@ -80,8 +77,7 @@ package org.openscales.core.handler.sketch
 				//When we have at least a 2 points path, we can remove the first point				
 				if(getQualifiedClassName(drawLayer.features[drawLayer.features.length-1].geometry) == "org.openscales.core.geometry::Point") {
 					drawLayer.removeFeatures(drawLayer.features[drawLayer.features.length-1]);
-				}
-									
+				}								
 				drawLayer.renderer.clear();
 				var points:Array = new Array(2);
 				points.push(lastPoint, point);
@@ -132,14 +128,7 @@ package org.openscales.core.handler.sketch
 			this._dblClickHandler.map = value;
 		}
 		
-		//Getters and Setters
-		public function get drawLayer():org.openscales.core.layer.VectorLayer {
-			return _drawLayer;
-		}
-		public function set drawLayer(drawLayer:org.openscales.core.layer.VectorLayer):void {
-			_drawLayer = drawLayer;
-		}
-		
+		//Getters and Setters		
 		public function get id():Number {
 			return _id;
 		}

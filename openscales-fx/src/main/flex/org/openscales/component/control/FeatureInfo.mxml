@@ -67,21 +67,28 @@
 					properties.push(name);
 					
 					//MultiLineString = several LineString and LineString = 2 points
+					
+					/*There's still a problem with multiline : because of doubleclick to finish the path,
+					there is a last LineString with 2 same points. And because of its, the last point appears twice
+					in the tab.*/
+					
 					for each(var ls:org.openscales.core.geometry.LineString in (evt.vectorfeature.geometry as MultiLineString).components){
 						for each(currentPoint in ls.components){
-							//To prevent twice the same point
-							var pointPath:Object = {};
+							//To prevent the same point twice
+							var pointPath:Object = {};	//We use pointPath as object to put properties correctly
 							if(first){
 								lastP = currentPoint; first = false;
-								pointPath.Name = "Point_" + pointNum; pointNum++;
+								pointPath.Name = "Point_" + pointNum; 
 								pointPath.Value = currentPoint.x + ";" + currentPoint.y;
 								properties.push(pointPath);
+								pointNum++;
 							}
 							else if(lastP != currentPoint){							
-								pointPath.Name = "Point_" + pointNum; pointNum++;
+								pointPath.Name = "Point_" + pointNum;
 								pointPath.Value = currentPoint.x + ";" + currentPoint.y;
 								properties.push(pointPath);
 								lastP = currentPoint;
+								pointNum++;
 							}
 						}	
 					}

@@ -4,12 +4,12 @@ package org.openscales.core.feature
   
   import org.openscales.core.Icon;
   import org.openscales.core.Marker;
-  import org.openscales.core.Trace;
   import org.openscales.core.Util;
   import org.openscales.core.basetypes.Bounds;
   import org.openscales.core.basetypes.LonLat;
   import org.openscales.core.basetypes.Pixel;
   import org.openscales.core.basetypes.Size;
+  import org.openscales.core.events.FeatureEvent;
   import org.openscales.core.layer.Layer;
   import org.openscales.core.popup.Anchored;
   import org.openscales.core.popup.Popup;
@@ -215,6 +215,5 @@ package org.openscales.core.feature
     public function set selected(value:Boolean):void {
       this._selected = value;
     }
-
   }
 }

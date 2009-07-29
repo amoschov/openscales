@@ -1,6 +1,7 @@
 package org.openscales.core.handler.sketch
 {
 	import org.openscales.core.Map;
+	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LineString;
@@ -9,22 +10,23 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
-	import org.openscales.core.handler.Handler;
 	import org.openscales.core.layer.VectorLayer;
 
-	public class DrawMultiHandler extends Handler
-	{
-		
-		// The layer in which we'll draw
-		private var _drawLayer:org.openscales.core.layer.VectorLayer = null;
-		
-		
+	/**
+	 * DrawMultiHandler allow you to merge several features (withe the same geometry) in one.
+	 * It works ONLY with same geometry. It doesn't work with MultiGeometry.
+	 * You can merge point in MultiPoint, MultiLineString in MultiLineString and MultiPolygon in Multipolygon
+	 */
+	
+	public class DrawMultiHandler extends AbstractDrawHandler
+	{		
 		private var id:Number = 0;
 		
 		public function DrawMultiHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
 		{
-			super(map, active);
-			this.drawLayer = drawLayer;
+			super(map, active, drawLayer);
+			
+			/* this.map.addEventListener(FeatureEvent.FEATURE_SELECTED, featureSelected); */
 		}
 		
 		public function buttonClicked(selectedFeatures:Array):VectorFeature {
@@ -109,14 +111,6 @@ package org.openscales.core.handler.sketch
 			drawLayer.addFeatures(feature);
 			return(feature);
 			
-		}
-		
-		public function get drawLayer():org.openscales.core.layer.VectorLayer {
-			return _drawLayer;
-		}
-
-		public function set drawLayer(drawLayer:org.openscales.core.layer.VectorLayer):void {
-			_drawLayer = drawLayer;
 		}
 		
 	}

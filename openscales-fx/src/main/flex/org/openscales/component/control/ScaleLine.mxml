@@ -107,7 +107,7 @@
 
         // convert scaleMaxWidth to map units
         var maxSizeData:Number = this.scaleMaxWidth * res * Unit.getInchesPerUnit(curMapUnits);  
-		
+
         // decide whether to use large or small scale units     
         var topUnits:String;
         var bottomUnits:String;
@@ -185,5 +185,5 @@
 
 	]]>
 </mx:Script>
-	<mx:Canvas id="idScaleLine" width="100%" height="100%" />
+	<mx:Canvas id="idScaleLine" width="100%" height="100%" backgroundAlpha="0.3" color="0x000000"/>
 </Control>

@@ -1,9 +1,11 @@
 package org.openscales.core.handler.mouse
 {
+	import flash.utils.getQualifiedClassName;
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.control.ui.CheckBox;
 	import org.openscales.core.events.FeatureEvent;
+	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.layer.VectorLayer;
@@ -25,9 +27,23 @@ package org.openscales.core.handler.mouse
 		private var _select:Function=null;
 		private var _unselect:Function=null;
 		
+		private var _ctrl:Boolean=false;
+		
+		//Array witch keep all selectFeature using ctrl key)
+		private var _selectFeatures:Array = new Array();
+		
+		//real number of feature in the tab. We don't use lenght, because selectFeatures maybe contain null.
+		private var _selectFeauturesLength:int = 0;	
+		
+		private var _iteratorFeatures:Number = 0;	// iterator for selectFeature (in the tab "selectFeatures")
+			
+		//The style for selected feature (you can change its color)
+		private var _selectStyle:Style = new Style(); 
+		
 		private var _layer:VectorLayer;
 		private var _lastfeature:VectorFeature=null;
 		private var _currentfeature:VectorFeature=null;
+		
 		//Accept hover or not
 		private var _hover:Boolean=true;
 		
@@ -37,6 +53,9 @@ package org.openscales.core.handler.mouse
 		{
 			super(map,active);
 			this.layer=layer;
+			
+			this.selectStyle.fillColor = 0xFFD700;
+			this.selectStyle.strokeColor = 0xFFD700;
 		}
 		
 		override protected function registerListeners():void{
@@ -55,30 +74,147 @@ package org.openscales.core.handler.mouse
 			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp); */
 		}
 	
-		public function OnOut(pevt:FeatureEvent):void
-		{
+		public function OnOut(pevt:FeatureEvent):void{
 			if(pevt.vectorfeature.layer==this.layer)
 			{
 				if(this._unselect!=null)this._unselect(pevt);
 			}
 		}
-		public function OnOver(pevt:FeatureEvent):void
-		{
+		public function OnOver(pevt:FeatureEvent):void{
 			if(hover)
 			{
 				if(pevt.vectorfeature.layer==this.layer)
 				{
-				if(this._select!=null) this._select(pevt);
+					if(this._select!=null) this._select(pevt);
 				}
 			}
 		}
 		
-		public function OnClick(pevt:FeatureEvent):void
-		{			
+		public function OnClick(pevt:FeatureEvent):void{			
 			if(!this.hover)
 			{
 				if(this._select!=null)this._select(pevt);
 			}
+		}
+		
+		public function OnSelection():void{
+			var i:Number = 0;	// to iterate
+			var f:VectorFeature;
+			
+			/* if(selectFeatures == null){selectFeatures = new Array();} */
+			
+			//It's not the first selection
+			if(lastfeature != null){		
+				//Feature is not already selected
+				if(!currentfeature.selected){
+					//ctrl key isn't pressed
+					if(!ctrl){
+						selectFeauturesLength=0;
+						for each(f in selectFeatures){
+							if(f != null){
+								if(f.selected){f.style = f.originalStyle;f.selected=false;f.layer.redraw();}
+							}							
+						}
+						iteratorFeatures=0;
+						ChangeToSelected();
+					}
+					//ctrl key is pressed
+					else{
+						iteratorFeatures++;
+						ChangeToSelected();
+					}
+					/* if(selectFeatures.length > 1) {btnMerge.enabled = true;} */
+					selectFeauturesLength++;
+				}
+				//Feature is already selected
+				else{
+					//ctrl key isn't pressed
+					if(!ctrl){
+						selectFeauturesLength=1;
+						var others:Boolean = false;
+						for(i=0;i<=selectFeatures.length;i++){
+							f=selectFeatures[i];
+							if(f!=null && f.selected && f!=currentfeature){others=true;f.selected = false;f.style = f.originalStyle;f.layer.redraw();selectFeatures[i]=null;}
+						}			
+						if(!others){
+							currentfeature.style = currentfeature.originalStyle;												 
+							currentfeature.selected = false;
+							selectFeatures[iteratorFeatures]= null;
+							lastfeature = null;
+							currentfeature.layer.redraw();						
+							/* btnDeleteSelected.enabled = false; */			
+							/* this.featureInfo.dgFeatureInfo.dataProvider=null; */   //clear the information tab	
+							selectFeauturesLength--;					
+						}
+					}							
+					//ctrl key is pressed
+					else{
+						currentfeature.style = currentfeature.originalStyle;												 
+						currentfeature.selected = false;
+						for(i;i<selectFeatures.length;i++){
+							f=selectFeatures[i];
+							if(f == currentfeature){selectFeatures[i]=null;}
+						}
+						currentfeature.layer.redraw();
+						selectFeauturesLength--;
+					}							
+				}
+			}
+			//This is the first selection
+			else{this.ChangeToSelected();}
+		/* else{isDragging=false;} */
+		}
+		
+		/**
+		 * Change the current feature with the select style. The feature is now selected,
+		 * placed in the tab of selected features and the current is copy to the last.
+		 */		
+		private function ChangeToSelected():void{
+			this.currentfeature.originalStyle=this.currentfeature.style;					
+			this.currentfeature.style = selectStyle;							 
+			this.currentfeature.selected = true;
+			this.selectFeatures[iteratorFeatures]=this.currentfeature;						
+			this.currentfeature.layer.redraw(); 
+			this.lastfeature = this.currentfeature;
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,this.currentfeature));
+		}
+		
+		public function Comparison():Boolean{
+			var rep:Boolean = false;
+			if(selectFeauturesLength >= 2) 
+				{
+					for(var k:int=0;k<selectFeatures.length;k++)
+					{
+						var l:int = 1;
+						if(selectFeatures[k] != null)
+						{
+							while(selectFeatures[k-l] == null)
+							{
+								if((k-l) <= 0){l = 0;}
+								else{l++;}
+							}
+							if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::Point") || (getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPoint")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::Point") ||(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPoint")))))
+							{
+								rep = true;
+							}
+							else if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::LineString") || (getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::LineString") ||(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString")))))
+							{
+								rep = true;
+							}
+							else if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::Polygon") || (getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPolygon")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::Polygon") ||(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPolygon")))))
+							{
+									rep = true;
+							}
+							else
+							{
+								return false;
+							}
+						}
+					}
+					
+				}
+				else{rep = false;}
+				return rep;
 		}
 
 		// There is a problem with the function, so we rollback to the old version of selection (with Onclick)
@@ -102,23 +238,22 @@ package org.openscales.core.handler.mouse
 			}
 		} */
 	
+	
 		//Properties
-		public function  get select():Function
-		{
+		public function  get select():Function{
 			return this._select;
 		}
-		public function set select(select:Function):void
-		{
-			this._select=select;
+		public function set select(select:Function):void{
+			this._select=select; 
 		}
-		public function  get unselect():Function
-		{
+		
+		public function  get unselect():Function{
 			return this._unselect;
 		}
-		public function set unselect(unselect:Function):void
-		{
+		public function set unselect(unselect:Function):void{
 			this._unselect=unselect;
 		}
+		
 		public function  get layer():VectorLayer
 		{
 			return this._layer;
@@ -155,6 +290,39 @@ package org.openscales.core.handler.mouse
 			this._currentfeature=currentfeature;
 		}
 		
+		public function get selectStyle():Style{
+				return _selectStyle;
+		}
+		public function set selectStyle(newStyle:Style):void{
+			_selectStyle = newStyle;
+		}
 		
+		public function get selectFeatures():Array{
+			return _selectFeatures;
+		}
+		public function set selectFeatures(newArray:Array):void{
+			_selectFeatures = newArray;
+		}
+		
+		public function get selectFeauturesLength():Number{
+			return _selectFeauturesLength;
+		}
+		public function set selectFeauturesLength(value:Number):void{
+			_selectFeauturesLength = value;
+		}
+		
+		public function get iteratorFeatures():Number{
+			return _iteratorFeatures;
+		}
+		public function set iteratorFeatures(value:Number):void{
+			_iteratorFeatures = value;
+		}
+		
+		public function get ctrl():Boolean{
+			return _ctrl;
+		}
+		public function set ctrl(value:Boolean):void{
+			_ctrl = value;
+		}		
 	}
 }

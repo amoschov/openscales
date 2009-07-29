@@ -6,404 +6,41 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.geometry.MultiPolygon;
-			import org.openscales.core.geometry.MultiLineString;
-			import org.openscales.core.geometry.MultiPoint;
-			import org.openscales.core.geometry.LineString;
-			import org.openscales.core.handler.sketch.DrawMultiHandler;
-			import org.openscales.core.events.SpriteCursorEvent;
-			import org.openscales.core.Trace;
-			import mx.containers.TabNavigator;
-			import mx.events.IndexChangedEvent;
-			import org.openscales.core.handler.mouse.DragFeature;
-			import mx.effects.easing.Elastic;
-			import org.openscales.core.handler.mouse.SelectFeature;
-			import mx.events.CloseEvent;
-			import org.openscales.core.feature.VectorFeature;
-			import org.openscales.core.geometry.Polygon;
-			import org.openscales.core.feature.Style;
-			import org.openscales.core.feature.Feature;
-			import flash.sampler.NewObjectSample;
-			import org.openscales.core.handler.mouse.DragHandler;
-			import mx.controls.ToggleButtonBar;
-			import mx.events.ItemClickEvent;
-			import org.openscales.core.events.FeatureEvent;
-			import flash.utils.getQualifiedClassName;
-			import org.openscales.core.layer.VectorLayer;
-			import org.openscales.core.handler.sketch.DrawPolygonHandler;
-			import org.openscales.core.handler.sketch.DrawPathHandler;
 			import mx.controls.Alert;
-			import org.openscales.core.layer.VectorLayer;
-			import org.openscales.core.handler.Handler;
-			import org.openscales.core.handler.sketch.DrawPointHandler;
-			import org.openscales.core.geometry.Geometry;
-			
-			import org.openscales.core.Map;
-			
-			private var _drawType:String = "";
-			private var _indexTabDrawing:Number = -1;
-			public var drawLayer:VectorLayer = new VectorLayer("Drawings");			
-			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
-			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
-			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
-			public var multiPointHandler:DrawMultiHandler = new DrawMultiHandler(null, false, drawLayer);
-			
-			/**
-			 * Params for feature selection
-			 */
-			private var _selectStyle:Style = new Style();
-			public var selectFeatures:Array = new Array();  //Array witch keep all selectFeature (with ctrl key)
-			public var selectFeauturesLength:int = 0;
-			private var _iteratorFeatures:Number = 0;	//indicate the iterate for feature
-			private var _isDragging:Boolean = false;	//To know if the feature is dragging
-				
-			/**
-			 * Mouse handlers
-			 */
-			public var selectFeatureHandler:SelectFeature; //to select features
+			import org.openscales.core.feature.VectorFeature;
+			import org.openscales.core.events.SpriteCursorEvent;
+			import mx.containers.TabNavigator;
+			import org.openscales.core.handler.mouse.DragFeature;
+			import org.openscales.core.handler.mouse.DragHandler;
+			import org.openscales.core.events.FeatureEvent;
+			import mx.events.CloseEvent;		
+			import org.openscales.core.Map;	
+					
 			public var dragHandler:DragHandler;		//to pan on the map
 			public var dragfeature:DragFeature;		//to drag features
 
 			/**
 			 * Initialisation of map and params
 			 */
-			public function initTabDrawing():void{
-				
-				this.featureInfo.map = this.map;
-				//To unselect all button in the toggleBarButton
-				this.tgBar.selectedIndex = -1;
-				
-				//Properties of selectFeatureHandler
-				this.selectFeatureHandler = new SelectFeature(this.map,drawLayer,true);
-				this.selectFeatureHandler.select = onSelectFeature;
-				this.selectFeatureHandler.hover = false;
-				 				 
-				//Active drag feature
-				/* this.dragfeature = new DragFeature(this.map,[drawLayer],true); */
-				
-				//Add select feature handler to the map
-				this.map.addHandler(selectFeatureHandler);
-				
-				//Define the style of a feature when it selected
-				this.selectStyle.fillColor = 0xFFD700;
-				this.selectStyle.strokeColor = 0xFFD700;			
+			public function initTabDrawing():void{			
 				
 				//Manage switching tab
 				this.parent.addEventListener(Event.CHANGE,changingTab);
-				indexTabDrawing = (this.parent as TabNavigator).selectedIndex;
+				this.featureDrawing.indexTabDrawing = (this.parent as TabNavigator).selectedIndex;
 				
 				//Show the handcursor when mouse is hover a feature
 				this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND));
 				
 				this.map.addEventListener(FeatureEvent.FEATURE_DRAGGING, onDragingFeature);
+				this.map.addEventListener(FeatureEvent.FEATURE_SELECTED, showInformations);
 			}
-			
-			/**
-		 	 * Show a warning message when you delete selected feature. User can cancel if it's a mistake
-		 	 */
-			public function onDeleteSelectedClick(event:Event):void {
-				Alert.show("Are you sure ?", "Warning", Alert.YES | Alert.NO, null, alertClickHandler);				
-			}
-			
-			//check the user's answer
-			private function alertClickHandler(event:CloseEvent):void {
-                // User click on "YES", he wants to apply changes
-                if (event.detail==Alert.YES){
-                	deleteSelectedFeatures(); 
-                }                  
-            }
-			
-			/**
-			 * User clicks on delete selected feature button
-			 */
-			private function deleteSelectedFeatures():void {
-				var feature:org.openscales.core.feature.VectorFeature;
-				var i:Number = 0;
-				for(i;i<drawLayer.features.length;i++){
-					feature = drawLayer.features[i];
-					if(feature.selected){
-						drawLayer.removeFeatures(drawLayer.features[i]);
-						i--;
-					}
-				}
-				drawLayer.renderer.clear();
-				drawLayer.redraw();
-				btnDeleteSelected.enabled = false;
-				this.featureInfo.dgFeatureInfo.dataProvider=null;
-			}
-
-			/**
-			 * User clicks on delete all button
-			 */
-			private function onDeleteAllClick(event:Event):void {
-				drawLayer.destroyFeatures();
-				drawLayer.renderer.clear();
-				selectFeatureHandler.lastfeature = null;				
-				switch(drawType)
-				{
-					case "path":{pathHandler.newFeature = true; break;}
-					case "polygon":{polygonHandler.newFeature = true; break;}
-				}
-				this.featureInfo.dgFeatureInfo.dataProvider=null; //clear the information tab
-			}
-			
-			/**
-			 * User clicks on delete last feature button
-			 */
-			public function onDeleteLastClick(event:Event):void {
-				var last:Number = drawLayer.features.length - 1;
-				var lastFeature:VectorFeature = null;
-				
-				if (last >= 0) {					
-					lastFeature = drawLayer.features[last];
-					drawLayer.removeFeatures(drawLayer.features[last]);
-								
-					switch(drawType)
-					{
-						case "path":														
-							if (last - 1 >= 0 && getQualifiedClassName(drawLayer.features[last-1].geometry) == "org.openscales.core.geometry::LineString") {
-								pathHandler.lastPoint = drawLayer.features[last-1].geometry.getLastPoint();
-							}
-							else {pathHandler.newFeature = true;}
-							break;	
-												
-						case "polygon":
-							if (last-1 >= 0 && !polygonHandler.firstPointRemoved && !polygonHandler.newFeature) {
-								drawLayer.removeFeatures(drawLayer.features[last - 1]);
-							}
-							polygonHandler.newFeature = true;							
-							break;
-					}   
-				}
-				
-			}
-			
-			private function OnMergeClick(event:MouseEvent):void {
-
-				multiPointHandler.map = this.map;
-				var feature:VectorFeature = multiPointHandler.buttonClicked(selectFeatures);
-				selectFeatureHandler.currentfeature = feature;
-				
-				selectFeatureHandler.currentfeature.originalStyle=selectFeatureHandler.currentfeature.style;					
-				selectFeatureHandler.currentfeature.style = selectStyle;							 
-				selectFeatureHandler.currentfeature.selected = true;
-				selectFeatures[iteratorFeatures]=selectFeatureHandler.currentfeature;						
-				selectFeatureHandler.currentfeature.layer.redraw(); 
-				selectFeatureHandler.lastfeature = selectFeatureHandler.currentfeature;	
-				selectFeauturesLength++;
-				
-				btnMerge.enabled = false;
-				
-			}
-			
-			
-			
-			/**
-			 * On select feature
-			 */
-			private function onSelectFeature(event:FeatureEvent):void {			
-				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active && featureInfo != null && !isDragging) {					
-					var i:Number = 0;	// to iterate
-					var f:org.openscales.core.feature.VectorFeature;										
-					selectFeatureHandler.currentfeature = event.vectorfeature;
-					btnDeleteSelected.enabled = true;
-					if(selectFeatures == null){selectFeatures = new Array();}	
-											
-					//It's not the first selection
-					if(selectFeatureHandler.lastfeature != null){		
-						//Feature is not already selected
-						if(!selectFeatureHandler.currentfeature.selected){
-							//ctrl key isn't pressed
-							if(!event.ctrlPressed){
-								selectFeauturesLength=0;
-								for each(f in selectFeatures){
-									if(f != null){
-										if(f.selected){f.style = f.originalStyle;f.selected=false;f.layer.redraw();}
-									}							
-								}
-								iteratorFeatures=0;
-								selectFeatureHandler.currentfeature.originalStyle=selectFeatureHandler.currentfeature.style;					
-								selectFeatureHandler.currentfeature.style = selectStyle;							 
-								selectFeatureHandler.currentfeature.selected = true;
-								selectFeatures[iteratorFeatures]=selectFeatureHandler.currentfeature;
-								selectFeatureHandler.currentfeature.layer.redraw();
-								selectFeatureHandler.lastfeature = selectFeatureHandler.currentfeature;	
-								this.featureInfo.showInfo(event);		//Show information of the selected feature
-							}
-							//ctrl key is pressed
-							else{
-								selectFeatureHandler.currentfeature.originalStyle=selectFeatureHandler.currentfeature.style;							
-								selectFeatureHandler.currentfeature.style = selectStyle;							 
-								selectFeatureHandler.currentfeature.selected = true;
-								iteratorFeatures++;selectFeatures[iteratorFeatures]=selectFeatureHandler.currentfeature;
-								selectFeatureHandler.currentfeature.layer.redraw();	
-								this.featureInfo.showInfo(event);		//Show information of the selected feature
-							}
-							/* if(selectFeatures.length > 1) {btnMerge.enabled = true;} */
-							selectFeauturesLength++;
-						}
-						//Feature is already selected
-						else{
-							//ctrl key isn't pressed
-							if(!event.ctrlPressed){
-								selectFeauturesLength=1;
-								var others:Boolean = false;
-								for(i=0;i<=selectFeatures.length;i++){
-									f=selectFeatures[i];
-									if(f!=null && f.selected && f!=selectFeatureHandler.currentfeature){others=true;f.selected = false;f.style = f.originalStyle;f.layer.redraw();selectFeatures[i]=null;}
-								}			
-								if(!others){
-									selectFeatureHandler.currentfeature.style = selectFeatureHandler.currentfeature.originalStyle;												 
-									selectFeatureHandler.currentfeature.selected = false;
-									 selectFeatures[iteratorFeatures]= null;  
-
-
-									selectFeatureHandler.lastfeature = null;
-									selectFeatureHandler.currentfeature.layer.redraw();	
-								
-									this.featureInfo.showInfo(event);					//Show information of the selected feature
-									btnDeleteSelected.enabled = false;			
-									this.featureInfo.dgFeatureInfo.dataProvider=null;   //clear the information tab	
-									selectFeauturesLength--;					
-								}
-							}							
-							//ctrl key is pressed
-							else{
-								selectFeatureHandler.currentfeature.style = selectFeatureHandler.currentfeature.originalStyle;												 
-								selectFeatureHandler.currentfeature.selected = false;
-								for(i;i<selectFeatures.length;i++){
-									f=selectFeatures[i];
-									if(f == selectFeatureHandler.currentfeature){selectFeatures[i]=null;}
-								}
-								selectFeatureHandler.currentfeature.layer.redraw();
-								selectFeauturesLength--;
-							}							
-						}
-					}
-					//This is the first selection
-					else{
-						selectFeatureHandler.currentfeature.originalStyle=selectFeatureHandler.currentfeature.style;					
-						selectFeatureHandler.currentfeature.style = selectStyle;							 
-						selectFeatureHandler.currentfeature.selected = true;
-						selectFeatures[iteratorFeatures]=selectFeatureHandler.currentfeature;						
-						selectFeatureHandler.currentfeature.layer.redraw(); 
-						selectFeatureHandler.lastfeature = selectFeatureHandler.currentfeature;	
-						this.featureInfo.showInfo(event); 	 //Show information of the selected feature
-
-						selectFeauturesLength++;
-					}
-				}
-				else{isDragging=false;}
-				if(selectFeauturesLength >= 2) 
-				{
-					for(var k:int=0;k<selectFeatures.length;k++)
-					{
-						var l:int = 1;
-						if(selectFeatures[k] != null)
-						{
-							while(selectFeatures[k-l] == null)
-							{
-								if((k-l) <= 0)
-								{
-									l = 0;
-								}
-								else
-								{
-									l++;
-								}
-							}
-							if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::Point") || (getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPoint")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::Point") ||(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPoint")))))
-							{
-								btnMerge.enabled = true;
-							}
-							else if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::LineString") || (getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::LineString") ||(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString")))))
-							{
-								btnMerge.enabled = true;
-							}
-							else if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::Polygon") || (getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPolygon")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::Polygon") ||(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPolygon")))))
-							{
-								if((selectFeatures[k] as VectorFeature).selected ==true)
-								{
-									btnMerge.enabled = true;
-								}
-							}
-							else
-							{
-								btnMerge.enabled = false;
-								return;
-							}
-						}
-					}
 					
-				}
-				else{btnMerge.enabled = false;}
-			}
-			
 			override public function set map(value:Map):void {
 				super.map = value;
-				
-				if (this.map != null) {
-					pointHandler.map = this.map;
-					pathHandler.map = this.map;
-					polygonHandler.map = this.map
-					this.map.addLayer(drawLayer);
-				}
-				
 			}
 			
-			/**
-			 * Click on the togglebarbutton. Index button starts from 0.
-			 */ 		
-			private function clickHandler(event:ItemClickEvent):void{
-				var handler:Number = event.index;		// handler is a number because of toggleButtonBar
-				this.deactiveDrag();			
-				switch(handler)
-				{
-					case 0:		//click on button point
-						if(drawType!="point"){
-							if(pathHandler.active){this.finishPath();}
-							else if(polygonHandler.active){this.finishPolygon();}												
-							pointHandler.active = true;
-							drawType = "point";
-						}
-						else{
-							drawType = "";
-							pointHandler.active = false;
-							this.tgBar.selectedIndex = -1;
-							this.activeDrag(); 
-						}						
-						break;
-					
-					case 1:		//click on button path
-						if(drawType!="path"){
-							if(polygonHandler.active){this.finishPolygon();}						
-							pointHandler.active = false;
-							pathHandler.active = true;
-							drawType = "path";
-						}
-						else{
-							drawType = "";
-							finishPath();
-							this.tgBar.selectedIndex = -1;
-							this.activeDrag(); 
-						}
-						break;
-						
-					case 2:		//click on button polygon
-						if(drawType!="polygon"){
-							if(pathHandler.active){this.finishPath();}						
-							pointHandler.active = false;
-							polygonHandler.active = true;
-							drawType = "polygon";
-						}
-						else{
-							drawType = "";
-							this.finishPolygon();
-							this.tgBar.selectedIndex = -1;
-							this.activeDrag();   
-						}
-						break;
-				}
+			private function showInformations(event:FeatureEvent):void{
+				this.featureInfo.showInfo(event);
 			}
 			/**
 			 * Manage switching tab
@@ -414,9 +51,9 @@
 				var selectedFeature:Boolean = false;
 				
 				//User is on Drawing Tab, and wants to switch	
-				if((event.target as TabNavigator).selectedIndex != indexTabDrawing){						
+				if((event.target as TabNavigator).selectedIndex != this.featureDrawing.indexTabDrawing){						
 					//Check if some feature are selected
-					for each(f in selectFeatures){
+					for each(f in this.featureDrawing.selectFeatureHandler.selectFeatures){
 						if(f != null){if(f.selected){selectedFeature=true;}}
 					}				
 					//if one (or more) feature is selected, we warn user
@@ -427,20 +64,20 @@
 					}
 					//no feature is selected
 					else{
-						finishPath(); 
-						finishPolygon(); 
-						pointHandler.active = false;
-						tgBar.selectedIndex = -1;
-						drawType = "";
-						activeDrag();
-						selectFeatureHandler.active = false;
+						this.featureDrawing.finishPath(); 
+						this.featureDrawing.finishPolygon(); 
+						this.featureDrawing.pointHandler.active = false;
+						this.featureDrawing.tgBar.selectedIndex = -1;
+						this.featureDrawing.drawType = "";
+						this.featureDrawing.activeDrag();
+						this.featureDrawing.selectFeatureHandler.active = false;
 					}
 					//hide handcursor
 					this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));	
 				}
 				//user switches to drawing tab
 				else{
-					selectFeatureHandler.active = true;
+					this.featureDrawing.selectFeatureHandler.active = true;
 					//show handcursor
 					this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND));
 				}
@@ -452,123 +89,35 @@
             	var f:org.openscales.core.feature.VectorFeature;
             	// User click "Continue", he wants to continue
             	if (event.detail==Alert.OK){
-               		if(drawType != ""){
-						finishPath(); 
-						finishPolygon(); 
-						pointHandler.active = false;
-						tgBar.selectedIndex = -1;
-						drawType = "";
-						activeDrag();
+               		if(this.featureDrawing.drawType != ""){
+						this.featureDrawing.finishPath(); 
+						this.featureDrawing.finishPolygon(); 
+						this.featureDrawing.pointHandler.active = false;
+						this.featureDrawing.tgBar.selectedIndex = -1;
+						this.featureDrawing.drawType = "";
+						this.featureDrawing.activeDrag();
 					}
-					else if(selectFeatureHandler != null){
-						selectFeatureHandler.active=false;
+					else if(this.featureDrawing.selectFeatureHandler != null){
+						this.featureDrawing.selectFeatureHandler.active=false;
 					}
-					for(i;i<selectFeatures.length;i++){
-							f=selectFeatures[i];
+					for(i;i<this.featureDrawing.selectFeatureHandler.selectFeatures.length;i++){
+							f=this.featureDrawing.selectFeatureHandler.selectFeatures[i];
 							if(f != null){if(f.selected){f.selected = false;f.style = f.originalStyle;f.layer.redraw();}}
 						}	
-						selectFeatures = null;
+						this.featureDrawing.selectFeatureHandler.selectFeatures = null;
             	}
-            	else{(this.parent as TabNavigator).selectedIndex = indexTabDrawing;}
+            	else{(this.parent as TabNavigator).selectedIndex = this.featureDrawing.indexTabDrawing;}
 			}
 			
-			/**
-			 * Finish a polygon
-			 * Force to finalyse a polygon (even it's not finished)
-			 */
-			public function finishPolygon():void{
-				polygonHandler.drawFinalPoly();
-				polygonHandler.active = false;
-			}
 			
-			/**
-			 * Finish a path
-			 * Force to finalyse a path (event it's not finished)
-			 */
-			public function finishPath():void{
-				pathHandler.drawFinalPath();
-				pathHandler.active = false;
-			}
-			
-			/**
-			 * Active paning
-			 * User can pan the map
-			 */
-			public function activeDrag():void{
-				var handler:Handler;
-				for each(handler in this.map.handlers){
-					if(handler is DragHandler){
-						handler.active = true;
-					}
-				} 
-			}
-			/**
-			 * Deactive paning
-			 * User can't pan map anymore
-			 */
-			public function deactiveDrag():void{
-				var handler:Handler;
-				for each(handler in this.map.handlers){
-					if(handler is DragHandler){
-						handler.active = false;
-					} 
-				}
-			}
 			
 			private function onDragingFeature(evt:FeatureEvent):void{
-				isDragging = true;
-			}
-			
-			// Getters and setters AS3
-			public function get drawType():String{
-				return _drawType;
-			}
-			public function set drawType(value:String):void{
-				_drawType = value;
-			}
-			
-			public function get selectStyle():Style{
-				return _selectStyle;
-			}
-			public function set selectStyle(newStyle:Style):void{
-				_selectStyle = newStyle;
-			}
-			
-			public function get iteratorFeatures():Number{
-				return _iteratorFeatures;
-			}
-			public function set iteratorFeatures(value:Number):void{
-				_iteratorFeatures = value;
-			}
-			
-			public function get indexTabDrawing():Number{
-				return _indexTabDrawing;
-			}
-			public function set indexTabDrawing(value:Number):void{
-				_indexTabDrawing = value;
-			}
-			
-			public function get isDragging():Boolean{
-				return _isDragging;
-			}
-			public function set isDragging(value:Boolean):void{
-				_isDragging = value;
+				/* isDragging = true; */
 			}
 		]]>
 	</mx:Script>
 	
-	<mx:ToggleButtonBar x="100" y="10" horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="-1" id="tgBar">
-		<mx:Array>
-			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoint.swf')" id="btnPoint"/>
-			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" id="btnPath"/>
-			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoly.swf')" id="btnPolygon"/>
-		</mx:Array>
-	</mx:ToggleButtonBar>	
-	
-	<mx:Button x="106" y="74" label="Merge" id="btnMerge" click="this.OnMergeClick(event)" width="118" toolTip="Merge features selected" enabled="false"/>
-	<mx:Button x="106" y="152" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="118" toolTip="Delete all drawing feature on the map"/>
-	<mx:Button x="106" y="113" label="DeleteLast" width="118" id="btnDeleteLast" click="this.onDeleteLastClick(event)" toolTip="Delete the last drawing feature"/>
-	<mx:Button label="DeleteSelected" width="118" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" x="106" y="190" enabled="false" toolTip="Delete all selected features"/>
+	<control:FeatureDrawing id="featureDrawing" map="{this.map}"/>
 		
 	<mx:Text x="10" y="40" text="To finalize a path or a polygon, just double click on map." width="310" height="22" fontStyle="italic" textAlign="center" />
 	<mx:Text text="For the moment you can't delete WFS points, even if they are selected" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="219"/>
