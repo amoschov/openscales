@@ -24,6 +24,8 @@ package org.openscales.core.events
 		
 		public static const LAYER_OUT_RANGE:String="openscales.layeroutrange";
 		
+		public static const LAYER_AUTHENTIFICATED:String="openscales.layerauthentificated";
+		
 		public function LayerEvent(type:String, layer:Layer, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			this._layer = layer;

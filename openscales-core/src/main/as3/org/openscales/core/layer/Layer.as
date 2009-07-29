@@ -3,6 +3,7 @@ package org.openscales.core.layer
 	import flash.display.Sprite;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.RequestLayer;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -10,6 +11,9 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.events.SecurityEvent;
+	import org.openscales.core.layer.params.ogc.WMSParams;
+	import org.openscales.core.security.RequestManager;
 	import org.openscales.proj4as.ProjProjection;
 
 
@@ -57,6 +61,11 @@ package org.openscales.core.layer
 				this._projection = new ProjProjection("EPSG:4326");
 				
 			this._proxy = proxy;
+		}
+
+		protected function layerAuthentification(securityEvent:SecurityEvent):void
+		{
+			
 		}
 
 		public function destroy(setNewBaseLayer:Boolean = true):void {
@@ -113,7 +122,7 @@ package org.openscales.core.layer
 	                var show:Boolean = ((this.visible) && (this.inRange));
 	                this.visible = (show ? true : false);
 	            }
-
+				this.map.addEventListener(SecurityEvent.LOAD_CONF_END,layerAuthentification);
 	        }
 		}
 

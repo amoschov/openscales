@@ -32,29 +32,26 @@ package org.openscales.core.layer.ogc
        	}
        	
        	override public function getURL(bounds:Bounds):String {
+	        var projection:ProjProjection = this.projection;
+	       
 	        if(this.gutter) {
 	            bounds = this.adjustBoundsByGutter(bounds);
 	        }
-	        
-	        (this.params as WMSParams).bbox = bounds.boundsToString();
-	        (this.params as WMSParams).width = this.imageSize.w;
-	        (this.params as WMSParams).height = this.imageSize.h;
-	        
-	        return this.getFullRequestString();
+	         
+	        (this.request.params  as WMSParams).bbox = bounds.boundsToString();
+	        (this.request.params  as WMSParams).width = this.imageSize.w;
+	        (this.request.params  as WMSParams).height = this.imageSize.h;
+	         
+	         if (projection != null || this.map.projection != null)
+	        (this.request.params as WMSParams).srs = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
+        
+	        return this.request.getFullRequestSring();
        	}
        	
        	override public function addTile(bounds:Bounds, position:Pixel):Tile {
 	       	var url:String = this.getURL(bounds);
 	        return new ImageTile(this, position, bounds, 
 	                                             url, this.tileSize);
-       	}
-       	
-       	override public function getFullRequestString(altUrl:String = null):String {
-	         var projection:ProjProjection = this.projection;
-	         if (projection != null || this.map.projection != null)
-	        	(this.params as WMSParams).srs = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
-	
-	        return super.getFullRequestString(altUrl);
        	}
        	
        	public function get reproject():Boolean {
