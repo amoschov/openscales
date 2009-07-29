@@ -18,6 +18,8 @@
 <classEntry path="org.openscales.fx.FxExtent"/>
 <classEntry path="org.openscales.fx.FxMap"/>
 <classEntry path="org.openscales.fx.FxMaxExtent"/>
+<classEntry path="org.openscales.fx.Security.FxSecurities"/>
+<classEntry path="org.openscales.fx.Security.FxSecurity"/>
 <classEntry path="org.openscales.fx.basetypes.FxBounds"/>
 <classEntry path="org.openscales.fx.control.FxControl"/>
 <classEntry path="org.openscales.fx.control.FxLayerSwitcher"/>

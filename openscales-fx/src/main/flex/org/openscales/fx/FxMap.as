@@ -17,6 +17,7 @@ package org.openscales.fx {
   import org.openscales.core.control.IControl;
   import org.openscales.core.events.MapEvent;
   import org.openscales.core.popup.Popup;
+  import org.openscales.fx.Security.FxSecurities;
   import org.openscales.fx.control.FxControl;
   import org.openscales.fx.handler.FxHandler;
   import org.openscales.fx.layer.FxLayer;
@@ -98,7 +99,11 @@ package org.openscales.fx {
         if(child is FxLayer) {
           (child as FxLayer).fxmap = this;
           this._map.addLayer((child as FxLayer).layer);
-        } else if(child is FxControl) {
+        } 
+        else if(child is FxSecurities){
+          	(child as FxSecurities).map=this._map;
+          }
+        else if(child is FxControl) {
           this._map.addControl((child as FxControl).control);
         } else if(child is IControl) {
           this._map.addControl(child as IControl, false);
@@ -109,6 +114,7 @@ package org.openscales.fx {
         } else if ((child is UIComponent) && !(child is FxMaxExtent) && !(child is FxExtent) ){
           this.parent.addChild(child);
         }
+          
 
       }
 
