@@ -13,6 +13,35 @@
 		<version>1.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
+	
+	<profiles>
+		<profile>
+            <id>flex-mvn-report</id>
+			<build>
+				<plugins>
+					<plugin>
+				        <groupId>net.sf.flex-mvn-report</groupId>
+				        <artifactId>flex-mvn-report</artifactId>
+						<configuration>
+							<sourceDir>${project.build.sourceDirectory}</sourceDir>
+						</configuration>
+				    </plugin>
+				</plugins>
+			</build>
+			<reporting>
+				<plugins>
+					<plugin>
+						<groupId>net.sf.flex-mvn-report</groupId>
+						<artifactId>flex-mvn-report</artifactId>
+						<configuration>
+							<sourceDir>${project.build.sourceDirectory}</sourceDir>
+						</configuration>
+					</plugin>
+				</plugins>
+			</reporting>
+		</profile>
+	</profiles>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.openscales</groupId>
@@ -42,28 +71,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-		        <groupId>net.sf.flex-mvn-report</groupId>
-		        <artifactId>flex-mvn-report</artifactId>
-				<configuration>
-					<sourceDir>${project.build.sourceDirectory}</sourceDir>
-				</configuration>
-		    </plugin>
 		</plugins>
 	</build>
-
-			
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>net.sf.flex-mvn-report</groupId>
-				<artifactId>flex-mvn-report</artifactId>
-				<configuration>
-					<sourceDir>${project.build.sourceDirectory}</sourceDir>
-				</configuration>
-			</plugin>
-		</plugins>
-			
-	</reporting>
 	
 </project>
