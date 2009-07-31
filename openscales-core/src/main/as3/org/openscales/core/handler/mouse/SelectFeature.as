@@ -116,15 +116,15 @@ package org.openscales.core.handler.mouse
 							}							
 						}
 						iteratorFeatures=0;
-						ChangeToSelected();
+						//ChangeToSelected();
 					}
 					//ctrl key is pressed
 					else{
 						iteratorFeatures++;
-						ChangeToSelected();
+						//ChangeToSelected();
 					}
-					/* if(selectFeatures.length > 1) {btnMerge.enabled = true;} */
 					selectFeauturesLength++;
+					ChangeToSelected();
 				}
 				//Feature is already selected
 				else{
@@ -161,7 +161,7 @@ package org.openscales.core.handler.mouse
 				}
 			}
 			//This is the first selection
-			else{this.ChangeToSelected();}
+			else{selectFeauturesLength++;this.ChangeToSelected();}
 		/* else{isDragging=false;} */
 		}
 		
