@@ -13,6 +13,9 @@ package org.openscales.core.renderer
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
+	import org.openscales.core.geometry.MultiLineString;
+	import org.openscales.core.geometry.MultiPoint;
+	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.geometry.Rectangle;
@@ -229,9 +232,7 @@ package org.openscales.core.renderer
 				
 		override public function eraseGeometry(geometry:Geometry):void {
 			
-			if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
-	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
-	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
+			if ((geometry is MultiPoint) || (geometry is MultiLineString) || (geometry is MultiPolygon)) {
 	            for (var i:int = 0; i < (geometry as Collection).components.length; i++) {
 	                this.eraseGeometry((geometry as Collection).components[i]);
 	            }
@@ -259,9 +260,7 @@ package org.openscales.core.renderer
 	    }
 	    
 	    override public function drawGeometry(geometry:Geometry, style:Style, feature:VectorFeature):SpriteElement {
-		    if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
-	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
-	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
+		    if ((geometry is MultiPoint) || (geometry is MultiLineString) || (geometry is MultiPolygon)) {
 	            for (var i:int = 0; i < (geometry as Collection).components.length; i++) {
 	                this.drawGeometry((geometry as Collection).components[i], style, feature);
 	            }
@@ -279,26 +278,10 @@ package org.openscales.core.renderer
 	        }
 	        
 	        node.feature = feature;
-	        node.geometryClass = getQualifiedClassName(geometry);
 	        node.style = style;
 	        this.container.addChild(node);
 
 	        this.drawGeometryNode(node, geometry);
-	        
-	        return node;
-	    }
-	    
-	    override public function redrawGeometry(node:SpriteElement, geometry:Geometry, style:Style, feature:VectorFeature):SpriteElement {
-		    if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
-	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString") ||
-	            (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon")) {
-	            for (var i:int = 0; i < (geometry as Collection).components.length; i++) {
-	                this.redrawGeometry(node, (geometry as Collection).components[i], style, feature);
-	            }
-	            return null;
-	        };
-
-	        this.drawGeometryNode(node, geometry, style);
 	        
 	        return node;
 	    }
@@ -316,7 +299,7 @@ package org.openscales.core.renderer
     	public function drawGeometryNode(node:SpriteElement, geometry:Geometry, style:Style = null):void {
     		style = style || node.style;
 	        
-	        if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::LineString") {
+	        if (geometry is LineString) {
 	        	style.isFilled = false;
 	        }
 	        else {

@@ -46,16 +46,6 @@ package org.openscales.core.feature
 	        this.geometry = null;
 	        //super.destroy();
 		}
-		
-		
-		public function clone(obj:Object):Object {
-			if (obj == null) {
-	            obj = new VectorFeature(this.geometry.clone(),this.data , this.style);
-	        } 
-	        
-	        Util.applyDefaults(obj, this);
-	        return obj;
-		}
 
 		/**
 		 * Determines if the feature is placed at the given point with a certain tolerance (or not).

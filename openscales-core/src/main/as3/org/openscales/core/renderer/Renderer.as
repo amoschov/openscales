@@ -53,7 +53,7 @@ package org.openscales.core.renderer
 	            style = feature.style;
 	        }
 	        if(feature && feature.geometry) {
-	        	var node:Object = this.drawGeometry(feature.geometry, style, feature);
+	        	var node:SpriteElement = this.drawGeometry(feature.geometry, style, feature);
 	        }
 		}
 		
@@ -62,10 +62,6 @@ package org.openscales.core.renderer
 		}
 		
 		public function drawGeometry(geometry:Geometry, style:Style, feature:VectorFeature):SpriteElement {
-			return null;
-		}
-		
-		public function redrawGeometry(node:SpriteElement, geometry:Geometry, style:Style, feature:VectorFeature):SpriteElement {
 			return null;
 		}
 		

@@ -40,18 +40,6 @@ package org.openscales.core.geometry
 	        this.components = null;
     	}
 		
-		override public function clone():Geometry {
-			var geometryClass:Class = Class(getDefinitionByName(getQualifiedClassName(this)));
-			var geometry:Collection = new geometryClass();
-	        for(var i:int=0; i<this.components.length; i++) {
-	            geometry.addComponent(this.components[i].clone());
-	        }
-	        
-	        Util.applyDefaults(geometry, this);
-	        
-	        return geometry;
-		}
-		
 		public function getComponentsString():String {
 			var strings:Array = [];
 	        for(var i:int = 0; i < this.components.length; i++) {

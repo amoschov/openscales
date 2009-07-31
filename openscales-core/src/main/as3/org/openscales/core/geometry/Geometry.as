@@ -48,20 +48,7 @@ package org.openscales.core.geometry
 		 public function transform(source:ProjProjection, dest:ProjProjection):void {
 		 	
 		 }
-		
-		
-		/**
-		 * Clones the geometry
-		 */
-		public function clone():Geometry {
-			var geometryClass:Class = Class(getDefinitionByName(getQualifiedClassName(this)));
-			var geometry:Geometry = new geometryClass();
-	       
-	        Util.applyDefaults(geometry, this);
-	        
-	        return geometry;
-		}
-		
+				
 		/**
 		 * Clear the geometry's bounds
 		 */

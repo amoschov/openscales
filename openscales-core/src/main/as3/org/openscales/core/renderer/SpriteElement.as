@@ -18,8 +18,6 @@ package org.openscales.core.renderer
 		//Sprite now knows his feature instead of his feature_id
 		//it's important for event's on feature
 		private var _feature:VectorFeature = null;
-
-		private var _geometryClass:String = null;
 		
 		private var _isSelect:Boolean=true;
 	
@@ -61,15 +59,7 @@ package org.openscales.core.renderer
 			this.feature.layer.map.addEventListener(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND, hideHand);
 			this.feature.layer.map.addEventListener(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND, showHand);
 			
-		}
-		
-		public function get geometryClass():String {
-			return this._geometryClass;
-		}
-		
-		public function set geometryClass(value:String):void {
-			this._geometryClass = value;
-		}		
+		}	
 		
 		/**
 		 * Events Management

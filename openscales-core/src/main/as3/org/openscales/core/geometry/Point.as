@@ -22,15 +22,7 @@ package org.openscales.core.geometry
         
 	        this.x = x;
 	        this.y = y;
-		}
-		
-		override public function clone():Geometry {
-            var obj:Point = new Point(this.x, this.y);
-	
-	        Util.applyDefaults(obj, this);
-	
-	        return obj;
-		}
+		}		
 		
 		override public function calculateBounds():void {
 	        this.bounds = new Bounds(this.x, this.y,
