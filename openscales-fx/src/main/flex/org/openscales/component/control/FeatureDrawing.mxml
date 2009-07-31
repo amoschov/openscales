@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="initFeatureDrawing();">
+<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="234" height="108" creationComplete="initFeatureDrawing();">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.handler.mouse.DragHandler;
@@ -305,7 +305,7 @@
 		]]>
 	</mx:Script>
 	
-	<mx:ToggleButtonBar x="100" y="10" horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="-1" id="tgBar">
+	<mx:ToggleButtonBar x="43" y="10" horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="-1" id="tgBar" height="31" width="154">
 		<mx:Array>
 			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoint.swf')" id="btnPoint"/>
 			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" id="btnPath"/>
@@ -313,8 +313,8 @@
 		</mx:Array>
 	</mx:ToggleButtonBar>
 	
-	<mx:Button x="106" y="74" label="Merge" id="btnMerge" click="this.OnMergeClick(event)" width="118" toolTip="Merge features selected" enabled="false"/>
-	<mx:Button x="106" y="152" label="DeleteAll" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="118" toolTip="Delete all drawing feature on the map"/>
-	<mx:Button x="106" y="113" label="DeleteLast" width="118" id="btnDeleteLast" click="this.onDeleteLastClick(event)" toolTip="Delete the last drawing feature"/>
-	<mx:Button label="DeleteSelected" width="118" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" x="106" y="190" enabled="false" toolTip="Delete all selected features"/>
+	<mx:Button x="32" y="49" icon="@Embed('/org/openscales/component/images/merge_small.png')" id="btnMerge" click="this.OnMergeClick(event)" width="38" toolTip="Merge features selected" enabled="false" height="38"/>
+	<mx:Button x="78" y="49" icon="@Embed('/org/openscales/component/images/delete_all_small.png')" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="38" toolTip="Delete all drawing feature on the map" height="38"/>
+	<mx:Button x="124" y="49" icon="@Embed('/org/openscales/component/images/delete_last_small.png')" id="btnDeleteLast" click="this.onDeleteLastClick(event)" width="38" toolTip="Delete the last drawing feature" height="38"/>
+	<mx:Button x="170" y="49" icon="@Embed('/org/openscales/component/images/delete_selected_small.png')" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" width="38" enabled="false" toolTip="Delete all selected features" height="38"/>
 </Control>

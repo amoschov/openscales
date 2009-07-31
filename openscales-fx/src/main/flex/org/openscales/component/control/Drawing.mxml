@@ -108,21 +108,19 @@
             	}
             	else{(this.parent as TabNavigator).selectedIndex = this.featureDrawing.indexTabDrawing;}
 			}
-			
-			
-			
+						
 			private function onDragingFeature(evt:FeatureEvent):void{
 				/* isDragging = true; */
 			}
 		]]>
 	</mx:Script>
 	
-	<control:FeatureDrawing id="featureDrawing" map="{this.map}"/>
+	<control:FeatureDrawing id="featureDrawing" map="{this.map}" x="41" y="26"/>
 		
-	<mx:Text x="10" y="40" text="To finalize a path or a polygon, just double click on map." width="310" height="22" fontStyle="italic" textAlign="center" />
-	<mx:Text text="For the moment you can't delete WFS points, even if they are selected" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="219"/>
-	<mx:Text text="Merge works only with Point in this moment" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="95"/>
+	<mx:Text x="10" y="10" text="To finalize a path or a polygon, just double click on map." width="310" height="22" fontStyle="italic" textAlign="center"/>
+	<!--mx:Text text="For the moment you can't delete WFS points, even if they are selected" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="219"/-->
+	<!--mx:Text text="Merge works only with Point in this moment" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="95"/-->
 
-	<control:FeatureInfo id="featureInfo" x="10" y="261" width="310" height="165"/>
+	<control:FeatureInfo id="featureInfo" x="20" y="132" width="300" height="165"/>
 	
 </control:Control>
