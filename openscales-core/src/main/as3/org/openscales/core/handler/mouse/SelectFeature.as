@@ -101,7 +101,7 @@ package org.openscales.core.handler.mouse
 			var i:Number = 0;	// to iterate
 			var f:VectorFeature;
 			
-			/* if(selectFeatures == null){selectFeatures = new Array();} */
+			if(selectFeatures == null){selectFeatures = new Array();} 
 			
 			//It's not the first selection
 			if(lastfeature != null){		
