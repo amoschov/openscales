@@ -419,11 +419,9 @@ package org.openscales.core.renderer
     		    
 	    public function nodeFactory(id:String, type:String, geometry:Geometry):SpriteElement {
 	    	var node:SpriteElement = this.container.getChildByName(id) as SpriteElement;
-	        if (node) {
-	            if (!this.nodeTypeCompare(node, type)) {
-	                node.parent.removeChild(node);
-	                node = this.nodeFactory(id, type, geometry);
-	            }
+	        if (node) {	           
+	               this.container.removeChild(node);
+	               this.clearNode(node);
 	        } else {
 	            node = this.createNode(type, id);
 	        }
