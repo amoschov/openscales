@@ -52,7 +52,9 @@
 				/* this.dragfeature = new DragFeature(this.map,[drawLayer],true); */
 				
 				//Add select feature handler to the map
-				this.map.addHandler(selectFeatureHandler);
+				if(this.map != null){
+					this.map.addHandler(selectFeatureHandler);
+				}				
 			}
 			
 			/**
