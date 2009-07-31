@@ -112,7 +112,7 @@ package org.openscales.core.handler.mouse
 						selectFeauturesLength=0;
 						for each(f in selectFeatures){
 							if(f != null){
-								if(f.selected){f.style = f.originalStyle;f.selected=false;f.layer.redraw();}
+								if(f.selected){f.style = f.originalStyle;f.selected=false;f.layer.redraw();selectFeatures=null;selectFeatures = new Array(currentfeature);}
 							}							
 						}
 						iteratorFeatures=0;
