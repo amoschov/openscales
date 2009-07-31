@@ -55,6 +55,7 @@
 				if(this.map != null){
 					this.map.addHandler(selectFeatureHandler);
 				}				
+				
 			}
 			
 			/**
@@ -267,8 +268,7 @@
 						handler.active = false;
 					} 
 				}
-			}
-			
+			}			
 			
 			//Getters and setters
 			public function get drawType():String{

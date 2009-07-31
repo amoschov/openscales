@@ -6,6 +6,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.events.SelectBoxEvent;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LineString;
@@ -122,6 +123,10 @@ package org.openscales.core.handler.sketch
 			}
 			
 		}
+		
+		public function featureSelectedBox(event:SelectBoxEvent):void {
+            	
+            }
 		
 		override public function set map(value:Map):void {
 			super.map = value;

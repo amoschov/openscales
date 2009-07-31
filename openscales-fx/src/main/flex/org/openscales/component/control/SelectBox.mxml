@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.events.SelectBoxEvent;
+			import org.openscales.core.basetypes.Bounds;
+			import mx.effects.easing.Bounce;
+			import org.openscales.core.feature.Feature;
+			import org.openscales.core.events.FeatureEvent;
+			import org.openscales.core.basetypes.Pixel;
+			import org.openscales.core.basetypes.LonLat;
+			import org.openscales.core.handler.mouse.DragHandler;
+			import org.openscales.core.handler.Handler;
+			import org.openscales.core.Map;
+			
+			private var lastSelection:LonLat = null;
+			private var fillColor:uint = 0x660000
+	        private var drawContainer:Sprite = new Sprite();
+			
+			override public function set map(value:Map):void
+          	{
+             	super.map = value;
+           		map.addChild(drawContainer);
+         	}
+		
+			private function enableBox(e:Event) : void 
+			{
+               	if(selectbox.selected == false)
+               	{ 
+               		selectbox.selected = true;
+	              	deactiveDrag();
+	             	map.addEventListener(MouseEvent.MOUSE_DOWN,startBox);
+	            	map.addEventListener(MouseEvent.MOUSE_UP,endBox);
+               	}
+               	else
+               	{
+               		selectbox.selected = false;
+               		map.removeEventListener(MouseEvent.MOUSE_DOWN,startBox);
+               		map.removeEventListener(MouseEvent.MOUSE_UP,endBox);
+               		activeDrag();
+               	}
+               	
+           	}
+           	
+           	private function startBox(e:MouseEvent) : void 
+           	{
+                map.addEventListener(MouseEvent.MOUSE_MOVE,expandArea);
+                drawContainer.graphics.beginFill(fillColor,0.5);
+                drawContainer.graphics.drawRect(map.mouseX,map.mouseY,1,1);
+                drawContainer.graphics.endFill();
+                this.lastSelection = this.map.getLonLatFromMapPx(new Pixel(map.mouseX, map.mouseY));
+            }
+
+                private function endBox(e:MouseEvent) : void 
+                {
+                	map.removeEventListener(MouseEvent.MOUSE_MOVE,expandArea);
+               		drawContainer.graphics.clear();
+                }
+
+            private function expandArea(e:MouseEvent) : void 
+            {
+                var ll:Pixel = map.getMapPxFromLonLat(lastSelection);
+                drawContainer.graphics.clear();
+                drawContainer.graphics.beginFill(fillColor,0.5);
+                drawContainer.graphics.drawRect(ll.x,ll.y,map.mouseX - ll.x,map.mouseY - ll.y);
+                drawContainer.graphics.endFill();
+               var nowSelection:LonLat = this.map.getLonLatFromMapPx(new Pixel(map.mouseX, map.mouseY));
+                this.map.dispatchEvent(new SelectBoxEvent(SelectBoxEvent.SELECTBOX_DRAW,new Bounds(Math.min(lastSelection.lon,nowSelection.lon),
+               																			Math.min(nowSelection.lat,lastSelection.lat),
+               																			Math.max(lastSelection.lon,nowSelection.lon),
+               																			Math.max(nowSelection.lat,lastSelection.lat))));
+            }
+
+            public function activeDrag():void
+            {
+                var handler:Handler;
+                for each(handler in this.map.handlers)
+                {
+                    if(handler is DragHandler)
+                    {
+                       handler.active = true;
+                	}
+            	}
+            }
+
+            public function deactiveDrag():void
+            {
+                var handler:Handler;
+                for each(handler in this.map.handlers)
+                {
+                    if(handler is DragHandler)
+                    {
+                        handler.active = false;
+                    }
+                }
+            }
+                
+		]]>
+	</mx:Script>
+	
+	
+	<mx:Button id="selectbox" selected="false" label="SelectBox" click="enableBox(event)" />
+</Control>

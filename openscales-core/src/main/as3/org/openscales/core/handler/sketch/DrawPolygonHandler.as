@@ -6,6 +6,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.events.SelectBoxEvent;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LinearRing;
@@ -109,6 +110,10 @@ package org.openscales.core.handler.sketch
 			super.map = value;
 			this._dblClickHandler.map = value;
 		}
+		
+		public function featureSelectedBox(event:SelectBoxEvent):void {
+            	
+            }
 		
 		//Getters and Setters
 		

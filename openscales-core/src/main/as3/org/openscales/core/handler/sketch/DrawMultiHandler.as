@@ -1,7 +1,7 @@
 package org.openscales.core.handler.sketch
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.events.FeatureEvent;
+	import org.openscales.core.events.SelectBoxEvent;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LineString;
@@ -36,6 +36,10 @@ package org.openscales.core.handler.sketch
 			}
 			return feature;
 		}
+		
+		public function featureSelectedBox(event:SelectBoxEvent):void {
+            	
+            }
 		
 		private function draw(selectedFeatures:Array):VectorFeature {
 			var f:org.openscales.core.feature.VectorFeature;
