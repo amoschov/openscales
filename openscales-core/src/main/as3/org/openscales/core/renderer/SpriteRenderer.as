@@ -336,7 +336,7 @@ package org.openscales.core.renderer
 	
 	        //first we create the basic node and add it to the root
 	        var nodeType:String = this.getNodeType(geometry);
-	        var node:SpriteElement = this.nodeFactory(geometry.id, nodeType, geometry);
+	        var node:SpriteElement = this.nodeFactory(geometry.id, nodeType);
 	        node.feature = feature;
 	        node.geometryClass = getQualifiedClassName(geometry);
 	        node.style = style;
@@ -417,7 +417,7 @@ package org.openscales.core.renderer
 	        return node._feature;
     	}
     		    
-	    public function nodeFactory(id:String, type:String, geometry:Geometry):SpriteElement {
+	    public function nodeFactory(id:String, type:String):SpriteElement {
 	    	var node:SpriteElement = this.container.getChildByName(id) as SpriteElement;
 	        if (node) {	           
 	               this.container.removeChild(node);
