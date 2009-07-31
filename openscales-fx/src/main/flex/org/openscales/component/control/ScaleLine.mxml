@@ -39,6 +39,10 @@
 	private var labelMiles:Label = null;
 	
 	private var labelKm:Label = null;
+	
+	private var labelScaleKm:Label = null;
+	
+	private var labelScaleMi:Label = null;
 
 
 	/**
@@ -154,11 +158,9 @@
         
         this.graphics.drawRect(this.position.x,this.position.y+32,1,20);
         
-         this.graphics.drawRect(this.position.x,this.position.y+50,1,20);
-         
+         this.graphics.drawRect(this.position.x,this.position.y+50,1,20); 
          
          this.graphics.endFill();
-		
 		
 		if(labelMiles != null)
          {
@@ -168,7 +170,7 @@
          labelMiles.text = bottomRounded + " " + bottomUnits ;
          labelMiles.x=10;
          labelMiles.y=55;
-         this.idScaleLine.addChild(labelMiles);
+         this.idScaleLine.addChild(labelMiles); 
          
 		if(labelKm != null)
          {
@@ -179,7 +181,21 @@
          labelKm.x=10;
          labelKm.y=35;
          this.idScaleLine.addChild(labelKm);
-
+		
+		//Calcul scale
+       	/* var sizeCM:Number = (topPx)/((this.parentApplication.height)*(this.parentApplication.width))*2.54;
+		var scaleD:Number; */
+		
+		//Show the scale 1/xxxxx
+		/* if(labelScaleKm != null)
+         {
+         	idScaleLine.removeChild(labelScaleKm);	
+         }
+		labelScaleKm = new Label();
+		labelScaleKm.text = "1/"+Math.round(scaleD).toString();
+		labelScaleKm.x = this.position.x;
+		labelScaleKm.y = 0;
+		this.idScaleLine.addChild(labelScaleKm); */ 	
         
     }
 

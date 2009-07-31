@@ -48,6 +48,7 @@ package org.openscales.core.layer.capabilities
 			this._url = url;
 			this._request = "GetCapabilities";
 			this._capabilities = new HashMap(false)
+			
 			this._proxy = proxy;
 			
 			this._cbkFunc = cbkFunc;
