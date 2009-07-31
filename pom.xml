@@ -41,6 +41,14 @@
 				    </plugin>
 				</plugins>
 			</build>
+			<reporting>
+				<plugins>
+					<plugin>
+						<groupId>net.sf.flex-mvn-report</groupId>
+						<artifactId>flex-mvn-report</artifactId>
+					</plugin>
+				</plugins>
+			</reporting>
 		</profile>
 	</profiles>
 	
@@ -208,36 +216,20 @@
 		        <artifactId>maven-surefire-report-plugin</artifactId>
 		        <version>2.4.3</version>
 			</plugin>
-			<plugin>
-		        <groupId>net.sf.flex-mvn-report</groupId>
-		        <artifactId>flex-mvn-report</artifactId>
-		    </plugin>
 		</plugins>
   </reporting>
 
 	<repositories>
-        <repository>
-            <id>flexmojos</id>
-            <url>http://repository.sonatype.org/content/groups/flexgroup</url>
-        </repository>
-        <!--repository>
-            <id>flexmojos</id>
-            <url>http://repository.sonatype.org/content/repositories/flexmojos-releases/</url>
-        </repository-->
 		<repository>
-			<id>openscales</id>
-			<url>http://openscales.org/nexus/content/repositories/releases/</url>
+			<id>central</id>
+			<url>http://openscales.org/nexus/content/groups/public</url>
 		</repository>
 	</repositories>
 	
 	<pluginRepositories>
-        <pluginRepository>
-            <id>flexmojos</id>
-            <url>http://repository.sonatype.org/content/groups/flexgroup</url>
-        </pluginRepository>
 		<pluginRepository>
-			<id>flex-mvn-report-repository</id>
-            <url>http://flex-mvn-report.sourceforge.net</url>
+			<id>central</id>
+			<url>http://openscales.org/nexus/content/groups/public</url>
 		</pluginRepository>
 	</pluginRepositories>
 
