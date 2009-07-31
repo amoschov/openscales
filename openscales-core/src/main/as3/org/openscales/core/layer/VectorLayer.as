@@ -114,19 +114,11 @@ package org.openscales.core.layer
 	    }
 	    
 	      override public function onMapResize():void {
-	    //	super.onMapResize();
-	    	
-	    	for each (var feature:VectorFeature in this.features){
-	        this.renderer.eraseGeometry(feature.geometry);
-	       /* var nodeType:String = (this.renderer as SpriteRenderer).getNodeType(feature.geometry);
-	    	var node:SpriteElement =(this.renderer as SpriteRenderer).nodeFactory(feature.geometry.id, nodeType, feature.geometry);
-	    	node.feature = feature;
-	    	node.geometryClass = getQualifiedClassName(feature.geometry);
-	        node.style = feature.style;
-	        (this.renderer as SpriteRenderer).redrawGeometry(node,feature.geometry,node.style,feature);*/
-	        this.renderer.drawFeature(feature,feature.style);
+	   		for each (var feature:VectorFeature in this.features){
+		        this.renderer.eraseGeometry(feature.geometry);
+		        this.renderer.drawFeature(feature,feature.style);
 	    	}
-        //	this.renderer.size = this.map.size;
+
 	    }  
 	    
 	    /**

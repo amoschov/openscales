@@ -5,7 +5,6 @@ package org.openscales.core.renderer
 	
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.SpriteCursorEvent;
-	import org.openscales.core.events.TraceEvent;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 
@@ -21,13 +20,13 @@ package org.openscales.core.renderer
 		private var _feature:VectorFeature = null;
 
 		private var _geometryClass:String = null;
-		private var _attributes:Object = new Object();
 		
 		private var _isSelect:Boolean=true;
 	
-		public function SpriteElement()
+		public function SpriteElement(name:String = null)
 		{	
-			/* this.useHandCursor = false; */
+			this.name = name;
+			this.alpha = 1.0;
 		}
 		
 		private function hideHand(event:SpriteCursorEvent):void{
@@ -70,16 +69,7 @@ package org.openscales.core.renderer
 		
 		public function set geometryClass(value:String):void {
 			this._geometryClass = value;
-		}
-		
-		public function get attributes():Object {
-			return this._attributes;
-		}
-		
-		public function set attributes(value:Object):void {
-			this._attributes = value;
-		}
-		
+		}		
 		
 		/**
 		 * Events Management

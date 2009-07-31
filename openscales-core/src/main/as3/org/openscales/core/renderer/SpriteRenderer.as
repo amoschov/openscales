@@ -7,7 +7,6 @@ package org.openscales.core.renderer
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
@@ -90,32 +89,6 @@ package org.openscales.core.renderer
         	
 		}
 		
-		public function getNodeType(geometry:Geometry):String {
-			var nodeType:String = null;
-	        switch (getQualifiedClassName(geometry)) {
-	            case "org.openscales.core.geometry::Point":
-	                nodeType = "circle";
-	                break;
-	            case "org.openscales.core.geometry::Rectangle":
-	                nodeType = "rect";
-	                break;
-	            case "org.openscales.core.geometry::LineString":
-	                nodeType = "line";
-	                break;
-	            case "org.openscales.core.geometry::LinearRing":
-	                nodeType = "line";
-	                break;
-	            case "org.openscales.core.geometry::Polygon":
-	            case "org.openscales.core.geometry::Curve":
-	            case "org.openscales.core.geometry::Surface":
-	                nodeType = "line";
-	                break;
-	            default:
-	                break;
-	        }
-	        return nodeType;
-		}
-		
 		public function setStyle(node:SpriteElement, style:Style):void {	
 	        style = style  || node.style;
 	        
@@ -127,17 +100,7 @@ package org.openscales.core.renderer
 	
 	        if (style.isStroked) {
 	        	node.graphics.lineStyle(style.strokeWidth, style.strokeColor, style.strokeOpacity, false, "normal", style.strokeLinecap);
-	        } else {
-	            //don't draw the line
 	        }
-	        
-	        /*if (style.pointerEvents) {
-	            node.attributes.pointerEvents = style.pointerEvents;
-	        }
-	        
-	        if (style.cursor) {
-	            node.attributes.cursor = style.cursor;
-	        }*/
 		}
 		
 		public function removeStyle(node:SpriteElement, style:Style):void {
@@ -233,11 +196,6 @@ package org.openscales.core.renderer
 	                d += " " + component;
 	            }
 	        }
-	        if (draw) {
-	            node.attributes.d = d;
-	        } else {
-	            node.attributes.d = "";
-	        }    
 		}
 		
 		public function drawLinearRing(node:SpriteElement, geometry:LinearRing):void {
@@ -268,21 +226,7 @@ package org.openscales.core.renderer
 	        var string:String =  x + "," + y;  
 	        return string;
 		}
-		
-		public function createNode(type:Object, id:Object):SpriteElement {
-			var node:SpriteElement = new SpriteElement();
-			//node.id = String(id);
-			node.name = String(id);
-			//node.type = String(type);
-			node.alpha = 1.0;
-	        return node;    
-		}
-		
-		
-		/* override public function nodeTypeCompare(node:SpriteOL, type:String):Boolean {
-			return (type == node.type);
-		} */
-		
+				
 		override public function eraseGeometry(geometry:Geometry):void {
 			
 			if ((getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") ||
@@ -299,16 +243,6 @@ package org.openscales.core.renderer
 	        }
 	        
 		}
-		
-		/**
-	 * This function erases simple features which are not  collections like  
-	 * Point LineString or Polygon
-	 */
-	/*	private function eraseFeature(geometry:Geometry):void{
-			if(geometry) {	            	
-	            	
-	            }
-		}*/
 	
 		override public function clearNode(node:SpriteElement):void {
 			node.graphics.clear();
@@ -335,8 +269,15 @@ package org.openscales.core.renderer
 	        };
 	
 	        //first we create the basic node and add it to the root
-	        var nodeType:String = this.getNodeType(geometry);
-	        var node:SpriteElement = this.nodeFactory(geometry.id, nodeType);
+	       
+	        var node:SpriteElement = this.container.getChildByName(geometry.id) as SpriteElement;
+	        if (node) {	           
+	               this.container.removeChild(node);
+	               this.clearNode(node);
+	        } else {
+	            node = new SpriteElement(geometry.id);
+	        }
+	        
 	        node.feature = feature;
 	        node.geometryClass = getQualifiedClassName(geometry);
 	        node.style = style;
@@ -416,22 +357,7 @@ package org.openscales.core.renderer
 	        var node:Object = evt.currentTarget;
 	        return node._feature;
     	}
-    		    
-	    public function nodeFactory(id:String, type:String):SpriteElement {
-	    	var node:SpriteElement = this.container.getChildByName(id) as SpriteElement;
-	        if (node) {	           
-	               this.container.removeChild(node);
-	               this.clearNode(node);
-	        } else {
-	            node = this.createNode(type, id);
-	        }
-	        return node;
-	    }
-
-		public function nodeTypeCompare(node:SpriteElement, type:String):Boolean {
-			return false;
-		}
-				
+    		    	
 		
 	}
 }
