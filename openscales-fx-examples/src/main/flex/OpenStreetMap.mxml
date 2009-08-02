@@ -2,6 +2,7 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap();" >
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.feature.PointFeature;
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.layer.ogc.WFS;
 			import org.openscales.proj4as.ProjProjection;
@@ -59,7 +60,7 @@
 				with EPSG:4326 projection.*/
 				var vect:VectorLayer = new VectorLayer("vector");
 				var p:org.openscales.core.geometry.Point = new org.openscales.core.geometry.Point(4.8,45.7);
-				vect.addFeatures(new VectorFeature(p));
+				vect.addFeature(new PointFeature(p));
 				vect.projection = new ProjProjection("EPSG:4326");
 				map.addLayer(vect);
 
