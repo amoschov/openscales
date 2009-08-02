@@ -1,6 +1,7 @@
 package org.openscales.core.events
 {
 	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.VectorFeature;
 
 	 /**
@@ -11,10 +12,9 @@ package org.openscales.core.events
 	{
 		
 		/**
-		 * @private 
-		 * Vectorfeature concerned by the event.
+		 * feature concerned by the event.
 		 */
-		private var _vectorfeature:VectorFeature = null;
+		private var _feature:Feature = null;
 		
 
 		/**
@@ -47,10 +47,10 @@ package org.openscales.core.events
 		 * @param active to determinates if the handler is active
 		 */
 
-		public function FeatureEvent(type:String,vectorfeature:VectorFeature,ctrlStatus:Boolean = false,bubbles:Boolean=false,cancelable:Boolean=false,bounds:Bounds = null) 
+		public function FeatureEvent(type:String,feature:Feature,ctrlStatus:Boolean = false,bubbles:Boolean=false,cancelable:Boolean=false,bounds:Bounds = null) 
 		{
 			super(type, bubbles, cancelable);
-			this.vectorfeature=vectorfeature;
+			this._feature=feature;
 			this._ctrlPressed = ctrlStatus;
 		}
 	
@@ -59,16 +59,16 @@ package org.openscales.core.events
 		 * Vectorfeature concerned by the event.
 		 * @default null
 		 */
-		public function get vectorfeature():VectorFeature
+		public function get feature():Feature
 		{
-			return this._vectorfeature;
+			return this._feature;
 		}
 		/**
 		 * @private 
 		 */
-		public function set vectorfeature(vector:VectorFeature):void
+		public function set feature(value:Feature):void
 		{
-			this._vectorfeature=vector;
+			this._feature=value;
 		}
 		/**
 		 * To know if ctrl key is pressed

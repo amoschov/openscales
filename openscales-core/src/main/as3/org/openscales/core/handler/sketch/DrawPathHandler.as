@@ -8,12 +8,13 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.SelectBoxEvent;
 	import org.openscales.core.feature.Style;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.feature.VectorFeature;
 	
 	/**
 	 * Handler to draw paths (multi line strings)
@@ -60,9 +61,8 @@ package org.openscales.core.handler.sketch
 		} 
 		
 		private function drawLine():void{
-			var feature:org.openscales.core.feature.VectorFeature;
-			feature = new org.openscales.core.feature.VectorFeature();
-			feature.id = "path." + id.toString(); id++;
+			var feature:VectorFeature = new VectorFeature(); 
+			feature.name = "path." + id.toString(); id++;
 			
 			var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
@@ -111,7 +111,7 @@ package org.openscales.core.handler.sketch
 			if (lstrings.length > 0) {
 				var mlString:MultiLineString = new MultiLineString(lstrings);
 				var mlFeature:VectorFeature = new VectorFeature();
-				mlFeature.id = "path." + id.toString(); id++;
+				mlFeature.name = "path." + id.toString(); id++;
 				mlFeature.style = style;
 				mlFeature.geometry = mlString;
 				

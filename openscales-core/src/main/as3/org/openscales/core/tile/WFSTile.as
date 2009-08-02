@@ -13,6 +13,8 @@ package org.openscales.core.tile
 	import org.openscales.core.format.GMLFormat;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.ogc.WFS;
+	import org.openscales.core.feature.Feature;
+	import org.openscales.core.basetypes.LonLat;
 	
 	/**
 	 * WFS single tile
@@ -88,7 +90,7 @@ package org.openscales.core.tile
 			catch(error:Error) {
 				//Trace.log(error.message);
 			}
-			var wfsLayer:org.openscales.core.layer.ogc.WFS = this.layer as org.openscales.core.layer.ogc.WFS;
+			var wfsLayer:WFS = this.layer as WFS;
 			
 			if (wfsLayer && wfsLayer.vectorMode) {
 				wfsLayer.destroyFeatures();
@@ -109,15 +111,15 @@ package org.openscales.core.tile
 		}
 		
 		/**
-	     * Construct new feature via layer featureClass constructor, and add to
-	     * this.features.
+	     * Construct new feature and add to this.features.
 	     * 
 	     * @param results
 	     */
 		public function addResults(results:Object):void {
-			var wfsLayer:org.openscales.core.layer.ogc.WFS = this.layer as org.openscales.core.layer.ogc.WFS;
+			var wfsLayer:WFS = this.layer as WFS;
 			for (var i:int=0; i < results.length; i++) {
-	            var feature:Object = new wfsLayer.featureClass(this.layer, results[i]);
+				var data = this.processXMLNode(results[i]);
+	            var feature:Feature = new Feature( this.layer, data.lonlat, data);
 	            this.features.push(feature);
 	        }
 		}
@@ -140,6 +142,15 @@ package org.openscales.core.tile
         
         public function set features(value:Array):void {
         	this._features = value;
+        }
+        
+        private function processXMLNode(xmlNode:XML):Object {
+            var point:XMLList = xmlNode.elements("gml::Point");
+            var text:String = point[0].elements("gml::coordinates")[0].nodeValue;
+            var floats:Array = text.split(",");
+            return {lonlat: new LonLat(Number(floats[0]),
+                                                  Number(floats[1])),
+                    id: null};
         }
 
 	}

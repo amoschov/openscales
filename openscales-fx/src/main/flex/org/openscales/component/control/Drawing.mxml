@@ -6,8 +6,9 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import mx.controls.Alert;
 			import org.openscales.core.feature.VectorFeature;
+			import org.openscales.core.feature.Feature;
+			import mx.controls.Alert;
 			import org.openscales.core.events.SpriteCursorEvent;
 			import mx.containers.TabNavigator;
 			import org.openscales.core.handler.mouse.DragFeature;
@@ -47,7 +48,7 @@
 			 * To prevent a feature selection. If user isn't on drawing tab, he can't select a feature
 			 */
 			private function changingTab(event:Event):void{
-				var f:org.openscales.core.feature.VectorFeature;
+				var f:Feature;
 				var selectedFeature:Boolean = false;
 				
 				//User is on Drawing Tab, and wants to switch	
@@ -86,7 +87,7 @@
 			//check if the user wants to continue
 			private function alertContinueHandler(event:CloseEvent):void {
             	var i:Number = 0;
-            	var f:org.openscales.core.feature.VectorFeature;
+            	var f:VectorFeature;
             	// User click "Continue", he wants to continue
             	if (event.detail==Alert.OK){
                		if(this.featureDrawing.drawType != ""){

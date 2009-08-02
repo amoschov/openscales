@@ -4,8 +4,9 @@ package org.openscales.core.format
 	
 	import org.openscales.core.Trace;
 	import org.openscales.core.feature.State;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.layer.ogc.WFS;
+	import org.openscales.core.feature.VectorFeature;
 	
 	/**
 	 * WFS writer extending GML format.
@@ -100,7 +101,7 @@ package org.openscales.core.format
 	     * @param feature 
 	     */
     	public function update(feature:VectorFeature):XMLNode {
-	        if (!feature.id) { Trace.error("Can't update a feature for which there is no FID."); }
+	        if (!feature.name) { Trace.error("Can't update a feature for which there is no FID."); }
 	        var updateNode:XMLNode = new XMLNode(1, "wfs:Update");
 	        updateNode.attributes.typeName = this._layerName;
 	
@@ -119,7 +120,7 @@ package org.openscales.core.format
 	        
 	        var filterNode:XMLNode = new XMLNode(1, "ogc:Filter");
 	        var filterIdNode:XMLNode = new XMLNode(1, "ogc:FeatureId");
-	        filterIdNode.attributes.fid = feature.id;
+	        filterIdNode.attributes.fid = feature.name;
 	        filterNode.appendChild(filterIdNode);
 	        updateNode.appendChild(filterNode);
 	
@@ -131,7 +132,7 @@ package org.openscales.core.format
 	     *
 	     * @param feature 
 	     */
-    	public function remove(feature:VectorFeature):XMLNode {
+    	public function remove(feature:Feature):XMLNode {
 	        if (!feature.attributes.fid) { 
 	            Trace.error("Can't update a feature for which there is no FID."); 
 	            return null; 

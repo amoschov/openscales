@@ -8,12 +8,13 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.SelectBoxEvent;
 	import org.openscales.core.feature.Style;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.feature.VectorFeature;
 
 	/**
 	 * Handler to draw polygons.
@@ -48,9 +49,8 @@ package org.openscales.core.handler.sketch
 		public function mouseClick(event:MouseEvent):void {
 			
 			if (drawLayer != null) {
-				var feature:org.openscales.core.feature.VectorFeature;
-				feature = new org.openscales.core.feature.VectorFeature();
-				feature.id = "polygon."+id.toString(); id++;
+				var feature:VectorFeature = new VectorFeature();
+				feature.name = "polygon."+id.toString(); id++;
 				
 				var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
 				var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
@@ -62,8 +62,8 @@ package org.openscales.core.handler.sketch
 					feature.geometry = polygon;
 					
 					// We create a point the first time to see were we have clicked
-					var featurePoint:VectorFeature = new VectorFeature;
-					featurePoint.id = id.toString();id++;
+					var featurePoint:VectorFeature = new VectorFeature();
+					featurePoint.name = id.toString();id++;
 					featurePoint.geometry = point;
 					
 					drawLayer.addFeatures(featurePoint);

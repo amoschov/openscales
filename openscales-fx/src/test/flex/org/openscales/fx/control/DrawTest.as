@@ -10,7 +10,7 @@ package org.openscales.fx.control
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.control.MousePosition;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.handler.mouse.DragHandler;
 	import org.openscales.core.handler.mouse.WheelHandler;
@@ -228,7 +228,7 @@ package org.openscales.fx.control
 			nbOther = 0;
 			
 			
-			for each (var feature:VectorFeature in _draw.drawLayer.features) {
+			for each (var feature:Feature in _draw.drawLayer.features) {
 				if (getQualifiedClassName(feature.geometry) == "org.openscales.core.geometry::Point") {
 					nbPoints ++;
 				}

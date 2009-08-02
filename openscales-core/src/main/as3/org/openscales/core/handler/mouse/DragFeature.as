@@ -8,10 +8,10 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.renderer.SpriteElement;
+	import org.openscales.core.feature.VectorFeature;
 	
 	/**
 	 * 
@@ -28,7 +28,7 @@ package org.openscales.core.handler.mouse
 		/**
 		 * The Feature which is drag
 		 */
-		private var _Feature:VectorFeature = null;	
+		private var _feature:VectorFeature = null;	
 					
 		/**
 		 * The Group  of layers with draggable features
@@ -43,7 +43,7 @@ package org.openscales.core.handler.mouse
 		/**
 		 * dragged sprite
 		 */	
-		private var _elementDragging:SpriteElement=new SpriteElement();
+		private var _elementDragging:Feature=new Feature();
 		
 		/**
 		 * DragFeature constructor
@@ -77,7 +77,7 @@ package org.openscales.core.handler.mouse
 		
 			while(cpt!=this.layer.length)
 			{
-				if((event as FeatureEvent).vectorfeature.layer==this.layer[this.layer_number])
+				if((event as FeatureEvent).feature.layer==this.layer[this.layer_number])
 				{	
 					for each (var handler:* in this.map.handlers)
 					{
@@ -87,7 +87,7 @@ package org.openscales.core.handler.mouse
 							handler.active=false;
 						}
 					}		
-					this.Feature=(event as FeatureEvent).vectorfeature;
+					this.feature=(event as FeatureEvent).feature as VectorFeature;
 					if(this.onstart!=null){this.onstart((event as FeatureEvent));}
 	     			var index:int=0;
 	     	  		this.FeatureMove();
@@ -104,12 +104,12 @@ package org.openscales.core.handler.mouse
 		{
 			var index:int=0;
 			//We start to differentiates MultiGeometries and simple geometry
-			if ((getQualifiedClassName(this.Feature.geometry) == "org.openscales.core.geometry::MultiPoint") ||
-	            (getQualifiedClassName(this.Feature.geometry) == "org.openscales.core.geometry::MultiLineString") ||
-	            (getQualifiedClassName(this.Feature.geometry) == "org.openscales.core.geometry::MultiPolygon")) {
+			if ((getQualifiedClassName(this.feature.geometry) == "org.openscales.core.geometry::MultiPoint") ||
+	            (getQualifiedClassName(this.feature.geometry) == "org.openscales.core.geometry::MultiLineString") ||
+	            (getQualifiedClassName(this.feature.geometry) == "org.openscales.core.geometry::MultiPolygon")) {
 				    
 				    //The first element move and the others will follow it
-				    var FirstGeomId:Geometry=((this.Feature.geometry as Collection).components[0] as Geometry);
+				    var FirstGeomId:Geometry=((this.feature.geometry as Collection).components[0] as Geometry);
 				    this._elementDragging=this.layer[layer_number].renderer.container.getChildByName(FirstGeomId.id);
 				    this._elementDragging.startDrag();
 				    this.map.addEventListener(MouseEvent.MOUSE_MOVE,movefeatures);
@@ -117,7 +117,7 @@ package org.openscales.core.handler.mouse
 	           }
 		     else
 	          {
-	           this._elementDragging=this.layer[layer_number].renderer.container.getChildByName(Feature.geometry.id);
+	           this._elementDragging=this.layer[layer_number].renderer.container.getChildByName(feature.geometry.id);
 	           this._elementDragging.startDrag();   
 	           this.dragging=true;     
 	          }	         
@@ -138,7 +138,7 @@ package org.openscales.core.handler.mouse
 			*/
 			
 			this.layer_number=0;
-			this._elementDragging=new SpriteElement();
+			this._elementDragging=new Feature();
 			for each (var handler:* in this.map.handlers)
 			{
 				//We reactivate all Draghandler				
@@ -156,10 +156,10 @@ package org.openscales.core.handler.mouse
 		{
 			var dx:Number=_elementDragging.x-event.stageX;
 			var dy:Number=_elementDragging.y-event.stageY;
-			for(var i:int=1;i<(Feature.geometry as Collection).components.length;i++)
+			for(var i:int=1;i<(feature.geometry as Collection).components.length;i++)
 			{
-				var Geom:Geometry=((Feature.geometry as Collection).components[i]as Geometry);
-				var Sprite:SpriteElement=layer[layer_number].renderer.container.getChildByName(Geom.id);
+				var Geom:Geometry=((feature.geometry as Collection).components[i]as Geometry);
+				var Sprite:Feature=layer[layer_number].renderer.container.getChildByName(Geom.id);
 				Sprite.x=event.stageX+dx;
 				Sprite.y= event.stageY+dy;    	
 			}
@@ -169,13 +169,13 @@ package org.openscales.core.handler.mouse
 		 * The Feature which is drag
 		 */
 		
-		public function set Feature(Feature:VectorFeature):void
+		public function set feature(feature:VectorFeature):void
 		{
-			this._Feature=Feature;
+			this._feature=feature;
 		}
-		public function get Feature():VectorFeature
+		public function get feature():VectorFeature
 		{
-			return this._Feature;
+			return this._feature;
 		}
 		/**
 		 * 

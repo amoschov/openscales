@@ -2,10 +2,11 @@
 <Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="234" height="108" creationComplete="initFeatureDrawing();">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.feature.VectorFeature;
+			import org.openscales.core.feature.Feature;
 			import org.openscales.core.handler.mouse.DragHandler;
 			import org.openscales.core.handler.Handler;
 			import mx.controls.Alert;
-			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.handler.mouse.SelectFeature;
 			import org.openscales.core.handler.sketch.DrawMultiHandler;
 			import org.openscales.core.handler.sketch.DrawPathHandler;
@@ -70,7 +71,7 @@
 					et retourne une multi gÃ©omÃ©trie des features en question
 					
 				END TODO*/
-				var feature:VectorFeature = multiPointHandler.buttonClicked(selectFeatureHandler.selectFeatures);
+				var feature:VectorFeature = multiPointHandler.buttonClicked(selectFeatureHandler.selectFeatures) as VectorFeature;
 				selectFeatureHandler.currentfeature = feature;				
 				selectFeatureHandler.OnSelection();
 				selectFeatureHandler.selectFeauturesLength++;
@@ -97,7 +98,7 @@
 			 * User clicks on delete selected feature button
 			 */
 			private function deleteSelectedFeatures():void {
-				var feature:org.openscales.core.feature.VectorFeature;
+				var feature:Feature;
 				var i:Number = 0;
 				for(i;i<drawLayer.features.length;i++){
 					feature = drawLayer.features[i];
@@ -132,7 +133,7 @@
 			 */
 			public function onDeleteLastClick(event:Event):void {
 				var last:Number = drawLayer.features.length - 1;
-				var lastFeature:VectorFeature = null;
+				var lastFeature:Feature = null;
 				
 				if (last >= 0) {					
 					lastFeature = drawLayer.features[last];
@@ -162,7 +163,7 @@
 			 */
 			private function onSelectFeature(event:FeatureEvent):void {			
 				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active && !isDragging) {										
-					selectFeatureHandler.currentfeature = event.vectorfeature;
+					selectFeatureHandler.currentfeature = event.feature as VectorFeature;
 					btnDeleteSelected.enabled = true;
 					selectFeatureHandler.ctrl = event.ctrlPressed;					
 					selectFeatureHandler.OnSelection();

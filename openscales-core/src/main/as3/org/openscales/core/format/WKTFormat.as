@@ -4,7 +4,7 @@ package org.openscales.core.format
 	
 	import org.openscales.core.StringUtils;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
@@ -13,6 +13,7 @@ package org.openscales.core.format
 	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
+	import org.openscales.core.feature.VectorFeature;
 	
 	/**
 	 * Read/Wite WKT.
@@ -152,14 +153,14 @@ package org.openscales.core.format
 		
 		public var parse:Object = {
 			
-        'point': function(str:String):VectorFeature {
+        'point': function(str:String):Feature {
             var coords:Array = StringUtils.trim(str).split(this._regExes.spaces);
             return new VectorFeature(
                 new Point(coords[0], coords[1])
             );
         },
 
-        'multipoint': function(str:String):VectorFeature {
+        'multipoint': function(str:String):Feature {
             var points:Array = StringUtils.trim(str).split(',');
             var components:Array = [];
             for(var i:int=0; i<points.length; ++i) {
@@ -170,18 +171,16 @@ package org.openscales.core.format
             );
         },
 
-        'linestring': function(str:String):VectorFeature {
+        'linestring': function(str:String):Feature {
             var points:Array = StringUtils.trim(str).split(',');
             var components:Array = [];
             for(var i:int=0; i<points.length; ++i) {
                 components.push(this.parse.point.apply(this, [points[i]]).geometry);
             }
-            return new VectorFeature(
-                new LineString(components)
-            );
+            return new VectorFeature(new LineString(components));
         },
 
-        'multilinestring': function(str:String):VectorFeature {
+        'multilinestring': function(str:String):Feature {
             var line:String;
             var lines:Array = StringUtils.trim(str).split(this._regExes.parenComma);
             var components:Array = [];
@@ -194,7 +193,7 @@ package org.openscales.core.format
             );
         },
         
-        'polygon': function(str:String):VectorFeature {
+        'polygon': function(str:String):Feature {
             var ring:String, linestring:String, linearring:LinearRing;
             var rings:Array = StringUtils.trim(str).split(this._regExes.parenComma);
             var components:Array = [];
@@ -209,7 +208,7 @@ package org.openscales.core.format
             );
         },
 
-        'multipolygon': function(str:String):VectorFeature {
+        'multipolygon': function(str:String):Feature {
             var polygon:String;
             var polygons:Array = StringUtils.trim(str).split(this._regExes.doubleParenComma);
             var components:Array = [];

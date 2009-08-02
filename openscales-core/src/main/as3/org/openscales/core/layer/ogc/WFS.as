@@ -12,7 +12,6 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.maps.HashMap;
-	import org.openscales.core.feature.WFSFeature;
 	import org.openscales.core.format.Format;
 	import org.openscales.core.format.WFSFormat;
 	import org.openscales.core.layer.VectorLayer;
@@ -47,15 +46,6 @@ package org.openscales.core.layer.ogc
 		private var _tile:WFSTile = null;
 		
 		private var _writer:Format = null;
-		
-		/** 
-		 * TODO: is this attribute used ?!
-		 * 
-	     *  If featureClass is defined, an old-style markers
-	     *     based WFS layer is created instead of a new-style vector layer. If
-	     *     sent, this should be a subclass of OpenLayers.Feature
-	     */
-		private var _featureClass:Class = null;
 		
 		private var _featureNS:String = null;
 				
@@ -106,9 +96,6 @@ package org.openscales.core.layer.ogc
 	        
 	        if (!this.renderer || !this.vectorMode) {
 	            this.vectorMode = false; 
-	            if (!this.featureClass) {
-	                this.featureClass = WFSFeature;
-	            }   
 	        }
 	        
 	        if (!(this.geometryColumn)) {
@@ -189,8 +176,7 @@ package org.openscales.core.layer.ogc
 			            var url:String = this.getFullRequestString();
 			        
 			            if (!this.tile) {
-			                this.tile = new org.openscales.core.tile.WFSTile(this, pos, tileBounds, 
-			                                                     url, tileSize);
+			                this.tile = new WFSTile(this, pos, tileBounds, url, tileSize);
 			                this.tile.draw();
 			               	this.featuresBbox = tileBounds;
 			            } 
@@ -400,11 +386,11 @@ package org.openscales.core.layer.ogc
 			this._url = value;
 		}
 		
-		public function get tile():org.openscales.core.tile.WFSTile {
+		public function get tile():WFSTile {
 			return this._tile;
 		}
 		
-		public function set tile(value:org.openscales.core.tile.WFSTile):void {
+		public function set tile(value:WFSTile):void {
 			this._tile = value;
 		}
 		
@@ -414,14 +400,6 @@ package org.openscales.core.layer.ogc
 		
 		public function set writer(value:Format):void {
 			this._writer = value;
-		}
-		
-		public function get featureClass():Class {
-			return this._featureClass;
-		}
-		
-		public function set featureClass(value:Class):void {
-			this._featureClass = value;
 		}
 		
 		public function get featureNS():String {

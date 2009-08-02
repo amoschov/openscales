@@ -6,9 +6,10 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.Style;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.feature.VectorFeature;
 	
 	/**
 	 * 
@@ -41,7 +42,7 @@ package org.openscales.core.handler.mouse
 		private var _selectStyle:Style = new Style(); 
 		
 		private var _layer:VectorLayer;
-		private var _lastfeature:VectorFeature=null;
+		private var _lastfeature:Feature=null;
 		private var _currentfeature:VectorFeature=null;
 		
 		//Accept hover or not
@@ -75,7 +76,7 @@ package org.openscales.core.handler.mouse
 		}
 	
 		public function OnOut(pevt:FeatureEvent):void{
-			if(pevt.vectorfeature.layer==this.layer)
+			if(pevt.feature.layer==this.layer)
 			{
 				if(this._unselect!=null)this._unselect(pevt);
 			}
@@ -83,7 +84,7 @@ package org.openscales.core.handler.mouse
 		public function OnOver(pevt:FeatureEvent):void{
 			if(hover)
 			{
-				if(pevt.vectorfeature.layer==this.layer)
+				if(pevt.feature.layer==this.layer)
 				{
 					if(this._select!=null) this._select(pevt);
 				}
@@ -272,11 +273,11 @@ package org.openscales.core.handler.mouse
 			this._hover=hover;
 		}
 		
-		public function  get lastfeature():VectorFeature
+		public function  get lastfeature():Feature
 		{
 			return this._lastfeature;
 		}
-		public function set lastfeature(lastfeature:VectorFeature):void
+		public function set lastfeature(lastfeature:Feature):void
 		{
 			this._lastfeature=lastfeature;
 		}
@@ -285,6 +286,7 @@ package org.openscales.core.handler.mouse
 		{
 			return this._currentfeature;
 		}
+		
 		public function set currentfeature(currentfeature:VectorFeature):void
 		{
 			this._currentfeature=currentfeature;

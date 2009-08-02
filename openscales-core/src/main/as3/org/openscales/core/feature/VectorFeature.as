@@ -27,12 +27,14 @@ package org.openscales.core.feature
 			super(null, null, data);
 	        this.lonlat = null;
 	        this.geometry = geometry;
+	        if (this.geometry)
+          		this.name = geometry.id;
 	        this.state = null;
 	        this.attributes = new Object();
 	        if (data) {
 	            this.attributes = Util.extend(this.attributes, data);
 	        }
-	        this.style = style ? style : null; 
+	        this.style = style ? style : null;
 		}
 		
 		/**
@@ -126,5 +128,7 @@ package org.openscales.core.feature
 		public function set originalStyle(value:Style):void {
 			this._originalStyle = value;
 		}
+		
+		
 	}
 }

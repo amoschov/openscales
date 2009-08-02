@@ -3,7 +3,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.events.SelectBoxEvent;
 	import org.openscales.core.feature.Style;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.MultiPoint;
@@ -11,6 +11,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.feature.VectorFeature;
 
 	/**
 	 * DrawMultiHandler allow you to merge several features (withe the same geometry) in one.
@@ -29,8 +30,8 @@ package org.openscales.core.handler.sketch
 			/* this.map.addEventListener(FeatureEvent.FEATURE_SELECTED, featureSelected); */
 		}
 		
-		public function buttonClicked(selectedFeatures:Array):VectorFeature {
-			var feature:VectorFeature;
+		public function buttonClicked(selectedFeatures:Array):Feature {
+			var feature:Feature;
 			if (drawLayer != null) {
 				feature = this.draw(selectedFeatures); 
 			}
@@ -41,8 +42,8 @@ package org.openscales.core.handler.sketch
             	
             }
 		
-		private function draw(selectedFeatures:Array):VectorFeature {
-			var f:org.openscales.core.feature.VectorFeature;
+		private function draw(selectedFeatures:Array):Feature {
+			var f:VectorFeature;
 			var array:Array = new Array();
 			var multiPoint:MultiPoint = new MultiPoint();
 			var multiLineString:MultiLineString = new MultiLineString();

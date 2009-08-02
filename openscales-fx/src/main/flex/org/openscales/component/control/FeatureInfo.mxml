@@ -3,9 +3,10 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.geometry.LinearRing;
+			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.geometry.Polygon;
 			import org.openscales.core.geometry.LineString;
-			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.geometry.MultiLineString;
 			import flash.utils.getQualifiedClassName;
 			import mx.collections.ArrayCollection;
@@ -39,7 +40,7 @@
 				var first:Boolean = true; //indicate if it's the first point
 				
 				//point informations
-				if(getQualifiedClassName(evt.vectorfeature.geometry) == "org.openscales.core.geometry::Point"){
+				if(getQualifiedClassName((evt.feature as VectorFeature).geometry) == "org.openscales.core.geometry::Point"){
 					name = {};
 					name.Name = "Name";
 					
@@ -47,23 +48,23 @@
 					var coordinateLon:Object = {};
 					var coordinateLat:Object = {};
 									
-					name.Value = "Point_" + evt.vectorfeature.id;
+					name.Value = "Point_" + evt.feature.name;
 									
 					coordinateLon.Name = "Lon";
-					coordinateLon.Value = evt.vectorfeature.lonlat.lon;
+					coordinateLon.Value = evt.feature.lonlat.lon;
 					coordinateLat.Name = "Lat";
-					coordinateLat.Value = evt.vectorfeature.lonlat.lat;
+					coordinateLat.Value = evt.feature.lonlat.lat;
 					
 					//Add properties to array
 					properties.push(name,coordinateLon,coordinateLat);				
 				}
 				
 				//path informations
-				else if(getQualifiedClassName(evt.vectorfeature.geometry) == "org.openscales.core.geometry::MultiLineString"){					
+				else if(getQualifiedClassName((evt.feature as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString"){					
 					//Add the property NAME
 					name = {};
 					name.Name = "Name";					
-					name.Value = evt.vectorfeature.id;
+					name.Value = evt.feature.name;
 					properties.push(name);
 					
 					//MultiLineString = several LineString and LineString = 2 points
@@ -72,7 +73,7 @@
 					there is a last LineString with 2 same points. And because of its, the last point appears twice
 					in the tab.*/
 					
-					for each(var ls:org.openscales.core.geometry.LineString in (evt.vectorfeature.geometry as MultiLineString).components){
+					for each(var ls:LineString in ((evt.feature as VectorFeature).geometry as MultiLineString).components){
 						for each(currentPoint in ls.components){
 							//To prevent the same point twice
 							var pointPath:Object = {};	//We use pointPath as object to put properties correctly
@@ -95,13 +96,13 @@
 					pointNum=1;		
 				}
 				//polygon informations
-				else if(getQualifiedClassName(evt.vectorfeature.geometry) == "org.openscales.core.geometry::Polygon"){
+				else if(getQualifiedClassName((evt.feature as VectorFeature).geometry) == "org.openscales.core.geometry::Polygon"){
 					name = {};
 					name.Name = "Name";
-					name.Value = evt.vectorfeature.id;
+					name.Value = evt.feature.name;
 					properties.push(name);
 					
-					for each(var lr:org.openscales.core.geometry.LinearRing in (evt.vectorfeature.geometry as Polygon).components){
+					for each(var lr:LinearRing in ((evt.feature as VectorFeature).geometry as Polygon).components){
 						for each(currentPoint in lr.components){
 							var pointPoly:Object = {};
 							pointPoly.Name = "Point_" + pointNum; pointNum++;
@@ -113,10 +114,10 @@
 				}
 				else{
 					// Only for WFS features (for the moment)
-					for (var key:String in evt.vectorfeature.attributes) {	
+					for (var key:String in evt.feature.attributes) {	
 						var property:Object = {};
 						property.Name = key;
-						property.Value = evt.vectorfeature.attributes[key];
+						property.Value = evt.feature.attributes[key];
 						properties.push(property);				
 					}
 				}				

@@ -4,7 +4,6 @@
 		<![CDATA[
 			import org.openscales.core.layer.ogc.WFS;
 			import org.openscales.proj4as.ProjProjection;
-			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.layer.VectorLayer;
 			import org.openscales.core.handler.IHandler;
 			import org.openscales.core.handler.mouse.DragHandler;
@@ -42,7 +41,7 @@
 				
 				//We create a marker over Lyon (France) with EPSG:900913 projection
 				var markers:Markers = new Markers("Markers");
-				feature = new Feature(markers,new LonLat(538850.47459,5740916.1243),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
+				feature = new Feature(null, markers,new LonLat(538850.47459,5740916.1243),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
 				mark = feature.createMarker();
 				
 				markLyon = feature.createMarker();
@@ -59,7 +58,7 @@
 				with EPSG:4326 projection.*/
 				var vect:VectorLayer = new VectorLayer("vector");
 				var p:org.openscales.core.geometry.Point = new org.openscales.core.geometry.Point(4.8,45.7);
-				vect.addFeatures(new VectorFeature(p));
+				vect.addFeatures(new Feature(p));
 				vect.projection = new ProjProjection("EPSG:4326");
 				map.addLayer(vect);
 

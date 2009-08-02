@@ -7,9 +7,10 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.SelectBoxEvent;
 	import org.openscales.core.feature.Style;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.feature.VectorFeature;
 	
 	/**
 	 * Handler to draw points.
@@ -51,9 +52,8 @@ package org.openscales.core.handler.sketch
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
 			
-			var feature:VectorFeature;
-			feature = new VectorFeature();
-			feature.id = id.toString(); id++;
+			var feature:VectorFeature = new VectorFeature();
+			feature.name = id.toString(); id++;
 			feature.style = style;
 			feature.lonlat = lonlat; 		
 			feature.geometry = point;		

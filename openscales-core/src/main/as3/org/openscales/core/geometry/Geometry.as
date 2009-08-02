@@ -40,7 +40,7 @@ package org.openscales.core.geometry
 		}
 		
 		/**
-		 * Method to convert the lon/lat (x/y) value of the geometry from a projection sysrtem to an other.
+		 * Method to convert the lon/lat (x/y) value of the geometry from a projection system to an other.
 		 * 
 		 * @param source The source projection
 		 * @param dest The destination projection

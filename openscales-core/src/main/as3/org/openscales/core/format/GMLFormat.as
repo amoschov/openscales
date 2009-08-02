@@ -4,7 +4,7 @@ package org.openscales.core.format
 	import flash.xml.XMLNode;
 	
 	import org.openscales.core.Util;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
@@ -16,6 +16,7 @@ package org.openscales.core.format
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
+	import org.openscales.core.feature.VectorFeature;
 	
 	/**
 	 * Read/Wite GML. Supports the GML simple features profile.
@@ -109,7 +110,7 @@ package org.openscales.core.format
 	        var p:Array = new Array();
 	
 	        var feature:VectorFeature = new VectorFeature();
-			feature.id = xmlNode..@fid;
+			feature.name = xmlNode..@fid;
 			
 	        if (xmlNode..*::the_geom.*::MultiPolygon.length() > 0) {
 	            var multipolygon:XML = xmlNode..*::the_geom.*::MultiPolygon[0];
