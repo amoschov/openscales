@@ -21,10 +21,10 @@ package org.openscales.core.feature
 	        for (var i:int = 0; i < this.lineStrings.components.length; i++) {
 	        	var lineString:LineString = this.lineStrings.components[i];
 		        for (var j:int = 0; j < lineString.components.length; j++) {
-					var point:Point = lineString.components[i];
+					var point:Point = lineString.components[j];
 					var x:Number = (point.x / this.layer.resolution + this.left);
 		        	var y:Number = (this.top - point.y / this.layer.resolution);
-					if (i==0) {
+					if (j==0) {
 						this.graphics.moveTo(x, y);
 					} else {
 						this.graphics.lineTo(x, y); 

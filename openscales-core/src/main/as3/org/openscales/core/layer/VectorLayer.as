@@ -19,9 +19,7 @@ package org.openscales.core.layer
 	 */
 	public class VectorLayer extends Layer
 	{
-	
-	    private var _features:Array = null;
-	    
+		    
 	    private var _featuresBbox:Bounds = null;
 
 	    private var _selectedFeatures:Array = null;
@@ -48,11 +46,10 @@ package org.openscales.core.layer
 	
 	        super(name, isBaseLayer, visible, projection, proxy);
 	
-	        this.features = new Array();
 	        this.selectedFeatures = new Array();
 	        this.featuresBbox = new Bounds();
 	        // For better performances
-	        //this.cacheAsBitmap = true;
+	        this.cacheAsBitmap = true;
 	        this._temporaryProjection = this.projection;
 	        
 	    }
@@ -60,8 +57,7 @@ package org.openscales.core.layer
 	    override public function destroy(setNewBaseLayer:Boolean = true):void {
 	        super.destroy();  
 	
-	        this.destroyFeatures();
-	        this.features = null;
+	        this.clear();
 	        this.selectedFeatures = null;
 	        this.geometryType = null;
 	        this.drawn = false;
@@ -128,78 +124,69 @@ package org.openscales.core.layer
 	    /**
 	     * Add Features to the layer.
 	     *
-	     * @param features
+	     * @param features array
 	     */
-	    public function addFeatures(features:Object):void {
-			
-			if (!(features is Array)) {
-                features = [features];
-            }
-
-	        for (var i:int = 0; i < features.length; i++) {
-	            var feature:VectorFeature = features[i];
-	            
-	            if (this.geometryType &&
-	                !(getQualifiedClassName(feature.geometry) == this.geometryType)) {
-	                    var throwStr:String = "addFeatures : component should be an " + 
-	                                    getQualifiedClassName(this.geometryType);
-	                    throw throwStr;
-	                }
-				
-				if (this.map != null && this.map.projection != null && this.projection != null && 
-					getQualifiedClassName(this).split("::")[1] != "WFS" && this.projection.srsCode != this.map.projection.srsCode) {
-						
-					feature.geometry.transform(this.projection, this.map.projection);
-				}
-				
-	            this.features.push(feature);
-	            feature.layer = this;
-	
-	            if (!feature.style) {
-	                feature.style = this.style;
-	            }
-	
-	            this.preFeatureInsert(feature);
-	            this.addChild(feature);
-                feature.draw();
-	            
-	            this.onFeatureInsert(feature);
-	        }
+	    public function addFeatures(features:Array):void {
+	    	 for (var i:int = 0; i < features.length; i++) {
+	    	 	this.addFeature(features[i]);
+	    	 }
 	    }
 	    
-	    public function removeFeatures(features:Object):void {
-			if (!(features is Array)) {
-                features = [features];
-            }
+	    /**
+	     * Add Feature to the layer.
+	     *
+	     * @param feature The feature to add
+	     */
+	    public function addFeature(feature:VectorFeature):void {
             
-	        for (var i:int = features.length - 1; i >= 0; i--) {
-	            var feature:VectorFeature = features[i];
-	            this.features = Util.removeItem(this.features, feature);
-	
+            if (this.geometryType &&
+                !(getQualifiedClassName(feature.geometry) == this.geometryType)) {
+                    var throwStr:String = "addFeatures : component should be an " + 
+                                    getQualifiedClassName(this.geometryType);
+                    throw throwStr;
+                }
+			
+			if (this.map != null && this.map.projection != null && this.projection != null && 
+				getQualifiedClassName(this).split("::")[1] != "WFS" && this.projection.srsCode != this.map.projection.srsCode) {
+					
+				feature.geometry.transform(this.projection, this.map.projection);
+			}
+			
+            feature.layer = this;
 
-	            if (Util.indexOf(this.selectedFeatures, feature) != -1){
-	                Util.removeItem(this.selectedFeatures, feature);
-	            }
-	        }
+            if (!feature.style) {
+                feature.style = this.style;
+            }
+
+            this.preFeatureInsert(feature);
+            this.addChild(feature);
+            feature.draw();
+            
+            this.onFeatureInsert(feature);
 	    }
 	    
-	/**
-     * Erase and destroy features on the layer.
-     *
-     */
-	    public function destroyFeatures():void {
-	    	this.selectedFeatures = new Array();
-	    	var destroyed:VectorFeature = null;
-	        while(this.features.length > 0) {
-	            destroyed = this.features.shift();
-	            destroyed.destroy();
-	            destroyed = null;
-	        }
+	    public function removeFeatures(features:Array):void {
+	    	for (var i:int = 0; i < features.length; i++) {
+	    	 	this.removeFeature(features[i]);
+	    	 }
 	    }
 	    
+	    public function removeFeature(feature:VectorFeature):void {
+	            
+            for(var j:int = 0;j<this.numChildren;j++)
+	    	{
+	    		if(this.getChildAt(j) == feature)
+	    			this.removeChildAt(j);
+			}
+            if (Util.indexOf(this.selectedFeatures, feature) != -1){
+                Util.removeItem(this.selectedFeatures, feature);
+            }
+		     	
+
+	    }    
 	    
-	    public function getFeatureById(featureId:String):org.openscales.core.feature.Feature {
-	    	var feature:org.openscales.core.feature.Feature = null;
+	    public function getFeatureById(featureId:String):VectorFeature {
+	    	var feature:VectorFeature = null;
 	        for(var i:int=0; i<this.features.length; ++i) {
 	            if(this.features[i].id == featureId) {
 	                feature = this.features[i];
@@ -211,11 +198,16 @@ package org.openscales.core.layer
 	    
 	    //Getters and setters
 	    public function get features():Array {
-			return this._features;
-		}
-		
-		public function set features(value:Array):void {
-			this._features = value;
+			var featureArray:Array = new Array();
+
+	    	for(var i:int = 0;i<this.numChildren;i++)
+	    	{
+	    		if(this.getChildAt(i) is Feature)
+	    		{
+	    				featureArray.push(this.getChildAt(i));
+	    		}
+	    	}
+	    	return featureArray;
 		}
 		
 		public function get featuresBbox():Bounds {

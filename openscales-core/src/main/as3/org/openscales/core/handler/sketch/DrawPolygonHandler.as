@@ -15,6 +15,8 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.PolygonFeature;
+	import org.openscales.core.feature.PointFeature;
 
 	/**
 	 * Handler to draw polygons.
@@ -49,8 +51,8 @@ package org.openscales.core.handler.sketch
 		public function mouseClick(event:MouseEvent):void {
 			
 			if (drawLayer != null) {
-				var feature:VectorFeature = new VectorFeature();
-				feature.name = "polygon."+id.toString(); id++;
+				
+				var name:String = "polygon."+id.toString(); id++;
 				
 				var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
 				var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
@@ -59,26 +61,25 @@ package org.openscales.core.handler.sketch
 				if(newFeature) {					
 					lring = new LinearRing([point]);
 					polygon = new Polygon(lring);
-					feature.geometry = polygon;
+					var polygonFeature:PolygonFeature = new PolygonFeature(polygon);
 					
 					// We create a point the first time to see were we have clicked
-					var featurePoint:VectorFeature = new VectorFeature();
-					featurePoint.name = id.toString();id++;
-					featurePoint.geometry = point;
+					var pointFeature:PointFeature = new PointFeature(point);
+					pointFeature.name = id.toString();id++;
 					
-					drawLayer.addFeatures(featurePoint);
-					drawLayer.addFeatures(feature);
+					drawLayer.addFeature(pointFeature);
+					drawLayer.addFeature(polygonFeature);
 					
 					newFeature = false;
 				}
 				else {
 					//When we have at least a 2 points polygon, we can remove the first point					
 					if(!_firstPointRemoved && getQualifiedClassName(drawLayer.features[drawLayer.features.length-2].geometry) == "org.openscales.core.geometry::Point") {
-						drawLayer.removeFeatures(drawLayer.features[drawLayer.features.length-2]);
+						drawLayer.removeFeature(drawLayer.features[drawLayer.features.length-2]);
 						_firstPointRemoved = true;
 					}
 					
-					drawLayer.clear();
+					//drawLayer.clear();
 					lring.addComponent(point);
 					drawLayer.redraw();
 				}
@@ -101,7 +102,7 @@ package org.openscales.core.handler.sketch
 			if(feature!=null){
 				//Apply the new style
 				feature.style = style;
-				drawLayer.clear();
+				//drawLayer.clear();
 				drawLayer.redraw();
 			}		
 		}

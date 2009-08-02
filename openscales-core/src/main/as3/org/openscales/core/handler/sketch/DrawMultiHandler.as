@@ -98,7 +98,7 @@ package org.openscales.core.handler.sketch
 							}
 							drawType = "MultiPoint";
 						}
-						drawLayer.removeFeatures(f);
+						drawLayer.removeFeature(f);
 					}
 				}
 				if(drawType == "MultiPoint")
@@ -113,7 +113,7 @@ package org.openscales.core.handler.sketch
 				{
 					feature = new VectorFeature(multiPolygon,null,style);
 				}		 
-			drawLayer.addFeatures(feature);
+			drawLayer.addFeature(feature);
 			return(feature);
 			
 		}

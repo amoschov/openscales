@@ -11,6 +11,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.PointFeature;
 	
 	/**
 	 * Handler to draw points.
@@ -19,7 +20,7 @@ package org.openscales.core.handler.sketch
 	{
 		
 		// The layer in which we'll draw
-		private var _drawLayer:org.openscales.core.layer.VectorLayer = null;
+		private var _drawLayer:VectorLayer = null;
 		
 		
 		private var id:Number = 0;
@@ -52,16 +53,14 @@ package org.openscales.core.handler.sketch
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
 			
-			var feature:VectorFeature = new VectorFeature();
-			feature.name = id.toString(); id++;
-			feature.style = style;
-			feature.lonlat = lonlat; 		
-			feature.geometry = point;		
-			drawLayer.addFeatures(feature);
+			var pointFeature:org.openscales.core.feature.PointFeature = new org.openscales.core.feature.PointFeature(point, null, style);
+			pointFeature.name = id.toString(); id++;
+			pointFeature.lonlat = lonlat; 			
+			drawLayer.addFeature(pointFeature);
 		}
 		
 		public function featureSelectedBox(event:SelectBoxEvent):void {
             	
-            }
+        }
 	}
 }

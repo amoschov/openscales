@@ -15,6 +15,9 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.PointFeature;
+	import org.openscales.core.feature.LineStringFeature;
+	import org.openscales.core.feature.MultiLineStringFeature;
 	
 	/**
 	 * Handler to draw paths (multi line strings)
@@ -22,7 +25,7 @@ package org.openscales.core.handler.sketch
 	public class DrawPathHandler extends AbstractDrawHandler
 	{		
 		// The layer in which we'll draw
-		private var _drawLayer:org.openscales.core.layer.VectorLayer = null;				
+		private var _drawLayer:VectorLayer = null;				
 		private var _id:Number = 0;
 		private var _lastPoint:Point = null;
 		private var _newFeature:Boolean = true;
@@ -44,25 +47,21 @@ package org.openscales.core.handler.sketch
 		override protected function registerListeners():void{
 			this._dblClickHandler.active = true;
 			this._dblClickHandler.doubleclick = this.mouseDblClick;
-			this.map.addEventListener(MouseEvent.CLICK, this.mouseClick); 
+			this.map.addEventListener(MouseEvent.CLICK, this.drawLine); 
 		}
 		
 		override protected function unregisterListeners():void{
-        	this.map.removeEventListener(MouseEvent.CLICK, this.mouseClick);
+        	this.map.removeEventListener(MouseEvent.CLICK, this.drawLine);
         	this._dblClickHandler.active = false;
 		}
-		
-		public function mouseClick(event:MouseEvent):void {	 					
-			this.drawLine();						
-		}
-		
-		 public function mouseDblClick(event:MouseEvent):void {
+				
+		public function mouseDblClick(event:MouseEvent):void {
 			this.drawFinalPath();
 		} 
 		
-		private function drawLine():void{
-			var feature:VectorFeature = new VectorFeature(); 
-			feature.name = "path." + id.toString(); id++;
+		private function drawLine(event:MouseEvent):void{
+			
+			var name:String = "path." + id.toString(); id++;
 			
 			var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
@@ -70,21 +69,23 @@ package org.openscales.core.handler.sketch
 			
 			if(newFeature){				
 				lastPoint = point;
-				feature.geometry = point;
-				drawLayer.addFeatures(feature);
+				var pointFeature:PointFeature = new PointFeature(point); 
+				pointFeature.name = name;
+				drawLayer.addFeature(pointFeature);
 				newFeature = false;				
 			}
 			else {
 				//When we have at least a 2 points path, we can remove the first point				
-				if(getQualifiedClassName(drawLayer.features[drawLayer.features.length-1].geometry) == "org.openscales.core.geometry::Point") {
-					drawLayer.removeFeatures(drawLayer.features[drawLayer.features.length-1]);
+				if(drawLayer.features[drawLayer.features.length-1] is PointFeature) {
+					drawLayer.removeFeature(drawLayer.features[drawLayer.features.length-1]);
 				}								
-				drawLayer.clear();
+				//drawLayer.clear();
 				var points:Array = new Array(2);
 				points.push(lastPoint, point);
 				var lstring:LineString = new LineString(points);
-				feature.geometry = lstring;
-				drawLayer.addFeatures(feature);
+				var lineStringFeature:LineStringFeature = new LineStringFeature(lstring);
+				lineStringFeature.name = name;
+				drawLayer.addFeature(lineStringFeature);
 				drawLayer.redraw();
 				lastPoint = point;
 			}
@@ -101,7 +102,7 @@ package org.openscales.core.handler.sketch
 			var featuresToRemove:Array = [];
 			
 			for each (var feature:VectorFeature in drawLayer.features) {
-				if (getQualifiedClassName(feature.geometry) == "org.openscales.core.geometry::LineString") {
+				if (feature is LineStringFeature) {
 					featuresToRemove.push(feature);
 					lstrings.push(feature.geometry);
 				}
@@ -110,15 +111,13 @@ package org.openscales.core.handler.sketch
 			//We create a MultiLineString with several LineStrings (if there are line strings)
 			if (lstrings.length > 0) {
 				var mlString:MultiLineString = new MultiLineString(lstrings);
-				var mlFeature:VectorFeature = new VectorFeature();
+				var mlFeature:MultiLineStringFeature = new MultiLineStringFeature(mlString);
 				mlFeature.name = "path." + id.toString(); id++;
 				mlFeature.style = style;
-				mlFeature.geometry = mlString;
 				
 				drawLayer.removeFeatures(featuresToRemove);
-				drawLayer.addFeatures(mlFeature);
+				drawLayer.addFeature(mlFeature);
 				
-				drawLayer.clear();
 				drawLayer.redraw();
 			}
 			

@@ -93,7 +93,6 @@ package org.openscales.core.tile
 			var wfsLayer:WFS = this.layer as WFS;
 			
 			if (wfsLayer && wfsLayer.vectorMode) {
-				wfsLayer.destroyFeatures();
 				wfsLayer.clear();
 			}
 						
@@ -103,7 +102,7 @@ package org.openscales.core.tile
 	            	gml.externalProj = this.layer.projection;
 	            	gml.internalProj = this.layer.map.projection;
         		}
-	            wfsLayer.addFeatures(gml.read(doc));
+	            wfsLayer.addFeatures(gml.read(doc) as Array);
 	        } else {
 	            var resultFeatures:Object = doc..*::featureMember;
 	            this.addResults(resultFeatures);
