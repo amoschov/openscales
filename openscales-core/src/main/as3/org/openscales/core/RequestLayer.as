@@ -110,7 +110,7 @@ package org.openscales.core
 		 /**
 		 * @private
 		 * */
-		 public function set altUrls(alturls:Array)
+		 public function set altUrls(alturls:Array):void
 		 {
 		 	this._altUrls=alturls;
 		 }

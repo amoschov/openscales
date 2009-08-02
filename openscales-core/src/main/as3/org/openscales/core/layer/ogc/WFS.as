@@ -94,10 +94,6 @@ package org.openscales.core.layer.ogc
 	        
 	        super(name, isBaseLayer, visible, projection, proxy);
 	        
-	        if (!this.renderer || !this.vectorMode) {
-	            this.vectorMode = false; 
-	        }
-	        
 	        if (!(this.geometryColumn)) {
 	            this.geometryColumn = "the_geom";
 	        }    

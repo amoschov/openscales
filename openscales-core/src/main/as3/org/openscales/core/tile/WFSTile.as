@@ -94,7 +94,7 @@ package org.openscales.core.tile
 			
 			if (wfsLayer && wfsLayer.vectorMode) {
 				wfsLayer.destroyFeatures();
-				wfsLayer.renderer.clear();
+				wfsLayer.clear();
 			}
 						
 	        if (wfsLayer && wfsLayer.vectorMode) {
@@ -118,7 +118,7 @@ package org.openscales.core.tile
 		public function addResults(results:Object):void {
 			var wfsLayer:WFS = this.layer as WFS;
 			for (var i:int=0; i < results.length; i++) {
-				var data = this.processXMLNode(results[i]);
+				var data:Object = this.processXMLNode(results[i]);
 	            var feature:Feature = new Feature( this.layer, data.lonlat, data);
 	            this.features.push(feature);
 	        }

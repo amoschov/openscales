@@ -17,6 +17,12 @@ package org.openscales.core.format
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
 	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.PointFeature;
+	import org.openscales.core.feature.MultiPointFeature;
+	import org.openscales.core.feature.LineStringFeature;
+	import org.openscales.core.feature.MultiLineStringFeature;
+	import org.openscales.core.feature.PolygonFeature;
+	import org.openscales.core.feature.MultiPolygonFeature;
 	
 	/**
 	 * Read/Wite GML. Supports the GML simple features profile.
@@ -109,8 +115,7 @@ package org.openscales.core.format
     		var geom:Collection = null;
 	        var p:Array = new Array();
 	
-	        var feature:VectorFeature = new VectorFeature();
-			feature.name = xmlNode..@fid;
+	        var feature:VectorFeature = null;
 			
 	        if (xmlNode..*::the_geom.*::MultiPolygon.length() > 0) {
 	            var multipolygon:XML = xmlNode..*::the_geom.*::MultiPolygon[0];
@@ -168,8 +173,26 @@ package org.openscales.core.format
 	        }
 	        
 	        if(geom) {
-                
-		        feature.geometry = geom; 
+	        	
+	        	if(geom is Point) {
+	        		feature = new PointFeature(geom);
+	        	} else if(geom is MultiPoint) {
+	        		feature = new MultiPointFeature(geom);
+	        	} else if(geom is LineString) {
+	        		feature = new LineStringFeature(geom);
+	        	} else if(geom is MultiLineString) {
+	        		feature = new MultiLineStringFeature(geom);
+	        	} else if(geom is Polygon) {
+	        		feature = new PolygonFeature(geom);
+	        	} else if(geom is MultiPolygon) {
+	        		feature = new MultiPolygonFeature(geom);
+	        	} else {
+	        		trace("Unrecognized geometry);"); 
+	        		return null; 
+	        	}
+	        	
+                feature.name = xmlNode..@fid;
+		        
 		        if (this.extractAttributes) {
 		            feature.attributes = this.parseAttributes(xmlNode);
 		        }    

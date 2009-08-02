@@ -107,7 +107,7 @@
 						i--;
 					}
 				}
-				drawLayer.renderer.clear();
+				drawLayer.clear();
 				drawLayer.redraw();
 				btnDeleteSelected.enabled = false;
 				/* this.featureInfo.dgFeatureInfo.dataProvider=null; */
@@ -118,7 +118,7 @@
 			 */
 			private function onDeleteAllClick(event:Event):void {
 				drawLayer.destroyFeatures();
-				drawLayer.renderer.clear();
+				drawLayer.clear();
 				selectFeatureHandler.lastfeature = null;				
 				switch(drawType)
 				{

@@ -79,7 +79,7 @@ package org.openscales.core.handler.sketch
 				if(getQualifiedClassName(drawLayer.features[drawLayer.features.length-1].geometry) == "org.openscales.core.geometry::Point") {
 					drawLayer.removeFeatures(drawLayer.features[drawLayer.features.length-1]);
 				}								
-				drawLayer.renderer.clear();
+				drawLayer.clear();
 				var points:Array = new Array(2);
 				points.push(lastPoint, point);
 				var lstring:LineString = new LineString(points);
@@ -118,7 +118,7 @@ package org.openscales.core.handler.sketch
 				drawLayer.removeFeatures(featuresToRemove);
 				drawLayer.addFeatures(mlFeature);
 				
-				drawLayer.renderer.clear();
+				drawLayer.clear();
 				drawLayer.redraw();
 			}
 			

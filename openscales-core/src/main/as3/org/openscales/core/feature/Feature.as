@@ -277,5 +277,19 @@ package org.openscales.core.feature
 			this.useHandCursor = true;
 		}
 		
+		public function get top():Number {
+			if(this.layer)
+				return this.layer.map.extent.top / this.layer.map.resolution;
+			else
+				return NaN;
+		}
+		
+		public function get left():Number {
+			if(this.layer)
+				return - this.layer.map.extent.left / this.layer.map.resolution;
+			else
+				return NaN;
+		}
+		
   }
 }

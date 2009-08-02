@@ -78,7 +78,7 @@ package org.openscales.core.handler.sketch
 						_firstPointRemoved = true;
 					}
 					
-					drawLayer.renderer.clear();
+					drawLayer.clear();
 					lring.addComponent(point);
 					drawLayer.redraw();
 				}
@@ -101,7 +101,7 @@ package org.openscales.core.handler.sketch
 			if(feature!=null){
 				//Apply the new style
 				feature.style = style;
-				drawLayer.renderer.clear();
+				drawLayer.clear();
 				drawLayer.redraw();
 			}		
 		}

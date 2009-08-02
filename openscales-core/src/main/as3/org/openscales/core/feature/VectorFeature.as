@@ -129,6 +129,22 @@ package org.openscales.core.feature
 			this._originalStyle = value;
 		}
 		
+		public function draw():void {
+			
+			this.graphics.clear();
+			
+			// Apply style
+			if (style.isFilled) {
+				this.graphics.beginFill(style.fillColor, style.fillOpacity);
+           	} else {
+            	this.graphics.endFill();
+           	}
+	    
+            if (style.isStroked) {
+                this.graphics.lineStyle(style.strokeWidth, style.strokeColor, style.strokeOpacity, false, "normal", style.strokeLinecap);
+            }
+
+		}
 		
 	}
 }
