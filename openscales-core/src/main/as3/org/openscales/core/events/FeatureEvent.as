@@ -2,7 +2,6 @@ package org.openscales.core.events
 {
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.feature.Feature;
-	import org.openscales.core.feature.VectorFeature;
 
 	 /**
 	 * 
@@ -38,6 +37,7 @@ package org.openscales.core.events
 		public static const FEATURE_DRAGGING:String="openscales.feature.dragging";
 		public static const FEATURE_SELECTED:String="openscales.feature.selected";
 		public static const FEATURE_SELECTEDBOX:String="openscales.feature.selectedbox";
+		public static const FEATURE_UNSELECTED:String="org.openscales.feature.unselected";
 
 		
 		/**

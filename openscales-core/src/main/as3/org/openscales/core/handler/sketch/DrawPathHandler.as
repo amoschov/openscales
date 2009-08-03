@@ -119,8 +119,7 @@ package org.openscales.core.handler.sketch
 				drawLayer.addFeature(mlFeature);
 				
 				drawLayer.redraw();
-			}
-			
+			}			
 		}
 		
 		public function featureSelectedBox(event:SelectBoxEvent):void {

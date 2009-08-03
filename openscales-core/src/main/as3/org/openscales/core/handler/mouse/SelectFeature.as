@@ -144,7 +144,8 @@ package org.openscales.core.handler.mouse
 							lastfeature = null;
 							currentfeature.layer.redraw();						
 							/* btnDeleteSelected.enabled = false; */			
-							/* this.featureInfo.dgFeatureInfo.dataProvider=null; */   //clear the information tab	
+							//clear the information tab
+							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.currentfeature));	
 							selectFeauturesLength--;					
 						}
 					}							

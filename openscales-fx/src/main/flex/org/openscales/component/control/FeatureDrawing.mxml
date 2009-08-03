@@ -55,8 +55,7 @@
 				//Add select feature handler to the map
 				if(this.map != null){
 					this.map.addHandler(selectFeatureHandler);
-				}				
-				
+				}								
 			}
 			
 			/**
@@ -65,12 +64,7 @@
 			 */
 			private function OnMergeClick(event:MouseEvent):void {
 				
-				/*TO DO
-				
-					Passe le tableau des features sÃ©lectionnÃ© en argument, 
-					et retourne une multi gÃ©omÃ©trie des features en question
-					
-				END TODO*/
+				/* tab of selected features in params, return a multigeometry of this selected features */					
 				var feature:VectorFeature = multiPointHandler.buttonClicked(selectFeatureHandler.selectFeatures) as VectorFeature;
 				selectFeatureHandler.currentfeature = feature;				
 				selectFeatureHandler.OnSelection();
@@ -103,14 +97,13 @@
 				for(i;i<drawLayer.features.length;i++){
 					feature = drawLayer.features[i];
 					if(feature.selected){
-						drawLayer.removeFeatures(drawLayer.features[i]);
+						drawLayer.removeFeature(drawLayer.features[i]);
 						i--;
 					}
 				}
-				drawLayer.clear();
-				drawLayer.redraw();
 				btnDeleteSelected.enabled = false;
-				/* this.featureInfo.dgFeatureInfo.dataProvider=null; */
+				//clear the information tab
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
 			}
 
 			/**
@@ -125,6 +118,7 @@
 					case "polygon":{polygonHandler.newFeature = true; break;}
 				}
 				/* this.featureInfo.dgFeatureInfo.dataProvider=null; */ //clear the information tab
+				this.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
 			}
 			
 			/**
@@ -136,7 +130,7 @@
 				
 				if (last >= 0) {					
 					lastFeature = drawLayer.features[last];
-					drawLayer.removeFeatures(drawLayer.features[last]);
+					drawLayer.removeFeature(drawLayer.features[last]);
 								
 					switch(drawType)
 					{

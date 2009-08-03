@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*" width="282" height="168">
+<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*" 
+	creationComplete="initInfo();" width="282" height="168">
 	
 	<mx:Script>
 		<![CDATA[
@@ -28,12 +29,20 @@
 			public var lastP:org.openscales.core.geometry.Point;		
 			
 			/**
+			 * Register events on creation
+			 */
+			public function initInfo():void{
+				this.map.addEventListener(FeatureEvent.FEATURE_UNSELECTED, clearInformations);
+			}
+			
+			/**
 			 * Method which display the feature properties. We differenciate information with the feature : 
 			 * with a point, we only have to show its name and Lon/Lat.
 			 * with path, its name and all coordinates of each point in the path
 			 * with polygon, same as path
-			 */
+			 */				
 			public function showInfo(evt:FeatureEvent):void {
+				//Properties
 				var properties:Array = [];
 				var name:Object;
 				var pointNum:Number = 1; //indicate the number of the point (because point.id is too long)
@@ -137,6 +146,14 @@
 				}
 			}
 			
+			/**
+			 * Update the tab when there is no more selected features
+			 * @param event
+			 */			
+			private function clearInformations(event:FeatureEvent):void{
+				this.dgFeatureInfo.dataProvider=null;
+			}
+			
 		]]>
 	</mx:Script>
 	<mx:DataGrid x="10" y="10" width="262" height="148" id="dgFeatureInfo" editable="false">
@@ -145,7 +162,4 @@
 			<mx:DataGridColumn headerText="Value" dataField="Value"/>
 		</mx:columns>
 	</mx:DataGrid>
-
-	
-
 </control:Control>

@@ -43,6 +43,7 @@
 			private function showInformations(event:FeatureEvent):void{
 				this.featureInfo.showInfo(event);
 			}
+			
 			/**
 			 * Manage switching tab
 			 * To prevent a feature selection. If user isn't on drawing tab, he can't select a feature
@@ -122,6 +123,6 @@
 	<!--mx:Text text="For the moment you can't delete WFS points, even if they are selected" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="219"/-->
 
 
-	<control:FeatureInfo id="featureInfo" x="20" y="132" width="300" height="165"/>
+	<control:FeatureInfo id="featureInfo" map="{this.map}" x="20" y="132" width="300" height="165"/>
 	
 </control:Control>
