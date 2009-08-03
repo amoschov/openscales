@@ -50,7 +50,7 @@ package org.openscales.core.layer
 	    
 	    override public function onMapResize():void {
 	   		for each (var feature:Feature in this.features){
-		        this.removeChild(feature);
+		        this.graphics.clear();
 		        feature.draw();
 	    	}
 	    }
