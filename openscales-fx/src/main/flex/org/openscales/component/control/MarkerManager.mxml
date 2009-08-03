@@ -5,23 +5,23 @@
   width="330" height="330">
   <mx:Script>
     <![CDATA[
+    	import org.openscales.core.feature.Marker;
+      import org.openscales.core.layer.FeatureLayer;
       import mx.containers.TitleWindow;
       import org.openscales.fx.layer.FxLayer;
-      import org.openscales.fx.feature.FxFeature;
       import org.openscales.fx.popup.FxAnchored;
       import org.openscales.fx.popup.FxPopup;
       import org.openscales.core.popup.Popup;
       import org.openscales.core.basetypes.Pixel;
       import org.openscales.core.basetypes.Size;
-      import org.openscales.core.Marker;
+      import org.openscales.core.feature.Marker;
       import org.openscales.core.basetypes.LonLat;
       import org.openscales.core.feature.Feature;
-      import org.openscales.core.layer.Markers;
       import org.openscales.core.Map;
       import org.openscales.core.layer.Layer;
       import mx.collections.ArrayCollection;
 
-      public var markerLayer:Markers = new Markers("Markers");
+      public var markerLayer:FeatureLayer = new FeatureLayer("Markers");
 
       [Bindable]
       public var availableIcons:Array;
@@ -43,15 +43,14 @@
           else if (popupTypeFlex.selected)
             featureData.popupContent = new TitleWindow();
 
-          var feature:FxFeature = new FxFeature(markerLayer, new LonLat(markerLon.value,markerLat.value),featureData,fxmap);
-          var mark:Marker = feature.createMarker(iconChoice.selectedItem.url, new Size(iconWidth.value,iconHeight.value));
-          mark.addEventListener(MouseEvent.CLICK, function():void {fxmap.addPopup(feature.createPopup());});
-          markerLayer.addMarker(mark);
+          var marker:Marker = new Marker( markerLayer, new LonLat(markerLon.value,markerLat.value),featureData );
+          marker.addEventListener(MouseEvent.CLICK, function():void {fxmap.addPopup(marker.createPopup());});
+          markerLayer.addFeature(marker);
         }
       }
 
       public function clearHandler(event:MouseEvent):void {
-        markerLayer.clearMarkers();
+        markerLayer.clear();
       }
 
       override public function set map(value:Map):void {

@@ -1,5 +1,7 @@
 package org.openscales.core.popup
 {
+  import flash.display.Sprite;
+  
   import org.openscales.core.basetypes.Bounds;
   import org.openscales.core.basetypes.LonLat;
   import org.openscales.core.basetypes.Pixel;
@@ -21,14 +23,9 @@ package org.openscales.core.popup
     static public var TL:String = "tl";
     static public var BL:String = "bl";
 
-      /**
-       * Object to which we'll anchor the popup. Must expose
-       * 'size' (Size) and 'offset' (Pixel) properties.
-       * TODO : use an interface for that
-       */
-      private var _anchor:Object = null;
+    private var _anchor:Sprite = null;
 
-      public function Anchored(id:String, lonlat:LonLat, background:uint, border:Number, size:Size, contentHTML:String, anchor:Object, closeBox:Boolean) {
+      public function Anchored(id:String, lonlat:LonLat, background:uint, border:Number, size:Size, contentHTML:String, anchor:Sprite, closeBox:Boolean) {
           super(id, lonlat, background, border, size, contentHTML, closeBox);
 
           this._anchor = anchor;
@@ -75,19 +72,19 @@ package org.openscales.core.popup
           var top:Boolean = (this.relativePosition == TR || this.relativePosition == TL);
 
           if(top){
-            newPx.y += -this._anchor.size.h/2 - this.size.h;
+            newPx.y += -this._anchor.height/2 - this.size.h;
           }
           else{
-            newPx.y += this._anchor.size.h/2;
+            newPx.y += this._anchor.height/2;
           }
 
           var left:Boolean = (this.relativePosition == BL || this.relativePosition == TL);
 
           if(left){
-            newPx.x += -this._anchor.size.w/2 - this.size.w;
+            newPx.x += -this._anchor.width/2 - this.size.w;
           }
           else{
-            newPx.x += this._anchor.size.w/2;
+            newPx.x += this._anchor.width/2;
           }
 
           return newPx;

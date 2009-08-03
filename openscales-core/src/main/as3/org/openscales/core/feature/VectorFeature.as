@@ -129,9 +129,8 @@ package org.openscales.core.feature
 			this._originalStyle = value;
 		}
 		
-		public function draw():void {
-			
-			this.graphics.clear();
+		override public function draw():void {
+			super.draw();
 			
 			// Apply style
 			if (style.isFilled) {

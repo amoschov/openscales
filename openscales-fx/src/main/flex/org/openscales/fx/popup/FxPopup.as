@@ -1,25 +1,24 @@
 package org.openscales.fx.popup
 {
   import com.gskinner.motion.GTweeny;
-
+  
   import flash.display.Sprite;
   import flash.events.Event;
   import flash.events.MouseEvent;
   import flash.utils.getQualifiedClassName;
-
+  
   import mx.containers.TitleWindow;
   import mx.controls.Image;
   import mx.core.UIComponent;
   import mx.events.CloseEvent;
-
+  
   import org.openscales.core.Map;
-  import org.openscales.core.Marker;
   import org.openscales.core.Util;
   import org.openscales.core.basetypes.LonLat;
   import org.openscales.core.basetypes.Pixel;
   import org.openscales.core.basetypes.Size;
+  import org.openscales.core.feature.Feature;
   import org.openscales.fx.FxMap;
-  import org.openscales.fx.feature.FxFeature;
 
   public class FxPopup extends UIComponent
   {
@@ -33,7 +32,7 @@ package org.openscales.fx.popup
       private var _fxmap:FxMap = null;
       private var _map:Map = null;
       private var _content:UIComponent = null;
-      private var _feature:FxFeature = null;
+      private var _feature:Feature = null;
       private var _closeBox:Boolean;
 
       [Embed(source="/org/openscales/fx/img/close.gif")]
@@ -187,10 +186,10 @@ package org.openscales.fx.popup
       this._lonlat = value;
     }
 
-    public function get feature():FxFeature {
+    public function get feature():Feature {
       return this._feature;
     }
-    public function set feature(value:FxFeature):void {
+    public function set feature(value:Feature):void {
       this._feature = value;
     }
 

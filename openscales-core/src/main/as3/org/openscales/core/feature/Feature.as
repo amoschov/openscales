@@ -3,7 +3,7 @@ package org.openscales.core.feature
   import flash.utils.getQualifiedClassName;
   
   import org.openscales.core.Icon;
-  import org.openscales.core.Marker;
+  import org.openscales.core.feature.Marker;
   import org.openscales.core.Util;
   import org.openscales.core.basetypes.Bounds;
   import org.openscales.core.basetypes.LonLat;
@@ -19,10 +19,11 @@ package org.openscales.core.feature
   import org.openscales.core.events.SpriteCursorEvent;
   import org.openscales.core.events.FeatureEvent;
   
-  	/**
-	 * Features use the Geometry classes as geometry description.
-	 * They have an ‘attributes’ property, which is the data object, and a ‘style’ property.
-	 */
+  /**
+   * Features is a geolocalized graphical element.
+   * It is generally subclassed to customized how it is displayed. 
+   * They have an ‘attributes’ property, which is the data object, and a ‘style’ property.
+   */
   public class Feature extends Sprite
   {
 
@@ -31,8 +32,6 @@ package org.openscales.core.feature
       private var _lonlat:LonLat = null;
 
       private var _data:Object = null;
-
-      private var _marker:Marker = null;
 
       private var _popup:Popup = null;
 
@@ -73,10 +72,7 @@ package org.openscales.core.feature
           this.name = null;
           this.lonlat = null;
           this.data = null;
-          if (this._marker != null) {
-              this.destroyMarker();
-              this._marker = null;
-          }
+         
           if (this.popup != null) {
               this.destroyPopup();
               this.popup = null;
@@ -96,33 +92,6 @@ package org.openscales.core.feature
     }
 
     /**
-     * Create a marker for the feature instance and returns it.
-     *
-     * @return The created marker
-     */
-    public function createMarker(url:String = null, size:Size = null, offset:Pixel = null, calculateOffset:Function = null):Marker {
-      var marker:Marker = null;
-
-          if (this.lonlat != null) {
-              this.marker = new Marker(url, size, offset, calculateOffset);
-              this.marker.lonlat = this.lonlat;
-              this.marker.feature = this;
-              if (this.popup != null)
-                this.marker.popup = this.popup;
-          }
-          return this.marker;
-    }
-
-    /**
-     * Destroys the feature's marker
-     */
-    public function destroyMarker():void {
-      this.marker.feature = null;
-      this.marker.destroy();
-      this.marker = null;
-    }
-
-    /**
      * Creates a popup for the feature
      *
      * @param closeBox
@@ -131,20 +100,15 @@ package org.openscales.core.feature
     public function createPopup(closeBox:Boolean=true):Popup {
       if (this.lonlat != null) {
 
-              var id:String = this.name + "_popup";
-              var anchor:Icon = this._marker;
-
-              this.popup = new Anchored(	id,
+              this.popup = new Anchored(  this.name + "_popup",
                                           this.lonlat,
                                           this.data.popupBackground,
                                           this.data.popupBorder,
                                           this.data.popupSize,
                                           this.data.popupContentHTML,
-                                          anchor,closeBox);
+                                          this,closeBox);
 
                 this.popup.feature = this;
-                if (this.marker != null)
-                  this.marker.popup = this.popup;
           }
           return this.popup;
     }
@@ -156,9 +120,6 @@ package org.openscales.core.feature
       this.popup.feature = null;
       this.popup.destroy();
       this.popup = null;
-        if (this.marker != null)
-          this.marker.popup = null;
-
     }  
 	
     public function get layer():Layer {
@@ -195,14 +156,6 @@ package org.openscales.core.feature
 
     public function set data(value:Object):void {
       this._data = value;
-    }
-
-    public function get marker():Marker {
-      return this._marker;
-    }
-
-    public function set marker(value:Marker):void {
-      this._marker = value;
     }
 
     public function get popup():Popup {
@@ -288,6 +241,10 @@ package org.openscales.core.feature
 				return - this.layer.map.extent.left / this.layer.map.resolution;
 			else
 				return NaN;
+		}
+		
+		public function draw():void {
+			this.graphics.clear();
 		}
 		
   }

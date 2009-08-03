@@ -1,7 +1,6 @@
 package org.openscales.core.events
 {
-	import org.openscales.core.Marker;
-	import org.openscales.core.layer.Layer;
+	import org.openscales.core.feature.Marker;
 	
 	/**
 	 * Event related to a marker.

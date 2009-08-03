@@ -5,29 +5,22 @@ package org.openscales.core.layer
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
 	
-	import org.openscales.core.Icon;
-	import org.openscales.core.Marker;
 	import org.openscales.core.Request;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.feature.Feature;
+	import org.openscales.core.feature.Marker;
 	
 	/**
 	 * Add GeoRSS Point features to your map.
 	 * 
 	 * @author Bouiaw
 	 */	
-	public class GeoRSS extends Markers
+	public class GeoRSS extends FeatureLayer
 	{
 	
 		private var _location:String = null;
-
-    	private var _features:Array = null;
-
-    	private var _selectedFeature:Feature = null;
-
-    	private var _icon:Icon = null;
     	
     	/**
     	 * GeoRSS constructor
@@ -45,17 +38,10 @@ package org.openscales.core.layer
 	        super(name, isBaseLayer, visible, projection, proxy);
 	        
 	        this.location = url;
-	        this.features = [];
 	     	
 			new Request(location, URLRequestMethod.GET, this.parseData, null , null, this.proxy);
 
     	}
-
-		override public function destroy(setNewBaseLayer:Boolean = true):void {
-			this.clearFeatures();
-        	this.features = null;
-        	super.destroy();
-		}
 		
 		public function parseData(event:Event):void {
 			var loader:URLLoader = event.target as URLLoader;
@@ -144,7 +130,7 @@ package org.openscales.core.layer
 	              catch (e:Error) {}
 	            }
 	
-				if (link != null) {
+				i/* f (link != null) {
 					this.icon = new Icon(link);
 				}
 	
@@ -169,7 +155,7 @@ package org.openscales.core.layer
 	            var marker:Marker = feature.createMarker();
 	            marker.addEventListener(MouseEvent.CLICK, this.markerClick);
 	            
-	            this.addMarker(marker);
+	            this.addMarker(marker); */
 	        }
 		}
 		
@@ -191,18 +177,7 @@ package org.openscales.core.layer
 	            markerClicked.layer.map.addPopup(popup); 
 	        }
 		}
-		/**
-		 * Remove features
-		 */
-		public function clearFeatures():void {
-			if (this.features != null) {
-	            while(this.features.length > 0) {
-	                var feature:Feature = this.features[0];
-	                Util.removeItem(this.features, feature);
-	                feature.destroy();
-	            }
-	        } 
-		}
+		
 		
 		//Getters and Setters
 		public function get location():String {
@@ -211,30 +186,6 @@ package org.openscales.core.layer
 		
 		public function set location(value:String):void {
 			this._location = value;
-		}
-		
-		public function get features():Array {
-			return this._features;
-		}
-		
-		public function set features(value:Array):void {
-			this._features = value;
-		}
-		
-		public function get selectedFeature():Feature {
-			return this._selectedFeature;
-		}
-		
-		public function set selectedFeature(value:Feature):void {
-			this._selectedFeature = value;
-		}
-		
-		public function get icon():Icon {
-			return this._icon;
-		}
-		
-		public function set icon(value:Icon):void {
-			this._icon = value;
 		}
 		
 	}

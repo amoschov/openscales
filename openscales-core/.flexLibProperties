@@ -11,7 +11,6 @@
 <classEntry path="mx.utils.NameUtil"/>
 <classEntry path="org.openscales.core.Icon"/>
 <classEntry path="org.openscales.core.Map"/>
-<classEntry path="org.openscales.core.Marker"/>
 <classEntry path="org.openscales.core.OpenScales"/>
 <classEntry path="org.openscales.core.Request"/>
 <classEntry path="org.openscales.core.RequestLayer"/>
@@ -54,6 +53,7 @@
 <classEntry path="org.openscales.core.events.TraceEvent"/>
 <classEntry path="org.openscales.core.feature.Feature"/>
 <classEntry path="org.openscales.core.feature.LineStringFeature"/>
+<classEntry path="org.openscales.core.feature.Marker"/>
 <classEntry path="org.openscales.core.feature.MultiLineStringFeature"/>
 <classEntry path="org.openscales.core.feature.MultiPointFeature"/>
 <classEntry path="org.openscales.core.feature.MultiPolygonFeature"/>
@@ -91,11 +91,11 @@
 <classEntry path="org.openscales.core.handler.sketch.DrawPathHandler"/>
 <classEntry path="org.openscales.core.handler.sketch.DrawPointHandler"/>
 <classEntry path="org.openscales.core.handler.sketch.DrawPolygonHandler"/>
+<classEntry path="org.openscales.core.layer.FeatureLayer"/>
 <classEntry path="org.openscales.core.layer.GeoRSS"/>
 <classEntry path="org.openscales.core.layer.Grid"/>
 <classEntry path="org.openscales.core.layer.HTTPRequest"/>
 <classEntry path="org.openscales.core.layer.Layer"/>
-<classEntry path="org.openscales.core.layer.Markers"/>
 <classEntry path="org.openscales.core.layer.TMS"/>
 <classEntry path="org.openscales.core.layer.VectorLayer"/>
 <classEntry path="org.openscales.core.layer.capabilities.CapabilitiesParser"/>

@@ -2,6 +2,8 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap();" >
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.layer.FeatureLayer;
+			import org.openscales.core.feature.Marker;
 			import org.openscales.core.feature.PointFeature;
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.layer.ogc.WFS;
@@ -14,9 +16,7 @@
 			import org.openscales.core.Map;
 			import org.openscales.core.popup.Popup;
 			import org.openscales.core.control.MousePosition;
-			import org.openscales.core.Marker;
 			import org.openscales.core.feature.Feature;
-			import org.openscales.core.layer.Markers;
 			import org.openscales.core.control.PanZoom;
 			import org.openscales.core.control.PanZoomBar;
 			import org.openscales.core.basetypes.Bounds;
@@ -32,9 +32,6 @@
 			
 			public var map:Map; 
 			
-			public var feature:Feature; 
-        	
-        	public var mark:Marker;
         	public var markLyon:Marker;
 			
 			private function initMap():void
@@ -42,17 +39,11 @@
 				map = fxmap.map;							
 				
 				//We create a marker over Lyon (France) with EPSG:900913 projection
-				var markers:Markers = new Markers("Markers");
-				feature = new Feature(markers, new LonLat(538850.47459,5740916.1243), {popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
-				mark = feature.createMarker();
-				
-				markLyon = feature.createMarker();
+				var markers:FeatureLayer = new FeatureLayer("Markers");
+				markLyon = new Marker(markers, new LonLat(538850.47459,5740916.1243), {popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
 				markLyon.addEventListener(MouseEvent.CLICK,showPopup);
-				
-				markers.addMarker(markLyon);
-				
-				mark.addEventListener(MouseEvent.CLICK, showPopup); 
-				markers.addMarker(mark);
+				markers.addFeature(markLyon);
+				markLyon.addEventListener(MouseEvent.CLICK, showPopup); 
 				map.addLayer(markers);
 				
 				
@@ -72,7 +63,7 @@
 			
 			private function showPopup(e:MouseEvent):void
 			{				
-				var pop:Popup = feature.createPopup();			
+				var pop:Popup = markLyon.createPopup();			
 				map.addPopup(pop, true);
 			}  
 		]]>

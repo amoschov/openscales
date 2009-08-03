@@ -32,7 +32,7 @@
 <classEntry path="org.openscales.fx.control.FxPanZoom"/>
 <classEntry path="org.openscales.fx.control.FxPanZoomBar"/>
 <classEntry path="org.openscales.fx.control.FxWMSGetFeatureInfo"/>
-<classEntry path="org.openscales.fx.feature.FxFeature"/>
+<classEntry path="org.openscales.fx.feature.FxMarker"/>
 <classEntry path="org.openscales.fx.feature.FxStyle"/>
 <classEntry path="org.openscales.fx.handler.FxHandler"/>
 <classEntry path="org.openscales.fx.handler.mouse.FxBorderPanHandler"/>
