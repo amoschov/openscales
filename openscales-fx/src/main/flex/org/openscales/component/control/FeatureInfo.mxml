@@ -76,12 +76,7 @@
 					name.Value = evt.feature.name;
 					properties.push(name);
 					
-					//MultiLineString = several LineString and LineString = 2 points
-					
-					/*There's still a problem with multiline : because of doubleclick to finish the path,
-					there is a last LineString with 2 same points. And because of its, the last point appears twice
-					in the tab.*/
-					
+					//MultiLineString = several LineString and LineString = 2 points					
 					for each(var ls:LineString in ((evt.feature as VectorFeature).geometry as MultiLineString).components){
 						for each(currentPoint in ls.components){
 							//To prevent the same point twice
@@ -129,8 +124,7 @@
 						property.Value = evt.feature.attributes[key];
 						properties.push(property);				
 					}
-				}				
-								
+				}												
 				attributes = new ArrayCollection(properties); 
 				this.dgFeatureInfo.dataProvider = attributes;
 				this.dgFeatureInfo.columns.sort();

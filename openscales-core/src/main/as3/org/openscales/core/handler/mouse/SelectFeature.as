@@ -117,12 +117,10 @@ package org.openscales.core.handler.mouse
 							}							
 						}
 						iteratorFeatures=0;
-						//ChangeToSelected();
 					}
 					//ctrl key is pressed
 					else{
 						iteratorFeatures++;
-						//ChangeToSelected();
 					}
 					selectFeauturesLength++;
 					ChangeToSelected();

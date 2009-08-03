@@ -17,7 +17,7 @@
 			import mx.events.CloseEvent;		
 			import org.openscales.core.Map;	
 					
-			public var dragHandler:DragHandler;		//to pan on the map
+			public var dragHandler:DragHandler;		//to pan the map
 			public var dragfeature:DragFeature;		//to drag features
 
 			/**
