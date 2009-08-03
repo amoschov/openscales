@@ -133,44 +133,8 @@
       }
        baseLayerList.invalidateList();
        
-       //addEventListener(FlexEvent.CREATION_COMPLETE,this.ActiverSurMiniCarte);
-       //ActiverSurMiniCarte();
-       
     }
 
-
-/*	public function ActiverSurMiniCarte(event:MouseEvent):void {
-		
-	
-		//map.baseLayer=baseLayerArray[0] as Layer;
-		//Application.application
-		var petiteMap:Map = this.parentDocument.miniCarteMagique;
-		//set map(petiteMap);
-		//(baseLayerArray[0] as Layer).visible = false;// on modifie les layers de la grande carte alors que on veut modifier la petite
-		//(baseLayerArray[1] as Layer).visible = true;
-		//petiteMap.baseLayer=(baseLayerArray[1] as Layer);
-		//petiteMap.visible=false;
-		
-	  var layer:Layer = event.currentTarget.selectedItem;
-      for(var i:int=0;i<baseLayerArray.length;i++)
-      {
-        //if the layer in the Array isn't the layer selected
-        if((baseLayerArray[i] as Layer) != layer)
-        {
-          (baseLayerArray[i] as Layer).visible = false;//we hide the layer
-        }
-        else
-        {
-          (baseLayerArray[i] as Layer).visible = true;
-          //(baseLayerArray[i] as Layer).redraw();//we display the layer
-          petiteMap.baseLayer = (baseLayerArray[i] as Layer);
-        }
-      }
-       baseLayerList.invalidateList();
-		
-		
-		
-	}*/
 
   ]]>
 </mx:Script>
