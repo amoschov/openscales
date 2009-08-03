@@ -2,8 +2,12 @@ package org.openscales.core.handler.sketch
 {
 	import org.openscales.core.Map;
 	import org.openscales.core.events.SelectBoxEvent;
-	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Feature;
+	import org.openscales.core.feature.MultiLineStringFeature;
+	import org.openscales.core.feature.MultiPointFeature;
+	import org.openscales.core.feature.MultiPolygonFeature;
+	import org.openscales.core.feature.Style;
+	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.MultiPoint;
@@ -11,7 +15,6 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.layer.VectorLayer;
-	import org.openscales.core.feature.VectorFeature;
 
 	/**
 	 * DrawMultiHandler allow you to merge several features (withe the same geometry) in one.
@@ -49,6 +52,9 @@ package org.openscales.core.handler.sketch
 			var multiLineString:MultiLineString = new MultiLineString();
 			var multiPolygon:MultiPolygon = new MultiPolygon();
 			var drawType:String = "";
+			var multiPointFeature:MultiPointFeature;
+			var multiLineStringFeature:MultiLineStringFeature;
+			var multiPolygonFeature:MultiPolygonFeature;
 			var feature:VectorFeature;
 			
 			var style:Style = new Style();
@@ -103,20 +109,23 @@ package org.openscales.core.handler.sketch
 				}
 				if(drawType == "MultiPoint")
 				{
-					feature = new VectorFeature(multiPoint,null,style);
+					multiPointFeature = new MultiPointFeature(multiPoint,null,style);
+					drawLayer.addFeature(multiPointFeature);
+					feature = multiPointFeature;
 				}
 				if(drawType == "MultiLineString")
 				{
-					feature = new VectorFeature(multiLineString,null,style);
+					multiLineStringFeature = new MultiLineStringFeature(multiLineString,null,style);
+					drawLayer.addFeature(multiLineStringFeature);
+					feature = multiLineStringFeature;
 				}
 				if(drawType == "MultiPolygon")
 				{
-					feature = new VectorFeature(multiPolygon,null,style);
-				}		 
-			drawLayer.addFeature(feature);
-			return(feature);
-			
+					multiPolygonFeature = new MultiPolygonFeature(multiPolygon,null,style);
+					drawLayer.addFeature(multiPolygonFeature);
+					feature = multiPolygonFeature;
+				}	
+				return(feature);	 
 		}
-		
 	}
 }

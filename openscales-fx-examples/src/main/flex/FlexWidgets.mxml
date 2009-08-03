@@ -60,7 +60,7 @@
 					<os:PanComponent id="pan" map="{map}"/>
 					<os:ZoomComponent id="zoom" map="{map}"/>
 					<os:ZoomBoxComponent id="zoombox" map="{map}"/>	
-					<!--<os:SelectBoxComponent id="selectbox" map="{map}"/>	-->
+					<os:SelectBoxComponent id="selectbox" map="{map}"/>	
 				</mx:VBox>
 			</resize:ResizableWindow>
 						   
