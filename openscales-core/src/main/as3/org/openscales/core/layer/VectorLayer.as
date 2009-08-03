@@ -160,7 +160,10 @@ package org.openscales.core.layer
 
             this.preFeatureInsert(feature);
             this.addChild(feature);
-            feature.draw();
+            
+            if (this.drawn) {
+            	feature.draw();
+            }
             
             this.onFeatureInsert(feature);
 	    }

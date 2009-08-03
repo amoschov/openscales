@@ -43,7 +43,7 @@
 				
 				//We create a marker over Lyon (France) with EPSG:900913 projection
 				var markers:Markers = new Markers("Markers");
-				feature = new Feature(markers,new LonLat(538850.47459,5740916.1243),{popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
+				feature = new Feature(markers, new LonLat(538850.47459,5740916.1243), {popupContentHTML:"This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
 				mark = feature.createMarker();
 				
 				markLyon = feature.createMarker();
