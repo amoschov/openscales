@@ -23,21 +23,29 @@
 			import org.openscales.core.Map;
 					
 			[Bindable]
-			public var map:Map; 
+			public var map:Map;
 			
 			private function initMap():void{
 	   			map = fxmap.map;
-				tools.x = this.width - tools.width;
-                
+	   			tools.x = this.width - tools.width;
+	   	
                 // setup click handler
                 map.addEventListener(GetFeatureInfoEvent.GET_FEATURE_INFO_DATA, this.onFeatureInfoData);
+                
+          
 			}
             
             private function onFeatureInfoData(event:GetFeatureInfoEvent):void {
                 Trace.info("Data="+event.data);
             }
+            
+
+            
 		]]>
 	</mx:Script>
+	
+
+	
 	
 		<os:Map id="fxmap" x="0" y="0" height="100%" width="100%" proxy="http://openscales.org/proxy.php?url=">
 			
@@ -65,6 +73,9 @@
 			</resize:ResizableWindow>
 						   
 			<mx:Spacer/>
+			
+			
+
 
 			<resize:ResizableWindow title="Tools" movable="true" resizable="true" id="tools" width="350" height="575">
 				<mx:TabNavigator id="tabNav" width="100%" height="100%">
@@ -88,10 +99,21 @@
 			<os:ClickHandler />
 			<os:WheelHandler />
             <os:WMSGetFeatureInfo url="http://sigma.openplans.org/geoserver/wms" layers="tiger:poi" />
-			<!--os:DragFeature id="dragfeature" map="{this.map}"/-->					
+			<!--os:DragFeature id="dragfeature" map="{this.map}"/-->	
+			
+				
 		</os:Map>
+			
 		<resize:ResizableWindow title="ScaleLine" movable="true" id="scaleLine" width="250" height="150" y="417">
 		<os:ScaleLine map="{map}"/>				
+		</resize:ResizableWindow>
+	
+		
+		<resize:ResizableWindow title="MiniCarte" movable="true" id="mincarte" x="144" y="193" height="250" width="400">
+			<mx:Panel width="100%" height="100%">
+				<os:OverviewMapComponent id="ovmap" map="{map}" width="100%" height="100%"/>
+			</mx:Panel>
+				
 		</resize:ResizableWindow>
 	
 </mx:Panel>

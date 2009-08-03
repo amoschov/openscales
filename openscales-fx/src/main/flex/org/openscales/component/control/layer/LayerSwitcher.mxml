@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
-	xmlns:control="org.openscales.component.control.*"
+	xmlns:control="org.openscales.component.control.*" 
     width="100%" horizontalScrollPolicy="off">
 
 <mx:Script>
   <![CDATA[
+  	import mx.core.Application;
+  	import mx.events.FlexEvent;
     import org.openscales.core.handler.mouse.ClickHandler;
     import mx.controls.RadioButton;
     import mx.events.DragEvent;
@@ -22,6 +24,9 @@
      *
      * @param value
      */
+     
+     
+     
     override public function set map(value:Map):void {
       super.map = value;
 
@@ -127,8 +132,45 @@
         }
       }
        baseLayerList.invalidateList();
+       
+       //addEventListener(FlexEvent.CREATION_COMPLETE,this.ActiverSurMiniCarte);
+       //ActiverSurMiniCarte();
+       
     }
 
+
+/*	public function ActiverSurMiniCarte(event:MouseEvent):void {
+		
+	
+		//map.baseLayer=baseLayerArray[0] as Layer;
+		//Application.application
+		var petiteMap:Map = this.parentDocument.miniCarteMagique;
+		//set map(petiteMap);
+		//(baseLayerArray[0] as Layer).visible = false;// on modifie les layers de la grande carte alors que on veut modifier la petite
+		//(baseLayerArray[1] as Layer).visible = true;
+		//petiteMap.baseLayer=(baseLayerArray[1] as Layer);
+		//petiteMap.visible=false;
+		
+	  var layer:Layer = event.currentTarget.selectedItem;
+      for(var i:int=0;i<baseLayerArray.length;i++)
+      {
+        //if the layer in the Array isn't the layer selected
+        if((baseLayerArray[i] as Layer) != layer)
+        {
+          (baseLayerArray[i] as Layer).visible = false;//we hide the layer
+        }
+        else
+        {
+          (baseLayerArray[i] as Layer).visible = true;
+          //(baseLayerArray[i] as Layer).redraw();//we display the layer
+          petiteMap.baseLayer = (baseLayerArray[i] as Layer);
+        }
+      }
+       baseLayerList.invalidateList();
+		
+		
+		
+	}*/
 
   ]]>
 </mx:Script>
@@ -136,13 +178,15 @@
   <mx:VBox width="100%">
     <mx:Text text="Base Layer" width="100%"/>
     <mx:List id="baseLayerList" itemRenderer="org.openscales.component.control.layer.LayerRenderer" labelField="BaseLayer"
-      width="100%" click="changeVisibility(event)"/>
+      width="100%" click="{changeVisibility(event)}"/>
 
     <mx:Text text="Overlays" width="100%"/>
     <mx:List id="overlayList" itemRenderer="org.openscales.component.control.layer.LayerRenderer" labelField="Overlays"
       dragEnabled="true" dropEnabled="true" dragMoveEnabled="true" dragDrop="changeLayerOrder(event)"
       width="100%"/>
   </mx:VBox>
+  
+  
 
 </control:Control>
 

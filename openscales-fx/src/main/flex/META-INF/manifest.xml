@@ -35,6 +35,8 @@
 	<component id="PanComponent" class="org.openscales.component.control.Pan" />
 	<component id="ZoomComponent" class="org.openscales.component.control.Zoom" />
 	<component id="ZoomBoxComponent" class="org.openscales.component.control.ZoomBox" />
+	
+	<component id="OverviewMapComponent" class="org.openscales.component.control.OverviewMap" />
 	<component id="SelectBoxComponent" class="org.openscales.component.control.SelectBox" />
 	<component id="CapabilitiesComponent" class="org.openscales.component.control.Capabilities" />
 	<component id="DrawingComponent" class="org.openscales.component.control.Drawing" />
