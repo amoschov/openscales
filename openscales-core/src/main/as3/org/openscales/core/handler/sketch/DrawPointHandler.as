@@ -31,32 +31,28 @@ package org.openscales.core.handler.sketch
 		}
 		
 		override protected function registerListeners():void{
-			this.map.addEventListener(MouseEvent.CLICK, this.mouseClick);
+			this.map.addEventListener(MouseEvent.CLICK, this.drawPoint);
 		}
 		
 		override protected function unregisterListeners():void{
-        	this.map.removeEventListener(MouseEvent.CLICK, this.mouseClick);
+        	this.map.removeEventListener(MouseEvent.CLICK, this.drawPoint);
 		}
-		
-		public function mouseClick(event:MouseEvent):void {		
+				
+		private function drawPoint(event:MouseEvent):void {
 			if (drawLayer != null) {
-				this.drawPoint(); 
-			}		
-		}
-		
-		private function drawPoint():void {
-			var style:Style = new Style();
-			style.fillColor = 0x60FFE9;
-			style.strokeColor = 0x60FFE9;
-			
-			var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
-			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
-			var point:Point = new Point(lonlat.lon,lonlat.lat);
-			
-			var pointFeature:org.openscales.core.feature.PointFeature = new org.openscales.core.feature.PointFeature(point, null, style);
-			pointFeature.name = id.toString(); id++;
-			pointFeature.lonlat = lonlat; 			
-			drawLayer.addFeature(pointFeature);
+				var style:Style = new Style();
+				style.fillColor = 0x60FFE9;
+				style.strokeColor = 0x60FFE9;
+				
+				var pixel:Pixel = new Pixel(drawLayer.mouseX - this.map.layerContainer.x ,drawLayer.mouseY - this.map.layerContainer.y);
+				var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
+				var point:Point = new Point(lonlat.lon,lonlat.lat);
+				
+				var pointFeature:PointFeature = new PointFeature(point, null, style);
+				pointFeature.name = id.toString(); id++;
+				pointFeature.lonlat = lonlat; 			
+				drawLayer.addFeature(pointFeature);
+			}
 		}
 		
 		public function featureSelectedBox(event:SelectBoxEvent):void {

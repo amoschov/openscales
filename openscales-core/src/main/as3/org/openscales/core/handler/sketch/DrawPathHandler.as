@@ -45,7 +45,7 @@ package org.openscales.core.handler.sketch
 		override protected function registerListeners():void{
 			this._dblClickHandler.active = true;
 			this._dblClickHandler.doubleclick = this.mouseDblClick;
-			this._dblClickHandler.click=this.draw;
+			this._dblClickHandler.click=this.drawLine;
 		}
 		
 		override protected function unregisterListeners():void{
@@ -55,10 +55,6 @@ package org.openscales.core.handler.sketch
 		public function mouseDblClick(event:MouseEvent):void {
 			this.drawFinalPath();
 		} 
-		
-		private function draw(event:MouseEvent):void{
-			this.drawLine();
-		}
 		
 		public function drawFinalPath():void{			
 			this.drawLine();
@@ -96,10 +92,10 @@ package org.openscales.core.handler.sketch
             	
             }
 		
-		private function drawLine():void{
+		private function drawLine(event:MouseEvent=null):void{
 			var name:String = "path." + id.toString(); id++;
 			
-			var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY);
+			var pixel:Pixel = new Pixel(drawLayer.mouseX - this.map.layerContainer.x ,drawLayer.mouseY - this.map.layerContainer.y);
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
 			
