@@ -19,10 +19,10 @@ package org.openscales.core.layer.requesters.ogc
 		 **/
 		private var _loader:EventDispatcher;
 		
-		public function OGCRequest(layer:Layer,url:String, method:String, params:IHttpParams, oncomplete:Function=null,proxy:String=null,loader:EventDispatcher=null)
+		public function OGCRequest(layer:Layer,url:String, method:String, params:IHttpParams, oncomplete:Function=null, loader:EventDispatcher=null)
 		{	
 			this._loader=loader;
-			super(layer,url, method, params, oncomplete,null,proxy);
+			super(layer,url, method, params, oncomplete,null);
 		}
 		
 		override public function executeRequest():void

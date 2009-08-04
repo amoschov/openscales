@@ -48,7 +48,7 @@ package org.openscales.core.layer.requesters
 		/**
 		 *This class is an Abstract class don't instanciate it  
 		 **/
-		public function AbstractRequest(layer:Layer,url:String,method:String,params:IHttpParams,oncomplete:Function=null,altUrl:Array=null,proxy:String=null)
+		public function AbstractRequest(layer:Layer,url:String,method:String,params:IHttpParams,oncomplete:Function=null,altUrl:Array=null)
 		{
 			this._layer=layer;
 			this._url=url;
@@ -56,7 +56,6 @@ package org.openscales.core.layer.requesters
 			this._params=params;
 			this._onComplete=oncomplete;
 			this._altUrl=altUrl;
-			this._proxy=proxy;
 		}
 		
 		public function getUrl():String
@@ -138,17 +137,15 @@ package org.openscales.core.layer.requesters
 		 public function set altUrl(value:Array):void{
 		 	this._altUrl=value;
 		 }
-		 	/**
-		 * alternative url
+		/**
+		 * proxy
 		 * */
 		 public function get proxy():String{
-		 	return this._proxy;
+		 	if(this.layer)
+		 		return this.layer.proxy;
+		 	else
+		 		return null;
 		 }
-		 /**
-		 * @private
-		 * */
-		public function set proxy(value:String):void{
-			this._proxy=proxy;
-		}
+
 	}
 }

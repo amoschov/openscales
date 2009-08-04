@@ -23,11 +23,11 @@ package org.openscales.core.layer.requesters.ogc
 		 **/
 		private var _postbody:Object;
 		
-		public function WFSRequest(layer:Layer,url:String, method:String, params:WFSParams, oncomplete:Function=null,proxy:String=null,loader:EventDispatcher=null)
+		public function WFSRequest(layer:Layer,url:String, method:String, params:WFSParams, oncomplete:Function=null, loader:EventDispatcher=null)
 		{
 			//WFS directly downloads data or textual response
 			//For it we use an URLLoader			
-			super(layer,url, method, params, oncomplete,proxy,new URLLoader());
+			super(layer,url, method, params, oncomplete,new URLLoader());
 		}
 		/**
 		 * @inherited

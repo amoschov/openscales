@@ -29,7 +29,7 @@ package org.openscales.core.layer.ogc
 			if (params == null)
 				params = new WMSParams("");
 			//TO do remove url , params after adding osmparams 		
-	        super(name, url, params, new WMSRequest(this,url,URLRequestMethod.GET,params,proxy),isBaseLayer, visible, projection, proxy);
+	        super(name, url, params, new WMSRequest(this,url,URLRequestMethod.GET,params),isBaseLayer, visible, projection, proxy);
 	        
 	        this.singleTile = true;
 

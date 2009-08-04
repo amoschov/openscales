@@ -12,11 +12,11 @@ package org.openscales.core.layer.requesters.ogc
 	 **/
 	public class WMSRequest extends OGCRequest implements IhttpRequest
 	{
-		public function WMSRequest(layer:Layer,url:String, method:String, params:WMSParams,proxy:String=null,oncomplete:Function=null)
+		public function WMSRequest(layer:Layer,url:String, method:String, params:WMSParams, oncomplete:Function=null)
 		{
 			//WMS downloads a picture 
 			//consequently we use a loader providing for flash.display
-			super(layer,url, method, params,oncomplete,proxy,new Loader());
+			super(layer,url, method, params,oncomplete,new Loader());
 		}
 		
 		override public function getUrl():String{
