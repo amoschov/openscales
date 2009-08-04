@@ -20,10 +20,18 @@
 <classEntry path="org.openscales.component.control.MousePosition"/>
 <classEntry path="org.openscales.fx.control.FxLayerSwitcher"/>
 <classEntry path="org.openscales.component.control.ScaleLine"/>
+<<<<<<< .mine
+<classEntry path="org.openscales.fx.layer.FxGrid"/>
+<classEntry path="org.openscales.component.control.OverviewMap"/>
+<classEntry path="org.openscales.component.control.FeatureDrawing"/>
+<classEntry path="org.openscales.fx.control.FxPanZoom"/>
+<classEntry path="org.openscales.fx.handler.mouse.FxSelectFeature"/>
+=======
 <classEntry path="org.openscales.fx.layer.FxGrid"/>
 <classEntry path="org.openscales.component.control.FeatureDrawing"/>
 <classEntry path="org.openscales.fx.control.FxPanZoom"/>
 <classEntry path="org.openscales.fx.handler.mouse.FxSelectFeature"/>
+>>>>>>> .r570
 <classEntry path="org.openscales.component.control.SelectBox"/>
 <classEntry path="org.openscales.component.control.layer.LayerRenderer"/>
 <classEntry path="org.openscales.fx.layer.FxWMS"/>
@@ -35,8 +43,12 @@
 <classEntry path="org.openscales.fx.control.FxControl"/>
 <classEntry path="org.openscales.component.control.layer.LayerSwitcher"/>
 <classEntry path="org.openscales.fx.handler.sketch.FxDrawPointHandler"/>
+<<<<<<< .mine
+<classEntry path="org.openscales.component.control.Pan"/>
+=======
 <classEntry path="org.openscales.fx.Security.FxSecurityParam"/>
 <classEntry path="org.openscales.component.control.Pan"/>
+>>>>>>> .r570
 <classEntry path="org.openscales.fx.layer.FxLayer"/>
 <classEntry path="org.openscales.fx.layer.FxHTTPRequest"/>
 <classEntry path="org.openscales.fx.Security.FxSecurity"/>

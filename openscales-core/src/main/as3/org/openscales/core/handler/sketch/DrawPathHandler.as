@@ -57,7 +57,6 @@ package org.openscales.core.handler.sketch
 		} 
 		
 		public function drawFinalPath():void{			
-			this.drawLine();
 			newFeature = true;
 				
 			//Change style of finished path

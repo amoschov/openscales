@@ -69,7 +69,7 @@
 						this.featureDrawing.finishPath(); 
 						this.featureDrawing.finishPolygon(); 
 						this.featureDrawing.pointHandler.active = false;
-						this.featureDrawing.tgBar.selectedIndex = -1;
+						this.featureDrawing.tgBar.selectedIndex = 0;
 						this.featureDrawing.drawType = "";
 						this.featureDrawing.activeDrag();
 						this.featureDrawing.selectFeatureHandler.active = false;
@@ -95,7 +95,7 @@
 						this.featureDrawing.finishPath(); 
 						this.featureDrawing.finishPolygon(); 
 						this.featureDrawing.pointHandler.active = false;
-						this.featureDrawing.tgBar.selectedIndex = -1;
+						this.featureDrawing.tgBar.selectedIndex = 0;
 						this.featureDrawing.drawType = "";
 						this.featureDrawing.activeDrag();
 					}
@@ -117,7 +117,7 @@
 		]]>
 	</mx:Script>
 	
-	<control:FeatureDrawing id="featureDrawing" map="{this.map}" x="41" y="26"/>
+	<control:FeatureDrawing id="featureDrawing" map="{this.map}" x="31" y="26"/>
 		
 	<mx:Text x="10" y="10" text="To finalize a path or a polygon, just double click on map." width="310" height="22" fontStyle="italic" textAlign="center"/>
 	<!--mx:Text text="For the moment you can't delete WFS points, even if they are selected" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="219"/-->

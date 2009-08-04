@@ -174,7 +174,7 @@ package org.openscales.core.handler.mouse
 			this.currentfeature.style = selectStyle;							 
 			this.currentfeature.selected = true;
 			this.selectFeatures[iteratorFeatures]=this.currentfeature;						
-			this.currentfeature.layer.redraw(); 
+			this.currentfeature.layer.redraw();  
 			this.lastfeature = this.currentfeature;
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,this.currentfeature));
 		}

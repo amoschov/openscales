@@ -30,17 +30,13 @@
 	   			tools.x = this.width - tools.width;
 	   	
                 // setup click handler
-                map.addEventListener(GetFeatureInfoEvent.GET_FEATURE_INFO_DATA, this.onFeatureInfoData);
-                
-          
+                map.addEventListener(GetFeatureInfoEvent.GET_FEATURE_INFO_DATA, this.onFeatureInfoData);      
 			}
             
             private function onFeatureInfoData(event:GetFeatureInfoEvent):void {
                 Trace.info("Data="+event.data);
             }
-            
-
-            
+           
 		]]>
 	</mx:Script>
 	

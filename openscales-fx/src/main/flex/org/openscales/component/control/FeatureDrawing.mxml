@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="234" height="108" creationComplete="initFeatureDrawing();">
+<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="276" height="108" creationComplete="initFeatureDrawing();">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.feature.VectorFeature;
@@ -38,8 +38,6 @@
 			 * Initiate properties and handlers
 			 */
 			public function initFeatureDrawing():void{	
-				//To unselect all button in the toggleBarButton
-				this.tgBar.selectedIndex = -1;
 				
 				//Properties of selectFeatureHandler
 				this.selectFeatureHandler = new SelectFeature(this.map,drawLayer,true);
@@ -111,13 +109,14 @@
 			 */
 			private function onDeleteAllClick(event:Event):void {
 				drawLayer.clear();
-				selectFeatureHandler.lastfeature = null;				
+				selectFeatureHandler.lastfeature = null;
+				selectFeatureHandler.selectFeatures = null;				
 				switch(drawType)
 				{
 					case "path":{pathHandler.newFeature = true; break;}
 					case "polygon":{polygonHandler.newFeature = true; break;}
 				}
-				/* this.featureInfo.dgFeatureInfo.dataProvider=null; */ //clear the information tab
+				//clear the information tab
 				this.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
 			}
 			
@@ -169,57 +168,66 @@
 			 * Click on the togglebarbutton. Index button starts from 0.
 			 */ 		
 			private function clickHandler(event:ItemClickEvent):void{
-				var handler:Number = event.index;		// handler is a number because of toggleButtonBar
-				this.deactiveDrag();			
+				var handler:Number = event.index;		// handler is a number because of toggleButtonBar			
 				switch(handler)
 				{
-					case 0:		//click on button point
+					case 0:
+						pointHandler.active = false;
+						if(pathHandler.active){this.finishPath();}
+						else if(polygonHandler.active){this.finishPolygon();}
+						drawType = "";
+						this.activeDrag();
+						break;
+					
+					case 1:		//click on button point
 						if(drawType!="point"){
 							if(pathHandler.active){this.finishPath();}
 							else if(polygonHandler.active){this.finishPolygon();}												
 							pointHandler.active = true;
 							drawType = "point";
 						}
-						else{
+						this.deactiveDrag();
+						/* else{
 							drawType = "";
 							pointHandler.active = false;
 							this.tgBar.selectedIndex = -1;
 							this.activeDrag(); 
-						}						
+						} */						
 						break;
 					
-					case 1:		//click on button path
+					case 2:		//click on button path
 						if(drawType!="path"){
 							if(polygonHandler.active){this.finishPolygon();}						
 							pointHandler.active = false;
 							pathHandler.active = true;
 							drawType = "path";
 						}
-						else{
+						this.deactiveDrag();
+						/* else{
 							drawType = "";
 							finishPath();
 							this.tgBar.selectedIndex = -1;
 							this.activeDrag(); 
-						}
+						} */						
 						break;
 						
-					case 2:		//click on button polygon
+					case 3:		//click on button polygon
 						if(drawType!="polygon"){
 							if(pathHandler.active){this.finishPath();}						
 							pointHandler.active = false;
 							polygonHandler.active = true;
 							drawType = "polygon";
 						}
-						else{
+						this.deactiveDrag();
+						/* else{
 							drawType = "";
 							this.finishPolygon();
 							this.tgBar.selectedIndex = -1;
 							this.activeDrag();   
-						}
+						} */
 						break;
 				}
-			}
-			
+			}			
 			
 			/**
 			 * Finish a polygon
@@ -300,17 +308,19 @@
 			}		
 		]]>
 	</mx:Script>
-	
-	<mx:ToggleButtonBar x="43" y="10" horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="-1" id="tgBar" height="31" width="154">
+	<mx:Glow id="glowImage" alphaFrom="1" alphaTo="1" blurXFrom="0.0" blurXTo="15.0" blurYFrom="0.0" blurYTo="15.0" color="0xC0FF0C"/>
+	<mx:ToggleButtonBar x="44" y="10" horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="0" id="tgBar" height="31" width="186">
 		<mx:Array>
+			<mx:Object icon="@Embed('/org/openscales/component/images/IconeMouvement.swf')" id="btnMouvement"/>
 			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoint.swf')" id="btnPoint"/>
 			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" id="btnPath"/>
 			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoly.swf')" id="btnPolygon"/>
 		</mx:Array>
 	</mx:ToggleButtonBar>
 	
-	<mx:Button x="32" y="49" icon="@Embed('/org/openscales/component/images/merge_small.png')" id="btnMerge" click="this.OnMergeClick(event)" width="38" toolTip="Merge features selected" enabled="false" height="38"/>
-	<mx:Button x="78" y="49" icon="@Embed('/org/openscales/component/images/delete_all_small.png')" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="38" toolTip="Delete all drawing feature on the map" height="38"/>
-	<mx:Button x="124" y="49" icon="@Embed('/org/openscales/component/images/delete_last_small.png')" id="btnDeleteLast" click="this.onDeleteLastClick(event)" width="38" toolTip="Delete the last drawing feature" height="38"/>
-	<mx:Button x="170" y="49" icon="@Embed('/org/openscales/component/images/delete_selected_small.png')" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" width="38" enabled="false" toolTip="Delete all selected features" height="38"/>
+	<mx:Button x="46" y="49" icon="@Embed('/org/openscales/component/images/merge_small.png')" id="btnMerge" click="this.OnMergeClick(event)" width="38" toolTip="Merge features selected" enabled="false" height="38"/>
+	<mx:Button x="95" y="49" icon="@Embed('/org/openscales/component/images/delete_all_small.png')" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="38" toolTip="Delete all drawing feature on the map" height="38"/>
+	<mx:Button x="143" y="49" icon="@Embed('/org/openscales/component/images/delete_last_small.png')" id="btnDeleteLast" click="this.onDeleteLastClick(event)" width="38" toolTip="Delete the last drawing feature" height="38"/>
+	<mx:Button x="190" y="49" icon="@Embed('/org/openscales/component/images/delete_selected_small.png')" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" width="38" enabled="false" toolTip="Delete all selected features" height="38"/>
+	<!--mx:Button x="27" y="49" icon="@Embed('/org/openscales/component/images/IconeMouvement.swf')" id="btnPan" click="this.onPanClick(event)" width="38" selected="true" toolTip="Panning" height="38" /-->
 </Control>
