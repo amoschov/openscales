@@ -6,6 +6,7 @@
 		<project>openscales-commons</project>
 		<project>openscales-core</project>
 		<project>openscales-flex-component</project>
+		<project>openscales-fx</project>
 		<project>openscales-proj4as</project>
 	</projects>
 	<buildSpec>

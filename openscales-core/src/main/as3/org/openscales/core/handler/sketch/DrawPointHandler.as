@@ -5,13 +5,10 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.events.SelectBoxEvent;
+	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.Style;
-	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.VectorLayer;
-	import org.openscales.core.feature.VectorFeature;
-	import org.openscales.core.feature.PointFeature;
 	
 	/**
 	 * Handler to draw points.
@@ -54,9 +51,5 @@ package org.openscales.core.handler.sketch
 				drawLayer.addFeature(pointFeature);
 			}
 		}
-		
-		public function featureSelectedBox(event:SelectBoxEvent):void {
-            	
-        }
 	}
 }

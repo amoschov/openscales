@@ -5,7 +5,6 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.events.SelectBoxEvent;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.PointFeature;
@@ -86,10 +85,6 @@ package org.openscales.core.handler.sketch
 				drawLayer.redraw();
 			}			
 		}
-		
-		public function featureSelectedBox(event:SelectBoxEvent):void {
-            	
-            }
 		
 		private function drawLine(event:MouseEvent=null):void{
 			var name:String = "path." + id.toString(); id++;

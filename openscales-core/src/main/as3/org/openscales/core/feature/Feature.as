@@ -17,6 +17,7 @@ package org.openscales.core.feature {
 	import org.openscales.core.popup.Anchored;
 	import org.openscales.core.popup.Popup;
 
+
 	/**
 	 * Features is a geolocalized graphical element.
 	 * It is generally subclassed to customized how it is displayed.

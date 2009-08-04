@@ -82,7 +82,7 @@
 					<os:TraceInfo id="trace" width="100%" height="100%" map="{map}" label="Trace"/>
 					<!--os:MarkerManagerComponent id="markerManag" width="100%" height="100%" map="{map}" label="Marker"/-->
 				</mx:TabNavigator>
-				<os:CatalogTreeComponent id="CatalogTreeComponent" map="{map}"/>
+				<!--<os:CatalogTreeComponent id="CatalogTreeComponent" map="{map}"/>-->
 			</resize:ResizableWindow>
 			
 			<mx:Spacer/>

@@ -1,7 +1,6 @@
 package org.openscales.core.handler.sketch
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.events.SelectBoxEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPointFeature;
@@ -40,10 +39,6 @@ package org.openscales.core.handler.sketch
 			}
 			return feature;
 		}
-		
-		public function featureSelectedBox(event:SelectBoxEvent):void {
-            	
-            }
 		
 		private function draw(selectedFeatures:Array):Feature {
 			var f:VectorFeature;
