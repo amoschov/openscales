@@ -1,81 +1,57 @@
 package org.openscales.core.security.Requesters
 {
-	import org.openscales.core.RequestLayer;
-	import org.openscales.core.events.LayerEvent;
-	import org.openscales.core.layer.Layer;
-	import org.openscales.core.security.SecurityType;
+	import flash.display.Loader;
+	import flash.events.EventDispatcher;
+	import flash.net.URLRequest;
+	
+	import org.openscales.core.RequestLayer1;
+	import org.openscales.core.events.SecurityEvent;
 	/**
 	 *This class is used as defaultRequester for the security  
 	 * @author DamienNda 
 	 **/
-	public class DefaultRequester implements ISecurityRequester
+	public class DefaultRequester
 	{
 		/**
 		 * @private
-		 *Requester type 
-		 **/
-		protected  var _type:String;
-		/**
-		 * @private
-		 **/
-		private var _listLayer:Array=new Array();
-		
+		 * */
+		 private var _map:EventDispatcher;
 		/**
 		 *Default Requester creation 
 		 **/
-		public function DefaultRequester(listlayer:Array=null)
+		public function DefaultRequester()
 		{
-			if(listlayer!=null) this._listLayer=listlayer;
-			this._type=SecurityType.DefaultRequester;
-		}
-	
-		/**
-		 * @inheritDoc
-		 * */
-		public function IsSecuredByRequester(layerRefId:Layer):Boolean
-		{
-			for(var i:int=0; i < this._listLayer.length; i++) {
-	            if (this._listLayer[i] == layerRefId) {
-	                return true;
-	            }
-	        }
-	        return false;
-		} 
-		 /**
-		 * @inheritDoc
-		 * */
-		public function AuthentificateLayer(request:RequestLayer):void
-		{
-			request.layer.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_AUTHENTIFICATED,request.layer));
+			
 		}
 		
 		/**
-		 * this function is use for adding unsecured layer to the security Requester
-		 * @param layerRefId layer Reference
-		 * */
-		public function addsecuredLayer(layerRefId:Layer):Boolean
-		{
-			if(!this.IsSecuredByRequester(layerRefId))
-			{
-			this._listLayer.push(layerRefId);
-	         return true;
-			}
-	        return false;
-		}
-		/**
-		 *List of refences layers which are  concerned   
-		 * by this security
+		 *Execute request providing from RequestManager when the layer concerned
+		 * by the request has no Security
 		 **/
-		public function get listLayer():Array
+		public function ExecuteRequest(request:RequestLayer1):Loader
 		{
-			return this._listLayer;
+			var loader:Loader=new Loader();
+			loader.load(new URLRequest(request.getFullRequestSring()));
+			return loader;
 		}
+		
+		//getters & setters
 		/**
-		 *Get requester type 
+		 * To get the Eventdispatcher In the case of
+		 * OpenScales the event dispatcher will be a Map object
 		 **/
-		 public function get type():String
-		 {
-		 	return this._type;
+		 public  function get map():EventDispatcher
+		 {	
+		 		return this._map;
 		 }
+		 /**
+		 * @private
+		 * */
+		 public function set map(eventDispatcher:EventDispatcher):void
+		 {
+		 	this._map=eventDispatcher;
+		 	this._map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_LOAD));
+		 }
+		
 	}
 }

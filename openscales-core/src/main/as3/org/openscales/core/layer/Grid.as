@@ -8,7 +8,11 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.maps.HashMap;
+	import org.openscales.core.layer.params.AbstractParams;
 	import org.openscales.core.layer.params.IHttpParams;
+	import org.openscales.core.layer.params.ogc.WMSParams;
+	import org.openscales.core.layer.requesters.AbstractRequest;
+	import org.openscales.core.layer.requesters.IhttpRequest;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	
@@ -52,10 +56,11 @@ package org.openscales.core.layer
 	     * @param projection
 	     * @param proxy
 	     */
-		public function Grid(name:String, url:String, params:IHttpParams = null, isBaseLayer:Boolean = false, 
+		public function Grid(name:String, url:String, params:IHttpParams = null,ihttpRequest:IhttpRequest=null,isBaseLayer:Boolean = false, 
 								visible:Boolean = true, projection:String = null, proxy:String = null) {
 									
-			super(name, url, params, isBaseLayer, visible, projection, proxy);
+			//TOdo delete url and params after osmparams work
+			super(name, url, params,ihttpRequest, isBaseLayer, visible, projection, proxy);
 			
 			this.grid = new Array();
 			
@@ -89,6 +94,16 @@ package org.openscales.core.layer
 	        }
 		}
 		
+		/**
+		 *To draw tile
+		 * @param tile  
+		 **/
+		public function drawTile(tile:Tile):void
+		{
+			(this.requester as AbstractRequest).onComplete=(tile as ImageTile).onTileLoadEnd;
+	        ((this.requester as AbstractRequest).params as AbstractParams).bbox=tile.bounds.boundsToString();
+	        this.requester.executeRequest();
+		}
 		
 		/**
 		 * Methodd to cache a tile
@@ -254,8 +269,8 @@ package org.openscales.core.layer
 	        var tile:Tile = this.grid[0][0];
 	        if (!tile) {
 	            tile = this.addTile(tileBounds, px);
-	            
 	            tile.draw();
+	           
 	            this.grid[0][0] = tile;
 	        } else {
 	            tile.moveTo(tileBounds, px);
@@ -412,8 +427,8 @@ package org.openscales.core.layer
 			
 			// now we go through and draw the tiles in forward order
 	        for(var i:int=tileQueue.length-1; i >= 0; i--) {
-	            tile = tileQueue[i]
-	            tile.draw();
+	            tile = tileQueue[i];
+	           tile.draw();
 	            //mark tile as unqueued for the next time (since tiles are reused)
 	            tile.queued = false;       
 	        }

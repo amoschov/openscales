@@ -21,6 +21,9 @@ package org.openscales.core.layer.params
 		 * @param value
 		 */
 		function setAdditionalParam(key:String, value:String):void;
-		
+		/**
+		 * for Ihttpparams cloning
+		 * */
+		function clone():IHttpParams;
 	}
 }

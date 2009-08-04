@@ -9,7 +9,6 @@ package org.openscales.core.security
 	{
 		public static const  IgnGeoDrm:String="IgnGeodrm";
 		public static const  AtosGeoDrm:String="AtosGeoDrm";
-		public static const  DefaultRequester:String="defaultRequester"; 
 		public function SecurityType()
 		{
 		}

@@ -3,7 +3,6 @@ package org.openscales.core.layer
 	import flash.display.Sprite;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.RequestLayer1;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -11,9 +10,6 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.events.LayerEvent;
-	import org.openscales.core.events.SecurityEvent;
-	import org.openscales.core.layer.params.ogc.WMSParams;
-	import org.openscales.core.security.RequestManager;
 	import org.openscales.proj4as.ProjProjection;
 
 
@@ -62,8 +58,6 @@ package org.openscales.core.layer
 				
 			this._proxy = proxy;
 		}
-
-
 
 		public function destroy(setNewBaseLayer:Boolean = true):void {
 			if (this.map != null) {
@@ -119,7 +113,7 @@ package org.openscales.core.layer
 	                var show:Boolean = ((this.visible) && (this.inRange));
 	                this.visible = (show ? true : false);
 	            }
-				
+
 	        }
 		}
 
@@ -294,7 +288,7 @@ package org.openscales.core.layer
 	        return px;
 		}
 
-		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
+		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false):void {
 			  var display:Boolean = this.visible;  
 	        if (!this.isBaseLayer) {
 	            display = display && this.inRange;

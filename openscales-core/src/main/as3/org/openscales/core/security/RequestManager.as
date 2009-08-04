@@ -1,11 +1,14 @@
 package org.openscales.core.security
 {
-	import org.openscales.core.RequestLayer;
-	import org.openscales.core.basetypes.maps.HashMap;
-	import org.openscales.core.layer.Layer;
+	import flash.display.Loader;
+	import flash.events.EventDispatcher;
+	
+	import org.openscales.core.RequestLayer1;
+	import org.openscales.core.events.SecurityEvent;
 	import org.openscales.core.security.Requesters.DefaultRequester;
-	import org.openscales.core.security.Requesters.GeoIgnSecurityRequester;
 	import org.openscales.core.security.Requesters.ISecurityRequester;
+	import org.openscales.core.security.Requesters.ReqManagerFactory;
+	import org.openscales.core.security.Requesters.SecurityFactory;
 	
 	/**
 	 *This class is used for security management on a layer 
@@ -16,150 +19,85 @@ package org.openscales.core.security
 	{
 		/**
 		 * @private
-		 * security requesters factories
 		 * */
-		private static var securityFactory:HashMap=new HashMap();
-		securityFactory.put(SecurityType.DefaultRequester,new DefaultRequester());
-		securityFactory.put(SecurityType.IgnGeoDrm,new GeoIgnSecurityRequester());
-		
+		 private var _map:EventDispatcher;
 		/**
-		 * @private		 
-		 **/
-		private static var _securityRequesters:Array=new Array(new DefaultRequester());
-
+		 * @private
+		 * */
+		private  var _defaultRequester:DefaultRequester=new DefaultRequester();
+		
+		private var _numberSecurityInitialized:int=0;
 		/**
 		 *RequestManager creation
 		 **/
-		public function RequestManager()
+		public function RequestManager(map:EventDispatcher=null)
 		{
+			if(this._map!=null)
+			{
+			this.map=map;
+			this.map.addEventListener(SecurityEvent.SECURITY_LOAD,this.SecurityRequesterIsInitialized);
+			}
 		}
 		
 		/**
-		 *  Layer Authentification 
-		 * The layer reference is in request object
-		 * @param layer: layer concerned by the authentification operation
-		 * @param request: the request object
+		 * Execute request from the layer tile 
+		 * @param request:RequestLayer
 		 **/
-		public static function Authentificate(request:RequestLayer):void
+		
+		public  function getLoader(request:RequestLayer1):Loader
 		{
-			var securityRequester:ISecurityRequester=RequestManager.getSecurityRequesterByLayer(request.layer);
-			if(securityRequester!=null)
-			{
-				securityRequester.AuthentificateLayer(request);
-			}
-			else
-			{
-				/*
-				To choose a requester by default
-				for example we can  choose a requester by layer url consequently url DNS
-				*/
-				var defaultRequester:ISecurityRequester=RequestManager.getDefaultRequester();
-				defaultRequester.addsecuredLayer(request.layer);
-				defaultRequester.AuthentificateLayer(request);
-			}
+		
+			 for(var i:int=0;i<=ReqManagerFactory.requestManager.securityRequesters.length-1;i++)
+			 {
+			 	var securityRequester:ISecurityRequester=ReqManagerFactory.requestManager.securityRequesters[i];
+			 	if(securityRequester!=null)
+			 	{
+			 		if(securityRequester.canExecuteRequest(request)) return securityRequester.executeRequest(request);
+			 	}
+			 }
+			 return ReqManagerFactory.requestManager._defaultRequester.ExecuteRequest(request);
 		}
-		/**
-		 * this static function is used for adding
-		 * new security requester in the requesterManager security requester table
-		 * @param securityType:  the type of requester
-		 * @return the position orf the securityRequester in the securityRequester table
+		
+		 /**
+		 *This function is directly call when a Security requester is completely initialized  
 		 **/
-		public static  function addSecurityRequester(securityType:String):int
+		 public function SecurityRequesterIsInitialized(securityEvent:SecurityEvent):void{
+		 	
+		 	_numberSecurityInitialized++;
+		 	//there is also the defaultRequester
+		 	if(_numberSecurityInitialized==this.securityRequesters.length+1)
+		 	{
+		 		this._map.dispatchEvent(new SecurityEvent(SecurityEvent.LOAD_CONF_END));
+		 		this._map.removeEventListener(SecurityEvent.SECURITY_LOAD,ReqManagerFactory.requestManager.SecurityRequesterIsInitialized);	
+		 	}
+		 }
+		
+		//getters &setters
+		/**
+		 *to get all Security requester 
+		 **/
+		public  function get securityRequesters():Array
 		{
-			var index:int=-1;
-			if(!RequestManager.ExistSecurityRequester(securityType))
-			{
-				var securityrequester:ISecurityRequester=RequestManager.securityFactory.getValue(securityType);
-			
-				if(securityrequester!=null)
-				{
-			 	index=RequestManager._securityRequesters.push(securityrequester);
-				}
-			}
-			return index;
+			return SecurityFactory.listSecurity;
 		}
 		
 		/**
-		 *  To record a security on a layer by the securitytype
-		 * @param layer reference
-		 * @param security type
+		 * To get the Eventdispatcher In the case of
+		 * OpenScales the event dispatcher will be a Map object
 		 **/
-		public static function recordSecuritybySecurityType(layerRefId:Layer,securityType:String):void
-		{
-			var securityrequester:ISecurityRequester=RequestManager.getSecurityRequesterByType(securityType);
-			if(securityrequester!=null) securityrequester.addsecuredLayer(layerRefId);
-			//else we use default requester
-			else RequestManager.getDefaultRequester().addsecuredLayer(layerRefId);
-		}
-		/**
-		 *To get security Requester from security type
-		 * @private
-		 * @param  the security type
-		 * @return the security requester
-		 **/
-		 private static function getSecurityRequesterByType(securityType:String):ISecurityRequester
-		 {
-		 	for each(var securityRequester:ISecurityRequester in _securityRequesters)
-		 	{
-		 		if((securityRequester as DefaultRequester).type==securityType) return securityRequester;	
-		 	}
-		 	return null;
-		 	//else it's also possible to return DefaultRequester
-		 	//return getSecurityRequesterByType(SecurityType.DefaultRequester);
-		 	
+		 public  function get map():EventDispatcher
+		 {	
+		 		return this._map;
 		 }
 		 /**
-		 *To get security Requester from security type
 		 * @private
-		 * @param  a securized layer
-		 * @return the security requester
-		 **/
-		 private static function getSecurityRequesterByLayer(layer:Layer):ISecurityRequester
-		 {
-		 	
-		 	for each(var securityRequester:ISecurityRequester in _securityRequesters)
-		 	{
-		 		//we use defaultrequester because all requesters extend DefaultRequester
-		 		for(var i:int=0;i<=(securityRequester as DefaultRequester).listLayer.length-1;i++)
-		 		{
-		 			if((securityRequester as DefaultRequester).listLayer[i]==layer)
-		 			{
-		 				return securityRequester;
-		 			}
-		 		}
-		 	}
-		 	return null;
-		 }
-		 /**
-		 *To get security Requester from security type
-		 * @private
-		 * @param  layer index
-		 * @return the security requester
-		 **/
-		 private static function getSecurityRequesterByIndex(index:int):ISecurityRequester
-		 {
-		 	if(_securityRequesters[index]!=undefined) return _securityRequesters[index];
-		 	return null;
-		 }
-		 /**
-		 *To get default requester 
-		 * @private
-		 **/
-		 private static function getDefaultRequester():ISecurityRequester
-		 {
-		 	return RequestManager.getSecurityRequesterByType(SecurityType.DefaultRequester);
-		 }
-		 /**
-		 * To know if the securityRequest already exists in  the security request list
 		 * */
-		 private static function ExistSecurityRequester(securityType:String)
+		 public function set map(eventDispatcher:EventDispatcher):void
 		 {
-		 	for each(var securityRequester:ISecurityRequester in _securityRequesters)
-		 	{
-		 		//All security requester extend default Requester
-		 		if((securityRequester as DefaultRequester).type==securityType) return true;
-		 	}
-		 	return false;
+		 	this._map=eventDispatcher;
+		 	this._map.addEventListener(SecurityEvent.SECURITY_LOAD,ReqManagerFactory.requestManager.SecurityRequesterIsInitialized);		
+		 	this._defaultRequester.map=eventDispatcher;
 		 }
+
 	}
 }

@@ -1,5 +1,7 @@
 package org.openscales.core.layer.params.ogc
 {
+	import org.openscales.core.layer.params.IHttpParams;
+	
 	/**
 	 * Implementation of IHttpParams interface.
 	 * Extends OGCParams.
@@ -32,6 +34,9 @@ package org.openscales.core.layer.params.ogc
 			this._format = format;
 			this._styles = styles;			
 			
+		}
+		override public function clone():IHttpParams{
+			return null
 		}
 		
 		override public function toGETString():String {

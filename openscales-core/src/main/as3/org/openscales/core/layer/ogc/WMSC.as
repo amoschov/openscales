@@ -2,6 +2,7 @@
 package org.openscales.core.layer.ogc
 {
 	import org.openscales.core.layer.params.ogc.WMSParams;
+	import org.openscales.core.layer.requesters.ogc.WMSRequest;
 	
 	/**
 	 * Instances of WMSC are used to display data from OGC Web Mapping Services requested as tiles.
@@ -18,7 +19,7 @@ package org.openscales.core.layer.ogc
 			
 			this.singleTile = false;
 			
-			(this.request.params as WMSParams).tiled = true;				
+			((this.requester as WMSRequest).params as WMSParams).tiled= true;				
 		}
 		
 	}

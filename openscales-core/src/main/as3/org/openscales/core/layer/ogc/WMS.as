@@ -1,10 +1,14 @@
 package org.openscales.core.layer.ogc
 {
 	
+	import flash.net.URLRequestMethod;
+	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.params.ogc.WMSParams;
+	import org.openscales.core.layer.requesters.AbstractRequest;
+	import org.openscales.core.layer.requesters.ogc.WMSRequest;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	import org.openscales.proj4as.ProjProjection;
@@ -24,8 +28,8 @@ package org.openscales.core.layer.ogc
 										
 			if (params == null)
 				params = new WMSParams("");
-										   		
-	        super(name, url, params, isBaseLayer, visible, projection, proxy);
+			//TO do remove url , params after adding osmparams 		
+	        super(name, url, params, new WMSRequest(this,url,URLRequestMethod.GET,params,proxy),isBaseLayer, visible, projection, proxy);
 	        
 	        this.singleTile = true;
 
@@ -38,14 +42,14 @@ package org.openscales.core.layer.ogc
 	            bounds = this.adjustBoundsByGutter(bounds);
 	        }
 	         
-	        (this.request.params  as WMSParams).bbox = bounds.boundsToString();
-	        (this.request.params  as WMSParams).width = this.imageSize.w;
-	        (this.request.params  as WMSParams).height = this.imageSize.h;
+	        ((this.requester as WMSRequest).params  as WMSParams).bbox = bounds.boundsToString();
+	         ((this.requester as WMSRequest).params  as WMSParams).width = this.imageSize.w;
+	        ((this.requester as WMSRequest).params  as WMSParams).height = this.imageSize.h;
 	         
 	         if (projection != null || this.map.projection != null)
-	        (this.request.params as WMSParams).srs = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
+	       ((this.requester as WMSRequest).params  as WMSParams).srs = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
         
-	        return this.request.getFullRequestSring();
+	        return (this.requester as WMSRequest).getUrl();
        	}
        	
        	override public function addTile(bounds:Bounds, position:Pixel):Tile {

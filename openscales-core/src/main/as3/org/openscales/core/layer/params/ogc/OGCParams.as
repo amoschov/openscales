@@ -1,24 +1,29 @@
 package org.openscales.core.layer.params.ogc
 {
 	import org.openscales.core.basetypes.maps.HashMap;
+	import org.openscales.core.layer.params.AbstractParams;
 	import org.openscales.core.layer.params.IHttpParams;
 		
 	/**
 	 * Implementation of IHttpParams interface.
 	 * It represents the common OGC requests params.
 	 */
-	internal class OGCParams implements IHttpParams
+	internal class OGCParams extends AbstractParams implements IHttpParams
 	{
 		
 		private var _service:String;
 		private var _version:String;
 		private var _request:String;
 		private var _srs:String;
-		private var _bbox:String;
+		
 
 		
 		private var _additionalParams:HashMap = null;
 		
+		override public function clone():IHttpParams{
+			
+			return new OGCParams(this.service,this.version,this.request);
+		}
 		
 		public function OGCParams(service:String, version:String, request:String) {
 			this._service = service;
@@ -31,7 +36,7 @@ package org.openscales.core.layer.params.ogc
 		}
 		
 		
-		public function toGETString():String {
+		override public function toGETString():String {
 			var str:String = "";
 			
 			if (this._service != null)
@@ -46,8 +51,8 @@ package org.openscales.core.layer.params.ogc
 			if (this._srs != null)
 				str += "SRS=" + this._srs + "&";
 				
-			if (this._bbox != null)
-				str += "BBOX=" + this._bbox + "&";
+			if (this.bbox != null)
+				str += "BBOX=" + this.bbox + "&";
 				
 			var keys:Array = _additionalParams.getKeys();
 			for (var i:Number=0; i < keys.length; i++) {
@@ -93,15 +98,9 @@ package org.openscales.core.layer.params.ogc
 			_srs = srs;
 		}
 
-		public function get bbox():String {
-			return _bbox;
-		}
-
-		public function set bbox(bbox:String):void {
-			_bbox = bbox;
-		}
 		
-		public function setAdditionalParam(key:String, value:String):void {
+		
+		override public function setAdditionalParam(key:String, value:String):void {
 			_additionalParams.put(key, value);
 		}
 	}

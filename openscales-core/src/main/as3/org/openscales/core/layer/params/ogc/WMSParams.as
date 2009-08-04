@@ -1,5 +1,7 @@
 package org.openscales.core.layer.params.ogc
 {
+	import org.openscales.core.layer.params.IHttpParams;
+	
 	/**
 	 * Implementation of IHttpParams interface.
 	 * Extends OGCParams.
@@ -33,7 +35,9 @@ package org.openscales.core.layer.params.ogc
 			this._bgcolor = bgcolor;		
 			
 		}
-		
+		override public function clone():IHttpParams{
+			return new WMSParams(this.layers,this.format,this.transparent,this.tiled,this.styles,this.bgcolor);
+		}
 		override public function toGETString():String {
 			var str:String = super.toGETString();
 			

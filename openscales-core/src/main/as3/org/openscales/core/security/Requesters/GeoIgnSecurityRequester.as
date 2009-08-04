@@ -1,24 +1,35 @@
 package org.openscales.core.security.Requesters
 {
-	import org.openscales.core.RequestLayer;
-	import org.openscales.core.layer.Layer;
-	import org.openscales.core.security.SecurityType;
+	import flash.display.Loader;
 	
-	public class GeoIgnSecurityRequester extends DefaultRequester implements ISecurityRequester 
+	import org.openscales.core.RequestLayer1;
+	import org.openscales.core.basetypes.maps.HashMap;
+	
+	public class GeoIgnSecurityRequester  implements ISecurityRequester 
 	{
 		public function GeoIgnSecurityRequester()
 		{
-			super();
-			//Type Instanciation 
-			this._type=SecurityType.IgnGeoDrm;
 		}
-		override public function IsSecuredByRequester(layerRefId:Layer):Boolean
-		{
-			return false;
-		}
-		override public function AuthentificateLayer(Request:RequestLayer):void
-		{
-			
-		}
+		/**
+		 *@inherited
+		 **/
+		public function executeRequest(request:RequestLayer1):Loader
+		 {
+		 	return null;
+		 }
+		 /**
+		 *@inherited 
+		 **/
+		public function canExecuteRequest(request:RequestLayer1):Boolean
+		 {
+		 	return false;
+		 }
+		 /**
+		 * @inherited
+		 * */
+		 public function addParams(params:HashMap):void
+		 {
+		 	
+		 }
 	}
 }

@@ -2,14 +2,16 @@ package org.openscales.core.layer
 {
 	import flash.net.URLRequestMethod;
 	
-	import org.openscales.core.RequestLayer;
+	import org.openscales.core.RequestLayer1;
 	import org.openscales.core.layer.params.IHttpParams;
+	import org.openscales.core.layer.requesters.AbstractRequest;
+	import org.openscales.core.layer.requesters.IhttpRequest;
 	
 	
 	/**
 	 * Base class for layers based on a remote image server
 	 */
-	public class HTTPRequest extends Layer
+	public class HTTPRequest extends RequestLayer
 	{
 		
 		public var URL_HASH_FACTOR:Number = (Math.sqrt(5) - 1) / 2;
@@ -18,12 +20,7 @@ package org.openscales.core.layer
 	/*
 	TODO delete url & co
 	*/
-		/**
-		 * request object
-		 * contains url,requesting method or request params
-		 * @private
-		 **/
-		private var _request:RequestLayer;
+		
 		
 		
 		private var _url:String = null;
@@ -37,18 +34,18 @@ package org.openscales.core.layer
 		
 		
 		
-		public function HTTPRequest(name:String, url:String, params:IHttpParams = null, isBaseLayer:Boolean = false, 
+		public function HTTPRequest(name:String, url:String, params:IHttpParams = null,ihttpRequest:IhttpRequest=null,isBaseLayer:Boolean = false, 
 									visible:Boolean = true, projection:String = null, proxy:String = null,onLoadComplete:Function=null) {
 	       
-	        super(name, isBaseLayer, visible, projection, proxy);
-	        this._request=new RequestLayer(url,params,this,URLRequestMethod.GET,null);
-			//TODO remove that after creation of osparams anhd georssparams extends IhttpRequest
+	        super(name,ihttpRequest,isBaseLayer, visible, projection, proxy);
+
+			//TODO remove that after creation of osmparams and georssparams extends IhttpRequest
 			this._url=url;
 			this.params = params;
 		}
 		
 		override public function destroy(setNewBaseLayer:Boolean = true):void {
-			this._request=null;
+			
 			super.destroy(setNewBaseLayer);
 		}
 		
@@ -106,6 +103,7 @@ package org.openscales.core.layer
 		public function set url(value:String):void
 		{
 			this._url = value;
+			(this.requester as AbstractRequest).url=value;
 		}
 		
 		public function get altUrls():Array
@@ -129,22 +127,6 @@ package org.openscales.core.layer
 		}
 		
 		
-		/**
-		 *
-		 * request object
-		 * contains url,requesting method or request params  
-		 **/
-		public function get request():RequestLayer
-		{
-			return this._request;
-		}
-		/**
-		 *@private 
-		 **/
-		public function set request(request:RequestLayer):void
-		{
-			this._request=request;
-		}
 	
 	}
 }

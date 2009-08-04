@@ -2,6 +2,7 @@ package org.openscales.fx.layer
 {
 	import org.openscales.core.Util;
 	import org.openscales.core.layer.HTTPRequest;
+	import org.openscales.core.layer.requesters.AbstractRequest;
 
 	public class FxHTTPRequest extends FxLayer
 	{
@@ -13,25 +14,25 @@ package org.openscales.fx.layer
 		public function set url(value:String):void {
 	    	if(this.layer != null)
 	    	{
-	    		(this.layer as HTTPRequest).request.url = value;
-	    		//TODO remove that after creation of osparams anhd georssparams extends IhttpRequest
+	    		((this.layer as HTTPRequest).requester as AbstractRequest).url= value;
+	    		//TODO remove that after creation of osparams and georssparams extends IhttpRequest
 	    		(this.layer as HTTPRequest).url=value;
 	    	}
 	    }
 		
 		public function set altUrls(value:Array):void {
 	    	if(this.layer != null)
-	    	{	(this.layer as HTTPRequest).request.altUrls = value;
-	    		//TODO remove that after creation of osparams anhd georssparams extends IhttpRequest
+	    	{	((this.layer as HTTPRequest).requester as AbstractRequest).altUrl = value.toString();
+	    		//TODO remove that after creation of osparams and georssparams extends IhttpRequest
 	    		(this.layer as HTTPRequest).altUrls=value;
 	    	}
 	    }
 	    
 	    public function set params(value:Object):void {
 	    	if(this.layer != null){
-	    		Util.extend((this.layer as HTTPRequest).request.params, value);
-	    		//TODO remove that after creation of osparams anhd georssparams extends IhttpRequest
-	    		Util.extend((this.layer as HTTPRequest).request.params, value);
+	    		Util.extend(((this.layer as HTTPRequest).requester as AbstractRequest).params, value);
+	    		//TODO remove that after creation of osparams and georssparams extends IhttpRequest
+	    		Util.extend((this.layer as HTTPRequest).params, value);
 	    	}
 	    }
 	}

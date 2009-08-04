@@ -1,13 +1,19 @@
 package org.openscales.fx.Security
 {
-	import mx.core.UIComponent;
+	import flash.display.DisplayObject;
+	import flash.events.Event;
+	
+	import mx.core.Container;
+	import mx.events.FlexEvent;
+	
+	import org.openscales.core.basetypes.maps.HashMap;
 	
 	
 	/**
 	 * 
 	 * Layer Security
 	 * */
-	public class FxSecurity extends UIComponent
+	public class FxSecurity extends Container
 	{
 		/**
 		 * @private
@@ -20,11 +26,22 @@ package org.openscales.fx.Security
 		 **/
 		private var _type:String;
 		
+		private var _params:HashMap=new HashMap();
 		
 		public function FxSecurity()
 		{
+			 this.addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
 		}
 		
+		public function onCreationComplete(event:Event):void
+		{
+			for(var i:int=0; i < this.rawChildren.numChildren ; i++) 
+		  	{
+		  	 	var child:DisplayObject= this.rawChildren.getChildAt(i);
+      	 	 	if(child is FxSecurityParam) this._params.put((child as FxSecurityParam).key,(child as FxSecurityParam).value);    	 
+			}	
+			var a:String=params.getValue("dzzd");
+		}
 		/**
 		 * secured layers list
 		 * for mxml access to the listlayers property
@@ -58,7 +75,7 @@ package org.openscales.fx.Security
 		}
 		
 		/**
-		 *secure type 
+		 *security type 
 		 **/
 		public function get type():String
 		 {
@@ -70,6 +87,15 @@ package org.openscales.fx.Security
 		public function set type(type:String):void
 		 {
 		 	this._type=type;
+		 }
+		 /**
+		 * Security params
+		 **/
+		 public function get params():HashMap{
+		 	return this._params;
+		 }
+		 public function set params(Params:HashMap):void{
+		 	this._params=Params;
 		 }
 	}
 }

@@ -49,7 +49,7 @@
 	
 	<component id="Securities" class="org.openscales.fx.Security.FxSecurities" />
 	<component id="Security" class="org.openscales.fx.Security.FxSecurity" />
-	
+	<component id="SecurityParam" class="org.openscales.fx.Security.FxSecurityParam" />
 	
 	
 </componentPackage>

@@ -6,7 +6,8 @@ package org.openscales.fx.Security
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.events.SecurityEvent;
-	import org.openscales.core.security.RequestManager;
+	import org.openscales.core.security.Requesters.ReqManagerFactory;
+	import org.openscales.core.security.Requesters.SecurityFactory;
 	/**
 	 *This class is use for reassuring of layers 
 	 * @author DamienNda 
@@ -46,17 +47,8 @@ package org.openscales.fx.Security
 			
 		 for each(var fxsecurity:FxSecurity in _listSecurity)
 		 {
-			RequestManager.addSecurityRequester(fxsecurity.type);
-			for(var i:int=0;i<=fxsecurity.securedlayers.length-1;i++)
-			{
-				if(map.getLayerByName(fxsecurity.securedlayers[i])!=null)
-				{
-				RequestManager.recordSecuritybySecurityType(map.getLayerByName(fxsecurity.securedlayers[i]),fxsecurity.type);
-				}
-			}
-				
+			SecurityFactory.addSecurity(fxsecurity.type,fxsecurity.params);			
 		 }
-		 this.map.dispatchEvent(new SecurityEvent(SecurityEvent.LOAD_CONF_END));		
 		}
 		
 		
@@ -75,8 +67,11 @@ package org.openscales.fx.Security
   		{
   			if(map!=null)
   			{
-  				this._map=map;
+  				this._map=map;	
+  				//map setting for the request manager
+  				ReqManagerFactory.requestManager.map=this.map;	
   				onSetMap();
+  				
   			}
   		}		
 	}

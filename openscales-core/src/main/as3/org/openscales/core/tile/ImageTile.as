@@ -17,6 +17,7 @@ package org.openscales.core.tile
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.Layer;
+	import org.openscales.core.layer.RequestLayer;
 	
 	/**
 	 * Instances of OpenLayers.Tile.Image are used to manage the image tiles
@@ -82,21 +83,34 @@ package org.openscales.core.tile
 	        if (this.layer is Grid && (cachedLoader=(this.layer as Grid).getTileCache(this.url)) != null)
 	        	drawLoader(cachedLoader,true);
 	        else {
-	        	//We instanciate a new Loader to avoid the cached loader loss
-		        _tileLoader = new Loader();
+	        	
+	        	if(this.layer is RequestLayer)
+	        	{
+	        	 	if((this.layer as RequestLayer).requester!=null)
+	        	 	{
+	        	 		(this.layer as Grid).drawTile(this);
+	        	 	}
+	        		else
+	        		{
+	        			//Before created osmparams and osm requester we keep the old behaviour
+	        				     
+	        			//We instanciate a new Loader to avoid the cached loader loss
+		      		  _tileLoader = new Loader();
 		        	
-		        //We add the proxy to the url (to avoid crossdomain issue in case of zoom tween effect (bitmapdata.draw))
-		        if (this.layer.proxy != null) {
-		        	var urlProxy:String = this.layer.proxy + encodeURIComponent(this.url);
-		        	_tileLoader.load(new URLRequest(urlProxy));
-		        }
-		        else {
-		        	_tileLoader.load(new URLRequest(this.url));
-		        }
+		        		//We add the proxy to the url (to avoid crossdomain issue in case of zoom tween effect (bitmapdata.draw))
+		        		if (this.layer.proxy != null) {
+		        		var urlProxy:String = this.layer.proxy + encodeURIComponent(this.url);
+		        		_tileLoader.load(new URLRequest(urlProxy));
+		       			 }
+		        		else {
+		        		_tileLoader.load(new URLRequest(this.url));
+		       		 }
 		        
-		        _tileLoader.name=this.url;
-		        _tileLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onTileLoadEnd, false, 0, true);
-				_tileLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onTileLoadError, false, 0, true);
+		        	_tileLoader.name=this.url;
+		        	_tileLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onTileLoadEnd, false, 0, true);
+					_tileLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onTileLoadError, false, 0, true);
+	        		}
+				}
 	        }
 			
 	       
