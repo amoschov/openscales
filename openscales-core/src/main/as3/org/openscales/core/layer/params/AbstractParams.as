@@ -6,7 +6,11 @@ package org.openscales.core.layer.params
 	 * */
 	public class AbstractParams implements IHttpParams
 	{
+		/**
+		 *requesting bbox 
+		 **/
 		private var _bbox:String;
+	
 		public function AbstractParams()
 		{
 		}
@@ -24,10 +28,15 @@ package org.openscales.core.layer.params
 		{
 			return null;
 		}
+		/**
+		 *requesting bbox 
+		 **/
 		public function get bbox():String {
 			return _bbox;
 		}
-
+		/**
+		 * @private
+		 * */
 		public function set bbox(bbox:String):void {
 			_bbox = bbox;
 		}

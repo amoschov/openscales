@@ -4,8 +4,9 @@ package org.openscales.core.layer
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.feature.Feature;
+	import org.openscales.core.layer.requesters.IhttpRequest;
 	
-	public class FeatureLayer extends Layer
+	public class FeatureLayer extends RequestLayer
 	{
 	    private var _featuresBbox:Bounds = null;
 
@@ -17,10 +18,10 @@ package org.openscales.core.layer
 	    
 	    public var preFeatureInsert:Function = null;
 
-		public function FeatureLayer(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
+		public function FeatureLayer(name:String,requester:IhttpRequest=null,isBaseLayer:Boolean = false, visible:Boolean = true, 
 									projection:String = null, proxy:String = null)
 		{
-			super(name, isBaseLayer, visible, projection, proxy);
+			super(name,requester,isBaseLayer, visible, projection, proxy);
 			
 			this.onFeatureInsert = new Function();
 	        this.preFeatureInsert = new Function();

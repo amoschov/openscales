@@ -5,16 +5,16 @@ package org.openscales.core.tile
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
 	
-	import org.openscales.core.Request;
-	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.format.GMLFormat;
 	import org.openscales.core.layer.Layer;
+	import org.openscales.core.layer.RequestLayer;
 	import org.openscales.core.layer.ogc.WFS;
-	import org.openscales.core.feature.Feature;
-	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.layer.requesters.AbstractRequest;
 	
 	/**
 	 * WFS single tile
@@ -58,7 +58,7 @@ package org.openscales.core.tile
 	     */
 		override public function draw():Boolean {
 			if (super.draw()) {
-	            this.loadFeaturesForRegion(this.requestSuccess);
+				this.loadFeaturesForRegion(this.requestSuccess);
 	        }
 	        return false;
 		}
@@ -71,8 +71,8 @@ package org.openscales.core.tile
 	    * @param success
 	    * @param failure
 	    */
-		public function loadFeaturesForRegion(success:Function):void {
-			new Request(this.url, URLRequestMethod.GET, success, null, null, this.layer.proxy);
+		public function loadFeaturesForRegion(success:Function):void {		
+			(this.layer as WFS).launchWFSRequest(this.requestSuccess,URLRequestMethod.GET);
 		}
 		
 		/**

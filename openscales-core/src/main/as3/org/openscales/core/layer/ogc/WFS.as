@@ -1,11 +1,11 @@
 package org.openscales.core.layer.ogc
 {	
+	import flash.errors.MemoryError;
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.Request;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -17,6 +17,8 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.layer.capabilities.GetCapabilities;
 	import org.openscales.core.layer.params.ogc.WFSParams;
+	import org.openscales.core.layer.requesters.AbstractRequest;
+	import org.openscales.core.layer.requesters.ogc.WFSRequest;
 	import org.openscales.core.tile.WFSTile;
 	import org.openscales.proj4as.ProjProjection;
 	
@@ -39,9 +41,7 @@ package org.openscales.core.layer.ogc
 	     */                   
 		private var _vectorMode:Boolean = true;
 		
-		private var _params:WFSParams = null;
 		
-		private var _url:String = null;
 		
 		private var _tile:WFSTile = null;
 		
@@ -91,8 +91,8 @@ package org.openscales.core.layer.ogc
 	    	
 	    	this.capabilities = capabilities;
 	    	this.useCapabilities = useCapabilities;
-	        
-	        super(name, isBaseLayer, visible, projection, proxy);
+	       	
+	        super(name,new WFSRequest(this,url,URLRequestMethod.GET,params),isBaseLayer, visible, projection, proxy);
 	        
 	        if (!(this.geometryColumn)) {
 	            this.geometryColumn = "the_geom";
@@ -124,6 +124,19 @@ package org.openscales.core.layer.ogc
 	        }
 	    }
 	    
+	    /**
+	    *To launch all wfs request 
+	    * @param callback function
+	    * @param requesting method
+	    * @param data to commit
+	    **/
+	    public function launchWFSRequest(onSuccess:Function,method:String,data:Object=null):void
+	    {
+	    	(this.requester as AbstractRequest).onComplete=onSuccess;
+			(this.requester as AbstractRequest).method=method;
+			(this.requester as WFSRequest).postbody=data;
+			this.requester.executeRequest();
+	    }
 	    /**
 	    * Method called when we pan, drag or change zoom to move the layer.
 	    * 
@@ -283,9 +296,9 @@ package org.openscales.core.layer.ogc
 	            proxy = this.proxy;
 	        }
 	
-	        var successfailure:Function = commitSuccessFailure;
+	        this.launchWFSRequest(commitSuccessFailure,URLRequestMethod.POST,data);
+	      	 this.requester.executeRequest();
 	        
-	        new Request(url, URLRequestMethod.POST, successfailure, data, null, proxy);
 		}
 		
 		/**
@@ -367,19 +380,19 @@ package org.openscales.core.layer.ogc
 		}
 		
 		public function get params():WFSParams {
-			return this._params;
+			return ((this.requester as WFSRequest).params as WFSParams);
 		}
 		
 		public function set params(value:WFSParams):void {
-			this._params = value;
+			(this.requester as WFSRequest).params = value;
 		}
 		
-		public function get url():String {
-			return this._url;
+		public function get url():String {		
+			return (this.requester as WFSRequest).url;
 		}
 		
 		public function set url(value:String):void {
-			this._url = value;
+			(this.requester as WFSRequest).url=value;
 		}
 		
 		public function get tile():WFSTile {

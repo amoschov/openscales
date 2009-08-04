@@ -35,7 +35,7 @@ package org.openscales.core.layer
     	public function GeoRSS(name:String, url:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
     							projection:String = null, proxy:String = null) {
     		
-	        super(name, isBaseLayer, visible, projection, proxy);
+	        super(name,null,isBaseLayer, visible, projection, proxy);
 	        
 	        this.location = url;
 	     	

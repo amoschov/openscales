@@ -36,9 +36,8 @@ package org.openscales.core.layer.requesters.ogc
 			if(this.onComplete!=null)
 			{
 				this.loader=new Loader();
-				(this.loader as Loader).load(new URLRequest(this.getUrl()));
 				(this.loader as Loader).contentLoaderInfo.addEventListener(Event.COMPLETE,this.onComplete,false, 0, true);
-				
+				(this.loader as Loader).load(new URLRequest(this.getUrl()));			
 			}
 		}
 	}
