@@ -86,7 +86,7 @@ package org.openscales.core.layer.requesters.ogc
 		{
 			return this._postbody;
 		}
-		public function set postbody(value:Object)
+		public function set postbody(value:Object):void
 		{
 			this._postbody=value;
 		}
