@@ -69,9 +69,6 @@
 			</resize:ResizableWindow>
 						   
 			<mx:Spacer/>
-			
-			
-
 
 			<resize:ResizableWindow title="Tools" movable="true" resizable="true" id="tools" width="350" height="575">
 				<mx:TabNavigator id="tabNav" width="100%" height="100%">

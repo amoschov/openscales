@@ -77,7 +77,7 @@ package org.openscales.core.layer.requesters
 		 /**
 		 * @private
 		 **/
-		 public function set layer(value:Layer){
+		 public function set layer(value:Layer):void{
 		 	this._layer=value;
 		 }
 		/**

@@ -30,15 +30,24 @@ package org.openscales.core.handler.mouse
 		
 		private var _ctrl:Boolean=false;
 		
-		//Array witch keep all selectFeature using ctrl key)
+		/**
+		 * Array witch keep all selectFeature using ctrl key
+		 */
 		private var _selectFeatures:Array = new Array();
 		
-		//real number of feature in the tab. We don't use lenght, because selectFeatures maybe contain null.
+		/**
+		 * real number of feature in the tab. We don't use lenght, because selectFeatures maybe contain null.
+		 */
 		private var _selectFeauturesLength:int = 0;	
 		
-		private var _iteratorFeatures:Number = 0;	// iterator for selectFeature (in the tab "selectFeatures")
+		/**
+		 * iterator for selectFeature (in the tab "selectFeatures")
+		 */
+		private var _iteratorFeatures:Number = 0;
 			
-		//The style for selected feature (you can change its color)
+		/**
+		 * The style for selected feature (you can change its color)
+		 */
 		private var _selectStyle:Style = new Style(); 
 		
 		private var _layer:VectorLayer;
@@ -179,6 +188,10 @@ package org.openscales.core.handler.mouse
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,this.currentfeature));
 		}
 		
+		/**
+		 * determine if the merge button can be enabled or not.
+		 * return boolean
+		 */
 		public function Comparison():Boolean{
 			var rep:Boolean = false;
 			if(selectFeauturesLength >= 2) 
@@ -319,11 +332,11 @@ package org.openscales.core.handler.mouse
 			_iteratorFeatures = value;
 		}
 		
-		public function get ctrl():Boolean{
+	 	public function get ctrl():Boolean{
 			return _ctrl;
 		}
 		public function set ctrl(value:Boolean):void{
 			_ctrl = value;
-		}		
+		} 		
 	}
 }

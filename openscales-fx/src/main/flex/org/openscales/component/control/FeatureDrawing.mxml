@@ -19,14 +19,44 @@
 			import mx.events.CloseEvent;
 			import mx.events.ItemClickEvent;
 			
+			/**
+			 * Type of drawing (point, path or polygon)
+			 */
 			private var _drawType:String = "";
+			
+			/**
+			 * Index of the tab Drawing, default : -1
+			 */
 			private var _indexTabDrawing:Number = -1;
-			public var drawLayer:VectorLayer = new VectorLayer("Drawings");			
+			
+			/**
+			 * Layer of drawing, which contains all drawing features
+			 */
+			public var drawLayer:VectorLayer = new VectorLayer("Drawings");
+			
+			/**
+			 * Handler of PointFeature
+			 */		
 			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
+			
+			/**
+			 * Handler of PolygonFeature
+			 */
 			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
+			
+			/**
+			 * Handler of PathFeature
+			 */
 			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
+			
+			/**
+			 * Handler of MultipointFeature
+			 */
 			public var multiPointHandler:DrawMultiHandler = new DrawMultiHandler(null, false, drawLayer);
 			
+			/**
+			 * Dragging state
+			 */
 			private var _isDragging:Boolean = false;	//To know if the feature is dragging
 				
 			/**
@@ -35,7 +65,7 @@
 			public var selectFeatureHandler:SelectFeature; //to select features
 			
 			/**
-			 * Initiate properties and handlers
+			 * Initiate all properties and handlers
 			 */
 			public function initFeatureDrawing():void{	
 				
@@ -78,7 +108,10 @@
 				Alert.show("Are you sure ?", "Warning", Alert.YES | Alert.NO, null, alertClickHandler);				
 			}
 			
-			//check the user's answer
+			/**
+			 * Check the user's answer
+			 * (Called by onDeleteSelectedClick method)
+			 */
 			private function alertClickHandler(event:CloseEvent):void {
                 // User click on "YES", he wants to apply changes
                 if (event.detail==Alert.YES){
@@ -151,7 +184,7 @@
 			}
 						
 			/**
-			 * On select feature
+			 * When a feature is selected
 			 */
 			private function onSelectFeature(event:FeatureEvent):void {			
 				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active && !isDragging) {										

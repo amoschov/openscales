@@ -102,7 +102,7 @@ package org.openscales.core.handler.sketch
 				//Apply the new style
 				feature.style = style;
 				//drawLayer.clear();
-				drawLayer.redraw();
+				drawLayer.redraw(); 
 			}		
 		}
 		

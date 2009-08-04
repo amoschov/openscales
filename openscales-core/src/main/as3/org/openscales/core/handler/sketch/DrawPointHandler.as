@@ -16,10 +16,14 @@ package org.openscales.core.handler.sketch
 	public class DrawPointHandler extends AbstractDrawHandler
 	{
 		
-		// The layer in which we'll draw
+		/**
+		 * The layer in which we'll draw
+		 */
 		private var _drawLayer:VectorLayer = null;
 		
-		
+		/**
+		 * Single ID for point
+		 */		
 		private var id:Number = 0;
 		
 		public function DrawPointHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
@@ -34,7 +38,10 @@ package org.openscales.core.handler.sketch
 		override protected function unregisterListeners():void{
         	this.map.removeEventListener(MouseEvent.CLICK, this.drawPoint);
 		}
-				
+		
+		/**
+		 * Create a point and draw it
+		 */		
 		private function drawPoint(event:MouseEvent):void {
 			if (drawLayer != null) {
 				var style:Style = new Style();
