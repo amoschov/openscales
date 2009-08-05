@@ -26,6 +26,9 @@
 			
 			public var minRectSize:Number=5;
 			public var rectPxBounds:Bounds;
+			
+			public var lastZoom:LonLat = null;
+			public var drawContainer:Sprite;
 		
 			//initialise l'overview map, le rectangle et les events listeners		
 			override public function set map(value:Map):void {
@@ -45,6 +48,7 @@
 			    //var rect:Shape;
 				leSprite=new Sprite();
 				rect=new Shape();	
+				drawContainer = new Sprite();
 				rect.graphics.lineStyle(1,0xFF0000);
 				//rect.graphics.beginFill(0xFFCC00);
 				//rect.graphics.endFill();
@@ -52,6 +56,7 @@
 				leSprite.addChild(rect);
 				minMap.addChild(leSprite);
 				
+				minMap.addChild(drawContainer);
 				
 				//this.leSprite.startDrag(false);
 				
@@ -62,19 +67,27 @@
 				//this.minMap.zoom++;
 				
 				this.map.addEventListener(MapEvent.DRAG_END,this.changerPositionRectangle);
+				//this.map.removeEventListener(MapEvent.DRAG_END,this.changerPositionRectangle);
 				
 				this.map.addEventListener(MapEvent.MOVE_END,this.changerPositionRectangle);
+				//this.map.removeEventListener(MapEvent.MOVE_END,this.changerPositionRectangle);
 				
 				this.map.addEventListener(MapEvent.ZOOM_END,this.changerPositionRectangle);
+				//this.map.removeEventListener(MapEvent.ZOOM_END,this.changerPositionRectangle);
 				
 				
-				//this.minMap.addEventListener(MouseEvent.MOUSE_DOWN,this.DebutDrag);
+			
 				
-				//this.minMap.addEventListener(MouseEvent.MOUSE_UP,this.FinDrag);
+				this.minMap.addEventListener(MouseEvent.CLICK,this.CliqueSurMiniMap);
+				
+				this.minMap.addEventListener(MouseEvent.MOUSE_DOWN,startBox);
+            	this.minMap.addEventListener(MouseEvent.MOUSE_UP,endBox);
 				
 				
 				
 				this.updateRectToMap();
+				
+				//this.updateMapToRect();
 				
 
       		}
@@ -93,24 +106,9 @@
 			}
 
 			
-			public function getMiniCarte():Map {
-				
-				return this.minMap;
-				
-			}
+
 			
-			/*public function ChangerLayer(event:LayerEvent):void {
-				
-				if(event.type=="openscales.addlayer")
-				{
-					this.minMap.baseLayer = event.layer;
-				}
-				
-				if(event.type == "openscales.removelayer")
-				{
-					this.minMap.baseLayer = event.layer;				
-				}
-			}*/
+
 			
 			
 			
@@ -283,19 +281,52 @@
     	
     	
     	
-    	//Les fonctions suivantes gèrent le drag and drop de rectangle dans l'overview map
-    /*	public function DebutDrag(event:MouseEvent):void {
+    	//Les fonctions suivantes gèrent le clique pour bouger le rectangle dans l'overview map
+    	
+    	public function CliqueSurMiniMap(event:MouseEvent):void {
     		
-    		this.leSprite.startDrag(false);
+
+    		if((Math.abs(this.minMap.mouseX-this.mouseXInitial)<=5)||(Math.abs(this.minMap.mouseY-this.mouseYInitial)<=5))
+            {
+    		//this.leSprite.width=90;
+    		//this.leSprite.height=20;
+    		
+    		//this.leSprite.x=event.localX;
+    		//this.leSprite.y=event.localY;
+    		
+    		//this.rect.x=event.localX;
+    		//this.rect.y=event.localY;
+    		
+    		this.rect.x = (this.minMap.mouseX)-((this.rect.width)/2);
+    		this.rect.y = (this.minMap.mouseY)-((this.rect.height)/2);
+    		
+    		this.rectPxBounds.left=this.rect.x;
+    		this.rectPxBounds.right=this.rect.width+this.rect.x;
+    		this.rectPxBounds.top=this.rect.y;
+    		this.rectPxBounds.bottom=this.rect.y+this.rect.height;
+    		
+
+    		updateMapToRect();
+    		
+			/* this.map.extent.left=-124.731422;
+			this.map.extent.top=49.371735;
+			this.map.extent.right=-66.969849;
+			this.map.extent. bottom=24.955967;    */
+            }
+            
+     		this.map.addEventListener(MapEvent.DRAG_END,this.changerPositionRectangle);
+     		this.map.addEventListener(MapEvent.ZOOM_END,this.changerPositionRectangle);
+     		this.map.addEventListener(MapEvent.MOVE_END,this.changerPositionRectangle);	             
     		
     	}
     	
-    	public function FinDrag(event:MouseEvent):void {
-    		
-    		this.leSprite.stopDrag();
-    		
-    	}
     	
+    	
+    	
+ 
+    	
+    	
+  
     	
     	
     	
@@ -307,8 +338,22 @@
                 this.minMap.projection,
                 this.map.projection);
                 lonLatBounds = this.getMapBoundsFromRectBounds(this.rectPxBounds);
+                
         }
-        this.map.panTo(lonLatBounds.centerLonLat);
+        
+       
+       
+        
+        
+        
+
+        
+
+        
+
+        this.map.zoomToExtent(lonLatBounds);
+        
+
         }
     
     
@@ -331,7 +376,73 @@
         
         return new LonLat(center.lon + delta_x * res ,
                                      center.lat - delta_y * res); 
-    }*/
+    }
+    
+    
+    //les fonctions suivantes gèrent la sélection d'une zone sur la minicarte
+    
+    public var mouseXInitial:Number;
+    public var mouseYInitial:Number;
+    
+     public function startBox(e:MouseEvent) : void {
+     				
+     				this.map.removeEventListener(MapEvent.DRAG_END,this.changerPositionRectangle);
+     				this.map.removeEventListener(MapEvent.ZOOM_END,this.changerPositionRectangle);
+     				this.map.removeEventListener(MapEvent.MOVE_END,this.changerPositionRectangle); 
+     				
+     				mouseXInitial=minMap.mouseX;
+     				mouseYInitial=minMap.mouseY;
+                	minMap.addEventListener(MouseEvent.MOUSE_MOVE,expandArea);
+                	drawContainer.graphics.beginFill(0xFF0000,0.5);
+                	drawContainer.graphics.drawRect(minMap.mouseX,minMap.mouseY,1,1);
+                	drawContainer.graphics.endFill();
+              		this.lastZoom = this.minMap.getLonLatFromMapPx(new Pixel(minMap.mouseX, minMap.mouseY));
+                }
+
+                public function endBox(e:MouseEvent) : void {
+                	drawContainer.graphics.clear();
+               		
+               		if((Math.abs(this.minMap.mouseX-this.mouseXInitial)>5)||(Math.abs(this.minMap.mouseY-this.mouseYInitial)>5))
+               		{
+               		var nowZoom:LonLat = this.minMap.getLonLatFromMapPx(new Pixel(minMap.mouseX, minMap.mouseY));
+               		map.zoomToExtent(new Bounds(Math.min(lastZoom.lon,nowZoom.lon),
+               									Math.min(nowZoom.lat,lastZoom.lat),
+               									Math.max(lastZoom.lon,nowZoom.lon),
+               									Math.max(nowZoom.lat,lastZoom.lat)));
+               		
+               		
+               		this.rect.x = this.mouseXInitial;
+		    		this.rect.y = this.mouseYInitial;
+		    		this.rect.width=Math.abs(this.mouseXInitial-this.minMap.mouseX);
+		    		this.rect.height=Math.abs(this.mouseYInitial-this.minMap.mouseY);
+		    		
+		    		
+		    		this.rectPxBounds.left=this.rect.x;
+		    		this.rectPxBounds.right=this.rect.width+this.rect.x;
+		    		this.rectPxBounds.top=this.rect.y;
+		    		this.rectPxBounds.bottom=this.rect.y+this.rect.height;
+		    		
+		    		this.map.addEventListener(MapEvent.DRAG_END,this.changerPositionRectangle);
+     				this.map.addEventListener(MapEvent.ZOOM_END,this.changerPositionRectangle);
+     				this.map.addEventListener(MapEvent.MOVE_END,this.changerPositionRectangle);	
+		    		
+               		}
+		    		
+		    		this.lastZoom = null;
+		    		
+		    		 
+  		
+	              	
+	               	
+                }
+
+            public function expandArea(e:MouseEvent) : void {
+                var lePixel:Pixel = minMap.getMapPxFromLonLat(lastZoom);
+                drawContainer.graphics.clear();
+                drawContainer.graphics.beginFill(0xFF0000,0.5);
+                drawContainer.graphics.drawRect(mouseXInitial,mouseYInitial,minMap.mouseX - lePixel.x,minMap.mouseY - lePixel.y);
+                drawContainer.graphics.endFill();
+            }
 
 
 			
@@ -340,35 +451,11 @@
 	</mx:Script>
 
 
-
-	<!--mx:Panel-->
-		
 	
 	<os:Map id="minimap" height="100%" width="100%" maxResolution="0.703125">   <!--max resolution indispensable sinon le fond de carte ne s'affiche pas-->
 			
-	<!--os:WMSC name="Metacarta" url="http://labs.metacarta.com/wms-c/Basic.py"
-							   layers="satellite" format="image/jpeg" isBaseLayer="true" /-->
 							   
 			<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
-			
-			<!--os:Mapnik name="Mapnik"  maxResolution="156543.0339" minResolution="0.5971642833709717" numZoomLevels="20"
-					maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34" isBaseLayer="true"/-->
-							   
-
-			
-			
-
-			
-			
-
-						   
-			<mx:Spacer/>
-			
-			
-			<mx:Spacer/>
-			
-				
-			
 			
 			<!--os:DragHandler id="dragHandler"/>
 			<os:ClickHandler /-->
@@ -377,16 +464,9 @@
             
 			<os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" />
 				
-			
-
-			
 						
-		</os:Map>
+	</os:Map>
 		
-		<!--os:LayerSwitcherComponent id="layerSwitcher" map="{minMap}" label="Layers"/-->
-
-<!--/mx:Panel-->
-
 
 
 </control:Control>
