@@ -28,8 +28,6 @@ package org.openscales.core.handler.sketch
 		public function DrawMultiHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
 		{
 			super(map, active, drawLayer);
-			
-			/* this.map.addEventListener(FeatureEvent.FEATURE_SELECTED, featureSelected); */
 		}
 		
 		public function buttonClicked(selectedFeatures:Array):Feature {
@@ -39,7 +37,13 @@ package org.openscales.core.handler.sketch
 			}
 			return feature;
 		}
-		
+		/**
+		 * draw the new feature with all features selected
+		 * 
+		 * @param selectedFeature An array of features selected
+		 * 
+		 * @return The feature create
+		 */
 		private function draw(selectedFeatures:Array):Feature {
 			var f:VectorFeature;
 			var array:Array = new Array();
@@ -59,6 +63,7 @@ package org.openscales.core.handler.sketch
 			for each(f in selectedFeatures){
 					if(f != null) 
 					{
+						//Add all the featue selected in a multigeometry
 						if(f.geometry is Point)
 						{
 							multiPoint.addPoint(f.geometry as Point);
@@ -99,9 +104,11 @@ package org.openscales.core.handler.sketch
 							}
 							drawType = "MultiPoint";
 						}
+						//delete features selected
 						drawLayer.removeFeature(f);
 					}
 				}
+				//Display the new feature
 				if(drawType == "MultiPoint")
 				{
 					multiPointFeature = new MultiPointFeature(multiPoint,null,style);
