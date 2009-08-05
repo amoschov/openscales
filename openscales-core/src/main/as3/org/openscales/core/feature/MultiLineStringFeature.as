@@ -5,6 +5,9 @@ package org.openscales.core.feature
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
 
+	/**
+	 * Feature used to draw a MultiLineString geometry on FeatureLayer 
+	 */
 	public class MultiLineStringFeature extends VectorFeature
 	{
 		public function MultiLineStringFeature(geometry:Geometry=null, data:Object=null, style:Style=null)

@@ -3,7 +3,10 @@ package org.openscales.core.feature
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.LineString;
-
+	
+	/**
+	 * Feature used to draw a LineString geometry on FeatureLayer 
+	 */
 	public class LineStringFeature extends VectorFeature
 	{
 		public function LineStringFeature(geometry:Geometry=null, data:Object=null, style:Style=null)

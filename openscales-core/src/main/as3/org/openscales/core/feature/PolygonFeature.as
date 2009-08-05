@@ -5,6 +5,9 @@ package org.openscales.core.feature
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.geometry.LinearRing;
 
+	/**
+	 * Feature used to draw a Polygon geometry on FeatureLayer 
+	 */
 	public class PolygonFeature extends VectorFeature
 	{
 		public function PolygonFeature(geometry:Geometry=null, data:Object=null, style:Style=null)

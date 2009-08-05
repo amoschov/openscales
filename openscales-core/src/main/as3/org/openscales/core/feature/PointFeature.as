@@ -3,6 +3,9 @@ package org.openscales.core.feature
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
 
+	/**
+	 * Feature used to draw a Point geometry on FeatureLayer 
+	 */
 	public class PointFeature extends VectorFeature
 	{
 		public function PointFeature(geometry:Geometry=null, data:Object=null, style:Style=null)

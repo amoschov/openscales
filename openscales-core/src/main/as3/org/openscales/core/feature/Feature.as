@@ -49,16 +49,41 @@ package org.openscales.core.feature {
 
 		}
 
+		/**
+		 * Attributes usually generated from data parsing or user input
+		 */
 		private var _attributes:Object=null;
 
+		/**
+		 * Raw data that represent this feature. For exemple, this could contains the
+		 * GML data for WFS features
+		 * 
+		 * TODO : specify where we can specify if data are kept or not, in order to
+		 * minimize memory consumption (GML use a lot of memory)
+		 */
 		private var _data:Object=null;
-
+		
+		/**
+		 * The layer where this feature belong. Should be a LayerFeature or inherited classes.
+		 */
 		private var _layer:Layer=null;
 
+		/**
+		 * The geolocalized position of this feature, will be used to know where
+		 * this feature should be drawn. Please not that lonlat getter and setter
+		 * may be override in inherited classes to use other attributes to determine
+		 * the position (for exemple the geometry)
+		 */
 		private var _lonlat:LonLat=null;
 
+		/**
+		 * The popup that will be displayed after a click on this feature
+		 */
 		private var _popup:Popup=null;
 
+		/**
+		 * Is this feature selected ?
+		 */
 		private var _selected:Boolean=false;
 
 		/**
@@ -135,6 +160,10 @@ package org.openscales.core.feature {
 			this.popup=null;
 		}
 
+		/**
+		 * The function allow to customize the display of this feature.
+		 * Inherited Feature classes usually override this function. 
+		 */
 		public function draw():void {
 			this.graphics.clear();
 		}

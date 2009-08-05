@@ -4,6 +4,9 @@ package org.openscales.core.feature
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.MultiPoint;
 
+	/**
+	 * Feature used to draw a MultiPoint geometry on FeatureLayer 
+	 */
 	public class MultiPointFeature extends VectorFeature
 	{
 		public function MultiPointFeature(geometry:Geometry=null, data:Object=null, style:Style=null)

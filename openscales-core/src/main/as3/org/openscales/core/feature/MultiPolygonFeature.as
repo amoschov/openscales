@@ -6,6 +6,9 @@ package org.openscales.core.feature
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.MultiPolygon;
 
+	/**
+	 * Feature used to draw a MultiPolygon geometry on FeatureLayer 
+	 */
 	public class MultiPolygonFeature extends VectorFeature
 	{
 		public function MultiPolygonFeature(geometry:Geometry=null, data:Object=null, style:Style=null)
