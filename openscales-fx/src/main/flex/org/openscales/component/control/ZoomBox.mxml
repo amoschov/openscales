@@ -21,11 +21,22 @@
                     map.addChild(drawContainer);
                 }
 
-                private function enableBox(e:Event) : void {
-                	zoombox.enabled = false;
-                    deactiveDrag();
-                    map.addEventListener(MouseEvent.MOUSE_DOWN,startBox);
-            		map.addEventListener(MouseEvent.MOUSE_UP,endBox);
+                private function selectBox(e:Event) : void {
+                	if(zoombox.selected == false)
+                	{
+                		zoombox.selected = true;
+	                    deactiveDrag();
+	                    map.addEventListener(MouseEvent.MOUSE_DOWN,startBox);
+	            		map.addEventListener(MouseEvent.MOUSE_UP,endBox);
+                	}
+            		else
+					{
+						zoombox.selected = false;
+		            	activeDrag();
+		            	map.removeEventListener(MouseEvent.MOUSE_MOVE,expandArea);
+	                	map.removeEventListener(MouseEvent.MOUSE_DOWN,startBox);
+	               		map.removeEventListener(MouseEvent.MOUSE_UP,endBox);
+					}
                 }
 
                 private function startBox(e:MouseEvent) : void {
@@ -47,7 +58,7 @@
                									Math.max(lastZoom.lon,nowZoom.lon),
                									Math.max(nowZoom.lat,lastZoom.lat)));
                		this.lastZoom = null;
-	              	zoombox.enabled = true;
+	              	zoombox.selected = false;
 	               	activeDrag();
                 }
 
@@ -79,6 +90,6 @@
             ]]>
     </mx:Script>
 
-    <mx:Button id="zoombox" label="ZoomBox" click="enableBox(event)" />
+    <mx:Button id="zoombox" label="ZoomBox" selected="false" click="selectBox(event)" />
 
 </control:Control> 
