@@ -149,8 +149,9 @@
 					case "path":{pathHandler.newFeature = true; break;}
 					case "polygon":{polygonHandler.newFeature = true; break;}
 				}
+				btnDeleteSelected.enabled = false;
 				//clear the information tab
-				this.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
 			}
 			
 			/**
