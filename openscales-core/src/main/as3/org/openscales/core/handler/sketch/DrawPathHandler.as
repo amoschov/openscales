@@ -44,7 +44,7 @@ package org.openscales.core.handler.sketch
 		override protected function registerListeners():void{
 			this._dblClickHandler.active = true;
 			this._dblClickHandler.doubleclick = this.mouseDblClick;
-			this._dblClickHandler.click=this.drawLine;
+			this._dblClickHandler.click=this.drawLine; 
 		}
 		
 		override protected function unregisterListeners():void{
@@ -52,6 +52,7 @@ package org.openscales.core.handler.sketch
 		}
 				
 		public function mouseDblClick(event:MouseEvent):void {
+			this.drawLine(event);
 			this.drawFinalPath();
 		} 
 		
@@ -74,7 +75,7 @@ package org.openscales.core.handler.sketch
 			
 			//We create a MultiLineString with several LineStrings (if there are line strings)
 			if (lstrings.length > 0) {
-				var mlString:MultiLineString = new MultiLineString(lstrings);
+				var mlString:MultiLineString = new MultiLineString(lstrings); 
 				var mlFeature:MultiLineStringFeature = new MultiLineStringFeature(mlString);
 				mlFeature.name = "path." + id.toString(); id++;
 				mlFeature.style = style;
@@ -105,14 +106,12 @@ package org.openscales.core.handler.sketch
 				if(drawLayer.features[drawLayer.features.length-1] is PointFeature) {
 					drawLayer.removeFeature(drawLayer.features[drawLayer.features.length-1]);
 				}								
-				//drawLayer.clear();
 				var points:Array = new Array(2);
 				points.push(lastPoint, point);
 				var lstring:LineString = new LineString(points);
 				var lineStringFeature:LineStringFeature = new LineStringFeature(lstring);
 				lineStringFeature.name = name;
 				drawLayer.addFeature(lineStringFeature);
-				drawLayer.redraw();
 				lastPoint = point;
 			}
 		}

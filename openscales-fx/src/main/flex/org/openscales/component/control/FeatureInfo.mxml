@@ -71,13 +71,13 @@
 				//path informations
 				else if(getQualifiedClassName((evt.feature as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString"){					
 					//Add the property NAME
-					name = {};
-					name.Name = "Name";					
-					name.Value = evt.feature.name;
-					properties.push(name);
-					
+						name = {};
+						name.Name = "Name";					
+						name.Value = evt.feature.name;
+						properties.push(name);							
 					//MultiLineString = several LineString and LineString = 2 points					
 					for each(var ls:LineString in ((evt.feature as VectorFeature).geometry as MultiLineString).components){
+						
 						for each(currentPoint in ls.components){
 							//To prevent the same point twice
 							var pointPath:Object = {};	//We use pointPath as object to put properties correctly
