@@ -54,6 +54,7 @@ package org.openscales.core.handler.mouse
 		private var _lastfeature:Feature=null;
 		private var _currentfeature:VectorFeature=null;
 		
+		
 		//Accept hover or not
 		private var _hover:Boolean=true;
 		
@@ -128,9 +129,7 @@ package org.openscales.core.handler.mouse
 						iteratorFeatures=0;
 					}
 					//ctrl key is pressed
-					else{
-						iteratorFeatures++;
-					}
+					else{iteratorFeatures++;}
 					selectFeauturesLength++;
 					ChangeToSelected();
 				}
@@ -151,8 +150,7 @@ package org.openscales.core.handler.mouse
 							lastfeature = null;
 							currentfeature.layer.redraw();						
 							/* btnDeleteSelected.enabled = false; */			
-							//clear the information tab
-							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.currentfeature));	
+							
 							selectFeauturesLength--;					
 						}
 					}							
@@ -166,7 +164,9 @@ package org.openscales.core.handler.mouse
 						}
 						currentfeature.layer.redraw();
 						selectFeauturesLength--;
-					}							
+					}
+					//clear the information tab
+					this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.currentfeature));								
 				}
 			}
 			//This is the first selection

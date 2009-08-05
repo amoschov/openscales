@@ -198,6 +198,9 @@
 					btnDeleteSelected.enabled = true;
 					selectFeatureHandler.ctrl = event.ctrlPressed;					
 					selectFeatureHandler.OnSelection();
+					//managing of btnDeleteSelected (in case there no more selected features
+					if(selectFeatureHandler.selectFeauturesLength==0){btnDeleteSelected.enabled = false;}
+					//managing of btnMerge
 					if(selectFeatureHandler.Comparison()){btnMerge.enabled = true;}
 					else{btnMerge.enabled = false;}
 				}
