@@ -25,7 +25,7 @@ package org.openscales.core.format
 	import org.openscales.core.feature.MultiPolygonFeature;
 	
 	/**
-	 * Read/Wite GML. Supports the GML simple features profile.
+	 * Read/Write GML. Supports the GML simple features profile.
 	 */
 	public class GMLFormat extends Format
 	{

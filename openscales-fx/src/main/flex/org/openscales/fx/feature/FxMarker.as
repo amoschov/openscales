@@ -3,7 +3,6 @@ package org.openscales.fx.feature
   import flash.display.Sprite;
   import flash.utils.getQualifiedClassName;
   
-  import org.openscales.core.Icon;
   import org.openscales.core.Util;
   import org.openscales.core.basetypes.LonLat;
   import org.openscales.core.feature.Feature;
@@ -37,7 +36,6 @@ package org.openscales.fx.feature
      * @param data
      */
     public function FxMarker(layer:Sprite, lonlat:LonLat, data:Object=null, map:FxMap=null) {
-      this.id = Util.createUniqueID(getQualifiedClassName(this) + "_");
 
       if (layer is FxLayer){
         this.fxmap = (layer as FxLayer).fxmap;
@@ -81,8 +79,7 @@ package org.openscales.fx.feature
               var id:String = this.id + "_popup";
 
               if (this.data.popupContent != null) {
-                this.popup = new FxAnchored(	id,
-                                          this.lonlat,
+                this.popup = new FxAnchored(this.lonlat,
                                           this.data.popupSize,
                                           this.data.popupContent,
                                           this.marker,closeBox);

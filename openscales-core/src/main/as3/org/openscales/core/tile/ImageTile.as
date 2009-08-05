@@ -20,8 +20,8 @@ package org.openscales.core.tile
 	import org.openscales.core.layer.RequestLayer;
 	
 	/**
-	 * Instances of OpenLayers.Tile.Image are used to manage the image tiles
-	 * used by various layers.
+	 * Image tile are used for example in WMS-C layers to display an image
+	 * part of the Grid layer.
 	 */
 	public class ImageTile extends Tile
 	{

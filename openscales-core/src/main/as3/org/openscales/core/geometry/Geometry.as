@@ -26,8 +26,8 @@ package org.openscales.core.geometry
 		/**
 		 * Geometry constructor
 		 */
-		public function Geometry() {
-			this.id = Util.createUniqueID(getQualifiedClassName(this) + "_");
+		public function Geometry(id:String = null) {
+			this._id = id;
 		}
 		
 		/**

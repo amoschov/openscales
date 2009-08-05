@@ -27,8 +27,8 @@ package org.openscales.core.feature
 			super(null, null, data);
 	        this.lonlat = null;
 	        this.geometry = geometry;
-	        if (this.geometry)
-          		this.name = geometry.id;
+	        if (this.geometry && this.geometry.id)
+          		this.name = this.geometry.id;
 	        this.state = null;
 	        this.attributes = new Object();
 	        if (data) {

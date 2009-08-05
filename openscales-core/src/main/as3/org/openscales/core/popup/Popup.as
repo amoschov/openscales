@@ -28,7 +28,6 @@ package org.openscales.core.popup
     public static var BACKGROUND:uint = 0xFFFFFF;
     public static var BORDER:Number = 2;
 
-      private var _id:String = "";
       private var _lonlat:LonLat = null;
       private var _size:Size = null;
       private var _background:uint;
@@ -42,12 +41,8 @@ package org.openscales.core.popup
       [Embed(source="/org/openscales/core/img/close.gif")]
         private var _closeImg:Class;
 
-      public function Popup(id:String, lonlat:LonLat, background:uint = 0, border:Number = NaN, size:Size = null, htmlText:String = "", closeBox:Boolean = true) {
-        if (id == null) {
-              id = Util.createUniqueID(getQualifiedClassName(this) + "_");
-          }
+      public function Popup(lonlat:LonLat, background:uint = 0, border:Number = NaN, size:Size = null, htmlText:String = "", closeBox:Boolean = true) {
 
-          this.id = id;
           this.lonlat = lonlat;
           this.htmlText = htmlText;
           this.closeBox = closeBox;
@@ -132,7 +127,7 @@ package org.openscales.core.popup
 
               var img:Bitmap = new this._closeImg();
 
-              var closeImg:Button = new Button(this.id + "_close", img, new Pixel(this.size.w- 17 - (this.border/2), (this.border/2)));
+              var closeImg:Button = new Button("close", img, new Pixel(this.size.w- 17 - (this.border/2), (this.border/2)));
 
               this.addChild(closeImg);
 
@@ -196,14 +191,6 @@ package org.openscales.core.popup
     }
     public function set map(value:Map):void {
       this._map = value;
-    }
-
-    public function get id():String {
-      return this._id;
-
-    }
-    public function set id(value:String):void {
-      this._id = value;
     }
 
     public function get lonlat():LonLat {

@@ -2,7 +2,6 @@ package org.openscales.core.feature {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
-	import org.openscales.core.Icon;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -121,7 +120,7 @@ package org.openscales.core.feature {
 		public function createPopup(closeBox:Boolean=true):Popup {
 			if (this.lonlat != null) {
 
-				this.popup=new Anchored(this.name + "_popup", this.lonlat, this.data.popupBackground, this.data.popupBorder, this.data.popupSize, this.data.popupContentHTML, this, closeBox);
+				this.popup=new Anchored(this.lonlat, this.data.popupBackground, this.data.popupBorder, this.data.popupSize, this.data.popupContentHTML, this, closeBox);
 
 				this.popup.feature=this;
 			}

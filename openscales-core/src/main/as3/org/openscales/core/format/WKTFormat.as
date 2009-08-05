@@ -16,7 +16,7 @@ package org.openscales.core.format
 	import org.openscales.core.feature.VectorFeature;
 	
 	/**
-	 * Read/Wite WKT.
+	 * Read/Write WKT.
 	 */
 	public class WKTFormat extends Format
 	{

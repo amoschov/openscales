@@ -8,7 +8,7 @@ package org.openscales.core.popup
   import org.openscales.core.basetypes.Size;
 
   /**
-   * Anchored popup
+   * Anchored popup, usually the anchor is a Feature
    */
   public class Anchored extends Popup
   {
@@ -25,8 +25,8 @@ package org.openscales.core.popup
 
     private var _anchor:Sprite = null;
 
-      public function Anchored(id:String, lonlat:LonLat, background:uint, border:Number, size:Size, contentHTML:String, anchor:Sprite, closeBox:Boolean) {
-          super(id, lonlat, background, border, size, contentHTML, closeBox);
+      public function Anchored(lonlat:LonLat, background:uint, border:Number, size:Size, contentHTML:String, anchor:Sprite, closeBox:Boolean) {
+          super(lonlat, background, border, size, contentHTML, closeBox);
 
           this._anchor = anchor;
       }

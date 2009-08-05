@@ -10,10 +10,9 @@ package org.openscales.core.tile
 	import org.openscales.core.layer.Layer;
 
 	/**
-	 *  This is a class designed to designate a single tile, however
- 	 *  it is explicitly designed to do relatively little. Tiles store 
-	 *  information about themselves -- such as the URL that they are related
-	 *  to, and their size. 
+	 *  A tile maybe a single tile (for example in WMS or WFS) or part of a Grid
+	 *  like in WMS-C. It is a graphical Sprite that use the draw function to 
+	 *  display itself.
 	 */
 	public class Tile extends Sprite
 	{

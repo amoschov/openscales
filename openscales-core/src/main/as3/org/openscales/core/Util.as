@@ -37,7 +37,7 @@ package org.openscales.core
 		/**
 		 * Remove an item of an array
 		 * 
-		 * @param array the array containnig items
+		 * @param array the array containing items
 		 * @param item item to remove
 		 * 
 		 * @return the new array
@@ -49,15 +49,6 @@ package org.openscales.core
                 }
             }
             return array;
-        }
-		
-		/**
-		 * Remove an array
-		 * 
-		 * @param array array to remove
-		 */
-        public static function clearArray(array:Array):void {
-            array.length = 0;
         }
 		
 		/**
@@ -74,35 +65,6 @@ package org.openscales.core
             }
             return -1;
         }
-		
-		/**
-		 * Generate unique ids
-		 * 
-		 * @param prefix
-		 * 
-		 * @return the unique ID
-		 */
-        public static function createUniqueID(prefix:String):String {
-            if (prefix == null) {
-                prefix = "id_";
-            }
-            lastSeqID += 1;
-            return prefix + lastSeqID;
-        }
-		
-
-       /*  public function pagePosition(forElement:Object):Array {
-            var valueT:Number = 0, valueL:Number = 0;
-
-            var element:Object = forElement;
-
-            var pt:Point = new Point(element.x, element.y);
-            pt = element.localToGlobal(pt);
-            valueT = pt.x;
-            valueT = pt.y;
-
-            return [valueL, valueT];
-        } */
 		
 		/**
 		 * Normalise scale
