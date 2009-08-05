@@ -36,7 +36,18 @@
 				
 			}
 			
+			public function onZoomSliderThumbPress(event:SliderEvent):void {
+				zoomSlider.removeEventListener(SliderEvent.CHANGE,this.zoomSliderChange);
+				zoomSlider.addEventListener(SliderEvent.THUMB_RELEASE,this.onZoomSliderThumbRelease);
+			}
+			
 			public function onZoomSliderThumbRelease(event:SliderEvent):void{
+				
+				map.zoom = zoomSlider.value;
+				zoomSlider.addEventListener(SliderEvent.CHANGE,this.zoomSliderChange);
+			}
+			
+			public function zoomSliderChange(event:Event):void {
 				map.zoom = zoomSlider.value;
 			}
 			
@@ -49,6 +60,7 @@
 				zoomSlider.maximum = map.getZoomForResolution(map.minResolution);
 				zoomSlider.minimum = map.getZoomForResolution(map.maxResolution);
 				zoomSlider.value = map.zoom;
+				zoomSlider.addEventListener(SliderEvent.CHANGE,this.zoomSliderChange);
 			}
 			
 			override public function set active(value:Boolean):void
@@ -79,7 +91,7 @@
 			allowTrackClick="true"
 			tickInterval="1"
 			snapInterval="1"
-			thumbRelease="this.onZoomSliderThumbRelease(event)"/>
+			 thumbPress="this.onZoomSliderThumbPress(event)"/>
 		<mx:Button id="zoomOut" height="30" width="30" icon="@Embed('/org/openscales/component/images/zoomout.swf')" click="this.onZoomOutClick(event);" />
 	</mx:VBox>
 </control:Control>
