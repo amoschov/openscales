@@ -1,6 +1,7 @@
 package org.openscales.core.layer
 {
 	import flash.display.Loader;
+	import flash.events.EventDispatcher;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Bounds;
@@ -10,7 +11,6 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.layer.params.AbstractParams;
 	import org.openscales.core.layer.params.IHttpParams;
-	import org.openscales.core.layer.params.ogc.WMSParams;
 	import org.openscales.core.layer.requesters.AbstractRequest;
 	import org.openscales.core.layer.requesters.IhttpRequest;
 	import org.openscales.core.tile.ImageTile;
@@ -96,13 +96,15 @@ package org.openscales.core.layer
 		
 		/**
 		 *To draw tile
-		 * @param tile  
+		 * @param tile
+		 * @return the loader  
 		 **/
-		public function drawTile(tile:Tile):void
+		public function drawTile(tile:Tile):EventDispatcher
 		{
 			(this.requester as AbstractRequest).onComplete=(tile as ImageTile).onTileLoadEnd;
+			(this.requester as AbstractRequest).onFailure=(tile as ImageTile).onTileLoadError;
 	        ((this.requester as AbstractRequest).params as AbstractParams).bbox=tile.bounds.boundsToString();
-	        this.requester.executeRequest();
+	        return this.requester.executeRequest();
 		}
 		
 		/**

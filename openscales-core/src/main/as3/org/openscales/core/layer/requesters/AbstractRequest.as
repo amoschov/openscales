@@ -1,5 +1,7 @@
 package org.openscales.core.layer.requesters
 {
+	import flash.events.EventDispatcher;
+	
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.params.IHttpParams;
 	
@@ -36,6 +38,12 @@ package org.openscales.core.layer.requesters
 		 **/
 		private var _onComplete:Function;
 		/**
+		 *	onFailure function is used to execute a 
+		 *  function after a bad download 
+		 * @private
+		 **/
+		private var _onfailure:Function;
+		/**
 		 *	Requesting params 
 		 * @private
 		 **/
@@ -63,9 +71,9 @@ package org.openscales.core.layer.requesters
 			return null;
 		}
 
-		public function executeRequest():void
+		public function executeRequest():EventDispatcher
 		{
-			
+			return null;
 		}
 		/**
 		 * layer concerned by the request
@@ -110,9 +118,27 @@ package org.openscales.core.layer.requesters
 		/**
 		 * @private
 		 * */
-		public function set onComplete(bob:Function):void{
-			this._onComplete=bob;
+		public function set onComplete(value:Function):void{
+			this._onComplete=value;
 		}
+		/**
+		 *	Oncomplete function is used to execute a 
+		 *  function after a download 
+		 * */
+		 /**
+		 *	onFailure function is used to execute a 
+		 *  function after a bad download 
+		 **/
+		public function get onFailure():Function{
+			return this._onfailure;
+		}
+		/**
+		 * @private
+		 * */
+		public function set onFailure(value:Function):void{
+			this._onfailure=value;
+		}
+		
 		/**
 		 * Requesting params
 		 **/

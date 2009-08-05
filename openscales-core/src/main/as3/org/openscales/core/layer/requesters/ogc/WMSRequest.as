@@ -2,6 +2,8 @@ package org.openscales.core.layer.requesters.ogc
 {
 	import flash.display.Loader;
 	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	import flash.events.IOErrorEvent;
 	import flash.net.URLRequest;
 	
 	import org.openscales.core.layer.Layer;
@@ -31,14 +33,21 @@ package org.openscales.core.layer.requesters.ogc
 		 	return request;
 		}
 			
-		override public function executeRequest():void
+		override public function executeRequest():EventDispatcher
 		{
 			if(this.onComplete!=null)
 			{
 				this.loader=new Loader();
+				(this.loader as Loader).name=this.getUrl();
 				(this.loader as Loader).contentLoaderInfo.addEventListener(Event.COMPLETE,this.onComplete,false, 0, true);
-				(this.loader as Loader).load(new URLRequest(this.getUrl()));			
+				
+				if(this.onFailure!=null){
+				(this.loader as Loader).contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, this.onFailure, false, 0, true);
+				}
+				(this.loader as Loader).load(new URLRequest(this.getUrl()));
+				return this.loader;			
 			}
+			return null;
 		}
 	}
 }

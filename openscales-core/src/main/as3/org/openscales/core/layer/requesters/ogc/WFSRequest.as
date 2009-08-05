@@ -32,7 +32,7 @@ package org.openscales.core.layer.requesters.ogc
 		/**
 		 * @inherited
 		 * */
-		override public function executeRequest():void
+		override public function executeRequest():EventDispatcher
 		{	
 
 		    try {
@@ -78,6 +78,7 @@ package org.openscales.core.layer.requesters.ogc
 		    } catch (e:Error) {
 		      Trace.error(e.message);
 		    }
+		    return null;
 		}
 		/**
 		 * this object represents a datas of a POST request 

@@ -25,9 +25,9 @@ package org.openscales.core.layer.requesters.ogc
 			super(layer,url, method, params, oncomplete,null);
 		}
 		
-		override public function executeRequest():void
+		override public function executeRequest():EventDispatcher
 		{
-
+			return null;
 		}
 		/**
 		 * The OGCRequester loader

@@ -88,7 +88,7 @@ package org.openscales.core.tile
 	        	{
 	        	 	if((this.layer as RequestLayer).requester!=null)
 	        	 	{
-	        	 		(this.layer as Grid).drawTile(this);
+	        	 		_tileLoader=((this.layer as Grid).drawTile(this) as Loader);
 	        	 	}
 	        		else
 	        		{
@@ -134,7 +134,7 @@ package org.openscales.core.tile
 		private function drawLoader(loader:Loader, cached:Boolean):void {
 			
 			if(this.layer) {
-
+				
 				this.addChild(loader);
 				
 				// Tween tile effect 
@@ -152,7 +152,7 @@ package org.openscales.core.tile
 			}
 		}
 		
-		private function onTileLoadError(event:IOErrorEvent):void
+		public function onTileLoadError(event:IOErrorEvent):void
 		{
 			
 			if (++this._attempt > OpenScales.IMAGE_RELOAD_ATTEMPTS) {
