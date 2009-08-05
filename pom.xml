@@ -11,7 +11,7 @@
 	
 	<properties>
 		<flex.version>3.3.0.4852</flex.version>
-		<flexmojos.version>3.2.0</flexmojos.version>
+		<flexmojos.version>3.3-SNAPSHOT</flexmojos.version>
 		<flex.target.player.version>9.0.0</flex.target.player.version>
 	</properties>
 	
@@ -178,6 +178,14 @@
 				<artifactId>flexmojos-maven-plugin</artifactId>
 				<version>${flexmojos.version}</version>
 				<extensions>true</extensions>
+				<dependencies>
+          				<dependency>
+						<groupId>com.adobe.flex</groupId>
+						<artifactId>compiler</artifactId>
+						<version>${flex.version}</version>
+						<type>pom</type>
+					</dependency>
+				</dependencies>
 				<configuration>
 					<targetPlayer>${flex.target.player.version}</targetPlayer>
 					<testFailureIgnore>true</testFailureIgnore>
@@ -188,6 +196,13 @@
 				<version>2.0-beta-9</version>
 				<configuration>
 					<tagBase>http://openscales.org/svn/openscales/tags</tagBase>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -217,7 +232,7 @@
 		        <version>2.4.3</version>
 			</plugin>
 		</plugins>
-  </reporting>
+  	</reporting>
 
 	<repositories>
 		<repository>
