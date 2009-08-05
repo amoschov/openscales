@@ -19,7 +19,6 @@
 	<component id="MousePosition" class="org.openscales.fx.control.FxMousePosition" />
 	<component id="PanZoom" class="org.openscales.fx.control.FxPanZoom" />
 	<component id="PanZoomBar" class="org.openscales.fx.control.FxPanZoomBar" />
-	<component id="WMSGetFeatureInfo" class="org.openscales.fx.control.FxWMSGetFeatureInfo" />
 	
 	<component id="BorderPanHandler" class="org.openscales.fx.handler.mouse.FxBorderPanHandler" />
 	<component id="ClickHandler" class="org.openscales.fx.handler.mouse.FxClickHandler" />
@@ -27,7 +26,9 @@
 	<component id="DragFeature" class="org.openscales.fx.handler.mouse.FxDragFeature" />
 	<component id="SelectFeature" class="org.openscales.fx.handler.mouse.FxSelectFeature" />
 	<component id="WheelHandler" class="org.openscales.fx.handler.mouse.FxWheelHandler" />
+	<component id="WMSGetFeatureInfo" class="org.openscales.fx.handler.mouse.FxWMSGetFeatureInfo" />
 	<component id="DrawPointHandler" class="org.openscales.fx.handler.sketch.FxDrawPointHandler" />
+	
 	
 	<component id="LayerSwitcherComponent" class="org.openscales.component.control.layer.LayerSwitcher" />
 	<component id="CatalogTreeComponent" class="org.openscales.component.control.layer.CatalogTreeComponent" />

@@ -1,12 +1,13 @@
 package org.openscales.core.events{
 
 	/**
-	 * Event related to a data.
+	 * Event allowing to get information about a WMS feature when we click on it.
+	 * Dispatched for example by the WMSGetFeatureInfo handler
 	 */
 	public class GetFeatureInfoEvent extends OpenScalesEvent {
 		
 		/**
-		 * data concerned by the event.
+		 * Data returned by the WMSGetFeatureInfo request
 		 */
 		private var _data:Object = null;
 		

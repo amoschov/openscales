@@ -4,11 +4,10 @@ package org.openscales.core.events
 	/**
 	 * Event related to the drawing action :
 	 * 
-	 * In order to not mix all handler (pan, drawing...) this events can determine when you're drawing.
-	 * So if there are problems with control (like zoomBox or selectBox), you can easy manage 
-	 * all different handler.
+	 * In order to not mix all handler (pan, drawing...), this event can determine when you're drawing.
+	 * So if there are problems with control (like zoomBox or selectBox), you can easily manage 
+	 * all different handlers.
 	 **/
-	
 	public class DrawingEvent extends OpenScalesEvent
 	{
 		

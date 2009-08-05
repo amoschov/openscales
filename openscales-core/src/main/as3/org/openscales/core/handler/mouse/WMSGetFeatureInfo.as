@@ -1,4 +1,4 @@
-package org.openscales.core.control
+package org.openscales.core.handler.mouse
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
@@ -13,11 +13,12 @@ package org.openscales.core.control
 	import org.openscales.core.layer.ogc.WMS;
 	import org.openscales.core.layer.params.ogc.WMSGetFeatureInfoParams;
 	import org.openscales.core.layer.params.ogc.WMSParams;
+	import org.openscales.core.handler.Handler;
 	
 	/**
-	 * Class allowing to get information about a WMS feature when we click on it.
+	 * Handler allowing to get information about a WMS feature when we click on it.
 	 */
-	public class WMSGetFeatureInfo extends Control
+	public class WMSGetFeatureInfo extends Handler
 	{
 	
 		private var _clickHandler:ClickHandler;
@@ -28,8 +29,8 @@ package org.openscales.core.control
 		private var _request:Request;
 		private var _srs:String;
     	  	
-    	public function WMSGetFeatureInfo(position:Pixel = null) {
-    		super(position);
+    	public function WMSGetFeatureInfo(target:Map = null, active:Boolean = false){
+			super(target,active);
 			_format = "application/vnd.ogc.gml";
 			_maxFeatures = 10;
 		}

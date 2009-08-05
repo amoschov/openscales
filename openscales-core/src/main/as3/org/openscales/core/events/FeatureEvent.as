@@ -3,9 +3,8 @@ package org.openscales.core.events
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.feature.Feature;
 
-	 /**
-	 * 
-	 *Event related to a Vectorfeature.
+	/**
+	 * Event related to a Feature.
 	 */
 	public class FeatureEvent extends OpenScalesEvent
 	{
