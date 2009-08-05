@@ -4,6 +4,7 @@
                  width="100%" height="100%">
     <mx:Script>
             <![CDATA[
+            	import org.openscales.core.events.DrawingEvent;
                 import org.openscales.core.Map;
                 import org.openscales.core.basetypes.LonLat;
                 import org.openscales.core.basetypes.Bounds;
@@ -15,10 +16,19 @@
 	            private var fillColor:uint = 0x660000
 	            private var drawContainer:Sprite = new Sprite();
 
+                private function activate(evt:DrawingEvent):void{
+					this.enabled = true;
+				}
+				private function deactivate(evt:DrawingEvent):void{
+					this.enabled = false;
+				}
+                
                 override public function set map(value:Map):void
                 {
                     super.map = value;
                     map.addChild(drawContainer);
+                    this.map.addEventListener(DrawingEvent.ENABLED, deactivate);
+					this.map.addEventListener(DrawingEvent.DISABLED, activate);
                 }
 
                 private function selectBox(e:Event) : void {
@@ -90,6 +100,6 @@
             ]]>
     </mx:Script>
 
-    <mx:Button id="zoombox" label="ZoomBox" selected="false" click="selectBox(event)" />
+    <mx:Button id="zoombox" label="ZoomBox" selected="false" click="selectBox(event)"/>
 
 </control:Control> 

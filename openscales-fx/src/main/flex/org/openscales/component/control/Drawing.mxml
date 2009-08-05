@@ -6,6 +6,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.events.DrawingEvent;
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.feature.Feature;
 			import mx.controls.Alert;
@@ -75,7 +76,7 @@
 						this.featureDrawing.selectFeatureHandler.active = false;
 					}
 					//hide handcursor
-					this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));	
+					this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));
 				}
 				//user switches to drawing tab
 				else{
@@ -105,8 +106,8 @@
 					for(i;i<this.featureDrawing.selectFeatureHandler.selectFeatures.length;i++){
 							f=this.featureDrawing.selectFeatureHandler.selectFeatures[i];
 							if(f != null){if(f.selected){f.selected = false;f.style = f.originalStyle;f.layer.redraw();}}
-						}	
-						this.featureDrawing.selectFeatureHandler.selectFeatures = null;
+					}	
+					this.featureDrawing.selectFeatureHandler.selectFeatures = null;
             	}
             	else{(this.parent as TabNavigator).selectedIndex = this.featureDrawing.indexTabDrawing;}
 			}

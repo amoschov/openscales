@@ -2,6 +2,7 @@
 <Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="276" height="108" creationComplete="initFeatureDrawing();">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.events.DrawingEvent;
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.feature.Feature;
 			import org.openscales.core.handler.mouse.DragHandler;
@@ -224,6 +225,7 @@
 						else if(polygonHandler.active){this.finishPolygon();}
 						drawType = "";
 						this.activeDrag();
+						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.DISABLED));
 						break;
 					
 					case 1:		//click on button point
@@ -234,12 +236,7 @@
 							drawType = "point";
 						}
 						this.deactiveDrag();
-						/* else{
-							drawType = "";
-							pointHandler.active = false;
-							this.tgBar.selectedIndex = -1;
-							this.activeDrag(); 
-						} */						
+						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));					
 						break;
 					
 					case 2:		//click on button path
@@ -250,12 +247,7 @@
 							drawType = "path";
 						}
 						this.deactiveDrag();
-						/* else{
-							drawType = "";
-							finishPath();
-							this.tgBar.selectedIndex = -1;
-							this.activeDrag(); 
-						} */						
+						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));					
 						break;
 						
 					case 3:		//click on button polygon
@@ -266,12 +258,7 @@
 							drawType = "polygon";
 						}
 						this.deactiveDrag();
-						/* else{
-							drawType = "";
-							this.finishPolygon();
-							this.tgBar.selectedIndex = -1;
-							this.activeDrag();   
-						} */
+						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 						break;
 				}
 			}			
