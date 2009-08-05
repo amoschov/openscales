@@ -30,7 +30,7 @@ package org.openscales.core.handler.mouse
 		/**
 		 * We use a timer to detect double click, without throwing a click before.
 		 */
-		private var _timer:Timer = new Timer(155,1);
+		private var _timer:Timer = new Timer(170,1);
 		
 		private var _clickNum:Number = 0;
 		

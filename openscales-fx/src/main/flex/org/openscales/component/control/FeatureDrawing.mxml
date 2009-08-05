@@ -123,15 +123,20 @@
 			 * User clicks on delete selected feature button
 			 */
 			private function deleteSelectedFeatures():void {
-				var feature:Feature;
+				var feature:VectorFeature;
 				var i:Number = 0;
-				for(i;i<drawLayer.features.length;i++){
-					feature = drawLayer.features[i];
-					if(feature.selected){
-						drawLayer.removeFeature(drawLayer.features[i]);
-						i--;
+				var featureToDelete:Array = new Array();
+				
+				for(i;i<this.selectFeatureHandler.selectFeatures.length;i++){
+					feature = this.selectFeatureHandler.selectFeatures[i];
+					if(feature != null){
+						feature.selected = false;feature.style = feature.originalStyle;
+						featureToDelete.push(feature);
+						feature.layer.redraw();
+						this.selectFeatureHandler.selectFeatures[i] = null;
 					}
 				}
+				this.drawLayer.removeFeatures(featureToDelete)			
 				btnDeleteSelected.enabled = false;
 				//clear the information tab
 				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
