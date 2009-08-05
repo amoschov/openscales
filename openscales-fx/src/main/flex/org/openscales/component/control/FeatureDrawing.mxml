@@ -147,14 +147,19 @@
 			 */
 			private function onDeleteAllClick(event:Event):void {
 				drawLayer.clear();
+				// clear the last feature
 				selectFeatureHandler.lastfeature = null;
-				selectFeatureHandler.selectFeatures = null;				
+				// clear the selected feature tab
+				selectFeatureHandler.selectFeatures = null;
+				// there's no more selected feature
+				selectFeatureHandler.selectFeauturesLength = 0;				
 				switch(drawType)
 				{
 					case "path":{pathHandler.newFeature = true; break;}
 					case "polygon":{polygonHandler.newFeature = true; break;}
 				}
 				btnDeleteSelected.enabled = false;
+				btnMerge.enabled = false;
 				//clear the information tab
 				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
 			}
