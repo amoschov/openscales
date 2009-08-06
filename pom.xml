@@ -246,6 +246,14 @@
 			<id>central</id>
 			<url>http://openscales.org/nexus/content/groups/public</url>
 		</pluginRepository>
+		<pluginRepository>
+			<id>snapshot</id>
+			<url>http://openscales.org/nexus/content/groups/public-snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		
 	</pluginRepositories>
 
 	 <distributionManagement>
