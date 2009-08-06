@@ -35,19 +35,8 @@ package org.openscales.core.layer.requesters.ogc
 			
 		override public function executeRequest():EventDispatcher
 		{
-			if(this.onComplete!=null)
-			{
-				this.loader=new Loader();
-				(this.loader as Loader).name=this.getUrl();
-				(this.loader as Loader).contentLoaderInfo.addEventListener(Event.COMPLETE,this.onComplete,false, 0, true);
-				
-				if(this.onFailure!=null){
-				(this.loader as Loader).contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, this.onFailure, false, 0, true);
-				}
-				(this.loader as Loader).load(new URLRequest(this.getUrl()));
-				return this.loader;			
-			}
-			return null;
+			
+			return this.layer.map.securityConfiguration.securitymanager.getLoader(this);
 		}
 	}
 }

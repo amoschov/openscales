@@ -26,6 +26,7 @@ package org.openscales.core.events
 		
 		public static const LAYER_AUTHENTIFICATED:String="openscales.layerauthentificated";
 		
+		public static const LAYERS_CONF_END:String="openscales.layersconfend";
 		public function LayerEvent(type:String, layer:Layer, bubbles:Boolean=false, cancelable:Boolean=false)
 		{
 			this._layer = layer;

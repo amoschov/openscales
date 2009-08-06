@@ -2,7 +2,6 @@ package org.openscales.core.layer
 {
 	import flash.net.URLRequestMethod;
 	
-	import org.openscales.core.RequestLayer1;
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.layer.requesters.AbstractRequest;
 	import org.openscales.core.layer.requesters.IhttpRequest;

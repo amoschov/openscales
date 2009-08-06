@@ -21,6 +21,7 @@ package org.openscales.core
   import org.openscales.core.handler.IHandler;
   import org.openscales.core.layer.Layer;
   import org.openscales.core.popup.Popup;
+  import org.openscales.core.security.SecurityConfiguration.SecuritiesConfiguration;
   import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -74,6 +75,12 @@ package org.openscales.core
 		private var _proxy:String = null;
 		private var _bitmapTransition:DraggableSprite;
 
+		/**
+		 * @private
+		 * */
+		private var _securityConfiguration:SecuritiesConfiguration=new SecuritiesConfiguration();
+		
+		
 		/**
 		 * Map constructor
 		 *
@@ -1018,6 +1025,19 @@ package org.openscales.core
 		
 		public function set proxy(value:String):void {
 			this._proxy = value;
+		}
+		
+		/**
+		 * The map securities configuration
+		 * */
+		public function get securityConfiguration():SecuritiesConfiguration{
+			return this._securityConfiguration;
+		}
+		/**
+		 * @private
+		 * */
+		public function set securityConfiguration(securityconfiguration:SecuritiesConfiguration):void{
+			this._securityConfiguration=securityconfiguration;
 		}
 		
 }

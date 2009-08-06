@@ -3,7 +3,6 @@ package org.openscales.core.layer
 	import flash.display.Sprite;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.RequestLayer1;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -13,7 +12,7 @@ package org.openscales.core.layer
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.SecurityEvent;
 	import org.openscales.core.layer.params.ogc.WMSParams;
-	import org.openscales.core.security.RequestManager;
+	import org.openscales.core.security.SecurityManager;
 	import org.openscales.proj4as.ProjProjection;
 
 

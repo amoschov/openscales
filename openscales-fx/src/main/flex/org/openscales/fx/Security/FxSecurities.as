@@ -5,74 +5,51 @@ package org.openscales.fx.Security
 	import mx.core.Container;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.events.SecurityEvent;
-	import org.openscales.core.security.Requesters.ReqManagerFactory;
-	import org.openscales.core.security.Requesters.SecurityFactory;
+	import org.openscales.core.security.SecurityConfiguration.SecuritiesConfiguration;
 	/**
-	 *This class is use for reassuring of layers 
+	 *This class is a wrapper of SecuritiesConfiguration as 3 classes 
 	 * @author DamienNda 
 	 **/
 	public class FxSecurities extends Container
 	{
-		private var _map:Map;
-		private var _listSecurity:Array=new Array;
+		/**
+		 * securities configuration Object 
+		 **/
+		private var _securitiesConfiguration:SecuritiesConfiguration;
+		
 		/**
 		 *to create FxSecurities
 		 **/
 		public function FxSecurities()
 		{
-
+			this._securitiesConfiguration=new SecuritiesConfiguration();
+		}
+		/**
+		 * map object is used hear as  bus event
+		 * */
+		public function get map():Map
+		{
+			return this._securitiesConfiguration.map; 
 		}
 		/**
 		 * @private
-		 * to record securities after we are sure that Fxsecurities creation is completely finished
-		 **/
-		private function onSetMap():void {
+		 * */
+		 public function set map(map:Map):void{
+		 	if(map!=null){		 	
+		 	this._securitiesConfiguration.map=map;	
+		 	onSetMap(); 	
+		 	}
+		 }
+		 private function onSetMap():void {
 			
-
+			var securityLayers:Array=new Array();
 		  	for(var i:int=0; i < this.rawChildren.numChildren ; i++) 
 		  	{
-		  	 	var child:DisplayObject= this.rawChildren.getChildAt(i);
-      	 	 	if(child is FxSecurity) _listSecurity.push(child as FxSecurity);    	 
+		  	 	var child:DisplayObject= this.rawChildren.getChildAt(i); 
+      	 	 	if(child is FxSecurity) securityLayers.push((child as FxSecurity).securityLayer);   	 
 			}
-		  	//Securities instanciation
-			SecurityInstanciation();
+			_securitiesConfiguration.addSecuritiesLayer(securityLayers);
+
 		}
-		
-		/**
-		 *Security instanciation 
-		 * @private
-		 **/
-		private function SecurityInstanciation():void{
-			
-		 for each(var fxsecurity:FxSecurity in _listSecurity)
-		 {
-			SecurityFactory.addSecurity(fxsecurity.type,fxsecurity.params);			
-		 }
-		}
-		
-		
-		/**
-		 * 
-		 * map object
-		 **/
- 		 public function get map():Map {
-      		return this._map;
-   		 }
-    
-   	 	/**
-    	* @private
-  		**/
-  		public function set map(map:Map):void
-  		{
-  			if(map!=null)
-  			{
-  				this._map=map;	
-  				//map setting for the request manager
-  				ReqManagerFactory.requestManager.map=this.map;	
-  				onSetMap();
-  				
-  			}
-  		}		
 	}
 }

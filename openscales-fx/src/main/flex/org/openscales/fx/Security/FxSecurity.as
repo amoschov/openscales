@@ -6,30 +6,26 @@ package org.openscales.fx.Security
 	import mx.core.Container;
 	import mx.events.FlexEvent;
 	
-	import org.openscales.core.basetypes.maps.HashMap;
+	import org.openscales.core.security.SecurityConfiguration.LayerSecurity;
 	
 	
 	/**
-	 * 
+	 * This class is LayerSecurity wrapper
 	 * Layer Security
 	 * */
 	public class FxSecurity extends Container
 	{
-		/**
-		 * @private
-		 *secured layers name list  
-		 **/
-		private var _listLayers:Array=new Array();
-		/**
-		 * @private
-		 *secure type 
-		 **/
-		private var _type:String;
 		
-		private var _params:HashMap=new HashMap();
+		
+		/**
+		 *LayerSecurity 
+		 **/
+		private var _securityLayer:LayerSecurity;
+		
 		
 		public function FxSecurity()
 		{
+			 this._securityLayer=new LayerSecurity();
 			 this.addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
 		}
 		
@@ -38,64 +34,29 @@ package org.openscales.fx.Security
 			for(var i:int=0; i < this.rawChildren.numChildren ; i++) 
 		  	{
 		  	 	var child:DisplayObject= this.rawChildren.getChildAt(i);
-      	 	 	if(child is FxSecurityParam) this._params.put((child as FxSecurityParam).key,(child as FxSecurityParam).value);    	 
+      	 	 	if(child is FxSecurityParam) this._securityLayer.addSecurityParams((child as FxSecurityParam).securityParams);  	 
 			}	
-			var a:String=params.getValue("dzzd");
-		}
-		/**
-		 * secured layers list
-		 * for mxml access to the listlayers property
-		 * because mxml also use String class  
-		 **/
-		public function get listLayers():String
-		{
-			var returnChain:String="";
-			for(var i:int=0;i<=this._listLayers.length-1;i++)
-			{
-				if(i==this._listLayers.length-1) returnChain=returnChain+this._listLayers[i];
-				else returnChain=returnChain+this._listLayers[i]+",";
-			}
-			return returnChain;
-		}
-		/**
-		 * @private
-		 **/
-		public function set listLayers(listlayers:String):void
-		{
-			this._listLayers=(listlayers as String).split(",");
 		}
 		
 		/**
-		 * secured layers list
-		 * for As3 access to the listlayers property
-		 **/
-		public function get securedlayers():Array
-		{
-			return this._listLayers;
-		}
-		
+		 * the security layer
+		 * */
+		 public function get securityLayer():LayerSecurity{
+		 	return this._securityLayer;
+		 }
 		/**
 		 *security type 
 		 **/
 		public function get type():String
 		 {
-		 	return this._type;
+		 	return this._securityLayer.securityType;
 		 }
 		 /**
 		 * @private
 		 * */
 		public function set type(type:String):void
 		 {
-		 	this._type=type;
-		 }
-		 /**
-		 * Security params
-		 **/
-		 public function get params():HashMap{
-		 	return this._params;
-		 }
-		 public function set params(Params:HashMap):void{
-		 	this._params=Params;
+		 	this._securityLayer.securityType=type;
 		 }
 	}
 }
