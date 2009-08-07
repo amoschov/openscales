@@ -21,7 +21,7 @@
 			[Bindable]
 			public var minMap:Map;
 			public var rect:Shape;
-			public var leSprite:Sprite
+			public var sprite:Sprite
 			
 			public var minRectSize:Number=5;
 			public var rectPxBounds:Bounds;
@@ -38,25 +38,25 @@
    
 				this.minMap.zoomToMaxExtent();
 
-				leSprite=new Sprite();
+				sprite=new Sprite();
 				rect=new Shape();	
 				drawContainer = new Sprite();
 				
 				rect.graphics.lineStyle(1,0xFF0000);
 				rect.graphics.drawRect(0,0,100,50);
 				
-				leSprite.addChild(rect);
-				minMap.addChild(leSprite);
+				sprite.addChild(rect);
+				minMap.addChild(sprite);
 				
 				minMap.addChild(drawContainer);
 
-				this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED,this.changerLayerBase);
+				this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED,this.changeBaseLayer);
 		
-				this.map.addEventListener(MapEvent.DRAG_END,this.changerPositionRectangle);			
-				this.map.addEventListener(MapEvent.MOVE_END,this.changerPositionRectangle);			
-				this.map.addEventListener(MapEvent.ZOOM_END,this.changerPositionRectangle);
+				this.map.addEventListener(MapEvent.DRAG_END,this.changeRectanglePosition);			
+				this.map.addEventListener(MapEvent.MOVE_END,this.changeRectanglePosition);			
+				this.map.addEventListener(MapEvent.ZOOM_END,this.changeRectanglePosition);
 	
-				this.minMap.addEventListener(MouseEvent.CLICK,this.CliqueSurMiniMap);
+				this.minMap.addEventListener(MouseEvent.CLICK,this.clickOnMiniMap);
 				
 				this.minMap.addEventListener(MouseEvent.MOUSE_DOWN,startBox);
             	this.minMap.addEventListener(MouseEvent.MOUSE_UP,endBox);
@@ -75,7 +75,7 @@
 
 			
 			//this method allows to switch the base layer in the overview map, nothing happens when only openlayers exists in the overview map's base layer list
-			public function changerLayerBase (event:LayerEvent):void  {
+			public function changeBaseLayer (event:LayerEvent):void  {
 
 			 	this.minMap.baseLayer.visible = false;
 			 	this.minMap.baseLayer = (this.minMap.getLayerByName(event.layer.name) as Layer);   //we select the base layer in the little map which has the same name
@@ -87,7 +87,7 @@
 			 
 			 
 			 //the following methods set the position of the square in the little map when the map is dragged, moved or zoomed 
-			 public function changerPositionRectangle(event:MapEvent):void {
+			 public function changeRectanglePosition(event:MapEvent):void {
 			 	
 				this.updateRectToMap();
 				
@@ -181,7 +181,7 @@
     	
     	
     	    //the following methods center the map on the correct position when we click somewhere on the little map to move the square
-    		public function CliqueSurMiniMap(event:MouseEvent):void {   		
+    		public function clickOnMiniMap(event:MouseEvent):void {   		
 
     		if((Math.abs(this.minMap.mouseX-this.mouseXInitial)<=5)||(Math.abs(this.minMap.mouseY-this.mouseYInitial)<=5))
             {
@@ -198,9 +198,9 @@
     		
 	        }
             
-	     		this.map.addEventListener(MapEvent.DRAG_END,this.changerPositionRectangle);
-	     		this.map.addEventListener(MapEvent.ZOOM_END,this.changerPositionRectangle);
-	     		this.map.addEventListener(MapEvent.MOVE_END,this.changerPositionRectangle);	             
+	     		this.map.addEventListener(MapEvent.DRAG_END,this.changeRectanglePosition);
+	     		this.map.addEventListener(MapEvent.ZOOM_END,this.changeRectanglePosition);
+	     		this.map.addEventListener(MapEvent.MOVE_END,this.changeRectanglePosition);	             
     		
     		}
     	
@@ -249,9 +249,9 @@
     
      		public function startBox(e:MouseEvent) : void {
      				
-     			this.map.removeEventListener(MapEvent.DRAG_END,this.changerPositionRectangle);
-     			this.map.removeEventListener(MapEvent.ZOOM_END,this.changerPositionRectangle);
-     			this.map.removeEventListener(MapEvent.MOVE_END,this.changerPositionRectangle); 
+     			this.map.removeEventListener(MapEvent.DRAG_END,this.changeRectanglePosition);
+     			this.map.removeEventListener(MapEvent.ZOOM_END,this.changeRectanglePosition);
+     			this.map.removeEventListener(MapEvent.MOVE_END,this.changeRectanglePosition); 
      				
      			mouseXInitial=minMap.mouseX;
      			mouseYInitial=minMap.mouseY;
@@ -285,9 +285,9 @@
 		    	this.rectPxBounds.top=this.rect.y;
 		    	this.rectPxBounds.bottom=this.rect.y+this.rect.height;
 		    		
-		    	this.map.addEventListener(MapEvent.DRAG_END,this.changerPositionRectangle);
-     			this.map.addEventListener(MapEvent.ZOOM_END,this.changerPositionRectangle);
-     			this.map.addEventListener(MapEvent.MOVE_END,this.changerPositionRectangle);	
+		    	this.map.addEventListener(MapEvent.DRAG_END,this.changeRectanglePosition);
+     			this.map.addEventListener(MapEvent.ZOOM_END,this.changeRectanglePosition);
+     			this.map.addEventListener(MapEvent.MOVE_END,this.changeRectanglePosition);	
 		    		
             }
 		    		
@@ -295,10 +295,11 @@
             }
 
             public function expandArea(e:MouseEvent) : void {
-                var lePixel:Pixel = minMap.getMapPxFromLonLat(lastZoom);
+            	this.lastZoom = this.minMap.getLonLatFromMapPx(new Pixel(minMap.mouseX, minMap.mouseY));
+                var pixel:Pixel = minMap.getMapPxFromLonLat(lastZoom);
                 drawContainer.graphics.clear();
                 drawContainer.graphics.beginFill(0xFF0000,0.5);
-                drawContainer.graphics.drawRect(mouseXInitial,mouseYInitial,minMap.mouseX - lePixel.x,minMap.mouseY - lePixel.y);
+                drawContainer.graphics.drawRect(mouseXInitial,mouseYInitial,minMap.mouseX - pixel.x,minMap.mouseY - pixel.y);
                 drawContainer.graphics.endFill();
             }
 
@@ -307,11 +308,9 @@
 
 
 	
-	<os:Map id="minimap" height="100%" width="100%" maxResolution="0.703125">   <!--max resolution indispensable sinon le fond de carte ne s'affiche pas-->
+	<os:Map id="minimap" height="100%" width="100%" maxResolution="0.703125">   <!--max resolution mandatory else no map display-->
 						   
 			<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
-
-			<!--os:WheelHandler /-->
 
 			<os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" />
 				
