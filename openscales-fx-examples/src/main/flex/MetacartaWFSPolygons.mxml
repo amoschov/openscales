@@ -3,7 +3,7 @@
 	
 	<os:Map id="fxmap" height="100%" width="100%" proxy="http://openscales.org/proxy.php?url=">
 
-		<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
+		<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" isAuthorizedToDownload="true"/>
 	
 		<os:WFS name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="topp:states" srs="EPSG:4326" version="1.0.0"
 				isBaseLayer="false" minZoomLevel="21">

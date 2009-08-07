@@ -1,10 +1,7 @@
 package org.openscales.core.layer
 {
-	import flash.net.URLRequestMethod;
-	
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.layer.requesters.AbstractRequest;
-	import org.openscales.core.layer.requesters.IhttpRequest;
 	
 	
 	/**
@@ -33,7 +30,7 @@ package org.openscales.core.layer
 		
 		
 		
-		public function HTTPRequest(name:String, url:String, params:IHttpParams = null,ihttpRequest:IhttpRequest=null,isBaseLayer:Boolean = false, 
+		public function HTTPRequest(name:String, url:String, params:IHttpParams = null,ihttpRequest:AbstractRequest=null,isBaseLayer:Boolean = false, 
 									visible:Boolean = true, projection:String = null, proxy:String = null,onLoadComplete:Function=null) {
 	       
 	        super(name,ihttpRequest,isBaseLayer, visible, projection, proxy);

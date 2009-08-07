@@ -12,7 +12,6 @@ package org.openscales.core.layer
 	import org.openscales.core.layer.params.AbstractParams;
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.layer.requesters.AbstractRequest;
-	import org.openscales.core.layer.requesters.IhttpRequest;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	
@@ -56,7 +55,7 @@ package org.openscales.core.layer
 	     * @param projection
 	     * @param proxy
 	     */
-		public function Grid(name:String, url:String, params:IHttpParams = null,ihttpRequest:IhttpRequest=null,isBaseLayer:Boolean = false, 
+		public function Grid(name:String, url:String, params:IHttpParams = null,ihttpRequest:AbstractRequest=null,isBaseLayer:Boolean = false, 
 								visible:Boolean = true, projection:String = null, proxy:String = null) {
 									
 			//TOdo delete url and params after osmparams work

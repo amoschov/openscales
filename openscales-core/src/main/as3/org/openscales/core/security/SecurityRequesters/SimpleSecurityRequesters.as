@@ -56,7 +56,7 @@ package org.openscales.core.security.SecurityRequesters
 		 * */
 		override  public function addParams(params:Array):void
 		 {
-		 	this.map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_LOAD));
+		 	this.map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_LOAD,this.type,true));
 		 }
 	}
 }

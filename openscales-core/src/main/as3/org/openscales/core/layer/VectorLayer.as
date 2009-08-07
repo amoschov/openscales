@@ -7,7 +7,7 @@ package org.openscales.core.layer
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
-	import org.openscales.core.layer.requesters.IhttpRequest;
+	import org.openscales.core.layer.requesters.AbstractRequest;
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
@@ -25,7 +25,7 @@ package org.openscales.core.layer
 
 	    private var _temporaryProjection:ProjProjection = null;
 	    
-	    public function VectorLayer(name:String,requester:IhttpRequest=null,isBaseLayer:Boolean = false, visible:Boolean = true, 
+	    public function VectorLayer(name:String,requester:AbstractRequest=null,isBaseLayer:Boolean = false, visible:Boolean = true, 
 									projection:String = null, proxy:String = null) {
 										
 	        super(name,requester,isBaseLayer, visible, projection, proxy);

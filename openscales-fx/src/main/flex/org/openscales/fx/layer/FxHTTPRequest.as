@@ -2,6 +2,7 @@ package org.openscales.fx.layer
 {
 	import org.openscales.core.Util;
 	import org.openscales.core.layer.HTTPRequest;
+	import org.openscales.core.layer.RequestLayer;
 	import org.openscales.core.layer.requesters.AbstractRequest;
 
 	public class FxHTTPRequest extends FxLayer
@@ -10,7 +11,17 @@ package org.openscales.fx.layer
 		{
 			super();
 		}
-		
+		/**
+		 * set this flag at true if the layer doesn't bneed security for request
+		 * 
+		 * */
+		public function set isAuthorizedToDownload(value:Boolean):void{
+			if(this.layer != null)
+	    	{
+	    		(this.layer as RequestLayer).isAuthorizedTodownload=value;
+	    		
+	    	}
+		}
 		public function set url(value:String):void {
 	    	if(this.layer != null)
 	    	{

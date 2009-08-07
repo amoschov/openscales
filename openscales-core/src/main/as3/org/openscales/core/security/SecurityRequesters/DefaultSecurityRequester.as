@@ -70,7 +70,7 @@ package org.openscales.core.security.SecurityRequesters
 		 public function set map(eventDispatcher:EventDispatcher):void
 		 {
 		 	this._map=eventDispatcher;
-		 	this._map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_LOAD,"default"));
+		 	//this._map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_LOAD));
 		 }
 		
 	}

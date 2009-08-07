@@ -6,6 +6,7 @@ package org.openscales.core.security
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.SecurityEvent;
+	import org.openscales.core.layer.RequestLayer;
 	import org.openscales.core.layer.requesters.ogc.WMSRequest;
 	import org.openscales.core.security.SecurityConfiguration.LayerSecurity;
 	import org.openscales.core.security.SecurityConfiguration.SecuritiesConfiguration;
@@ -121,24 +122,20 @@ package org.openscales.core.security
 		 /**
 		 *This function is directly call when a Security requester is completely initialized  
 		 **/
-		 public function SecurityRequesterIsInitialized(securityEvent:SecurityEvent):void{
-		 	
-		 /*	_numberSecurityInitialized++;
-		 	//there is also the defaultRequester
-		 	if(_numberSecurityInitialized==this.securityRequesters.length+1)
-		 	{
-		 		this._map.dispatchEvent(new SecurityEvent(SecurityEvent.LOAD_CONF_END));
-		 		this._map.removeEventListener(SecurityEvent.SECURITY_LOAD,SecurityManagerFactory.securityManager.SecurityRequesterIsInitialized);
-		 	}*/
-		 }
-		
 		public function securityLoad(event:SecurityEvent):void
 		{
-			_numberSecurityInitialized++;
-			if(_numberSecurityInitialized==this.securityRequesters.length)
+		 	if(event.isAuthorized)
 		 	{
-		 		this.map.dispatchEvent(new SecurityEvent(LayerEvent.LAYERS_CONF_END));
-		 		this.map.removeEventListener(SecurityEvent.SECURITY_LOAD,this.securityLoad);
+		 		if(ExistSecurityRequester(event.securityType))
+		 		{
+		 			for each(var layer:RequestLayer in this.map.layers){
+		 				if((FactorySecurityRequester.getValue(event.securityType) as AbstractSecurityRequester).canExecuteRequest(layer.requester))
+		 				{
+		 					this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYERS_CONF_END,layer,map.extent));
+		 				}
+		 			}
+		 		
+		 		}
 		 	}
 		}
 		//getters &setters

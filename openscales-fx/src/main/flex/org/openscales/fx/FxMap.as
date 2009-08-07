@@ -100,9 +100,7 @@ package org.openscales.fx {
           (child as FxLayer).fxmap = this;
           this._map.addLayer((child as FxLayer).layer);
         } 
-        else if(child is FxSecurities){
-          	(child as FxSecurities).map=this._map;
-          }
+        else if (child is FxSecurities){}
         else if(child is FxControl) {
           this._map.addControl((child as FxControl).control);
         } else if(child is IControl) {
@@ -134,9 +132,20 @@ package org.openscales.fx {
         child = this.rawChildren.getChildAt(i);
         if(child is FxExtent) {
           this._map.zoomToExtent((child as FxExtent).bounds);
+          break;
+        }
+        else if(child is FxMaxExtent){
+        	 this._map.zoomToExtent((child as FxMaxExtent).bounds);
+        	 break;
         }
       }
-
+	  for(i=0; i < this.rawChildren.numChildren ; i++) {
+         child = this.rawChildren.getChildAt(i);
+ 		  if(child is FxSecurities){
+          	(child as FxSecurities).map=this._map;
+          }
+          
+ 		}
       this._map.addEventListener(MapEvent.MOVE_START, this.hidePopups)
       this._map.addEventListener(MapEvent.DRAG_START, this.hidePopups)
       this._map.addEventListener(MapEvent.MOVE_END, this.showPopups)

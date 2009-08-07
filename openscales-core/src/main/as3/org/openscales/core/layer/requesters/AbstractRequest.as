@@ -54,6 +54,12 @@ package org.openscales.core.layer.requesters
 		 **/
 		private var _proxy:String="";
 		/**
+		 * download authorization
+		 * when this is flags is equaled true the layer is allowed to download tile
+		 * @private
+		 * */
+		private var _isAuthorized:Boolean=false;
+		/**
 		 *This class is an Abstract class don't instanciate it  
 		 **/
 		public function AbstractRequest(layer:Layer,url:String,method:String,params:IHttpParams,oncomplete:Function=null,altUrl:Array=null)
@@ -172,6 +178,19 @@ package org.openscales.core.layer.requesters
 		 	else
 		 		return null;
 		 }
-
+		 
+		/**
+		 * download authorization
+		 * when this is flags is equaled true the layer is allowed to download tile
+		 * */
+		 public function get isAuthorized():Boolean{
+		 	return this._isAuthorized;
+		 }
+		 /**
+		 * @private
+		 **/
+		public function set isAuthorized(value:Boolean):void{
+			this._isAuthorized=value;
+		}
 	}
 }
