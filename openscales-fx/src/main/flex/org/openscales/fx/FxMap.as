@@ -150,7 +150,7 @@ package org.openscales.fx {
     }
 
     private function showPopups(event:Event):void{
-      var element:Container = this._popupContainer;
+       var element:Container = this._popupContainer;
       var i:Number;
       var child:DisplayObject;
       for(i=element.numChildren-1;i>=0;i--){
@@ -159,7 +159,7 @@ package org.openscales.fx {
          FxPopup(child).draw();;
         }
       }
-      element.visible = true;
+      element.visible = true; 
     }
 
     private function onResize(event:ResizeEvent):void {

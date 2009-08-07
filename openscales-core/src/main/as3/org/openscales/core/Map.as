@@ -384,16 +384,16 @@ package org.openscales.core
 		 * @param tween use tween effect
 		 */
 		public function pan(dx:int, dy:int, tween:Boolean=false):void {
-			var centerPx:Pixel = this.getMapPxFromLonLat(this.center);
+			 var centerPx:Pixel = this.getMapPxFromLonLat(this.center);
 
 	        // adjust
 	        var newCenterPx:Pixel = centerPx.add(dx, dy);
 
 	        // only call setCenter if there has been a change
-	        if (!newCenterPx.equals(centerPx)) {
+	         if (!newCenterPx.equals(centerPx)) {
 	            var newCenterLonLat:LonLat = this.getLonLatFromMapPx(newCenterPx);
 	            this.setCenter(newCenterLonLat, NaN, false, false, tween);
-	        }
+	        }  
 		}
 		
 		/**
@@ -409,50 +409,52 @@ package org.openscales.core
 		 *
 		 */
 		private function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false,resizing:Boolean=false):void {
-			if (!this.center && !this.isValidLonLat(lonlat)) {
+			  if (!this.center && !this.isValidLonLat(lonlat)) {
 	            lonlat = this.maxExtent.centerLonLat;
-	        }
+	        } 
 
-	        var zoomChanged:Boolean = forceZoomChange || (
+	         var zoomChanged:Boolean = forceZoomChange || (
 	                            (this.isValidZoomLevel(zoom)) &&
 	                            (zoom != this._zoom) );
 
 	        var centerChanged:Boolean = (this.isValidLonLat(lonlat)) &&
-	                            (!lonlat.equals(this.center));
+	                            (!lonlat.equals(this.center));  
+	                            
 
 
 	        if (zoomChanged || centerChanged || !dragging) {
 
-	            if (!dragging) {
+	             if (!dragging) {
 	            	this.dispatchEvent(new MapEvent(MapEvent.MOVE_START, this));
 
-	            }
+	            } 
+				
+	              if (centerChanged) {
+	                  if ((!zoomChanged) && (this.center)) {
+	                     this.centerLayerContainer(lonlat, dragTween);  
+	                		
+	                }  
+	                 this._center = lonlat.clone(); 
 
-	            if (centerChanged) {
-	                if ((!zoomChanged) && (this.center)) {
-	                    this.centerLayerContainer(lonlat, dragTween);
-	                }
-	                this._center = lonlat.clone();
-
-	            }
-
-	            if ((zoomChanged) || (this._layerContainerOrigin == null)) {
+	            } 
+				
+	             if ((zoomChanged) || (this._layerContainerOrigin == null)) {
 	                this._layerContainerOrigin = this.center.clone();
 	                this._layerContainer.x = 0;
 	                this._layerContainer.y = 0;
-	            }
+	            } 
 
-	            if (zoomChanged) {
+	              if (zoomChanged) {
 	                this._zoom = zoom;
 	            }
 
 	            var bounds:Bounds = this.extent;
-
-	            this.baseLayer.moveTo(bounds, zoomChanged, dragging);
-	            for (var i:int = 0; i < this.layers.length; i++) {
+					
+	              this.baseLayer.moveTo(bounds, zoomChanged, dragging);  
+	             for (var i:int = 0; i < this.layers.length; i++) {
 	                var layer:Layer = this.layers[i];
-	                if (!layer.isBaseLayer) {
-
+	                //layer.redraw();
+	                 if (!layer.isBaseLayer) {
 	                    var moveLayer:Boolean;
 	                    var inRange:Boolean = layer.calculateInRange();
 	                    if (layer.inRange != inRange) {
@@ -460,25 +462,25 @@ package org.openscales.core
 	                        moveLayer = true;
 	                         this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_CHANGED, layer)); 
 	                    } else {
-	                        moveLayer = (layer.visible && layer.inRange);
+	                         moveLayer = (layer.visible && layer.inRange); 
 	                    }
 
 	                    if (moveLayer) {
-	                         layer.moveTo(bounds, zoomChanged, dragging,resizing); 
+	                          layer.moveTo(bounds, zoomChanged, dragging,resizing);  
 	                    }
-	                }
-	            }
+	                } 
+	            } 
 
-	            this.dispatchEvent(new MapEvent(MapEvent.MOVE, this));
+	             this.dispatchEvent(new MapEvent(MapEvent.MOVE, this)); 
 
-	            if (zoomChanged) {
+	             if (zoomChanged) {
 	            	this.dispatchEvent(new MapEvent(MapEvent.ZOOM_END, this));
-	            }
+	            } 
 	        }
 
-	        if (!dragging) {
+	         if (!dragging) {
 	           	this.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this));
-	        }
+	        } 
 		}
 
 		/**
@@ -489,11 +491,13 @@ package org.openscales.core
 		 */
 		private function centerLayerContainer(lonlat:LonLat, tween:Boolean = false):void
 		{
-			var originPx:Pixel = this.getMapPxFromLonLat(this._layerContainerOrigin);
+			  var originPx:Pixel = this.getMapPxFromLonLat(this._layerContainerOrigin);
 	        var newPx:Pixel = this.getMapPxFromLonLat(lonlat);
 	        
 	        if (originPx == null || newPx == null) return;
 	        
+	       
+									
 	        // X and Y positions for the layer container and bitmap transition, respectively.
 	        var lx:Number = originPx.x - newPx.x;
 	        var ly:Number = originPx.y - newPx.y; 
@@ -503,20 +507,21 @@ package org.openscales.core
 			}
 
         	if(tween) {
-	        	new GTweeny(this._layerContainer, 0.5, {x: lx});
-	        	new GTweeny(this._layerContainer, 0.5, {y: ly}); 
-	        	if(bitmapTransition != null) {
+	        	    new GTweeny(this._layerContainer, 0.5, {x: lx});
+	        	new GTweeny(this._layerContainer, 0.5, {y: ly});    
+	        	 if(bitmapTransition != null) {
 	        		new GTweeny(bitmapTransition, 0.5, {x: bx });
 	        		new GTweeny(bitmapTransition, 0.5, {y: by });
-	        	}
+	        	} 
         	} else {
-        		this._layerContainer.x = lx;
-            	this._layerContainer.y = ly;  
-            	if(bitmapTransition != null) {
+        		    this._layerContainer.x = lx;
+            	this._layerContainer.y = ly;    
+            	 if(bitmapTransition != null) {
 	        		bitmapTransition.x = bx;
 	        		bitmapTransition.y = by;
-	        	}
-        	}
+	        	} 
+        	}  
+        	
 		}
 
 		/**
@@ -964,7 +969,7 @@ package org.openscales.core
 		public function get extent():Bounds {
 	        var extent:Bounds = null;
 
-	        if ((this.center != null) && (this.resolution != -1)) {
+	         if ((this.center != null) && (this.resolution != -1)) {
 
 	            var w_deg:Number = this.size.w * this.resolution;
 	            var h_deg:Number = this.size.h * this.resolution;
@@ -973,7 +978,7 @@ package org.openscales.core
 	                                           this.center.lat - h_deg / 2,
 	                                           this.center.lon + w_deg / 2,
 	                                           this.center.lat + h_deg / 2);
-	        }
+	        } 
 
 	        return extent;
 		}

@@ -140,7 +140,7 @@ package org.openscales.core.handler.mouse
           var deltaX:Number = this._start.x - xy.x;
           var deltaY:Number = this._start.y - xy.y;
           var newCenter:LonLat = new LonLat(this._startCenter.lon + deltaX * this.map.resolution , this._startCenter.lat - deltaY * this.map.resolution);
-          this.map.center = newCenter;
+           this.map.center = newCenter; 
      }
   }
 }

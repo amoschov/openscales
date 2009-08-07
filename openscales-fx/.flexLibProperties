@@ -19,7 +19,6 @@
 <classEntry path="org.openscales.fx.control.FxMousePosition"/>
 <classEntry path="org.openscales.component.control.MousePosition"/>
 <classEntry path="org.openscales.fx.control.FxLayerSwitcher"/>
-<classEntry path="org.openscales.component.control.ScaleLine"/>
 <classEntry path="org.openscales.fx.layer.FxGrid"/>
 <classEntry path="org.openscales.component.control.OverviewMap"/>
 <classEntry path="org.openscales.component.control.FeatureDrawing"/>
@@ -39,6 +38,7 @@
 <classEntry path="org.openscales.fx.handler.sketch.FxDrawPointHandler"/>
 <classEntry path="org.openscales.fx.Security.FxSecurityParam"/>
 <classEntry path="org.openscales.component.control.Pan"/>
+<classEntry path="org.openscales.fx.control.FxScaleLine"/>
 <classEntry path="org.openscales.fx.layer.FxLayer"/>
 <classEntry path="org.openscales.fx.layer.FxHTTPRequest"/>
 <classEntry path="org.openscales.fx.Security.FxSecurity"/>

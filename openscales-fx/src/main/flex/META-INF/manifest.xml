@@ -46,7 +46,7 @@
 	<component id="FeatureInfoComponent" class="org.openscales.component.control.FeatureInfo" />
 	<component id="YahooSearchComponent" class="org.openscales.component.control.search.YahooSearch" />
 	<component id="TraceInfo" class="org.openscales.component.control.TraceInfo" />
-	<component id="ScaleLine" class="org.openscales.component.control.ScaleLine" />
+	<component id="ScaleLine" class="org.openscales.fx.control.FxScaleLine" />
 	
 	<component id="Securities" class="org.openscales.fx.Security.FxSecurities" />
 	<component id="Security" class="org.openscales.fx.Security.FxSecurity" />

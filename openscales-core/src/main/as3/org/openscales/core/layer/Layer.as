@@ -83,7 +83,7 @@ package org.openscales.core.layer
 		 */
 		public function redraw():Boolean {
 			var redrawn:Boolean = false;
-	        if (this.map) {
+	          if (this.map) {
 
 	            // min/max Range may have changed
 	            this.inRange = this.calculateInRange();
@@ -95,7 +95,7 @@ package org.openscales.core.layer
 	                this.moveTo(extent, true, false);
 	                redrawn = true;
 	            }
-	        }
+	        }  
 	        return redrawn;
 		}
 
@@ -294,33 +294,33 @@ package org.openscales.core.layer
 		}
 
 		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
-			  var display:Boolean = this.visible;  
+			   var display:Boolean = this.visible;  
 	        if (!this.isBaseLayer) {
-	            display = display && this.inRange;
+	            display = display  && this.inRange ;
 	        }
-	       	this.visible = display;
+	       	this.visible = display; 
 		}
 
 		public function calculateInRange():Boolean {
-			var inRange:Boolean = false;
+			 var inRange:Boolean = false;
 	        if (this.map) {
 	            var resolution:Number = this.map.resolution;
 	            inRange = ( (resolution >= this.minResolution) &&
 	                        (resolution <= this.maxResolution) );
 	        }
-	        return inRange;
+	        return inRange; 
 		}
 
 		/**
 		 * Adjust the extent of a bounds in map units by the layer's gutter in pixels.
 		 */
 		public function adjustBoundsByGutter(bounds:Bounds):Bounds {
-			var mapGutter:Number = this.gutter * this.map.resolution;
+			  var mapGutter:Number = this.gutter * this.map.resolution;
 	        bounds = new Bounds(bounds.left - mapGutter,
 	                                       bounds.bottom - mapGutter,
 	                                       bounds.right + mapGutter,
-	                                       bounds.top + mapGutter);
-	        return bounds;
+	                                       bounds.top + mapGutter); 
+	        return bounds; 
 		}
 
 		/**
@@ -493,14 +493,14 @@ package org.openscales.core.layer
 
 		public function set inRange(value:Boolean):void {
 	    	this._inRange = value;
-	    	if(this._inRange == true)
+	    	 if(this._inRange == true)
 	    	{
 	    		this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_IN_RANGE, this));
 	    	}
 	    	else
 	    	{
 	    		this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_OUT_RANGE, this));
-	    	}
+	    	} 
 	    }
 
 	    /**
