@@ -28,8 +28,6 @@
 			private function initMap():void{
 	   			map = fxmap.map;
 	   			tools.x = this.width - tools.width;
-	   			mincarte.x=this.width-mincarte.width;
-	   	
                 // setup click handler
 
                 map.addEventListener(GetFeatureInfoEvent.GET_FEATURE_INFO_DATA, this.onFeatureInfoData);      
@@ -46,7 +44,7 @@
 
 	
 	
-		<os:Map id="fxmap" x="0" y="0" height="100%" width="100%" proxy="http://openscales.org/proxy.php?url=">
+		<os:Map id="fxmap" x="0" y="0" height="100%" width="100%">
 			
 			<os:WMSC name="Metacarta" url="http://labs.metacarta.com/wms-c/Basic.py"
 							   layers="satellite" format="image/jpeg" isBaseLayer="true" />
@@ -56,17 +54,16 @@
 			<os:Mapnik name="Mapnik"  maxResolution="156543.0339" minResolution="0.5971642833709717" numZoomLevels="20"
 					maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34" isBaseLayer="true"/>
 							   
-			<os:WFS id="test" name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="tiger:poi" srs="EPSG:4326" version="1.0.0"
+			<!--os:WFS id="test" name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="tiger:poi" srs="EPSG:4326" version="1.0.0"
 					isBaseLayer="false" minZoomLevel="21" useCapabilities="true" use110Capabilities="false">
 				<os:Style fillColor="0xff0000" fillOpacity="0.8" strokeColor="0x0000ff" strokeWidth="2" />
 				
-			</os:WFS>
+			</os:WFS-->
 							   
 			<resize:ResizableWindow title="PanZoom" movable="true" id="panzoom">
 				<mx:VBox horizontalAlign="center">
 					<os:PanComponent id="pan" map="{map}"/>
 					<os:ZoomComponent id="zoom" map="{map}"/>
-					<os:ZoomBoxComponent id="zoombox" map="{map}"/>	
 					<os:SelectBoxComponent id="selectbox" map="{map}"/>	
 				</mx:VBox>
 			</resize:ResizableWindow>
@@ -100,18 +97,7 @@
 				
 		</os:Map>
 			
-		<resize:ResizableWindow title="ScaleLine" movable="true" id="scaleLine" width="250" height="150" y="417">
+		<resize:ResizableWindow title="ScaleLine" movable="true" id="scaleLine" width="250" height="150" y="417" backgroundAlpha="0.1">
 		<os:ScaleLine map="{map}"/>				
 		</resize:ResizableWindow>
-	
-		
-
-		<resize:ResizableWindow title="OverviewMap" movable="true" resizable="false" id="mincarte"  y="525" height="250" width="400">
-
-			<mx:Panel width="100%" height="100%">
-				<os:OverviewMapComponent id="ovmap" map="{map}" width="100%" height="100%"/>
-			</mx:Panel>
-				
-		</resize:ResizableWindow>
-	
 </mx:Panel>

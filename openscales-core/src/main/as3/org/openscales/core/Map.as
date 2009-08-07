@@ -496,7 +496,7 @@ package org.openscales.core
 	        
 	        // X and Y positions for the layer container and bitmap transition, respectively.
 	        var lx:Number = originPx.x - newPx.x;
-	        var ly:Number = originPx.y - newPx.y;
+	        var ly:Number = originPx.y - newPx.y; 
 	        if (bitmapTransition != null) {
 		        var bx:Number = bitmapTransition.x + lx - _layerContainer.x;
 		        var by:Number = bitmapTransition.y + ly - _layerContainer.y;
@@ -504,14 +504,14 @@ package org.openscales.core
 
         	if(tween) {
 	        	new GTweeny(this._layerContainer, 0.5, {x: lx});
-	        	new GTweeny(this._layerContainer, 0.5, {y: ly});
+	        	new GTweeny(this._layerContainer, 0.5, {y: ly}); 
 	        	if(bitmapTransition != null) {
 	        		new GTweeny(bitmapTransition, 0.5, {x: bx });
 	        		new GTweeny(bitmapTransition, 0.5, {y: by });
 	        	}
         	} else {
         		this._layerContainer.x = lx;
-            	this._layerContainer.y = ly;
+            	this._layerContainer.y = ly;  
             	if(bitmapTransition != null) {
 	        		bitmapTransition.x = bx;
 	        		bitmapTransition.y = by;

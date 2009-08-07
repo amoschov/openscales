@@ -82,9 +82,9 @@
 				/* this.dragfeature = new DragFeature(this.map,[drawLayer],true); */
 				
 				//Add select feature handler to the map
-				if(this.map != null){
+				if(map!=null){
 					this.map.addHandler(selectFeatureHandler);
-				}								
+				}										
 			}
 			
 			/**
@@ -139,6 +139,7 @@
 				}
 				this.drawLayer.removeFeatures(featureToDelete)			
 				btnDeleteSelected.enabled = false;
+				btnMerge.enabled = false;
 				//clear the information tab
 				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
 			}
@@ -187,7 +188,7 @@
 												
 						case "polygon":
 							if (last-1 >= 0 && !polygonHandler.firstPointRemoved && !polygonHandler.newFeature) {
-								drawLayer.removeFeatures(drawLayer.features[last - 1]);
+								drawLayer.removeFeature(drawLayer.features[last - 1]);
 							}
 							polygonHandler.newFeature = true;							
 							break;
@@ -336,7 +337,7 @@
 					pointHandler.map = this.map;
 					pathHandler.map = this.map;
 					polygonHandler.map = this.map
-					this.map.addLayer(drawLayer);
+					this.map.addLayer(drawLayer);					
 				}
 				
 			}		
@@ -356,5 +357,4 @@
 	<mx:Button x="95" y="49" icon="@Embed('/org/openscales/component/images/delete_all_small.png')" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="38" toolTip="Delete all drawing feature on the map" height="38"/>
 	<mx:Button x="143" y="49" icon="@Embed('/org/openscales/component/images/delete_last_small.png')" id="btnDeleteLast" click="this.onDeleteLastClick(event)" width="38" toolTip="Delete the last drawing feature" height="38"/>
 	<mx:Button x="190" y="49" icon="@Embed('/org/openscales/component/images/delete_selected_small.png')" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" width="38" enabled="false" toolTip="Delete all selected features" height="38"/>
-	<!--mx:Button x="27" y="49" icon="@Embed('/org/openscales/component/images/IconeMouvement.swf')" id="btnPan" click="this.onPanClick(event)" width="38" selected="true" toolTip="Panning" height="38" /-->
 </Control>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:resize="flex.utils.ui.resize.*"
-	xmlns:control="org.openscales.component.control.*" xmlns:os="http://openscales.org" creationComplete="InitMiniMap();"  >
+	xmlns:control="org.openscales.component.control.*" xmlns:os="http://openscales.org" creationComplete="InitMiniMap();" >
 	
 	<mx:Script>
 		<![CDATA[
@@ -115,7 +115,7 @@
 			 //Cette fonction permet de switcher les bases layers de l'overview map en mm tps que la map
 			 public function changerLayerBase (event:LayerEvent):void  {
 			 	this.minMap.baseLayer.visible = false;
-			 	 this.minMap.baseLayer = (this.minMap.getLayerByName(event.layer.name) as Layer);   //on prend le layer contenu dans le minimap : celui qui a le mm nom que celui qui a changé dans le map
+			 	 this.minMap.baseLayer = (this.minMap.getLayerByName(event.layer.name) as Layer);   //on prend le layer contenu dans le minimap : celui qui a le mm nom que celui qui a chang� dans le map
 			 	/* var array:Array = new Array();
 			 	array = this.map.layers; */
 			 	
@@ -154,7 +154,7 @@
 			 
 			 
 			 
-			 //Les fonctions suivantes gèrent le repositionnement de rectangle de l'overview map en fonction du déplacement dans la carte principale
+			 //Les fonctions suivantes g�rent le repositionnement de rectangle de l'overview map en fonction du d�placement dans la carte principale
 			 public function changerPositionRectangle(event:MapEvent):void {
 			 	
 			 	//this.rect.x =this.map.extent.left;
@@ -279,12 +279,9 @@
     	}
     	
     	
-    	
-    	
     	//Les fonctions suivantes gèrent le clique pour bouger le rectangle dans l'overview map
     	
-    	public function CliqueSurMiniMap(event:MouseEvent):void {
-    		
+    	public function CliqueSurMiniMap(event:MouseEvent):void {   		
 
     		if((Math.abs(this.minMap.mouseX-this.mouseXInitial)<=5)||(Math.abs(this.minMap.mouseY-this.mouseYInitial)<=5))
             {
@@ -379,7 +376,7 @@
     }
     
     
-    //les fonctions suivantes gèrent la sélection d'une zone sur la minicarte
+    //les fonctions suivantes g�rent la s�lection d'une zone sur la minicarte
     
     public var mouseXInitial:Number;
     public var mouseYInitial:Number;
@@ -398,7 +395,8 @@
                 	drawContainer.graphics.endFill();
               		this.lastZoom = this.minMap.getLonLatFromMapPx(new Pixel(minMap.mouseX, minMap.mouseY));
                 }
-
+    
+    
                 public function endBox(e:MouseEvent) : void {
                 	drawContainer.graphics.clear();
                		
@@ -428,12 +426,7 @@
 		    		
                		}
 		    		
-		    		this.lastZoom = null;
-		    		
-		    		 
-  		
-	              	
-	               	
+		    		this.lastZoom = null;               	
                 }
 
             public function expandArea(e:MouseEvent) : void {

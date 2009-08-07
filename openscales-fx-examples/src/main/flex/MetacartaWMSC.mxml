@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org">
-	
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org">	
 	<os:Map id="fxmap" width="100%" height="100%" numZoomLevels="20" zoom="5">
 		
 		<os:WMSC name="Metacarta" url="http://labs.metacarta.com/wms-c/Basic.py"
@@ -9,10 +8,9 @@
 						   
 		<os:MaxExtent left="-180" bottom="-90" right="180" top="90" />
 		
-		<os:MousePosition />
-				
+		<os:MousePosition />	
 		<os:BorderPanHandler />
 		<os:ClickHandler />
-		<os:WheelHandler />
+		<os:WheelHandler />		
 	</os:Map>
 </mx:Canvas>

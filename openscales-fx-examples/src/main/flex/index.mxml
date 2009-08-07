@@ -9,5 +9,6 @@
 		<os:MetacartaWFSPolygons label="Metacarta WFS Polygons" />
 		<os:MetacartaWFSPoints label="Metacarta WFS Points" />
 		<os:GermanyWMS label="Germany WMS" />
+		<os:OverView label="Overview tool"/>
 	</mx:TabNavigator>	
 </mx:Application>
