@@ -7,7 +7,7 @@ package org.openscales.core.security
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.SecurityEvent;
 	import org.openscales.core.layer.RequestLayer;
-	import org.openscales.core.layer.requesters.ogc.WMSRequest;
+	import org.openscales.core.request.ogc.WMSRequest;
 	import org.openscales.core.security.SecurityConfiguration.LayerSecurity;
 	import org.openscales.core.security.SecurityConfiguration.SecuritiesConfiguration;
 	import org.openscales.core.security.SecurityRequesters.AbstractSecurityRequester;

@@ -1,8 +1,7 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.events.LayerEvent;
-	import org.openscales.core.layer.requesters.AbstractRequest;
-	import org.openscales.core.layer.requesters.IRequest;
+	import org.openscales.core.request.IRequest;
 	
 	/**
 	 *This class is use for all layers requests 
@@ -15,9 +14,9 @@ package org.openscales.core.layer
 		 **/
 		private var _requester:IRequest;
 		
-		public function RequestLayer(name:String,ihttpRequest:AbstractRequest,isBaseLayer:Boolean=false, visible:Boolean=true, projection:String=null, proxy:String=null)
+		public function RequestLayer(name:String,request:IRequest,isBaseLayer:Boolean=false, visible:Boolean=true, projection:String=null, proxy:String=null)
 		{
-			this._requester=ihttpRequest;
+			this._requester=request;
 			super(name, isBaseLayer, visible, projection, proxy);
 		
 		}

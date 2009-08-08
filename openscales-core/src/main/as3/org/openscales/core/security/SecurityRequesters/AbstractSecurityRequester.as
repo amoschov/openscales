@@ -3,9 +3,9 @@ package org.openscales.core.security.SecurityRequesters
 	import flash.events.EventDispatcher;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.layer.requesters.AbstractRequest;
+	import org.openscales.core.request.AbstractRequest;
 	import org.openscales.core.security.SecurityManager;
-	import org.openscales.core.layer.requesters.IRequest;
+	import org.openscales.core.request.IRequest;
 	/**
 	 * This class is an abstract class 
 	 * don't instanciate it

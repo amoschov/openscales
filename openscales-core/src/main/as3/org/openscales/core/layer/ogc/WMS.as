@@ -7,8 +7,8 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.params.ogc.WMSParams;
-	import org.openscales.core.layer.requesters.AbstractRequest;
-	import org.openscales.core.layer.requesters.ogc.WMSRequest;
+	import org.openscales.core.request.AbstractRequest;
+	import org.openscales.core.request.ogc.WMSRequest;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	import org.openscales.proj4as.ProjProjection;

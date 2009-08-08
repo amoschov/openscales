@@ -2,7 +2,7 @@ package org.openscales.fx.layer
 {
   import org.openscales.core.layer.ogc.WMS;
   import org.openscales.core.layer.params.ogc.WMSParams;
-  import org.openscales.core.layer.requesters.ogc.WMSRequest;
+  import org.openscales.core.request.ogc.WMSRequest;
   import org.openscales.proj4as.ProjProjection;
 
   public class FxWMS extends FxGrid

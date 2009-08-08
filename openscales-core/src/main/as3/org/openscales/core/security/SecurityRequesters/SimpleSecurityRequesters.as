@@ -7,10 +7,10 @@ package org.openscales.core.security.SecurityRequesters
 	import flash.net.URLRequest;
 	
 	import org.openscales.core.events.SecurityEvent;
-	import org.openscales.core.layer.requesters.AbstractRequest;
-	import org.openscales.core.layer.requesters.ogc.WMSRequest;
+	import org.openscales.core.request.AbstractRequest;
+	import org.openscales.core.request.ogc.WMSRequest;
 	import org.openscales.core.security.SecurityManager;
-	import org.openscales.core.layer.requesters.IRequest;
+	import org.openscales.core.request.IRequest;
 	
 	public class SimpleSecurityRequesters extends AbstractSecurityRequester  implements ISecurityRequester 
 	{

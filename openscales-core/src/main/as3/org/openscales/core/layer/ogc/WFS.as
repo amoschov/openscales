@@ -17,8 +17,8 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.layer.capabilities.GetCapabilities;
 	import org.openscales.core.layer.params.ogc.WFSParams;
-	import org.openscales.core.layer.requesters.AbstractRequest;
-	import org.openscales.core.layer.requesters.ogc.WFSRequest;
+	import org.openscales.core.request.AbstractRequest;
+	import org.openscales.core.request.ogc.WFSRequest;
 	import org.openscales.core.tile.WFSTile;
 	import org.openscales.proj4as.ProjProjection;
 	

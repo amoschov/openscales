@@ -11,7 +11,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.layer.params.AbstractParams;
 	import org.openscales.core.layer.params.IHttpParams;
-	import org.openscales.core.layer.requesters.AbstractRequest;
+	import org.openscales.core.request.AbstractRequest;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	

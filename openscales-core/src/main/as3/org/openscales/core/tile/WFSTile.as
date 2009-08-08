@@ -14,7 +14,7 @@ package org.openscales.core.tile
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.RequestLayer;
 	import org.openscales.core.layer.ogc.WFS;
-	import org.openscales.core.layer.requesters.AbstractRequest;
+	import org.openscales.core.request.AbstractRequest;
 	
 	/**
 	 * WFS single tile

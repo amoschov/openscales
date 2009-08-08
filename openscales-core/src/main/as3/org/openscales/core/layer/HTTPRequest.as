@@ -1,7 +1,7 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.layer.params.IHttpParams;
-	import org.openscales.core.layer.requesters.AbstractRequest;
+	import org.openscales.core.request.AbstractRequest;
 	
 	
 	/**

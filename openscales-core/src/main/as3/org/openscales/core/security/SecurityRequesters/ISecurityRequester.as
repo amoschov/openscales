@@ -2,8 +2,8 @@ package org.openscales.core.security.SecurityRequesters
 {
 	import flash.events.EventDispatcher;
 	
-	import org.openscales.core.layer.requesters.AbstractRequest;
-	import org.openscales.core.layer.requesters.IRequest;
+	import org.openscales.core.request.AbstractRequest;
+	import org.openscales.core.request.IRequest;
 	/**
 	 *This class is used as Interface  for all security requsters  
 	 * @author DamienNda 

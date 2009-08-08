@@ -3,7 +3,7 @@ package org.openscales.fx.layer
 	import org.openscales.core.Util;
 	import org.openscales.core.layer.HTTPRequest;
 	import org.openscales.core.layer.RequestLayer;
-	import org.openscales.core.layer.requesters.AbstractRequest;
+	import org.openscales.core.request.AbstractRequest;
 
 	public class FxHTTPRequest extends FxLayer
 	{
