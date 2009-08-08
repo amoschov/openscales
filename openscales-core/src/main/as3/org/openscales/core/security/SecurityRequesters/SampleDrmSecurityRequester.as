@@ -12,13 +12,13 @@ package org.openscales.core.security.SecurityRequesters
 	import org.openscales.core.security.SecurityManager;
 	import org.openscales.core.request.IRequest;
 	
-	public class SimpleSecurityRequesters extends AbstractSecurityRequester  implements ISecurityRequester 
-	{
+	public class SampleDrmSecurityRequester extends AbstractSecurityRequester 
+	{		
+		public static const TYPE:String = "SampleDrm";
 		
-		public function SimpleSecurityRequesters(securityManager:SecurityManager)
+		public function SampleDrmSecurityRequester(securityManager:SecurityManager)
 		{
 			super(securityManager);
-			this._type=SecurityRequestersType.simpleDRM;
 		}
 		/**
 		 *@inherited
@@ -58,6 +58,9 @@ package org.openscales.core.security.SecurityRequesters
 		override  public function addParams(params:Array):void
 		 {
 		 	this.map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_LOAD,this.type,true));
+		 }
+		 override public function get type():String{
+			return TYPE;
 		 }
 	}
 }

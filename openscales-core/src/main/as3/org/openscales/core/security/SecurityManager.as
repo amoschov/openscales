@@ -12,8 +12,8 @@ package org.openscales.core.security
 	import org.openscales.core.security.SecurityConfiguration.SecuritiesConfiguration;
 	import org.openscales.core.security.SecurityRequesters.AbstractSecurityRequester;
 	import org.openscales.core.security.SecurityRequesters.DefaultSecurityRequester;
-	import org.openscales.core.security.SecurityRequesters.SecurityRequestersType;
-	import org.openscales.core.security.SecurityRequesters.SimpleSecurityRequesters;
+	import org.openscales.core.security.SecurityRequesters.SampleDrmSecurityRequester;
+	import org.openscales.core.security.SecurityRequesters.ISecurityRequester;
 	
 	/**
 	 *This class is used for security management on a layer 
@@ -28,7 +28,7 @@ package org.openscales.core.security
 		 * @private
 		 * security requesters factories
 		 * */
-		private  var FactorySecurityRequester:HashMap;
+		private var FactorySecurityRequester:HashMap;
 		
 		/**
 		 * @private
@@ -54,7 +54,8 @@ package org.openscales.core.security
 			this._securityConfiguration=securityConfiguration;
 			_securityRequesters=new Array();
 			FactorySecurityRequester=new HashMap();
-			FactorySecurityRequester.put(SecurityRequestersType.simpleDRM,new SimpleSecurityRequesters(this));
+			var sampleDrmSecurityRequester:SampleDrmSecurityRequester = new SampleDrmSecurityRequester(this);
+			FactorySecurityRequester.put(sampleDrmSecurityRequester.type,sampleDrmSecurityRequester);
 		}
 		
 		/**
@@ -80,7 +81,7 @@ package org.openscales.core.security
 			{
 				if(FactorySecurityRequester.getValue(securityLayer.securityType)!=undefined && FactorySecurityRequester.getValue(securityLayer.securityType) is AbstractSecurityRequester){
 					//if the security is already in the securityRequester list 
-					if(!ExistSecurityRequester(securityLayer.securityType))
+					if(!existSecurityRequester(securityLayer.securityType))
 					{
 					_securityRequesters.push(FactorySecurityRequester.getValue(securityLayer.securityType));					
 					}
@@ -92,9 +93,9 @@ package org.openscales.core.security
 		 * To know if a securityRequester has been already created
 		 * @param security
 		 * */
-		public function ExistSecurityRequester(securityType:String):Boolean{
+		public function existSecurityRequester(securityType:String):Boolean{
 			
-			for each(var securityRequester:AbstractSecurityRequester in  _securityRequesters)
+			for each(var securityRequester:ISecurityRequester in  _securityRequesters)
 			{
 				if(securityRequester.type==securityType) return true;
 			}
@@ -126,7 +127,7 @@ package org.openscales.core.security
 		{
 		 	if(event.isAuthorized)
 		 	{
-		 		if(ExistSecurityRequester(event.securityType))
+		 		if(existSecurityRequester(event.securityType))
 		 		{
 		 			for each(var layer:RequestLayer in this.map.layers){
 		 				if((FactorySecurityRequester.getValue(event.securityType) as AbstractSecurityRequester).canExecuteRequest(layer.requester))

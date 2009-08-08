@@ -25,7 +25,10 @@ package org.openscales.core.security.SecurityRequesters
 		 /**
 		 * The params are a cuple value\key which contain attributes like layer
 		 * and securities informations
-		 * */
+		 **/
 		 function addParams(params:Array):void;
+		 
+		 function get type():String;
+		 
 	}
 }

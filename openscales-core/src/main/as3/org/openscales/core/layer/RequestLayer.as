@@ -2,6 +2,7 @@ package org.openscales.core.layer
 {
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.request.IRequest;
+	import org.openscales.core.Map;
 	
 	/**
 	 *This class is use for all layers requests 
@@ -20,6 +21,14 @@ package org.openscales.core.layer
 			super(name, isBaseLayer, visible, projection, proxy);
 		
 		}
+		
+		override public function set map(map:Map):void {
+			super.map = map;
+			if (this.isBaseLayer) {
+				this.map.addEventListener(LayerEvent.LAYERS_CONF_END,(this as RequestLayer).tilesDownload);
+			}
+		}
+		
 		/**
 		 * To start tiles downloading
 		 * @param LayerEvent
@@ -28,8 +37,8 @@ package org.openscales.core.layer
 		{
 			if(layerEvent.layer==this)
 			{
-				this.moveTo(layerEvent.bounds,true);
 				this.isAuthorizedTodownload=true;
+				this.moveTo(layerEvent.bounds,true);
 			}
 		}
 		/**

@@ -10,7 +10,6 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.events.LayerEvent;
-	import org.openscales.core.layer.osm.OSM;
 	import org.openscales.proj4as.ProjProjection;
 
 
@@ -116,12 +115,6 @@ package org.openscales.core.layer
 	                var show:Boolean = ((this.visible) && (this.inRange));
 	                this.visible = (show ? true : false);
 	            }	            
-				else
-				{
-					if(!(this is OSM)){
-						this.map.addEventListener(LayerEvent.LAYERS_CONF_END,(this as RequestLayer).tilesDownload);	
-					}
-				} 
 	        }
 		}
 

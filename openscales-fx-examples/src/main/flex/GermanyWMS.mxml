@@ -6,7 +6,7 @@
 		<os:MaxExtent left="5.60075" bottom="47.2441" right="15.425" top="55.0317" />
 				
 		<os:WMS name="Germany" url="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map" layers="Germany"
-				 format="image/jpeg" isBaseLayer="true" isAuthorizedToDownload="true"/>
+				 format="image/jpeg" isBaseLayer="true" />
 
 		<os:MousePosition />
 		

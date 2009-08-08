@@ -10,29 +10,28 @@ package org.openscales.core.security.SecurityRequesters
 	import org.openscales.core.request.AbstractRequest;
 	import org.openscales.core.request.ogc.WMSRequest;
 	import org.openscales.core.request.IRequest;
+	import org.openscales.core.security.SecurityManager;
 	/**
 	 *This class is used as defaultRequester for the security  
 	 * @author DamienNda 
 	 **/
-	public class DefaultSecurityRequester
+	public class DefaultSecurityRequester extends AbstractSecurityRequester
 	{
-		/**
-		 * @private
-		 * */
-		 private var _map:EventDispatcher;
+		public static const TYPE:String = "Default";
+
 		/**
 		 *Default Requester creation 
 		 **/
-		public function DefaultSecurityRequester()
+		public function DefaultSecurityRequester(securityManager:SecurityManager=null)
 		{
-			
+			super(securityManager);
 		}
 		
 		/**
 		 *Execute request providing from RequestManager when the layer concerned
 		 * by the request has no Security
 		 **/
-		public function executeRequest(request:IRequest):EventDispatcher
+		override public function executeRequest(request:IRequest):EventDispatcher
 		{
 			if(request is WMSRequest) return this.wmsTreatment(request as WMSRequest);
 			return null;
@@ -56,22 +55,8 @@ package org.openscales.core.security.SecurityRequesters
 		}
 		
 		
-		//getters & setters
-		/**
-		 * To get the Eventdispatcher In the case of
-		 * OpenScales the event dispatcher will be a Map object
-		 **/
-		 public  function get map():EventDispatcher
-		 {	
-		 		return this._map;
-		 }
-		 /**
-		 * @private
-		 * */
-		 public function set map(eventDispatcher:EventDispatcher):void
-		 {
-		 	this._map=eventDispatcher;
-		 	//this._map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_LOAD));
+		 override public function get type():String{
+			return TYPE;
 		 }
 		
 	}

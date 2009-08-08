@@ -14,17 +14,17 @@ package org.openscales.core.security.SecurityRequesters
 	 **/
 	public class AbstractSecurityRequester implements ISecurityRequester
 	{
-		/**
-		 *Security Type 
-		 * @private
-		 **/
-		protected var _type:String;
 		
 		/**
 		 * security manager of the sevcurity requester
 		 * @private
 		 * */
 		 private var _securityManager:SecurityManager;
+		 
+		/**
+		 * @private
+		 * */
+		 private var _map:EventDispatcher;
 		 
 		public function AbstractSecurityRequester(securityManager:SecurityManager)
 		{
@@ -44,19 +44,31 @@ package org.openscales.core.security.SecurityRequesters
 		public function addParams(params:Array):void
 		{
 		}
-		/**
-		 * Security Type
-		 * read only property
-		 * */
-		public function get type():String{
-			return this._type;
+
+		static public function get type():String{
+			return "";
 		}
+		
+		//getters & setters
+		/**
+		 * To get the Eventdispatcher In the case of
+		 * OpenScales the event dispatcher will be a Map object
+		 **/
+		 public  function get map():EventDispatcher
+		 {	
+		 		return this._map;
+		 }
+		 /**
+		 * @private
+		 * */
+		 public function set map(eventDispatcher:EventDispatcher):void
+		 {
+		 	this._map=eventDispatcher;
+		 }
+		 
+		 public function get type():String{
+			return "";
+		 }
 	
-		/**
-		 * map object is here used as bus event
-		 * */
-		public function get map():Map{
-			return this._securityManager.map;
-		}
 	}
 }

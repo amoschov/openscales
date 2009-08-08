@@ -6,7 +6,7 @@
 		<os:MaxExtent left="-77.92" bottom="40.75" right="-77.79" top="40.85" />
 				
 		<os:WMSC name="Base Image" url="http://www.apps.geovista.psu.edu/tilecache/tilecache.py" layers="centreimagerygeogjpeg"
-				 format="image/jpeg" isBaseLayer="true" isAuthorizedToDownload="true"/>
+				 format="image/jpeg" isBaseLayer="true" />
 		
 		<os:WFS name="Blue Course Track" url="http://www.apps.geovista.psu.edu/geoserver/wfs" typename="golf:golf_7_2207"
 				srs="EPSG:4326" version="1.0.0" isBaseLayer="false" minZoomLevel="21">
