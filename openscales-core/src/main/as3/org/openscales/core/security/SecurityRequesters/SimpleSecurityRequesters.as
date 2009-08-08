@@ -10,6 +10,7 @@ package org.openscales.core.security.SecurityRequesters
 	import org.openscales.core.layer.requesters.AbstractRequest;
 	import org.openscales.core.layer.requesters.ogc.WMSRequest;
 	import org.openscales.core.security.SecurityManager;
+	import org.openscales.core.layer.requesters.IRequest;
 	
 	public class SimpleSecurityRequesters extends AbstractSecurityRequester  implements ISecurityRequester 
 	{
@@ -22,7 +23,7 @@ package org.openscales.core.security.SecurityRequesters
 		/**
 		 *@inherited
 		 **/
-		override public function executeRequest(request:AbstractRequest):EventDispatcher
+		override public function executeRequest(request:IRequest):EventDispatcher
 		 {
 		 if(request is WMSRequest) return this.wmsTreatment(request as WMSRequest);
 			return null;
@@ -47,7 +48,7 @@ package org.openscales.core.security.SecurityRequesters
 		 /**
 		 *@inherited 
 		 **/
-		override public function canExecuteRequest(request:AbstractRequest):Boolean
+		override public function canExecuteRequest(request:IRequest):Boolean
 		 {
 		 	return true;
 		 }

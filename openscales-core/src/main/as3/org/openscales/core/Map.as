@@ -21,7 +21,7 @@ package org.openscales.core
   import org.openscales.core.handler.IHandler;
   import org.openscales.core.layer.Layer;
   import org.openscales.core.layer.RequestLayer;
-  import org.openscales.core.layer.osm.OSM;
+
   import org.openscales.core.popup.Popup;
   import org.openscales.core.security.SecurityConfiguration.SecuritiesConfiguration;
   import org.openscales.proj4as.ProjProjection;
@@ -452,12 +452,7 @@ package org.openscales.core
 
 	            var bounds:Bounds = this.extent;
 
-	            //Securiy modification
-	            if(this.baseLayer is RequestLayer)
-	            {
-	            	if(this.baseLayer is OSM) this.baseLayer.moveTo(bounds, zoomChanged, dragging);
-	            	else if((this.baseLayer as RequestLayer).isAuthorizedTodownload) this.baseLayer.moveTo(bounds, zoomChanged, dragging);
-	            }            
+	            this.baseLayer.moveTo(bounds, zoomChanged, dragging);             
 	            for (var i:int = 0; i < this.layers.length; i++) {
 	                var layer:Layer = this.layers[i];
 	                //layer.redraw();

@@ -10,5 +10,6 @@
 		<os:MetacartaWFSPoints label="Metacarta WFS Points" />
 		<os:GermanyWMS label="Germany WMS" />
 		<os:OverView label="Overview tool"/>
+		<os:SecurityMap label="Security"/>
 	</mx:TabNavigator>	
 </mx:Application>

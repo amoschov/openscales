@@ -5,6 +5,7 @@ package org.openscales.core.security.SecurityRequesters
 	import org.openscales.core.Map;
 	import org.openscales.core.layer.requesters.AbstractRequest;
 	import org.openscales.core.security.SecurityManager;
+	import org.openscales.core.layer.requesters.IRequest;
 	/**
 	 * This class is an abstract class 
 	 * don't instanciate it
@@ -30,12 +31,12 @@ package org.openscales.core.security.SecurityRequesters
 			this._securityManager=securityManager;
 		}
 
-		public function executeRequest(request:AbstractRequest):EventDispatcher
+		public function executeRequest(request:IRequest):EventDispatcher
 		{
 			return null;
 		}
 		
-		public function canExecuteRequest(request:AbstractRequest):Boolean
+		public function canExecuteRequest(request:IRequest):Boolean
 		{
 			return false;
 		}

@@ -116,7 +116,7 @@ package org.openscales.core.security
 				}
 			
 			}
-			return _defaultRequester.ExecuteRequest(request);
+			return _defaultRequester.executeRequest(request);
 		}
 		
 		 /**

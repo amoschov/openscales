@@ -10,12 +10,13 @@ package org.openscales.core.layer.requesters.ogc
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.params.AbstractParams;
 	import org.openscales.core.layer.params.ogc.WFSParams;
-	import org.openscales.core.layer.requesters.IhttpRequest;
+	import org.openscales.core.layer.requesters.IRequest;
+	import org.openscales.core.layer.RequestLayer;
 
 	/**
 	 * This class is for WFS request Execution 
  	**/
-	public class WFSRequest extends OGCRequest implements IhttpRequest
+	public class WFSRequest extends OGCRequest
 	{
 		//this object represents a datas of a POST request 
 		/**
@@ -23,7 +24,7 @@ package org.openscales.core.layer.requesters.ogc
 		 **/
 		private var _postbody:Object;
 		
-		public function WFSRequest(layer:Layer,url:String, method:String, params:WFSParams, oncomplete:Function=null, loader:EventDispatcher=null)
+		public function WFSRequest(layer:RequestLayer,url:String, method:String, params:WFSParams, oncomplete:Function=null, loader:EventDispatcher=null)
 		{
 			//WFS directly downloads data or textual response
 			//For it we use an URLLoader			

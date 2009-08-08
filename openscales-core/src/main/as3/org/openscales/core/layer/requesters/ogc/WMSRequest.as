@@ -8,13 +8,14 @@ package org.openscales.core.layer.requesters.ogc
 	
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.params.ogc.WMSParams;
-	import org.openscales.core.layer.requesters.IhttpRequest;
+	import org.openscales.core.layer.requesters.IRequest;
+	import org.openscales.core.layer.RequestLayer;
 	/**
 	 * This class is used for all WMSRequest
 	 **/
-	public class WMSRequest extends OGCRequest implements IhttpRequest
+	public class WMSRequest extends OGCRequest
 	{
-		public function WMSRequest(layer:Layer,url:String, method:String, params:WMSParams, oncomplete:Function=null)
+		public function WMSRequest(layer:RequestLayer,url:String, method:String, params:WMSParams, oncomplete:Function=null)
 		{
 			//WMS downloads a picture 
 			//consequently we use a loader providing for flash.display

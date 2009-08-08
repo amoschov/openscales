@@ -4,18 +4,19 @@ package org.openscales.core.layer.requesters
 	
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.params.IHttpParams;
+	import org.openscales.core.layer.RequestLayer;
 	
 	/**
 	 *This class is the abstract class for layers http Request
 	 *@author damienNda 
 	 **/
-	public class AbstractRequest implements IhttpRequest
+	public class AbstractRequest implements IRequest
 	{
 		/**
 		 * layer concerned by the request
 		 * @private
 		 **/
-		 private var _layer:Layer;
+		 private var _layer:RequestLayer;
 		/**
 		 * Layer url
 		 * @private
@@ -62,7 +63,7 @@ package org.openscales.core.layer.requesters
 		/**
 		 *This class is an Abstract class don't instanciate it  
 		 **/
-		public function AbstractRequest(layer:Layer,url:String,method:String,params:IHttpParams,oncomplete:Function=null,altUrl:Array=null)
+		public function AbstractRequest(layer:RequestLayer,url:String,method:String,params:IHttpParams,oncomplete:Function=null,altUrl:Array=null)
 		{
 			this._layer=layer;
 			this._url=url;
@@ -84,13 +85,13 @@ package org.openscales.core.layer.requesters
 		/**
 		 * layer concerned by the request
 		 **/
-		 public function get layer():Layer{
+		 public function get layer():RequestLayer{
 		 	return this._layer;
 		 }
 		 /**
 		 * @private
 		 **/
-		 public function set layer(value:Layer):void{
+		 public function set layer(value:RequestLayer):void{
 		 	this._layer=value;
 		 }
 		/**
@@ -122,15 +123,13 @@ package org.openscales.core.layer.requesters
 			return this._onComplete;
 		}
 		/**
-		 * @private
+		 *	onComplete function is used to execute a 
+		 *  function after a download 
 		 * */
 		public function set onComplete(value:Function):void{
 			this._onComplete=value;
 		}
-		/**
-		 *	Oncomplete function is used to execute a 
-		 *  function after a download 
-		 * */
+	
 		 /**
 		 *	onFailure function is used to execute a 
 		 *  function after a bad download 

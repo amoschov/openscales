@@ -5,13 +5,14 @@ package org.openscales.core.layer.requesters.ogc
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.layer.requesters.AbstractRequest;
-	import org.openscales.core.layer.requesters.IhttpRequest;
+	import org.openscales.core.layer.requesters.IRequest;
+	import org.openscales.core.layer.RequestLayer;
 
 	/**
 	 *This class is a requester for ogc
 	 * Don't use it, directly use the  service requester like WMSRequest or WFSRequest  
 	 **/
-	public class OGCRequest extends AbstractRequest implements IhttpRequest
+	public class OGCRequest extends AbstractRequest
 	{
 		/**
 		 *The OGCRequester loader
@@ -19,7 +20,7 @@ package org.openscales.core.layer.requesters.ogc
 		 **/
 		private var _loader:EventDispatcher;
 		
-		public function OGCRequest(layer:Layer,url:String, method:String, params:IHttpParams, oncomplete:Function=null, loader:EventDispatcher=null)
+		public function OGCRequest(layer:RequestLayer,url:String, method:String, params:IHttpParams, oncomplete:Function=null, loader:EventDispatcher=null)
 		{	
 			this._loader=loader;
 			super(layer,url, method, params, oncomplete,null);

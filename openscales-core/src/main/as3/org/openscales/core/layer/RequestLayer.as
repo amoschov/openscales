@@ -2,6 +2,7 @@ package org.openscales.core.layer
 {
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.layer.requesters.AbstractRequest;
+	import org.openscales.core.layer.requesters.IRequest;
 	
 	/**
 	 *This class is use for all layers requests 
@@ -12,7 +13,7 @@ package org.openscales.core.layer
 		/**
 		 *The requester object 
 		 **/
-		private var _requester:AbstractRequest;
+		private var _requester:IRequest;
 		
 		public function RequestLayer(name:String,ihttpRequest:AbstractRequest,isBaseLayer:Boolean=false, visible:Boolean=true, projection:String=null, proxy:String=null)
 		{
@@ -35,11 +36,11 @@ package org.openscales.core.layer
 		/**
 		 * The requester object
 		 **/
-		public function get requester():AbstractRequest
+		public function get requester():IRequest
 		{
 		return this._requester;	
 		}
-		public function set requester(value:AbstractRequest):void
+		public function set requester(value:IRequest):void
 		{
 			this._requester=value;
 		}
@@ -49,9 +50,7 @@ package org.openscales.core.layer
 		public function get isAuthorizedTodownload():Boolean{
 			return this._requester.isAuthorized;
 		}
-		/**
-		 * @private
-		 * */
+
 		public function set isAuthorizedTodownload(value:Boolean):void{
 		if(this._requester!=null)	
 			this._requester.isAuthorized=value

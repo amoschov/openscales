@@ -10,8 +10,6 @@
 			
 			private function initMap():void{
 				map = fxmap.map;
-				miniMap.x = this.width - miniMap.width;
-				miniMap.y = this.height - miniMap.height;
 			}	
 		]]>
 	</mx:Script>
@@ -21,21 +19,20 @@
 		<!-- This layer will be secured by the simpleDRM  if you want to not secured it -->
 		<!--you have to give the value true to the isAuthorizedTodownload layer attributes  and remoce the securities -->
 		<os:WMSC name="Metacarta" url="http://labs.metacarta.com/wms-c/Basic.py"
-						  id="metacarta" layers="satellite" format="image/jpeg" isBaseLayer="true" isAuthorizedToDownload="true"/>
+						  id="metacarta" layers="satellite" format="image/jpeg" isBaseLayer="true"/>
 						   
 						   
 		<os:MaxExtent left="-180" bottom="-90" right="180" top="90" />
 		<os:ClickHandler />
 		<os:WheelHandler />
 		<os:DragHandler id="dragHandler"/>
+		<os:Securities>
+			<os:Security type="{SecurityRequestersType.simpleDRM}">
+				<os:SecurityParam layer="{metacarta.layer}" key="key" value="value"/>
+			</os:Security>
+			
+		</os:Securities>
 		
 	</os:Map>
-	
-	<mx:VBox horizontalAlign="center" x="10" y="10">
-		<os:PanComponent id="pan" map="{map}"/>
-		<os:ZoomBoxComponent id="zoombox" map="{map}"/>	
-	</mx:VBox>
-	<os:OverviewMapComponent id="miniMap" map="{map}" height="250" width="400" />
-	
 		
 </mx:Canvas>

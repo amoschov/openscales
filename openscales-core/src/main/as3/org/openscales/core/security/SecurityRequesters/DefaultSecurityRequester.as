@@ -9,6 +9,7 @@ package org.openscales.core.security.SecurityRequesters
 	import org.openscales.core.events.SecurityEvent;
 	import org.openscales.core.layer.requesters.AbstractRequest;
 	import org.openscales.core.layer.requesters.ogc.WMSRequest;
+	import org.openscales.core.layer.requesters.IRequest;
 	/**
 	 *This class is used as defaultRequester for the security  
 	 * @author DamienNda 
@@ -31,7 +32,7 @@ package org.openscales.core.security.SecurityRequesters
 		 *Execute request providing from RequestManager when the layer concerned
 		 * by the request has no Security
 		 **/
-		public function ExecuteRequest(request:AbstractRequest):EventDispatcher
+		public function executeRequest(request:IRequest):EventDispatcher
 		{
 			if(request is WMSRequest) return this.wmsTreatment(request as WMSRequest);
 			return null;
