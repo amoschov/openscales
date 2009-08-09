@@ -72,6 +72,8 @@ package org.openscales.core.layer.ogc
     	private var _url:String = null;
     	
     	private var _params:WFSParams = null;
+    	
+    	private var _request:XMLRequest = null;	
 		
 		/**
 		 * WFS class constructor
@@ -269,8 +271,9 @@ package org.openscales.core.layer.ogc
 	
 	         var successfailure:Function = commitSuccessFailure;
 	        
-	        // TODO : profile memory management
-	        new XMLRequest(url, successfailure, proxy, URLRequestMethod.POST, this.security, null, data);
+	        if(_request)
+				_request.destroy();
+	        _request = new XMLRequest(url, successfailure, proxy, URLRequestMethod.POST, this.security, null, data);
 	        
 		}
 		

@@ -9,7 +9,7 @@ package org.openscales.core.request {
 	 **/
 	public interface IRequest {
 
-		// TODO : Nothing common for the moment ;-)
+		function destroy():void;
 
 	}
 }

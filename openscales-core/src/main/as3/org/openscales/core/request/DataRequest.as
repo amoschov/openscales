@@ -9,7 +9,12 @@ package org.openscales.core.request {
 	/**
 	 * DisplayRequest is used to download binary data available from an URL, like picture
 	 */
-	public class DataRequest implements IRequest {
+	public class DataRequest extends AbstractRequest {
+		
+		/**
+		 * Loader to download to content of the remote URL
+		 */
+		private var _loader:Loader = null;
 		
 		/**
 		 * Create a new Request to download data like images
@@ -22,9 +27,12 @@ package org.openscales.core.request {
 		public function DataRequest(url:String, onComplete:Function=null, proxy:String = null, security:ISecurity = null, onFailure:Function=null) {
 			try {
 				this._loader = new Loader();
+				this._onComplete = onComplete;
+				this._onFailure = onFailure;
+				
 				this._loader.name=url;
 				this._loader.contentLoaderInfo.addEventListener(Event.COMPLETE,onComplete,false, 0, true);
-				if(onFailure!=null) {
+				if(onFailure != null) {
 					this._loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onFailure, false, 0, true);
 				}
 				var finalUrl:String = url;
@@ -49,10 +57,21 @@ package org.openscales.core.request {
 		    }
 		}
 		
-		/**
-		 * Loader to download to content of the remote URL
-		 */
-		private var _loader:Loader = null;
+		override public function destroy():void {
+			try {
+	        	this.loader.close();
+	        } catch(e:Error){
+	        	// Empty catch are generally evil, but it is right in this case
+	        };
+	        
+	        if(this._onComplete != null)
+	        	this.loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, this._onComplete);
+	        
+	        if(this._onFailure != null)
+	        	this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, this._onFailure);
+		}
+		
+		
 		
 		public function get loader():Loader {
 	    	return this._loader;

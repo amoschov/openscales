@@ -108,7 +108,8 @@ package org.openscales.core.handler.mouse
             infoParams.width = this.map.width;
 			
 			// request data
-			if (_request != null && _request.loader != null) try { _request.loader.close(); } catch (e:Error) { }
+			if(_request)
+				_request.destroy()
 			_request = new XMLRequest(theURL + "?" + infoParams.toGETString(), this.handleResponse, map.proxy);
 		}
 		

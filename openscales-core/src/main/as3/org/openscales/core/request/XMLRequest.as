@@ -10,8 +10,7 @@ package org.openscales.core.request
 	import org.openscales.core.Trace;
 	import org.openscales.core.security.ISecurity;
 
-	public class XMLRequest implements IRequest
-	{
+	public class XMLRequest extends AbstractRequest {
 	
 		private var _loader:URLLoader = null;
 		/**
@@ -66,6 +65,20 @@ package org.openscales.core.request
 		    } catch (e:Error) {
 		      Trace.error(e.message);
 		    }
+		}
+		
+		override public function destroy():void {
+			try {
+	        	this.loader.close();
+	        } catch(e:Error){
+	        	// Empty catch are generally evil, but it is right in this case
+	        };
+	        
+	        if(this._onComplete != null)
+	        	this.loader.removeEventListener(Event.COMPLETE, this._onComplete);
+	        
+	        if(this._onFailure != null)
+	        	this.loader.removeEventListener(IOErrorEvent.IO_ERROR, this._onFailure);
 		}
 		
 		public function get loader():URLLoader {

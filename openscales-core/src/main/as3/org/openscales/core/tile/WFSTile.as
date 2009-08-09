@@ -21,7 +21,9 @@ package org.openscales.core.tile
 	public class WFSTile extends Tile
 	{
 		
-		private var _features:Array = null;		
+		private var _features:Array = null;	
+		
+		private var _request:XMLRequest = null;	
 		
 		/**
 	     * WFSTile constructor
@@ -49,6 +51,8 @@ package org.openscales.core.tile
 	     */
 		override public function clear():void {
 			super.clear();
+			if(_request)
+	        	_request.destroy();	
         	this.destroyAllFeatures();
 		}
 		
@@ -71,8 +75,9 @@ package org.openscales.core.tile
 	    * @param failure
 	    */
 		public function loadFeaturesForRegion(success:Function):void {		
-			// TODO : profile memory management
-			new XMLRequest(this.url, success, this.layer.proxy, URLRequestMethod.GET, this.layer.security);
+			if(_request)
+				_request.destroy();
+			_request = new XMLRequest(this.url, success, this.layer.proxy, URLRequestMethod.GET, this.layer.security);
 		}
 		
 		/**

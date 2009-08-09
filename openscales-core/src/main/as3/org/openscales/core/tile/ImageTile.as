@@ -7,7 +7,6 @@ package org.openscales.core.tile
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	import flash.net.URLRequest;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
@@ -28,15 +27,14 @@ package org.openscales.core.tile
 		
 		private var _queued:Boolean = false;
 		
-		private var _tileLoader:Loader = null;
-		
+		private var _request:DataRequest = null
+				
 		public function ImageTile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size) {
 			super(layer, position, bounds, url, size);
 			
 			// otherwise you'll get seams between tiles :(
 			this.cacheAsBitmap = false;
 			
-			_tileLoader = new Loader();
 		}
 		
 		override public function destroy():void {
@@ -81,8 +79,10 @@ package org.openscales.core.tile
 	        //If the tile (loader) was already loaded and is in the cache, we draw it
 	        if (this.layer is Grid && (cachedLoader=(this.layer as Grid).getTileCache(this.url)) != null)
 	        	drawLoader(cachedLoader,true);
-	        else {        				     
-    			new DataRequest(this.url, onTileLoadEnd, this.layer.proxy, this.layer.security, onTileLoadError);
+	        else {        	
+	        	if(_request)
+	        		_request.destroy();			     
+    			_request = new DataRequest(this.url, onTileLoadEnd, this.layer.proxy, this.layer.security, onTileLoadError);
 	       }
            return true;
 		}
@@ -132,13 +132,7 @@ package org.openscales.core.tile
 			// retry load
 			Trace.info("Retry " + this._attempt + " tile " + this.url);
 			this.url = this.layer.getURL(this.bounds);
-	        if (this.layer.proxy != null) {
-	        	var urlProxy:String = this.layer.proxy + encodeURIComponent(this.url);
-	        	this._tileLoader.load(new URLRequest(urlProxy));
-	        }
-	        else {
-	        	this._tileLoader.load(new URLRequest(this.url));
-	        }
+	        this.draw();
 		}
 		
 		/** 
@@ -148,10 +142,8 @@ package org.openscales.core.tile
 			super.clear();
 	        this.alpha = 0;
 	        
-	        try {_tileLoader.close();}catch(e:Error){};
-	        
-	        _tileLoader.contentLoaderInfo.removeEventListener(Event.COMPLETE, onTileLoadEnd);
-	        _tileLoader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onTileLoadError);
+	        if(_request)
+	        		_request.destroy();	
 	        
 	        if (this.numChildren >0)
 	        	this.removeChildAt(0);
