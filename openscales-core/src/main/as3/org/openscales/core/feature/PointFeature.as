@@ -4,7 +4,7 @@ package org.openscales.core.feature
 	import org.openscales.core.geometry.Point;
 
 	/**
-	 * Feature used to draw a Point geometry on FeatureLayer 
+	 * Feature used to draw a Point geometry on FeatureLayer
 	 */
 	public class PointFeature extends VectorFeature
 	{
@@ -12,16 +12,17 @@ package org.openscales.core.feature
 		{
 			super(geometry, data, style);
 		}
-		
+
 		public function get point():Point {
 			return this.geometry as Point;
 		}
-		
+
 		override public function draw():void {
 			super.draw();
-	        var x:Number = (point.x / this.layer.resolution + this.left);
-	        var y:Number = (this.top - point.y / this.layer.resolution);
-            this.graphics.drawCircle(x, y, this.style.pointRadius);
+			var x:Number = (point.x / this.layer.resolution + this.left);
+			var y:Number = (this.top - point.y / this.layer.resolution);
+			this.graphics.drawCircle(x, y, this.style.pointRadius);
 		}		
 	}
 }
+

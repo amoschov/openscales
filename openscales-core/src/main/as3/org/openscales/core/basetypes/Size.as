@@ -7,20 +7,20 @@ package org.openscales.core.basetypes
 	{
 		private var _w:Number = 0.0;
 		private var _h:Number = 0.0;
-		
+
 		public function Size(w:Number = NaN, h:Number = NaN) {
 			this.w = w;
 			this.h = h;
 		}
-		
+
 		public function toString():String {
 			return "w=" + this.w + ",h=" + this.h;
 		}
-		
+
 		public function clone():Size {
 			return new Size(this.w, this.h);
 		}
-		
+
 		public function equals(sz:Size):Boolean {
 			var equals:Boolean = false;
 			if (sz != null) {
@@ -28,9 +28,9 @@ package org.openscales.core.basetypes
 			}
 			return equals;
 		}
-		
+
 		// Getters & setters
-		
+
 		public function get w():Number
 		{
 			return _w;
@@ -39,7 +39,7 @@ package org.openscales.core.basetypes
 		{
 			_w = newW;
 		}
-		
+
 		public function get h():Number
 		{
 			return _h;
@@ -50,3 +50,4 @@ package org.openscales.core.basetypes
 		}
 	}
 }
+

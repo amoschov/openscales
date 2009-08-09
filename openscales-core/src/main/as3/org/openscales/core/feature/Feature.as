@@ -56,12 +56,12 @@ package org.openscales.core.feature {
 		/**
 		 * Raw data that represent this feature. For exemple, this could contains the
 		 * GML data for WFS features
-		 * 
+		 *
 		 * TODO : specify where we can specify if data are kept or not, in order to
 		 * minimize memory consumption (GML use a lot of memory)
 		 */
 		private var _data:Object=null;
-		
+
 		/**
 		 * The layer where this feature belong. Should be a LayerFeature or inherited classes.
 		 */
@@ -161,7 +161,7 @@ package org.openscales.core.feature {
 
 		/**
 		 * The function allow to customize the display of this feature.
-		 * Inherited Feature classes usually override this function. 
+		 * Inherited Feature classes usually override this function.
 		 */
 		public function draw():void {
 			this.graphics.clear();
@@ -264,3 +264,5 @@ package org.openscales.core.feature {
 		}
 	}
 }
+
+

@@ -2,7 +2,7 @@ package org.openscales.core.events
 {
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.layer.Layer;
-	
+
 	/**
 	 * Event related to a layer.
 	 */
@@ -19,23 +19,23 @@ package org.openscales.core.events
 		 * @private
 		 * */
 		private var _bounds:Bounds=null;
-		
+
 		public static const LAYER_ADDED:String="openscales.addlayer";
-		
+
 		public static const LAYER_REMOVED:String="openscales.removelayer";
-		
+
 		public static const LAYER_CHANGED:String="openscales.changelayer";
-		
+
 		public static const BASE_LAYER_CHANGED:String="openscales.changebaselayer";
-		
+
 		public static const LAYER_IN_RANGE:String="openscales.layerinrange";
-		
+
 		public static const LAYER_OUT_RANGE:String="openscales.layeroutrange";
-		
+
 		public static const LAYER_AUTHENTIFICATED:String="openscales.layerauthentificated";
-		
+
 		public static const LAYER_INITIALIZED:String="openscales.layerinitialized";
-		
+
 		public function LayerEvent(type:String, layer:Layer,bounds:Bounds=null, bubbles:Boolean=false,cancelable:Boolean=false)
 		{
 			this._layer = layer;
@@ -58,18 +58,19 @@ package org.openscales.core.events
 		 * Layer extent corresponding to map extent
 		 * is used here for the security
 		 **/
-		 public function get bounds():Bounds{
-		 	return this._bounds;
-		 }
-		 
-		 /**
+		public function get bounds():Bounds{
+			return this._bounds;
+		}
+
+		/**
 		 * @private
 		 * */
-		 public function set bounds(value:Bounds):void{
-		 	this._bounds=value;
-		 }
-		
-		
-		
+		public function set bounds(value:Bounds):void{
+			this._bounds=value;
+		}
+
+
+
 	}
 }
+

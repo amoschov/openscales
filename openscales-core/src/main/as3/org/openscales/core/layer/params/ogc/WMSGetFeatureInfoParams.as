@@ -1,7 +1,7 @@
 package org.openscales.core.layer.params.ogc
 {
 	import org.openscales.core.layer.params.IHttpParams;
-	
+
 	/**
 	 * Implementation of IHttpParams interface.
 	 * Extends OGCParams.
@@ -9,7 +9,7 @@ package org.openscales.core.layer.params.ogc
 	 */
 	public class WMSGetFeatureInfoParams extends OGCParams
 	{
-				
+
 		private var _format:String;
 		private var _exceptions:String;
 		private var _layers:String;
@@ -21,55 +21,55 @@ package org.openscales.core.layer.params.ogc
 		private var _x:Number;
 		private var _y:Number;
 		private var _srs:String;
-		
-		
+
+
 		public function WMSGetFeatureInfoParams(layers:String, format:String = "text/xml", styles:String = null)
 		{
 			super("WMS", "1.1.1", "GetFeatureInfo");
-			
+
 			this._exceptions = "application/vnd.ogc.se_inimage";
-			
+
 			this._layers = layers;
 			this._query_layers = layers;
 			this._format = format;
 			this._styles = styles;			
-			
+
 		}
-		
+
 		override public function toGETString():String {
 			var str:String = super.toGETString();
-			
+
 			if (this._format != null)
 				str += "INFO_FORMAT=" + this._format + "&";
-				
+
 			if (this._exceptions != null)
 				str += "EXCEPTIONS=" + this._exceptions + "&";
-				
+
 			if (this._layers != null)
 				str += "LAYERS=" + this._layers + "&";
-				
+
 			if (this._query_layers != null)
 				str += "QUERY_LAYERS=" + this._layers + "&";
-				
+
 			if (this._styles != null)
 				str += "STYLES=" + this._styles + "&";
 			else
 				str += "STYLES=&";
-				
+
 			if (this._srs != null)
 				str += "SRS=" + this._srs + "&";
-				
+
 			str += "X=" + this._x + "&";
 			str += "Y=" + this._y + "&";
-				
+
 			str += "WIDTH=" + this._width + "&";
 			str += "HEIGHT=" + this._height + "&";
 			str += "FEATURE_COUNT=" + this._maxFeatures + "&";
-			
+
 			return str.substr(0, str.length-1);
 		}
-		
-		
+
+
 		//Getters & setters
 		public function get format():String {
 			return _format;
@@ -142,6 +142,7 @@ package org.openscales.core.layer.params.ogc
 		public function set y(y:Number):void {
 			_y = y;
 		}
-		
+
 	}
 }
+

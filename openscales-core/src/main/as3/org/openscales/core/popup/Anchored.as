@@ -1,101 +1,103 @@
 package org.openscales.core.popup
 {
-  import flash.display.Sprite;
-  
-  import org.openscales.core.basetypes.Bounds;
-  import org.openscales.core.basetypes.LonLat;
-  import org.openscales.core.basetypes.Pixel;
-  import org.openscales.core.basetypes.Size;
+	import flash.display.Sprite;
 
-  /**
-   * Anchored popup, usually the anchor is a Feature
-   */
-  public class Anchored extends Popup
-  {
-    /**
-       * Relative position of the popup ("br", "tr", "tl" or "bl").
-       * TODO : use an enum for that
-       */
-    private var _relativePosition:String = "";
+	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.basetypes.Size;
 
-    static public var BR:String = "br";
-    static public var TR:String = "tr";
-    static public var TL:String = "tl";
-    static public var BL:String = "bl";
+	/**
+	 * Anchored popup, usually the anchor is a Feature
+	 */
+	public class Anchored extends Popup
+	{
+		/**
+		 * Relative position of the popup ("br", "tr", "tl" or "bl").
+		 * TODO : use an enum for that
+		 */
+		private var _relativePosition:String = "";
 
-    private var _anchor:Sprite = null;
+		static public var BR:String = "br";
+		static public var TR:String = "tr";
+		static public var TL:String = "tl";
+		static public var BL:String = "bl";
 
-      public function Anchored(lonlat:LonLat, background:uint, border:Number, size:Size, contentHTML:String, anchor:Sprite, closeBox:Boolean) {
-          super(lonlat, background, border, size, contentHTML, closeBox);
+		private var _anchor:Sprite = null;
 
-          this._anchor = anchor;
-      }
+		public function Anchored(lonlat:LonLat, background:uint, border:Number, size:Size, contentHTML:String, anchor:Sprite, closeBox:Boolean) {
+			super(lonlat, background, border, size, contentHTML, closeBox);
 
-      override public function draw(px:Pixel=null):void {
-        if (px == null) {
-              if ((this.lonlat != null) && (this.map != null)) {
-                  px = this.map.getLayerPxFromLonLat(this.lonlat);
-              }
-          }
+			this._anchor = anchor;
+		}
 
-          this.relativePosition = this.calculateRelativePosition(px);
+		override public function draw(px:Pixel=null):void {
+			if (px == null) {
+				if ((this.lonlat != null) && (this.map != null)) {
+					px = this.map.getLayerPxFromLonLat(this.lonlat);
+				}
+			}
 
-          super.draw(px);
-      }
+			this.relativePosition = this.calculateRelativePosition(px);
 
-      public function calculateRelativePosition(px:Pixel):String {
-          var lonlat:LonLat = this.map.getLonLatFromLayerPx(px);
+			super.draw(px);
+		}
 
-          var extent:Bounds = this.map.extent;
-          var quadrant:String = extent.determineQuadrant(lonlat);
+		public function calculateRelativePosition(px:Pixel):String {
+			var lonlat:LonLat = this.map.getLonLatFromLayerPx(px);
 
-          return Bounds.oppositeQuadrant(quadrant);
-      }
+			var extent:Bounds = this.map.extent;
+			var quadrant:String = extent.determineQuadrant(lonlat);
 
-      override public function set position(px:Pixel):void {
-          var newPx:Pixel = this.calculateNewPx(px);
-          super.position = newPx;
-      }
+			return Bounds.oppositeQuadrant(quadrant);
+		}
 
-      override public function set size(size:Size):void {
-        super.size = size;
+		override public function set position(px:Pixel):void {
+			var newPx:Pixel = this.calculateNewPx(px);
+			super.position = newPx;
+		}
 
-          if ((this.lonlat) && (this.map)) {
-              var px:Pixel = this.map.getLayerPxFromLonLat(this.lonlat);
-              this.position = px;
-          }
-      }
+		override public function set size(size:Size):void {
+			super.size = size;
 
-      public function calculateNewPx(px:Pixel):Pixel {
-        var newPx:Pixel = px;
+			if ((this.lonlat) && (this.map)) {
+				var px:Pixel = this.map.getLayerPxFromLonLat(this.lonlat);
+				this.position = px;
+			}
+		}
 
-          var top:Boolean = (this.relativePosition == TR || this.relativePosition == TL);
+		public function calculateNewPx(px:Pixel):Pixel {
+			var newPx:Pixel = px;
 
-          if(top){
-            newPx.y += -this._anchor.height/2 - this.size.h;
-          }
-          else{
-            newPx.y += this._anchor.height/2;
-          }
+			var top:Boolean = (this.relativePosition == TR || this.relativePosition == TL);
 
-          var left:Boolean = (this.relativePosition == BL || this.relativePosition == TL);
+			if(top){
+				newPx.y += -this._anchor.height/2 - this.size.h;
+			}
+			else{
+				newPx.y += this._anchor.height/2;
+			}
 
-          if(left){
-            newPx.x += -this._anchor.width/2 - this.size.w;
-          }
-          else{
-            newPx.x += this._anchor.width/2;
-          }
+			var left:Boolean = (this.relativePosition == BL || this.relativePosition == TL);
 
-          return newPx;
-      }
+			if(left){
+				newPx.x += -this._anchor.width/2 - this.size.w;
+			}
+			else{
+				newPx.x += this._anchor.width/2;
+			}
 
-      public function get relativePosition():String {
-          return this._relativePosition;
-        }
+			return newPx;
+		}
 
-        public function set relativePosition(value:String):void {
-          this._relativePosition = value;
-        }
-  }
+		public function get relativePosition():String {
+			return this._relativePosition;
+		}
+
+		public function set relativePosition(value:String):void {
+			this._relativePosition = value;
+		}
+	}
 }
+
+

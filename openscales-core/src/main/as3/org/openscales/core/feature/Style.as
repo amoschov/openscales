@@ -1,11 +1,11 @@
 package org.openscales.core.feature
 {
 	/**
-	 * Style describe graphical attributes used to render vectors. 
+	 * Style describe graphical attributes used to render vectors.
 	 */
 	public class Style
 	{
-		
+
 		private var _fillColor:uint;
 		private var _fillOpacity:Number;
 		private var _strokeColor:uint;
@@ -19,26 +19,26 @@ package org.openscales.core.feature
 		private var _hoverStrokeOpacity:Number;
 		private var _hoverStrokeWidth:Number;
 		private var _hoverPointRadius:Number;
-		
+
 		private var _isFilled:Boolean;
 		private var _isStroked:Boolean;
 
 		/**
 		 * <p>Class constructor.</p>
-		 * 
+		 *
 		 * <p>It defines default values for the attributes.</p>
 		 */
 		public function Style()
 		{
 			//Default values
 			_fillColor = 0x00ff00;
-		    _fillOpacity = 0.4;
-		    _strokeColor = 0x00ff00;
-		    _strokeOpacity = 1;
-		    _strokeWidth = 2;
-		    _strokeLinecap = "round";
-		    _pointRadius = 6;
-		    _hoverFillColor = 0xffffff;
+			_fillOpacity = 0.4;
+			_strokeColor = 0x00ff00;
+			_strokeOpacity = 1;
+			_strokeWidth = 2;
+			_strokeLinecap = "round";
+			_pointRadius = 6;
+			_hoverFillColor = 0xffffff;
 			_hoverFillOpacity = 0.2;
 			_hoverStrokeColor = 0xff0000;
 			_hoverStrokeOpacity = 1;
@@ -46,12 +46,12 @@ package org.openscales.core.feature
 			_hoverPointRadius = 1;
 			_isFilled = true;
 			_isStroked = true;
-			
+
 		}
-		
-		
+
+
 		/* Getters & setters */
-		
+
 		public function get fillColor():uint {
 			return _fillColor;
 		}
@@ -107,7 +107,7 @@ package org.openscales.core.feature
 		public function set pointRadius(pointRadius:Number):void {
 			_pointRadius = pointRadius;
 		}
-		
+
 		public function get isFilled():Boolean {
 			return _isFilled;
 		}
@@ -115,7 +115,7 @@ package org.openscales.core.feature
 		public function set isFilled(value:Boolean):void {
 			_isFilled = value;
 		}
-		
+
 		public function get isStroked():Boolean {
 			return _isStroked;
 		}
@@ -126,3 +126,4 @@ package org.openscales.core.feature
 
 	}
 }
+

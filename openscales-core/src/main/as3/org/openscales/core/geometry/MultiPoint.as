@@ -1,7 +1,7 @@
 package org.openscales.core.geometry
 {
 	import org.openscales.proj4as.ProjProjection;
-	
+
 	/**
 	 * Class to represent a multi point geometry.
 	 * It's a collection of points.
@@ -12,19 +12,19 @@ package org.openscales.core.geometry
 			this.componentTypes = ["org.openscales.core.geometry::Point"];
 			super(components);
 		}
-		
-		
-	    public function addPoint(point:Point, index:Number=NaN):void {
-	        this.addComponent(point, index);
-	    }
-	    
+
+
+		public function addPoint(point:Point, index:Number=NaN):void {
+			this.addComponent(point, index);
+		}
+
 		public function removePoint(point:Point):void {
-	        this.removeComponent(point);
-	    }
-	    
-	    /**
+			this.removeComponent(point);
+		}
+
+		/**
 		 * Method to convert the multipoint (x/y) from a projection system to an other.
-		 * 
+		 *
 		 * @param source The source projection
 		 * @param dest The destination projection
 		 */
@@ -35,6 +35,7 @@ package org.openscales.core.geometry
 				}
 			}
 		}
-		
+
 	}
 }
+

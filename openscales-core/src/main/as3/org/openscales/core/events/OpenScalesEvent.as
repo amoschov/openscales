@@ -11,6 +11,7 @@ package org.openscales.core.events
 		{
 			super(type, bubbles, cancelable);
 		}
-		
+
 	}
 }
+

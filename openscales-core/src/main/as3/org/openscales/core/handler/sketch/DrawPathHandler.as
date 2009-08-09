@@ -1,7 +1,7 @@
 package org.openscales.core.handler.sketch
 {
 	import flash.events.MouseEvent;
-	
+
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -15,7 +15,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
-	
+
 	/**
 	 * Handler to draw paths (multi line strings)
 	 */
@@ -26,12 +26,12 @@ package org.openscales.core.handler.sketch
 		private var _id:Number = 0;
 		private var _lastPoint:Point = null;
 		private var _newFeature:Boolean = true;
-		
+
 		private var _dblClickHandler:ClickHandler = new ClickHandler();
-		
+
 		/**
 		 * DrawPathHandler constructor
-		 * 
+		 *
 		 * @param map
 		 * @param active
 		 * @param drawLayer
@@ -40,60 +40,60 @@ package org.openscales.core.handler.sketch
 		{
 			super(map, active, drawLayer);
 		}
-		
+
 		override protected function registerListeners():void{
 			this._dblClickHandler.active = true;
 			this._dblClickHandler.doubleclick = this.mouseDblClick;
 			this._dblClickHandler.click=this.drawLine; 
 		}
-		
+
 		override protected function unregisterListeners():void{
-        	this._dblClickHandler.active = false;
+			this._dblClickHandler.active = false;
 		}
-				
+
 		public function mouseDblClick(event:MouseEvent):void {
 			this.drawLine(event);
 			this.drawFinalPath();
 		} 
-		
+
 		public function drawFinalPath():void{			
 			newFeature = true;
-				
+
 			//Change style of finished path
 			var style:Style = new Style();
 			style.strokeColor = 0x60FFE9;
-			
+
 			var lstrings:Array = [];
 			var featuresToRemove:Array = [];
-			
+
 			for each (var feature:VectorFeature in drawLayer.features) {
 				if (feature is LineStringFeature) {
 					featuresToRemove.push(feature);
 					lstrings.push(feature.geometry);
 				}
 			} 
-			
+
 			//We create a MultiLineString with several LineStrings (if there are line strings)
 			if (lstrings.length > 0) {
 				var mlString:MultiLineString = new MultiLineString(lstrings); 
 				var mlFeature:MultiLineStringFeature = new MultiLineStringFeature(mlString);
 				mlFeature.name = "path." + id.toString(); id++;
 				mlFeature.style = style;
-				
+
 				drawLayer.removeFeatures(featuresToRemove);
 				drawLayer.addFeature(mlFeature);
-				
+
 				drawLayer.redraw();
 			}			
 		}
-		
+
 		private function drawLine(event:MouseEvent=null):void{
 			var name:String = "path." + id.toString(); id++;
-			
+
 			var pixel:Pixel = new Pixel(drawLayer.mouseX - this.map.layerContainer.x ,drawLayer.mouseY - this.map.layerContainer.y);
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
-			
+
 			if(newFeature){				
 				lastPoint = point;
 				var pointFeature:PointFeature = new PointFeature(point); 
@@ -115,12 +115,12 @@ package org.openscales.core.handler.sketch
 				lastPoint = point;
 			}
 		}
-		
+
 		override public function set map(value:Map):void {
 			super.map = value;
 			this._dblClickHandler.map = value;
 		}
-		
+
 		//Getters and Setters		
 		public function get id():Number {
 			return _id;
@@ -128,7 +128,7 @@ package org.openscales.core.handler.sketch
 		public function set id(nb:Number):void {
 			_id = nb;
 		}
-		
+
 		public function get newFeature():Boolean {
 			return _newFeature;
 		}
@@ -139,7 +139,7 @@ package org.openscales.core.handler.sketch
 			}
 			_newFeature = newFeature;
 		}
-		
+
 		public function get lastPoint():Point {
 			return _lastPoint;
 		}
@@ -148,3 +148,4 @@ package org.openscales.core.handler.sketch
 		}
 	}
 }
+

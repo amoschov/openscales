@@ -1,37 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap()">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+		   xmlns:os="http://openscales.org"
+		   creationComplete="initMap()">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.security.sample.SampleSecurity;
 			import org.openscales.core.Map;
-		
+
 			[Bindable]
 			public var map:Map;
-			
-			public var security:SampleSecurity;
-			
-			private function initMap():void{
-				map = fxmap.map;
-				
-				security = new SampleSecurity(map, "test", "t35t");
-				metacarta.layer.security = security;
 
-			}	
+			public var security:SampleSecurity;
+
+			private function initMap():void {
+				map=fxmap.map;
+
+				// TODO : <os:SampleSecurity login="test" password="t35t" /> Flex component
+				security=new SampleSecurity(map, "test", "t35t");
+				metacarta.layer.security=security;
+
+			}
 		]]>
 	</mx:Script>
-	
-	<os:Map id="fxmap" width="100%" height="100%" numZoomLevels="20" zoom="5">
-		
+
+	<os:Map id="fxmap"
+			width="100%"
+			height="100%"
+			numZoomLevels="20"
+			zoom="5">
+
 		<!-- This layer will be secured by a sample DRM -->
-		<os:WMSC name="Metacarta" url="http://labs.metacarta.com/wms-c/Basic.py"
-						  id="metacarta" layers="satellite" format="image/jpeg" isBaseLayer="true"/>
-						   
-						   
-		<os:MaxExtent left="-180" bottom="-90" right="180" top="90" />
-		<os:ClickHandler />
-		<os:WheelHandler />
+		<os:WMSC name="Metacarta"
+				 url="http://labs.metacarta.com/wms-c/Basic.py"
+				 id="metacarta"
+				 layers="satellite"
+				 format="image/jpeg"
+				 isBaseLayer="true"/>
+
+
+		<os:MaxExtent left="-180"
+					  bottom="-90"
+					  right="180"
+					  top="90"/>
+		<os:ClickHandler/>
+		<os:WheelHandler/>
 		<os:DragHandler id="dragHandler"/>
-				
+
 	</os:Map>
-		
+
 </mx:Canvas>

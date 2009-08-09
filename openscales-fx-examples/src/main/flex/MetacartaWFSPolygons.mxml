@@ -1,25 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org">
-	
-	<os:Map id="fxmap" height="100%" width="100%" proxy="http://openscales.org/proxy.php?url=">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+		   xmlns:os="http://openscales.org">
 
-		<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
-	
-		<os:WFS name="test" url="http://sigma.openplans.org/geoserver/wfs" typename="topp:states" srs="EPSG:4326" version="1.0.0"
-				isBaseLayer="false" minZoomLevel="21">
-			<os:Style fillColor="0xff0000" fillOpacity="0.8" strokeColor="0x0000ff" strokeWidth="2" />
-			
+	<os:Map id="fxmap"
+			height="100%"
+			width="100%"
+			proxy="http://openscales.org/proxy.php?url=">
+
+		<os:WMSC name="OpenLayers WMS"
+				 url="http://labs.metacarta.com/wms-c/Basic.py"
+				 layers="basic"
+				 isBaseLayer="true"/>
+
+		<os:WFS name="test"
+				url="http://sigma.openplans.org/geoserver/wfs"
+				typename="topp:states"
+				srs="EPSG:4326"
+				version="1.0.0"
+				isBaseLayer="false"
+				minZoomLevel="21">
+			<os:Style fillColor="0xff0000"
+					  fillOpacity="0.8"
+					  strokeColor="0x0000ff"
+					  strokeWidth="2"/>
+
 		</os:WFS>
-		
-		<os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" />
-			
-		<os:PanZoomBar />
-		<os:MousePosition />
-		<os:LayerSwitcher />
-		
-		<os:DragHandler />
-		<os:ClickHandler />
-		<os:WheelHandler />
+
+		<os:Extent left="-124.731422"
+				   bottom="24.955967"
+				   right="-66.969849"
+				   top="49.371735"/>
+
+		<os:PanZoomBar/>
+		<os:MousePosition/>
+		<os:LayerSwitcher/>
+
+		<os:DragHandler/>
+		<os:ClickHandler/>
+		<os:WheelHandler/>
 	</os:Map>
-	
+
 </mx:Canvas>

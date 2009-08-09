@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+		   xmlns:os="http://openscales.org">
 
-	<os:Map id="fxmap" height="100%" width="100%" maxResolution="1" numZoomLevels="18" proxy="http://openscales.org/proxy.php?url=">
-		
-		<os:MaxExtent left="5.60075" bottom="47.2441" right="15.425" top="55.0317" />
-				
-		<os:WMS name="Germany" url="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map" layers="Germany"
-				 format="image/jpeg" isBaseLayer="true" />
+	<os:Map id="fxmap"
+			height="100%"
+			width="100%"
+			maxResolution="1"
+			numZoomLevels="18"
+			proxy="http://openscales.org/proxy.php?url=">
 
-		<os:MousePosition />
-		
-		<os:DragHandler />
-		<os:ClickHandler />
-		<os:WheelHandler />
-		
-		<os:Extent left="5.60075" bottom="47.2441" right="15.425" top="55.0317" />
+		<os:MaxExtent left="5.60075"
+					  bottom="47.2441"
+					  right="15.425"
+					  top="55.0317"/>
+
+		<os:WMS name="Germany"
+				url="http://wms.wheregroup.com/cgi-bin/mapserv?map=/data/umn/germany/germany.map"
+				layers="Germany"
+				format="image/jpeg"
+				isBaseLayer="true"/>
+
+		<os:MousePosition/>
+
+		<os:DragHandler/>
+		<os:ClickHandler/>
+		<os:WheelHandler/>
+
+		<os:Extent left="5.60075"
+				   bottom="47.2441"
+				   right="15.425"
+				   top="55.0317"/>
 	</os:Map>
 </mx:Canvas>

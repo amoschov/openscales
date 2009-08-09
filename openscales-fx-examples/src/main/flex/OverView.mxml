@@ -1,38 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap()">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+		   xmlns:os="http://openscales.org"
+		   creationComplete="initMap()">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.Map;
-		
+
 			[Bindable]
 			public var map:Map;
-			
-			private function initMap():void{
-				map = fxmap.map;
-				miniMap.x = this.width - miniMap.width;
-				miniMap.y = this.height - miniMap.height;
-			}	
+
+			private function initMap():void {
+				map=fxmap.map;
+				miniMap.x=this.width - miniMap.width;
+				miniMap.y=this.height - miniMap.height;
+			}
 		]]>
 	</mx:Script>
-	
-	<os:Map id="fxmap" width="100%" height="100%" numZoomLevels="20" zoom="5">
-		
-		<os:WMSC name="Metacarta" url="http://labs.metacarta.com/wms-c/Basic.py"
-						  id="metacarta" layers="satellite" format="image/jpeg" isBaseLayer="true" />
-						   
-						   
-		<os:MaxExtent left="-180" bottom="-90" right="180" top="90" />
-		<os:ClickHandler />
-		<os:WheelHandler />
+
+	<os:Map id="fxmap"
+			width="100%"
+			height="100%"
+			numZoomLevels="20"
+			zoom="5">
+
+		<os:WMSC name="Metacarta"
+				 url="http://labs.metacarta.com/wms-c/Basic.py"
+				 id="metacarta"
+				 layers="satellite"
+				 format="image/jpeg"
+				 isBaseLayer="true"/>
+
+
+		<os:MaxExtent left="-180"
+					  bottom="-90"
+					  right="180"
+					  top="90"/>
+		<os:ClickHandler/>
+		<os:WheelHandler/>
 		<os:DragHandler id="dragHandler"/>
-		
+
 	</os:Map>
-	
-	<mx:VBox horizontalAlign="center" x="10" y="10">
-		<os:PanComponent id="pan" map="{map}"/>
-		<os:ZoomBoxComponent id="zoombox" map="{map}"/>	
+
+	<mx:VBox horizontalAlign="center"
+			 x="10"
+			 y="10">
+		<os:PanComponent id="pan"
+						 map="{map}"/>
+		<os:ZoomBoxComponent id="zoombox"
+							 map="{map}"/>
 	</mx:VBox>
-	<os:OverviewMapComponent id="miniMap" map="{map}" height="250" width="400" />
-	
-		
+	<os:OverviewMapComponent id="miniMap"
+							 map="{map}"
+							 height="250"
+							 width="400"/>
+
+
 </mx:Canvas>

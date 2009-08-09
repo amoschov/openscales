@@ -1,7 +1,7 @@
 package org.openscales.core.layer.params.ogc
 {
 	import org.openscales.core.layer.params.IHttpParams;
-	
+
 	/**
 	 * Implementation of IHttpParams interface.
 	 * Extends OGCParams.
@@ -9,7 +9,7 @@ package org.openscales.core.layer.params.ogc
 	 */
 	public class WMSParams extends OGCParams
 	{
-				
+
 		private var _format:String;
 		private var _exceptions:String;
 		private var _layers:String;
@@ -19,51 +19,51 @@ package org.openscales.core.layer.params.ogc
 		private var _transparent:Boolean;
 		private var _bgcolor:String;
 		private var _tiled:Boolean;
-		
+
 		public function WMSParams(layers:String, format:String = "image/jpeg", transparent:Boolean = false, 
-									tiled:Boolean = false, styles:String = null, bgcolor:String = null)
+			tiled:Boolean = false, styles:String = null, bgcolor:String = null)
 		{
 			super("WMS", "1.1.1", "GetMap");
-			
+
 			this._exceptions = "application/vnd.ogc.se_inimage";
-			
+
 			this._layers = layers;
 			this._format = format;
 			this._transparent = transparent;
 			this._tiled = tiled;
 			this._styles = styles;	
 			this._bgcolor = bgcolor;		
-			
+
 		}
 
 		override public function toGETString():String {
 			var str:String = super.toGETString();
-			
+
 			if (this._format != null)
 				str += "FORMAT=" + this._format + "&";
-				
+
 			if (this._exceptions != null)
 				str += "EXCEPTIONS=" + this._exceptions + "&";
-				
+
 			if (this._layers != null)
 				str += "LAYERS=" + this._layers + "&";
-				
+
 			if (this._styles != null)
 				str += "STYLES=" + this._styles + "&";
-				
+
 			str += "WIDTH=" + this._width + "&";
 			str += "HEIGHT=" + this._height + "&";
 			str += "TILED=" + this._tiled + "&";
 			str += "TRANSPARENT=" + this._transparent.toString().toUpperCase() + "&";
-			
+
 			if (this._bgcolor != null)
 				str += "BGCOLOR=" + this._bgcolor + "&";
-			
-			
+
+
 			return str.substr(0, str.length-1);
 		}
-		
-		
+
+
 		//Getters & setters
 		public function get format():String {
 			return _format;
@@ -92,7 +92,7 @@ package org.openscales.core.layer.params.ogc
 		public function get styles():String {
 			return _styles;
 		}
-		
+
 		public function set styles(styles:String):void {
 			_styles = styles;
 		}
@@ -128,13 +128,14 @@ package org.openscales.core.layer.params.ogc
 		public function set tiled(tiled:Boolean):void {
 			_tiled = tiled;
 		}
-		
+
 		public function get bgcolor():String {
 			return _bgcolor;
 		}
-		
+
 		public function set bgcolor(bgcolor:String):void {
 			_bgcolor = bgcolor;
 		}
 	}
 }
+

@@ -8,23 +8,23 @@ package org.openscales.core.events
 	 */
 	public class FeatureEvent extends OpenScalesEvent
 	{
-		
+
 		/**
 		 * feature concerned by the event.
 		 */
 		private var _feature:Feature = null;
-		
+
 
 		/**
-		 * event's types 
+		 * event's types
 		 */
-		 	
+
 		//Ctrl is pressed or not
 		/**
 		 * To know if ctrl key is pressed
 		 */
 		private var _ctrlPressed:Boolean = false;
-			
+
 
 		public static const FEATURE_OVER:String="openscales.feature.over";
 		public static const FEATURE_OUT:String="openscales.feature.out";
@@ -38,7 +38,7 @@ package org.openscales.core.events
 		public static const FEATURE_SELECTEDBOX:String="openscales.feature.selectedbox";
 		public static const FEATURE_UNSELECTED:String="org.openscales.feature.unselected";
 
-		
+
 		/**
 		 * FeatureEvent constructor
 		 *
@@ -52,7 +52,7 @@ package org.openscales.core.events
 			this._feature=feature;
 			this._ctrlPressed = ctrlStatus;
 		}
-	
+
 		// Getters & setters as3
 		/**
 		 * Vectorfeature concerned by the event.
@@ -63,7 +63,7 @@ package org.openscales.core.events
 			return this._feature;
 		}
 		/**
-		 * @private 
+		 * @private
 		 */
 		public function set feature(value:Feature):void
 		{
@@ -79,3 +79,4 @@ package org.openscales.core.events
 		}
 	}
 }
+
