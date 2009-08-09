@@ -11,17 +11,7 @@ package org.openscales.fx.layer
 		{
 			super();
 		}
-		/**
-		 * set this flag at true if the layer doesn't bneed security for request
-		 * 
-		 * */
-		public function set isAuthorizedToDownload(value:Boolean):void{
-			if(this.layer != null)
-	    	{
-	    		(this.layer as RequestLayer).isAuthorizedTodownload=value;
-	    		
-	    	}
-		}
+
 		public function set url(value:String):void {
 	    	if(this.layer != null)
 	    	{

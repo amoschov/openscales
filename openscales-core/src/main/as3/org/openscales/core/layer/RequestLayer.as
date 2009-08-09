@@ -37,7 +37,7 @@ package org.openscales.core.layer
 		{
 			if(layerEvent.layer==this)
 			{
-				this.isAuthorizedTodownload=true;
+				this.request.isAuthorized=true;
 				this.moveTo(layerEvent.bounds,true);
 			}
 		}
@@ -52,17 +52,6 @@ package org.openscales.core.layer
 		{
 			this._request=value;
 		}
-		/**
-		 * To know if the Request  layer is authorized to download
-		 * */
-		public function get isAuthorizedTodownload():Boolean{
-			return this._request.isAuthorized;
-		}
-
-		public function set isAuthorizedTodownload(value:Boolean):void{
-		if(this._request!=null)	
-			this._request.isAuthorized=value
 		
-		}
 	}
 }
