@@ -106,9 +106,7 @@ package org.openscales.core.request
 		public function set url(value:String):void{
 			this._url=value;	
 		}
-		/**
-		 *  Requesting method  POST  or GET   
-		 **/
+
 		public function get method():String{
 			return this._method;
 		}

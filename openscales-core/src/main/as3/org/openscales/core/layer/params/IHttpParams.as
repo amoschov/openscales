@@ -22,8 +22,14 @@ package org.openscales.core.layer.params
 		 */
 		function setAdditionalParam(key:String, value:String):void;
 		/**
-		 * for Ihttpparams cloning
+		 * for IHttpParams cloning
 		 * */
 		function clone():IHttpParams;
+		
+		/**
+		 *requesting bbox 
+		 **/
+		function get bbox():String;
+		function set bbox(bbox:String):void;
 	}
 }

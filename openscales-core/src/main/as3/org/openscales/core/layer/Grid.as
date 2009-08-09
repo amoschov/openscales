@@ -100,10 +100,10 @@ package org.openscales.core.layer
 		 **/
 		public function drawTile(tile:Tile):EventDispatcher
 		{
-			(this.requester as AbstractRequest).onComplete=(tile as ImageTile).onTileLoadEnd;
-			(this.requester as AbstractRequest).onFailure=(tile as ImageTile).onTileLoadError;
-	        ((this.requester as AbstractRequest).params as AbstractParams).bbox=tile.bounds.boundsToString();
-	        return this.requester.executeRequest();
+			this.request.onComplete=(tile as ImageTile).onTileLoadEnd;
+			this.request.onFailure=(tile as ImageTile).onTileLoadError;
+	        this.request.params.bbox=tile.bounds.boundsToString();
+	        return this.request.executeRequest();
 		}
 		
 		/**

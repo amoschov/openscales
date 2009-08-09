@@ -132,10 +132,10 @@ package org.openscales.core.layer.ogc
 	    **/
 	    public function launchWFSRequest(onSuccess:Function,method:String,data:Object=null):void
 	    {
-	    	(this.requester as AbstractRequest).onComplete=onSuccess;
-			(this.requester as AbstractRequest).method=method;
-			(this.requester as WFSRequest).postbody=data;
-			this.requester.executeRequest();
+	    	this.request.onComplete=onSuccess;
+			this.request.method=method;
+			(this.request as WFSRequest).postbody=data;
+			this.request.executeRequest();
 	    }
 	    /**
 	    * Method called when we pan, drag or change zoom to move the layer.
@@ -297,7 +297,7 @@ package org.openscales.core.layer.ogc
 	        }
 	
 	        this.launchWFSRequest(commitSuccessFailure,URLRequestMethod.POST,data);
-	      	 this.requester.executeRequest();
+	      	this.request.executeRequest();
 	        
 		}
 		
@@ -380,19 +380,19 @@ package org.openscales.core.layer.ogc
 		}
 		
 		public function get params():WFSParams {
-			return ((this.requester as WFSRequest).params as WFSParams);
+			return this.request.params as WFSParams;
 		}
 		
 		public function set params(value:WFSParams):void {
-			(this.requester as WFSRequest).params = value;
+			this.request.params = value;
 		}
 		
 		public function get url():String {		
-			return (this.requester as WFSRequest).url;
+			return this.request.url;
 		}
 		
 		public function set url(value:String):void {
-			(this.requester as WFSRequest).url=value;
+			this.request.url=value;
 		}
 		
 		public function get tile():WFSTile {

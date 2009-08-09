@@ -25,24 +25,24 @@ package org.openscales.fx.layer
 		public function set url(value:String):void {
 	    	if(this.layer != null)
 	    	{
-	    		((this.layer as HTTPRequest).requester as AbstractRequest).url= value;
-	    		//TODO remove that after creation of osparams and georssparams extends IhttpRequest
+	    		(this.layer as HTTPRequest).url=value;
+	    		//TODO remove that after creation of osparams extends IhttpRequest
 	    		(this.layer as HTTPRequest).url=value;
 	    	}
 	    }
 		
 		public function set altUrls(value:Array):void {
 	    	if(this.layer != null)
-	    	{	((this.layer as HTTPRequest).requester as AbstractRequest).altUrl = value.toString();
-	    		//TODO remove that after creation of osparams and georssparams extends IhttpRequest
+	    	{	(this.layer as HTTPRequest).request.altUrl = value.toString();
+	    		//TODO remove that after creation of osparams extends IhttpRequest
 	    		(this.layer as HTTPRequest).altUrls=value;
 	    	}
 	    }
 	    
 	    public function set params(value:Object):void {
 	    	if(this.layer != null){
-	    		Util.extend(((this.layer as HTTPRequest).requester as AbstractRequest).params, value);
-	    		//TODO remove that after creation of osparams and georssparams extends IhttpRequest
+	    		Util.extend((this.layer as HTTPRequest).request.params, value);
+	    		//TODO remove that after creation of osparams extends IhttpRequest
 	    		Util.extend((this.layer as HTTPRequest).params, value);
 	    	}
 	    }

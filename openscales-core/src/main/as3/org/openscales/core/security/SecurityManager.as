@@ -130,9 +130,9 @@ package org.openscales.core.security
 		 		if(existSecurityRequester(event.securityType))
 		 		{
 		 			for each(var layer:RequestLayer in this.map.layers){
-		 				if((FactorySecurityRequester.getValue(event.securityType) as AbstractSecurityRequester).canExecuteRequest(layer.requester))
+		 				if((FactorySecurityRequester.getValue(event.securityType) as AbstractSecurityRequester).canExecuteRequest(layer.request))
 		 				{
-		 					this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYERS_CONF_END,layer,map.extent));
+		 					this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_INITIALIZED,layer,map.extent));
 		 				}
 		 			}
 		 		

@@ -42,14 +42,14 @@ package org.openscales.core.layer.ogc
 	            bounds = this.adjustBoundsByGutter(bounds);
 	        }
 	         
-	        ((this.requester as WMSRequest).params  as WMSParams).bbox = bounds.boundsToString();
-	         ((this.requester as WMSRequest).params  as WMSParams).width = this.imageSize.w;
-	        ((this.requester as WMSRequest).params  as WMSParams).height = this.imageSize.h;
+	        this.request.params.bbox = bounds.boundsToString();
+	        (this.request.params as WMSParams).width = this.imageSize.w;
+	        (this.request.params as WMSParams).height = this.imageSize.h;
 	         
-	         if (projection != null || this.map.projection != null)
-	       ((this.requester as WMSRequest).params  as WMSParams).srs = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
+	        if (projection != null || this.map.projection != null)
+	       		(this.request.params as WMSParams).srs = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
         
-	        return (this.requester as WMSRequest).getUrl();
+	        return (this.request as WMSRequest).getUrl();
        	}
        	
        	override public function addTile(bounds:Bounds, position:Pixel):Tile {

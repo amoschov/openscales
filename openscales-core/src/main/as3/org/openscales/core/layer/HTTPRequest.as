@@ -99,7 +99,7 @@ package org.openscales.core.layer
 		public function set url(value:String):void
 		{
 			this._url = value;
-			(this.requester as AbstractRequest).url=value;
+			this.request.url=value;
 		}
 		
 		public function get altUrls():Array

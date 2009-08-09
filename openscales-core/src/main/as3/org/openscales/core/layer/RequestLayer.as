@@ -13,11 +13,11 @@ package org.openscales.core.layer
 		/**
 		 *The requester object 
 		 **/
-		private var _requester:IRequest;
+		private var _request:IRequest;
 		
 		public function RequestLayer(name:String,request:IRequest,isBaseLayer:Boolean=false, visible:Boolean=true, projection:String=null, proxy:String=null)
 		{
-			this._requester=request;
+			this._request=request;
 			super(name, isBaseLayer, visible, projection, proxy);
 		
 		}
@@ -25,15 +25,15 @@ package org.openscales.core.layer
 		override public function set map(map:Map):void {
 			super.map = map;
 			if (this.isBaseLayer) {
-				this.map.addEventListener(LayerEvent.LAYERS_CONF_END,(this as RequestLayer).tilesDownload);
+				this.map.addEventListener(LayerEvent.LAYER_INITIALIZED,(this as RequestLayer).onLayerInitialized);
 			}
 		}
 		
 		/**
-		 * To start tiles downloading
+		 * Start download after init
 		 * @param LayerEvent
 		 * */
-		public function tilesDownload(layerEvent:LayerEvent):void
+		public function onLayerInitialized(layerEvent:LayerEvent):void
 		{
 			if(layerEvent.layer==this)
 			{
@@ -44,24 +44,24 @@ package org.openscales.core.layer
 		/**
 		 * The requester object
 		 **/
-		public function get requester():IRequest
+		public function get request():IRequest
 		{
-		return this._requester;	
+		return this._request;	
 		}
-		public function set requester(value:IRequest):void
+		public function set request(value:IRequest):void
 		{
-			this._requester=value;
+			this._request=value;
 		}
 		/**
 		 * To know if the Request  layer is authorized to download
 		 * */
 		public function get isAuthorizedTodownload():Boolean{
-			return this._requester.isAuthorized;
+			return this._request.isAuthorized;
 		}
 
 		public function set isAuthorizedTodownload(value:Boolean):void{
-		if(this._requester!=null)	
-			this._requester.isAuthorized=value
+		if(this._request!=null)	
+			this._request.isAuthorized=value
 		
 		}
 	}

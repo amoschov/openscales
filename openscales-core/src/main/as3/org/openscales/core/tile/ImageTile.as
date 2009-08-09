@@ -86,7 +86,7 @@ package org.openscales.core.tile
 	        	
 	        	if(this.layer is RequestLayer)
 	        	{
-	        	 	if((this.layer as RequestLayer).requester!=null)
+	        	 	if((this.layer as RequestLayer).request!=null)
 	        	 	{
 	        	 		_tileLoader=((this.layer as Grid).drawTile(this) as Loader);
 	        	 	}
