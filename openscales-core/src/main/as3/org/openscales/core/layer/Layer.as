@@ -10,6 +10,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.security.ISecurity;
 	import org.openscales.proj4as.ProjProjection;
 
 
@@ -37,12 +38,13 @@ package org.openscales.core.layer
 		protected var _imageSize:Size = null;
 		private var _proxy:String = null;
 		private var _map:Map = null;
+		private var _security:ISecurity = null;
 
 		/**
 		 * Layer constructor
 		 */
 		public function Layer (name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
-								projection:String = null, proxy:String = null) {
+								projection:String = null, proxy:String = null, security:ISecurity = null) {
 
 			this.name = name;
 			this.doubleClickEnabled = true;
@@ -525,7 +527,14 @@ package org.openscales.core.layer
 	    public function set proxy(value:String):void {
 	    	this._proxy = value;
 	    }
+	    
+	    public function get security():ISecurity {
+    		return this._security;
+	    }
 
+	    public function set security(value:ISecurity):void {
+	    	this._security = value;
+	    }
 
 	}
 }

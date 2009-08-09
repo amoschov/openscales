@@ -1,6 +1,5 @@
 package org.openscales.core.layer.ogc
 {	
-	import flash.errors.MemoryError;
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
@@ -17,8 +16,7 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.layer.capabilities.GetCapabilities;
 	import org.openscales.core.layer.params.ogc.WFSParams;
-	import org.openscales.core.request.AbstractRequest;
-	import org.openscales.core.request.ogc.WFSRequest;
+	import org.openscales.core.request.XMLRequest;
 	import org.openscales.core.tile.WFSTile;
 	import org.openscales.proj4as.ProjProjection;
 	
@@ -40,8 +38,6 @@ package org.openscales.core.layer.ogc
 	     *  Determines whether the layer is in vector mode or marker mode.
 	     */                   
 		private var _vectorMode:Boolean = true;
-		
-		
 		
 		private var _tile:WFSTile = null;
 		
@@ -72,6 +68,10 @@ package org.openscales.core.layer.ogc
 		private var _use100Capabilities:Boolean = true;
     
     	private var _use110Capabilities:Boolean = true;
+    	
+    	private var _url:String = null;
+    	
+    	private var _params:WFSParams = null;
 		
 		/**
 		 * WFS class constructor
@@ -92,7 +92,7 @@ package org.openscales.core.layer.ogc
 	    	this.capabilities = capabilities;
 	    	this.useCapabilities = useCapabilities;
 	       	
-	        super(name,new WFSRequest(this,url,URLRequestMethod.GET,params),isBaseLayer, visible, projection, proxy);
+	        super(name, isBaseLayer, visible, projection, proxy);
 	        
 	        if (!(this.geometryColumn)) {
 	            this.geometryColumn = "the_geom";
@@ -124,19 +124,6 @@ package org.openscales.core.layer.ogc
 	        }
 	    }
 	    
-	    /**
-	    *To launch all wfs request 
-	    * @param callback function
-	    * @param requesting method
-	    * @param data to commit
-	    **/
-	    public function launchWFSRequest(onSuccess:Function,method:String,data:Object=null):void
-	    {
-	    	this.request.onComplete=onSuccess;
-			this.request.method=method;
-			(this.request as WFSRequest).postbody=data;
-			this.request.executeRequest();
-	    }
 	    /**
 	    * Method called when we pan, drag or change zoom to move the layer.
 	    * 
@@ -223,22 +210,6 @@ package org.openscales.core.layer.ogc
 	        }
 	    } 
 	    
-		/**
-		 * TODO: Has to be refactored
-		 */
-	    override public function clone(obj:Object):Object {
-	        if (obj == null) {
-	            obj = new WFS(this.name,
-                               this.url,
-                               this.params);
-	        }
-
-	        if (this.vectorMode) {
-	            obj = super.clone([obj]);
-	        }
-	
-	        return obj;
-	    }
 	    
 	    /** 
 	     * Combine the layer's url with its params and these newParams. 
@@ -296,8 +267,10 @@ package org.openscales.core.layer.ogc
 	            proxy = this.proxy;
 	        }
 	
-	        this.launchWFSRequest(commitSuccessFailure,URLRequestMethod.POST,data);
-	      	this.request.executeRequest();
+	         var successfailure:Function = commitSuccessFailure;
+	        
+	        // TODO : profile memory management
+	        new XMLRequest(url, successfailure, proxy, URLRequestMethod.POST, this.security, null, data);
 	        
 		}
 		
@@ -380,19 +353,19 @@ package org.openscales.core.layer.ogc
 		}
 		
 		public function get params():WFSParams {
-			return this.request.params as WFSParams;
+			return this._params;
 		}
 		
 		public function set params(value:WFSParams):void {
-			this.request.params = value;
+			this._params = value;
 		}
 		
 		public function get url():String {		
-			return this.request.url;
+			return this._url;
 		}
 		
 		public function set url(value:String):void {
-			this.request.url=value;
+			this._url=value;
 		}
 		
 		public function get tile():WFSTile {

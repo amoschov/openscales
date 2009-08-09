@@ -24,10 +24,6 @@ package org.openscales.core.layer.params
 		{
 		}
 		
-		public function clone():IHttpParams
-		{
-			return null;
-		}
 		/**
 		 *requesting bbox 
 		 **/

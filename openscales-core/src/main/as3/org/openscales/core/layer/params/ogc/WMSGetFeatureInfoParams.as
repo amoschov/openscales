@@ -35,9 +35,6 @@ package org.openscales.core.layer.params.ogc
 			this._styles = styles;			
 			
 		}
-		override public function clone():IHttpParams{
-			return null
-		}
 		
 		override public function toGETString():String {
 			var str:String = super.toGETString();

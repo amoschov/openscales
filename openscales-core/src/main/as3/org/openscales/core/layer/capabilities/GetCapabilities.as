@@ -5,9 +5,9 @@ package org.openscales.core.layer.capabilities
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
 	
-	import org.openscales.core.Request;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.maps.HashMap;
+	import org.openscales.core.request.XMLRequest;
 	
 	/**
 	 * Class to request Capabilities to a given server.
@@ -111,7 +111,7 @@ package org.openscales.core.layer.capabilities
 			
 			var urlRequest:String = this.buildRequestUrl(); 
 			
-			new Request(urlRequest, URLRequestMethod.GET, this.parseResult, null, null, this._proxy);
+			new XMLRequest(urlRequest, this.parseResult, this._proxy);
                       
 			return true;
 		}

@@ -65,7 +65,7 @@ package org.openscales.core.events
 		 /**
 		 * @private
 		 * */
-		 public function set bounds(value:Bounds){
+		 public function set bounds(value:Bounds):void{
 		 	this._bounds=value;
 		 }
 		

@@ -12,9 +12,8 @@ package org.openscales.core.tile
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.format.GMLFormat;
 	import org.openscales.core.layer.Layer;
-	import org.openscales.core.layer.RequestLayer;
 	import org.openscales.core.layer.ogc.WFS;
-	import org.openscales.core.request.AbstractRequest;
+	import org.openscales.core.request.XMLRequest;
 	
 	/**
 	 * WFS single tile
@@ -72,7 +71,8 @@ package org.openscales.core.tile
 	    * @param failure
 	    */
 		public function loadFeaturesForRegion(success:Function):void {		
-			(this.layer as WFS).launchWFSRequest(this.requestSuccess,URLRequestMethod.GET);
+			// TODO : profile memory management
+			new XMLRequest(this.url, success, this.layer.proxy, URLRequestMethod.GET, this.layer.security);
 		}
 		
 		/**

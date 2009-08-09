@@ -7,8 +7,6 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.params.ogc.WMSParams;
-	import org.openscales.core.request.AbstractRequest;
-	import org.openscales.core.request.ogc.WMSRequest;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	import org.openscales.proj4as.ProjProjection;
@@ -28,8 +26,8 @@ package org.openscales.core.layer.ogc
 										
 			if (params == null)
 				params = new WMSParams("");
-			//TO do remove url , params after adding osmparams 		
-	        super(name, url, params, new WMSRequest(this,url,URLRequestMethod.GET,params),isBaseLayer, visible, projection, proxy);
+			 		
+	        super(name, url, params, isBaseLayer, visible, projection, proxy);
 	        
 	        this.singleTile = true;
 
@@ -42,14 +40,18 @@ package org.openscales.core.layer.ogc
 	            bounds = this.adjustBoundsByGutter(bounds);
 	        }
 	         
-	        this.request.params.bbox = bounds.boundsToString();
-	        (this.request.params as WMSParams).width = this.imageSize.w;
-	        (this.request.params as WMSParams).height = this.imageSize.h;
+	        this.params.bbox = bounds.boundsToString();
+	        (this.params as WMSParams).width = this.imageSize.w;
+	        (this.params as WMSParams).height = this.imageSize.h;
 	         
 	        if (projection != null || this.map.projection != null)
-	       		(this.request.params as WMSParams).srs = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
+	       		(this.params as WMSParams).srs = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
+	       		
+	       	var requestString:String;
+		 	if(this.url.indexOf("?")==-1) requestString = this.url+"?"+this.params.toGETString();
+		 	else requestString=this.url+"&"+this.params.toGETString();
         
-	        return (this.request as WMSRequest).getUrl();
+	        return requestString;
        	}
        	
        	override public function addTile(bounds:Bounds, position:Pixel):Tile {

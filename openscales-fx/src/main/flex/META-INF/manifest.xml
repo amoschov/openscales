@@ -32,7 +32,7 @@
 	
 	<component id="LayerSwitcherComponent" class="org.openscales.component.control.layer.LayerSwitcher" />
 	<component id="CatalogTreeComponent" class="org.openscales.component.control.layer.CatalogTreeComponent" />
-  <component id="MousePositionComponent" class="org.openscales.component.control.MousePosition" />
+  	<component id="MousePositionComponent" class="org.openscales.component.control.MousePosition" />
 	<component id="PanComponent" class="org.openscales.component.control.Pan" />
 	<component id="ZoomComponent" class="org.openscales.component.control.Zoom" />
 	<component id="ZoomBoxComponent" class="org.openscales.component.control.ZoomBox" />
@@ -42,15 +42,10 @@
 	<component id="CapabilitiesComponent" class="org.openscales.component.control.Capabilities" />
 	<component id="DrawingComponent" class="org.openscales.component.control.Drawing" />
 	<component id="FeatureDrawingComponent" class="org.openscales.component.control.FeatureDrawing"/>
-  <component id="MarkerManagerComponent" class="org.openscales.component.control.MarkerManager" />
+  	<component id="MarkerManagerComponent" class="org.openscales.component.control.MarkerManager" />
 	<component id="FeatureInfoComponent" class="org.openscales.component.control.FeatureInfo" />
 	<component id="YahooSearchComponent" class="org.openscales.component.control.search.YahooSearch" />
 	<component id="TraceInfo" class="org.openscales.component.control.TraceInfo" />
 	<component id="ScaleLine" class="org.openscales.fx.control.FxScaleLine" />
-	
-	<component id="Securities" class="org.openscales.fx.Security.FxSecurities" />
-	<component id="Security" class="org.openscales.fx.Security.FxSecurity" />
-	<component id="SecurityParam" class="org.openscales.fx.Security.FxSecurityParam" />
-	
 	
 </componentPackage>

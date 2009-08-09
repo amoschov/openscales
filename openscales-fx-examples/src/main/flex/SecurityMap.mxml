@@ -2,14 +2,20 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap()">
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.security.SecurityRequesters.SampleDrmSecurityRequester;
+			import org.openscales.core.security.sample.SampleSecurity;
 			import org.openscales.core.Map;
 		
 			[Bindable]
 			public var map:Map;
 			
+			public var security:SampleSecurity;
+			
 			private function initMap():void{
 				map = fxmap.map;
+				
+				security = new SampleSecurity(map, "test", "t35t");
+				metacarta.layer.security = security;
+
 			}	
 		]]>
 	</mx:Script>
@@ -25,13 +31,7 @@
 		<os:ClickHandler />
 		<os:WheelHandler />
 		<os:DragHandler id="dragHandler"/>
-		<os:Securities>
-			<os:Security type="{SampleDrmSecurityRequester.TYPE}">
-				<os:SecurityParam layer="{metacarta.layer}" key="key" value="value"/>
-			</os:Security>
-			
-		</os:Securities>
-		
+				
 	</os:Map>
 		
 </mx:Canvas>

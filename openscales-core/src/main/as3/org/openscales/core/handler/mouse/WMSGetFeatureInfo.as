@@ -6,14 +6,12 @@ package org.openscales.core.handler.mouse
 	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.Request;
-	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.GetFeatureInfoEvent;
-	import org.openscales.core.handler.mouse.ClickHandler;
+	import org.openscales.core.handler.Handler;
 	import org.openscales.core.layer.ogc.WMS;
 	import org.openscales.core.layer.params.ogc.WMSGetFeatureInfoParams;
 	import org.openscales.core.layer.params.ogc.WMSParams;
-	import org.openscales.core.handler.Handler;
+	import org.openscales.core.request.XMLRequest;
 	
 	/**
 	 * Handler allowing to get information about a WMS feature when we click on it.
@@ -26,7 +24,7 @@ package org.openscales.core.handler.mouse
 		private var _maxFeatures:Number;
 		private var _url:String;
 		private var _layers:String;
-		private var _request:Request;
+		private var _request:XMLRequest;
 		private var _srs:String;
     	  	
     	public function WMSGetFeatureInfo(target:Map = null, active:Boolean = false){
@@ -111,7 +109,7 @@ package org.openscales.core.handler.mouse
 			
 			// request data
 			if (_request != null && _request.loader != null) try { _request.loader.close(); } catch (e:Error) { }
-			_request = new Request(theURL + "?" + infoParams.toGETString(), URLRequestMethod.GET, this.handleResponse, null, null, map.proxy);
+			_request = new XMLRequest(theURL + "?" + infoParams.toGETString(), this.handleResponse, map.proxy);
 		}
 		
 		private function handleResponse(event:Event):void {

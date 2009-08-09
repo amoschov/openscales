@@ -20,10 +20,8 @@ package org.openscales.core
   import org.openscales.core.events.MapEvent;
   import org.openscales.core.handler.IHandler;
   import org.openscales.core.layer.Layer;
-  import org.openscales.core.layer.RequestLayer;
 
   import org.openscales.core.popup.Popup;
-  import org.openscales.core.security.SecurityConfiguration.SecuritiesConfiguration;
   import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -47,6 +45,7 @@ package org.openscales.core
 		public var DEFAULT_MAX_RESOLUTION:Number = 1.40625;
 		public var DEFAULT_PROJECTION:ProjProjection = new ProjProjection("EPSG:4326");
 		public var DEFAULT_UNITS:String = Unit.DEGREE;
+		public var IMAGE_RELOAD_ATTEMPTS:Number = 0;
 
 		/**
 		 * Enable tween effects.
@@ -76,12 +75,6 @@ package org.openscales.core
 		private var _units:String;
 		private var _proxy:String = null;
 		private var _bitmapTransition:DraggableSprite;
-
-		/**
-		 * @private
-		 * */
-		private var _securityConfiguration:SecuritiesConfiguration=new SecuritiesConfiguration();
-		
 		
 		/**
 		 * Map constructor
@@ -1033,20 +1026,7 @@ package org.openscales.core
 		public function set proxy(value:String):void {
 			this._proxy = value;
 		}
-		
-		/**
-		 * The map securities configuration
-		 * */
-		public function get securityConfiguration():SecuritiesConfiguration{
-			return this._securityConfiguration;
-		}
-		/**
-		 * @private
-		 * */
-		public function set securityConfiguration(securityconfiguration:SecuritiesConfiguration):void{
-			this._securityConfiguration=securityconfiguration;
-		}
-		
-}
+				
+	}
 
 }

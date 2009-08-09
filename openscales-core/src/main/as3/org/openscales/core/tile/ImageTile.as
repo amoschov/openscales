@@ -10,14 +10,13 @@ package org.openscales.core.tile
 	import flash.net.URLRequest;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.OpenScales;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.Layer;
-	import org.openscales.core.layer.RequestLayer;
+	import org.openscales.core.request.DataRequest;
 	
 	/**
 	 * Image tile are used for example in WMS-C layers to display an image
@@ -82,40 +81,10 @@ package org.openscales.core.tile
 	        //If the tile (loader) was already loaded and is in the cache, we draw it
 	        if (this.layer is Grid && (cachedLoader=(this.layer as Grid).getTileCache(this.url)) != null)
 	        	drawLoader(cachedLoader,true);
-	        else {
-	        	
-	        	if(this.layer is RequestLayer)
-	        	{
-	        	 	if((this.layer as RequestLayer).request!=null)
-	        	 	{
-	        	 		_tileLoader=((this.layer as Grid).drawTile(this) as Loader);
-	        	 	}
-	        		else
-	        		{
-	        			//Before created osmparams and osm requester we keep the old behaviour
-	        				     
-	        			//We instanciate a new Loader to avoid the cached loader loss
-		      		  _tileLoader = new Loader();
-		        	
-		        		//We add the proxy to the url (to avoid crossdomain issue in case of zoom tween effect (bitmapdata.draw))
-		        		if (this.layer.proxy != null) {
-		        		var urlProxy:String = this.layer.proxy + encodeURIComponent(this.url);
-		        		_tileLoader.load(new URLRequest(urlProxy));
-		       			 }
-		        		else {
-		        		_tileLoader.load(new URLRequest(this.url));
-		       		 }
-		        
-		        	_tileLoader.name=this.url;
-		        	_tileLoader.contentLoaderInfo.addEventListener(Event.COMPLETE, onTileLoadEnd, false, 0, true);
-					_tileLoader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onTileLoadError, false, 0, true);
-	        		}
-				}
-	        }
-			
-	       
-			
-	        return true;
+	        else {        				     
+    			new DataRequest(this.url, onTileLoadEnd, this.layer.proxy, this.layer.security, onTileLoadError);
+	       }
+           return true;
 		}
 		
 		public function onTileLoadEnd(event:Event):void
@@ -155,7 +124,7 @@ package org.openscales.core.tile
 		public function onTileLoadError(event:IOErrorEvent):void
 		{
 			
-			if (++this._attempt > OpenScales.IMAGE_RELOAD_ATTEMPTS) {
+			if (++this._attempt > this.layer.map.IMAGE_RELOAD_ATTEMPTS) {
 				Trace.error("Error when loading tile " + this.url);
 				return;
 			}

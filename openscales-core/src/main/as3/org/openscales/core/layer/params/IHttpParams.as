@@ -21,10 +21,6 @@ package org.openscales.core.layer.params
 		 * @param value
 		 */
 		function setAdditionalParam(key:String, value:String):void;
-		/**
-		 * for IHttpParams cloning
-		 * */
-		function clone():IHttpParams;
 		
 		/**
 		 *requesting bbox 

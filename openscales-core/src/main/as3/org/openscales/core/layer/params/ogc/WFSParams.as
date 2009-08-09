@@ -37,9 +37,6 @@ package org.openscales.core.layer.params.ogc
 			
 			return str.substr(0, str.length-1);
 		}
-		override public function clone():IHttpParams{
-			return null
-		}
 		
 		// Getters & setters
 		public function get typename():String {

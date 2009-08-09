@@ -1,24 +1,16 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.layer.params.IHttpParams;
-	import org.openscales.core.request.AbstractRequest;
 	
 	
 	/**
 	 * Base class for layers based on a remote image server
 	 */
-	public class HTTPRequest extends RequestLayer
+	public class HTTPRequest extends Layer
 	{
 		
 		public var URL_HASH_FACTOR:Number = (Math.sqrt(5) - 1) / 2;
-	
-	
-	/*
-	TODO delete url & co
-	*/
-		
-		
-		
+
 		private var _url:String = null;
 		
 		/**
@@ -28,14 +20,11 @@ package org.openscales.core.layer
 		
 		private var _params:IHttpParams = null;
 		
-		
-		
-		public function HTTPRequest(name:String, url:String, params:IHttpParams = null,ihttpRequest:AbstractRequest=null,isBaseLayer:Boolean = false, 
+		public function HTTPRequest(name:String, url:String, params:IHttpParams = null, isBaseLayer:Boolean = false, 
 									visible:Boolean = true, projection:String = null, proxy:String = null,onLoadComplete:Function=null) {
 	       
-	        super(name,ihttpRequest,isBaseLayer, visible, projection, proxy);
+	        super(name, isBaseLayer, visible, projection, proxy);
 
-			//TODO remove that after creation of osmparams and georssparams extends IhttpRequest
 			this._url=url;
 			this.params = params;
 		}
@@ -45,7 +34,6 @@ package org.openscales.core.layer
 			super.destroy(setNewBaseLayer);
 		}
 		
-		//we will remove this method after adding all params like osm params and wms params
 		public function getUrls():Array 
 		{
 		var urls:Array = null;
@@ -99,7 +87,6 @@ package org.openscales.core.layer
 		public function set url(value:String):void
 		{
 			this._url = value;
-			this.request.url=value;
 		}
 		
 		public function get altUrls():Array

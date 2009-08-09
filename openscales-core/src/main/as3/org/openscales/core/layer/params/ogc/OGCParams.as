@@ -19,12 +19,7 @@ package org.openscales.core.layer.params.ogc
 
 		
 		private var _additionalParams:HashMap = null;
-		
-		override public function clone():IHttpParams{
-			
-			return new OGCParams(this.service,this.version,this.request);
-		}
-		
+				
 		public function OGCParams(service:String, version:String, request:String) {
 			this._service = service;
 			this._version = version;

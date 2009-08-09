@@ -11,7 +11,6 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.layer.params.AbstractParams;
 	import org.openscales.core.layer.params.IHttpParams;
-	import org.openscales.core.request.AbstractRequest;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 	
@@ -55,11 +54,11 @@ package org.openscales.core.layer
 	     * @param projection
 	     * @param proxy
 	     */
-		public function Grid(name:String, url:String, params:IHttpParams = null,ihttpRequest:AbstractRequest=null,isBaseLayer:Boolean = false, 
+		public function Grid(name:String, url:String, params:IHttpParams = null, isBaseLayer:Boolean = false, 
 								visible:Boolean = true, projection:String = null, proxy:String = null) {
 									
 			//TOdo delete url and params after osmparams work
-			super(name, url, params,ihttpRequest, isBaseLayer, visible, projection, proxy);
+			super(name, url, params, isBaseLayer, visible, projection, proxy);
 			
 			this.grid = new Array();
 			
@@ -91,19 +90,6 @@ package org.openscales.core.layer
 	            }
 	            this.grid = [];
 	        }
-		}
-		
-		/**
-		 *To draw tile
-		 * @param tile
-		 * @return the loader  
-		 **/
-		public function drawTile(tile:Tile):EventDispatcher
-		{
-			this.request.onComplete=(tile as ImageTile).onTileLoadEnd;
-			this.request.onFailure=(tile as ImageTile).onTileLoadError;
-	        this.request.params.bbox=tile.bounds.boundsToString();
-	        return this.request.executeRequest();
 		}
 		
 		/**
