@@ -139,7 +139,6 @@
 							  label="Trace"/>
 				<!--os:MarkerManagerComponent id="markerManag" width="100%" height="100%" map="{map}" label="Marker"/-->
 			</mx:TabNavigator>
-			<os:CatalogTree1Component map="{map}"/>
 		</resize:ResizableWindow>
 
 		<mx:Spacer/>
