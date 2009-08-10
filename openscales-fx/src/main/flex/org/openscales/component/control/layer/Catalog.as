@@ -13,7 +13,7 @@ package org.openscales.component.control.layer
 	{
 		
 		private var _map:Map;
-		private var checkBox;
+		private var checkBox:CheckBox;
 		
 		public function Catalog()
 		{
