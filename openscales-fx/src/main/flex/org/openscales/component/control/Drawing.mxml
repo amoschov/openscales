@@ -20,6 +20,9 @@
 					
 			public var dragHandler:DragHandler;		//to pan the map
 			public var dragfeature:DragFeature;		//to drag features
+			
+			[Bindable]
+			public var mapBiding:Map;
 
 			/**
 			 * Initialisation of map and params
@@ -39,8 +42,12 @@
 					
 			override public function set map(value:Map):void {
 				super.map = value;
+				mapBiding=value;
 			}
 			
+			/**
+			 * Show feature's information in the tab
+			 */
 			private function showInformations(event:FeatureEvent):void{
 				this.featureInfo.showInfo(event);
 			}
@@ -121,12 +128,12 @@
 		]]>
 	</mx:Script>
 	
-	<os:FeatureDrawingComponent id="featureDrawing" map="{this.map}" x="31" y="26"/>
+	<os:FeatureDrawingComponent id="featureDrawing" map="{mapBiding}" x="31" y="26"/>
 		
 	<mx:Text x="10" y="10" text="To finalize a path or a polygon, just double click on map." width="310" height="22" fontStyle="italic" textAlign="center"/>
 	<!--mx:Text text="For the moment you can't delete WFS points, even if they are selected" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="219"/-->
 
 
-	<control:FeatureInfo id="featureInfo" map="{this.map}" x="20" y="132" width="300" height="165"/>
+	<control:FeatureInfo id="featureInfo" map="{mapBiding}" x="20" y="132" width="300" height="165"/>
 	
 </control:Control>

@@ -70,19 +70,23 @@ package org.openscales.core.handler.mouse
 		}
 
 		override protected function registerListeners():void{
-			this.map.addEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
-			this.map.addEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);
-			this.map.addEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
-		/* this.map.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
-		 this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp); */	
-
+			if(map!=null){
+				this.map.addEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
+				this.map.addEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);
+				this.map.addEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
+				/* this.map.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
+		 		this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp); */	
+			}
 		}
+		
 		override protected function unregisterListeners():void{
-			this.map.removeEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
-			this.map.removeEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);			
-			this.map.removeEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
-		/* this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
-		 this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp); */
+			if(map!=null){		
+				this.map.removeEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
+				this.map.removeEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);			
+				this.map.removeEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
+				/* this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
+		 		this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp); */
+		 	}
 		}
 
 		public function OnOut(pevt:FeatureEvent):void{

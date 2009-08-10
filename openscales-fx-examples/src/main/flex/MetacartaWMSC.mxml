@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
 		   xmlns:os="http://openscales.org">
+	
 	<os:Map id="fxmap"
 			width="100%"
 			height="100%"
@@ -21,6 +22,7 @@
 
 		<os:MousePosition/>
 		<os:BorderPanHandler/>
+		<os:PanComponent/>
 		<os:ClickHandler/>
 		<os:WheelHandler/>
 	</os:Map>

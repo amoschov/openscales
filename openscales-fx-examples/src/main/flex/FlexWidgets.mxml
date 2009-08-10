@@ -34,8 +34,9 @@
 			private function initMap():void {
 				map=fxmap.map;
 				tools.x=this.width - tools.width;
-				// setup click handler
 
+				
+				// setup click handler
 				map.addEventListener(GetFeatureInfoEvent.GET_FEATURE_INFO_DATA, this.onFeatureInfoData);
 			}
 
@@ -156,7 +157,7 @@
 		<os:WMSGetFeatureInfo url="http://sigma.openplans.org/geoserver/wms"
 							  layers="tiger:poi"/>
 		<!--os:DragFeature id="dragfeature" map="{this.map}"/-->
-		<os:ScaleLine map="{map}"/>
+		<os:ScaleLine id="scale" map="{map}"/>
 
 	</os:Map>
 
