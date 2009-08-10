@@ -154,6 +154,7 @@ package org.openscales.core
 					this.baseLayer = layer;
 				} else {
 					layer.visible = false;
+					 layer.zindex = 0; 
 				}
 			} else {
 				layer.redraw();
