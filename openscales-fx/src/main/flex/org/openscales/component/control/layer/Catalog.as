@@ -1,12 +1,13 @@
 package org.openscales.component.control.layer
 {
+	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	
 	import mx.controls.CheckBox;
+	import mx.controls.Tree;
 	import mx.controls.treeClasses.TreeItemRenderer;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.layer.Layer;
 
@@ -39,7 +40,7 @@ package org.openscales.component.control.layer
 		       	
 		     	checkBox.id = layer.name;
 		     	checkBox.name = layer.name;
-		    	 checkBox.x = 10;
+		    	 checkBox.x = 10; 
 		     	checkBox.y = 9; 
 		     	checkBox.label = layer.name;
 		     	checkBox.addEventListener(MouseEvent.CLICK,addLayerInMap);

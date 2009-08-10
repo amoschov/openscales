@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:control="org.openscales.component.control.*"
-    width="100%" horizontalScrollPolicy="off" >
+    width="100%" height="100%" horizontalScrollPolicy="off" >
 
 <mx:Script>
   <![CDATA[
@@ -17,7 +17,9 @@
                	import mx.controls.List;
                
                	private var _wfs:WFS;
-			   	private var _layerArray:Array;
+			   	private var _layerArrayL1:Array;
+			   	private var _layerArray2L1:Array;
+			   	private var _layerArrayL2:Array;
 			   	private var _root:Array;
 			   	private var catalogRenderer:ClassFactory = new ClassFactory(Catalog);
                
@@ -29,7 +31,10 @@
                 	catalogRenderer.properties = { map: map };
 					tree.itemRenderer = catalogRenderer;
 					
-					_layerArray = new Array();
+					_layerArrayL2 = new Array();
+					_layerArray2L1 = new Array();
+					_layerArrayL1 = new Array({label:"level2", children: _layerArrayL2});
+					
 					//Create a feature
 					_wfs = new WFS("test","http://sigma.openplans.org/geoserver/wfs",null,false,true,null,null,true,null);
 					_wfs.typename = "tiger:poi";
@@ -38,10 +43,28 @@
 					_wfs.params.srs = "EPSG:4326";
 					_wfs.params.version = "1.0.0";
 					
+					//An other
+					var wfs2:WFS = new WFS("test2","http://sigma.openplans.org/geoserver/wfs",null,false,false,null,null,false,null);
+					wfs2.typename = "topp:states";
+					wfs2.params.srs = "EPSG:4326";
+					wfs2.params.version = "1.0.0";
+					wfs2.minZoomLevel = 21;
+					
+					//An other
+					var wfs3:WFS = new WFS("test3","http://sigma.openplans.org/geoserver/wfs",null,false,false,null,null,false,null);
+					wfs3.typename = "topp:tasmania_roads";
+					wfs3.params.srs = "EPSG:4326";
+					wfs3.params.version = "1.0.0";
+					wfs3.minZoomLevel = 21;
+					wfs3.visible = true;
+					
 					//Add the feature in an array
-					_layerArray.push(_wfs);
+					
+					_layerArrayL1.push(_wfs);
+					_layerArrayL2.push(wfs2);
+					_layerArray2L1.push(wfs3);
 					//Create the root of the tree
-					_root = new Array({label:"Overlays", children: _layerArray});
+					_root = new Array({label:"Overlays", children: _layerArrayL1},{label:"Others Overlays", children: _layerArray2L1});
 									
 					this.refresh();
 				}

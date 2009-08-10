@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="initMap();" width="100%" height="100%"
+		   xmlns:os="http://openscales.org" xmlns:resize="flex.utils.ui.resize.*">
+		   
+		   <mx:Script>
+		   	<![CDATA[
+		   		import org.openscales.component.control.layer.CatalogTree2Component;
+		   		import com.gskinner.motion.GTweeny;
+		   		import org.openscales.core.Map;
+		   	
+		   	[Bindable]
+			private var map:Map;
+			
+		   		private function initMap():void {
+				map=fxmap.map;
+				
+			}
+			
+			public function showCatalog(event:MouseEvent):void {
+				if((event.target as Button).selected == false)
+				{
+					TreeLayerSwitcher.visible = true;
+					(event.target as Button).selected = true;
+					new GTweeny(this.Catalog,0.5,{height:410},null);
+				}
+				else
+				{
+					TreeLayerSwitcher.visible = false;
+					(event.target as Button).selected = false;
+					new GTweeny(this.Catalog,0.5,{height:250},null);
+				}	
+			}
+			
+		   	]]>
+		   </mx:Script>
+	<os:Map id="fxmap"
+			width="100%"
+			height="100%"
+			numZoomLevels="20"
+			zoom="5">
+
+		<os:WMSC name="Metacarta"
+				 url="http://labs.metacarta.com/wms-c/Basic.py"
+				 layers="satellite"
+				 format="image/jpeg"
+				 isBaseLayer="true"/>
+
+
+		<os:Extent left="-124.731422"
+				   bottom="24.955967"
+				   right="-66.969849"
+				   top="49.371735"/>
+					  
+		<resize:ResizableWindow id="Catalog" title="Catalog" movable="true" y="380" width="250" height="250">
+			<os:CatalogTree1Component id="CatalogTreeComponent" map="{map}" width="100%" height="165"/>
+			<mx:Button id="MoreLayer" label="More Layer ..." click="showCatalog(event)"/>
+			<os:CatalogTree2Component id="TreeLayerSwitcher" map="{map}" width="100%" height="100%" visible="false"/>
+		</resize:ResizableWindow>
+		<mx:Spacer/>
+		
+		<os:DragHandler id="dragHandler"/>
+		<os:MousePosition/>
+		<os:ClickHandler/>
+		<os:WheelHandler/>
+	</os:Map>
+	<resize:ResizableWindow title="Tools" movable="true" resizable="true" id="tools" width="300" height="370">
+			<os:LayerSwitcherComponent id="layerSwitcher" map="{map}" label="Layers"/>
+	</resize:ResizableWindow>
+</mx:Canvas>
