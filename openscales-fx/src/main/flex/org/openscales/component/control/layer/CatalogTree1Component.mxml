@@ -5,6 +5,9 @@
 
 <mx:Script>
   <![CDATA[
+  	import org.openscales.core.layer.params.ogc.WMSParams;
+  	import org.openscales.core.layer.ogc.WMS;
+  	import org.openscales.core.layer.ogc.WMSC;
 			  	import org.openscales.proj4as.ProjProjection;
 			  	import org.openscales.proj4as.Proj4as;
 			  	import org.openscales.core.layer.ogc.WFS;
@@ -52,21 +55,22 @@
 					wfs2.minZoomLevel = 21;
 					wfs2.visible = true;
 					
-					//An other
-					var wfs3:WFS = new WFS("test3","http://sigma.openplans.org/geoserver/wfs",null,false,false,null,null,false,null);
-					wfs3.typename = "topp:tasmania_roads";
-					wfs3.params.srs = "EPSG:4326";
-					wfs3.params.version = "1.0.0";
-					wfs3.minZoomLevel = 21;
-					wfs3.visible = true;
-					
+					//A base Layer
+				 	var wmsc:WMSC = new WMSC("OpenLayers WMS","http://labs.metacarta.com/wms-c/Basic.py",null,true,true,null,null);
+				 	((wmsc as WMS).params as WMSParams).layers = "basic";
+				 	
+				 	//A other base Layer
+				 	var wmsc2:WMSC = new WMSC("Metacarta","http://labs.metacarta.com/wms-c/Basic.py",null,true,true,null,null);
+					((wmsc2 as WMS).params as WMSParams).layers = "satellite";
+				 	((wmsc2 as WMS).params as WMSParams).format="image/jpeg";
+		
 					//Add the feature in an array
 					
 					_layerArrayL1.push(_wfs);
 					_layerArrayL2.push(wfs2);
-					_layerArray2L1.push(wfs3);
+					_layerArray2L1.push(wmsc,wmsc2);
 					//Create the root of the tree
-					_root = new Array({label:"Overlays", children: _layerArrayL1},{label:"Others Overlays", children: _layerArray2L1});
+					_root = new Array({label:"Overlays", children: _layerArrayL1},{label:"BaseLayers", children: _layerArray2L1});
 									
 					this.refresh();
 				}

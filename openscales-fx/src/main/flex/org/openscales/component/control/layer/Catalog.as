@@ -1,10 +1,8 @@
 package org.openscales.component.control.layer
 {
-	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	
 	import mx.controls.CheckBox;
-	import mx.controls.Tree;
 	import mx.controls.treeClasses.TreeItemRenderer;
 	
 	import org.openscales.core.Map;
@@ -69,7 +67,7 @@ package org.openscales.component.control.layer
 				else
 			    {
 				    checkBox.x = super.label.x;
-				    checkBox.y = 50;
+				    checkBox.y = 9;
 				    super.label.x = checkBox.x + checkBox.width + 17;
 				}
 			}
@@ -81,7 +79,7 @@ package org.openscales.component.control.layer
           * @param event a Layer event
           */
           public function changeStateLayer(event:LayerEvent):void {
-			  	 if(checkBox != null)
+			  	 if(checkBox.name == event.layer.name)
 			  	 {
 			  	 	if(event.type == LayerEvent.LAYER_REMOVED)
 			  	 	{
