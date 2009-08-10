@@ -15,7 +15,7 @@ package org.openscales.component.control.layer
 	{
 		
 		private var _map:Map;
-		private var checkBox:CheckBox = new CheckBox();
+		private var checkBox;
 		
 		public function Catalog()
 		{
@@ -23,39 +23,57 @@ package org.openscales.component.control.layer
 		}
 		
 		public function set map(value:Map):void {
-				this._map = value;
+				this._map = value;		
+				this._map.addEventListener(LayerEvent.LAYER_ADDED,changeStateLayer);
+				this._map.addEventListener(LayerEvent.LAYER_REMOVED,changeStateLayer);	
 		}
 		
-		override public function set data(value:Object):void 
+		override protected function createChildren():void
 		{
-       		super.data = value;
-       		
-       		this._map.addEventListener(LayerEvent.LAYER_ADDED,changeStateLayer);
-			this._map.addEventListener(LayerEvent.LAYER_REMOVED,changeStateLayer);
-             
-     		 if(this.data is Layer)
-     		{                 
-				var layer:Layer = data as Layer;
-
-		       	
-		     	checkBox.id = layer.name;
-		     	checkBox.name = layer.name;
-		    	 checkBox.x = 10; 
-		     	checkBox.y = 9; 
-		     	checkBox.label = layer.name;
-		     	checkBox.addEventListener(MouseEvent.CLICK,addLayerInMap);
-		     	//Check if the layer is in the map
-		     	for (var i:int=0;i<this._map.layers.length;i++)
-		     	{
-		     		if(this._map.layers[i].name == checkBox.name)
-		     		{
-		     			checkBox.selected = true;
-		     		}
-		     	}
-		     	this.addChild(checkBox);
-          	}    
-            
-          }
+			super.createChildren();
+			checkBox = new CheckBox();
+			checkBox.setStyle( "verticalAlign", "middle" );
+			checkBox.addEventListener( MouseEvent.CLICK, addLayerInMap );
+			addChild(checkBox);		
+	    }
+	    
+	    override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+	   {
+			super.updateDisplayList(unscaledWidth, unscaledHeight);
+	        if(super.data)
+	        {
+			    if (super.icon != null)
+			    {
+				    if(data is Layer)
+				    {
+				    	super.label.text = (data as Layer).name;
+				    	checkBox.name = (data as Layer).name;
+				    	 for (var i:int=0;i<this._map.layers.length;i++)
+				     	{
+				     		if(this._map.layers[i].name == (data as Layer).name)
+				     		{
+				     			checkBox.selected = true;
+				     		}
+				     	}
+				     	checkBox.x = super.icon.x;
+				    	checkBox.y = 9;
+				    	super.icon.x = checkBox.x + checkBox.width + 17;
+				    }
+				    else
+				    {
+				    	checkBox.enabled = false;
+				    	checkBox.visible = false;
+				    }	    
+				    super.label.x = super.icon.x + super.icon.width + 3;
+				}
+				else
+			    {
+				    checkBox.x = super.label.x;
+				    checkBox.y = 50;
+				    super.label.x = checkBox.x + checkBox.width + 17;
+				}
+			}
+	    }
           
           /**
           * Change the state of the layer
@@ -63,16 +81,15 @@ package org.openscales.component.control.layer
           * @param event a Layer event
           */
           public function changeStateLayer(event:LayerEvent):void {
-			  	 var check:CheckBox = this.getChildByName(event.layer.name) as CheckBox;
-			  	 if(check != null)
+			  	 if(checkBox != null)
 			  	 {
 			  	 	if(event.type == LayerEvent.LAYER_REMOVED)
 			  	 	{
-			  	 		check.selected = false;	
+			  	 		checkBox.selected = false;	
 			  	 	}
 			  	 	if(event.type == LayerEvent.LAYER_ADDED)
 			  	 	{
-			  	 		check.selected = true;	
+			  	 		checkBox.selected = true;	
 			  	 	}
 			  	 }
 			  }

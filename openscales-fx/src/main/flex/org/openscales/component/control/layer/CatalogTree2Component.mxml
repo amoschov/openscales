@@ -35,6 +35,7 @@
 					_wfs.use110Capabilities = false;
 					_wfs.params.srs = "EPSG:4326";
 					_wfs.params.version = "1.0.0";
+					_wfs.visible = true;
 					
 					//Add the feature in an array
 					
@@ -51,26 +52,6 @@
 			  {
 					tree.dataProvider= _root;
 			  }
-			  
-			  /**
-			  * Give a name of all the tree's leaf
-			  * 
-			  * @param item
-			  * 
-			  * @return
-			  */
-			  private function tree_labelFunc(item:Object):String {
-               
-                var label:String;
-                if(item is Layer){
-                label = item.name;
-                
-                }
-                else{
-                label = item.label;
-                } 
-                return label;
-            }
 
   ]]>
 </mx:Script>
@@ -78,6 +59,6 @@
    
  <mx:Tree id="tree" labelField="label" width="200"  dragEnabled="true"
                      dropEnabled="false"
-             dragMoveEnabled="false" labelFunction="tree_labelFunc"/>
+             dragMoveEnabled="false"/>
 
 </Control>
