@@ -1,7 +1,7 @@
 package org.openscales.core.handler.sketch
 {
 	import flash.events.MouseEvent;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -24,6 +24,7 @@ package org.openscales.core.handler.sketch
 		// The layer in which we'll draw
 		private var _drawLayer:VectorLayer = null;				
 		private var _id:Number = 0;
+		private var _multiLineString:MultiLineString=null;
 		private var _lastPoint:Point = null;
 		private var _newFeature:Boolean = true;
 
@@ -43,16 +44,17 @@ package org.openscales.core.handler.sketch
 
 		override protected function registerListeners():void{
 			this._dblClickHandler.active = true;
-			this._dblClickHandler.doubleclick = this.mouseDblClick;
-			this._dblClickHandler.click=this.drawLine; 
+			/* this._dblClickHandler.click=this.drawLine; */
+			this._dblClickHandler.doubleclick = this.mouseDblClick; 
+			this.map.addEventListener(MouseEvent.CLICK, this.drawLine);
 		}
 
 		override protected function unregisterListeners():void{
 			this._dblClickHandler.active = false;
+			this.map.removeEventListener(MouseEvent.CLICK, this.drawLine);
 		}
 
 		public function mouseDblClick(event:MouseEvent):void {
-			this.drawLine(event);
 			this.drawFinalPath();
 		} 
 
@@ -63,28 +65,13 @@ package org.openscales.core.handler.sketch
 			var style:Style = new Style();
 			style.strokeColor = 0x60FFE9;
 
-			var lstrings:Array = [];
-			var featuresToRemove:Array = [];
-
-			for each (var feature:VectorFeature in drawLayer.features) {
-				if (feature is LineStringFeature) {
-					featuresToRemove.push(feature);
-					lstrings.push(feature.geometry);
-				}
-			} 
-
-			//We create a MultiLineString with several LineStrings (if there are line strings)
-			if (lstrings.length > 0) {
-				var mlString:MultiLineString = new MultiLineString(lstrings); 
-				var mlFeature:MultiLineStringFeature = new MultiLineStringFeature(mlString);
-				mlFeature.name = "path." + id.toString(); id++;
-				mlFeature.style = style;
-
-				drawLayer.removeFeatures(featuresToRemove);
-				drawLayer.addFeature(mlFeature);
-
+			var f:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
+			if(f!=null){
+				//Apply the new style
+				f.style = style;
+				f.name = "path." + id.toString(); id++;
 				drawLayer.redraw();
-			}			
+			}	
 		}
 
 		private function drawLine(event:MouseEvent=null):void{
@@ -94,25 +81,36 @@ package org.openscales.core.handler.sketch
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
 
-			if(newFeature){				
+			if(newFeature){			
+				_multiLineString = new MultiLineString();
+				var multiLineFeature:MultiLineStringFeature = new MultiLineStringFeature(_multiLineString);
+				
 				lastPoint = point;
+				
+				//add a pointFeature to show where we clicked
 				var pointFeature:PointFeature = new PointFeature(point); 
 				pointFeature.name = name;
-				drawLayer.addFeature(pointFeature);
-				newFeature = false;				
+				
+				drawLayer.addFeature(pointFeature);								
+				drawLayer.addFeature(multiLineFeature);
+				
+				newFeature = false;		
+					
 			}
 			else {
 				//When we have at least a 2 points path, we can remove the first point				
-				if(drawLayer.features[drawLayer.features.length-1] is PointFeature) {
-					drawLayer.removeFeature(drawLayer.features[drawLayer.features.length-1]);
+				if(drawLayer.features[drawLayer.features.length-2] is PointFeature) {
+					drawLayer.removeFeature(drawLayer.features[drawLayer.features.length-2]);
 				}								
-				var points:Array = new Array(2);
-				points.push(lastPoint, point);
-				var lstring:LineString = new LineString(points);
-				var lineStringFeature:LineStringFeature = new LineStringFeature(lstring);
-				lineStringFeature.name = name;
-				drawLayer.addFeature(lineStringFeature);
-				lastPoint = point;
+				if(!point.equals(lastPoint)){
+					var points:Array = new Array(2);
+					points.push(lastPoint, point);
+					var lstring:LineString = new LineString(points);
+					_multiLineString.addLineString(lstring); 
+						
+					drawLayer.redraw();
+					lastPoint = point;
+				}								
 			}
 		}
 

@@ -14,6 +14,10 @@ package org.openscales.core.geometry
 			super(components);
 		}
 
+		/**
+		 * AddLineSring permit to add a line in the MultiLineString.
+		 * In order to not allow 2 lineString witch start at the same point, we make a test with the last component.
+		 */
 		public function addLineString(lineString:LineString, index:Number=NaN):void {
 			this.addComponent(lineString, index);
 		}

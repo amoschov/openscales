@@ -104,7 +104,7 @@
 		 	 * Show a warning message when you delete selected feature. User can cancel if it's a mistake
 		 	 */
 			public function onDeleteSelectedClick(event:Event):void {
-				Alert.show("You want to delete selected feature(s). Are you sure ?", "Warning", Alert.YES | Alert.NO, null, alertClickHandler);				
+				Alert.show("You want to delete selected feature(s). \nAre you sure ?", "Warning", Alert.YES | Alert.NO, null, alertClickHandler);				
 			}
 			
 			/**

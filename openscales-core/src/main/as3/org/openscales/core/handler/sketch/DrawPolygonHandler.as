@@ -77,8 +77,6 @@ package org.openscales.core.handler.sketch
 						drawLayer.removeFeature(drawLayer.features[drawLayer.features.length-2]);
 						_firstPointRemoved = true;
 					}
-
-					//drawLayer.clear();
 					lring.addComponent(point);
 					drawLayer.redraw();
 				}

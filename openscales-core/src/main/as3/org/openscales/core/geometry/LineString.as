@@ -17,7 +17,7 @@ package org.openscales.core.geometry
 				super.removeComponent(point);
 			}
 		}
-
+		
 		public function getPointAt(index:Number):Point {
 
 			if(index >= 0 && index < this.components.length) {
