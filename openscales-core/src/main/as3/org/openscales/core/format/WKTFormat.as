@@ -1,10 +1,16 @@
 package org.openscales.core.format
 {
 	import flash.utils.getQualifiedClassName;
-
+	
 	import org.openscales.core.StringUtils;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.feature.Feature;
+	import org.openscales.core.feature.LineStringFeature;
+	import org.openscales.core.feature.MultiLineStringFeature;
+	import org.openscales.core.feature.MultiPointFeature;
+	import org.openscales.core.feature.MultiPolygonFeature;
+	import org.openscales.core.feature.PointFeature;
+	import org.openscales.core.feature.PolygonFeature;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
@@ -13,7 +19,6 @@ package org.openscales.core.format
 	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
-	import org.openscales.core.feature.VectorFeature;
 
 	/**
 	 * Read/Write WKT.
@@ -155,7 +160,7 @@ package org.openscales.core.format
 
 				'point': function(str:String):Feature {
 				var coords:Array = StringUtils.trim(str).split(this._regExes.spaces);
-				return new VectorFeature(
+				return new PointFeature(
 					new Point(coords[0], coords[1])
 					);
 			},
@@ -166,7 +171,7 @@ package org.openscales.core.format
 				for(var i:int=0; i<points.length; ++i) {
 					components.push(this.parse.point.apply(this, [points[i]]).geometry);
 				}
-				return new VectorFeature(
+				return new MultiPointFeature(
 					new MultiPoint(components)
 					);
 			},
@@ -177,7 +182,7 @@ package org.openscales.core.format
 				for(var i:int=0; i<points.length; ++i) {
 					components.push(this.parse.point.apply(this, [points[i]]).geometry);
 				}
-				return new VectorFeature(new LineString(components));
+				return new LineStringFeature(new LineString(components));
 			},
 
 			'multilinestring': function(str:String):Feature {
@@ -188,7 +193,7 @@ package org.openscales.core.format
 					line = lines[i].replace(this._regExes.trimParens, '$1');
 					components.push(this.parse.linestring.apply(this, [line]).geometry);
 				}
-				return new VectorFeature(
+				return new MultiLineStringFeature(
 					new MultiLineString(components)
 					);
 			},
@@ -203,7 +208,7 @@ package org.openscales.core.format
 					linearring = new LinearRing(linestring.components)
 					components.push(linearring);
 				}
-				return new VectorFeature(
+				return new PolygonFeature(
 					new Polygon(components)
 					);
 			},
@@ -216,7 +221,7 @@ package org.openscales.core.format
 					polygon = polygons[i].replace(this._regExes.trimParens, '$1');
 					components.push(this.parse.polygon.apply(this, [polygon]).geometry);
 				}
-				return new VectorFeature(
+				return new MultiPolygonFeature(
 					new MultiPolygon(components)
 					);
 			},
