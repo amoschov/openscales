@@ -129,11 +129,12 @@
 	</mx:Script>
 	
 	<os:FeatureDrawingComponent id="featureDrawing" map="{mapBiding}" x="31" y="26"/>
+	<os:SelectBoxComponent id="selectbox" map="{mapBiding}" x="117" y="123"/>
 		
 	<mx:Text x="10" y="10" text="To finalize a path or a polygon, just double click on map." width="310" height="22" fontStyle="italic" textAlign="center"/>
 	<!--mx:Text text="For the moment you can't delete WFS points, even if they are selected" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="219"/-->
 
 
-	<control:FeatureInfo id="featureInfo" map="{mapBiding}" x="20" y="132" width="300" height="165"/>
+	<control:FeatureInfo id="featureInfo" map="{mapBiding}" x="20" y="150" width="300" height="165"/>
 	
 </control:Control>
