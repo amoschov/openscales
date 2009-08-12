@@ -20,8 +20,12 @@ package org.openscales.core.feature
 
 		override public function draw():void {
 			super.draw();
+			
+			// Variable declaration before for loop to improve performances
+			var p:Pixel = null;
+			
 			for (var i:int = 0; i < points.components.length; i++) {
-				var p:Pixel = this.getLayerPxFromPoint(points.components[i]);
+				p = this.getLayerPxFromPoint(points.components[i]);
 				this.graphics.drawCircle(p.x, p.y, this.style.pointRadius);
 			}
 

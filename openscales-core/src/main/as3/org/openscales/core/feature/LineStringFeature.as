@@ -25,8 +25,11 @@ package org.openscales.core.feature
 			// Regardless to the style, a LineString is never filled
 			this.graphics.endFill();
 			
+			// Variable declaration before for loop to improve performances
+			var p:Pixel = null;
+			
 			for (var i:int = 0; i < this.lineString.components.length; i++) {
-				var p:Pixel = this.getLayerPxFromPoint(this.lineString.components[i]);
+				p = this.getLayerPxFromPoint(this.lineString.components[i]);
 				if (i==0) {
 					this.graphics.moveTo(p.x, p.y);
 				} else {

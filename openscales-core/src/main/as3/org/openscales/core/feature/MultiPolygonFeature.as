@@ -22,12 +22,20 @@ package org.openscales.core.feature
 
 		override public function draw():void {
 			super.draw();
+			
+			// Variable declaration before for loop to improve performances
+			var polygon:Polygon = null;
+			var linearRing:LinearRing = null;
+			var p:Pixel = null;
+			var i:int = 0;
+			var j:int = 0;
+			
 			for (var k:int = 0; k < this.polygons.components.length; k++) {
-				var polygon:Polygon = this.polygons.components[k];
-				for (var i:int = 0; i < polygon.components.length; i++) {
-					var linearRing:LinearRing = polygon.components[i];
-					for (var j:int = 0; j < linearRing.components.length; j++) {
-						var p:Pixel = this.getLayerPxFromPoint(linearRing.components[j]);
+				polygon = this.polygons.components[k];
+				for (i = 0; i < polygon.components.length; i++) {
+					linearRing = polygon.components[i];
+					for (j = 0; j < linearRing.components.length; j++) {
+						p = this.getLayerPxFromPoint(linearRing.components[j]);
 						if (j==0) {
 							this.graphics.moveTo(p.x, p.y);
 						} else {

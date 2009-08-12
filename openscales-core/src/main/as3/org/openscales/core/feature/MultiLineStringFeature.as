@@ -25,10 +25,15 @@ package org.openscales.core.feature
 			// Regardless to the style, a MultiLineString is never filled
 			this.graphics.endFill();
 			
+			// Variable declaration before for loop to improve performances
+			var p:Pixel = null;
+			var lineString:LineString = null;
+			var j:int = 0;
+			
 			for (var i:int = 0; i < this.lineStrings.components.length; i++) {
-				var lineString:LineString = this.lineStrings.components[i];
-				for (var j:int = 0; j < lineString.components.length; j++) {
-					var p:Pixel = this.getLayerPxFromPoint(lineString.components[j]);
+				lineString = this.lineStrings.components[i];
+				for (j = 0; j < lineString.components.length; j++) {
+					p = this.getLayerPxFromPoint(lineString.components[j]);
 
 					if (j==0) {
 						this.graphics.moveTo(p.x, p.y);
