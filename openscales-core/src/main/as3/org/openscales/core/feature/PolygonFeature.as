@@ -1,9 +1,9 @@
 package org.openscales.core.feature
 {
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.geometry.LinearRing;
+	import org.openscales.core.geometry.Polygon;
 
 	/**
 	 * Feature used to draw a Polygon geometry on FeatureLayer
@@ -24,13 +24,11 @@ package org.openscales.core.feature
 			for (var i:int = 0; i < this.polygon.components.length; i++) {
 				var linearRing:LinearRing = this.polygon.components[i];
 				for (var j:int = 0; j < linearRing.components.length; j++) {
-					var point:Point = linearRing.components[j];
-					var x:Number = (point.x / this.layer.resolution + this.left);
-					var y:Number = (this.top - point.y / this.layer.resolution);
+					var p:Pixel = this.getLayerPxFromPoint(linearRing.components[j]);
 					if (j==0) {
-						this.graphics.moveTo(x, y);
+						this.graphics.moveTo(p.x, p.y);
 					} else {
-						this.graphics.lineTo(x, y);
+						this.graphics.lineTo(p.x, p.y);
 					}
 				}
 			}

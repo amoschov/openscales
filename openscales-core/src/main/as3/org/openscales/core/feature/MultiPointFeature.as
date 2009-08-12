@@ -1,7 +1,7 @@
 package org.openscales.core.feature
 {
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.MultiPoint;
 
 	/**
@@ -21,9 +21,8 @@ package org.openscales.core.feature
 		override public function draw():void {
 			super.draw();
 			for (var i:int = 0; i < points.components.length; i++) {
-				var x:Number = (points.components[i].x / this.layer.resolution + this.left);
-				var y:Number = (this.top - points.components[i].y / this.layer.resolution);
-				this.graphics.drawCircle(x, y, this.style.pointRadius);
+				var p:Pixel = this.getLayerPxFromPoint(points.components[i]);
+				this.graphics.drawCircle(p.x, p.y, this.style.pointRadius);
 			}
 
 		}		

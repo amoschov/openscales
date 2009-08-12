@@ -1,8 +1,9 @@
 package org.openscales.core.feature
 {
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.LineString;
+	import org.openscales.core.geometry.Point;
 
 	/**
 	 * Feature used to draw a LineString geometry on FeatureLayer
@@ -25,13 +26,11 @@ package org.openscales.core.feature
 			this.graphics.endFill();
 			
 			for (var i:int = 0; i < this.lineString.components.length; i++) {
-				var point:Point = this.lineString.components[i];
-				var x:Number = (point.x / this.layer.resolution + this.left);
-				var y:Number = (this.top - point.y / this.layer.resolution);
+				var p:Pixel = this.getLayerPxFromPoint(this.lineString.components[i]);
 				if (i==0) {
-					this.graphics.moveTo(x, y);
+					this.graphics.moveTo(p.x, p.y);
 				} else {
-					this.graphics.lineTo(x, y); 
+					this.graphics.lineTo(p.x, p.y); 
 				}
 			} 
 		}		

@@ -1,17 +1,14 @@
 package org.openscales.core.feature {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.utils.getQualifiedClassName;
+	
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.SpriteCursorEvent;
-	import org.openscales.core.feature.Marker;
-	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Anchored;
 	import org.openscales.core.popup.Popup;
@@ -187,13 +184,6 @@ package org.openscales.core.feature {
 			}
 		}
 
-		public function get left():Number {
-			if (this.layer && layer.map && this.layer.map.extent)
-				return -this.layer.map.extent.left / this.layer.map.resolution;
-			else
-				return NaN;
-		}
-
 		public function get lonlat():LonLat {
 			return this._lonlat;
 		}
@@ -254,6 +244,13 @@ package org.openscales.core.feature {
 			else
 				return NaN;
 		}
+		
+		public function get left():Number {
+			if (this.layer && layer.map && this.layer.map.extent)
+				return -this.layer.map.extent.left / this.layer.map.resolution;
+			else
+				return NaN;
+		}
 
 		private function hideHand(event:SpriteCursorEvent):void {
 			this.useHandCursor=false;
@@ -262,6 +259,7 @@ package org.openscales.core.feature {
 		private function showHand(event:SpriteCursorEvent):void {
 			this.useHandCursor=true;
 		}
+		
 	}
 }
 

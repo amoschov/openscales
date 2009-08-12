@@ -1,5 +1,6 @@
 package org.openscales.core.feature
 {
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
 
@@ -19,9 +20,8 @@ package org.openscales.core.feature
 
 		override public function draw():void {
 			super.draw();
-			var x:Number = (point.x / this.layer.resolution + this.left);
-			var y:Number = (this.top - point.y / this.layer.resolution);
-			this.graphics.drawCircle(x, y, this.style.pointRadius);
+			var p:Pixel = this.getLayerPxFromPoint(point);
+			this.graphics.drawCircle(p.x, p.y, this.style.pointRadius);
 		}		
 	}
 }

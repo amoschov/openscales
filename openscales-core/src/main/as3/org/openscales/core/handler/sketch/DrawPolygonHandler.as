@@ -53,7 +53,7 @@ package org.openscales.core.handler.sketch
 
 				var name:String = "polygon."+id.toString(); id++;
 
-				var pixel:Pixel = new Pixel(drawLayer.mouseX - this.map.layerContainer.x ,drawLayer.mouseY - this.map.layerContainer.y);
+				var pixel:Pixel = new Pixel(drawLayer.mouseX ,drawLayer.mouseY);
 				var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
 				var point:Point = new Point(lonlat.lon,lonlat.lat);
 

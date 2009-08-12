@@ -2,7 +2,9 @@ package org.openscales.core.feature
 {
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.geometry.Point;
 
 	/**
 	 * Vector features use the Geometry classes as geometry description.
@@ -142,6 +144,12 @@ package org.openscales.core.feature
 			if (style.isStroked) {
 				this.graphics.lineStyle(style.strokeWidth, style.strokeColor, style.strokeOpacity, false, "normal", style.strokeLinecap);
 			}
+		}
+		
+		protected function getLayerPxFromPoint(point:Point) : Pixel {
+			var x:Number = (point.x / this.layer.resolution + this.left);
+			var y:Number = (this.top - point.y / this.layer.resolution);
+			return this.layer.map.getLayerPxFromMapPx(new Pixel(x, y));
 		}
 
 	}
