@@ -73,7 +73,7 @@ package org.openscales.core.handler.sketch
 				}
 				else {
 					//When we have at least a 2 points polygon, we can remove the first point					
-					if(!_firstPointRemoved && getQualifiedClassName(drawLayer.features[drawLayer.features.length-2].geometry) == "org.openscales.core.geometry::Point") {
+					if(!_firstPointRemoved && drawLayer.features[drawLayer.features.length-2]is PointFeature) {
 						drawLayer.removeFeature(drawLayer.features[drawLayer.features.length-2]);
 						_firstPointRemoved = true;
 					}

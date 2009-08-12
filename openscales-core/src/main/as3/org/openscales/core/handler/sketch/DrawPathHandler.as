@@ -27,6 +27,7 @@ package org.openscales.core.handler.sketch
 		private var _multiLineString:MultiLineString=null;
 		private var _lastPoint:Point = null;
 		private var _newFeature:Boolean = true;
+		private var _firstPointRemoved:Boolean = false;
 
 		private var _dblClickHandler:ClickHandler = new ClickHandler();
 
@@ -99,8 +100,9 @@ package org.openscales.core.handler.sketch
 			}
 			else {
 				//When we have at least a 2 points path, we can remove the first point				
-				if(drawLayer.features[drawLayer.features.length-2] is PointFeature) {
+				if(!_firstPointRemoved && drawLayer.features[drawLayer.features.length-2] is PointFeature) {
 					drawLayer.removeFeature(drawLayer.features[drawLayer.features.length-2]);
+					_firstPointRemoved = true;
 				}								
 				if(!point.equals(lastPoint)){
 					var points:Array = new Array(2);
