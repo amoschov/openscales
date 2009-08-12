@@ -48,7 +48,7 @@ package org.openscales.core.feature
 			}
 
 			this.geometry = null;
-			//super.destroy();
+			super.destroy();
 		}
 
 		/**

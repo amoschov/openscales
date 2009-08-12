@@ -3,8 +3,8 @@ package org.openscales.core.layer
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.Feature;
-	import org.openscales.core.request.IRequest;
 
 	public class FeatureLayer extends Layer
 	{
@@ -14,17 +14,10 @@ package org.openscales.core.layer
 
 		private var _drawn:Boolean = false;
 
-		public var onFeatureInsert:Function = null;
-
-		public var preFeatureInsert:Function = null;
-
 		public function FeatureLayer(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
 			projection:String = null, proxy:String = null)
 		{
 			super(name, isBaseLayer, visible, projection, proxy);
-
-			this.onFeatureInsert = new Function();
-			this.preFeatureInsert = new Function();
 
 			this.selectedFeatures = new Array();
 			this.featuresBbox = new Bounds();
@@ -98,14 +91,15 @@ package org.openscales.core.layer
 
 			feature.layer = this;
 
-			this.preFeatureInsert(feature);
+			this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, feature));
+			
 			this.addChild(feature);
 
 			if (this.drawn) {
 				feature.draw();
 			}
 
-			this.onFeatureInsert(feature);
+			this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature));
 		}
 
 		public function removeFeatures(features:Array):void {

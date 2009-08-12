@@ -26,6 +26,8 @@ package org.openscales.core.events
 		private var _ctrlPressed:Boolean = false;
 
 
+		public static const FEATURE_PRE_INSERT:String="openscales.feature.preinsert";
+		public static const FEATURE_INSERT:String="openscales.feature.insert";
 		public static const FEATURE_OVER:String="openscales.feature.over";
 		public static const FEATURE_OUT:String="openscales.feature.out";
 		public static const FEATURE_CLICK:String="openscales.feature.click";
