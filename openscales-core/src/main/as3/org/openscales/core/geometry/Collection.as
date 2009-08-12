@@ -1,20 +1,14 @@
 package org.openscales.core.geometry
 {
-	import org.openscales.proj4as.ProjProjection;
-
-	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
-
+	
 	import org.openscales.core.Util;
+	import org.openscales.proj4as.ProjProjection;
 
 	/**
 	 * A Collection is exactly what it sounds like: A collection of different Geometries.
 	 * These are stored in the local parameter components (which can be passed as a parameter
 	 * to the constructor).
-	 *
-	 * As new geometries are added to the collection, they are NOT cloned.
-	 * When removing geometries, they need to be specified by reference
-	 * (ie you have to pass in the exact geometry to be removed).
 	 *
 	 * The getArea and getLength functions here merely iterate through the components,
 	 * summing their respective areas and lengths.
@@ -27,7 +21,7 @@ package org.openscales.core.geometry
 
 		private var _componentTypes:Array = null;
 
-		public function Collection(components:Object) {
+		public function Collection(components:Array) {
 			super();
 			this.components = new Array();
 			if (components != null) {
@@ -40,7 +34,7 @@ package org.openscales.core.geometry
 			this.components = null;
 		}
 
-		public function getComponentsString():String {
+		public function get componentsString():String {
 			var strings:Array = [];
 			for(var i:int = 0; i < this.components.length; i++) {
 				strings.push(this.components[i].toShortString()); 
@@ -58,16 +52,13 @@ package org.openscales.core.geometry
 			}
 		}
 
-		public function addComponents(components:Object):void {
-			if(!(components is Array)) {
-				components = [components];
-			}
+		public function addComponents(components:Array):void {
 			for(var i:int=0; i < components.length; i++) {
 				this.addComponent(components[i]);
 			}
 		}
 
-		public function addComponent(component:Object, index:Number = NaN):Boolean {
+		public function addComponent(component:Geometry, index:Number = NaN):Boolean {
 			var added:Boolean = false;
 			if(component) {
 				if(!(component is Array) && (this.componentTypes == null ||

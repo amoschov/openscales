@@ -8,7 +8,6 @@
 <classEntry path="org.openscales.core.handler.sketch.DrawMultiHandler"/>
 <classEntry path="org.openscales.core.tile.WFSTile"/>
 <classEntry path="org.openscales.core.popup.Anchored"/>
-<classEntry path="org.openscales.core.geometry.Rectangle"/>
 <classEntry path="org.openscales.core.request.XMLRequest"/>
 <classEntry path="org.openscales.core.layer.capabilities.CapabilitiesParser"/>
 <classEntry path="mx.core.IFlexDisplayObject"/>
@@ -98,7 +97,6 @@
 <classEntry path="org.openscales.core.geometry.MultiPoint"/>
 <classEntry path="org.openscales.core.request.AbstractRequest"/>
 <classEntry path="org.openscales.core.security.events.SecurityEvent"/>
-<classEntry path="org.openscales.core.geometry.Surface"/>
 <classEntry path="org.openscales.core.geometry.LinearRing"/>
 <classEntry path="mx.core.mx_internal"/>
 <classEntry path="mx.core.FlexBitmap"/>

@@ -1,22 +1,23 @@
 package org.openscales.core.geometry
 {	
 	/**
-	 * Class to represent a linear ring.
-	 * A linear ring is a collection of points.
+	 * A Linear Ring is a special LineString which is closed. 
+	 * It closes itself automatically on every addPoint/removePoint by adding a copy of the first point as the last point.
+	 * Also, as it is the first in the line family to close itself, an area getter is 
+	 * defined to calculate the enclosed area of the linearRing
 	 */
 	public class LinearRing extends LineString
 	{
 
 		public function LinearRing(points:Array = null) {
-			this.componentTypes = ["org.openscales.core.geometry::Point"];
 			super(points);
 		}
 
-		override public function addComponent(point:Object, index:Number=NaN):Boolean {
+		override public function addComponent(point:Geometry, index:Number=NaN):Boolean {
 			var added:Boolean = false;
 
 			var lastPoint:Point = this.components[this.components.length-1];
-			if(!isNaN(index) || !point.equals(lastPoint)) {
+			if(!isNaN(index) || !(point as Point).equals(lastPoint)) {
 				added = super.addComponent(point, index);
 			}
 

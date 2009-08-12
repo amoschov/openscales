@@ -124,7 +124,7 @@ package org.openscales.core.format
 				var polygons:XMLList = multipolygon..*::Polygon;
 				for (var i:int = 0; i < polygons.length(); i++) {
 					var polygon:Polygon = this.parsePolygonNode(polygons[i]);
-					geom.addComponents(polygon);
+					geom.addComponent(polygon);
 				}
 			} else if (xmlNode..*::the_geom.*::MultiLineString.length() > 0) {
 				var multilinestring:XML = xmlNode..*::the_geom.*::MultiLineString[0];
@@ -136,7 +136,7 @@ package org.openscales.core.format
 					p = this.parseCoords(lineStrings[i]);
 					if(p){
 						var lineString:LineString = new LineString(p);
-						geom.addComponents(lineString);
+						geom.addComponent(lineString);
 					}
 				}
 			} else if (xmlNode..*::the_geom.*::MultiPoint.length() > 0) {
@@ -167,25 +167,25 @@ package org.openscales.core.format
 				geom = new MultiPoint();
 				p = this.parseCoords(point);
 				if (p) {
-					//var nPoint:Point = new Point(p.points[0].x,p.points[0].y);
-					geom.addComponents(p[0]);
+					geom.addComponent(p[0]);
 				}
 			}
 
 			if(geom) {
 
-				if(geom is Point) {
-					feature = new PointFeature(geom);
-				} else if(geom is MultiPoint) {
-					feature = new MultiPointFeature(geom);
-				} else if(geom is LineString) {
-					feature = new LineStringFeature(geom);
-				} else if(geom is MultiLineString) {
-					feature = new MultiLineStringFeature(geom);
+				// Test more specific geom before because for is operator, a lineString is a multipoint for example (inheritance) 
+				if(geom is MultiPolygon) {
+					feature = new MultiPolygonFeature(geom);
 				} else if(geom is Polygon) {
 					feature = new PolygonFeature(geom);
-				} else if(geom is MultiPolygon) {
-					feature = new MultiPolygonFeature(geom);
+				} else if(geom is MultiLineString) {
+					feature = new MultiLineStringFeature(geom);
+				} else if(geom is LineString) {
+					feature = new LineStringFeature(geom);
+				} else if(geom is MultiPoint) {
+					feature = new MultiPointFeature(geom);
+				} else if(geom is Point) {
+					feature = new PointFeature(geom);
 				} else {
 					trace("Unrecognized geometry);"); 
 					return null; 

@@ -1,13 +1,12 @@
 package org.openscales.core.geometry
 {
 	/**
-	 * Class to represent a polygon geometry.
-	 * It's a collection of linear rings.
+	 * Polygon is a collection of LinearRings.
 	 */
 	public class Polygon extends Collection
 	{
 
-		public function Polygon(components:Object = null) {
+		public function Polygon(components:Array = null) {
 			this.componentTypes = ["org.openscales.core.geometry::LinearRing"];
 			super(components);
 		}

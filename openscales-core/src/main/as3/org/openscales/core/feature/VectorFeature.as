@@ -142,7 +142,6 @@ package org.openscales.core.feature
 			if (style.isStroked) {
 				this.graphics.lineStyle(style.strokeWidth, style.strokeColor, style.strokeOpacity, false, "normal", style.strokeLinecap);
 			}
-
 		}
 
 	}

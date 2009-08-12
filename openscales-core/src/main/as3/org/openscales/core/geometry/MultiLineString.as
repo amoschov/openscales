@@ -3,13 +3,12 @@ package org.openscales.core.geometry
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
-	 * Class to represent a multi line string.
-	 * It's a collection of lins strings.
+	 * A MultiLineString is a geometry with multiple LineString components.
 	 */
 	public class MultiLineString extends Collection
 	{
 
-		public function MultiLineString(components:Object = null) {
+		public function MultiLineString(components:Array = null) {
 			this.componentTypes = ["org.openscales.core.geometry::LineString"];
 			super(components);
 		}

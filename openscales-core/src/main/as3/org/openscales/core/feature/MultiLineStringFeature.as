@@ -21,6 +21,10 @@ package org.openscales.core.feature
 
 		override public function draw():void {
 			super.draw();
+			
+			// Regardless to the style, a MultiLineString is never filled
+			this.graphics.endFill();
+			
 			for (var i:int = 0; i < this.lineStrings.components.length; i++) {
 				var lineString:LineString = this.lineStrings.components[i];
 				for (var j:int = 0; j < lineString.components.length; j++) {

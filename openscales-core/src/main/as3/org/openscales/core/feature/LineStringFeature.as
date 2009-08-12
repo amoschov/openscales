@@ -20,6 +20,10 @@ package org.openscales.core.feature
 
 		override public function draw():void {
 			super.draw();
+			
+			// Regardless to the style, a LineString is never filled
+			this.graphics.endFill();
+			
 			for (var i:int = 0; i < this.lineString.components.length; i++) {
 				var point:Point = this.lineString.components[i];
 				var x:Number = (point.x / this.layer.resolution + this.left);

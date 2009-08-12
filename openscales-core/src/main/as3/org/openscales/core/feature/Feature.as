@@ -20,7 +20,7 @@ package org.openscales.core.feature {
 	/**
 	 * Features is a geolocalized graphical element.
 	 * It is generally subclassed to customized how it is displayed.
-	 * They have an ‘attributes’ property, which is the data object, and a ‘style’ property.
+	 * They have an ‘attributes’ property, which is the data object.
 	 */
 	public class Feature extends Sprite {
 

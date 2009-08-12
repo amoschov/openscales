@@ -3,13 +3,12 @@ package org.openscales.core.geometry
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
-	 * Class to represent a multi polygon geometry.
-	 * It's a collection of polygons.
+	 * MultiPolygon is a geometry with multiple Polygon components
 	 */
 	public class MultiPolygon extends Collection
 	{
 
-		public function MultiPolygon(components:Object = null) {
+		public function MultiPolygon(components:Array = null) {
 			this.componentTypes = ["org.openscales.core.geometry::Polygon"];
 			super(components);
 		}

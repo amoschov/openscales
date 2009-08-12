@@ -1,14 +1,13 @@
 package org.openscales.core.geometry
 {	
 	/**
-	 * Class to represent a line string.
-	 * A line string is a collection of points.
-	 * It extends Curve class.
+	 * A LineString is a Curve which, once two points have been added to it,
+	 * can never be less than two points long.
 	 */
 	public class LineString extends Curve
 	{
 
-		public function LineString(points:Object = null) {
+		public function LineString(points:Array = null) {
 			super(points);
 		}
 

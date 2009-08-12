@@ -1,11 +1,9 @@
 package org.openscales.core.geometry
 {
+	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
-
-	import org.openscales.core.Util;
-	import org.openscales.core.basetypes.Bounds;
 
 	/**
 	 * Class to represent a point geometry.
@@ -41,11 +39,11 @@ package org.openscales.core.geometry
 			return distance;
 		}
 
-		public function equals(geom:Object):Boolean {
+		public function equals(point:Point):Boolean {
 			var equals:Boolean = false;
-			if (geom != null) {
-				equals = ((this.x == geom.x && this.y == geom.y) ||
-					(isNaN(this.x) && isNaN(this.y) && isNaN(geom.x) && isNaN(geom.y)));
+			if (point != null) {
+				equals = ((this.x == point.x && this.y == point.y) ||
+					(isNaN(this.x) && isNaN(this.y) && isNaN(point.x) && isNaN(point.y)));
 			}
 			return equals;
 		}

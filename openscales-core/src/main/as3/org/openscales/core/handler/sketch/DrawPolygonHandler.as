@@ -59,7 +59,7 @@ package org.openscales.core.handler.sketch
 
 				if(newFeature) {					
 					lring = new LinearRing([point]);
-					polygon = new Polygon(lring);
+					polygon = new Polygon([lring]);
 					var polygonFeature:PolygonFeature = new PolygonFeature(polygon);
 
 					// We create a point the first time to see were we have clicked

@@ -1,13 +1,14 @@
 package org.openscales.core.geometry
 {
 	/**
-	 * Class to represent a curve.
-	 * Extends MultiPoint class.
+	 * A Curve is a MultiPoint, whose points are assumed to be connected. 
+	 * 
+	 * To this end, we provide a length getter, which iterates through the points, summing the distances between them.
 	 */
 	public class Curve extends MultiPoint
 	{
 
-		public function Curve(points:Object) {
+		public function Curve(points:Array) {
 			this.componentTypes = ["org.openscales.core.geometry::Point"];
 			super(points);
 		}
