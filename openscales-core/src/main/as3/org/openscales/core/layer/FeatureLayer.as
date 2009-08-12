@@ -1,5 +1,7 @@
 package org.openscales.core.layer
 {
+	import flash.trace.Trace;
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
@@ -90,16 +92,21 @@ package org.openscales.core.layer
 		public function addFeature(feature:Feature):void {
 
 			feature.layer = this;
-
-			this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, feature));
+			
+			if(map)
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, feature));
+			else
+				trace("Warning : no FEATURE_PRE_INSERT dispatched because map event dispatcher is not defined");
 			
 			this.addChild(feature);
 
 			if (this.drawn) {
 				feature.draw();
 			}
-
-			this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature));
+			if(map)
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature));
+			else
+				trace("Warning : no FEATURE_INSERT dispatched because map event dispatcher is not defined");
 		}
 
 		public function removeFeatures(features:Array):void {
