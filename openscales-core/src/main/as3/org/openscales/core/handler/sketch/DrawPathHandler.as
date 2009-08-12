@@ -61,7 +61,7 @@ package org.openscales.core.handler.sketch
 
 		public function drawFinalPath():void{			
 			newFeature = true;
-
+			
 			//Change style of finished path
 			var style:Style = new Style();
 			style.strokeColor = 0x60FFE9;
@@ -136,6 +136,7 @@ package org.openscales.core.handler.sketch
 		public function set newFeature(newFeature:Boolean):void {
 			if(newFeature == true) {
 				lastPoint = null;
+				_firstPointRemoved = false;
 			}
 			_newFeature = newFeature;
 		}
