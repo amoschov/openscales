@@ -86,16 +86,16 @@ package org.openscales.core.feature {
 		 * Events Management
 		 *
 		 */
-		public function OnMouseHover(pevt:MouseEvent):void {
+		public function onMouseHover(pevt:MouseEvent):void {
 			this.buttonMode=true;
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER, this));
 		}
 
-		public function OnMouseMove(pevt:MouseEvent):void {
+		public function onMouseMove(pevt:MouseEvent):void {
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEMOVE, this));
 		}
 
-		public function OnMouseOut(pevt:MouseEvent):void {
+		public function onMouseOut(pevt:MouseEvent):void {
 			this.buttonMode=false;
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT, this));
 		}
@@ -171,13 +171,13 @@ package org.openscales.core.feature {
 		public function set layer(value:Layer):void {
 			this._layer=value;
 			if (this._layer != null) {
-				this.addEventListener(MouseEvent.MOUSE_OVER, this.OnMouseHover);
-				this.addEventListener(MouseEvent.MOUSE_OUT, this.OnMouseOut);
+				this.addEventListener(MouseEvent.MOUSE_OVER, this.onMouseHover);
+				this.addEventListener(MouseEvent.MOUSE_OUT, this.onMouseOut);
 				this.addEventListener(MouseEvent.CLICK, this.onMouseClick);
 				this.addEventListener(MouseEvent.DOUBLE_CLICK, this.onMouseDoubleClick);
 				this.addEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
 				this.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
-				this.addEventListener(MouseEvent.MOUSE_MOVE, this.OnMouseMove);
+				this.addEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);
 
 				this._layer.addEventListener(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND, hideHand);
 				this._layer.addEventListener(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND, showHand);
