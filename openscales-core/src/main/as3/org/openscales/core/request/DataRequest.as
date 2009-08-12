@@ -47,7 +47,7 @@ package org.openscales.core.request {
 					}
 				}		      
 
-				if(proxy!=null) {
+				if ((proxy != null) && (proxy != "")) {
 					finalUrl = proxy + encodeURIComponent(finalUrl);
 				}
 
