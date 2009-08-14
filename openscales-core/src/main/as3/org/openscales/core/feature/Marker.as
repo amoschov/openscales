@@ -1,5 +1,6 @@
 package org.openscales.core.feature {
 	import flash.display.Bitmap;
+	
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.layer.Layer;
@@ -21,8 +22,8 @@ package org.openscales.core.feature {
 		 * Boolean used to know if that marker has been draw. This is used to draw markers only
 		 *  when all the map and layer stuff are ready
 		 */
-		private var _drawn:Boolean=false;
-
+		private var _drawn:Boolean = false;
+		
 		/**
 		 * The image that will be drawn at the feature localization
 		 */
@@ -33,15 +34,25 @@ package org.openscales.core.feature {
 		 * Draw the marker
 		 */
 		override public function draw():void {
+			super.draw();
+			
 			if (!this._drawn) {
-				super.draw();
-				var marker:Bitmap=new this._image();
-				var px:Pixel=this.layer.map.getLayerPxFromLonLat(this.lonlat);
-				marker.x=px.x - marker.width / 2;
-				marker.y=px.y - marker.height / 2;
-				this.addChild(marker);
+				// Eventually remove old stuff
+				while (this.numChildren>0) {
+					this.removeChildAt(0);
+				}
+				this.addChild(new this._image());
 				this._drawn=true;
 			}
+			var marker:Bitmap = this.getChildAt(0) as Bitmap;
+			if(marker != null) {
+				var px:Pixel=this.layer.map.getLayerPxFromLonLat(this.lonlat);
+				this.x=px.x - marker.width / 2;
+				this.y=px.y - marker.height / 2;
+			} else {
+				trace("No marker found !");
+			}
+				
 		}
 
 		public function get image():Class {
@@ -50,6 +61,8 @@ package org.openscales.core.feature {
 
 		public function set image(value:Class):void {
 			this._image=value;
+			this._drawn = false;
+			
 		}
 	}
 }
