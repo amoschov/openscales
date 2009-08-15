@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:resize="flex.utils.ui.resize.*"
-	xmlns:control="org.openscales.component.control.*" xmlns:os="http://openscales.org" creationComplete="InitMiniMap();" >
+<control:Control xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:resize="flex.utils.ui.resize.*"
+	xmlns:control="org.openscales.component.control.*"
+	xmlns:os="http://openscales.org"
+	width="100" height="100"
+	creationComplete="initMiniMap();"
+	resize="resizeMiniMap();">
 	
 	<mx:Script>
 		<![CDATA[
@@ -17,9 +22,9 @@
 			import org.openscales.core.basetypes.LonLat;
 			import org.openscales.core.basetypes.Bounds;
 
-
 			[Bindable]
 			public var minMap:Map;
+			
 			public var rect:Shape;
 			public var sprite:Sprite
 			
@@ -31,224 +36,180 @@
 		
 			//initialize the overview map, the square and the event listeners		
 			override public function set map(value:Map):void {
-      		
-      		super.map = value;
-      		if (map!=null)
-      		{
-   
-				this.minMap.zoomToMaxExtent();
+	      		super.map = value;
+	      		if (map!=null)
+	      		{
+					this.minMap.zoomToMaxExtent();
 
-				sprite=new Sprite();
-				rect=new Shape();	
-				drawContainer = new Sprite();
-				
-				rect.graphics.lineStyle(1,0xFF0000);
-				rect.graphics.drawRect(0,0,100,50);
-				
-				sprite.addChild(rect);
-				minMap.addChild(sprite);
-				
-				minMap.addChild(drawContainer);
-
-				this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED,this.changeBaseLayer);
-		
-				this.map.addEventListener(MapEvent.DRAG_END,this.changeRectanglePosition);			
-				this.map.addEventListener(MapEvent.MOVE_END,this.changeRectanglePosition);			
-				this.map.addEventListener(MapEvent.ZOOM_END,this.changeRectanglePosition);
+					sprite = new Sprite();
+					rect = new Shape();	
+					drawContainer = new Sprite();
+					
+					rect.graphics.lineStyle(1,0xFF0000);
+					rect.graphics.drawRect(0,0,100,50);
+					
+					sprite.addChild(rect);
+					minMap.addChild(sprite);
+					minMap.addChild(drawContainer);
 	
-				this.minMap.addEventListener(MouseEvent.CLICK,this.clickOnMiniMap);
-				
-				this.minMap.addEventListener(MouseEvent.MOUSE_DOWN,startBox);
-            	this.minMap.addEventListener(MouseEvent.MOUSE_UP,endBox);
-				
-				this.updateRectToMap();
-
-      		}
-
+					this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED,this.changeBaseLayer);
+			
+					this.map.addEventListener(MapEvent.DRAG_END,this.changeRectanglePosition);			
+					this.map.addEventListener(MapEvent.MOVE_END,this.changeRectanglePosition);			
+					this.map.addEventListener(MapEvent.ZOOM_END,this.changeRectanglePosition);
+		
+					this.minMap.addEventListener(MouseEvent.CLICK,this.clickOnMiniMap);
+					
+					this.minMap.addEventListener(MouseEvent.MOUSE_DOWN,startBox);
+	            	this.minMap.addEventListener(MouseEvent.MOUSE_UP,endBox);
+					
+					this.updateRectToMap();
+	      		}
 			}
 			
-			//on creation complete , same as flexWidgets
-			public function InitMiniMap():void {
+			// on creation complete
+			private function initMiniMap():void {
 			    minMap = minimap.map;
+			}
 
+			private function resizeMiniMap():void {
+			    // TODO
 			}
 
 			
 			//this method allows to switch the base layer in the overview map, nothing happens when only openlayers exists in the overview map's base layer list
 			public function changeBaseLayer (event:LayerEvent):void  {
-
 			 	this.minMap.baseLayer.visible = false;
 			 	this.minMap.baseLayer = (this.minMap.getLayerByName(event.layer.name) as Layer);   //we select the base layer in the little map which has the same name
-
-			 	this.minMap.baseLayer.visible =true;
+			 	this.minMap.baseLayer.visible = true;
 			 	//this.minMap.baseLayer.redraw();
-	
 			}
 			 
 			 
 			 //the following methods set the position of the square in the little map when the map is dragged, moved or zoomed 
-			 public function changeRectanglePosition(event:MapEvent):void {
-			 	
+			public function changeRectanglePosition(event:MapEvent):void { 	
 				this.updateRectToMap();
-				
 			}
 				
 			public function updateRectToMap():void {	
 				var mapBounds:Bounds;
-	        if (this.minMap.projection!= this.map.projection) {
+		        if (this.minMap.projection != this.map.projection) {
 	           		this.map.extent.transform(
 	                this.map.projection, 
 	                this.minMap.projection);
 	                mapBounds = this.map.extent;
-            } 
-            else {
-            mapBounds = this.map.extent;
-            }
-        		var pxBounds:Bounds = this.getRectBoundsFromMapBounds(mapBounds);
-         	if (pxBounds) {
-            this.setRectPxBounds(pxBounds);
-        	} 
-								 	
+	            } else {
+		            mapBounds = this.map.extent;
+	            }
+	        	var pxBounds:Bounds = this.getRectBoundsFromMapBounds(mapBounds);
+	         	if (pxBounds) {
+		            this.setRectPxBounds(pxBounds);
+	        	} 
 			}
-			 
 		 
 			public function setRectPxBounds(pxBounds:Bounds):void {
-		
 		        var top:Number = Math.max(pxBounds.top, 0);
 		        var left:Number = Math.max(pxBounds.left, 0);
-		        var bottom:Number = Math.min(pxBounds.top + Math.abs(pxBounds.height),
-		                              this.minMap.size.h);
-		        var right:Number = Math.min(pxBounds.left + pxBounds.width,
-		                             this.minMap.size.w );
+		        var bottom:Number = Math.min(pxBounds.top + Math.abs(pxBounds.height), this.minMap.size.h);
+		        var right:Number = Math.min(pxBounds.left + pxBounds.width, this.minMap.size.w );
 		        var width:Number = Math.max(right - left, 0);
 		        var height:Number = Math.max(bottom - top, 0);
        	    
-       	    if(width < this.minRectSize || height < this.minRectSize) {
-
-	            var rLeft:Number = left + (width / 2) - (this.minRectSize / 2);
-	            var rTop:Number = top + (height / 2) - (this.minRectSize / 2);
-	            this.rect.y = Math.round(rTop);
-	            this.rect.x = Math.round(rLeft);
-	            this.rect.height = this.minRectSize;
-	            this.rect.width = this.minRectSize;
-            
-        	} 
-        	
-        	else {
-
-	            this.rect.y = Math.round(top);
-	            this.rect.x = Math.round(left);
-	            this.rect.height = Math.round(height);
-	            this.rect.width = Math.round(width);
-      	    }
+	       	    if(width < this.minRectSize || height < this.minRectSize) {
+		            var rLeft:Number = left + (width / 2) - (this.minRectSize / 2);
+		            var rTop:Number = top + (height / 2) - (this.minRectSize / 2);
+		            this.rect.y = Math.round(rTop);
+		            this.rect.x = Math.round(rLeft);
+		            this.rect.height = this.minRectSize;
+		            this.rect.width = this.minRectSize;
+	        	} else {
+		            this.rect.y = Math.round(top);
+		            this.rect.x = Math.round(left);
+		            this.rect.height = Math.round(height);
+		            this.rect.width = Math.round(width);
+				}
 		        this.rectPxBounds = new Bounds(
 		            Math.round(left), Math.round(bottom),
 		            Math.round(right), Math.round(top)
-        	);
-    		
+        		);
     		}
-			 
-	 
+			
 			public function getRectBoundsFromMapBounds(lonLatBounds:Bounds):Bounds {
-
-		        var leftBottomLonLat:LonLat = new LonLat(lonLatBounds.left,
-		                                                     lonLatBounds.bottom);
-		        var rightTopLonLat:LonLat = new LonLat(lonLatBounds.right,
-		                                                   lonLatBounds.top);
+		        var leftBottomLonLat:LonLat = new LonLat(lonLatBounds.left, lonLatBounds.bottom);
+		        var rightTopLonLat:LonLat = new LonLat(lonLatBounds.right, lonLatBounds.top);
 		        var leftBottomPx:Pixel = this.getOverviewPxFromLonLat(leftBottomLonLat);
 		        var rightTopPx:Pixel = this.getOverviewPxFromLonLat(rightTopLonLat);
 		        var bounds:Bounds;
-	        if (leftBottomPx && rightTopPx) {
-	            bounds = new Bounds(leftBottomPx.x, leftBottomPx.y,
-	                                           rightTopPx.x, rightTopPx.y);
-	        }
-	        return bounds;
-    		}
-			
-			
+				if (leftBottomPx && rightTopPx) {
+					bounds = new Bounds(leftBottomPx.x, leftBottomPx.y, rightTopPx.x, rightTopPx.y);
+				}
+				return bounds;
+			}
 			
 			public function getOverviewPxFromLonLat(lonlat:LonLat):Pixel {
 		        var res:Number  = this.minMap.resolution;
 		        var extent:Bounds = this.minMap.extent;
 		        var px:Pixel = null;
-	        if (extent) {
-	            px = new Pixel(
+	        	if (extent) {
+	            	px = new Pixel(
 	                        Math.round(1/res * (lonlat.lon - extent.left)),
 	                        Math.round(1/res * (extent.top - lonlat.lat)));
-	        } 
+	        	} 
         		return px;
     		}
     	
-    	
     	    //the following methods center the map on the correct position when we click somewhere on the little map to move the square
     		public function clickOnMiniMap(event:MouseEvent):void {   		
-
-    		if((Math.abs(this.minMap.mouseX-this.mouseXInitial)<=5)||(Math.abs(this.minMap.mouseY-this.mouseYInitial)<=5))
-            {
-   		
-	    		this.rect.x = (this.minMap.mouseX)-((this.rect.width)/2);
-	    		this.rect.y = (this.minMap.mouseY)-((this.rect.height)/2);
+	    		if((Math.abs(this.minMap.mouseX-this.mouseXInitial)<=5)||(Math.abs(this.minMap.mouseY-this.mouseYInitial)<=5))
+	            {
+		    		this.rect.x = (this.minMap.mouseX)-((this.rect.width)/2);
+		    		this.rect.y = (this.minMap.mouseY)-((this.rect.height)/2);
+		    		
+		    		this.rectPxBounds.left = this.rect.x;
+		    		this.rectPxBounds.right = this.rect.width+this.rect.x;
+		    		this.rectPxBounds.top = this.rect.y;
+		    		this.rectPxBounds.bottom = this.rect.y+this.rect.height;
+		    		
+		    		updateMapToRect();
 	    		
-	    		this.rectPxBounds.left=this.rect.x;
-	    		this.rectPxBounds.right=this.rect.width+this.rect.x;
-	    		this.rectPxBounds.top=this.rect.y;
-	    		this.rectPxBounds.bottom=this.rect.y+this.rect.height;
-	    		
-	    		updateMapToRect();
-    		
-	        }
-            
+		        }
+				
 	     		this.map.addEventListener(MapEvent.DRAG_END,this.changeRectanglePosition);
 	     		this.map.addEventListener(MapEvent.ZOOM_END,this.changeRectanglePosition);
 	     		this.map.addEventListener(MapEvent.MOVE_END,this.changeRectanglePosition);	             
-    		
     		}
-    	
 
 	    	public function updateMapToRect(): void {
-	    		
-	        	var lonLatBounds:Bounds = this.getMapBoundsFromRectBounds(this.rectPxBounds);
-	        if (this.minMap.projection != this.map.projection) {
-	            lonLatBounds.transform(
-	                this.minMap.projection,
-	                this.map.projection);
+				var lonLatBounds:Bounds = this.getMapBoundsFromRectBounds(this.rectPxBounds);
+				if (this.minMap.projection != this.map.projection) {
+					lonLatBounds.transform(this.minMap.projection, this.map.projection);
 	                lonLatBounds = this.getMapBoundsFromRectBounds(this.rectPxBounds);
-			}
-
+				}
         		this.map.zoomToExtent(lonLatBounds);
- 
         	}
     
-    
-	        public function getMapBoundsFromRectBounds(pxBounds:Bounds):Bounds  {
-	        	
+			public function getMapBoundsFromRectBounds(pxBounds:Bounds):Bounds {
 		        var leftBottomPx:Pixel = new Pixel(pxBounds.left,pxBounds.bottom);
 		        var rightTopPx:Pixel = new Pixel(pxBounds.right,pxBounds.top);
 		        var leftBottomLonLat:LonLat = this.getLonLatFromOverviewPx(leftBottomPx);
 		        var rightTopLonLat:LonLat = this.getLonLatFromOverviewPx(rightTopPx);
 	       		return new Bounds(leftBottomLonLat.lon, leftBottomLonLat.lat,rightTopLonLat.lon, rightTopLonLat.lat);
-	 	   }
-    
-    
+			}
+			
 	    	public function getLonLatFromOverviewPx(overviewMapPx:Pixel):LonLat {
 		        var size:Size = this.minMap.size;
 		        var res:Number  = this.minMap.resolution;
 		        var center:LonLat = this.minMap.extent.centerLonLat;
-		    
 		        var delta_x:Number = overviewMapPx.x - (size.w / 2);
 		        var delta_y:Number = overviewMapPx.y - (size.h / 2);
-	        
-		        return new LonLat(center.lon + delta_x * res ,
-		                                     center.lat - delta_y * res); 
+		        return new LonLat(center.lon + delta_x * res, center.lat - delta_y * res); 
 	    	}
-    
-    
+			
 	        //the following methods allow to select a zone in the little map
 	    	public var mouseXInitial:Number;
 	    	public var mouseYInitial:Number;
     
      		public function startBox(e:MouseEvent) : void {
-     				
      			this.map.removeEventListener(MapEvent.DRAG_END,this.changeRectanglePosition);
      			this.map.removeEventListener(MapEvent.ZOOM_END,this.changeRectanglePosition);
      			this.map.removeEventListener(MapEvent.MOVE_END,this.changeRectanglePosition); 
@@ -262,38 +223,35 @@
               	this.lastZoom = this.minMap.getLonLatFromMapPx(new Pixel(minMap.mouseX, minMap.mouseY));
             }
     
-    
             public function endBox(e:MouseEvent) : void {
-                
                 drawContainer.graphics.clear();
                		
-            if((Math.abs(this.minMap.mouseX-this.mouseXInitial)>5)||(Math.abs(this.minMap.mouseY-this.mouseYInitial)>5))
-            {
-               	var nowZoom:LonLat = this.minMap.getLonLatFromMapPx(new Pixel(minMap.mouseX, minMap.mouseY));
-               	map.zoomToExtent(new Bounds(Math.min(lastZoom.lon,nowZoom.lon),
-               								Math.min(nowZoom.lat,lastZoom.lat),
-               								Math.max(lastZoom.lon,nowZoom.lon),
-               								Math.max(nowZoom.lat,lastZoom.lat)));
-               		
-               	this.rect.x = this.mouseXInitial;
-		    	this.rect.y = this.mouseYInitial;
-		    	this.rect.width=Math.abs(this.mouseXInitial-this.minMap.mouseX);
-		    	this.rect.height=Math.abs(this.mouseYInitial-this.minMap.mouseY);
-		    		
-		    	this.rectPxBounds.left=this.rect.x;
-		    	this.rectPxBounds.right=this.rect.width+this.rect.x;
-		    	this.rectPxBounds.top=this.rect.y;
-		    	this.rectPxBounds.bottom=this.rect.y+this.rect.height;
-		    		
-		    	this.map.addEventListener(MapEvent.DRAG_END,this.changeRectanglePosition);
-     			this.map.addEventListener(MapEvent.ZOOM_END,this.changeRectanglePosition);
-     			this.map.addEventListener(MapEvent.MOVE_END,this.changeRectanglePosition);	
-		    		
-            }
-		    		
+            	if((Math.abs(this.minMap.mouseX-this.mouseXInitial)>5)||(Math.abs(this.minMap.mouseY-this.mouseYInitial)>5))
+            	{
+	               	var nowZoom:LonLat = this.minMap.getLonLatFromMapPx(new Pixel(minMap.mouseX, minMap.mouseY));
+	               	map.zoomToExtent(new Bounds(Math.min(lastZoom.lon,nowZoom.lon),
+	               								Math.min(nowZoom.lat,lastZoom.lat),
+	               								Math.max(lastZoom.lon,nowZoom.lon),
+	               								Math.max(nowZoom.lat,lastZoom.lat)));
+	               		
+	               	this.rect.x = this.mouseXInitial;
+			    	this.rect.y = this.mouseYInitial;
+			    	this.rect.width=Math.abs(this.mouseXInitial-this.minMap.mouseX);
+			    	this.rect.height=Math.abs(this.mouseYInitial-this.minMap.mouseY);
+			    		
+			    	this.rectPxBounds.left=this.rect.x;
+			    	this.rectPxBounds.right=this.rect.width+this.rect.x;
+			    	this.rectPxBounds.top=this.rect.y;
+			    	this.rectPxBounds.bottom=this.rect.y+this.rect.height;
+			    		
+			    	this.map.addEventListener(MapEvent.DRAG_END,this.changeRectanglePosition);
+	     			this.map.addEventListener(MapEvent.ZOOM_END,this.changeRectanglePosition);
+	     			this.map.addEventListener(MapEvent.MOVE_END,this.changeRectanglePosition);	
+            	}
+				
 		    	this.lastZoom = null;               	
-            }
-
+			}
+			
             public function expandArea(e:MouseEvent) : void {
             	this.lastZoom = this.minMap.getLonLatFromMapPx(new Pixel(minMap.mouseX, minMap.mouseY));
                 var pixel:Pixel = minMap.getMapPxFromLonLat(lastZoom);
@@ -302,19 +260,25 @@
                 drawContainer.graphics.drawRect(mouseXInitial,mouseYInitial,minMap.mouseX - pixel.x,minMap.mouseY - pixel.y);
                 drawContainer.graphics.endFill();
             }
-
 		]]>
 	</mx:Script>
 
 
-	
-	<os:Map id="minimap" height="100%" width="100%" maxResolution="0.703125">   <!--max resolution mandatory else no map display-->
+	<os:Map id="minimap" height="100%" width="100%"
+		maxResolution="0.703125">
+		<!--max resolution mandatory else no map display-->
 						   
-			<os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
+		<!--os:WMSC name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="true" />
+		<os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" /-->
 
-			<os:Extent left="-124.731422" bottom="24.955967" right="-66.969849" top="49.371735" />
-				
+		<!-- A EPSG:900913 baselayer (OSM) -->
+		<os:Mapnik name="Mapnik"
+				   numZoomLevels="20"
+				   maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
+				   minResolution="0.5971642833709717"
+				   maxResolution="156543.0339"
+				   isBaseLayer="true" />
+
 	</os:Map>
 		
-
 </control:Control>
