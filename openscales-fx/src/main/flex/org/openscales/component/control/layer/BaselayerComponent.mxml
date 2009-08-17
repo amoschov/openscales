@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%">
+<mx:Script>
+	<![CDATA[
+		import org.openscales.core.layer.Layer;
+		import org.openscales.core.events.LayerEvent;
+		import org.openscales.core.Map;
+		
+		[Bindable]
+		private var _baselayerArray:Array;
+		
+		[Bindable]
+		private var _baseLayerPrompt:String = "----";
+		
+		public function set baseLayerPrompt(value:String):void {
+			this._baseLayerPrompt = value;
+		}
+    	public function get baselayerArray():Array {
+    		return this._baselayerArray;
+    	}
+    	
+    	public function set baselayerArray(value:Array):void {
+    		this._baselayerArray = value;
+    		BaselayerCombo.dataProvider = value;
+    		
+    	}
+    	public function layerOpacity(event:Event):void
+	    {
+	       layer.alpha = (event.target as HSlider).value/100;
+	    }
+	    
+	    /**
+       * Get the layer selected into the combobox
+       *
+       * @return return the layer
+       */
+      private function get layer():Layer {
+      	return ((this.parent.parent as LayerSwitcher).map.getLayerByName((this.BaselayerCombo.text)) as Layer)
+      }
+      
+      private function onDrag(event:Event):void {
+        event.stopPropagation();
+      }
+      
+      private function baselayerCombobox_labelFunc(item:Layer):String {
+               
+                var label:String;
+                label = item.name;
+                return label;
+            }
+            
+      private function closeHandler(event:Event):void {
+         	layer.map.baseLayer = (event.currentTarget as ComboBox).selectedItem as Layer;
+         	layer.map.baseLayer.redraw();
+      }
+		
+	]]>
+</mx:Script>
+
+<mx:ComboBox id="BaselayerCombo" prompt="{_baseLayerPrompt}" labelFunction="baselayerCombobox_labelFunc" close="closeHandler(event);"/>
+<mx:HBox id="Hbox2" width="100%">
+        <mx:Label text="0%"/>
+    <mx:HSlider id="opacityControl" width="100" height="5"  minimum="0" maximum="100"
+      change="layerOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
+      <mx:Label text="100%"/>
+  </mx:HBox>	
+</mx:VBox>

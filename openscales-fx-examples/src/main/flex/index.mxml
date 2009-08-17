@@ -6,7 +6,7 @@
 	<mx:TabNavigator width="100%"
 					 height="100%">
 		<os:FlexWidgets label="Flex widgets"/>
-		<os:OpenStreetMap label="OSM and Reprojection"/>
+		<os:OpenStreetMap label="OSM and Reprojection"/>		
 		<os:MetacartaWMSC label="Metacarta WMS-C"/>
 		<os:GeovistaWMSCWFS label="WMS-C layer and 2 WFS"/>
 		<os:MetacartaWFSPolygons label="Metacarta WFS Polygons"/>
@@ -14,6 +14,5 @@
 		<os:GermanyWMS label="Germany WMS"/>
 		<os:OverView label="Overview tool"/>
 		<os:SecurityMap label="Security"/>
-		<os:CatalogTree label="Catalog tree"/>
 	</mx:TabNavigator>
 </mx:Application>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="75" paddingRight="17">
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="45" horizontalScrollPolicy="off" verticalScrollPolicy="off" paddingRight="17">
   <mx:Script>
     <![CDATA[
+    	import mx.controls.Label;
       import mx.controls.List;
       import mx.controls.Text;
       import org.openscales.core.events.LayerEvent;
@@ -56,7 +57,7 @@
        */
       public function layerOpacity(event:Event):void
       {
-        layer.alpha = (event.target as HSlider).value;
+        layer.alpha = (event.target as HSlider).value/100;
       }
 
       /**
@@ -97,10 +98,9 @@
        */
             override public function set data(value:Object):void {
                 super.data = value;
-
+				
         if((this.layer != null) && (displayControl != null))
         {
-        	
         	(data as Layer).map.addEventListener(LayerEvent.LAYER_IN_RANGE,inOutRange);
         	(data as Layer).map.addEventListener(LayerEvent.LAYER_OUT_RANGE,inOutRange);
         	
@@ -109,7 +109,10 @@
 
           if(this.layer.isBaseLayer == true)//if the layer is a base layer
           {
-       
+       		ArrowUp.visible = false;
+       		ArrowUp.enabled = false;
+       		ArrowDown.visible = false;
+       		ArrowDown.enabled = false;
             var radioButton:RadioButton = new RadioButton();
             radioButton.id = this.layer.name;
             radioButton.percentHeight = 100;
@@ -121,14 +124,18 @@
           }
           else
           {
-            var checkBox:CheckBox = new CheckBox();
+            /* var checkBox:CheckBox = new CheckBox();
             checkBox.id = this.layer.name;
             checkBox.percentHeight = 100;
             checkBox.percentWidth = 100;
             checkBox.label = this.layer.name;
              checkBox.selected = this.layer.visible;
              checkBox.addEventListener(MouseEvent.CLICK,layerVisible); 
-            displayControl.addChild(checkBox);
+            displayControl.addChild(checkBox); */
+            var label:Label = new Label();
+            label.text = this.layer.name;
+            label.percentWidth = 100;
+            displayControl.addChild(label);
 
           }
 
@@ -160,21 +167,45 @@
       private function onDrag(event:Event):void {
         event.stopPropagation();
       }
+      
+      public function changeLayerOrder(event:MouseEvent):void {
+      		var numBaseLayer:int = (this.parent.parent.parent.parent as LayerSwitcher).baseLayerArray.length;
+      		var numOverlays:int = (this.parent.parent.parent.parent as LayerSwitcher).overlayArray.length;
+      		
+	      if((event.currentTarget as Image).name == "ArrowUp") //if we drag and drop the layer down
+	      {
+	      	if(this.layer.zindex+1 <= numBaseLayer+numOverlays-1)
+	      	{
+	      		this.layer.zindex = this.layer.zindex + 1;
+	      	}  
+	      }
+	      if((event.currentTarget as Image).name == "ArrowDown")	//if we drag and drop the layer up
+	      {
+	      	if(this.layer.zindex-1 > numBaseLayer-1)
+	      	{
+	      		this.layer.zindex = this.layer.zindex - 1;
+	      	}
+	        
+	      } 
+	      this.layer.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_CHANGED,this.layer));
+      }
 
 
     ]]>
   </mx:Script>
 
   <mx:HBox width="100%">
-    <mx:Canvas id="displayControl" textAlign="left" width="100%"/>
-    <mx:Button id="zoomButton" toolTip="Center Map" icon="@Embed('/org/openscales/component/images/zoomin.swf')" click="this.setLayerExtent(event)"/>
-    <mx:Button id="deleteButton" toolTip="Delete" icon="@Embed('/org/openscales/component/images/cross.swf')" click="deleteLayer(event)"/>
+    <mx:Canvas id="displayControl" width="128"/>
+    <!--<mx:Button id="zoomButton" width="30" height="20" toolTip="Center Map" icon="@Embed('/org/openscales/component/images/zoomin.swf')" click="this.setLayerExtent(event)"/>-->
+    <mx:Image id="ArrowUp" name="ArrowUp" source="@Embed('/org/openscales/component/images/ArrowUp.swf')" click="changeLayerOrder(event)"/>
+    <mx:Image id="ArrowDown" name="ArrowDown" source="@Embed('/org/openscales/component/images/ArrowDown.swf')" click="changeLayerOrder(event)"/>
+    <mx:Button id="deleteButton" width="20" height="10" toolTip="Delete" icon="@Embed('/org/openscales/component/images/cross.swf')" click="deleteLayer(event)"/>
   </mx:HBox>
-  <mx:HBox width="100%">
-        <mx:Label text="Opacity"/>
-    <mx:HSlider width="100%" id="opacityControl" minimum="0" maximum="1"
-      labels="{['0%','100%']}" change="layerOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
-
+  <mx:HBox id="Hbox2" width="100%">
+        <mx:Label text="0%"/>
+    <mx:HSlider width="100" height="5" id="opacityControl" minimum="0" maximum="100"
+      change="layerOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
+      <mx:Label text="100%"/>
   </mx:HBox>
 
 </mx:VBox>
