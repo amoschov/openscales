@@ -31,7 +31,6 @@
 	
 	
 	<component id="LayerSwitcherComponent" class="org.openscales.component.control.layer.LayerSwitcher" />
-	<component id="CatalogTreeComponent" class="org.openscales.component.control.layer.CatalogTreeComponent" />
   	<component id="MousePositionComponent" class="org.openscales.component.control.MousePosition" />
 	<component id="PanComponent" class="org.openscales.component.control.Pan" />
 	<component id="ZoomComponent" class="org.openscales.component.control.Zoom" />
