@@ -14,6 +14,5 @@
 		<os:GermanyWMS label="Germany WMS"/>
 		<os:OverView label="Overview tool"/>
 		<os:SecurityMap label="Security"/>
-		<os:CatalogTree label="CatalogTree"/>
 	</mx:TabNavigator>
 </mx:Application>
