@@ -57,7 +57,6 @@
 <classEntry path="org.openscales.core.feature.State"/>
 <classEntry path="org.openscales.core.feature.Style"/>
 <classEntry path="org.openscales.core.feature.VectorFeature"/>
-<classEntry path="org.openscales.core.format.ConfigurationFormat"/>
 <classEntry path="org.openscales.core.format.Format"/>
 <classEntry path="org.openscales.core.format.GMLFormat"/>
 <classEntry path="org.openscales.core.format.WFSFormat"/>

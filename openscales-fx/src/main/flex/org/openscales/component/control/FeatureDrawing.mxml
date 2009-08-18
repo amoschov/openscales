@@ -73,7 +73,7 @@
 				//Properties of selectFeatureHandler
 				this.selectFeatureHandler = new SelectFeature(this.map,drawLayer,true);
 				this.selectFeatureHandler.select = onSelectFeature;
-				this.selectFeatureHandler.selectBySelectBox = onSelectBySelectBox;
+				this.selectFeatureHandler.selectBySelectBox = onSelectBySelectBox; 
 				
 				//Properties of MultiHandler
 				this.multiPointHandler.map = this.map;

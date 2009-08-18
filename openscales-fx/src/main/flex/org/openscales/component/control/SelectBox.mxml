@@ -32,6 +32,7 @@
 			private var lastSelection:LonLat = null;
 			private var fillColor:uint = 0x660000;
 	        private var drawContainer:Sprite = new Sprite();
+	        private var _ctrlStatus:Boolean=false;
 
 			private function activate(evt:DrawingEvent):void{
 				this.enabled = true;
@@ -104,6 +105,7 @@
                		activeDrag();
                		//delete the rectangle
                		drawContainer.graphics.clear();
+               		_ctrlStatus = e.ctrlKey;
                		//Get the last rectangle point
                		var nowSelection:LonLat = this.map.getLonLatFromMapPx(new Pixel(map.mouseX, map.mouseY));
                		featureInclude(new Bounds(Math.min(lastSelection.lon,nowSelection.lon),
@@ -232,9 +234,9 @@
             					}
             				}
             			}
-            			this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTEDBOX,featuresToSelect));
-            		}
+            		}          		
             	}
+            	this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTEDBOX,featuresToSelect, _ctrlStatus));
             }
 
             public function activeDrag():void{

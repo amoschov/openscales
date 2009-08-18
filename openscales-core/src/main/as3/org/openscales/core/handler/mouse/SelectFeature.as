@@ -125,29 +125,51 @@ package org.openscales.core.handler.mouse
 				if(this._selectBySelectBox!=null){
 					this._ctrl = pevt.ctrlPressed;
 					this._featureToSelect = pevt.features;
+					this.currentfeature = pevt.features[0];
 					this._selectBySelectBox(pevt);
 				} 				
 			}
 		}
 		
 		public function OnSelectionBySelectBox():void{			
-			var f:VectorFeature;
-			if(!_ctrl){
+			var f:VectorFeature, f1:VectorFeature;
+			if(!ctrl){
 				selectFeauturesLength=0;
 				for each(f in selectFeatures){
 					if(f != null){
-						if(f.selected){f.style = f.originalStyle;f.selected=false;f.layer.redraw();selectFeatures=null;selectFeatures = new Array(currentfeature);}
+						if(f.selected)
+						{
+							var find:Boolean=false;
+							for each (f1 in _featureToSelect)
+							{
+								if(f == f1){find=true;}
+							}
+							if(!find){
+								f.style = f.originalStyle;f.selected=false;f.layer.redraw();selectFeatures=null;selectFeatures = new Array(currentfeature);
+							}
+						}
 					}							
 				}
 				iteratorFeatures=0;
+				
+				
 			}
-			
 			for each (f in _featureToSelect){
 				currentfeature = f;
-				iteratorFeatures++;
-				selectFeauturesLength++;
-				ChangeToSelected();
-			}
+				if(!currentfeature.selected){
+					iteratorFeatures++;
+					selectFeauturesLength++;
+					ChangeToSelected();
+				}
+				else{
+					currentfeature.selected = false;
+					currentfeature.style = f.originalStyle;								
+					selectFeatures[iteratorFeatures]=null;
+					iteratorFeatures--; 
+					selectFeauturesLength--;
+					currentfeature.layer.redraw();
+				}
+			}							
 		}
 
 		public function OnSelection():void{
