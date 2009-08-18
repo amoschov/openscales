@@ -1,10 +1,9 @@
 package org.openscales.core.handler.sketch
 {	
-	import flash.events.MouseEvent;
-
 	import org.openscales.core.Map;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.proj4as.ProjProjection;
 
 	/**
 	 * Handler base class for Drawing Handler
@@ -18,7 +17,15 @@ package org.openscales.core.handler.sketch
 			super(map, active);
 			this.drawLayer = drawLayer;
 		}
-
+		
+		override public function set map(value:Map):void{
+			if(value!=null){
+			super.map=value;
+			if(map.baseLayer!=null){
+					this.drawLayer.projection=new ProjProjection(this.map.baseLayer.projection.srsCode);
+				}
+			}
+		}
 		//Getters and setters
 
 		public function get drawLayer():VectorLayer{
