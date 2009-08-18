@@ -21,7 +21,7 @@ package org.openscales.core.geometry
      	* The first ring (this.component[0])is the outer bounds of the polygon and 
      	* all subsequent rings (this.component[1-n]) are internal holes.
      	*
-     	* Params:
+     	* Parameters:
      	* @components:Array(LinearRing)
      	*/
     	public function Polygon(components:Array=null){
@@ -80,7 +80,7 @@ package org.openscales.core.geometry
      	* Test if a point is inside a polygon.  Points on a polygon edge are
      	*     considered inside.
      	*
-     	* Params:
+     	* Parameters:
      	* point - {Point}
      	*
      	* Returns:
