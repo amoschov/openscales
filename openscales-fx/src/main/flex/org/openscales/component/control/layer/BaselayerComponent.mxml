@@ -14,47 +14,37 @@
 		
 		[Bindable]
 		private var _baseLayerVisibility:Number=100;
-		
-		public function set baseLayerPrompt(value:String):void {
-			this._baseLayerPrompt = value;
-		}
-		public function set baseLayerVisibility(value:Number):void {
-			this._baseLayerVisibility = value*100;
-		}
-    	public function get baseLayerArray():Array {
-    		return this._baselayerArray;
-    	}
-    	
-    	public function set baseLayerArray(value:Array):void {
-    		this._baselayerArray = value;
-    		BaselayerCombo.dataProvider = value;
-    		
-    	}
+		    	
+		 /**
+       * Change the opacity of the layer
+       *
+       * @param event event send by a slide
+       */
     	public function layerOpacity(event:Event):void
 	    {
 	       layer.alpha = (event.target as HSlider).value/100;
 	    }
-	    
-	    /**
-       * Get the layer selected into the combobox
-       *
-       * @return return the layer
-       */
-      private function get layer():Layer {
-      	return ((this.parent.parent as LayerSwitcher).map.getLayerByName((this.BaselayerCombo.text)) as Layer)
-      }
-      
+	         
       private function onDrag(event:Event):void {
         event.stopPropagation();
       }
       
+      /**
+      * Add name of layer into the comboBox
+      * 
+      * @param item it's a layer
+      */
       private function baselayerCombobox_labelFunc(item:Layer):String {
                
                 var label:String;
                 label = item.name;
                 return label;
             }
-            
+      /**
+      * Change the base layer
+      * 
+      * @param event a comboBox event
+      */
       private function closeHandler(event:Event):void {
       	if((event.target as ComboBox).selectedItem != null)
       	{
@@ -67,6 +57,32 @@
          		opacityControl.value = layer.map.baseLayer.alpha*100;
       		}
       	}    	
+      }
+      //Getters and setters
+      public function set baseLayerPrompt(value:String):void {
+			this._baseLayerPrompt = value;
+		}
+		
+		public function set baseLayerVisibility(value:Number):void {
+			this._baseLayerVisibility = value*100;
+		}
+		
+    	public function get baseLayerArray():Array {
+    		return this._baselayerArray;
+    	}
+    	
+    	public function set baseLayerArray(value:Array):void {
+    		this._baselayerArray = value;
+    		BaselayerCombo.dataProvider = value;
+    		
+    	}
+    	/**
+       * Get the layer selected into the combobox
+       *
+       * @return return the layer
+       */
+      private function get layer():Layer {
+      	return ((this.parent.parent as LayerSwitcher).map.getLayerByName((this.BaselayerCombo.text)) as Layer)
       }
 		
 	]]>
