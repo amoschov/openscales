@@ -50,6 +50,8 @@
             }
             
       private function closeHandler(event:Event):void {
+      	if((event.target as ComboBox).selectedItem != null)
+      	{
       		if(this.layer.map.baseLayer.name != (event.target as ComboBox).selectedItem.name)
       		{
       			layer.map.baseLayer.visible = false;
@@ -57,7 +59,7 @@
       			layer.map.baseLayer.visible = true;
          		layer.map.baseLayer.redraw();
       		}
-         	
+      	}    	
       }
 		
 	]]>
