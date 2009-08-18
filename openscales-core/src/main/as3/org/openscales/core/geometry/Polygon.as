@@ -84,7 +84,7 @@ package org.openscales.core.geometry
      	* point - {Point}
      	*
      	* Returns:
-     	* Number The point is inside the polygon.  Returns 1 if the
+     	* Boolean | Number The point is inside the polygon.  Returns 1 if the
      	*     point is on an edge.  Returns boolean otherwise.
      	*/
      	public function containsPoint(point:Point):Boolean {
@@ -97,13 +97,13 @@ package org.openscales.core.geometry
             	if(contained !== 1) {
                 	if(contained && numRings > 1) {
                     	// check interior rings
-                    	var hole;
+                    	var hole:Boolean;
                     	for(i=1; i<numRings; ++i) {
                         	hole = this.components[i].containsPoint(point);
                         	if(hole) {
                             	if(hole === 1) {
                                 	// on edge
-                                	contained = 1;
+                                	contained = false;
                             	} else {
                                 	// in hole
                                 	contained = false;
@@ -195,7 +195,7 @@ package org.openscales.core.geometry
      	*     properties represent the coordinates of the closest point on the
      	*     target geometry.
      	*/
-    	// TODO : backportage from OpenLayers not finish
+    	// TODO : backport from OpenLayers not finish
     	
     	/* private function distanceTo(geometry:Geometry, options:Object) {
         	var edge = !(options && options.edge === false); // === compare value and type
