@@ -10,9 +10,9 @@ package org.openscales.core.events
 	{
 
 		/**
-		 * feature concerned by the event.
+		 * An array of features concerned by the event.
 		 */
-		private var _feature:Feature = null;
+		private var _features:Array = null;
 
 
 		/**
@@ -48,10 +48,10 @@ package org.openscales.core.events
 		 * @param active to determinates if the handler is active
 		 */
 
-		public function FeatureEvent(type:String,feature:Feature,ctrlStatus:Boolean = false,bubbles:Boolean=false,cancelable:Boolean=false,bounds:Bounds = null) 
+		public function FeatureEvent(type:String,features:Array,ctrlStatus:Boolean = false,bubbles:Boolean=false,cancelable:Boolean=false,bounds:Bounds = null) 
 		{
 			super(type, bubbles, cancelable);
-			this._feature=feature;
+			this._features=features;
 			this._ctrlPressed = ctrlStatus;
 		}
 
@@ -60,23 +60,20 @@ package org.openscales.core.events
 		 * Vectorfeature concerned by the event.
 		 * @default null
 		 */
-		public function get feature():Feature
-		{
-			return this._feature;
+		public function get features():Array{
+			return this._features;
 		}
 		/**
 		 * @private
 		 */
-		public function set feature(value:Feature):void
-		{
-			this._feature=value;
+		public function set features(value:Array):void{
+			this._features=value;
 		}
 		/**
 		 * To know if ctrl key is pressed
 		 * @default false
 		 */
-		public function get ctrlPressed():Boolean
-		{
+		public function get ctrlPressed():Boolean{
 			return this._ctrlPressed;
 		}
 	}

@@ -32,12 +32,6 @@
 			private var lastSelection:LonLat = null;
 			private var fillColor:uint = 0x660000;
 	        private var drawContainer:Sprite = new Sprite();
-	        private var pointFeature:PointFeature;
-	        private var multiPoint:MultiPoint;
-	        private var multiLineString:MultiLineString;
-	        private var linearRing:LinearRing;
-	        private var multiPolygon:MultiPolygon;
-	        private var feature:VectorFeature;
 
 			private function activate(evt:DrawingEvent):void{
 				this.enabled = true;
@@ -135,21 +129,22 @@
             }
             
             /**
-            * This function look for features that are in the rectangle draw previously to select them
+            * This function looks for features that are in the rectangle draw previously to select them
             * 
             * @param bounds The rectangle bounds that contain features to select
             */
             public function featureInclude(bounds:Bounds):void 
             {
+            	var featuresToSelect:Array = new Array();
             	for(var i:int = 0;i<this.map.layers.length;i++)
             	{
             		//if layer is a feature
-            		if(this.map.layers[i] is FeatureLayer)
-            		{
+            		if(this.map.layers[i] is FeatureLayer){
+            			
             			//we count the number of features draw on the map           			
             			for(var k:int = 0;k<(this.map.layers[i] as FeatureLayer).numChildren;k++)
             			{
-	            			feature = ((this.map.layers[i] as VectorLayer).features[k]);
+	            			var feature:Feature = ((this.map.layers[i] as VectorLayer).features[k]);
 							
             				if(feature is PointFeature)
             				{ 
@@ -158,14 +153,14 @@
             					{
             						if((feature as PointFeature).point.y <= bounds.top && (feature as PointFeature).point.y >= bounds.bottom)
             						{
-            							//We dispatch an event in order to select it
-            							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK,(feature as PointFeature),true));
+            							//We add the feature to the tab
+            							featuresToSelect.push(feature);
             						}
             					} 
             				 } 
             				else if(feature is MultiPointFeature)
             				{
-            					multiPoint = ((feature as MultiPointFeature).points as MultiPoint);
+            					var multiPoint:MultiPoint = ((feature as MultiPointFeature).points as MultiPoint);
             					for(var j:int = 0;j<multiPoint.components.length;j++)
             					{
             						//We compare the rectangle bounds and the x,y of the feature to see if it is include in the rectangle
@@ -173,8 +168,8 @@
 	            					{
 	            						if(multiPoint.components[j].y <= bounds.top && multiPoint.components[j].y >= bounds.bottom)
 	            						{
-	            							//We dispatch an event in order to select it
-	            							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK,(feature as MultiPointFeature),true));
+	            							//We add the feature to the tab
+	            							featuresToSelect.push(feature);
 	            							break;
 	            						}
 	            					}
@@ -183,7 +178,7 @@
             				}
             				else if(feature is MultiLineStringFeature)
             				{
-            					multiLineString = (feature as MultiLineStringFeature).lineStrings as MultiLineString;
+            					var multiLineString:MultiLineString = (feature as MultiLineStringFeature).lineStrings as MultiLineString;
             					for(var l:int = 0;l<multiLineString.components.length;l++)
             					{
             						//We compare the rectangle bounds and the x,y of the feature to see if it is include in the rectangle
@@ -191,8 +186,8 @@
             						{
             							if((multiLineString.components[l].components[0].y <= bounds.top && multiLineString.components[l].components[0].y >= bounds.bottom) || (multiLineString.components[l].components[1].y <= bounds.top && multiLineString.components[l].components[1].y >= bounds.bottom))
 	            						{	
-	            							//We dispatch an event in order to select it
-	            							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK,(feature as MultiLineStringFeature),true));
+	            							//We add the feature to the tab
+            								featuresToSelect.push(feature);
 	            							break;
 	            						}
             						}
@@ -200,7 +195,7 @@
             				}
             				else if(feature is PolygonFeature)
             				{
-            					linearRing = ((feature as PolygonFeature).polygon as Polygon).components[0] as LinearRing;
+            					var linearRing:LinearRing = ((feature as PolygonFeature).polygon as Polygon).components[0] as LinearRing;
             					for(var m:int = 0;m<linearRing.components.length;m++)
             					{
             						//We compare the rectangle bounds and the x,y of the feature to see if it is include in the rectangle
@@ -208,8 +203,8 @@
             						{
             							if(linearRing.components[m].y <= bounds.top && linearRing.components[m].y >= bounds.bottom)
 	            						{	
-	            							//We dispatch an event in order to select it
-	            							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK,(feature as PolygonFeature),true));
+	            							//We add the feature to the tab
+            								featuresToSelect.push(feature);
 	            							break;
 	            						}
             						}
@@ -217,7 +212,7 @@
             				}
             				else if(feature is MultiPolygonFeature)
             				{
-            					multiPolygon = ((feature as MultiPolygonFeature).polygons as MultiPolygon);
+            					var multiPolygon:MultiPolygon = ((feature as MultiPolygonFeature).polygons as MultiPolygon);
             					for(var n:int;n<multiPolygon.components.length;n++)
             					{
             						linearRing = (multiPolygon.components[n] as Polygon).components[0] as LinearRing;
@@ -228,8 +223,8 @@
 	            						{
 	            							if(linearRing.components[p].y <= bounds.top && linearRing.components[p].y >= bounds.bottom)
 		            						{	
-		            							//We dispatch an event in order to select it
-		            							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK,(feature as MultiPolygonFeature),true));
+		            							//We add the feature to the tab
+            									featuresToSelect.push(feature);
 		            							break;
 		            						}
 	            						}
@@ -237,26 +232,24 @@
             					}
             				}
             			}
+            			this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTEDBOX,featuresToSelect));
             		}
             	}
             }
 
             public function activeDrag():void{
                 var handler:Handler;
-                for each(handler in this.map.handlers)
-                {
+                for each(handler in this.map.handlers){
                     if(handler is DragHandler){handler.active = true;}
             	}
             }
 
             public function deactiveDrag():void{
                 var handler:Handler;
-                for each(handler in this.map.handlers)
-                {
+                for each(handler in this.map.handlers){
                     if(handler is DragHandler){handler.active = false;}
                 }
-            }
-                
+            }               
 		]]>
 	</mx:Script>
 	

@@ -73,7 +73,7 @@
 				//Properties of selectFeatureHandler
 				this.selectFeatureHandler = new SelectFeature(this.map,drawLayer,true);
 				this.selectFeatureHandler.select = onSelectFeature;
-				this.selectFeatureHandler.hover = false;
+				this.selectFeatureHandler.selectBySelectBox = onSelectBySelectBox;
 				
 				//Properties of MultiHandler
 				this.multiPointHandler.map = this.map;
@@ -139,7 +139,7 @@
 				btnDeleteSelected.enabled = false;
 				btnMerge.enabled = false;
 				//clear the information tab
-				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, new Array(this.selectFeatureHandler.currentfeature)));
 			}
 
 			/**
@@ -161,7 +161,7 @@
 				btnDeleteSelected.enabled = false;
 				btnMerge.enabled = false;
 				//clear the information tab
-				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, new Array(this.selectFeatureHandler.currentfeature)));
 			}
 			
 			/**
@@ -197,18 +197,18 @@
 			/**
 			 * When a feature is selected
 			 */
-			private function onSelectFeature(event:FeatureEvent):void {			
-				if(!pathHandler.active && !polygonHandler.active && !pointHandler.active && !isDragging) {										
-					selectFeatureHandler.currentfeature = event.feature as VectorFeature;
-					btnDeleteSelected.enabled = true;
-					selectFeatureHandler.ctrl = event.ctrlPressed;					
-					selectFeatureHandler.OnSelection();
-					//managing of btnDeleteSelected (in case there no more selected features
-					if(selectFeatureHandler.selectFeauturesLength==0){btnDeleteSelected.enabled = false;}
-					//managing of btnMerge
-					if(selectFeatureHandler.Comparison()){btnMerge.enabled = true;}
-					else{btnMerge.enabled = false;}
-				}
+			private function onSelectFeature(event:FeatureEvent):void {											
+				btnDeleteSelected.enabled = true;				
+				selectFeatureHandler.OnSelection();
+				//managing of btnDeleteSelected (in case there no more selected features)
+				if(selectFeatureHandler.selectFeauturesLength==0){btnDeleteSelected.enabled = false;}
+				//managing of btnMerge
+				if(selectFeatureHandler.Comparison()){btnMerge.enabled = true;}
+				else{btnMerge.enabled = false;}
+			}
+			
+			private function onSelectBySelectBox(event:FeatureEvent):void{
+				selectFeatureHandler.OnSelectionBySelectBox();
 			}
 					
 			/**

@@ -1,13 +1,8 @@
 package org.openscales.core.geometry
 {
-	import org.openscales.proj4as.ProjProjection;
-
-	import flash.utils.getDefinitionByName;
-	import flash.utils.getQualifiedClassName;
-
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.proj4as.ProjProjection;
 
 	/**
 	 * A Geometry is a description of a geographic object.
@@ -16,11 +11,19 @@ package org.openscales.core.geometry
 	 */
 	public class Geometry
 	{
-
+		/**
+     	 * A unique identifier for this geometry.
+     	 */
 		private var _id:String = null;
 
+		/**
+     	 * This is set when a Geometry is added as component of another geometry
+     	 */
 		private var _parent:Geometry = null;
-
+		
+		/**
+     	 * The bounds of this geometry
+     	 */
 		protected var _bounds:Bounds = null;
 
 		/**
@@ -119,7 +122,31 @@ package org.openscales.core.geometry
 			}
 			return atPoint;
 		}
-
+		
+		/**
+     	 * APIMethod: distanceTo
+     	 * Calculate the closest distance between two geometries (on the x-y plane).
+     	 *
+     	 * Parameters:
+     	 * geometry - {<OpenLayers.Geometry>} The target geometry.
+     	 * options - {Object} Optional properties for configuring the distance
+     	 *     calculation.
+     	 *
+     	 * Valid options depend on the specific geometry type.
+     	 * 
+     	 * Returns:
+     	 * {Number | Object} The distance between this geometry and the target.
+     	 *     If details is true, the return will be an object with distance,
+     	 *     x0, y0, x1, and x2 properties.  The x0 and y0 properties represent
+     	 *     the coordinates of the closest point on this geometry. The x1 and y1
+     	 *     properties represent the coordinates of the closest point on the
+     	 *     target geometry.
+      	 */
+    	public function distanceTo(geometry:Geometry):Number{
+    		var distance:Number;
+    		return distance;
+    	}
+  
 		/**
 		 * Returns the geometry's length. Overrided by subclasses.
 		 */

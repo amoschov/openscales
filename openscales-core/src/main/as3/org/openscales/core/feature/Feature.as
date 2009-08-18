@@ -5,10 +5,8 @@ package org.openscales.core.feature {
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.SpriteCursorEvent;
-	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Anchored;
 	import org.openscales.core.popup.Popup;
@@ -88,16 +86,16 @@ package org.openscales.core.feature {
 		 */
 		public function onMouseHover(pevt:MouseEvent):void {
 			this.buttonMode=true;
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER, this));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER, new Array(this)));
 		}
 
 		public function onMouseMove(pevt:MouseEvent):void {
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEMOVE, this));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEMOVE, new Array(this)));
 		}
 
 		public function onMouseOut(pevt:MouseEvent):void {
 			this.buttonMode=false;
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT, this));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT, new Array(this)));
 		}
 
 		public function get attributes():Object {
@@ -193,21 +191,21 @@ package org.openscales.core.feature {
 		}
 
 		public function onMouseClick(pevt:MouseEvent):void {
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK, this, pevt.ctrlKey));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK, new Array(this), pevt.ctrlKey));
 		}
 
 		public function onMouseDoubleClick(pevt:MouseEvent):void {
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DOUBLECLICK, this));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DOUBLECLICK, new Array(this)));
 		}
 
 		public function onMouseDown(pevt:MouseEvent):void {
 			/* this.buttonMode=true; */
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEDOWN, this));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEDOWN, new Array(this)));
 		}
 
 		public function onMouseUp(pevt:MouseEvent):void {
 			/* this.buttonMode=false; */
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP, this, pevt.ctrlKey));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP, new Array(this), pevt.ctrlKey));
 		}
 
 		/**

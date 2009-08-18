@@ -27,13 +27,13 @@ package org.openscales.core.geometry
 				this.x, this.y);
 		}
 
-		public function distanceTo(point:Point):Number {
+		override public function distanceTo(point:Geometry):Number {
 			var distance:Number = 0.0;
 			if ( (!isNaN(this.x)) && (!isNaN(this.y)) && 
-				(point != null) && (!isNaN(point.x)) && (!isNaN(point.y)) ) {
+				((point as Point) != null) && (!isNaN((point as Point).x)) && (!isNaN((point as Point).y)) ) {
 
-				var dx2:Number = Math.pow(this.x - point.x, 2);
-				var dy2:Number = Math.pow(this.y - point.y, 2);
+				var dx2:Number = Math.pow(this.x - (point as Point).x, 2);
+				var dy2:Number = Math.pow(this.y - (point as Point).y, 2);
 				distance = Math.sqrt( dx2 + dy2 );
 			}
 			return distance;

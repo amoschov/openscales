@@ -1,15 +1,15 @@
 package org.openscales.core.handler.mouse
 {
 	import flash.utils.getQualifiedClassName;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
-	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.Feature;
+	import org.openscales.core.feature.Style;
+	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.layer.VectorLayer;
-	import org.openscales.core.feature.VectorFeature;
 
 	/**
 	 *
@@ -27,7 +27,10 @@ package org.openscales.core.handler.mouse
 		 */
 		private var _select:Function=null;
 		private var _unselect:Function=null;
+		private var _selectBySelectBox:Function=null;
 
+		private var _featureToSelect:Array=null;
+		
 		private var _ctrl:Boolean=false;
 
 		/**
@@ -56,7 +59,7 @@ package org.openscales.core.handler.mouse
 
 
 		//Accept hover or not
-		private var _hover:Boolean=true;
+		private var _hover:Boolean=false;
 
 		private var _startPixel:Pixel=null;
 
@@ -74,6 +77,7 @@ package org.openscales.core.handler.mouse
 				this.map.addEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
 				this.map.addEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);
 				this.map.addEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
+				this.map.addEventListener(FeatureEvent.FEATURE_SELECTEDBOX,this.OnSelectBySelectBox);
 				/* this.map.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
 		 		this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp); */	
 			}
@@ -84,13 +88,14 @@ package org.openscales.core.handler.mouse
 				this.map.removeEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
 				this.map.removeEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);			
 				this.map.removeEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
+				this.map.removeEventListener(FeatureEvent.FEATURE_SELECTEDBOX,this.OnSelectBySelectBox);
 				/* this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
 		 		this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp); */
 		 	}
 		}
 
 		public function OnOut(pevt:FeatureEvent):void{
-			if(pevt.feature.layer==this.layer)
+			if(pevt.features[0].layer==this.layer)
 			{
 				if(this._unselect!=null)this._unselect(pevt);
 			}
@@ -98,7 +103,7 @@ package org.openscales.core.handler.mouse
 		public function OnOver(pevt:FeatureEvent):void{
 			if(hover)
 			{
-				if(pevt.feature.layer==this.layer)
+				if(pevt.features[0].layer==this.layer)
 				{
 					if(this._select!=null) this._select(pevt);
 				}
@@ -106,9 +111,42 @@ package org.openscales.core.handler.mouse
 		}
 
 		public function OnClick(pevt:FeatureEvent):void{			
-			if(!this.hover)
-			{
-				if(this._select!=null)this._select(pevt);
+			if(!this.hover){
+				if(this._select!=null){				
+					this._ctrl = pevt.ctrlPressed;
+					this.currentfeature = pevt.features[0] as VectorFeature;
+					this._select(pevt);
+				}
+			}
+		}
+		
+		public function OnSelectBySelectBox(pevt:FeatureEvent):void{
+			if(!this.hover){
+				if(this._selectBySelectBox!=null){
+					this._ctrl = pevt.ctrlPressed;
+					this._featureToSelect = pevt.features;
+					this._selectBySelectBox(pevt);
+				} 				
+			}
+		}
+		
+		public function OnSelectionBySelectBox():void{			
+			var f:VectorFeature;
+			if(!_ctrl){
+				selectFeauturesLength=0;
+				for each(f in selectFeatures){
+					if(f != null){
+						if(f.selected){f.style = f.originalStyle;f.selected=false;f.layer.redraw();selectFeatures=null;selectFeatures = new Array(currentfeature);}
+					}							
+				}
+				iteratorFeatures=0;
+			}
+			
+			for each (f in _featureToSelect){
+				currentfeature = f;
+				iteratorFeatures++;
+				selectFeauturesLength++;
+				ChangeToSelected();
 			}
 		}
 
@@ -152,9 +190,7 @@ package org.openscales.core.handler.mouse
 							currentfeature.selected = false;
 							selectFeatures[iteratorFeatures]= null;
 							lastfeature = null;
-							currentfeature.layer.redraw();						
-							/* btnDeleteSelected.enabled = false; */			
-
+							currentfeature.layer.redraw();
 							selectFeauturesLength--;					
 						}
 					}							
@@ -170,12 +206,11 @@ package org.openscales.core.handler.mouse
 						selectFeauturesLength--;
 					}
 					//clear the information tab
-					this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.currentfeature));								
+					this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, new Array(this.currentfeature)));								
 				}
 			}
 			//This is the first selection
-			else{selectFeauturesLength++;this.ChangeToSelected();}
-		/* else{isDragging=false;} */
+			else{selectFeauturesLength++; this.ChangeToSelected(); }
 		}
 
 		/**
@@ -189,7 +224,7 @@ package org.openscales.core.handler.mouse
 			this.selectFeatures[iteratorFeatures]=this.currentfeature;						
 			this.currentfeature.layer.redraw();  
 			this.lastfeature = this.currentfeature;
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,this.currentfeature));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,new Array(this.currentfeature)));
 		}
 
 		/**
@@ -270,7 +305,14 @@ package org.openscales.core.handler.mouse
 		public function set unselect(unselect:Function):void{
 			this._unselect=unselect;
 		}
-
+		
+		public function get selectBySelectBox():Function{
+			return this._selectBySelectBox;
+		}
+		public function set selectBySelectBox(selectBySelectBox:Function):void{
+			this._selectBySelectBox=selectBySelectBox;
+		}
+		
 		public function  get layer():VectorLayer
 		{
 			return this._layer;

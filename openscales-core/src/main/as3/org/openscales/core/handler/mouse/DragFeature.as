@@ -77,7 +77,7 @@ package org.openscales.core.handler.mouse
 
 			while(cpt!=this.layer.length)
 			{
-				if((event as FeatureEvent).feature.layer==this.layer[this.layer_number])
+				if((event as FeatureEvent).features[0].layer==this.layer[this.layer_number])
 				{	
 					for each (var handler:* in this.map.handlers)
 					{
@@ -87,7 +87,7 @@ package org.openscales.core.handler.mouse
 							handler.active=false;
 						}
 					}		
-					this.feature=(event as FeatureEvent).feature as VectorFeature;
+					this.feature=(event as FeatureEvent).features[0] as VectorFeature;
 					if(this.onstart!=null){this.onstart((event as FeatureEvent));}
 					var index:int=0;
 					this.FeatureMove();

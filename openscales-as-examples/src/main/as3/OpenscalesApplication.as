@@ -23,7 +23,7 @@ package {
 			
 			_map.maxResolution=156543.0339;  
 			_map.numZoomLevels=20;
-			_map.size=new Size(800, 600);
+			_map.size=new Size(600, 400);
 
 			// Add layers to map
 			var mapnik:Mapnik=new Mapnik("Mapnik", true); // a base layer

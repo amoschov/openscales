@@ -1,9 +1,11 @@
 package org.openscales.core.geometry
 {	
 	/**
-	 * A LineString is a Curve which, once two points have been added to it,
-	 * can never be less than two points long.
+ 	 * Class: OpenLayers.Geometry.LineString
+ 	 * A LineString is a Curve which, once two points have been added to it, can 
+ 	 * never be less than two points long.
 	 */
+
 	public class LineString extends Curve
 	{
 
@@ -11,7 +13,7 @@ package org.openscales.core.geometry
 			super(points);
 		}
 
-		override public function removeComponent(point:Object):void {
+		override public function removeComponent(point:Geometry):void {
 			if ( this.components && (this.components.length > 2)) {
 				super.removeComponent(point);
 			}
