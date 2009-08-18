@@ -8,7 +8,7 @@ package org.openscales.core.geometry
 	 
 	public class Polygon extends Collection{
 
-    	/**
+    	/*
      	* Property: componentTypes
      	* {Array(String)} An array of class names representing the types of
      	* components that the collection can include.  A null value means the
@@ -16,7 +16,7 @@ package org.openscales.core.geometry
      	*/
     	private var _componentTypes:Array;
 
-    	/**
+    	/*
      	* Constructor for a Polygon geometry. 
      	* The first ring (this.component[0])is the outer bounds of the polygon and 
      	* all subsequent rings (this.component[1-n]) are internal holes.
@@ -29,7 +29,7 @@ package org.openscales.core.geometry
     		super(components); 
     	}
     
-    	/** 
+    	/*
      	* Calculated by subtracting the areas of the internal holes from the 
      	*   area of the outer hole.
      	* 
@@ -48,7 +48,7 @@ package org.openscales.core.geometry
        		return area;
     	}
 
-    	/** 
+    	/* 
      	* Calculate the approximate area of the polygon were it projected onto
      	*     the earth.
      	*
@@ -76,7 +76,7 @@ package org.openscales.core.geometry
         	return area;
     	} */
 
-    	/**
+    	/*
      	* Test if a point is inside a polygon.  Points on a polygon edge are
      	*     considered inside.
      	*
@@ -117,7 +117,7 @@ package org.openscales.core.geometry
         	return contained;
     	}
 
-    	/**
+    	/*
      	* Determine if the input geometry intersects this one.
      	*
      	* Parameters:
@@ -169,7 +169,7 @@ package org.openscales.core.geometry
         	return intersect;
     	}
 
-    	/**
+    	/*
      	* Calculate the closest distance between two geometries (on the x-y plane).
      	*
      	* Parameters:
@@ -210,7 +210,7 @@ package org.openscales.core.geometry
     	} */
 	
 
-		/**
+		/*
  		* Create a regular polygon around a radius. Useful for creating circles 
  		* and the like.
  		*
