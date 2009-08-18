@@ -50,8 +50,9 @@
         baseLayerList.dataProvider = _baseLayerArray; */
         overlayList.dataProvider = _overlayArray.reverse();
         
-        baselayerComponent.baselayerArray = this.baseLayerArray;
+        baselayerComponent.baseLayerArray = this.baseLayerArray;
         baselayerComponent.baseLayerPrompt = this.map.baseLayer.name;
+        baselayerComponent.baseLayerVisibility = this.map.baseLayer.alpha;
       }
     }
     /**
@@ -67,7 +68,7 @@
           _baseLayerArray.push(event.layer); //add a new layer in the array
          /*  baseLayerList.height = _baseLayerArray.length * 60;
           baseLayerList.invalidateList(); //update the list */
-          baselayerComponent.baselayerArray = this.baseLayerArray;
+          baselayerComponent.baseLayerArray = this.baseLayerArray;
         }
         else{
           _overlayArray.reverse();
@@ -82,7 +83,7 @@
           _baseLayerArray.splice(_baseLayerArray.indexOf(event.layer),1);//delete the layer remove in the array
          /*  baseLayerList.height = _baseLayerArray.length * 80;
           baseLayerList.invalidateList(); */
-          baselayerComponent.baselayerArray = this.baseLayerArray;
+          baselayerComponent.baseLayerArray = this.baseLayerArray;
         }
         else{
 

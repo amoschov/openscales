@@ -105,7 +105,7 @@
         	(data as Layer).map.addEventListener(LayerEvent.LAYER_OUT_RANGE,inOutRange);
         	
           	displayControl.removeAllChildren();
-          	opacityControl.value = this.layer.alpha;
+          	opacityControl.value = this.layer.alpha*100;
 
           if(this.layer.isBaseLayer == true)//if the layer is a base layer
           {
