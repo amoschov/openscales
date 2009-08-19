@@ -1,14 +1,14 @@
 package org.openscales.core
 {
 	import com.gskinner.motion.GTweeny;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
-
+	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.DraggableSprite;
 	import org.openscales.core.basetypes.LonLat;
@@ -20,8 +20,8 @@ package org.openscales.core
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.handler.IHandler;
 	import org.openscales.core.layer.Layer;
-
 	import org.openscales.core.popup.Popup;
+	import org.openscales.core.request.XMLRequest;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -1028,6 +1028,16 @@ package org.openscales.core
 			this._proxy = value;
 		}
 
+		/**
+		 * Loading configuration of the map
+		 */
+		 public function loadConfiguration():void{
+		 	var _request:XMLRequest = new XMLRequest("/ressources/config.xml", success, this.proxy);
+		 }
+		 
+		 private function success():void{
+		 	
+		 }
 	}
 
 }

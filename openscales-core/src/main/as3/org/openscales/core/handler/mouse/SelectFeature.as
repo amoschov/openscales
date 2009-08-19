@@ -133,43 +133,68 @@ package org.openscales.core.handler.mouse
 		
 		public function OnSelectionBySelectBox():void{			
 			var f:VectorFeature, f1:VectorFeature;
+			//if ctrl key isn't pressed
 			if(!ctrl){
-				selectFeauturesLength=0;
-				for each(f in selectFeatures){
+				//we deselect all features on the layer
+				for(var i:int=0;i<selectFeatures.length;i++){
+					f=selectFeatures[i];
 					if(f != null){
-						if(f.selected)
-						{
+						if(f.selected){
+							//we check if the feature is not in the selection area
 							var find:Boolean=false;
-							for each (f1 in _featureToSelect)
-							{
-								if(f == f1){find=true;}
+							for each (f1 in _featureToSelect){
+								if(f == f1){find=true;break;}
 							}
+							//if the features is not in the area, we deselect it.
 							if(!find){
-								f.style = f.originalStyle;f.selected=false;f.layer.redraw();selectFeatures=null;selectFeatures = new Array(currentfeature);
+								f.style = f.originalStyle;
+								f.selected=false;
+								f.layer.redraw();
+								selectFeatures[i]=null;
+								iteratorFeatures--; 
+								selectFeauturesLength--;
 							}
 						}
-					}							
+					}
 				}
-				iteratorFeatures=0;
-				
-				
+				//we select (or deselect if the feature is already selected) features in the area
+				for each (f in _featureToSelect){
+					var featureIterator:VectorFeature;
+					
+					currentfeature = f;
+					if(!currentfeature.selected){
+						iteratorFeatures++;
+						selectFeauturesLength++;
+						ChangeToSelected();
+					}
+					/* else{
+						currentfeature.selected = false;
+						currentfeature.style = f.originalStyle;
+						//we look for the feature in selectFeatures to erase it in selectFeatures('cause it's not selected anymore)
+						for(var j:int=0; j<selectFeatures.length;j++){
+							featureIterator=selectFeatures[j];
+							if(featureIterator!=null){
+								if(featureIterator==f){selectFeatures[j]=null;break;}
+							}
+						}
+						iteratorFeatures--; 
+						selectFeauturesLength--;
+						currentfeature.layer.redraw();
+					} */
+				}			
 			}
-			for each (f in _featureToSelect){
-				currentfeature = f;
-				if(!currentfeature.selected){
-					iteratorFeatures++;
-					selectFeauturesLength++;
-					ChangeToSelected();
+			// ctrl key is pressed
+			else{
+				//We just add all features selected by the area in the global selection
+				for each (f in _featureToSelect){
+					currentfeature = f;
+					if(!currentfeature.selected){
+						iteratorFeatures++;
+						selectFeauturesLength++;
+						ChangeToSelected();
+					}
 				}
-				else{
-					currentfeature.selected = false;
-					currentfeature.style = f.originalStyle;								
-					selectFeatures[iteratorFeatures]=null;
-					iteratorFeatures--; 
-					selectFeauturesLength--;
-					currentfeature.layer.redraw();
-				}
-			}							
+			}									
 		}
 
 		public function OnSelection():void{
