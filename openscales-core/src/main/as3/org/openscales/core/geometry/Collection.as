@@ -30,8 +30,7 @@ package org.openscales.core.geometry
 		/**
      	 * Creates a Geometry Collection
      	 *
-     	 * Parameters: 
-     	 * components - {Array}
+     	 * @param components {Array}
      	 */
 		public function Collection(components:Array) {
 			super();
@@ -52,8 +51,7 @@ package org.openscales.core.geometry
 		/**
      	 * Get a string representing the components for this collection
      	 * 
-     	 * Returns:
-     	 * {String} A string representation of the components of this collection
+     	 * @return A string representation of the components of this collection
       	 */
 		public function get componentsString():String {
 			var strings:Array = [];
@@ -80,8 +78,7 @@ package org.openscales.core.geometry
 		/**
      	 * Add components to this geometry.
      	 *
-     	 * Parameters:
-     	 * components - {Array} An array of geometries to add
+     	 * @param components An array of geometries to add
      	 */
 		public function addComponents(components:Array):void {
 			for(var i:int=0; i < components.length; i++) {
@@ -92,15 +89,12 @@ package org.openscales.core.geometry
 		/**
      	 * Add a new component (geometry) to the collection.  If this.componentTypes
      	 * is set, then the component class name must be in the componentTypes array.
-     	 *
      	 * The bounds cache is reset.
      	 * 
-      	 * Parameters:
-     	 * component - {Geometry} A geometry to add
-     	 * index - {Number} Optional index into the array to insert the component
+      	 * @param component A geometry to add
+     	 * @param index Optional index into the array to insert the component
      	 *
-     	 * Returns:
-     	 * {Boolean} The component geometry was successfully added
+     	 * @return The component geometry was successfully added
      	 */
 		public function addComponent(component:Geometry, index:Number = NaN):Boolean {
 			var added:Boolean = false;
@@ -128,8 +122,7 @@ package org.openscales.core.geometry
 		/**
      	 * Remove components from this geometry.
      	 *
-     	 * Parameters:
-     	 * components - {Array} The components to be removed
+     	 * @param components The components to be removed
      	 */
 		public function removeComponents(components:Array):void {
 			for (var i:int = 0; i < components.length; i++) {
@@ -140,8 +133,7 @@ package org.openscales.core.geometry
 		/**
      	 * Remove a component from this geometry.
      	 *
-     	 * Parameters:
-     	 * component - {Geometry} 
+     	 * @param component 
      	 */
 		public function removeComponent(component:Geometry):void {    
 			Util.removeItem(this.components, component);
@@ -151,8 +143,7 @@ package org.openscales.core.geometry
 		/**
      	 * Calculate the length of this geometry
      	 *
-     	 * Returns:
-     	 * {Number} The length of the geometry
+     	 * return The length of the geometry
       	 */
 		override public function get length():Number {
 			var length:Number = 0.0;
@@ -166,8 +157,7 @@ package org.openscales.core.geometry
      	 * Calculate the area of this geometry. Note how this function is overridden
      	 * in Polygon.
      	 *
-     	 * Returns:
-     	 * {Number} The area of the collection by summing its parts
+     	 * @return The area of the collection by summing its parts
      	 */
 		override public function get area():Number {
 			var area:Number = 0.0;
@@ -182,9 +172,8 @@ package org.openscales.core.geometry
      	 *     This modifies the position of the geometry and clears the cached
      	 *     bounds.
       	 *
-     	 * Parameters:
-     	 * x - {Number} Distance to move geometry in positive x direction. 
-     	 * y - {Number} Distance to move geometry in positive y direction.
+     	 * @param x Distance to move geometry in positive x direction. 
+     	 * @param y Distance to move geometry in positive y direction.
      	 */
 		public function move(x:Number, y:Number):void {
 			for(var i:int = 0; i < this.components.length; i++) {
