@@ -32,7 +32,7 @@
 			 * Register events on creation
 			 */
 			public function initInfo():void{
-				this.map.addEventListener(FeatureEvent.FEATURE_UNSELECTED, clearInformations);
+				this.map.addEventListener(FeatureEvent.FEATURE_UNSELECTED, clearInformations);			
 			}
 			
 			/**

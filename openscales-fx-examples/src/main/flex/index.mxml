@@ -7,13 +7,14 @@
 					 height="100%">
 		<os:FlexWidgets label="Flex widgets"/>
 		<os:LayerSwitcher label="LayerSwitcher"/>
+		<os:DrawingExemple label="Drawing"/>
 		<os:OpenStreetMap label="OSM and Reprojection"/>			
 		<os:MetacartaWMSC label="Metacarta WMS-C"/>
 		<os:GeovistaWMSCWFS label="WMS-C layer and 2 WFS"/>
 		<os:MetacartaWFSPolygons label="Metacarta WFS Polygons"/>
 		<os:MetacartaWFSPoints label="Metacarta WFS Points"/>
 		<os:GermanyWMS label="Germany WMS"/>
-		<os:OverView label="Overview tool"/>
+		<os:OverView label="Overview"/>
 		<os:SecurityMap label="Security"/>
 	</mx:TabNavigator>
 </mx:Application>
