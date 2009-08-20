@@ -149,4 +149,3 @@ package org.openscales.core.handler.sketch
 		}
 	}
 }
-

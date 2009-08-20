@@ -67,6 +67,8 @@
 			
 			/**
 			 * Initiate all properties and handlers
+			 * Be careful with handlers : You have to manage all handler, in order to activate or deactivate them when it's necessary.
+			 * Don't let a handler active if it's not necessary. 
 			 */
 			public function initFeatureDrawing():void{	
 				
@@ -219,6 +221,7 @@
 				switch(handler)
 				{
 					case 0:
+						selectFeatureHandler.active = true;
 						pointHandler.active = false;
 						if(pathHandler.active){this.finishPath();}
 						else if(polygonHandler.active){this.finishPolygon();}
@@ -235,6 +238,7 @@
 							drawType = "point";
 						}
 						this.deactiveDrag();
+						selectFeatureHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));					
 						break;
 					
@@ -246,6 +250,7 @@
 							drawType = "path";
 						}
 						this.deactiveDrag();
+						selectFeatureHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));					
 						break;
 						
@@ -257,6 +262,7 @@
 							drawType = "polygon";
 						}
 						this.deactiveDrag();
+						selectFeatureHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 						break;
 				}

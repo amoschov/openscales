@@ -6,8 +6,8 @@
 	<mx:TabNavigator width="100%"
 					 height="100%">
 		<os:FlexWidgets label="Flex widgets"/>
-		<os:OpenStreetMap label="OSM and Reprojection"/>
-		<!--os:TestConf label="Test loadConf"/-->			
+		<os:LayerSwitcher label="LayerSwitcher"/>
+		<os:OpenStreetMap label="OSM and Reprojection"/>			
 		<os:MetacartaWMSC label="Metacarta WMS-C"/>
 		<os:GeovistaWMSCWFS label="WMS-C layer and 2 WFS"/>
 		<os:MetacartaWFSPolygons label="Metacarta WFS Polygons"/>
