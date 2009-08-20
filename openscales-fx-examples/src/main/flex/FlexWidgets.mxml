@@ -93,16 +93,15 @@
 		</os:WFS>
 
 
-		<resize:ResizableWindow title="PanZoom"
-								movable="true"
-								id="panzoom">
+		<mx:Panel title="PanZoom"
+							id="panzoom">
 			<mx:VBox horizontalAlign="center">
 				<os:PanComponent id="pan"
 								 map="{map}"/>
 				<os:ZoomComponent id="zoom"
 								  map="{map}"/>
 			</mx:VBox>
-		</resize:ResizableWindow>
+		</mx:Panel>
 
 		<mx:Spacer/>
 

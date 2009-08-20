@@ -30,7 +30,7 @@ package org.openscales.core.geometry
 		/**
      	 * Creates a Geometry Collection
      	 *
-     	 * @param components {Array}
+     	 * @param components
      	 */
 		public function Collection(components:Array) {
 			super();
@@ -143,7 +143,7 @@ package org.openscales.core.geometry
 		/**
      	 * Calculate the length of this geometry
      	 *
-     	 * return The length of the geometry
+     	 * @return The length of the geometry
       	 */
 		override public function get length():Number {
 			var length:Number = 0.0;
@@ -184,10 +184,9 @@ package org.openscales.core.geometry
 		/**
      	 * Rotate a geometry around some origin
      	 *
-     	 * Parameters:
-      	 * angle - {Number} Rotation angle in degrees (measured counterclockwise
+     	 * @param angle Rotation angle in degrees (measured counterclockwise
      	 *                 from the positive x-axis)
-     	 * origin - {Point} Center point for the rotation
+     	 * @param origin Center point for the rotation
      	 */
    		public function rotate(angle:Number, origin:Point):void{
         	var i:Number=0;
@@ -201,16 +200,14 @@ package org.openscales.core.geometry
      	 * Resize a geometry relative to some origin.  Use this method to apply
      	 *     a uniform scaling to a geometry.
      	 *
-     	 * Parameters:
-     	 * scale - {Number} Factor by which to scale the geometry.  A scale of 2
+     	 * @param scale Factor by which to scale the geometry.  A scale of 2
      	 *                 doubles the size of the geometry in each dimension
      	 *                 (lines, for example, will be twice as long, and polygons
      	 *                 will have four times the area).
-     	 * origin - {Point} Point of origin for resizing
-     	 * ratio - {Number} Optional x:y ratio for resizing.  Default ratio is 1.
+     	 * @param origin Point of origin for resizing
+     	 * @param ratio Optional x:y ratio for resizing.  Default ratio is 1.
       	 * 
-     	 * Returns:
-     	 * {Geometry} - The current geometry. 
+     	 * @return The current geometry. 
      	 */
     	public function resize(scale:Number, origin:Point, ratio:Number):Geometry {
         	var i:Number=0;
@@ -224,11 +221,9 @@ package org.openscales.core.geometry
      	 * Determine whether another geometry is equivalent to this one.  Geometries
      	 *     are considered equivalent if all components have the same coordinates.
      	 * 
-     	 * Parameters:
-     	 * geom - {Geometry} The geometry to test. 
+     	 * @params geometry The geometry to test. 
      	 *
-     	 * Returns:
-     	 * {Boolean} The supplied geometry is equivalent to this geometry.
+     	 * @return The supplied geometry is equivalent to this geometry.
      	 */
      	public function equals(geometry:Collection):Boolean {
 			var equivalent:Boolean = true;
@@ -265,11 +260,9 @@ package org.openscales.core.geometry
 		/**
     	* Determine if the input geometry intersects this one.
      	*
-     	* Parameters:
-     	* geometry - {Collection} Any type of geometry.
+     	* @param geometry Any type of geometry.
      	*
-     	* Returns:
-     	* {Boolean} The input geometry intersects this one.
+     	* @return The input geometry intersects this one.
      	*/
     	public function intersects(geometry:Collection):Boolean {
         	var intersect:Boolean = false;

@@ -79,13 +79,15 @@ package org.openscales.core.handler.mouse
 		 */
 		private function mouseUp(evt:MouseEvent):void
 		{
-			//dx and dy variables are use to know if there was a drag or a click
-			var dx :Number = Math.abs(this._StartPixel.x-evt.stageX);
-			var dy :Number = Math.abs(this._StartPixel.y-evt.stageY);
-			if(dx<=this.tolerance && dy<=this.tolerance)
-			{
-				this.mouseClick(evt);
-			}
+			if(this._StartPixel!=null){
+				//dx and dy variables are use to know if there was a drag or a click
+				var dx :Number = Math.abs(this._StartPixel.x-evt.stageX);
+				var dy :Number = Math.abs(this._StartPixel.y-evt.stageY);
+				if(dx<=this.tolerance && dy<=this.tolerance)
+				{
+					this.mouseClick(evt);
+				}
+			}		
 		}
 
 		private function mouseClick(evt:MouseEvent):void

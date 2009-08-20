@@ -8,34 +8,31 @@ package org.openscales.core.geometry
 	 
 	public class Polygon extends Collection{
 
-    	/*
-     	* Property: componentTypes
-     	* {Array(String)} An array of class names representing the types of
-     	* components that the collection can include.  A null value means the
-     	* component types are not restricted.
-     	*/
+    	/**
+    	 * An array of class names representing the types of
+     	 * components that the collection can include. 
+     	 * A null value means the component types are not restricted.
+     	 */
     	private var _componentTypes:Array;
 
-    	/*
-     	* Constructor for a Polygon geometry. 
-     	* The first ring (this.component[0])is the outer bounds of the polygon and 
-     	* all subsequent rings (this.component[1-n]) are internal holes.
-     	*
-     	* Parameters:
-     	* @components:Array(LinearRing)
+    	/**
+     	 * Constructor for a Polygon geometry. 
+     	 * The first ring (this.component[0])is the outer bounds of the polygon and 
+     	 * all subsequent rings (this.component[1-n]) are internal holes.
+     	 *
+     	 * @param components
      	*/
     	public function Polygon(components:Array=null){
     		this._componentTypes = ["org.openscales.core.geometry::LinearRing"];
     		super(components); 
     	}
     
-    	/*
-     	* Calculated by subtracting the areas of the internal holes from the 
-     	*   area of the outer hole.
-     	* 
-     	* Returns:
-	 	* The area of the geometry
-     	*/
+    	/**
+     	 * Calculated by subtracting the areas of the internal holes from the 
+     	 *   area of the outer hole.
+     	 * 
+     	 * @return The area of the geometry
+     	 */
    		private function get Area():Number{
         	var area:Number = 0.0;
         	var i:Number, len:Number;
@@ -76,16 +73,13 @@ package org.openscales.core.geometry
         	return area;
     	} */
 
-    	/*
+    	/**
      	* Test if a point is inside a polygon.  Points on a polygon edge are
      	*     considered inside.
      	*
-     	* Parameters:
-     	* point - {Point}
+     	*@param point
      	*
-     	* Returns:
-     	* Boolean | Number The point is inside the polygon.  Returns 1 if the
-     	*     point is on an edge.  Returns boolean otherwise.
+     	*@return boolean if the point is inside the polygon.
      	*/
      	public function containsPoint(point:Point):Boolean {
         	var numRings:Number = this.components.length;
@@ -117,14 +111,12 @@ package org.openscales.core.geometry
         	return contained;
     	}
 
-    	/*
+    	/**
      	* Determine if the input geometry intersects this one.
      	*
-     	* Parameters:
-     	* @geometry - {Collection} Any type of geometry.
+     	* @param geometry Any type of geometry.
      	*
-     	* Returns:
-     	* intersect - {Boolean} The input geometry intersects this one.
+     	* @return The input geometry intersects this one.
      	*/
     	override public function intersects(geometry:Collection):Boolean{
         	var intersect:Boolean = false;
@@ -210,15 +202,14 @@ package org.openscales.core.geometry
     	} */
 	
 
-		/*
+		/**
  		* Create a regular polygon around a radius. Useful for creating circles 
  		* and the like.
  		*
- 		* Parameters:
- 		* origin - {Point} center of polygon.
- 		* radius - {Number} distance to vertex, in map units.
- 		* sides - {Number} Number of sides. 20 approximates a circle.
- 		* rotation- {Number} original angle of rotation, in degrees.
+ 		* @param origin The center of polygon.
+ 		* @param radius Distance to vertex, in map units.
+ 		* @param sides Number of sides. 20 approximates a circle.
+ 		* @param rotation original angle of rotation, in degrees.
  		*/
 		 public function createRegularPolygon(origin:Point, radius:Number, sides:Number, rotation:Number):Polygon {  
     		var angle:Number = Math.PI * ((1/sides) - (1/2));

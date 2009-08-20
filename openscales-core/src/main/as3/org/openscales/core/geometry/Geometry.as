@@ -63,10 +63,10 @@ package org.openscales.core.geometry
 		}
 
 		/**
-		 * <p>Extends geometry's bounds</p>
+		 * Extends geometry's bounds
 		 *
-		 * <p>If bounds are not defined yet, it initializes the bounds. If bounds are already defined,
-		 * it extends them.</p>
+		 * If bounds are not defined yet, it initializes the bounds. If bounds are already defined,
+		 * it extends them.
 		 *
 		 * @param newBounds Bounds to extend gemetry's bounds
 		 */
@@ -124,18 +124,12 @@ package org.openscales.core.geometry
 		}
 		
 		/**
-     	 * APIMethod: distanceTo
      	 * Calculate the closest distance between two geometries (on the x-y plane).
      	 *
-     	 * Parameters:
-     	 * geometry - {<OpenLayers.Geometry>} The target geometry.
-     	 * options - {Object} Optional properties for configuring the distance
-     	 *     calculation.
+     	 * @param geometry The target geometry.
      	 *
-     	 * Valid options depend on the specific geometry type.
      	 * 
-     	 * Returns:
-     	 * {Number | Object} The distance between this geometry and the target.
+     	 * @return The distance between this geometry and the target.
      	 *     If details is true, the return will be an object with distance,
      	 *     x0, y0, x1, and x2 properties.  The x0 and y0 properties represent
      	 *     the coordinates of the closest point on this geometry. The x1 and y1

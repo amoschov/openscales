@@ -56,15 +56,13 @@
 			 */
 			private function selectBox(e:Event) : void 
 			{
-				if(selectbox.selected == false)
-				{
+				if(selectbox.selected == false){
 					selectbox.selected = true;
 	            	deactiveDrag();
 	            	map.addEventListener(MouseEvent.MOUSE_DOWN,startBox);
 	            	map.addEventListener(MouseEvent.MOUSE_UP,endBox); 
 				}
-				else
-				{
+				else{
 					selectbox.selected = false;
 	            	activeDrag();
 	            	map.removeEventListener(MouseEvent.MOUSE_MOVE,expandArea);
