@@ -2,7 +2,6 @@
 <mx:Panel xmlns:mx="http://www.adobe.com/2006/mxml"
 		  width="100%"
 		  height="100%"
-		  xmlns:resize="flex.utils.ui.resize.*"
 		  xmlns:os="http://openscales.org"
 		  creationComplete="initMap();"
 		  xmlns:control="org.openscales.component.control.*"
@@ -105,9 +104,7 @@
 
 		<mx:Spacer/>
 
-		<!--resize:ResizableWindow title="Tools"
-								movable="true"
-								resizable="true"
+		<mx:Panel title="Tools"
 								id="tools"
 								width="350"
 								height="575">
@@ -135,10 +132,10 @@
 							  width="100%"
 							  height="100%"
 							  map="{map}"
-							  label="Trace"/-->
+							  label="Trace"/>
 				<!--os:MarkerManagerComponent id="markerManag" width="100%" height="100%" map="{map}" label="Marker"/-->
-			<!--/mx:TabNavigator>
-		</resize:ResizableWindow-->
+			</mx:TabNavigator>
+		</mx:Panel>
 
 		<mx:Spacer/>
 
@@ -155,7 +152,6 @@
 		<os:WMSGetFeatureInfo url="http://sigma.openplans.org/geoserver/wms"
 							  layers="tiger:poi"/>
 		<!--os:DragFeature id="dragfeature" map="{this.map}"/-->
-		<!--os:ScaleLine id="scale" map="{map}"/-->
 
 	</os:Map>
 
