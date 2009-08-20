@@ -33,8 +33,17 @@ package org.openscales.core.geometry
 		 */
 		override public function transform(source:ProjProjection, dest:ProjProjection):void {
 			if (this.components.length > 0) {
+				var j:int=0;
 				for each (var lS:LineString in this.components) {
-					lS.transform(source, dest);
+				//for the first linestring we transform the two points
+				//but for the followings we just draw the second
+				if(j==0 )
+				{ 
+					lS.transformLineString(source, dest);
+					j++;
+				}
+				else lS.transformLineString(source, dest,false)
+				
 				}
 			}
 		}

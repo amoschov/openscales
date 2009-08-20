@@ -80,8 +80,10 @@ package org.openscales.core.handler.sketch
 
 			var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY );
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
+			if(this.drawLayer.projection.srsCode!=this.map.projection.srsCode)
+				lonlat.transform(this.map.projection,this.drawLayer.projection);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
-
+			
 			if(newFeature){			
 				_multiLineString = new MultiLineString();
 				var multiLineFeature:MultiLineStringFeature = new MultiLineStringFeature(_multiLineString);
