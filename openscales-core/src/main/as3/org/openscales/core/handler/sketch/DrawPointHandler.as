@@ -47,9 +47,13 @@ package org.openscales.core.handler.sketch
 				var style:Style = new Style();
 				style.fillColor = 0x60FFE9;
 				style.strokeColor = 0x60FFE9;
-
+			
 				var pixel:Pixel = new Pixel(drawLayer.mouseX ,drawLayer.mouseY);
 				var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
+				
+				if(this.drawLayer.projection.srsCode!=this.map.projection.srsCode)
+				lonlat.transform(this.map.projection,this.drawLayer.projection);
+				
 				var point:Point = new Point(lonlat.lon,lonlat.lat);
 
 				var pointFeature:PointFeature = new PointFeature(point, null, style);

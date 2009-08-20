@@ -110,12 +110,13 @@ package org.openscales.core.layer
 				this.maxExtent = this.maxExtent || this.map.maxExtent;
 				this.units = this.units || this.map.units;
 
-				this.initResolutions();
-
+			if((this.map.baseLayer==null)||(this.isBaseLayer && this.map.baseLayer==this))
+			this.initResolutions();
 				if (!this.isBaseLayer) {
+					this.initResolutions();
 					this.inRange = this.calculateInRange();
 					var show:Boolean = ((this.visible) && (this.inRange));
-					this.visible = (show ? true : false);
+					this.visible = (show ? true : false);					
 				}	            
 			}
 		}

@@ -41,6 +41,10 @@ package org.openscales.core.layer
 		}
 
 		private function checkProjection(evt:LayerEvent = null):void {
+			//we don't have to change the projection because 
+			//the layers keep the starting resolution 
+			
+			
 		/*	if (this.features.length > 0 && this.map != null && this._temporaryProjection.srsCode != this.map.projection.srsCode) {
 				for each (var f:VectorFeature in this.features) {
 					f.geometry.transform(this._temporaryProjection, this.map.projection);

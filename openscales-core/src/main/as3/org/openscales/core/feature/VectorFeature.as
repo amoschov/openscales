@@ -5,6 +5,8 @@ package org.openscales.core.feature
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
+	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.proj4as.ProjProjection;
 
 	/**
 	 * Vector features use the Geometry classes as geometry description.
@@ -143,6 +145,15 @@ package org.openscales.core.feature
 
 			if (style.isStroked) {
 				this.graphics.lineStyle(style.strokeWidth, style.strokeColor, style.strokeOpacity, false, "normal", style.strokeLinecap);
+			}
+			//The first feature drawn changes the layer srs
+			if(this.layer.projection.srsCode!=this.layer.map.projection.srsCode){
+				
+				for each(var feature:VectorFeature in (this.layer as VectorLayer).features)
+				{
+					feature.geometry.transform(this.layer.projection,this.layer.map.projection);
+				}
+				this.layer.projection=new ProjProjection(this.layer.map.projection.srsCode);
 			}
 		}
 		
