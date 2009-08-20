@@ -33,7 +33,7 @@
 
 			private function initMap():void {
 				map=fxmap.map;
-				tools.x=this.width - tools.width;
+				/* tools.x=this.width - tools.width; */
 
 				
 				// setup click handler
@@ -106,7 +106,7 @@
 
 		<mx:Spacer/>
 
-		<resize:ResizableWindow title="Tools"
+		<!--resize:ResizableWindow title="Tools"
 								movable="true"
 								resizable="true"
 								id="tools"
@@ -136,10 +136,10 @@
 							  width="100%"
 							  height="100%"
 							  map="{map}"
-							  label="Trace"/>
+							  label="Trace"/-->
 				<!--os:MarkerManagerComponent id="markerManag" width="100%" height="100%" map="{map}" label="Marker"/-->
-			</mx:TabNavigator>
-		</resize:ResizableWindow>
+			<!--/mx:TabNavigator>
+		</resize:ResizableWindow-->
 
 		<mx:Spacer/>
 
@@ -156,7 +156,7 @@
 		<os:WMSGetFeatureInfo url="http://sigma.openplans.org/geoserver/wms"
 							  layers="tiger:poi"/>
 		<!--os:DragFeature id="dragfeature" map="{this.map}"/-->
-		<os:ScaleLine id="scale" map="{map}"/>
+		<!--os:ScaleLine id="scale" map="{map}"/-->
 
 	</os:Map>
 
