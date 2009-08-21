@@ -57,7 +57,7 @@
 					  strokeWidth="2"/>
 
 		</os:WFS>
-		<mx:Panel label="Layer Switcher">
+		<mx:Panel title="Layer Switcher">
 			<os:LayerSwitcherComponent id="layerSwitcher"
 										   map="{map}"
 										   label="Layers"/>
@@ -69,7 +69,7 @@
 					  right="180"
 					  top="90"/>
 				   
-		<os:ClickHandler/>
+		<os:DragHandler id="dragHandler"/>
 		<os:WheelHandler/>
 		
 	</os:Map>
