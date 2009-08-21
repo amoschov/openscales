@@ -39,9 +39,6 @@
 							<manifest>${build.sourceDirectory}/META-INF/manifest.xml</manifest>
 						</namespace>
 					</namespaces>
-					<includeNamespaces>
-						<namespaces>http://openscales.org</namespaces>
-					</includeNamespaces>
 				</configuration>
 				<executions>
 					<execution>
