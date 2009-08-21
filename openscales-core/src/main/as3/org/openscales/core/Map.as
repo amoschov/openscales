@@ -191,25 +191,25 @@ package org.openscales.core
 				this.bitmapTransition.alpha = 0;
 
 			if (newBaseLayer != this.baseLayer) {
-				this._baseLayer=null;
+					this._baseLayer=null;
 				if (Util.indexOf(this.layers, newBaseLayer) != -1) {
 
 					// if we set a baselayer with a diferent projection, we change the map's projection datas
-					if (this.projection.srsCode != newBaseLayer.projection.srsCode) {
-
+					if ((this.projection.srsCode != newBaseLayer.projection.srsCode)||(newBaseLayer.resolutions==null)) {
+						
+						
 						if (this.center != null)
 							this.center.transform(this.projection, newBaseLayer.projection);
 
 						if (this._layerContainerOrigin != null)
 							this._layerContainerOrigin.transform(this.projection, newBaseLayer.projection);
+						
 
 						oldExtent = null;
 						
 						this.maxResolution=this.DEFAULT_MAX_RESOLUTION;
-						this.minResolution=0;
 						this.numZoomLevels=this.DEFAULT_NUM_ZOOM_LEVELS;
-						this.maxExtent =null;
-						
+						this.minResolution=0;
 						if(newBaseLayer.resolutions==null)newBaseLayer.initResolutions();
 						
 						this.projection = newBaseLayer.projection;
@@ -217,7 +217,7 @@ package org.openscales.core
 						this.numZoomLevels = newBaseLayer.numZoomLevels;
 						this.maxExtent = newBaseLayer.maxExtent;
 						this.minResolution = newBaseLayer.minResolution;
-						this.resolutions = null;
+						this.resolutions = newBaseLayer.resolutions;
 						for each(var layer:Layer in this.layers){
 							if(!layer.isBaseLayer)
 							{
