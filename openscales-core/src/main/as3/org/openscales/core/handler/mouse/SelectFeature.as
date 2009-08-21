@@ -112,22 +112,22 @@ package org.openscales.core.handler.mouse
 
 		public function OnClick(pevt:FeatureEvent):void{			
 			if(!this.hover){
-				if(this._select!=null){				
-					this._ctrl = pevt.ctrlPressed;
-					this.currentfeature = pevt.features[0] as VectorFeature;
-					this._select(pevt);
-				}
+				this._ctrl = pevt.ctrlPressed;
+				this.currentfeature = pevt.features[0] as VectorFeature;
+				
+				if(this._select!=null){this._select(pevt);}
+				else{OnSelection();}
 			}
 		}
 		
 		public function OnSelectBySelectBox(pevt:FeatureEvent):void{
 			if(!this.hover){
-				if(this._selectBySelectBox!=null){
-					this._ctrl = pevt.ctrlPressed;
-					this._featureToSelect = pevt.features;
-					this.currentfeature = pevt.features[0];
-					this._selectBySelectBox(pevt);
-				} 				
+				this._ctrl = pevt.ctrlPressed;
+				this._featureToSelect = pevt.features;
+				this.currentfeature = pevt.features[0] as VectorFeature;
+				
+				if(this._selectBySelectBox!=null){this._selectBySelectBox(pevt);}
+				else{OnSelectionBySelectBox();}				
 			}
 		}
 		
@@ -271,7 +271,7 @@ package org.openscales.core.handler.mouse
 			this.selectFeatures[iteratorFeatures]=this.currentfeature;						
 			this.currentfeature.layer.redraw();  
 			this.lastfeature = this.currentfeature;
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,new Array(this.currentfeature)));
+			this.currentfeature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,new Array(this.currentfeature)));
 		}
 
 		/**

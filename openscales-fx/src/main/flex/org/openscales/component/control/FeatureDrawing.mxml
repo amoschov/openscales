@@ -81,10 +81,7 @@
 				this.multiPointHandler.map = this.map;
 				 				 
 				//Active drag feature
-				/* this.dragfeature = new DragFeature(this.map,[drawLayer],true); */
-				
-				//Add select feature handler to the map	
-				  										
+				/* this.dragfeature = new DragFeature(this.map,[drawLayer],true); */				  										
 			}
 			
 			/**
@@ -148,7 +145,18 @@
 			 * User clicks on delete all button
 			 */
 			private function onDeleteAllClick(event:Event):void {
-				drawLayer.clear();
+				Alert.show("You want to delete all features. \nAre you sure ?", "Warning", Alert.YES | Alert.NO, null, alertDeleteHandler);
+			}
+			
+			private function alertDeleteHandler(event:CloseEvent):void {
+                // User click on "YES", he wants to apply changes
+                if (event.detail==Alert.YES){
+                	deleteAllFeatures(); 
+                }                  
+            }
+            
+            private function deleteAllFeatures():void{
+            	drawLayer.clear();
 				// clear the last feature
 				selectFeatureHandler.lastfeature = null;
 				// clear the selected feature tab
@@ -164,7 +172,7 @@
 				btnMerge.enabled = false;
 				//clear the information tab
 				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, new Array(this.selectFeatureHandler.currentfeature)));
-			}
+            }
 			
 			/**
 			 * User clicks on delete last feature button

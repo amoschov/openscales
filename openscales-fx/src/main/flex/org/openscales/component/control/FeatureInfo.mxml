@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*" 
-	creationComplete="initInfo();" width="282" height="168">
+<control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*" width="282" height="168">
 	
 	<mx:Script>
 		<![CDATA[
@@ -27,13 +26,6 @@
 			 */
 			public var currentPoint:org.openscales.core.geometry.Point;
 			public var lastP:org.openscales.core.geometry.Point;		
-			
-			/**
-			 * Register events on creation
-			 */
-			public function initInfo():void{
-				this.map.addEventListener(FeatureEvent.FEATURE_UNSELECTED, clearInformations);			
-			}
 			
 			/**
 			 * Method which display the feature properties. We differenciate information with the feature : 
@@ -136,7 +128,9 @@
 			 */
 			override public function set map(value:Map):void {
 				if (value != null) {
-					super.map = value;				
+					super.map = value;	
+					this.map.addEventListener(FeatureEvent.FEATURE_UNSELECTED, clearInformations);
+					this.map.addEventListener(FeatureEvent.FEATURE_SELECTED, showInfo);
 				}
 			}
 			
