@@ -13,7 +13,6 @@
 
 			private function initMap():void {
 				map=fxmap.map; 			
-				// setup click handler
 			}
 		]]>
 	</mx:Script>

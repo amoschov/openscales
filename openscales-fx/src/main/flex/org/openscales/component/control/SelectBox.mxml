@@ -234,7 +234,10 @@
             			}
             		}          		
             	}
-            	this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTEDBOX,featuresToSelect, _ctrlStatus));
+            	if(featuresToSelect.length>0){          		
+            		this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTEDBOX,featuresToSelect, _ctrlStatus));
+            	}
+            	
             }
 
             public function activeDrag():void{

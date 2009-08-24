@@ -13,7 +13,16 @@
         <version>1.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.openscales</groupId>
+			<artifactId>openscales-core</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>swc</type>
+		</dependency>
+	</dependencies>
+	
     <build>
    		<plugins>
 			<plugin>

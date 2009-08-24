@@ -84,6 +84,7 @@
 					}
 					//hide handcursor
 					this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));
+					
 					this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 				}
 				//user switches to drawing tab
@@ -91,6 +92,7 @@
 					this.featureDrawing.selectFeatureHandler.active = true;
 					//show handcursor
 					this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND));
+					
 					this.map.dispatchEvent(new DrawingEvent(DrawingEvent.DISABLED));
 				}
 			}		

@@ -167,20 +167,6 @@ package org.openscales.core.handler.mouse
 						selectFeauturesLength++;
 						ChangeToSelected();
 					}
-					/* else{
-						currentfeature.selected = false;
-						currentfeature.style = f.originalStyle;
-						//we look for the feature in selectFeatures to erase it in selectFeatures('cause it's not selected anymore)
-						for(var j:int=0; j<selectFeatures.length;j++){
-							featureIterator=selectFeatures[j];
-							if(featureIterator!=null){
-								if(featureIterator==f){selectFeatures[j]=null;break;}
-							}
-						}
-						iteratorFeatures--; 
-						selectFeauturesLength--;
-						currentfeature.layer.redraw();
-					} */
 				}			
 			}
 			// ctrl key is pressed

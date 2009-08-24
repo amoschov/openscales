@@ -2,6 +2,7 @@
 <Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="276" height="108" creationComplete="initFeatureDrawing();">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.events.SpriteCursorEvent;
 			import org.openscales.core.events.DrawingEvent;
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.feature.Feature;
@@ -219,6 +220,9 @@
 			
 			private function onSelectBySelectBox(event:FeatureEvent):void{
 				selectFeatureHandler.OnSelectionBySelectBox();
+				if(selectFeatureHandler.selectFeauturesLength>0){
+					btnDeleteSelected.enabled = true;
+				}
 			}
 					
 			/**
@@ -236,6 +240,7 @@
 						drawType = "";
 						this.activeDrag();
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.DISABLED));
+						this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND));
 						break;
 					
 					case 1:		//click on button point
@@ -247,7 +252,8 @@
 						}
 						this.deactiveDrag();
 						selectFeatureHandler.active = false;
-						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));					
+						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
+						this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));					
 						break;
 					
 					case 2:		//click on button path
@@ -259,7 +265,8 @@
 						}
 						this.deactiveDrag();
 						selectFeatureHandler.active = false;
-						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));					
+						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
+						this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));					
 						break;
 						
 					case 3:		//click on button polygon
@@ -272,6 +279,7 @@
 						this.deactiveDrag();
 						selectFeatureHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
+						this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));
 						break;
 				}
 			}			
