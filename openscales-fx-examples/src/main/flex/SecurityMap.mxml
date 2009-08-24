@@ -15,7 +15,6 @@
 			private function initMap():void {
 				map=fxmap.map;
 
-				// TODO : <os:SampleSecurity login="test" password="t35t" /> Flex component
 				security=new SampleSecurity(map, "test", "t35t");
 				metacarta.layer.security=security;
 
@@ -45,7 +44,8 @@
 		<os:ClickHandler/>
 		<os:WheelHandler/>
 		<os:DragHandler id="dragHandler"/>
-
+		<!--<os:SampleSecurity map="{map}" login="test" password="t35t">
+-->
 	</os:Map>
 
 </mx:Canvas>

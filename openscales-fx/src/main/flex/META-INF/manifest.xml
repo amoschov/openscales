@@ -47,4 +47,7 @@
 	<component id="TraceInfo" class="org.openscales.component.control.TraceInfo" />
 	<component id="ScaleLine" class="org.openscales.fx.control.FxScaleLine" />
 	
+	<component id="SampleSecurity" class="org.openscales.fx.security.sample.FxSampleSecurity"/>
+	
+	
 </componentPackage>

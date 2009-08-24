@@ -18,6 +18,7 @@
 <classEntry path="org.openscales.fx.control.FxMousePosition"/>
 <classEntry path="org.openscales.component.control.MousePosition"/>
 <classEntry path="org.openscales.fx.control.FxLayerSwitcher"/>
+<classEntry path="org.openscales.fx.security.sample.FxSampleSecurity"/>
 <classEntry path="org.openscales.fx.layer.FxGrid"/>
 <classEntry path="org.openscales.component.control.OverviewMap"/>
 <classEntry path="org.openscales.component.control.FeatureDrawing"/>
@@ -44,6 +45,7 @@
 <classEntry path="org.openscales.component.control.Capabilities"/>
 <classEntry path="org.openscales.component.control.search.YahooSearch"/>
 <classEntry path="org.openscales.fx.FxMap"/>
+<classEntry path="org.openscales.fx.security.FxAbstractSecurity"/>
 <classEntry path="org.openscales.component.control.Zoom"/>
 <classEntry path="org.openscales.component.control.Drawing"/>
 <classEntry path="org.openscales.fx.layer.FxWFS"/>
