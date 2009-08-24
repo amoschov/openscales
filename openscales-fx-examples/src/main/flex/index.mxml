@@ -5,8 +5,8 @@
 
 	<mx:TabNavigator width="100%"
 					 height="100%">
-		<!--os:PanZoom label="PanZoom"/-->
-		<os:FlexWidgets label="FlexWidgets"/>
+		<os:PanZoom label="PanZoom"/>
+		<!--<os:FlexWidgets label="FlexWidgets"/>-->
 		<os:LayerSwitcher label="LayerSwitcher"/>
 		<os:DrawingExemple label="Drawing"/>
 		<os:InfoExample label="Info"/>
