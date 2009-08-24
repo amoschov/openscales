@@ -11,7 +11,7 @@
 	
 	<properties>
 		<flex.version>3.3.0.4852</flex.version>
-		<flexmojos.version>3.3-SNAPSHOT</flexmojos.version>
+		<flexmojos.version>3.3.0</flexmojos.version>
 		<flex.target.player.version>9.0.0</flex.target.player.version>
 	</properties>
 	
