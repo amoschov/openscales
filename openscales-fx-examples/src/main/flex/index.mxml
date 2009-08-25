@@ -9,9 +9,11 @@
 		<!--<os:FlexWidgets label="FlexWidgets"/>-->
 		<os:PanZoom label="PanZoom"/>
 		<os:LayerSwitcher label="LayerSwitcher"/>
-		<os:DrawingExemple label="Drawing"/>
+		<os:DrawingExample label="Drawing"/>
 		<os:InfoExample label="Info"/>
-		<os:OpenStreetMap label="OSM and Reprojection"/>			
+		<os:OpenStreetMap label="OSM and Reprojection"/>
+		<os:CapabilitiesExample label="Capabilities"/>
+		<os:YahooSearchExample label="Yahoo Search"/>			
 		<os:MetacartaWMSC label="Metacarta WMS-C"/>
 		<os:GeovistaWMSCWFS label="WMS-C layer and 2 WFS"/>
 		<os:MetacartaWFSPolygons label="Metacarta WFS Polygons"/>

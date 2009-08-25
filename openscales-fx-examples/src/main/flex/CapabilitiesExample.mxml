@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+		xmlns:os="http://openscales.org" 
+		creationComplete="initMap();">
+	<mx:Script>
+	<![CDATA[
+			import org.openscales.core.handler.mouse.DragHandler;
+			import org.openscales.core.Trace;
+			import org.openscales.core.events.GetFeatureInfoEvent;
+
+			import org.openscales.core.Map;
+
+			[Bindable]
+			public var map:Map;
+
+			private function initMap():void {
+				map=fxmap.map; 			
+			}
+		]]>
+	</mx:Script>
+	<os:Map id="fxmap"
+			x="0"
+			y="0"
+			height="100%"
+			width="100%"
+			zoom="5">
+			
+		<os:WMSC name="Metacarta"
+				 url="http://labs.metacarta.com/wms-c/Basic.py"
+				 layers="satellite"
+				 format="image/jpeg"
+				 isBaseLayer="true"/>
+
+		<mx:Panel title="Capabilities">
+			<os:CapabilitiesComponent width="250" map="{map}"/>
+		</mx:Panel>
+									   
+		<os:MaxExtent left="-180"
+					  bottom="-90"
+					  right="180"
+					  top="90"/>
+		
+		<os:DragHandler id="dragHandler"/>	
+		<os:ClickHandler/>
+		<os:WheelHandler/>
+		
+	</os:Map>
+</mx:Canvas>

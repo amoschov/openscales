@@ -21,12 +21,6 @@
 			width="100%"
 			numZoomLevels="20"
 			zoom="5">
-				<os:Mapnik name="Mapnik"
-				   maxResolution="156543.0339"
-				   minResolution="0.5971642833709717"
-				   numZoomLevels="20"
-				   maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-				   isBaseLayer="true"/>	
 		<os:WMSC name="Metacarta"
 				 url="http://labs.metacarta.com/wms-c/Basic.py"
 				 layers="satellite"
@@ -55,6 +49,12 @@
 					  strokeWidth="2"/>
 
 		</os:WFS>
+		<os:Mapnik name="Mapnik"
+				   maxResolution="156543.0339"
+				   minResolution="0.5971642833709717"
+				   numZoomLevels="20"
+				   maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
+				   isBaseLayer="true"/>	
 		<mx:Panel title="Layer Switcher">
 			<os:LayerSwitcherComponent id="layerSwitcher"
 										   map="{map}"

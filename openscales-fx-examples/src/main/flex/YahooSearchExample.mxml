@@ -13,7 +13,6 @@
 
 			private function initMap():void {
 				map=fxmap.map; 			
-				// setup click handler
 			}
 		]]>
 	</mx:Script>
@@ -22,27 +21,30 @@
 			y="0"
 			height="100%"
 			width="100%"
-			proxy="http://openscales.org/proxy.php?url="
-			zoom="2">
+			numZoomLevels="20"
+			zoom="5">
 			
-		<os:Mapnik name="Mapnik"
-				   maxResolution="156543.0339"
-				   minResolution="0.5971642833709717"
-				   numZoomLevels="20"
-				   maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-				   isBaseLayer="true"/>
+		<os:WMSC name="Metacarta"
+				 url="http://labs.metacarta.com/wms-c/Basic.py"
+				 layers="satellite"
+				 format="image/jpeg"
+				 isBaseLayer="true"/>
 
-		<mx:Panel title="Drawing Tools">
-			<os:FeatureDrawingComponent map="{map}"/>
+		<mx:Panel title="YahooSearch">
+			<os:YahooSearchComponent 
+							 map="{map}"
+							label="Search"
+							appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é"/>
 		</mx:Panel>
-											   
-		<os:Extent left="-124.731422"
-				   bottom="24.955967"
-				   right="-66.969849"
-				   top="49.371735"/>
+									   
+		<os:MaxExtent left="-180"
+					  bottom="-90"
+					  right="180"
+					  top="90"/>
 		
-		<os:DragHandler id="dragHandler"/>	   
+		<os:DragHandler id="dragHandler"/>	
 		<os:ClickHandler/>
 		<os:WheelHandler/>
+		
 	</os:Map>
 </mx:Canvas>

@@ -13,6 +13,7 @@
 
 			private function initMap():void {
 				map=fxmap.map; 			
+				// setup click handler
 			}
 		]]>
 	</mx:Script>
@@ -30,37 +31,19 @@
 				   numZoomLevels="20"
 				   maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
 				   isBaseLayer="true"/>
-		<os:WFS id="test"
-				name="test"
-				url="http://sigma.openplans.org/geoserver/wfs"
-				typename="tiger:poi"
-				srs="EPSG:4326"
-				version="1.0.0"
-				isBaseLayer="false"
-				minZoomLevel="21"
-				useCapabilities="true"
-				use110Capabilities="false">
-			<os:Style fillColor="0xff0000"
-					  fillOpacity="0.8"
-					  strokeColor="0x0000ff"
-					  strokeWidth="2"/>
 
-		</os:WFS>
-
-		<mx:Panel title="Informations">
-			<mx:Text text="It displays always the LAST selected feature" textAlign="center" width="100%"/>
-			<os:FeatureInfoComponent map="{map}"/>
+		<mx:Panel title="Drawing Tools">
+			<os:FeatureDrawingComponent map="{map}"/>
+			<os:SelectBoxComponent map="{map}"/>
 		</mx:Panel>
-									   
+											   
 		<os:Extent left="-124.731422"
 				   bottom="24.955967"
 				   right="-66.969849"
 				   top="49.371735"/>
 		
-		<os:DragHandler id="dragHandler"/>
-		<os:SelectFeature/>		
+		<os:DragHandler id="dragHandler"/>	   
 		<os:ClickHandler/>
 		<os:WheelHandler/>
-		
 	</os:Map>
 </mx:Canvas>

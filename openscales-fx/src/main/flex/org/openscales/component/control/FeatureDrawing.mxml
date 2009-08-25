@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="276" height="108" creationComplete="initFeatureDrawing();">
+<control:Control xmlns:control="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="276" height="108" creationComplete="initFeatureDrawing();">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.events.SpriteCursorEvent;
@@ -223,6 +223,8 @@
 				if(selectFeatureHandler.selectFeauturesLength>0){
 					btnDeleteSelected.enabled = true;
 				}
+				if(selectFeatureHandler.Comparison()){btnMerge.enabled = true;}
+				else{btnMerge.enabled = false;}
 			}
 					
 			/**
@@ -377,4 +379,4 @@
 	<mx:Button x="95" y="49" icon="@Embed('/org/openscales/component/images/delete_all_small.png')" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="38" toolTip="Delete all drawing feature on the map" height="38"/>
 	<mx:Button x="143" y="49" icon="@Embed('/org/openscales/component/images/delete_last_small.png')" id="btnDeleteLast" click="this.onDeleteLastClick(event)" width="38" toolTip="Delete the last drawing feature" height="38"/>
 	<mx:Button x="190" y="49" icon="@Embed('/org/openscales/component/images/delete_selected_small.png')" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" width="38" enabled="false" toolTip="Delete all selected features" height="38"/>
-</Control>
+</control:Control>

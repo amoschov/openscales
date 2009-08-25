@@ -178,7 +178,7 @@ package org.openscales.core.feature {
 				this.addEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);
 
 				/* this._layer.map.addEventListener(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND, hideHand);
-				this._layer.map.addEventListener(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND, showHand); */
+				this._layer.map.addEventListener(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND, showHand); */ 
 			}
 		}
 

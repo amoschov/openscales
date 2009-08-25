@@ -224,8 +224,12 @@ package org.openscales.core.handler.mouse
 							selectFeatures[iteratorFeatures]= null;
 							lastfeature = null;
 							currentfeature.layer.redraw();
-							selectFeauturesLength--;					
+							selectFeauturesLength--;
+							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, new Array(this.currentfeature)));					
 						}
+						else{
+							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED, new Array(this.currentfeature)));
+						}				
 					}							
 					//ctrl key is pressed
 					else{
@@ -237,9 +241,11 @@ package org.openscales.core.handler.mouse
 						}
 						currentfeature.layer.redraw();
 						selectFeauturesLength--;
+						
+						//clear the information tab
+						this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, new Array(this.currentfeature)));
+						
 					}
-					//clear the information tab
-					this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, new Array(this.currentfeature)));								
 				}
 			}
 			//This is the first selection

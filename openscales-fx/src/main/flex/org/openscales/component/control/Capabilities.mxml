@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
-	xmlns:control="org.openscales.component.control.*" creationComplete="this.map.addEventListener(LayerEvent.LAYER_REMOVED,deleteLayer);" >
+	xmlns:control="org.openscales.component.control.*" >
 	
 	<mx:Script>
 		<![CDATA[
@@ -105,6 +105,13 @@
 				this.capabilities = getCap.getAllCapabilities();
 				lblFeatures.text = "There are " + capabilities.size() + " features available on server:";
 				this.list.dataProvider = capabilities.getKeys().sort();	
+			}
+			
+			override public function set map(value:Map):void{
+				super.map = value;
+				if(this.map!=null){
+					this.map.addEventListener(LayerEvent.LAYER_REMOVED,deleteLayer);
+				}			
 			}
 			
 		]]>
