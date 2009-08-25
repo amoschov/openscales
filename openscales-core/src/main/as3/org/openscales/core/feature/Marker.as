@@ -3,19 +3,20 @@ package org.openscales.core.feature {
 	
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.layer.Layer;
+	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.geometry.Point;
 
 	/**
 	 * A Marker is an graphical element localized by a LonLat
 	 *
 	 * As Marker extends Feature, markers are generally added to FeatureLayer
 	 */
-	public class Marker extends Feature {
+	public class Marker extends PointFeature {
 		/**
 		 * Marker constructor
 		 */
-		public function Marker(layer:Layer=null, lonlat:LonLat=null, data:Object=null) {
-			super(layer, lonlat, data);
+		public function Marker(geometry:Geometry=null, data:Object=null, style:Style=null) {
+			super(geometry,data,style);		
 		}
 
 		/**
@@ -46,7 +47,8 @@ package org.openscales.core.feature {
 			}
 			var marker:Bitmap = this.getChildAt(0) as Bitmap;
 			if(marker != null) {
-				var px:Pixel=this.layer.map.getLayerPxFromLonLat(this.lonlat);
+				//var px:Pixel=this.layer.map.getLayerPxFromLonLat(this.lonlat);
+				var px:Pixel=this.getLayerPxFromPoint(point);
 				this.x=px.x - marker.width / 2;
 				this.y=px.y - marker.height / 2;
 			} else {

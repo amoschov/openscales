@@ -1,12 +1,10 @@
 package org.openscales.fx.feature
 {
   import flash.display.Sprite;
-  import flash.utils.getQualifiedClassName;
   
-  import org.openscales.core.Util;
   import org.openscales.core.basetypes.LonLat;
-  import org.openscales.core.feature.Feature;
   import org.openscales.core.feature.Marker;
+  import org.openscales.core.geometry.Point;
   import org.openscales.core.layer.Layer;
   import org.openscales.core.popup.Popup;
   import org.openscales.fx.FxMap;
@@ -39,11 +37,13 @@ package org.openscales.fx.feature
 
       if (layer is FxLayer){
         this.fxmap = (layer as FxLayer).fxmap;
-        this.marker = new Marker((layer as FxLayer).getInstance(), lonlat, data);
+        //this.marker = new Marker((layer as FxLayer).getInstance(), lonlat, data);
+        this.marker = new Marker(new org.openscales.core.geometry.Point(lonlat.lon,lonlat.lat));
       }
       else if (layer is Layer){
           this.fxmap = map;
-          this.marker = new Marker((layer as Layer), lonlat, data);
+         // this.marker = new Marker((layer as Layer), lonlat, data);
+          this.marker = new Marker(new org.openscales.core.geometry.Point(lonlat.lon,lonlat.lat));
       }
 
     }

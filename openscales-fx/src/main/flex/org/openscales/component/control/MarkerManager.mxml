@@ -20,7 +20,9 @@
 		import org.openscales.core.Map;
 		import org.openscales.core.layer.Layer;
 		import mx.collections.ArrayCollection;
-
+		import org.openscales.core.geometry.Point;
+		
+		
 		public var markerLayer:FeatureLayer = new FeatureLayer("Markers");
 		
 		[Bindable]
@@ -43,9 +45,16 @@
 				else if (popupTypeFlex.selected)
 					featureData.popupContent = new TitleWindow();
 				
-				var marker:Marker = new Marker( markerLayer, new LonLat(markerLon.value,markerLat.value),featureData );
+				//var marker:Marker = new Marker( markerLayer, new LonLat(markerLon.value,markerLat.value),featureData );
+				
+				var marker:Marker = new Marker(new org.openscales.core.geometry.Point(markerLon.value,markerLat.value));
+				
 				marker.addEventListener(MouseEvent.CLICK, function():void {fxmap.addPopup(marker.createPopup());});
+				
 				markerLayer.addFeature(marker);
+				
+				
+				
 			}
 		}
 		

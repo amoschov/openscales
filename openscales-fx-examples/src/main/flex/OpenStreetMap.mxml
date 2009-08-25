@@ -26,29 +26,22 @@
 			private function initMap():void {
 				map=fxmap.map;
 
-				//We create a marker over Lyon (France) with EPSG:900913 projection
-				var lonlat:LonLat=new LonLat(4.8, 45.7);
-				if(this.map.baseLayer.projection.srsCode!="EPSG:4326"){
-					lonlat.transform(new ProjProjection("EPSG:4326"),this.map.baseLayer.projection);
-				}
-				var markers:FeatureLayer=new FeatureLayer("Markers");
-				markLyon=new Marker(markers, lonlat, {popupContentHTML: "This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
+				//We create a lonlat over Lyon (France) with EPSG:27700 projection
+				var lonlat:LonLat=new LonLat(932115.8764378761,-437484.6802551435);
+				
+				var markers:VectorLayer=new VectorLayer("Markers",false,true,"EPSG:27700");
+				markLyon=new Marker(new org.openscales.core.geometry.Point(lonlat.lon,lonlat.lat),{popupContentHTML: "This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
 				markLyon.addEventListener(MouseEvent.CLICK, showPopup);
 				markers.addFeature(markLyon);
 				markLyon.addEventListener(MouseEvent.CLICK, showPopup);
 				map.addLayer(markers);
 
-				/* We create a vector layer with a point near to Lyon (France)
-				 with EPSG:4326 projection.*/
-				var vect:VectorLayer=new VectorLayer("Reprojected vector",false,true,this.map.baseLayer.projection.srsCode);
+				
+				/*var vect:VectorLayer=new VectorLayer("Reprojected vector",false,true,"EPSG:27700");
 				var p:org.openscales.core.geometry.Point=new org.openscales.core.geometry.Point(lonlat.lon,lonlat.lat);
-				/*if(this.map.baseLayer.projection.srsCode!="EPSG:4326"){
-					p.transform(new ProjProjection("EPSG:4326"),this.map.baseLayer.projection);
-				}*/
-				//vect.projection=new ProjProjection("EPSG:4326");
 				
 				vect.addFeature(new PointFeature(p));
-				map.addLayer(vect);
+				map.addLayer(vect);*/
 				//FIXME : the point is not displayed
 			}
 
