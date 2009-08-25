@@ -5,18 +5,19 @@
 
 	<mx:TabNavigator width="100%"
 					 height="100%">
+		
+		<!--<os:FlexWidgets label="FlexWidgets"/>
 		<os:PanZoom label="PanZoom"/>
-		<!--<os:FlexWidgets label="FlexWidgets"/>-->
 		<os:LayerSwitcher label="LayerSwitcher"/>
 		<os:DrawingExemple label="Drawing"/>
-		<os:InfoExample label="Info"/>
+		<os:InfoExample label="Info"/>-->
 		<os:OpenStreetMap label="OSM and Reprojection"/>			
-		<os:MetacartaWMSC label="Metacarta WMS-C"/>
+		<!--<os:MetacartaWMSC label="Metacarta WMS-C"/>
 		<os:GeovistaWMSCWFS label="WMS-C layer and 2 WFS"/>
 		<os:MetacartaWFSPolygons label="Metacarta WFS Polygons"/>
 		<os:MetacartaWFSPoints label="Metacarta WFS Points"/>
 		<os:GermanyWMS label="Germany WMS"/>
 		<os:OverView label="Overview"/>
-		<os:SecurityMap label="Security"/>
+		<os:SecurityMap label="Security"/>-->
 	</mx:TabNavigator>
 </mx:Application>

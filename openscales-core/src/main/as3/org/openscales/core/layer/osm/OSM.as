@@ -1,8 +1,5 @@
 package org.openscales.core.layer.osm
 {
-	import org.openscales.proj4as.ProjProjection;
-
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.layer.TMS;
@@ -14,6 +11,8 @@ package org.openscales.core.layer.osm
 	 */	
 	public class OSM extends TMS
 	{
+		public static const MISSING_TILE_URL:String="http://openstreetmap.org/openlayers/img/404.png";
+		
 		public function OSM(name:String, url:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
 			projection:String = null, proxy:String = null) {
 
@@ -37,13 +36,13 @@ package org.openscales.core.layer.osm
 			var z:Number = this.map.zoom;
 			var limit:Number = Math.pow(2, z);
 
-			if (y < 0 || y >= limit)
+			/*if (y < 0 || y >= limit)
 			{
-				return Util.MISSING_TILE_URL;
+				return OSM.MISSING_TILE_URL;
 			}
 			else
 			{
-				x = ((x % limit) + limit) % limit;
+				x = ((x % limit) + limit) % limit;*/
 
 				var url:String = this.url;
 				var path:String = z + "/" + x + "/" + y + ".png";
@@ -53,7 +52,7 @@ package org.openscales.core.layer.osm
 				}  
 
 				return url + path;
-			}
+			//}
 		}
 
 	}
