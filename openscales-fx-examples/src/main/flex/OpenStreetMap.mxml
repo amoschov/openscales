@@ -37,11 +37,11 @@
 				map.addLayer(markers);
 
 				
-				/*var vect:VectorLayer=new VectorLayer("Reprojected vector",false,true,"EPSG:27700");
+				var vect:VectorLayer=new VectorLayer("Reprojected vector",false,true,"EPSG:27700");
 				var p:org.openscales.core.geometry.Point=new org.openscales.core.geometry.Point(lonlat.lon,lonlat.lat);
 				
 				vect.addFeature(new PointFeature(p));
-				map.addLayer(vect);*/
+				map.addLayer(vect);
 				//FIXME : the point is not displayed
 			}
 
