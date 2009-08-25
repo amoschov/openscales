@@ -25,20 +25,13 @@
     	public function layerOpacity(event:Event):void
 	    {
 	       layer.alpha = (event.target as HSlider).value/100;
-	       
-	       layer.map.bitmapTransition.alpha=layer.alpha;
 	    }
 	    
 	    private function manageOpacity(event:SliderEvent):void{
-	    	switch (event.type){
-	    		case "thumbPress":
-	    		if(layer.map!=null && layer.map.bitmapTransition!=null)
+	    		if(layer.map!=null && layer.map.bitmapTransition!=null && layer.map.getChildIndex(layer.map.bitmapTransition)!=-1){
 	    		layer.map.removeChild(layer.map.bitmapTransition);
-	    		break;
-	    		case"thumbRelease":
-	    		layer.map.addChildAt(layer.map.bitmapTransition,0);
-	    		break;
-	    	}
+	    		layer.map.bitmapTransition=null;
+	    		}
 	    }
 	    
 	 	   
@@ -110,7 +103,7 @@
 <mx:HBox id="Hbox2" width="100%">
         <mx:Label text="0%"/>
     <mx:HSlider id="opacityControl" width="100" height="5" value="{this._baseLayerVisibility}" minimum="0" maximum="100"
-      change="layerOpacity(event)" thumbRelease="manageOpacity(event)"  thumbPress="manageOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
+      change="layerOpacity(event)" thumbPress="manageOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
       <mx:Label text="100%"/>
   </mx:HBox>	
 </mx:VBox>

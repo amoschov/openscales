@@ -775,7 +775,8 @@ package org.openscales.core
 				// We create the background layer from the bitmap data
 				this.bitmapTransition = new DraggableSprite();
 				this.bitmapTransition.addChild(new Bitmap(bitmapData));		
-
+				this.bitmapTransition.alpha=this._baseLayer.alpha;
+				
 				this.addChildAt(bitmapTransition, 0);				
 
 				// We hide the layerContainer (to avoid zooming out issues)
