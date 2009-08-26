@@ -106,8 +106,9 @@ package org.openscales.core.layer
 			if (this._map == null) {
 
 				this._map = map;
-
+				if(!isBaseLayer||map.baseLayer==this||this.maxExtent!=null)
 				this.maxExtent = this.maxExtent || this.map.maxExtent;
+				else this.maxExtent=new Bounds(-180,-90,180,90);
 				this.units = this.units || this.map.units;
 
 			if((this.map.baseLayer==null)||(this.isBaseLayer && this.map.baseLayer==this))
