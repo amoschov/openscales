@@ -36,14 +36,14 @@ package org.openscales.core.layer.osm
 			var z:Number = this.map.zoom;
 			var limit:Number = Math.pow(2, z);
 
-			/*if (y < 0 || y >= limit)
+			if (y < 0 || y >= limit ||x < 0 || x >= limit)
 			{
 				return OSM.MISSING_TILE_URL;
 			}
 			else
 			{
-				x = ((x % limit) + limit) % limit;*/
-
+				x = ((x % limit) + limit) % limit;
+				y = ((y % limit) + limit) % limit;
 				var url:String = this.url;
 				var path:String = z + "/" + x + "/" + y + ".png";
 
@@ -52,7 +52,7 @@ package org.openscales.core.layer.osm
 				}  
 
 				return url + path;
-			//}
+			}
 		}
 
 	}
