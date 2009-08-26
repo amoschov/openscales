@@ -85,17 +85,53 @@ package org.openscales.core.basetypes
 			return bbox;
 		}
 
+		// Getters & setters for _left, _bottom, _right and _top
+
+		public function get left():Number {
+			return _left;
+		}
+		public function set left(value:Number):void {
+			_left = value;
+		}
+
+		public function get bottom():Number {
+			return _bottom;
+		}
+		public function set bottom(value:Number):void {
+			_bottom = value;
+		}
+
+		public function get right():Number {
+			return _right;
+		}
+		public function set right(value:Number):void {
+			_right = value;
+		}
+
+		public function get top():Number {
+			return _top;
+		}
+		public function set top(value:Number):void {
+			_top = value;
+		}
+
+		// Getters for width, height and size
+
 		public function get width():Number {
-			return this.right - this.left;
+			return Math.abs(this.right - this.left);
 		}
 
 		public function get height():Number {
-			return this.top - this.bottom;
+			return Math.abs(this.top - this.bottom);
 		}
 
 		public function get size():Size {
 			return new Size(this.width, this.height);
 		}
+
+		/*public function get center():Abstract2D {
+			return new Abstract2D((this.left + this.right) / 2, (this.bottom + this.top) / 2);
+		}*/
 
 		public function get centerPixel():Pixel {
 			return new Pixel((this.left + this.right) / 2, (this.bottom + this.top) / 2);
@@ -353,44 +389,6 @@ package org.openscales.core.basetypes
 			Proj4as.transform(source, dest, pRT);
 			this._left = pLB.x; this._bottom = pLB.y;
 			this._right = pRT.x; this._top = pRT.y;
-		}
-
-		// Getters & setters : _left _bottom _right _top
-
-		public function get left():Number
-		{
-			return _left;
-		}
-		public function set left(newLeft:Number):void
-		{
-			_left = newLeft;
-		}
-
-		public function get bottom():Number
-		{
-			return _bottom;
-		}
-		public function set bottom(newBottom:Number):void
-		{
-			_bottom = newBottom;
-		}
-
-		public function get right():Number
-		{
-			return _right;
-		}
-		public function set right(newRight:Number):void
-		{
-			_right = newRight;
-		}
-
-		public function get top():Number
-		{
-			return _top;
-		}
-		public function set top(newTop:Number):void
-		{
-			_top = newTop;
 		}
 
 	}
