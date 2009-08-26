@@ -9,14 +9,14 @@
 		<os:LayerSwitcher label="LayerSwitcher" toolTip="Switch the different layers"/>
 		<os:DrawingExample label="Drawing" toolTip="Draw different features"/>
 		<os:InfoExample label="Info" toolTip="show informations of the selected feature"/>
-		<os:OpenStreetMap label="OSM and Reprojection"/>
+		<os:OpenStreetMap label="OSM and Reprojection - No test need"/>
 		<os:CapabilitiesExample label="Capabilities" toolTip="Add a WFS which is on a server"/>
 		<os:YahooSearchExample label="Yahoo Search" toolTip="Search a place with Yahoo"/>			
-		<os:MetacartaWMSC label="Metacarta WMS-C"/>
-		<os:GeovistaWMSCWFS label="WMS-C layer and 2 WFS"/>
-		<os:MetacartaWFSPolygons label="Metacarta WFS Polygons"/>
-		<os:MetacartaWFSPoints label="Metacarta WFS Points"/>
-		<os:GermanyWMS label="Germany WMS"/>
+		<os:MetacartaWMSC label="Metacarta WMS-C - No test need"/>
+		<os:GeovistaWMSCWFS label="WMS-C layer and 2 WFS - No test need"/>
+		<os:MetacartaWFSPolygons label="Metacarta WFS Polygons - No test need"/>
+		<os:MetacartaWFSPoints label="Metacarta WFS Points - No test need"/>
+		<os:GermanyWMS label="Germany WMS - No test need"/>
 		<os:OverView label="Overview" toolTip="Use the miniMap to move"/>
 		<os:SecurityMap label="Security" toolTip="Not implement yet"/>
 	</mx:TabNavigator>

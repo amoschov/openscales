@@ -23,6 +23,7 @@
 			y="0"
 			height="100%"
 			width="100%"
+			proxy="http://openscales.org/proxy.php?url="	
 			zoom="5">
 			
 		<os:WMSC name="Metacarta"
