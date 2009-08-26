@@ -31,7 +31,12 @@ package org.openscales.core.control.ui
 			this.layerName = layerName;
 			this.status=true;
 		}
-
+		
+		/**
+		 * Manage the status of the checkBox, and display the appropriate image
+		 * 
+		 * @param value check=true uncheck=false
+		 */
 		public function set status(value:Boolean):void {
 			this._status = value;
 
@@ -47,6 +52,8 @@ package org.openscales.core.control.ui
 			this.addChild(this.image);
 
 		}
+		
+		// Getters & setters
 		public function get status():Boolean
 		{
 			return this._status;

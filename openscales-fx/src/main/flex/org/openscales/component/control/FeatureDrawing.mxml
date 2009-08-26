@@ -368,10 +368,10 @@
 	<mx:Glow id="glowImage" alphaFrom="1" alphaTo="1" blurXFrom="0.0" blurXTo="15.0" blurYFrom="0.0" blurYTo="15.0" color="0xC0FF0C"/>
 	<mx:ToggleButtonBar x="44" y="10" horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="0" id="tgBar" height="31" width="186">
 		<mx:Array>
-			<mx:Object icon="@Embed('/org/openscales/component/images/IconeMouvement.swf')" id="btnMouvement"/>
-			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoint.swf')" id="btnPoint"/>
-			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" id="btnPath"/>
-			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoly.swf')" id="btnPolygon"/>
+			<mx:Object icon="@Embed('/org/openscales/component/images/IconeMouvement.swf')" id="btnMouvement" toolTip="Pan the map"/>
+			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoint.swf')" id="btnPoint" toolTip="Draw a point"/>
+			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" id="btnPath" toolTip="Draw a path"/>
+			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoly.swf')" id="btnPolygon" toolTip="Draw a polygon"/>
 		</mx:Array>
 	</mx:ToggleButtonBar>
 	

@@ -36,18 +36,12 @@ package org.openscales.core.control
 		 * @param Units for zoomed in on bottom bar.  Default is ft.
 		 */
 		private var bottomInUnits:String = "ft";
-
 		private var labelMiles:TextField = null;
-
 		private var labelKm:TextField = null;
-
 		private var _color:int = 0x666666;
 
-
-		public function ScaleLine(position:Pixel=null)
-		{
+		public function ScaleLine(position:Pixel=null){
 			super(position);
-
 		}
 
 		/**
