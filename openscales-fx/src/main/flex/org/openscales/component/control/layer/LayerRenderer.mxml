@@ -24,6 +24,8 @@
 
       [Bindable]
       private var hasCapabilities:Boolean = false;
+      
+      private var labelLayer:Label;
 
       /**
        * Get the layer that the List into the LayerSwitcher.mxml send to display it
@@ -58,6 +60,14 @@
       public function layerOpacity(event:Event):void
       {
         layer.alpha = (event.target as HSlider).value/100;
+        if(layer.alpha == 0)
+        {
+        	labelLayer.setStyle("color",0xA8A8A8);
+        }
+        else
+        {
+        	labelLayer.setStyle("color",0x000000);
+        }
       }
 
       /**
@@ -132,10 +142,29 @@
              checkBox.selected = this.layer.visible;
              checkBox.addEventListener(MouseEvent.CLICK,layerVisible); 
             displayControl.addChild(checkBox); */
-            var label:Label = new Label();
-            label.text = this.layer.name;
-            label.percentWidth = 100;
-            displayControl.addChild(label);
+            labelLayer = new Label();
+            labelLayer.text = this.layer.name;
+            labelLayer.percentWidth = 100;
+            displayControl.addChild(labelLayer);
+            
+            if(((this.parent.parent.parent.parent as LayerSwitcher).overlayArray.length)<=1)
+            {
+       			ArrowUp.enabled = false;
+				ArrowUp.alpha = 0.3;
+       			ArrowDown.enabled = false;
+       			ArrowDown.alpha = 0.3;
+       			ArrowUp.removeEventListener(MouseEvent.CLICK,changeLayerOrder);
+       			ArrowDown.removeEventListener(MouseEvent.CLICK,changeLayerOrder);
+            }
+            else
+            {
+            	ArrowUp.enabled = true;
+            	ArrowUp.alpha = 1;
+       			ArrowDown.enabled = true;
+       			ArrowDown.alpha = 1;
+       			ArrowUp.addEventListener(MouseEvent.CLICK,changeLayerOrder);
+       			ArrowDown.addEventListener(MouseEvent.CLICK,changeLayerOrder);
+            }
 
           }
 
