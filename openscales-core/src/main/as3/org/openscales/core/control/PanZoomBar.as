@@ -3,11 +3,12 @@ package org.openscales.core.control
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.control.ui.Button;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
 
@@ -106,21 +107,18 @@ package org.openscales.core.control
 		public function _addZoomBar(centered:Pixel):Pixel {
 
 			var zoomsToEnd:int = this.map.numZoomLevels - 1 - this.map.zoom;
-			this.slider = new sliderImg();
-			this.slider.x = centered.x - 1;
-			this.slider.y = centered.y + zoomsToEnd * this.zoomStopHeight;
-
-
+			var sz:Size = new Size(20,9);
+			this.slider =new Button("slider",new sliderImg(),new Pixel(centered.x - 1,centered.y + zoomsToEnd * this.zoomStopHeight),sz);
+			
+			
 			slider.addEventListener(MouseEvent.MOUSE_DOWN, this.zoomBarDown);
-			slider.addEventListener(MouseEvent.MOUSE_MOVE, this.zoomBarDrag);
-			slider.addEventListener(MouseEvent.MOUSE_UP, this.zoomBarUp);
-			slider.addEventListener(MouseEvent.MOUSE_OUT, this.zoomBarUp);
-			slider.addEventListener(MouseEvent.DOUBLE_CLICK, this.doubleClick);
-			slider.addEventListener(MouseEvent.CLICK, this.doubleClick);
 
-			this.zoomBar = new zoombarImg();
-			zoomBar.x = centered.x;
-			zoomBar.y = centered.y;
+			slider.addEventListener(MouseEvent.MOUSE_UP, this.zoomBarUp);
+		
+
+			
+			this.zoomBar=new Button("zooomBar",new zoombarImg(),centered,sz);
+			
 			zoomBar.width = this.zoomStopWidth;
 			zoomBar.height = this.zoomStopHeight * this.map.numZoomLevels;
 
@@ -147,7 +145,7 @@ package org.openscales.core.control
 		}
 
 		public function zoomBarClick(evt:MouseEvent):void {
-			var y:Number = map.mouseY;
+			var y:Number = evt.stageY;
 			var top:Number = Util.pagePosition(evt.currentTarget)[1];
 			var levels:Number = Math.floor((y - top)/this.zoomStopHeight);
 			this.map.zoom = (this.map.numZoomLevels -1) -  levels;
@@ -156,14 +154,12 @@ package org.openscales.core.control
 
 		public function zoomBarDown(evt:MouseEvent):void {
 
-			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.passEventToSlider);
-			this.map.addEventListener(MouseEvent.MOUSE_UP,this.passEventToSlider);
-			this.map.addEventListener(MouseEvent.MOUSE_OUT,this.passEventToSlider);
 
+			
 			this.mouseDragStart = new Pixel(map.mouseX, map.mouseY);
-			this.zoomStart = new Pixel(map.mouseX, map.mouseY);
+			this.zoomStart = new Pixel(evt.stageX, evt.stageY);
 			this.useHandCursor = true;
-
+			slider.addEventListener(MouseEvent.MOUSE_MOVE, this.zoomBarDrag);
 			evt.stopPropagation();
 		}
 
@@ -174,7 +170,7 @@ package org.openscales.core.control
 				if ((map.mouseY - offsets[1]) > 0 && 
 					(map.mouseY - offsets[1]) < int(this.zoomBar.height) - 2) {
 					var newTop:Number = int(this.slider.y) - deltaY;
-					this.slider.y = newTop;
+					this.slider.y = int(this.slider.y) - deltaY;
 				}
 				this.mouseDragStart = new Pixel(map.mouseX, map.mouseY);
 				evt.stopPropagation();
@@ -184,13 +180,13 @@ package org.openscales.core.control
 		public function zoomBarUp(evt:MouseEvent):void {
 			if (this.zoomStart) {
 				this.useHandCursor = false;
-				this.map.removeEventListener(MouseEvent.MOUSE_MOVE,this.passEventToSlider);
-				this.map.removeEventListener(MouseEvent.MOUSE_UP,this.passEventToSlider);
-				this.map.removeEventListener(MouseEvent.MOUSE_OUT,this.passEventToSlider);
-				var deltaY:Number = this.zoomStart.y - map.mouseY;
+				
+				var deltaY:Number = this.zoomStart.y - evt.stageY;
 				this.map.zoom = this.map.zoom + Math.round(deltaY/this.zoomStopHeight);
 				this.moveZoomBar();
 				this.mouseDragStart = null;
+				slider.removeEventListener(MouseEvent.MOUSE_MOVE,this.zoomBarDrag);
+				
 				evt.stopPropagation();
 			}
 		}
