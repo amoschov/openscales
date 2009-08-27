@@ -28,6 +28,7 @@ package org.openscales.core.handler.mouse
 		private var _firstDrag:Boolean = true;
 
 		private var _dragging:Boolean = false;
+		
 		/**
 		 *Callbacks function
 		 */
@@ -44,6 +45,7 @@ package org.openscales.core.handler.mouse
 		{
 			super(map,active);
 		}
+		
 		override protected function registerListeners():void{
 			this.map.addEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
 			this.map.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
@@ -53,7 +55,7 @@ package org.openscales.core.handler.mouse
 			this.map.removeEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
 			this.map.removeEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
 		}
-
+		
 		/**
 		 * The MouseDown Listener
 		 */
@@ -78,17 +80,17 @@ package org.openscales.core.handler.mouse
 		/**
 		 *The MouseUp Listener
 		 */
-
-		protected function onMouseUp(event:Event):void
-		{
+		protected function onMouseUp(event:Event):void {
 			this.map.layerContainer.stopDrag();
-			if (this.map.bitmapTransition) this.map.bitmapTransition.stopDrag();
+			if (this.map.bitmapTransition)
+				this.map.bitmapTransition.stopDrag();
 
 			this.map.buttonMode=false;
-			this.done(new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY));
+			this.done(new Pixel((event as MouseEvent).stageX, (event as MouseEvent).stageY));
+			// A MapEvent.MOVE_END is emitted by the "set center" called in this.done
 			this._dragging=false;
-			this.map.dispatchEvent(new MapEvent(MapEvent.DRAG_END, this.map))
-			if(this.oncomplete!=null) this.oncomplete(event as MouseEvent);
+			if (this.oncomplete!=null)
+				this.oncomplete(event as MouseEvent);
 		}
 
 		// Getters & setters as3

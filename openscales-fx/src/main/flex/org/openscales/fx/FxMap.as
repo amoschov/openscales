@@ -148,7 +148,6 @@ package org.openscales.fx {
       this._map.addEventListener(MapEvent.MOVE_START, this.hidePopups)
       this._map.addEventListener(MapEvent.DRAG_START, this.hidePopups)
       this._map.addEventListener(MapEvent.MOVE_END, this.showPopups)
-      this._map.addEventListener(MapEvent.DRAG_END, this.showPopups)
       this.addEventListener(ResizeEvent.RESIZE, this.onResize);
     }
 

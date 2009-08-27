@@ -21,8 +21,7 @@ package org.openscales.core.events{
 		public static const ZOOM_END:String="openscales.zoomend";
 
 		public static const DRAG_START:String="openscales.dragstart";
-
-		public static const DRAG_END:String="openscales.dragend";
+		// There is no DRAG_END since a MOVE_END event is emitted if the center has finally changed
 
 		public static const RESIZE:String="openscales.resize";
 

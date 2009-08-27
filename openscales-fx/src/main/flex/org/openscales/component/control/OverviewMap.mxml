@@ -120,15 +120,19 @@
 			 * maximum size.
 			 */		
 			override public function set map(value:Map):void {
+				// Do nothing if the name of the new map is the name of the current map
+				/*if (value.name == map.name) {
+					return;
+				}*/
+
 				// Remove the event listeners defined on the previous main map
 	      		if (map != null) {
-					// Remove the listeners on when the main map is dragged, moved or zoomed	
-	     			map.removeEventListener(MapEvent.DRAG_END, updateRectFromMainMap);
+					// Remove the listeners on when the main map is moved or zoomed	
 	     			map.removeEventListener(MapEvent.MOVE_END, updateRectFromMainMap); 
 	     			map.removeEventListener(MapEvent.ZOOM_END, updateRectFromMainMap);
 
 					// Remove the listeners on when the base layer of the main map is changed	
-					map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED, changeBaseLayer);
+					map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED, updateRectFromMainMap);
 	      		}
 	      		
 	      		// Change the main map associated to the overview map
@@ -140,13 +144,12 @@
 	      		
 	      		// Add the event listeners to the new main map
 	      		if (map != null) {
-					// Update the overview when the main map is dragged, moved or zoomed	
-					map.addEventListener(MapEvent.DRAG_END, updateRectFromMainMap);			
+					// Update the overview when the main map is moved or zoomed	
 					map.addEventListener(MapEvent.MOVE_END, updateRectFromMainMap);			
 					map.addEventListener(MapEvent.ZOOM_END, updateRectFromMainMap);
 					
 					// Change the overview map if the base layer of the main map is changed
-					map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, changeBaseLayer);
+					map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, updateRectFromMainMap);
 	      		}
 			}
 			
@@ -176,11 +179,11 @@
 			}
     
 			/**
-			 * Update the overview when the main map is dragged, moved or zoomed
+			 * Update the overview when the main map is moved or zoomed
 			 * 
 			 * @param event the event is not used to perform the update, the main map is sufficient
 			 */
-			private function updateRectFromMainMap(event:MapEvent=null):void {
+			private function updateRectFromMainMap(event:Event=null):void {
 				var mapBounds:Bounds;
 				if (map == null) {
 					Trace.warning("Overview - updateRectFromMainMap("+((event==null)?"null":event.type)+") : stop, map is null");
@@ -269,9 +272,9 @@
 			 * 
 			 * @param event the event that defines the name of the new base layer to use for the overview map
 			 */
-			private function changeBaseLayer(event:LayerEvent):void  {
+			/*private function changeBaseLayer(event:LayerEvent):void  {
 				// Do nothing if the name of the event is the name of the current base layer of the overview map
-				if (overview.map.baseLayer.name == event.layer.name) {
+				if (event.layer.name == overview.map.baseLayer.name) {
 					return;
 				}
 				// Get the layer defined by the name of the event
@@ -282,13 +285,12 @@
 				 	overview.map.baseLayer = newBaseLayer;
 				 	overview.map.baseLayer.visible = true;
 				}
-			}
+			}*/
 			
 // TODO : à vérifier / corriger à partir d'ici !!!
 	        //the following methods allow to select a zone in the little map
 			
      		/*private function startBox(e:MouseEvent) : void {
-     			map.removeEventListener(MapEvent.DRAG_END,updateRectFromMainMap);
      			map.removeEventListener(MapEvent.ZOOM_END,updateRectFromMainMap);
      			map.removeEventListener(MapEvent.MOVE_END,updateRectFromMainMap); 
      				
@@ -347,7 +349,6 @@
 			    	rectRealPxBounds.top=rect.y;
 			    	rectRealPxBounds.bottom=rect.y+rect.height;
 			    		
-			    	map.addEventListener(MapEvent.DRAG_END,updateRectFromMainMap);
 	     			map.addEventListener(MapEvent.ZOOM_END,updateRectFromMainMap);
 	     			map.addEventListener(MapEvent.MOVE_END,updateRectFromMainMap);	
             	}
