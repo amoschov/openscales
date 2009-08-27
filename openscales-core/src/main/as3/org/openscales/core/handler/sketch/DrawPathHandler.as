@@ -1,11 +1,11 @@
 package org.openscales.core.handler.sketch
 {
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.Style;
@@ -28,6 +28,8 @@ package org.openscales.core.handler.sketch
 		private var _lastPoint:Point = null;
 		private var _newFeature:Boolean = true;
 		private var _firstPointRemoved:Boolean = false;
+		private var _drawContainer:Sprite = new Sprite();
+		private var _startPoint:Pixel=new Pixel(); //for the temporary line
 
 		private var _dblClickHandler:ClickHandler = new ClickHandler();
 
@@ -57,6 +59,8 @@ package org.openscales.core.handler.sketch
 
 		public function mouseDblClick(event:MouseEvent):void {
 			this.drawFinalPath();
+			_drawContainer.graphics.clear();
+			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,temporaryLine);
 		} 
 
 		public function drawFinalPath():void{			
@@ -83,29 +87,31 @@ package org.openscales.core.handler.sketch
 			if(this.drawLayer.projection.srsCode!=this.map.projection.srsCode)
 				lonlat.transform(this.map.projection,this.drawLayer.projection);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
-			
+			_startPoint = pixel;
 			if(newFeature){			
+				
 				_multiLineString = new MultiLineString();
 				var multiLineFeature:MultiLineStringFeature = new MultiLineStringFeature(_multiLineString);
 				
 				lastPoint = point;
 				
 				//add a pointFeature to show where we clicked
-				var pointFeature:PointFeature = new PointFeature(point); 
-				pointFeature.name = name;
+				/* var pointFeature:PointFeature = new PointFeature(point); 
+				pointFeature.name = name; */
 				
-				drawLayer.addFeature(pointFeature);								
+				/* drawLayer.addFeature(pointFeature); */								
 				drawLayer.addFeature(multiLineFeature);
 				
-				newFeature = false;		
-					
+				newFeature = false;
+						
+				this.map.addEventListener(MouseEvent.MOUSE_MOVE,temporaryLine);	
 			}
 			else {
 				//When we have at least a 2 points path, we can remove the first point				
-				if(!_firstPointRemoved && drawLayer.features[drawLayer.features.length-2] is PointFeature) {
+				/* if(!_firstPointRemoved && drawLayer.features[drawLayer.features.length-2] is PointFeature) {
 					drawLayer.removeFeature(drawLayer.features[drawLayer.features.length-2]);
 					_firstPointRemoved = true;
-				}								
+				} */								
 				if(!point.equals(lastPoint)){
 					var points:Array = new Array(2);
 					points.push(lastPoint, point);
@@ -117,10 +123,19 @@ package org.openscales.core.handler.sketch
 				}								
 			}
 		}
+		
+		private function temporaryLine(evt:MouseEvent):void{
+			_drawContainer.graphics.clear();
+			_drawContainer.graphics.lineStyle(2, 0x00ff00);
+			_drawContainer.graphics.moveTo(_startPoint.x, _startPoint.y);
+			_drawContainer.graphics.lineTo(map.mouseX, map.mouseY);	
+			_drawContainer.graphics.endFill();	
+		}
 
 		override public function set map(value:Map):void {
 			super.map = value;
 			this._dblClickHandler.map = value;
+			if(map!=null){map.addChild(_drawContainer);}
 		}
 
 		//Getters and Setters		
