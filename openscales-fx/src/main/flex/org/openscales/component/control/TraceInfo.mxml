@@ -1,43 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="200" height="300">
+<Control xmlns="org.openscales.component.control.*"
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	width="200" height="300">
 	
-		<mx:Script>
+	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.Trace;
 			import org.openscales.core.events.TraceEvent;
 			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
 			
-			[Bindable]
-			private var temp:String = "<b>Output Console :</b>";
+			[Bindable] private var temp:String = "<b>Output Console :</b>";
 			
 			override public function set map(value:Map):void {
-					super.map = value;
-					
-					this.map.addEventListener(TraceEvent.ERROR,traceInfo);
-					this.map.addEventListener(TraceEvent.WARNING,traceInfo);
-					this.map.addEventListener(TraceEvent.INFO,traceInfo);
-				}
-				
-			public function traceInfo(event:TraceEvent):void 
-			{
-				if(event.type == Trace.ERROR)
-				{
-					temp += "<br/><font color='#FF0000'>"+event.text+"</font><br/>----------";
-				}
-				if(event.type == Trace.WARNING)
-				{
-					temp += "<br/><font color='#FFCC00'>"+event.text+"</font><br/>----------";
-				}
-				if(event.type == Trace.INFO)
-				{
-					temp += "<br/><font color='#000000'>"+event.text+"</font><br/>----------";
-				}
-				
+				super.map = value;
+				this.map.addEventListener(TraceEvent.ERROR, traceInfo);
+				this.map.addEventListener(TraceEvent.WARNING, traceInfo);
+				this.map.addEventListener(TraceEvent.INFO, traceInfo);
 			}
 				
-				
+			public function traceInfo(event:TraceEvent):void {
+				var textColor:String = "#000066"; // used for event.type == Trace.INFO
+				if (event.type == Trace.ERROR) {
+					textColor = "#FF0000"
+				} else if (event.type == Trace.WARNING) {
+					textColor = "#FFCC00"
+				}
+				temp += "<br/><font color='"+textColor+"' size='9'>"+event.text+"</font><br/>----------";
+			}
 		]]>
-		</mx:Script>
-	<mx:TextArea id="textarea" width="100%" height="100%" valueCommit="textarea.verticalScrollPosition=textarea.maxVerticalScrollPosition" fontWeight="bold" htmlText="{temp}"/>
+	</mx:Script>
+	
+	<mx:TextArea id="textarea" width="100%" height="100%"
+		valueCommit="textarea.verticalScrollPosition=textarea.maxVerticalScrollPosition"
+		htmlText="{temp}"/>
 	
 </Control>
