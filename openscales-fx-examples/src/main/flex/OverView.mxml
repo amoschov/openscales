@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-		   xmlns:os="http://openscales.org"
-		   creationComplete="initMap()">
+	xmlns:os="http://openscales.org"
+	creationComplete="initMap()">
+	
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.Map;
-
-			[Bindable] private var map:Map; // Fixme : on devrait pouvoir binder directement Map.map
+			
+			[Bindable] private var map:Map; // Fixme : on devrait pouvoir utiliser directement map !??
 			
 			private function initMap():void {
 				map = fxmap.map;
-				resizeOverView();
+				resizeExample();
 			}
 			
-			private function resizeOverView():void {
+			private function resizeExample():void {
+				traceBox.x = this.width - 200;
+				
 				miniMap.height = 0.2 * this.height;
 				miniMap.width = this.width * miniMap.height / this.height;
 				miniMap.x = this.width - miniMap.width;
 				miniMap.y = this.height - miniMap.height;
 			}
 			
-			private function toggleOverView():void {
+			private function toggleOverview():void {
 				miniMap.visible = ! miniMap.visible;
 			}
 		]]>
@@ -28,16 +31,24 @@
 
 	<os:Map id="fxmap" width="100%" height="100%"
 		zoom="5" lon="538850.47459" lat="5740916.1243"
-		resize="resizeOverView();">
+		proxy="http://openscales.org/proxy.php?url="
+		resize="resizeExample();">
 
-		<!-- A EPSG:900913 baselayer (OSM) -->
+		<!-- OpenStreetMap EPSG:900913 -->
 		<os:Mapnik name="Mapnik"
 			numZoomLevels="20"
 			isBaseLayer="true"
-			proxy="http://openscales.org/proxy.php?url="
 			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
 			minResolution="0.5971642833709717"
 			maxResolution="156543.0339" />
+		
+		<os:WMSC name="Metacarta"
+			numZoomLevels="20"
+			isBaseLayer="true"
+			maxExtent="-180,-90,180,90"
+			url="http://labs.metacarta.com/wms-c/Basic.py"
+			layers="satellite"
+			format="image/jpeg" />
 
 		<os:ClickHandler />
 		<os:WheelHandler />
@@ -45,11 +56,25 @@
 
 	</os:Map>
 
+	<os:TraceInfo id="traceBox" map="{map}" x="{width-200}" y="0" />
+
 	<mx:VBox horizontalAlign="center" x="10" y="10">
 		<os:PanComponent map="{map}" />
-		<os:ZoomBoxComponent map="{map}" click="toggleOverView();" />
+		<os:ZoomBoxComponent map="{map}" click="toggleOverview();" />
 	</mx:VBox>
 
-	<os:OverviewMapComponent id="miniMap" map="{map}" />
-
+	<mx:Panel title="Main map's layer switcher" x="10" y="120">
+		<os:LayerSwitcherComponent id="layerSwitcher" map="{map}" />
+	</mx:Panel>
+	
+	<os:OverviewMapComponent id="miniMap" map="{map}" minRectPxSize="3" rectColor="0xFF3300">
+		<!-- A EPSG:900913 baselayer (OSM) -->
+		<!--os:Mapnik name="Mapnik"
+			numZoomLevels="20"
+			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
+			minResolution="0.5971642833709717"
+			maxResolution="156543.0339"
+			isBaseLayer="true" /-->
+	</os:OverviewMapComponent>
+	
 </mx:Canvas>

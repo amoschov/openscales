@@ -3,7 +3,7 @@
 	xmlns:control="org.openscales.component.control.*"
 	xmlns:os="http://openscales.org"
 	width="100" height="100"
-	creationComplete="initOverview();"
+	creationComplete="finalizeOverview();"
 	resize="resizeOverview();">
 	
 	<mx:Script>
@@ -17,58 +17,100 @@
 			import org.openscales.core.geometry.Geometry;
 			import org.openscales.core.layer.Layer;
 			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
 
 			import com.gskinner.motion.GTweeny;
 			import mx.events.SliderEvent;
 			import flash.geom.Rectangle;
+			
+			import mx.controls.Alert;
 
-			private var rect:Shape; // the rectangle that represents the visible extent of the main map over the overview map
-			private var minRectPxSize:Number=5; // the display of the rect is limited to a minimum width and a height of minRectPxSize pixels
-			private var rectRealPxBounds:Bounds; // the real extent in pixels associated to the visible extent of the main map
-
+			private var rect:Shape = new Shape(); // the rectangle that represents the visible extent of the main map over the overview map
+			private var rectRealPxBounds:Bounds = new Bounds(0, 0+height, 0+width, 0); // the real extent in pixels associated to the visible extent of the main map
 			private var sprite:Sprite // the sprite used to display the "rect"
 			
-			//private var drawContainer:Sprite; // ??? FixMe ???
-			//private var lastZoom:LonLat = null; // ??? FixMe ???
-	    	//private var mouseXInitial:Number; // ??? FixMe ???
-	    	//private var mouseYInitial:Number; // ??? FixMe ???
+			[Bindable] public var _minRectPxSize:Number = 5; // the display of the rect is limited to a minimum width and height of minRectPxSize pixels
+			public function get minRectPxSize():Number {
+				return _minRectPxSize;
+			}
+			public function set minRectPxSize(value:Number):void {
+				if (value > 0) {
+					_minRectPxSize = value;
+				}
+			}
+			
+			[Bindable] public var _rectColor:uint = 0xFF0000; // the color of the rect that represents the visible extent of the main map
+			public function get rectColor():uint {
+				return _rectColor;
+			}
+			public function set rectColor(value:uint):void {
+				_rectColor = value;
+				rect.graphics.lineStyle(1,_rectColor);
+			}
 			
 			/**
 			 * Init the overview once the creation is completed
 			 */
-			private function initOverview():void {
-				// Create the rect that represents the visible extent of the main map
-				rect = new Shape();	
-				rect.graphics.lineStyle(1,0xFF0000);
-				rect.graphics.drawRect(0,0,10,10);
-				// FixMe rect.graphics.drawRect(0,0,10,10); et rect.graphics.drawRect(0,0,100,50); montrent des tracés très différents
-
+			private function finalizeOverview():void {
+				// Override the base layer if defined
+				/*var child:DisplayObject;
+				for(i:int=0; i < this.rawChildren.numChildren; i++) {
+					child = this.rawChildren.getChildAt(i);
+					if (child is FxLayer) {
+						(child as FxLayer).fxmap = this;
+						this.overview.map.addLayer((child as FxLayer).layer);
+					}
+				}*/
+				
 				// Create the sprite that will display the rect and add to the overview
 				sprite = new Sprite();
 				sprite.addChild(rect);
 				overview.map.addChild(sprite);
-
-				// ??? FixMe ???
-				/*drawContainer = new Sprite();
-				overview.map.addChild(drawContainer);*/
 			
 				// Change the center of the main map to the location clicked on the overview
-				//this.overview.map.addEventListener(MouseEvent.CLICK, this.clickOnOverview);
+				overview.map.addEventListener(MouseEvent.CLICK, setCenterFromOverview);
 				
 				// Change the center and the scale of the main map depending on the new extent drawn on the overview map
-				/*this.overview.map.addEventListener(MouseEvent.MOUSE_DOWN, this.startBox);
-				this.overview.map.addEventListener(MouseEvent.MOUSE_MOVE, this.drawBox);
-				this.overview.map.addEventListener(MouseEvent.MOUSE_UP, this.endBox);*/
+				/*overview.map.addEventListener(MouseEvent.MOUSE_DOWN, startBox);
+				overview.map.addEventListener(MouseEvent.MOUSE_MOVE, drawBox);
+				overview.map.addEventListener(MouseEvent.MOUSE_UP, endBox);*/
 			}
 			
 			/**
 			 * Resize the overview to fit to the maximum size avaible for this component
 			 */
 			private function resizeOverview():void {
-			    overview.width = this.width;
-			    overview.height = this.height;
+			    overview.width = width;
+			    overview.height = height;
 			}
 
+			/**
+			 * Convert a coordinate on the overview map in a Pixel on the overview component
+			 * 
+			 * @param cx the X-coordinate of a point of the overview map
+			 * @param cy the Y-coordinate of a point of the overview map
+			 */
+			private function coordinateToPixel(cx:Number, cy:Number):Pixel { // TODO : à valider dans l'hémisphère Sud
+		        var invRes:Number = 1.0 / overview.map.resolution;
+            	return new Pixel(
+                    Math.round(invRes * (cx - overview.map.extent.left)),
+                    Math.round(invRes * (overview.map.extent.top - cy)));
+    		}
+    		
+			/**
+			 * Convert a Pixel on the overview component in a coordinate on the overview map 
+			 * 
+			 * @param p the pixel on the overview component
+			 */
+			private function pixelToCoordinate(p:Pixel):LonLat { // FixMe : pas LonLat mais Abstract2D !!!
+				// TODO : à valider dans l'hémisphère Sud
+		        var c2p_x:Number = p.x - overview.map.size.w / 2.0;
+		        var c2p_y:Number = p.y - overview.map.size.h / 2.0;
+		        var center:LonLat = overview.map.extent.centerLonLat;
+		        return new LonLat(	center.lon + c2p_x * overview.map.resolution,
+		        					center.lat - c2p_y * overview.map.resolution );
+    		}
+    		
 			/**
 			 * Change the main map associated to the overview, define the event
 			 * listeners attached to the map and redraw the rectangle that represents
@@ -81,12 +123,12 @@
 				// Remove the event listeners defined on the previous main map
 	      		if (map != null) {
 					// Remove the listeners on when the main map is dragged, moved or zoomed	
-	     			this.map.removeEventListener(MapEvent.DRAG_END, this.updateRectFromMainMap);
-	     			this.map.removeEventListener(MapEvent.MOVE_END, this.updateRectFromMainMap); 
-	     			this.map.removeEventListener(MapEvent.ZOOM_END, this.updateRectFromMainMap);
+	     			map.removeEventListener(MapEvent.DRAG_END, updateRectFromMainMap);
+	     			map.removeEventListener(MapEvent.MOVE_END, updateRectFromMainMap); 
+	     			map.removeEventListener(MapEvent.ZOOM_END, updateRectFromMainMap);
 
 					// Remove the listeners on when the base layer of the main map is changed	
-					this.map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED, this.changeBaseLayer);
+					map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED, changeBaseLayer);
 	      		}
 	      		
 	      		// Change the main map associated to the overview map
@@ -99,15 +141,40 @@
 	      		// Add the event listeners to the new main map
 	      		if (map != null) {
 					// Update the overview when the main map is dragged, moved or zoomed	
-					this.map.addEventListener(MapEvent.DRAG_END, this.updateRectFromMainMap);			
-					this.map.addEventListener(MapEvent.MOVE_END, this.updateRectFromMainMap);			
-					this.map.addEventListener(MapEvent.ZOOM_END, this.updateRectFromMainMap);
+					map.addEventListener(MapEvent.DRAG_END, updateRectFromMainMap);			
+					map.addEventListener(MapEvent.MOVE_END, updateRectFromMainMap);			
+					map.addEventListener(MapEvent.ZOOM_END, updateRectFromMainMap);
 					
 					// Change the overview map if the base layer of the main map is changed
-					this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.changeBaseLayer);
+					map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, changeBaseLayer);
 	      		}
 			}
 			
+			/**
+			 * Update the main map from the current position and size of the rectangle of the overview
+			 */
+			private function updateMainMapFromRect():void {
+				Trace.info("Overview - updateMainMapFromRect");
+				if (map == null) {
+					// Main map is not defined, nothing has to be done	
+					return;
+				}
+				// Convert the current pixels'boundary in a map extent in the projection of the overview map
+		        var leftBottomCoord:LonLat = pixelToCoordinate(new Pixel(rectRealPxBounds.left, rectRealPxBounds.bottom));
+		        var rightTopCoord:LonLat = pixelToCoordinate(new Pixel(rectRealPxBounds.right, rectRealPxBounds.top));
+				var mapBounds:Bounds = new Bounds(leftBottomCoord.lon, leftBottomCoord.lat, rightTopCoord.lon, rightTopCoord.lat);
+				// If necessary, convert mapBounds in the projection of the main map	
+				if (map.projection != overview.map.projection) {
+					mapBounds.transform(overview.map.projection,map.projection);
+				}
+				// Update the visible extent of the main map
+        		map.zoomToExtent(mapBounds);
+				// The update of the main map will call an update of the overview.
+				// It is normal since the extent drawn on the overview map is not
+				// constrained by the aspect ratio of the main map nor by its eventual
+				// predefined scales.
+			}
+    
 			/**
 			 * Update the overview when the main map is dragged, moved or zoomed
 			 * 
@@ -116,9 +183,11 @@
 			private function updateRectFromMainMap(event:MapEvent=null):void {
 				var mapBounds:Bounds;
 				if (map == null) {
+					Trace.warning("Overview - updateRectFromMainMap("+((event==null)?"null":event.type)+") : stop, map is null");
 					// Main map is not defined, the extent of the overview map is used instead	
 					mapBounds = overview.map.extent;
 				} else {
+					Trace.info("Overview - updateRectFromMainMap("+((event==null)?"null":event.type)+") : resolution=" + map.resolution + " ; map.center = " + map.center.toString());
 					// Define the current main map's extent in the projection of the overview map	
 					mapBounds = map.extent;
 					if (overview.map.projection != map.projection) {
@@ -129,56 +198,71 @@
 		        var leftBottomPx:Pixel = coordinateToPixel(mapBounds.left, mapBounds.bottom);
 		        var rightTopPx:Pixel = coordinateToPixel(mapBounds.right, mapBounds.top);
 				// Update the rectangle that represents the visible extent
-				setRectPxBounds(new Bounds(leftBottomPx.x, leftBottomPx.y, rightTopPx.x, rightTopPx.y));
+				setPxBoundsAndDraw(new Bounds(leftBottomPx.x, leftBottomPx.y, rightTopPx.x, rightTopPx.y));
 			}
 			
-			/**
-			 * Convert a coordinate on the overview map in Pixel on the overview component
-			 * 
-			 * @param cx the X-coordinate of a point of the overview map
-			 * @param cy the Y-coordinate of a point of the overview map
-			 */
-			private function coordinateToPixel(cx:Number, cy:Number):Pixel { // TODO : à valider dans l'hémisphère Sud
-		        var invRes:Number = 1.0 / overview.map.resolution;
-            	return new Pixel(
-                    Math.round(invRes * (cx - overview.map.extent.left)),
-                    Math.round(invRes * (overview.map.extent.top - cy)));
-    		}
-    		
     		/**
-    		 * Draw the map extent over the overview map
+    		 * Draw the map extent over the overview map (manage the visible part of the overview map for display)
     		 * 
     		 * @param pxBounds the extent of the main map in pixels over the overview map 
     		 */
-			private function setRectPxBounds(pxBounds:Bounds):void {
-				//
+			private function setPxBoundsAndDraw(pxBounds:Bounds):void {
+				// Save the real boundary in pixel coordinates
+		        rectRealPxBounds = pxBounds;
+
+				// For the display, the pixels bounds are not allowed to de defined outside of the visible part of the overview map
 				var rectLeft:Number = Math.max(pxBounds.left, 0);
 				var rectTop:Number = Math.max(pxBounds.top, 0);
-				var rectRight:Number = Math.min(pxBounds.left + pxBounds.width, this.overview.map.size.w);
-				var rectBottom:Number = Math.min(pxBounds.top + pxBounds.height, this.overview.map.size.h);
-				// Compute the width and the height from the 
+				var rectRight:Number = Math.min(pxBounds.left + pxBounds.width, overview.map.size.w);
+				var rectBottom:Number = Math.min(pxBounds.top + pxBounds.height, overview.map.size.h);
+				// Compute the width and the height of the visible boundary
 				var rectWidth:Number = rectRight - rectLeft;
 				var rectHeight:Number = rectBottom - rectTop;
-       	    
-				// Define the rectangle with the real values
-				this.rect.x = rectLeft;
-				this.rect.y = rectTop;
-				this.rect.width = rectWidth;
-				this.rect.height = rectHeight;
-				// Save the real values in rectRealPxBounds
-		        this.rectRealPxBounds = new Bounds(this.rect.x, this.rect.y+this.rect.height, this.rect.x+this.rect.width, this.rect.y);
 
-				// If the real width is lower than the minimum size for the display, change for this minimum size
-	       	    if (this.rect.width < this.minRectPxSize) {
-		            this.rect.x = this.rect.x + Math.round((this.rect.width-this.minRectPxSize) / 2);
-		            this.rect.width = this.minRectPxSize;
+				// If the visible width is lower than the minimum size for the display, change for this minimum size
+	       	    if (rectWidth < minRectPxSize) {
+		            rectLeft += Math.round((rectWidth-minRectPxSize) / 2);
+		            rectWidth = minRectPxSize;
 				}
 				// If the real height is lower than the minimum size for the display, change for this minimum size
-	       	    if (this.rect.height < this.minRectPxSize) {
-		            this.rect.y = this.rect.y + Math.round((this.rect.height-this.minRectPxSize) / 2);
-		            this.rect.height = this.minRectPxSize;
+	       	    if (rectHeight < minRectPxSize) {
+		            rectTop += Math.round((rectHeight-minRectPxSize) / 2);
+		            rectHeight = minRectPxSize;
 				}
+       	    
+				// Draw the rectangle with the corrected values
+				// Be Careful : the drawing must be done before setting the width and height of the rect !!
+				// Otherwise, in some cases, rect.width and rect.height are setted to zero instead of rectWidth and rectHeight
+				rect.graphics.clear();
+				rect.graphics.lineStyle(1,rectColor);
+				rect.graphics.drawRect(0,0,rectWidth,rectHeight);
+
+				// Update the position and size of the rectangle
+				rect.x = rectLeft;
+				rect.y = rectTop;
+				rect.width = rectWidth;
+				rect.height = rectHeight;
+				Trace.info("Overview - setPxBoundsAndDraw : (" + rect.x + "," + rect.y + ") + [" + rect.width + "," + rect.height + "]");
     		}
+			
+    	    /**
+    	    * Set the center of the main map to the position defined by a click on the overview map
+    	    * 
+    	    * @param event the event that contains the position clicked on the overview component
+    	    */
+    		private function setCenterFromOverview(event:MouseEvent):void {
+    			// Compute the displacement then move the real boundary
+    			var center:Pixel = rectRealPxBounds.centerPixel;
+    			var delta:Pixel = new Pixel(overview.map.mouseX - center.x, overview.map.mouseY - center.y); // FixMe : the location of the event should be used instead of the position from overview
+    			rectRealPxBounds.left += delta.x;
+    			rectRealPxBounds.right += delta.x;
+    			rectRealPxBounds.top += delta.y;
+    			rectRealPxBounds.bottom += delta.y;
+    			// Update the display of the visible boundary (needed if the center is changed to a position near a side of the overview map)
+    			setPxBoundsAndDraw(rectRealPxBounds);
+    			// Update the extent of the main map (position and/or scale)
+				updateMainMapFromRect();
+			}
 			
 			/**
 			 * Change the base layer of the overview map to the layer defined by the name of the event
@@ -187,73 +271,26 @@
 			 */
 			private function changeBaseLayer(event:LayerEvent):void  {
 				// Do nothing if the name of the event is the name of the current base layer of the overview map
-				if (this.overview.map.baseLayer.name == event.layer.name) {
+				if (overview.map.baseLayer.name == event.layer.name) {
 					return;
 				}
 				// Get the layer defined by the name of the event
-			 	var newBaseLayer:Layer = this.overview.map.getLayerByName(event.layer.name) as Layer;
+			 	var newBaseLayer:Layer = overview.map.getLayerByName(event.layer.name) as Layer;
 			 	// If the layer defined by the name of the event exists, the base layer of the overview map is changed
 			 	if (newBaseLayer) {
-				 	this.overview.map.baseLayer.visible = false;
-				 	this.overview.map.baseLayer = newBaseLayer;
-				 	this.overview.map.baseLayer.visible = true;
+				 	overview.map.baseLayer.visible = false;
+				 	overview.map.baseLayer = newBaseLayer;
+				 	overview.map.baseLayer.visible = true;
 				}
 			}
 			
-    	    /**
-    	    * Set the center of the main map to the position defined by a click on the overview map
-    	    * 
-    	    * @param event the event that contains the position clicked on the overview component
-    	    */
 // TODO : à vérifier / corriger à partir d'ici !!!
-    		/*private function clickOnOverview(event:MouseEvent):void {   		
-				if((Math.abs(this.overview.map.mouseX-this.mouseXInitial)<=5)||(Math.abs(this.overview.map.mouseY-this.mouseYInitial)<=5)) {
-					this.rect.x = this.overview.map.mouseX - this.rect.width / 2;
-					this.rect.y = this.overview.map.mouseY - this.rect.height / 2;
-					
-					this.rectRealPxBounds.left = this.rect.x;
-					this.rectRealPxBounds.right = this.rect.width + this.rect.x;
-					this.rectRealPxBounds.top = this.rect.y;
-					this.rectRealPxBounds.bottom = this.rect.y + this.rect.height;
-					
-					updateMapToRect();
-				}
-			}
-			
-	    	private function updateMapToRect(): void {
-				var lonLatBounds:Bounds = this.getMapBoundsFromRectBounds(this.rectRealPxBounds);
-				if (this.overview.map.projection != this.map.projection) {
-					lonLatBounds.transform(this.overview.map.projection, this.map.projection);
-	                lonLatBounds = this.getMapBoundsFromRectBounds(this.rectRealPxBounds);
-				}
-        		this.map.zoomToExtent(lonLatBounds);
-        	}
-    
-			private function getMapBoundsFromRectBounds(pxBounds:Bounds):Bounds {
-		        var leftBottomPx:Pixel = new Pixel(pxBounds.left,pxBounds.bottom);
-		        var rightTopPx:Pixel = new Pixel(pxBounds.right,pxBounds.top);
-		        var leftBottomLonLat:LonLat = this.getLonLatFromOverviewPx(leftBottomPx);
-		        var rightTopLonLat:LonLat = this.getLonLatFromOverviewPx(rightTopPx);
-	       		return new Bounds(leftBottomLonLat.lon, leftBottomLonLat.lat, rightTopLonLat.lon, rightTopLonLat.lat);
-			}
-			
-	    	private function getLonLatFromOverviewPx(overviewMapPx:Pixel):LonLat {
-		        var size:Size = this.overview.map.size;
-		        var res:Number  = this.overview.map.resolution;
-		        var center:LonLat = this.overview.map.extent.centerLonLat;
-		        var delta_x:Number = overviewMapPx.x - (size.w / 2);
-		        var delta_y:Number = overviewMapPx.y - (size.h / 2);
-		        return new LonLat(center.lon + delta_x * res, center.lat - delta_y * res); 
-	    	}*/
-			
-			
-			
 	        //the following methods allow to select a zone in the little map
 			
      		/*private function startBox(e:MouseEvent) : void {
-     			this.map.removeEventListener(MapEvent.DRAG_END,this.updateRectFromMainMap);
-     			this.map.removeEventListener(MapEvent.ZOOM_END,this.updateRectFromMainMap);
-     			this.map.removeEventListener(MapEvent.MOVE_END,this.updateRectFromMainMap); 
+     			map.removeEventListener(MapEvent.DRAG_END,updateRectFromMainMap);
+     			map.removeEventListener(MapEvent.ZOOM_END,updateRectFromMainMap);
+     			map.removeEventListener(MapEvent.MOVE_END,updateRectFromMainMap); 
      				
      			mouseXInitial=overview.map.mouseX;
      			mouseYInitial=overview.map.mouseY;
@@ -261,7 +298,7 @@
                 drawContainer.graphics.beginFill(0xFF0000,0.5);
                 drawContainer.graphics.drawRect(overview.map.mouseX,overview.map.mouseY,1,1);
                 drawContainer.graphics.endFill();
-              	this.lastZoom = this.overview.map.getLonLatFromMapPx(new Pixel(overview.map.mouseX, overview.map.mouseY));
+              	lastZoom = overview.map.getLonLatFromMapPx(new Pixel(overview.map.mouseX, overview.map.mouseY));
               	
               	e.stopImmediatePropagation();
             }
@@ -269,57 +306,57 @@
      		private function drawBox(e:MouseEvent) : void {
                 drawContainer.graphics.clear();
                		
-            	if((Math.abs(this.overview.map.mouseX-this.mouseXInitial)>5)||(Math.abs(this.overview.map.mouseY-this.mouseYInitial)>5))
+            	if((Math.abs(overview.map.mouseX-mouseXInitial)>5)||(Math.abs(overview.map.mouseY-mouseYInitial)>5))
             	{
-	               	var nowZoom:LonLat = this.overview.map.getLonLatFromMapPx(new Pixel(overview.map.mouseX, overview.map.mouseY));
+	               	var nowZoom:LonLat = overview.map.getLonLatFromMapPx(new Pixel(overview.map.mouseX, overview.map.mouseY));
 	               	map.zoomToExtent(new Bounds(Math.min(lastZoom.lon,nowZoom.lon),
 	               								Math.min(nowZoom.lat,lastZoom.lat),
 	               								Math.max(lastZoom.lon,nowZoom.lon),
 	               								Math.max(nowZoom.lat,lastZoom.lat)));
 	               		
-	               	this.rect.x = this.mouseXInitial;
-			    	this.rect.y = this.mouseYInitial;
-			    	this.rect.width=Math.abs(this.mouseXInitial-this.overview.map.mouseX);
-			    	this.rect.height=Math.abs(this.mouseYInitial-this.overview.map.mouseY);
+	               	rect.x = mouseXInitial;
+			    	rect.y = mouseYInitial;
+			    	rect.width=Math.abs(mouseXInitial-overview.map.mouseX);
+			    	rect.height=Math.abs(mouseYInitial-overview.map.mouseY);
 			    		
-			    	this.rectRealPxBounds.left=this.rect.x;
-			    	this.rectRealPxBounds.right=this.rect.width+this.rect.x;
-			    	this.rectRealPxBounds.top=this.rect.y;
-			    	this.rectRealPxBounds.bottom=this.rect.y+this.rect.height;
+			    	rectRealPxBounds.left=rect.x;
+			    	rectRealPxBounds.right=rect.width+rect.x;
+			    	rectRealPxBounds.top=rect.y;
+			    	rectRealPxBounds.bottom=rect.y+rect.height;
             	}
             }
 			
             private function endBox(e:MouseEvent) : void {
                 drawContainer.graphics.clear();
                		
-            	if((Math.abs(this.overview.map.mouseX-this.mouseXInitial)>5)||(Math.abs(this.overview.map.mouseY-this.mouseYInitial)>5))
+            	if((Math.abs(overview.map.mouseX-mouseXInitial)>5)||(Math.abs(overview.map.mouseY-mouseYInitial)>5))
             	{
-	               	var nowZoom:LonLat = this.overview.map.getLonLatFromMapPx(new Pixel(overview.map.mouseX, overview.map.mouseY));
+	               	var nowZoom:LonLat = overview.map.getLonLatFromMapPx(new Pixel(overview.map.mouseX, overview.map.mouseY));
 	               	map.zoomToExtent(new Bounds(Math.min(lastZoom.lon,nowZoom.lon),
 	               								Math.min(nowZoom.lat,lastZoom.lat),
 	               								Math.max(lastZoom.lon,nowZoom.lon),
 	               								Math.max(nowZoom.lat,lastZoom.lat)));
 	               		
-	               	this.rect.x = this.mouseXInitial;
-			    	this.rect.y = this.mouseYInitial;
-			    	this.rect.width=Math.abs(this.mouseXInitial-this.overview.map.mouseX);
-			    	this.rect.height=Math.abs(this.mouseYInitial-this.overview.map.mouseY);
+	               	rect.x = mouseXInitial;
+			    	rect.y = mouseYInitial;
+			    	rect.width=Math.abs(mouseXInitial-overview.map.mouseX);
+			    	rect.height=Math.abs(mouseYInitial-overview.map.mouseY);
 			    		
-			    	this.rectRealPxBounds.left=this.rect.x;
-			    	this.rectRealPxBounds.right=this.rect.width+this.rect.x;
-			    	this.rectRealPxBounds.top=this.rect.y;
-			    	this.rectRealPxBounds.bottom=this.rect.y+this.rect.height;
+			    	rectRealPxBounds.left=rect.x;
+			    	rectRealPxBounds.right=rect.width+rect.x;
+			    	rectRealPxBounds.top=rect.y;
+			    	rectRealPxBounds.bottom=rect.y+rect.height;
 			    		
-			    	this.map.addEventListener(MapEvent.DRAG_END,this.updateRectFromMainMap);
-	     			this.map.addEventListener(MapEvent.ZOOM_END,this.updateRectFromMainMap);
-	     			this.map.addEventListener(MapEvent.MOVE_END,this.updateRectFromMainMap);	
+			    	map.addEventListener(MapEvent.DRAG_END,updateRectFromMainMap);
+	     			map.addEventListener(MapEvent.ZOOM_END,updateRectFromMainMap);
+	     			map.addEventListener(MapEvent.MOVE_END,updateRectFromMainMap);	
             	}
 				
-		    	this.lastZoom = null;               	
+		    	lastZoom = null;               	
 			}
 			
             private function expandArea(e:MouseEvent) : void {
-            	this.lastZoom = this.overview.map.getLonLatFromMapPx(new Pixel(overview.map.mouseX, overview.map.mouseY));
+            	lastZoom = overview.map.getLonLatFromMapPx(new Pixel(overview.map.mouseX, overview.map.mouseY));
                 var pixel:Pixel = overview.map.getMapPxFromLonLat(lastZoom);
                 drawContainer.graphics.clear();
                 drawContainer.graphics.beginFill(0xFF0000,0.5);
@@ -331,13 +368,13 @@
 	
 	<os:Map id="overview" height="100%" width="100%">
 		
-		<!-- A EPSG:900913 baselayer (OSM) -->
+		<!-- Default base layer: OpenStreetMap EPSG:900913 -->
 		<os:Mapnik name="Mapnik"
-				   numZoomLevels="20"
-				   maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-				   minResolution="0.5971642833709717"
-				   maxResolution="156543.0339"
-				   isBaseLayer="true" />
+			numZoomLevels="20"
+			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
+			minResolution="0.5971642833709717"
+			maxResolution="156543.0339"
+			isBaseLayer="true" />
 		
 	</os:Map>
 
