@@ -36,10 +36,11 @@
             		else{
 						_zoomBoxHandler.active=false;
 						zoombox.selected = false;
+						_zoomBoxHandler.activeDrag();
 					}
                 }
                 private function disabled(evt:ZoomBoxEvent):void{
-                	zoombox.selected = false;
+                	zoombox.selected = false;              	
                 }
             ]]>
     </mx:Script>
