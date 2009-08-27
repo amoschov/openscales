@@ -2,7 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
 				xmlns:os="*"
 				layout="absolute"
-				>
+				creationComplete="viewStack.selectedIndex=0;">
 	<mx:TabNavigator id="viewStack" width="100%" height="100%">
 		<os:LayerSwitcher label="LayerSwitcher" toolTip="Switch the different layers"/>
 		<os:PanZoom label="PanZoom" toolTip="Drag and zoom on the map"/>		
