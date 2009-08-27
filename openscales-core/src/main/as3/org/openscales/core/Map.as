@@ -422,79 +422,70 @@ package org.openscales.core
 		 * @param dragTween
 		 *
 		 */
-		private function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false,resizing:Boolean=false):void {
+		private function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false, resizing:Boolean = false):void {
 			if (!this.center && !this.isValidLonLat(lonlat)) {
 				lonlat = this.maxExtent.centerLonLat;
-			} 
+			}
+			
+			var zoomChanged:Boolean = forceZoomChange || (this.isValidZoomLevel(zoom) && (zoom!=this._zoom));
 
-			var zoomChanged:Boolean = forceZoomChange || (
-				(this.isValidZoomLevel(zoom)) &&
-				(zoom != this._zoom) );
-
-			var centerChanged:Boolean = (this.isValidLonLat(lonlat)) &&
-				(!lonlat.equals(this.center));  
-
-
-
+			var centerChanged:Boolean = this.isValidLonLat(lonlat) && (!lonlat.equals(this.center));  
+			
 			if (zoomChanged || centerChanged || !dragging) {
-
+				
 				if (!dragging) {
 					this.dispatchEvent(new MapEvent(MapEvent.MOVE_START, this));
-
-				} 
-
+				}
+				
 				if (centerChanged) {
 					if ((!zoomChanged) && (this.center)) {
-						this.centerLayerContainer(lonlat, dragTween);  
-
-					}  
-					this._center = lonlat.clone(); 
-
-				} 
-
+						this.centerLayerContainer(lonlat, dragTween);
+					}
+					this._center = lonlat.clone();
+				}
+				
 				if ((zoomChanged) || (this._layerContainerOrigin == null)) {
 					this._layerContainerOrigin = this.center.clone();
 					this._layerContainer.x = 0;
 					this._layerContainer.y = 0;
-				} 
-
+				}
+				
 				if (zoomChanged) {
 					this._zoom = zoom;
 				}
-
+				
 				var bounds:Bounds = this.extent;
-
-				this.baseLayer.moveTo(bounds, zoomChanged, dragging);             
+				
+				this.baseLayer.moveTo(bounds, zoomChanged, dragging);
 				for (var i:int = 0; i < this.layers.length; i++) {
 					var layer:Layer = this.layers[i];
-					//layer.redraw();
 					if (!layer.isBaseLayer) {
 						var moveLayer:Boolean;
 						var inRange:Boolean = layer.calculateInRange();
 						if (layer.inRange != inRange) {
 							layer.inRange = inRange;
 							moveLayer = true;
-							this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_CHANGED, layer)); 
+							this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_CHANGED, layer));
 						} else {
-							moveLayer = (layer.visible && layer.inRange); 
+							moveLayer = (layer.visible && layer.inRange);
 						}
-
+						
 						if (moveLayer) {
-							layer.moveTo(bounds, zoomChanged, dragging,resizing);  
+							layer.moveTo(bounds, zoomChanged, dragging,resizing);
 						}
-					} 
-				} 
-
-				this.dispatchEvent(new MapEvent(MapEvent.MOVE, this)); 
-
+					}
+				}
+				
+				this.dispatchEvent(new MapEvent(MapEvent.MOVE, this));
+				
 				if (zoomChanged) {
 					this.dispatchEvent(new MapEvent(MapEvent.ZOOM_END, this));
-				} 
+				}
 			}
-
-			if (!dragging) {
+			
+			if (centerChanged && !dragging) {
 				this.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this));
-			} 
+			}
 		}
 
 		/**
