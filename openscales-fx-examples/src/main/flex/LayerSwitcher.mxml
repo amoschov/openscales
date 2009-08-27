@@ -56,6 +56,17 @@
 
 		</os:WFS>
 		
+		<os:WFS id="test2"
+			 	url="http://sigma.openplans.org/geoserver/wfs" 
+			 	typename="topp:states" 
+			 	srs="EPSG:4326"
+			 	version="1.0.0"
+			 	minZoomLevel="21"
+			 	visible="true"
+			 	isBaseLayer="false"
+			 	proxy="http://openscales.org/proxy.php?url=">
+		</os:WFS>
+		
 		<mx:Panel title="Layer Switcher">
 			<os:LayerSwitcherComponent id="layerSwitcher"
 										   map="{map}"
