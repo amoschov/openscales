@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Control xmlns="org.openscales.component.control.*"
 	xmlns:mx="http://www.adobe.com/2006/mxml"
-	width="200" height="300">
+	width="200" height="300"
+	creationComplete="clearTrace();">
 	
 	<mx:Script>
 		<![CDATA[
@@ -9,16 +10,20 @@
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 			
-			[Bindable] private var temp:String = "<b>Output Console :</b>";
+			[Bindable] private var temp:String;
 			
 			override public function set map(value:Map):void {
 				super.map = value;
-				this.map.addEventListener(TraceEvent.ERROR, traceInfo);
-				this.map.addEventListener(TraceEvent.WARNING, traceInfo);
-				this.map.addEventListener(TraceEvent.INFO, traceInfo);
+				this.map.addEventListener(TraceEvent.ERROR, displayLog);
+				this.map.addEventListener(TraceEvent.WARNING, displayLog);
+				this.map.addEventListener(TraceEvent.INFO, displayLog);
+			}
+			
+			private function clearTrace():void {
+				temp = "<b>Output Console :</b>";
 			}
 				
-			public function traceInfo(event:TraceEvent):void {
+			private function displayLog(event:TraceEvent):void {
 				var textColor:String = "#000066"; // used for event.type == Trace.INFO
 				if (event.type == Trace.ERROR) {
 					textColor = "#FF0000"
@@ -30,8 +35,14 @@
 		]]>
 	</mx:Script>
 	
-	<mx:TextArea id="textarea" width="100%" height="100%"
-		valueCommit="textarea.verticalScrollPosition=textarea.maxVerticalScrollPosition"
-		htmlText="{temp}"/>
+	<mx:VBox width="100%" height="100%" horizontalAlign="center">
+	
+		<mx:TextArea id="textarea" width="100%" height="100%"
+			valueCommit="textarea.verticalScrollPosition=textarea.maxVerticalScrollPosition"
+			htmlText="{temp}"/>
+		
+		<mx:Button label="Clear logs" click="{clearTrace();}" />
+		
+	</mx:VBox>
 	
 </Control>
