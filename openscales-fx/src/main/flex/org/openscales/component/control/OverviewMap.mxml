@@ -25,7 +25,9 @@
 			
 			import mx.controls.Alert;
 
-			private var rect:Shape = new Shape(); // the rectangle that represents the visible extent of the main map over the overview map
+			// FixMe : replace all LonLat by Abstract2D. Sometimes it is LonLat, other times it's Projected Coordinate and some other times it is Pixel !!!
+ 
+ 			private var rect:Shape = new Shape(); // the rectangle that represents the visible extent of the main map over the overview map
 			private var rectRealPxBounds:Bounds = new Bounds(0, 0+height, 0+width, 0); // the real extent in pixels associated to the visible extent of the main map
 			private var sprite:Sprite // the sprite used to display the "rect"
 			
@@ -90,7 +92,7 @@
 			 * @param cx the X-coordinate of a point of the overview map
 			 * @param cy the Y-coordinate of a point of the overview map
 			 */
-			private function coordinateToPixel(cx:Number, cy:Number):Pixel { // TODO : à valider dans l'hémisphère Sud
+			private function coordinateToPixel(cx:Number, cy:Number):Pixel {
 		        var invRes:Number = 1.0 / overview.map.resolution;
             	return new Pixel(
                     Math.round(invRes * (cx - overview.map.extent.left)),
@@ -102,8 +104,7 @@
 			 * 
 			 * @param p the pixel on the overview component
 			 */
-			private function pixelToCoordinate(p:Pixel):LonLat { // FixMe : pas LonLat mais Abstract2D !!!
-				// TODO : à valider dans l'hémisphère Sud
+			private function pixelToCoordinate(p:Pixel):LonLat {
 		        var c2p_x:Number = p.x - overview.map.size.w / 2.0;
 		        var c2p_y:Number = p.y - overview.map.size.h / 2.0;
 		        var center:LonLat = overview.map.extent.centerLonLat;
@@ -191,11 +192,25 @@
 					mapBounds = overview.map.extent;
 				} else {
 					Trace.info("Overview - updateRectFromMainMap("+((event==null)?"null":event.type)+") : resolution=" + map.resolution + " ; " + map.center.toString());
-					// Define the current main map's extent in the projection of the overview map	
+					// Get the current main map's extent	
 					mapBounds = map.extent;
+					// Intersect the map extent with its maxExtent
+					// TODO: is this part really necessary ? Test with a overview having a small maxExtent
+					var mapMaxExtent:Bounds = map.maxExtent;
+					mapBounds.left = Math.max(mapBounds.left, mapMaxExtent.left);
+					mapBounds.bottom = Math.max(mapBounds.bottom, mapMaxExtent.bottom);
+					mapBounds.right = Math.min(mapBounds.right, mapMaxExtent.right);
+					mapBounds.top = Math.min(mapBounds.top, mapMaxExtent.top);
+					// Reproject the extent in the projection of the overview map	
 					if (overview.map.projection != map.projection) {
 						mapBounds.transform(map.projection,overview.map.projection);
 					}
+					// Intersect the (reprojected) map extent with the overview map maxExtent
+					var overviewMapMaxExtent:Bounds = overview.map.maxExtent;
+					mapBounds.left = Math.max(mapBounds.left, overviewMapMaxExtent.left);
+					mapBounds.bottom = Math.max(mapBounds.bottom, overviewMapMaxExtent.bottom);
+					mapBounds.right = Math.min(mapBounds.right, overviewMapMaxExtent.right);
+					mapBounds.top = Math.min(mapBounds.top, overviewMapMaxExtent.top);
 				}
 				// Convert the extent in pixels
 		        var leftBottomPx:Pixel = coordinateToPixel(mapBounds.left, mapBounds.bottom);
@@ -254,7 +269,8 @@
     	    * @param event the event that contains the position clicked on the overview component
     	    */
     		private function setCenterFromOverview(event:MouseEvent):void {
-    			var click:Pixel = new Pixel(overview.map.mouseX, overview.map.mouseY); // FixMe : the location of the event should be used instead of the position from overview
+    			// FixMe : the location of the event should be used instead of the position from overview
+    			var click:Pixel = new Pixel(overview.map.mouseX, overview.map.mouseY);
 
 				// Update the overview (and the main map if not null)
 				if (map == null) {
