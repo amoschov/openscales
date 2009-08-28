@@ -67,7 +67,7 @@
 		<os:LayerSwitcherComponent id="layerSwitcher" map="{map}" />
 	</mx:Panel>
 	
-	<os:OverviewMapComponent id="miniMap" map="{map}" minRectPxSize="3" rectColor="0xFF3300">
+	<os:OverviewMapComponent id="miniMap" map="{map}" minRectPxSize="3" rectColor="0xFF3300" newExtentColor="0x00FF33">
 		<!-- Override the baselayer of the overview by OpenStreetMap EPSG:900913 -->
 		<!--os:Mapnik name="Mapnik"
 			numZoomLevels="20"
