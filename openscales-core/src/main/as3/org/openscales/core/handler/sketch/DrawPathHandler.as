@@ -84,7 +84,7 @@ package org.openscales.core.handler.sketch
 			if(this.drawLayer.projection.srsCode!=this.map.projection.srsCode)
 				lonlat.transform(this.map.projection,this.drawLayer.projection);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
-			_startPoint = pixel;
+			_startPoint = this.map.getMapPxFromLonLat(lonlat);
 			
 			if(newFeature){
 				_lineString = new LineString();
