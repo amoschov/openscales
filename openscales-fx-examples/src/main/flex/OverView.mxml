@@ -25,6 +25,7 @@
 			
 			private function toggleOverview():void {
 				miniMap.visible = ! miniMap.visible;
+				overviewToggler.label = ((miniMap.visible) ? "Hide" : "Show") + " overview";
 			}
 		]]>
 	</mx:Script>
@@ -60,7 +61,7 @@
 
 	<mx:VBox horizontalAlign="center" x="10" y="10">
 		<os:PanComponent map="{map}" />
-		<os:ZoomBoxComponent map="{map}" click="toggleOverview();" />
+		<mx:Button id="overviewToggler" label="Hide overview" click="toggleOverview();" />
 	</mx:VBox>
 
 	<mx:Panel title="Main map's layer switcher" x="10" y="120">
