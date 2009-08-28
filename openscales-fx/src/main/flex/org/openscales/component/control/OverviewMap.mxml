@@ -8,6 +8,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.effects.easing.Bounce;
 			import org.openscales.core.basetypes.Bounds;
 			import org.openscales.core.basetypes.LonLat;
 			import org.openscales.core.basetypes.Pixel;
@@ -25,9 +26,9 @@
 
 			// FixMe : replace all LonLat by Abstract2D. Sometimes it is LonLat, other times it's Projected Coordinate and some other times it is Pixel !!!
  
- 			private var rect:Shape = new Shape(); // the rectangle that represents the visible extent of the main map over the overview map
+ 			private var rectDrawnPxBounds:Bounds = new Bounds(0, 0+height, 0+width, 0); // the rectangle that represents the visible extent of the main map over the overview map 
 			private var rectRealPxBounds:Bounds = new Bounds(0, 0+height, 0+width, 0); // the real extent in pixels associated to the visible extent of the main map
-			private var sprite:Sprite // the sprite used to display the "rect"
+			private var sprite:Sprite = new Sprite(); // the sprite used to display the "rect"
 	    	private var drawingExtentFirstCorner:Pixel; // the first corner defined for a definition of a new extent by drawing on the overview map
 			
 			[Bindable] public var _minRectPxSize:Number = 5; // the display of the rect is limited to a minimum width and height of minRectPxSize pixels
@@ -72,15 +73,14 @@
 				}*/
 				
 				// Create the sprite that will display the rect and add to the overview
-				sprite = new Sprite();
-				sprite.addChild(rect);
 				overview.map.addChild(sprite);
 			
-				// Change the center of the main map to the location clicked on the overview
-				overview.map.addEventListener(MouseEvent.CLICK, setCenterFromOverview);
+				// Change the center (and the scale) of the main map depending on the action on the overview map.
+				// Is the user starting to draw a new extent or simply clicking to change the center ?
+				overview.map.addEventListener(MouseEvent.MOUSE_DOWN, startChangingMapExtent);
 				
-				// Change the center and the scale of the main map depending on the new extent drawn on the overview map
-				//overview.map.addEventListener(MouseEvent.MOUSE_DOWN, startDrawingExtent);
+				// Forward the MouseWheel event to the map
+				overview.map.addEventListener(MouseEvent.MOUSE_WHEEL, forwardMouseWheelToMap);
 			}
 			
 			/**
@@ -126,11 +126,6 @@
 			 * maximum size.
 			 */		
 			override public function set map(value:Map):void {
-				// Do nothing if the name of the new map is the name of the current map
-				/*if (value.name == map.name) {
-					return;
-				}*/
-
 				// Remove the event listeners defined on the previous main map
 	      		if (map != null) {
 					// Remove the listeners on when the main map is moved or zoomed	
@@ -252,36 +247,102 @@
 		            rectTop += Math.round((rectHeight-minRectPxSize) / 2);
 		            rectHeight = minRectPxSize;
 				}
-       	    
-				// Draw the rectangle with the corrected values
-				// Be Careful : the drawing must be done before setting the width and height of the rect !!
-				// Otherwise, in some cases, rect.width and rect.height are setted to zero instead of rectWidth and rectHeight
-				rect.graphics.clear();
-				rect.graphics.lineStyle(1,rectColor);
-				rect.graphics.drawRect(0,0,rectWidth,rectHeight);
-
-				// Update the position and size of the rectangle
-				rect.x = rectLeft;
-				rect.y = rectTop;
-				rect.width = rectWidth;
-				rect.height = rectHeight;
+       	    	
+       	    	// Save the boundary to display (with the corrected values)
+       	    	rectDrawnPxBounds = new Bounds(rectLeft, rectBottom, rectRight, rectTop);
+       	    	
+				// Draw the visible part of the bounding box of the extent of the main map
+				sprite.graphics.clear();
+				sprite.graphics.lineStyle(1,rectColor);
+				sprite.graphics.drawRect(rectDrawnPxBounds.left,rectDrawnPxBounds.top,rectDrawnPxBounds.width,rectDrawnPxBounds.height);
     		}
 			
+			
     	    /**
-    	    * Set the center of the main map to the position defined by a click on the overview map
+    	    * Simply save the pixel pointed during the MOUSE_DOWN event
     	    * 
     	    * @param event the event that contains the position clicked on the overview component
     	    */
-    		private function setCenterFromOverview(event:MouseEvent):void {
-    			// FixMe : the location of the event should be used instead of the position from overview
-    			var click:Pixel = new Pixel(overview.map.mouseX, overview.map.mouseY);
+    		private function startChangingMapExtent(event:MouseEvent):void {
+				// Save the clicked Pixel as the first corner of the new extent
+				// FixMe : the location of the event should be used instead of the position from overview
+				drawingExtentFirstCorner = new Pixel(overview.map.mouseX, overview.map.mouseY);
+				
+				// Draw the current extent
+				sprite.graphics.clear();
+				sprite.graphics.lineStyle(1,rectColor);
+				sprite.graphics.drawRect(rectDrawnPxBounds.left,rectDrawnPxBounds.top,rectDrawnPxBounds.width,rectDrawnPxBounds.height);
+				// Draw the possible new extent if the goal is just to change the center
+				sprite.graphics.lineStyle(1,newExtentColor);
+				sprite.graphics.beginFill(newExtentColor,0.25);
+				sprite.graphics.drawRect(drawingExtentFirstCorner.x-Math.round(rectDrawnPxBounds.width/2), drawingExtentFirstCorner.y-Math.round(rectDrawnPxBounds.height/2), rectDrawnPxBounds.width, rectDrawnPxBounds.height);
+				sprite.graphics.endFill();
 
+				// Add the event listeners needed to finalize the modification of the extent
+				overview.map.addEventListener(MouseEvent.MOUSE_MOVE, drawNewExtent);
+				overview.map.addEventListener(MouseEvent.MOUSE_UP, stopChangingMapExtent);
+    		}
+			
+			/**
+			 * Just draw the new extent that is being drawn waiting for a MOUSE_UP event.
+			 * 
+			 * @param event the event that defines the position of the (temporary) second corner of the new extent
+			 */
+            private function drawNewExtent(event:MouseEvent) : void {
+				// Get the current second corner of the new extent
+				// FixMe : the location of the event should be used instead of the position from overview
+				var click:Pixel = new Pixel(overview.map.mouseX, overview.map.mouseY);
+
+				// Compute the rectangle defined by the two corners
+				var topLeftPixel:Pixel = new Pixel(Math.min(drawingExtentFirstCorner.x,click.x), Math.min(drawingExtentFirstCorner.y,click.y)); 
+				var size:Size = new Size(Math.abs(click.x-drawingExtentFirstCorner.x), Math.abs(click.y-drawingExtentFirstCorner.y));
+				
+				// Draw the current extent
+				sprite.graphics.clear();
+				sprite.graphics.lineStyle(1,rectColor);
+				sprite.graphics.drawRect(rectDrawnPxBounds.left,rectDrawnPxBounds.top,rectDrawnPxBounds.width,rectDrawnPxBounds.height);
+				// Draw the possible new extent
+				sprite.graphics.lineStyle(1,newExtentColor);
+				sprite.graphics.beginFill(newExtentColor,0.25);
+				sprite.graphics.drawRect(topLeftPixel.x, topLeftPixel.y, size.w, size.h);
+				sprite.graphics.endFill();
+			}
+			
+            private function stopChangingMapExtent(event:MouseEvent) : void {
+				// Remove the event listeners needed to finalize the modification of the extent
+				overview.map.removeEventListener(MouseEvent.MOUSE_MOVE, drawNewExtent);
+				overview.map.removeEventListener(MouseEvent.MOUSE_UP, stopChangingMapExtent);
+
+				// Get the current second corner of the new extent
+				// FixMe : the location of the event should be used instead of the position from overview
+				var click:Pixel = new Pixel(overview.map.mouseX, overview.map.mouseY);
+
+				// Compute the rectangle defined by the two corners
+				var topLeftPixel:Pixel = new Pixel(Math.min(drawingExtentFirstCorner.x,click.x), Math.min(drawingExtentFirstCorner.y,click.y)); 
+				var size:Size = new Size(Math.abs(click.x-drawingExtentFirstCorner.x), Math.abs(click.y-drawingExtentFirstCorner.y));
+
+				if ((size.w > minRectPxSize) || (size.h > minRectPxSize)) {
+					Trace.info("Overview - stopChangingMapExtent : new extent");
+					setPxBoundsAndDraw(new Bounds(topLeftPixel.x, topLeftPixel.y+size.h, topLeftPixel.x+size.w, topLeftPixel.y));
+					updateMainMapFromRect();
+				} else {
+					var centerPixel:Pixel = new Pixel(topLeftPixel.x+Math.round(size.w/2), topLeftPixel.y+Math.round(size.h/2));
+					setCenterFromOverview(centerPixel);
+				}
+			}
+			
+    	    /**
+    	    * Set the center of the main map to the position defined by a pixel on the overview map
+    	    * 
+    	    * @param newCenter the pixel representing the new center of the extent
+    	    */
+    		private function setCenterFromOverview(newCenter:Pixel):void {
 				// Update the overview (and the main map if not null)
 				if (map == null) {
-					Trace.warning("Overview - setCenterFromOverview : map is null ; " + click.toString());
+					Trace.warning("Overview - setCenterFromOverview : map is null ; " + newCenter.toString());
 	    			var oldCenter:Pixel = rectRealPxBounds.centerPixel;
 	    			// Compute the displacement then move the real boundary
-	    			var delta:Pixel = new Pixel(click.x - oldCenter.x, click.y - oldCenter.y);
+	    			var delta:Pixel = new Pixel(newCenter.x - oldCenter.x, newCenter.y - oldCenter.y);
 	    			rectRealPxBounds.left += delta.x;
 	    			rectRealPxBounds.right += delta.x;
 	    			rectRealPxBounds.top += delta.y;
@@ -289,23 +350,35 @@
 	    			// Update the display of the visible boundary (needed if the center is changed to a position near a side of the overview map)
 	    			setPxBoundsAndDraw(rectRealPxBounds);
 				} else {
-					Trace.info("Overview - setCenterFromOverview : " + click.toString());
+					Trace.info("Overview - setCenterFromOverview : " + newCenter.toString());
 					// Convert the new pixel center in a location on the overview map in its projection
-			        var clickCoord:LonLat = pixelToCoordinate(click);
+			        var newCenterCoord:LonLat = pixelToCoordinate(newCenter);
 					// If necessary, convert the point in the projection of the main map	
 					if (map.projection != overview.map.projection) {
-						clickCoord.transform(overview.map.projection,map.projection);
+						newCenterCoord.transform(overview.map.projection,map.projection);
 					}
 					// Change the center of the main map, and so, indirectly update the overview.
-	        		map.center = clickCoord;
+	        		map.center = newCenterCoord;
 				}
+			}
+    
+			/**
+			 * Forward the MouseWheel event to the map
+			 * 
+			 * @param event the event to forward to the map
+			 */
+			private function forwardMouseWheelToMap(event:MouseEvent):void {
+				Trace.info("Overview - forwardMouseWheelToMap");
+				map.dispatchEvent(event);
 			}
 			
 			/**
-			 * Change the base layer of the overview map to the layer defined by the name of the event
+			 * Change the base layer of the overview map to the layer defined by the name of the event.
+			 * Be careful, there is no link with the base layer used by the main map!
 			 * 
 			 * @param event the event that defines the name of the new base layer to use for the overview map
 			 */
+			// TODO or not ?
 			/*private function changeBaseLayer(event:LayerEvent):void  {
 				// Do nothing if the name of the event is the name of the current base layer of the overview map
 				if (event.layer.name == overview.map.baseLayer.name) {
@@ -320,87 +393,6 @@
 				 	overview.map.baseLayer.visible = true;
 				}
 			}*/
-			
-			/**
-			 * Start to draw a new extent for the main map from the overview map ?
-			 * The draw really starts when the mouse moves. If MOUSE_UP occurs
-			 * without a MOUSE_MOVE, only the CLICK event is managed (change only
-			 * the center of the extent).
-			 * 
-			 * @param event the event that defines the position of the first corner of the new extent
-			 */
-			private function startDrawingExtent(event:MouseEvent) : void {
-				// Save the clicked Pixel as the first corner of the new extent
-				// FixMe : the location of the event should be used instead of the position from overview
-				drawingExtentFirstCorner = new Pixel(overview.map.mouseX, overview.map.mouseY);
-
-				// Add the event listener needed to draw of a new extent
-				overview.map.addEventListener(MouseEvent.MOUSE_MOVE, drawBoxExtent);
-			}
-			
-			/**
-			 * As the mouse moves, it is now sure that the user is drawing a new
-			 * extent. Nowadays, the propagation of the events is stop to avoid
-			 * the management of the CLICK event.
-			 * This function smply draw the current waiting for a MOUSE_UP event
-			 * that will define the real new extent. 
-			 * 
-			 * @param event the event that defines the position of the second corner of the new extent
-			 */
-            private function drawBoxExtent(event:MouseEvent) : void {
-				// Stop the propagation of the event to avoid the management of MouseEvent.CLICK
-				event.stopImmediatePropagation();
-
-				// Add the event listener needed to finalize the draw of a new extent
-				if (! overview.map.hasEventListener(MouseEvent.MOUSE_UP)) {
-					overview.map.addEventListener(MouseEvent.MOUSE_UP, stopDrawingExtent);
-				}
-				
-				// Get the current second corner of the new extent
-				// FixMe : the location of the event should be used instead of the position from overview
-				var click:Pixel = new Pixel(overview.map.mouseX, overview.map.mouseY);
-
-				// Compute the rectangle defined by the two corners
-				var topLeftPixel:Pixel = new Pixel(Math.min(drawingExtentFirstCorner.x,click.x), Math.min(drawingExtentFirstCorner.y,click.y)); 
-				var size:Size = new Size(Math.abs(click.x-drawingExtentFirstCorner.x), Math.abs(click.y-drawingExtentFirstCorner.y));
-				
-				// Draw the current extent
-				rect.graphics.clear();
-				rect.graphics.lineStyle(1,rectColor);
-				rect.graphics.drawRect(0,0,rect.width,rect.height);
-				
-				// Draw the possible new extent
-				sprite.graphics.lineStyle(1,newExtentColor);
-				sprite.graphics.beginFill(newExtentColor,0.25);
-				sprite.graphics.drawRect(topLeftPixel.x, topLeftPixel.y, size.w, size.h);
-				sprite.graphics.endFill();
-			}
-			
-            private function stopDrawingExtent(event:MouseEvent) : void {
-				Trace.info("Overview - stopDrawingExtent");
-
-				// Stop the propagation of the event to avoid the management of MouseEvent.CLICK
-				event.stopImmediatePropagation();
-
-     			// Remove tthe event listener needed to finalize the draw of a new extent
-				overview.map.removeEventListener(MouseEvent.MOUSE_MOVE, drawBoxExtent);
-				overview.map.removeEventListener(MouseEvent.MOUSE_UP, stopDrawingExtent);
-				
-				// Get the current second corner of the new extent
-				// FixMe : the location of the event should be used instead of the position from overview
-				var click:Pixel = new Pixel(overview.map.mouseX, overview.map.mouseY);
-
-				// Compute the rectangle defined by the two corners
-				var topLeftPixel:Pixel = new Pixel(Math.min(drawingExtentFirstCorner.x,click.x), Math.min(drawingExtentFirstCorner.y,click.y)); 
-				var size:Size = new Size(Math.abs(click.x-drawingExtentFirstCorner.x), Math.abs(click.y-drawingExtentFirstCorner.y));
-				
-				// Change the representation of the current extent on the overview map to use the extent drawn
-				// TODO
-				sprite.graphics.clear();
-				
-				// Update the main map extent from the overview map extent
-				// TODO
-			}
 		]]>
 	</mx:Script>
 	
