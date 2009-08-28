@@ -68,7 +68,7 @@
 	</mx:Panel>
 	
 	<os:OverviewMapComponent id="miniMap" map="{map}" minRectPxSize="3" rectColor="0xFF3300">
-		<!-- A EPSG:900913 baselayer (OSM) -->
+		<!-- Override the baselayer of the overview by OpenStreetMap EPSG:900913 -->
 		<!--os:Mapnik name="Mapnik"
 			numZoomLevels="20"
 			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"

@@ -190,7 +190,7 @@
 					// Main map is not defined, the extent of the overview map is used instead	
 					mapBounds = overview.map.extent;
 				} else {
-					Trace.info("Overview - updateRectFromMainMap("+((event==null)?"null":event.type)+") : resolution=" + map.resolution + " ; map.center = " + map.center.toString());
+					Trace.info("Overview - updateRectFromMainMap("+((event==null)?"null":event.type)+") : resolution=" + map.resolution + " ; " + map.center.toString());
 					// Define the current main map's extent in the projection of the overview map	
 					mapBounds = map.extent;
 					if (overview.map.projection != map.projection) {
@@ -254,17 +254,31 @@
     	    * @param event the event that contains the position clicked on the overview component
     	    */
     		private function setCenterFromOverview(event:MouseEvent):void {
-    			// Compute the displacement then move the real boundary
-    			var center:Pixel = rectRealPxBounds.centerPixel;
-    			var delta:Pixel = new Pixel(overview.map.mouseX - center.x, overview.map.mouseY - center.y); // FixMe : the location of the event should be used instead of the position from overview
-    			rectRealPxBounds.left += delta.x;
-    			rectRealPxBounds.right += delta.x;
-    			rectRealPxBounds.top += delta.y;
-    			rectRealPxBounds.bottom += delta.y;
-    			// Update the display of the visible boundary (needed if the center is changed to a position near a side of the overview map)
-    			setPxBoundsAndDraw(rectRealPxBounds);
-    			// Update the extent of the main map (position and/or scale)
-				updateMainMapFromRect();
+    			var click:Pixel = new Pixel(overview.map.mouseX, overview.map.mouseY); // FixMe : the location of the event should be used instead of the position from overview
+
+				// Update the overview (and the main map if not null)
+				if (map == null) {
+					Trace.warning("Overview - setCenterFromOverview : map is null ; " + click.toString());
+	    			var oldCenter:Pixel = rectRealPxBounds.centerPixel;
+	    			// Compute the displacement then move the real boundary
+	    			var delta:Pixel = new Pixel(click.x - oldCenter.x, click.y - oldCenter.y);
+	    			rectRealPxBounds.left += delta.x;
+	    			rectRealPxBounds.right += delta.x;
+	    			rectRealPxBounds.top += delta.y;
+	    			rectRealPxBounds.bottom += delta.y;
+	    			// Update the display of the visible boundary (needed if the center is changed to a position near a side of the overview map)
+	    			setPxBoundsAndDraw(rectRealPxBounds);
+				} else {
+					Trace.info("Overview - setCenterFromOverview : " + click.toString());
+					// Convert the new pixel center in a location on the overview map in its projection
+			        var clickCoord:LonLat = pixelToCoordinate(click);
+					// If necessary, convert the point in the projection of the main map	
+					if (map.projection != overview.map.projection) {
+						clickCoord.transform(overview.map.projection,map.projection);
+					}
+					// Change the center of the main map, and so, indirectly update the overview.
+	        		map.center = clickCoord;
+				}
 			}
 			
 			/**
