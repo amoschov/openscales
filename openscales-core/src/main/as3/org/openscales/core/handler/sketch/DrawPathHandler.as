@@ -6,12 +6,10 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.feature.MultiLineStringFeature;
-	import org.openscales.core.feature.PointFeature;
+	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
@@ -24,10 +22,9 @@ package org.openscales.core.handler.sketch
 		// The layer in which we'll draw
 		private var _drawLayer:VectorLayer = null;				
 		private var _id:Number = 0;
-		private var _multiLineString:MultiLineString=null;
+		private var _lineString:LineString=null;
 		private var _lastPoint:Point = null;
 		private var _newFeature:Boolean = true;
-		private var _firstPointRemoved:Boolean = false;
 		private var _drawContainer:Sprite = new Sprite();
 		private var _startPoint:Pixel=new Pixel(); //for the temporary line
 
@@ -88,36 +85,26 @@ package org.openscales.core.handler.sketch
 				lonlat.transform(this.map.projection,this.drawLayer.projection);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
 			_startPoint = pixel;
-			if(newFeature){			
-				
-				_multiLineString = new MultiLineString();
-				var multiLineFeature:MultiLineStringFeature = new MultiLineStringFeature(_multiLineString);
-				
+			
+			if(newFeature){
+				_lineString = new LineString();
+				_lineString.addPoint(point);
 				lastPoint = point;
 				
-				//add a pointFeature to show where we clicked
-				/* var pointFeature:PointFeature = new PointFeature(point); 
-				pointFeature.name = name; */
+				var lineStyle:Style = new Style();
+				lineStyle.strokeColor = 0x00ff00;
 				
-				/* drawLayer.addFeature(pointFeature); */								
-				drawLayer.addFeature(multiLineFeature);
+				var lineStringFeature:LineStringFeature = new LineStringFeature(_lineString, null, lineStyle);
+				
+				drawLayer.addFeature(lineStringFeature);
 				
 				newFeature = false;
 						
 				this.map.addEventListener(MouseEvent.MOUSE_MOVE,temporaryLine);	
 			}
-			else {
-				//When we have at least a 2 points path, we can remove the first point				
-				/* if(!_firstPointRemoved && drawLayer.features[drawLayer.features.length-2] is PointFeature) {
-					drawLayer.removeFeature(drawLayer.features[drawLayer.features.length-2]);
-					_firstPointRemoved = true;
-				} */								
+			else {								
 				if(!point.equals(lastPoint)){
-					var points:Array = new Array(2);
-					points.push(lastPoint, point);
-					var lstring:LineString = new LineString(points);
-					_multiLineString.addLineString(lstring); 
-						
+					_lineString.addPoint(point); 						
 					drawLayer.redraw();
 					lastPoint = point;
 				}								
@@ -153,7 +140,6 @@ package org.openscales.core.handler.sketch
 		public function set newFeature(newFeature:Boolean):void {
 			if(newFeature == true) {
 				lastPoint = null;
-				_firstPointRemoved = false;
 			}
 			_newFeature = newFeature;
 		}

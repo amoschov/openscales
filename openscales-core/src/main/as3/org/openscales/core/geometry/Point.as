@@ -58,6 +58,24 @@ package org.openscales.core.geometry
 		}
 
 		/**
+    	 * Determine if the input geometry intersects this one.
+    	 *
+    	 * @param geometry Any type of geometry.
+    	 *
+    	 * @return The input geometry intersects this one.
+    	 */
+    	public function intersects(geometry:Geometry):Boolean {
+        	var intersect:Boolean = false;
+        	if(geometry is Point) {
+            	intersect = this.equals(geometry as Point);
+        	} 
+        	else {      		
+            	intersect = (geometry as Collection).intersects(this);
+        	}
+        	return intersect;
+    	}
+	
+		/**
 		 * Method to convert the point (x/y) from a projection sysrtem to an other.
 		 *
 		 * @param source The source projection
@@ -85,7 +103,6 @@ package org.openscales.core.geometry
 		public function set y(value:Number):void {
 			this._y = value;
 		}
-
 	}
 }
 

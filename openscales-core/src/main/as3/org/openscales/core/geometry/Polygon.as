@@ -118,32 +118,33 @@ package org.openscales.core.geometry
      	*
      	* @return The input geometry intersects this one.
      	*/
-    	override public function intersects(geometry:Collection):Boolean{
+    	override public function intersects(geometry:Geometry):Boolean{
         	var intersect:Boolean = false;
         	var i:Number, len:Number;
-       		if(getQualifiedClassName(geometry) == "org.openscales.core.geometry::Point") {
+       		if(geometry is Point) {
             	intersect = this.containsPoint(geometry as Point);
-        	} else if(getQualifiedClassName(geometry) == "org.openscales.core.geometry::LineString" ||
-                 	getQualifiedClassName(geometry) == "org.openscales.core.geometry::LinearRing") {
+        	} 
+        	else if(geometry is LineString || geometry is LinearRing) {
             	// check if rings/linestrings intersect
             	 for(i=0, len=this.components.length; i<len; ++i) {
-                	intersect = geometry.intersects(this.components[i]);
+                	intersect = (geometry as LineString).intersects(this.components[i]);
                 	if(intersect) {
                     	break;
                 	} 
             	}
             	if(!intersect) {
                	// check if this poly contains points of the ring/linestring
-                	for(i=0, len=geometry.components.length; i<len; ++i) {
-                    	intersect = this.containsPoint(geometry.components[i]);
+                	for(i=0, len=(geometry as LineString).components.length; i<len; ++i) {
+                    	intersect = this.containsPoint((geometry as Curve).components[i]);
                     	if(intersect) {
                         	break;
                     	}
                 	}
             	}
-        	} else {
-            	for(i=0, len=geometry.components.length; i<len; ++ i) {
-                	intersect = this.intersects(geometry.components[i]);
+        	} 
+        	else {
+            	for(i=0, len=(geometry as Collection).components.length; i<len; ++ i) {
+                	intersect = this.intersects((geometry as Collection).components[i]);
                 	if(intersect) {break;}
             	}
         	}

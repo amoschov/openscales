@@ -1,5 +1,8 @@
 package org.openscales.core.basetypes
 {
+	import org.openscales.core.geometry.LinearRing;
+	import org.openscales.core.geometry.Point;
+	import org.openscales.core.geometry.Polygon;
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
@@ -390,7 +393,21 @@ package org.openscales.core.basetypes
 			this._left = pLB.x; this._bottom = pLB.y;
 			this._right = pRT.x; this._top = pRT.y;
 		}
-
+		
+		/**
+     	 * Create a new polygon geometry based on this bounds.
+     	 *
+     	 * @return A new polygon with the coordinates of this bounds.
+     	 */
+    	 public function toGeometry():Polygon {
+        	 return new Polygon([
+            	 new LinearRing([
+                	 new Point(this.left, this.bottom),
+                	 new Point(this.right, this.bottom),
+                	 new Point(this.right, this.top),
+                	 new Point(this.left, this.top)])
+         	]);
+    	 }
 	}
 }
 

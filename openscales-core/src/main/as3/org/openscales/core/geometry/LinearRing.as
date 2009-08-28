@@ -23,7 +23,119 @@ package org.openscales.core.geometry
 
 			return added;
 		}
+		
+		/**
+     	 * Test if a point is inside a linear ring.  For the case where a point
+     	 *     is coincident with a linear ring edge, returns 1.  Otherwise,
+     	 *     returns boolean.
+     	 *
+     	 * @param point
+     	 *
+     	 * @return True if the point is inside the linear ring. Otherwise false. 
+     	 */
+    	 public function containsPoint(point:Point):Boolean {
+        	 //check openlayers if problems        	 
+        	 var px:Number = point.x;
+        	 var py:Number = point.y;
+        	 var numSeg = this.components.length - 1;
+        	 var start:Point, end:Point, x1:Number, y1:Number, x2:Number, y2:Number, cx:Number, cy:Number;
+        	 var crosses:Number = 0;
+        	 for(var i=0; i<numSeg; ++i) {
+            	 start = this.components[i];
+            	 x1 = start.x;
+            	 y1 = start.y;
+             	end = this.components[i + 1];
+            	 x2 = end.x;
+            	 y2 =end.y;
+            
+            	 /*
+             	 * The following conditions enforce five edge-crossing rules:
+             	 *    1. points coincident with edges are considered contained;
+             	 *    2. an upward edge includes its starting endpoint, and
+             	 *    excludes its final endpoint;
+             	 *    3. a downward edge excludes its starting endpoint, and
+             	 *    includes its final endpoint;
+             	 *    4. horizontal edges are excluded; and
+             	 *    5. the edge-ray intersection point must be strictly right
+             	 *    of the point P.
+             	 */
+            	 if(y1 == y2) {
+                	 // horizontal edge
+                	 if(py == y1) {
+                    	 // point on horizontal line
+                    	 if(x1 <= x2 && (px >= x1 && px <= x2) || // right or vert
+                       	 	x1 >= x2 && (px <= x1 && px >= x2)) { // left or vert
+                        	 // point on edge
+                       	 	 crosses = -1;
+                       	  break;
+                    	 }
+                	 }
+                	 // ignore other horizontal edges
+                	 continue;
+            	 }
+            	 cx = getX(py, x1, y1, x2, y2);
+            	 if(cx == px) {
+                	 // point on line
+                	 if(y1 < y2 && (py >= y1 && py <= y2) || // upward
+                  	   y1 > y2 && (py <= y1 && py >= y2)) { // downward
+                    	 // point on edge
+                    	 crosses = -1;
+                    	 break;
+                	 }
+            	 }
+            	 if(cx <= px) {
+                	 // no crossing to the right
+                	 continue;
+            	 }
+            	 if(x1 != x2 && (cx < Math.min(x1, x2) || cx > Math.max(x1, x2))) {
+                	 // no crossing
+                	 continue;
+            	 }
+            	 if(y1 < y2 && (py >= y1 && py < y2) || // upward
+               	 y1 > y2 && (py < y1 && py >= y2)) { // downward
+                	 ++crosses;
+            	 }
+        	 }
+        	 var contained:Boolean;
+        	 if (crosses == -1){ contained = false;}
+        	 else {contained=true;}
 
+        	 return contained;
+    	 }
+
+    	 /**
+     	 * Determine if the input geometry intersects this one.
+     	 *
+     	 * @param geometry Any type of geometry.
+     	 *
+     	 * @return The input geometry intersects this one.
+     	 */
+    	 override public function intersects(geometry:Geometry):Boolean {
+        	 var intersect:Boolean = false;
+        	 if(geometry is Point) {
+            	 intersect = this.containsPoint((geometry as Point));
+        	 } 
+        	 else if(geometry is LineString) {
+            	 intersect = (geometry as LineString).intersects(this);
+        	 } 
+        	 else if(geometry is LinearRing) {
+            	 intersect = (this as LineString).intersects(this);
+        	 } 
+        	 else {
+            	 // check for component intersections
+            	 for(var i:Number=0, len:Number=(geometry as Collection).components.length; i<len; ++ i) {
+               		 intersect = (geometry as Collection).components[i].intersects(this);
+                	 if(intersect) {
+                    	 break;
+                	 }
+            	 }
+        	 }
+        	 return intersect;
+     	}
+     	
+     	private function getX(y:Number, x1:Number, y1:Number, x2:Number, y2:Number):Number {
+            return (((x1 - x2) * y) + ((x2 * y1) - (x1 * y2))) / (y1 - y2);
+        }
 	}
 }
 

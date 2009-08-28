@@ -264,13 +264,18 @@ package org.openscales.core.geometry
      	*
      	* @return The input geometry intersects this one.
      	*/
-    	public function intersects(geometry:Collection):Boolean {
+    	public function intersects(geometry:Geometry):Boolean {
         	var intersect:Boolean = false;
-        	for(var i:Number=0, len:Number=this.components.length; i<len; ++ i) {
-            	intersect = geometry.intersects(this.components[i]);
-            	if(intersect) {
-                	break;
-            	}
+        	if(geometry is Point){
+        		intersect = (geometry as Point).intersects(this);
+        	}
+        	else{
+        		for(var i:Number=0, len:Number=this.components.length; i<len; ++ i) {
+            		intersect = (geometry as Collection).intersects(this.components[i]);
+            		if(intersect) {
+                		break;
+            		}
+        		}
         	}
         	return intersect;
     	}
