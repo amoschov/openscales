@@ -37,10 +37,10 @@ package org.openscales.core.geometry
         	 //check openlayers if problems        	 
         	 var px:Number = point.x;
         	 var py:Number = point.y;
-        	 var numSeg = this.components.length - 1;
+        	 var numSeg:int = this.components.length - 1;
         	 var start:Point, end:Point, x1:Number, y1:Number, x2:Number, y2:Number, cx:Number, cy:Number;
         	 var crosses:Number = 0;
-        	 for(var i=0; i<numSeg; ++i) {
+        	 for(var i:int=0; i<numSeg; ++i) {
             	 start = this.components[i];
             	 x1 = start.x;
             	 y1 = start.y;
