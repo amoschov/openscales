@@ -2,7 +2,7 @@
 <Control xmlns="org.openscales.component.control.*"
 	xmlns:mx="http://www.adobe.com/2006/mxml"
 	width="200" height="300"
-	creationComplete="clearTrace();">
+	creationComplete="finalizeTraceInfo();">
 	
 	<mx:Script>
 		<![CDATA[
@@ -11,12 +11,29 @@
 			import org.openscales.core.Trace;
 			
 			[Bindable] private var temp:String;
+
+			[Bindable] public var _clearButton:Boolean = true;
+			public function get clearButton():Boolean {
+				return _clearButton;
+			}
+			public function set clearButton(value:Boolean):void {
+				_clearButton = value;
+				if (clearLogsButton) {
+					clearLogsButton.visible = _clearButton;
+				}
+			}
 			
 			override public function set map(value:Map):void {
 				super.map = value;
-				this.map.addEventListener(TraceEvent.ERROR, displayLog);
-				this.map.addEventListener(TraceEvent.WARNING, displayLog);
 				this.map.addEventListener(TraceEvent.INFO, displayLog);
+				this.map.addEventListener(TraceEvent.WARNING, displayLog);
+				this.map.addEventListener(TraceEvent.ERROR, displayLog);
+				this.map.addEventListener(TraceEvent.DEBUG, displayLog);
+			}
+			
+			private function finalizeTraceInfo():void {
+				clearLogsButton.visible = clearButton;
+				clearTrace();
 			}
 			
 			private function clearTrace():void {
@@ -25,10 +42,12 @@
 				
 			private function displayLog(event:TraceEvent):void {
 				var textColor:String = "#000066"; // used for event.type == Trace.INFO
-				if (event.type == Trace.ERROR) {
-					textColor = "#FF0000"
-				} else if (event.type == Trace.WARNING) {
-					textColor = "#FFCC00"
+				if (event.type == Trace.WARNING) {
+					textColor = "#FFCC00";
+				} else if (event.type == Trace.ERROR) {
+					textColor = "#FF0000";
+				} else if (event.type == Trace.DEBUG) {
+					textColor = "#0066FF";
 				}
 				temp += "<br/><font color='"+textColor+"' size='9'>"+event.text+"</font><br/>----------";
 			}
@@ -41,7 +60,7 @@
 			valueCommit="textarea.verticalScrollPosition=textarea.maxVerticalScrollPosition"
 			htmlText="{temp}"/>
 		
-		<mx:Button label="Clear logs" click="{clearTrace();}" />
+		<mx:Button id="clearLogsButton" label="Clear logs" click="{clearTrace();}" />
 		
 	</mx:VBox>
 	
