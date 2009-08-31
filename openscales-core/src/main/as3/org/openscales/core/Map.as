@@ -484,8 +484,10 @@ package org.openscales.core
 			}
 			
 			if (centerChanged && !dragging) {
+Trace.debug("dispatchEvent('MOVE_END')");
 				this.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this));
 			}
+else Trace.debug("NO dispatchEvent('MOVE_END') : centerChanged=" + centerChanged + ", dragging=" + dragging + ", isValidLonLat=" + this.isValidLonLat(lonlat));
 		}
 
 		/**
