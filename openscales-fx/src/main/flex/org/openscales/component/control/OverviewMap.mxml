@@ -4,7 +4,8 @@
 	xmlns:os="http://openscales.org"
 	width="100" height="100"
 	creationComplete="finalizeOverview();"
-	resize="resizeOverview();">
+	resize="resizeOverview();"
+	toolTip="Click to change the center of the main map.&#13;Draw a rectangle to define a new extent for the main map.">
 	
 	<mx:Script>
 		<![CDATA[
