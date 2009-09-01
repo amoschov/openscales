@@ -14,6 +14,7 @@ package org.openscales.core.tile
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.ogc.WFS;
 	import org.openscales.core.request.XMLRequest;
+	import org.openscales.core.Trace;
 
 	/**
 	 * WFS single tile
@@ -93,7 +94,7 @@ package org.openscales.core.tile
 				var doc:XML =  new XML(loader.data);;
 			}
 			catch(error:Error) {
-				//Trace.log(error.message);
+				Trace.error(error.message);
 			}
 			var wfsLayer:WFS = this.layer as WFS;
 
