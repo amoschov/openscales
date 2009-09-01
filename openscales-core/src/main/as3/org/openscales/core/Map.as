@@ -398,16 +398,15 @@ package org.openscales.core
 		 * @param tween use tween effect
 		 */
 		public function pan(dx:int, dy:int, tween:Boolean=false):void {
-			var centerPx:Pixel = this.getMapPxFromLonLat(this.center);
-
-			// adjust
-			var newCenterPx:Pixel = centerPx.add(dx, dy);
-
-			// only call setCenter if there has been a change
-			if (!newCenterPx.equals(centerPx)) {
-				var newCenterLonLat:LonLat = this.getLonLatFromMapPx(newCenterPx);
-				this.setCenter(newCenterLonLat, NaN, false, false, tween);
-			}  
+			// Is there a real offset ?
+			if ((dx==0) && (dy==0)) {
+				return;
+			}
+			
+			var newCenterPx:Pixel = this.getMapPxFromLonLat(this.center).add(dx, dy);
+			var newCenterLonLat:LonLat = this.getLonLatFromMapPx(newCenterPx);
+Trace.debug("pan(" + dx + ", " + dy + ") => " + newCenterLonLat);
+			this.setCenter(newCenterLonLat, NaN, false, false, tween);
 		}
 
 		/**
@@ -423,13 +422,12 @@ package org.openscales.core
 		 *
 		 */
 		private function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false, resizing:Boolean = false):void {
+			var zoomChanged:Boolean = forceZoomChange || (this.isValidZoomLevel(zoom) && (zoom!=this._zoom));
+			
 			if (!this.center && !this.isValidLonLat(lonlat)) {
 				lonlat = this.maxExtent.centerLonLat;
 			}
-			
-			var zoomChanged:Boolean = forceZoomChange || (this.isValidZoomLevel(zoom) && (zoom!=this._zoom));
-
-			var centerChanged:Boolean = this.isValidLonLat(lonlat) && (!lonlat.equals(this.center));  
+			var centerChanged:Boolean = this.isValidLonLat(lonlat) && (! lonlat.equals(this.center));  
 			
 			if (zoomChanged || centerChanged || !dragging) {
 				
@@ -484,7 +482,7 @@ package org.openscales.core
 			}
 			
 			if (centerChanged && !dragging) {
-Trace.debug("dispatchEvent('MOVE_END')");
+Trace.debug("dispatchEvent('MOVE_END') ; isValidLonLat=" + this.isValidLonLat(lonlat));
 				this.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this));
 			}
 else Trace.debug("NO dispatchEvent('MOVE_END') : centerChanged=" + centerChanged + ", dragging=" + dragging + ", isValidLonLat=" + this.isValidLonLat(lonlat));
@@ -496,14 +494,12 @@ else Trace.debug("NO dispatchEvent('MOVE_END') : centerChanged=" + centerChanged
 		 * @param lonlat the new layer container center
 		 * @param tween use tween effect is set to true
 		 */
-		private function centerLayerContainer(lonlat:LonLat, tween:Boolean = false):void
-		{
+		private function centerLayerContainer(lonlat:LonLat, tween:Boolean = false):void {
 			var originPx:Pixel = this.getMapPxFromLonLat(this._layerContainerOrigin);
 			var newPx:Pixel = this.getMapPxFromLonLat(lonlat);
 
-			if (originPx == null || newPx == null) return;
-
-
+			if (originPx == null || newPx == null)
+				return;
 
 			// X and Y positions for the layer container and bitmap transition, respectively.
 			var lx:Number = originPx.x - newPx.x;
@@ -539,10 +535,9 @@ else Trace.debug("NO dispatchEvent('MOVE_END') : centerChanged=" + centerChanged
 		 * range of zoom levels.
 		 */
 		private function isValidZoomLevel(zoomLevel:Number):Boolean {
-			var isValid:Boolean = ( (!isNaN(zoomLevel)) &&
+			return ( (!isNaN(zoomLevel)) &&
 				(zoomLevel >= 0) &&
 				(zoomLevel < this.numZoomLevels) );
-			return isValid;
 		}
 
 		/**
@@ -552,12 +547,7 @@ else Trace.debug("NO dispatchEvent('MOVE_END') : centerChanged=" + centerChanged
 		 * @return Whether or not the lonlat passed in is non-null and within the maxExtent bounds
 		 */
 		private function isValidLonLat(lonlat:LonLat):Boolean {
-			var valid:Boolean = false;
-			if (lonlat != null) {
-				var maxExtent:Bounds = this.maxExtent;
-				valid = maxExtent.containsLonLat(lonlat);
-			}
-			return valid;
+			return (lonlat!=null) ? this.maxExtent.containsLonLat(lonlat) : false;
 		}
 
 		/**
@@ -1047,9 +1037,9 @@ else Trace.debug("NO dispatchEvent('MOVE_END') : centerChanged=" + centerChanged
 		 	var _request:XMLRequest = new XMLRequest("/ressources/config.xml", success, this.proxy);
 		 }
 		 
-		 private function success():void{
-		 	
+		 private function success():void {
 		 }
+		 
 	}
 
 }
