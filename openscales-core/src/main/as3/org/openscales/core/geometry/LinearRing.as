@@ -10,8 +10,8 @@ package org.openscales.core.geometry
 	{
 
 		public function LinearRing(points:Array = null) {
-			this.componentTypes = ["org.openscales.core.geometry::LinearRing"];
 			super(points);
+			this.componentTypes = ["org.openscales.core.geometry::LinearRing"];
 		}
 
 		override public function addComponent(point:Geometry, index:Number=NaN):Boolean {
@@ -121,11 +121,11 @@ package org.openscales.core.geometry
 			if (geometry is Point) {
 				return this.containsPoint((geometry as Point));
 			}
+			else if (geometry is LinearRing) { // Must be tested before LineString !!!
+				return super.intersects(this);
+			}
 			else if (geometry is LineString) {
 				return (geometry as LineString).intersects(this);
-			}
-			else if (geometry is LinearRing) {
-				return (this as LineString).intersects(this);
 			}
 			else {  // geometry is a multi-geometry
 				var numSubGeometries:int = (geometry as Collection).components.length;
