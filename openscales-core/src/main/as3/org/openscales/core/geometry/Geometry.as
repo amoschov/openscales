@@ -287,9 +287,6 @@ return false; // TODO
 		public function set parent(value:Geometry):void {
 			this._parent = value;
 		}
-
-
-
 	}
 }
 

@@ -17,13 +17,21 @@ package org.openscales.core.handler.sketch
 
 	/**
 	 * DrawMultiHandler allow you to merge several features (withe the same geometry) in one.
-	 * It works ONLY with same geometry. It doesn't work with MultiGeometry.
+	 * It works ONLY with same geometries. It doesn't work with MultiGeometry.
 	 * You can merge point in MultiPoint, MultiLineString in MultiLineString and MultiPolygon in Multipolygon
 	 */
 
 	public class DrawMultiHandler extends AbstractDrawHandler
 	{		
+		/**
+		 * The single id of the multiFeature
+		 */
 		private var id:Number = 0;
+		
+		/**
+		 * TEMPORARY : to determine if we show an alert or not
+		 */
+		private var _multiPolygonForbiden:Boolean = false;
 
 		public function DrawMultiHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
 		{
@@ -55,57 +63,73 @@ package org.openscales.core.handler.sketch
 			var multiLineStringFeature:MultiLineStringFeature;
 			var multiPolygonFeature:MultiPolygonFeature;
 			var feature:VectorFeature;
-
+			
 			var style:Style = new Style();
 			style.fillColor = 0x60FFE9;
 			style.strokeColor = 0x60FFE9;
-
+			
 			for each(f in selectedFeatures){
 				if(f != null) 
 				{
-					//Add all the featue selected in a multigeometry
+					//Add all selected feature in a multigeometry
 					if(f.geometry is Point)
 					{
 						multiPoint.addPoint(f.geometry as Point);
 						drawType = "MultiPoint";
+						
+						_multiPolygonForbiden = false;
+						drawLayer.removeFeature(f);
 					}
-					if(f.geometry is LineString)
+					else if(f.geometry is LineString)
 					{
 						multiLineString.addLineString(f.geometry as LineString);
 						drawType = "MultiLineString";
+						
+						_multiPolygonForbiden = false;
+						drawLayer.removeFeature(f);
 					}
-					if(f.geometry is Polygon)
+					else if(f.geometry is Polygon)
 					{
 						multiPolygon.addPolygon(f.geometry as Polygon);
 						drawType = "MultiPolygon";
+						
+						_multiPolygonForbiden = false;
+						drawLayer.removeFeature(f);
 					}
 
-					if(f.geometry is MultiPoint)
+					else if(f.geometry is MultiPoint)
 					{
 						for(var i:int = 0;i<(f.geometry as MultiPoint).components.length;i++)
 						{
 							multiPoint.addPoint((f.geometry as MultiPoint).components[i] as Point);
 						}
 						drawType = "MultiPoint";
+						
+						_multiPolygonForbiden = false;
+						drawLayer.removeFeature(f);
 					}
-					if(f.geometry is MultiLineString)
+					else if(f.geometry is MultiLineString)
 					{
 						for(var k:int = 0;k<(f.geometry as MultiLineString).components.length;k++)
 						{
 							multiLineString.addLineString((f.geometry as MultiLineString).components[k] as LineString);
 						}
 						drawType = "MultiLineString";
+						
+						_multiPolygonForbiden = false;
+						drawLayer.removeFeature(f);
 					}
-					if(f.geometry is MultiPolygon)
+					else if(f.geometry is MultiPolygon)
 					{
-						for(var l:int = 0;l<(f.geometry as MultiPoint).components.length;l++)
+						
+						/* for(var l:int = 0;l<(f.geometry as MultiPolygon).components.length;l++)
 						{
 							multiPolygon.addPolygon((f.geometry as MultiPolygon).components[l] as Polygon);
 						}
-						drawType = "MultiPoint";
+						drawType = "MultiPolygon"; */
+						_multiPolygonForbiden = true;
+						break;
 					}
-					//delete features selected
-					drawLayer.removeFeature(f);
 				}
 			}
 			//Display the new feature
@@ -115,13 +139,13 @@ package org.openscales.core.handler.sketch
 				drawLayer.addFeature(multiPointFeature);
 				feature = multiPointFeature;
 			}
-			if(drawType == "MultiLineString")
+			else if(drawType == "MultiLineString")
 			{
 				multiLineStringFeature = new MultiLineStringFeature(multiLineString,null,style);
 				drawLayer.addFeature(multiLineStringFeature);
 				feature = multiLineStringFeature;
 			}
-			if(drawType == "MultiPolygon")
+			else if(drawType == "MultiPolygon")
 			{
 				multiPolygonFeature = new MultiPolygonFeature(multiPolygon,null,style);
 				drawLayer.addFeature(multiPolygonFeature);
@@ -129,6 +153,12 @@ package org.openscales.core.handler.sketch
 			}	
 			return(feature);	 
 		}
+		
+		public function get multiPolygonForbiden():Boolean{
+			return _multiPolygonForbiden;
+		}
+		public function set multiPolygonForbiden(value:Boolean):void{
+			_multiPolygonForbiden = value;
+		}
 	}
 }
-

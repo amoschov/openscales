@@ -52,9 +52,9 @@
 			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
 			
 			/**
-			 * Handler of MultipointFeature
+			 * Handler of MultiFeature
 			 */
-			public var multiPointHandler:DrawMultiHandler = new DrawMultiHandler(null, false, drawLayer);
+			public var multiFeaturesHandler:DrawMultiHandler = new DrawMultiHandler(null, false, drawLayer);
 			
 			/**
 			 * Dragging state
@@ -79,7 +79,7 @@
 				this.selectFeatureHandler.selectBySelectBox = onSelectBySelectBox; 
 				
 				//Properties of MultiHandler
-				this.multiPointHandler.map = this.map;
+				this.multiFeaturesHandler.map = this.map;
 				 				 
 				//Active drag feature
 				/* this.dragfeature = new DragFeature(this.map,[drawLayer],true); */				  										
@@ -92,10 +92,13 @@
 			private function OnMergeClick(event:MouseEvent):void {
 				
 				/* tab of selected features in params, return a multigeometry of this selected features */					
-				var feature:VectorFeature = multiPointHandler.buttonClicked(selectFeatureHandler.selectFeatures) as VectorFeature;
-				selectFeatureHandler.currentfeature = feature;				
-				selectFeatureHandler.OnSelection();
-				selectFeatureHandler.selectFeauturesLength++;
+				var feature:VectorFeature = multiFeaturesHandler.buttonClicked(selectFeatureHandler.selectFeatures) as VectorFeature;
+				if(multiFeaturesHandler.multiPolygonForbiden){
+					Alert.show("For the moment, you can't merge MultiPolygon", "Information", Alert.OK | Alert.NONMODAL);
+				}
+				/* selectFeatureHandler.currentfeature = feature; */				
+				/* selectFeatureHandler.OnSelection(); */
+				/* selectFeatureHandler.selectFeauturesLength++; */
 				btnMerge.enabled = false;
 				
 			}

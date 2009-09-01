@@ -39,15 +39,15 @@ package org.openscales.core.geometry
         	 var px:Number = point.x;
         	 var py:Number = point.y;
         	 var numSeg:int = this.components.length - 1;
-        	 var start:Point, end:Point, x1:Number, y1:Number, x2:Number, y2:Number, cx:Number, cy:Number;
+        	 var startPointSeg:Point, endPointSeg:Point, x1:Number, y1:Number, x2:Number, y2:Number, cx:Number, cy:Number;
         	 var crosses:Number = 0;
         	 for(var i:int=0; i<numSeg; ++i) {
-            	 start = this.components[i];
-            	 x1 = start.x;
-            	 y1 = start.y;
-             	end = this.components[i + 1];
-            	 x2 = end.x;
-            	 y2 =end.y;
+            	 startPointSeg = this.components[i];
+            	 x1 = startPointSeg.x;
+            	 y1 = startPointSeg.y;
+             	 endPointSeg = this.components[i + 1];
+            	 x2 = endPointSeg.x;
+            	 y2 = endPointSeg.y;
             
             	 /*
              	 * The following conditions enforce five edge-crossing rules:
@@ -66,7 +66,7 @@ package org.openscales.core.geometry
                     	 // point on horizontal line
                     	 if(x1 <= x2 && (px >= x1 && px <= x2) || // right or vert
                        	 	x1 >= x2 && (px <= x1 && px >= x2)) { // left or vert
-                        	 // point on edge
+                        	 // point on edge, so contained
                        	 	 crosses = -1;
                        	  break;
                     	 }

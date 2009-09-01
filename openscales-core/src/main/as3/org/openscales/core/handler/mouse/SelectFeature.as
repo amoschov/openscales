@@ -28,9 +28,16 @@ package org.openscales.core.handler.mouse
 		private var _select:Function=null;
 		private var _unselect:Function=null;
 		private var _selectBySelectBox:Function=null;
-
+		
+		/**
+		 * Array of feature wich contain all feature to select. Most of time, it contains only one feature
+		 * but because of the selectBox, sometimes there are several features to select.
+		 */
 		private var _featureToSelect:Array=null;
 		
+		/**
+		 * ctrl status. Indicate if the user pressed the ctrl key
+		 */
 		private var _ctrl:Boolean=false;
 
 		/**
@@ -49,19 +56,27 @@ package org.openscales.core.handler.mouse
 		private var _iteratorFeatures:Number = 0;
 
 		/**
-		 * The style for selected feature (you can change its color)
+		 * The style for selected feature
 		 */
 		private var _selectStyle:Style = new Style(); 
-
+		
+		/**
+		 * The layer wich contain our features
+		 */
 		private var _layer:VectorLayer;
+		
+		/**
+		 * To prevent duplicate points
+		 */
 		private var _lastfeature:Feature=null;
+		
+		
 		private var _currentfeature:VectorFeature=null;
-
 
 		//Accept hover or not
 		private var _hover:Boolean=false;
 
-		private var _startPixel:Pixel=null;
+		/* private var _startPixel:Pixel=null; */
 
 		public function SelectFeature(map:Map=null,layer:VectorLayer=null,active:Boolean=false)
 		{
@@ -157,7 +172,7 @@ package org.openscales.core.handler.mouse
 						}
 					}
 				}
-				//we select (or deselect if the feature is already selected) features in the area
+				//we select features in the area
 				for each (f in _featureToSelect){
 					var featureIterator:VectorFeature;
 					
@@ -284,15 +299,21 @@ package org.openscales.core.handler.mouse
 							if((k-l) <= 0){l = 0;}
 							else{l++;}
 						}
-						if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::Point") || (getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPoint")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::Point") ||(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPoint")))))
+						if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::Point") || 
+								(getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPoint")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::Point") ||
+									(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPoint")))))
 						{
 							rep = true;
 						}
-						else if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::LineString") || (getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::LineString") ||(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString")))))
+						else if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::LineString") ||
+						 	(getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::LineString") ||
+						 		(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString")))))
 						{
 							rep = true;
 						}
-						else if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::Polygon") || (getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPolygon")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::Polygon") ||(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPolygon")))))
+						else if(((((getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::Polygon") || 
+							(getQualifiedClassName((selectFeatures[k] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPolygon")) && ((getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::Polygon")  ||
+								(getQualifiedClassName((selectFeatures[k-l] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiPolygon")) )))
 						{
 							rep = true;
 						}

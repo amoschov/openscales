@@ -312,6 +312,7 @@ package org.openscales.core.geometry
      	 *     properties represent the coordinates of the closest point on the
      	 *     target geometry.
       	 */
+//TODO implement me
      	/* public function distanceTo(geometry, options) {
         	var edge = !(options && options.edge === false);
         	var details = edge && options && options.details;

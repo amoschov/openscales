@@ -41,6 +41,7 @@
 				   right="-66.969849"
 				   top="49.371735"/>
 		
+		<os:MousePosition/>
 		<os:DragHandler id="dragHandler"/>	   
 		<os:ClickHandler/>
 		<os:WheelHandler/>

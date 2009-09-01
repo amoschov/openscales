@@ -140,7 +140,7 @@ package org.openscales.core.geometry
             	if(!intersect) {
                	// check if this poly contains points of the ring/linestring
                 	for(i=0, len=(geometry as LineString).components.length; i<len; ++i) {
-                    	intersect = this.containsPoint((geometry as Curve).components[i]);
+                    	intersect = this.containsPoint((geometry as LineString).components[i]);
                     	if(intersect) {
                         	break;
                     	}

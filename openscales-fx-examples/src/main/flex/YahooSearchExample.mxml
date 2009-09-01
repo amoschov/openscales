@@ -35,8 +35,7 @@
 							 map="{map}"
 							label="Search"
 							appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é"/>
-		</mx:Panel>
-									   
+		</mx:Panel>						   
 		<os:MaxExtent left="-180"
 					  bottom="-90"
 					  right="180"

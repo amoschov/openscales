@@ -30,7 +30,7 @@
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 			
-			private var lastSelection:LonLat = null;
+			private var _startCoordinates:LonLat = null;
 			private var fillColor:uint = 0x660000;
 	        private var drawContainer:Sprite = new Sprite();
 	        private var _ctrlStatus:Boolean=false;
@@ -86,7 +86,7 @@
                 drawContainer.graphics.drawRect(map.mouseX,map.mouseY,1,1);
                 drawContainer.graphics.endFill();
                 //Get the first rectangle point
-                this.lastSelection = this.map.getLonLatFromMapPx(new Pixel(map.mouseX, map.mouseY));
+                this._startCoordinates = this.map.getLonLatFromMapPx(new Pixel(map.mouseX, map.mouseY));
             }
 			
 			/**
@@ -107,10 +107,10 @@
                		_ctrlStatus = e.ctrlKey;
                		//Get the last rectangle point
                		var nowSelection:LonLat = this.map.getLonLatFromMapPx(new Pixel(map.mouseX, map.mouseY));
-               		featureInclude(new Bounds(Math.min(lastSelection.lon,nowSelection.lon),
-               																			Math.min(nowSelection.lat,lastSelection.lat),
-               																			Math.max(lastSelection.lon,nowSelection.lon),
-               																			Math.max(nowSelection.lat,lastSelection.lat)));
+               		featureInclude(new Bounds(Math.min(_startCoordinates.lon,nowSelection.lon),
+               								Math.min(nowSelection.lat,_startCoordinates.lat),
+               								Math.max(_startCoordinates.lon,nowSelection.lon),
+               								Math.max(nowSelection.lat,_startCoordinates.lat)));
                		selectbox.selected = false;
                 }
 			
@@ -122,7 +122,7 @@
 			 */
             private function expandArea(e:MouseEvent) : void 
             {
-                var ll:Pixel = map.getMapPxFromLonLat(lastSelection);
+                var ll:Pixel = map.getMapPxFromLonLat(_startCoordinates);
                 drawContainer.graphics.clear();
                 drawContainer.graphics.beginFill(fillColor,0.5);
                 drawContainer.graphics.drawRect(ll.x,ll.y,map.mouseX - ll.x,map.mouseY - ll.y);
