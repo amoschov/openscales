@@ -372,6 +372,7 @@ package org.openscales.core.control
 			{
 				(event.target as CheckBox).status = true;
 				layer2.visible = true;
+				layer2.redraw();
 			}
 		}
 
