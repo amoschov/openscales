@@ -13,6 +13,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.Trace;
 
 	/**
 	 * Handler to draw paths (multi line strings)
@@ -87,8 +88,7 @@ package org.openscales.core.handler.sketch
 			_startPoint = this.map.getMapPxFromLonLat(lonlat);
 			
 			if(newFeature){
-				_lineString = new LineString();
-				_lineString.addPoint(point);
+				_lineString = new LineString([point]);
 				lastPoint = point;
 				
 				var lineStyle:Style = new Style();
@@ -104,7 +104,7 @@ package org.openscales.core.handler.sketch
 			}
 			else {								
 				if(!point.equals(lastPoint)){
-					_lineString.addPoint(point); 						
+					_lineString.addPoint(point);
 					drawLayer.redraw();
 					lastPoint = point;
 				}								

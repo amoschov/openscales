@@ -11,7 +11,6 @@ package org.openscales.core.geometry
 
 		public function LinearRing(points:Array = null) {
 			super(points);
-			this.componentTypes = ["org.openscales.core.geometry::LinearRing"];
 		}
 
 		override public function addComponent(point:Geometry, index:Number=NaN):Boolean {

@@ -23,8 +23,8 @@ package org.openscales.core.geometry
      	 * @param components
      	*/
     	public function Polygon(components:Array=null){
-    		this._componentTypes = ["org.openscales.core.geometry::LinearRing"];
     		super(components); 
+    		this._componentTypes = ["org.openscales.core.geometry::LinearRing"];
     	}
 
 		override public function toShortString():String {

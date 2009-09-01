@@ -4,60 +4,130 @@ package org.openscales.core.geometry
 	import org.openscales.proj4as.ProjProjection;
 		
 	/**
- 	 * Class: OpenLayers.Geometry.LineString
- 	 * A LineString is a Curve which, once two points have been added to it, can 
- 	 * never be less than two points long.
+	 * A LineString is a is a MultiPoint (2 vertices min), whose points are
+	 * assumed to be connected.
 	 */
-
-	public class LineString extends Curve
+	public class LineString extends MultiPoint
 	{
-
-		public function LineString(points:Array = null) {
-			this.componentTypes = ["org.openscales.core.geometry::LineString"];
-			super(points);
+		/**
+		 * LineString constructor
+		 * 
+		 * @param vertices Array of two or more points
+		 */
+		public function LineString(vertices:Array) {
+			// Check if all the components to add are Points
+			var validVertices:Boolean = true;
+			if (vertices) {
+				for(var i:int=0; i<vertices.length; i++) {
+					if (! (vertices[i] is Point)) {
+						Trace.error("LineString constructor ERROR : invalid parameter " + i);
+						validVertices = false;
+						vertices = null;
+					}
+				}
+			}
+			// Check if almost two vertices are defined.
+			// If one (or more) vertex is invalid, this condition is not tested
+			if (validVertices) {
+				if (vertices && (vertices.length < 2)) {
+					Trace.warning("LineString constructor WARNING : too few vertices (" + vertices.length + ")");
+				}
+			}
+			// Initialize the object
+			super(vertices);
 		}
-
-		override public function removeComponent(point:Geometry):void {
-			if ( this.components && (this.components.length > 2)) {
-				super.removeComponent(point);
+		
+		/**
+		 * Add vertices to the end of the LineString
+		 * 
+		 * @param vertices the array of vertices to add
+		 */
+		override public function addComponents(vertices:Array):void {
+			// Check if all the components to add are Points
+			for(var i:int=0; i<vertices.length; i++) {
+				if (! (vertices[i] is Point)) {
+					Trace.error("LineString.addComponents ERROR : invalid parameter " + i);
+					return;
+				}
+			}
+			// Add the vertices to the LineString
+			super.addComponents(vertices);
+		}
+		
+		/**
+		 * Remove a vertex of the LineString.
+		 * 
+		 * @param vertex the vertex of the LineString to remove
+		 */
+		override public function removeComponent(vertex:Geometry):void {
+			// Check if the geometry to remove is a Point
+			if (! (vertex is Point)) {
+				Trace.error("LineString.removeComponent ERROR : invalid parameter");
+				return; 
+			}
+			// Check if this object will stay a LineString after the removing
+			//   (2 vertices min) and try to remove this Collection's component
+			if (this.components.length > 2) {
+				super.removeComponent(vertex);
+			} else {
+				Trace.error("LineString.removeComponent ERROR : too few components (" + this.components.length + ")"); 
 			}
 		}
 		
+		/**
+		 * @param index the index of the attended vertex
+		 * @return the vertex requested or null for an invalid index
+		 */
 		public function getPointAt(index:Number):Point {
-
-			if(index >= 0 && index < this.components.length) {
-				return this.components[index];
-			}
-			else {
+			// Return null for an invalid request
+			if ((index<0) || (index>=this.components.length)) {
 				return null;
 			}
+			return this.components[index];
 		}
-
+		
+		/**
+		 * @return the last vertex of the LineString
+		 */
 		public function getLastPoint():Point {
 			return this.getPointAt(this.components.length - 1);
 		}
+		
+		/**
+		 * Length getter which iterates through the vertices summing the
+		 * distances of each edges.
+		 */
+		override public function get length():Number {
+			var length:Number = 0.0;
+			if (this.components.length > 1) {
+				for(var i:int=1; i<this.components.length; i++) {
+					length += this.components[i-1].distanceTo(this.components[i]);
+				}
+			}
+			return length;
+		}
+
 		/**
 		 * Method to convert the multipoint (x/y) from a projection system to an other.
-		 *
+		 * 
 		 * @param source The source projection
 		 * @param dest The destination projection
-		 * @param allPoints if allPoints is equal to true we transform the linestring two point if it's false we only transform  the last point we use it for example in the case of MultiLineString
-		 *  
+		 * @param allPoints if allPoints is equal to true we transform the
+		 *   linestring two point. If it's false we only transform the last point.
+		 *   We use it for example in the case of MultiLineString
 		 */
-		 public function transformLineString(source:ProjProjection, dest:ProjProjection, allPoints:Boolean=true):void {
+		public function transformLineString(source:ProjProjection, dest:ProjProjection, allPoints:Boolean=true):void {
+// FixMe : I think it's a bad backport from OpenLayers !!!
 			if (this.components.length > 0) {
-					if(allPoints)
-					{
-						for each (var p:Point in this.components) {
-							p.transform(source, dest);
-							}
+				if (allPoints) {
+					for each (var p:Point in this.components) {
+						p.transform(source, dest);
 					}
-					else
-					{
-						//There is only two point in a Linestring
-						this.components[1].transform(source, dest);
-					}
-				}	
+				} else {
+					// There is only two point in a Linestring
+					this.components[1].transform(source, dest);
+				}
+			}	
 		}
 		
 		/**
@@ -74,13 +144,12 @@ package org.openscales.core.geometry
       	 */
 		override public function intersects(geometry:Geometry):Boolean {
 			// Treat the geometry as a collection if it is not a simple point,
-			// a rectangle, a simple polyline or a simple polygon
+			// a simple polyline or a simple polygon
 			if ( ! ((geometry is Point) || (geometry is LineString) || (geometry is LinearRing)) ) {
 Trace.debug("Linestring:intersects - collection");
 				return (geometry as Collection).intersects(this);
 			}
-// FixMe : Rectangle, Curve and Polygon seems not to be (well-)managed
-// TODO : deeply test for intersection with a point
+// TODO : deeply test for the intersection with a point
 			
 			// The geometry to intersect is a simple Point, a simple polyline or
 			//   a simple polygon.
@@ -175,7 +244,6 @@ Trace.debug("Linestring:intersects - NOK");
 			}
 			return segments;
 		}
-		 
+		
 	}
 }
-

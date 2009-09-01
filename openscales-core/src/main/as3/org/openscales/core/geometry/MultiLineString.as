@@ -9,8 +9,8 @@ package org.openscales.core.geometry
 	{
 
 		public function MultiLineString(components:Array = null) {
-			this.componentTypes = ["org.openscales.core.geometry::LineString"];
 			super(components);
+			this.componentTypes = ["org.openscales.core.geometry::LineString"];
 		}
 
 		/**

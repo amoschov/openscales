@@ -121,6 +121,9 @@ package org.openscales.core.geometry
 					added = true;
 				}
 			}
+			if (! added) {
+				Trace.error("collection.addComponent ERROR : impossible to add geometry, componentTypes="+this.componentTypes);
+			}
 			return added;
 		}
 

@@ -9,8 +9,8 @@ package org.openscales.core.geometry
 	{
 
 		public function MultiPolygon(components:Array = null) {
-			this.componentTypes = ["org.openscales.core.geometry::Polygon"];
 			super(components);
+			this.componentTypes = ["org.openscales.core.geometry::Polygon"];
 		}
 
 		public function addPolygon(polygon:Polygon, index:Number=NaN):void {
