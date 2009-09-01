@@ -139,10 +139,10 @@ package org.openscales.core.layer.ogc
 			}  
 
 			if (dragging) {
+				// Nothing
 			} else {
 
-				if (this.minZoomLevel && this.map.zoom < this.minZoomLevel) {
-
+				if (this.minZoomLevel && (this.map.zoom>=this.minZoomLevel)) {
 
 					if (bounds == null) {
 						bounds = this.map.extent;
@@ -177,13 +177,8 @@ package org.openscales.core.layer.ogc
 							this.tile = new WFSTile(this, pos, tileBounds, url, tileSize);
 							this.tile.draw();
 							this.featuresBbox = tileBounds;
-						} 
-
-
-						else {
-
+						} else {
 							if ( !this.featuresBbox.containsBounds(tileBounds)) {
-
 								if (this.capabilities != null && 
 									!this.featuresBbox.containsBounds(this.capabilities.getValue("Extent"))) {
 
@@ -194,10 +189,9 @@ package org.openscales.core.layer.ogc
 
 									this.tile.url = url;			            		
 									this.tile.loadFeaturesForRegion(this.tile.requestSuccess);
-								}		                	
-
-							}		            	
-						} 
+								}
+							}
+						}
 					}
 				}
 			}
