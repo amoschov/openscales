@@ -217,7 +217,6 @@ package org.openscales.core.geometry
 				var along1:Number = n1 / d;
 				var along2:Number = n2 / d;
 				if ((along1 >= 0) && (along1 <= 1) && (along2 >=0) && (along2 <= 1)) {  // intersect
-Trace.debug("segmentsIntersect OK : d=" + d + " ; n1=" + n1 + " ; n2=" + n2);
 					return true;
          		}
          		// else there is no intersection but the Boolean to return will
@@ -225,7 +224,6 @@ Trace.debug("segmentsIntersect OK : d=" + d + " ; n1=" + n1 + " ; n2=" + n2);
 			}
 			
 			if (tolerance <= 0.0) {
-Trace.debug("segmentsIntersect NOK and tolerance not managed");
 				return false;
 			}
 

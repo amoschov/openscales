@@ -162,17 +162,24 @@ package org.openscales.core.geometry
 		}
 		
 		/**
-     	 * Calculate the area of this geometry. Note how this function is overridden
-     	 * in Polygon.
-     	 *
-     	 * @return The area of the collection by summing its parts
-     	 */
+		 * Calculate the approximate area of this geometry (the projection and
+		 * the geodesic are not managed).
+		 * 
+		 * Be careful, if some components intersect themselves, the intersection
+		 * area is added several times !
+		 * Moreover, the auto-intersection of edges of each LinearRing is not
+		 * managed.
+		 * 
+		 * Note how this function is overridden in LinearRing and in Polygon.
+		 * 
+		 * @return The area of the collection is defining by summing its parts.
+		 */
 		override public function get area():Number {
-			var area:Number = 0.0;
-			for (var i:int = 0; i < this.components.length; i++) {
-				area += this.components[i].getArea();
+			var _area:Number = 0.0;
+			for (var i:int=0; i<this.components.length; i++) {
+				_area += this.components[i].area;
 			}
-			return area;
+			return _area;
 		}
 		
 		/**

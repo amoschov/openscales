@@ -2,9 +2,10 @@ package org.openscales.core.geometry
 {	
 	/**
 	 * A Linear Ring is a special LineString which is closed. 
-	 * It closes itself automatically on every addPoint/removePoint by adding a copy of the first point as the last point.
-	 * Also, as it is the first in the line family to close itself, an area getter is 
-	 * defined to calculate the enclosed area of the linearRing
+	 * It closes itself automatically on every addPoint/removePoint by adding a
+	 * copy of the first point as the last point.
+	 * Also, as it is the first in the line family to close itself, an area
+	 * getter is defined to calculate the enclosed area of the linearRing.
 	 */
 	public class LinearRing extends LineString
 	{
@@ -137,10 +138,19 @@ package org.openscales.core.geometry
 					}
 				}
 			}
-
     		// No sub-geometry intersects this LinearRing
 			return false;
      	}
+		
+		/**
+		 * Calculate the approximate area enclosed by this LinearRing (the
+		 * projection and the geodesic are not managed).
+		 * 
+		 * The auto-intersection of edges of the LinearRing is not managed yet.
+		 */
+		override public function get area():Number {
+			return 0.0;  // TODO, FixMe
+		}
 
 	}
 }

@@ -2,92 +2,92 @@ package org.openscales.core.geometry
 {
 	import flash.utils.getQualifiedClassName;
 	
+	import org.openscales.core.Trace;
+	
 	/**
-	 * Polygon is a collection of Geometry LinearRings. 
-	 */ 
-	 
-	public class Polygon extends Collection{
-
-    	/**
-    	 * An array of class names representing the types of
-     	 * components that the collection can include. 
-     	 * A null value means the component types are not restricted.
-     	 */
-    	private var _componentTypes:Array;
-
-    	/**
+	 * A Polygon is a collection of Geometry LinearRings defining a Mathematical
+	 * Polygon (the first LinearRing) with holes (the potential others LinearRings).
+	 */
+	public class Polygon extends Collection
+	{
+		/**
      	 * Constructor for a Polygon geometry. 
-     	 * The first ring (this.component[0])is the outer bounds of the polygon and 
-     	 * all subsequent rings (this.component[1-n]) are internal holes.
+     	 * The first ring (components[0]) is the outer bounds of the polygon and 
+     	 * all subsequent rings (component[1..n]) are internal holes.
      	 *
-     	 * @param components
+     	 * @param rings the polygon and its holes
      	*/
-    	public function Polygon(components:Array=null){
-    		super(components); 
-    		this._componentTypes = ["org.openscales.core.geometry::LinearRing"];
-    	}
-
-		override public function toShortString():String {
-			// FixMe
-			return "TODO(Polygon.toShortString)";
+    	public function Polygon(rings:Array) {
+			// Check if all the components to add are LinearRing
+			var validRings:Boolean = true;
+			if (rings) {
+				for(var i:int=0; i<rings.length; i++) {
+					if (! (rings[i] is LinearRing)) {
+						Trace.error("Polygon constructor ERROR : invalid parameter " + i);
+						validRings = false;
+						rings = null;
+					}
+				}
+			}
+			// Check if almost one ring is defined.
+			// If one (or more) ring is invalid, this condition is not tested
+			if (validRings) {
+				if (rings && (rings.length < 1)) {
+					Trace.warning("Polygon constructor WARNING : too few rings (" + rings.length + ")");
+				}
+			}
+			// Initialize the object
+			super(rings);
+    		this.componentTypes = ["org.openscales.core.geometry::LinearRing"];
 		}
-    
-    	/**
-     	 * Calculated by subtracting the areas of the internal holes from the 
-     	 *   area of the outer hole.
-     	 * 
-     	 * @return The area of the geometry
-     	 */
-   		private function get Area():Number{
-        	var area:Number = 0.0;
-        	var i:Number, len:Number;
-        	if ( this.components && (this.components.length > 0)) {
-           		area += Math.abs(this.components[0].getArea());
-            	for (i=1, len=this.components.length; i<len; i++) {
-                	area -= Math.abs(this.components[i].getArea());
-            	}
+		
+		/**
+		 *  
+		 */
+		override public function toShortString():String {
+			var s:String = "(";
+			for each (var r:LinearRing in this.components) {
+				s = s + r.toShortString();
+			}
+			return s + ")";
+		}
+		
+		/**
+		 * Calculate the approximate area of this geometry (the projection and
+		 * the geodesic are not managed).
+		 * 
+		 * Be careful, if some components intersect themselves, the intersection
+		 * area is substracted several times !
+		 * Moreover, the auto-intersection of edges of each LinearRing is not
+		 * managed.
+		 * 
+		 * @return The area of the collection is defining by substracting the
+		 * areas of the internal holes to the area of the outer ring.
+		 */
+		override public function get area():Number {
+        	if (this.components.length < 1) {
+        		return 0.0;
         	}
-       		return area;
+			var _area:Number = (this.components[0] as LinearRing).area;
+        	for (var i:int=1; i<this.components.length; i++) {
+            	_area -= (this.components[i] as LinearRing).area;
+        	}
+        	if (_area < 0) {
+        		Trace.warning("Polygon.area ERROR : almost one hole is partially outside the outer ring");
+        	}
+       		return Math.max(_area, 0.0);
     	}
-
-    	/* 
-     	* Calculate the approximate area of the polygon were it projected onto
-     	*     the earth.
-     	*
-     	* Params
-    	* projection - {<OpenLayers.Projection>} The spatial reference system
-     	*     for the geometry coordinates.  If not provided, Geographic/WGS84 is
-     	*     assumed.
-     	* 
-     	* Reference:
-     	* Robert. G. Chamberlain and William H. Duquette, "Some Algorithms for
-     	*     Polygons on a Sphere", JPL Publication 07-03, Jet Propulsion
-     	*     Laboratory, Pasadena, CA, June 2007 http://trs-new.jpl.nasa.gov/dspace/handle/2014/40409
-     	*
-     	* Returns:
-     	* {float} The approximate geodesic area of the polygon in square meters.
-     	*/
-    	/* getGeodesicArea: function(projection) {
-        	var area = 0.0;
-        	if(this.components && (this.components.length > 0)) {
-            	area += Math.abs(this.components[0].getGeodesicArea(projection));
-            	for(var i=1, len=this.components.length; i<len; i++) {
-                	area -= Math.abs(this.components[i].getGeodesicArea(projection));
-            	}
-        	}
-        	return area;
-    	} */
-
-    	/**
-     	* Test if a point is inside a polygon.  Points on a polygon edge are
-     	*     considered inside.
-     	*
-     	*@param point
-     	*
-     	*@return boolean if the point is inside the polygon.
-     	*/
-     	public function containsPoint(point:Point):Boolean {
-        	var numRings:Number = this.components.length;
+		
+		/**
+		 * Test if a point is inside a polygon.
+		 * A point on a polygon edge is considered inside.
+		 * A point on at least one of the holes is considered outside.
+		 * 
+		 * @param point the point to test
+		 * @return a boolean defining if the point is inside or outside the polygon
+		 */
+		public function containsPoint(point:Point):Boolean {
+			var numRings:Number = this.components.length;
         	var contained:Boolean = false;
         	var i:Number;
         	if(numRings > 0) {

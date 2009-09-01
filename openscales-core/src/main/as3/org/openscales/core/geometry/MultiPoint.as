@@ -42,6 +42,14 @@ package org.openscales.core.geometry
 			}
 		}
 		
+		/**
+		 * Calculate the approximate area of this geometry (the projection and
+		 * the geodesic are not managed).
+		 */
+		override public function get area():Number {
+			return 0.0;
+		}
+		
 	}
 }
 
