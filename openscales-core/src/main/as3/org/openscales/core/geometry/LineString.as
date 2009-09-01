@@ -1,5 +1,6 @@
 package org.openscales.core.geometry
 {
+	import org.openscales.core.Trace;
 	import org.openscales.proj4as.ProjProjection;
 		
 	/**
@@ -12,6 +13,7 @@ package org.openscales.core.geometry
 	{
 
 		public function LineString(points:Array = null) {
+			this.componentTypes = ["org.openscales.core.geometry::LineString"];
 			super(points);
 		}
 
@@ -59,106 +61,121 @@ package org.openscales.core.geometry
 		}
 		
 		/**
-     	 * Test for instersection between two geometries.  This is a cheapo
-     	 *     implementation of the Bently-Ottmann algorigithm.  It doesn't
-     	 *     really keep track of a sweep line data structure.  It is closer
-     	 *     to the brute force method, except that segments are sorted and
-     	 *     potential intersections are only calculated when bounding boxes
-     	 *     intersect.
-     	 *
-     	 * Parameters:
-     	 * geometry - {<OpenLayers.Geometry>}
-     	 *
-      	 * Returns:
-     	 * {Boolean} The input geometry intersects this geometry.
+     	 * Test for instersection between this LineString and a geometry.
+     	 * 
+     	 * This is a cheapo implementation of the Bentley-Ottmann algorithm but
+     	 * it doesn't really keep track of a sweep line data structure.
+     	 * It is closer to the brute force method, except that segments are
+     	 * X-sorted and potential intersections are only calculated when their
+     	 * bounding boxes intersect.
+     	 * 
+     	 * @param geometry the geometry (of any type) to intersect with
+     	 * @return a boolean defining if an intersection exist or not
       	 */
-    	 override public function intersects(geometry:Geometry):Boolean {
-        	 var intersect:Boolean = false;
-        		if(geometry is LineString || geometry is LinearRing || geometry is Point){
-            		// cut the input line in segements
-            		var segs1:Array = this.getSortedSegments();
-            		
-            		// cut the geometry in segement. If it's a point, only one segment containing 2 same points
-            		var segs2:Array = new Array();
-            		if(geometry is Point) {
-                		segs2[1] = (geometry as Point);
-                		segs2[2] = (geometry as Point);
+		override public function intersects(geometry:Geometry):Boolean {
+			// Treat the geometry as a collection if it is not a simple point,
+			// a rectangle, a simple polyline or a simple polygon
+			if ( ! ((geometry is Point) || (geometry is LineString) || (geometry is LinearRing)) ) {
+Trace.debug("Linestring:intersects - collection");
+				return (geometry as Collection).intersects(this);
+			}
+// FixMe : Rectangle, Curve and Polygon seems not to be (well-)managed
+// TODO : deeply test for intersection with a point
+			
+			// The geometry to intersect is a simple Point, a simple polyline or
+			//   a simple polygon.
+			// First, check if the bounding boxes of the two geometries intersect
+			if (! this.bounds.intersectsBounds(geometry.bounds)) {
+Trace.debug("Linestring:intersects - NOK from BBOX");
+				return false;
+			}
+			
+			// To test if an intersection exists, it is necessary to cut this
+			//   line string and the geometry in segments. The segments are
+			//   oriented so that x1 <= x2 (but we does not known if y1 <= y2
+			//   or not).
+			var segs1:Array = this.getXsortedSegments();
+			var segs2:Array = (geometry is Point) ? [(geometry as Point),(geometry as Point)] : (geometry as LineString).getXsortedSegments();
+			
+			var seg1:Array, seg1y1:Number, seg1y2:Number, seg1yMin:Number, seg1yMax:Number;
+			var seg2:Array, seg2y1:Number, seg2y2:Number, seg2yMin:Number, seg2yMax:Number;
+			// Loop over each segment of this lineString
+    		for(var i:int=0; i<segs1.length; ++i) {
+				seg1 = segs1[i];
+				// Loop over each segment of the requested geometry
+				for(var j:int=0; j<segs2.length; ++j) {
+					// Before to really test the intersection between the two
+					//    segments, we will test the intersection between their
+					//    respective bounding boxes in four steps.
+					seg2 = segs2[j];
+					// If the most left vertex of seg2 is at the right of the
+					//   most right vertex of seg1, there is no intersection
+					if ((seg2[0] as Point).x > (seg1[1] as Point).x) {
+                		continue;
             		}
-            		else{
-                		segs2 = (geometry as LineString).getSortedSegments();
-            		}
-            		
-            		var seg1:Array, seg1x1:Number, seg1x2:Number, seg1y1:Number, seg1y2:Number, seg2:Array, seg2y1:Number, seg2y2:Number;
-            		// sweep right
-            		var i:Number=0, len:Number=segs1.length;
-            		for(i; i<len; ++i) {
-                		seg1 = segs1[i];
-                		seg1x1 = (seg1[0] as Point).x;  /* seg1.x1; */
-                		seg1x2 = (seg1[0] as Point).y;  /* seg1.x2; */
-                		seg1y1 = (seg1[1] as Point).x;  /* seg1.y1; */
-                		seg1y2 = (seg1[1] as Point).y;  /* seg1.y2; */
-                		
-                		for(var j:Number=0, jlen:Number=segs2.length; j<jlen; ++j) {
-                    		seg2 = segs2[j];
-                    		if((seg2[0] as Point).x > seg1x2){
-                      		 // seg1 still left of seg2
-                        		break;
-                    		}
-                    		if((seg2[1] as Point).x < seg1x1) {
-                    		    // seg2 still left of seg1
-                    		    continue;
-                   		 	}
-                  		  	seg2y1 = (seg2[0] as Point).y;  /* seg2.y1; */
-                  		  	seg2y2 = (seg2[1] as Point).y;  /* seg2.y2; */
-                  		  	if(Math.min(seg2y1, seg2y2) > Math.max(seg1y1, seg1y2)) {
-                     		   	// seg2 above seg1
-                    		    continue;
-                   		 	}
-                   		 	if(Math.max(seg2y1, seg2y2) < Math.min(seg1y1, seg1y2)) {
-                   		     	// seg2 below seg1
-                   		     	continue;
-                   		 	}
-                   		 	if(Geometry.segmentsIntersect(seg1, seg2)) {
-                   		     	intersect = true;
-                   		 	}
-               		 	}
-               		 	if(intersect){break;}
-            		}
-        		}
-        		else{
-            		intersect = (geometry as Collection).intersects(this);
-        		}
-        		return intersect;
-    		}   
+					// If the most right vertex of seg2 is at the left of the
+					//   most left vertex of seg1, there is no intersection
+            		if ((seg2[1] as Point).x < (seg1[0] as Point).x) {
+            		    // seg2 still left of seg1
+            		    continue;
+           		 	}
+           		 	// To perform similar tests along Y-axis, it is necessary to
+           		 	//   order the vertices of each segment
+					seg1y1 = (seg1[0] as Point).y;
+					seg1y2 = (seg1[1] as Point).y;
+          		  	seg2y1 = (seg2[0] as Point).y;
+          		  	seg2y2 = (seg2[1] as Point).y;
+          		  	seg1yMin = Math.min(seg1y1, seg1y2);
+          		  	seg1yMax = Math.max(seg1y1, seg1y2);
+          		  	seg2yMin = Math.min(seg2y1, seg2y2);
+          		  	seg2yMax = Math.max(seg2y1, seg2y2);
+					// If the most bottom vertex of seg2 is above the most top
+					//   vertex of seg1, there is no intersection
+					if (seg2yMin > seg1yMax) {
+						continue;
+					}
+					// If the most top vertex of seg2 is below the most bottom
+					//   vertex of seg1, there is no intersection
+					if (seg2yMax < seg1yMin) {
+						continue;
+					}
+					// Now it sure that the bounding box of the two segments
+					//   intersect themselves, so we have to perform the real
+					//   intersection test of the two segments
+					if (Geometry.segmentsIntersect(seg1, seg2)) {
+						// These two segments intersect, there is no need to
+						//   continue the tests for all the other couples of
+						//   segments
+Trace.debug("Linestring:intersects - OK for segments " + i + " and " + j);
+						return true;
+					}
+				}
+    		}
     		
-    		/**
-    		 * Cut the line in different segments, and sort them
-    		 * 
-    		 * @return An array of segment. Segment contains 2 points. The first point1 has
-    		 * 		properties x1 (point1.x), y1 (point1.y) and the second point2 has properties 
-    		 * 		x2 (point2.x), y2 (point2.y).  The start point is represented by x1 and y1.
-    		 *      The end point is represented by x2 and y2.  Start and end are ordered so that x1 < x2.
-    		 */
-    		 public function getSortedSegments():Array {
-        		var numSeg:Number = this.components.length - 1;
-        		var segments:Array = new Array(numSeg);
-        		var point1:Point, point2:Point;
-        		for(var i:Number=0; i<numSeg; ++i) {
-            		point1 = this.components[i];
-            		point2 = this.components[i + 1];
-            		if(point1.x < point2.x){
-                		segments[i] = new Array(2);
-                		segments[i][0]=point1;
-                		segments[i][1]=point2;
-            		}
-            		else {
-                		segments[i] = new Array(2);
-                		segments[i][0]=point2;
-                		segments[i][1]=point1;
-            		}
-        		}
-        		return segments;
-    		} 
+    		// All the couples of segment have been testes, there is no intersection
+Trace.debug("Linestring:intersects - NOK");
+    		return false;
+		}
+		   
+		/**
+		 * Cut the LineString in an array of segments and each of them is sorted
+		 * along X-axis to have seg[i].p1.x <= seg[i].p2.x
+		 * There is (of course) no sort along Y-axis.
+		 * 
+		 * @return Array of X-sorted segments
+		 */
+		private function getXsortedSegments():Array {
+			var point1:Point, point2:Point;
+			var numSegs:int = this.components.length-1;
+			var segments:Array = new Array(numSegs);
+			for(var i:int=0; i<numSegs; ++i) {
+				point1 = this.components[i];
+				point2 = this.components[i+1];
+				segments[i] = (point2.x < point1.x) ? [point2,point1] : [point1,point2];
+			}
+			return segments;
+		}
+		 
 	}
 }
 

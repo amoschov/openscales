@@ -10,6 +10,7 @@ package org.openscales.core.geometry
 	{
 
 		public function LinearRing(points:Array = null) {
+			this.componentTypes = ["org.openscales.core.geometry::LinearRing"];
 			super(points);
 		}
 
@@ -102,40 +103,46 @@ package org.openscales.core.geometry
 
         	 return contained;
     	 }
+		
+		/**
+		 * ???
+		 */
+		private function getX(y:Number, x1:Number, y1:Number, x2:Number, y2:Number):Number {
+			return (((x1 - x2) * y) + ((x2 * y1) - (x1 * y2))) / (y1 - y2);
+		}
+		
+		/**
+     	 * Test for instersection between this LinearRing and a geometry.
+     	 * 
+     	 * @param geometry the geometry (of any type) to intersect with
+     	 * @return a boolean defining if an intersection exist or not
+      	 */
+		override public function intersects(geometry:Geometry):Boolean {
+			if (geometry is Point) {
+				return this.containsPoint((geometry as Point));
+			}
+			else if (geometry is LineString) {
+				return (geometry as LineString).intersects(this);
+			}
+			else if (geometry is LinearRing) {
+				return (this as LineString).intersects(this);
+			}
+			else {  // geometry is a multi-geometry
+				var numSubGeometries:int = (geometry as Collection).components.length;
+				for(var i:int=0; i<numSubGeometries; ++i) {
+					if ((geometry as Collection).components[i].intersects(this)) {
+						// The sub-geometry intersects this LinearRing, there is
+						//   no need to continue the tests for all the other
+						//   sub-geometries
+						return true;
+					}
+				}
+			}
 
-    	 /**
-     	 * Determine if the input geometry intersects this one.
-     	 *
-     	 * @param geometry Any type of geometry.
-     	 *
-     	 * @return The input geometry intersects this one.
-     	 */
-    	 override public function intersects(geometry:Geometry):Boolean {
-        	 var intersect:Boolean = false;
-        	 if(geometry is Point) {
-            	 intersect = this.containsPoint((geometry as Point));
-        	 } 
-        	 else if(geometry is LineString) {
-            	 intersect = (geometry as LineString).intersects(this);
-        	 } 
-        	 else if(geometry is LinearRing) {
-            	 intersect = (this as LineString).intersects(this);
-        	 } 
-        	 else {
-            	 // check for component intersections
-            	 for(var i:Number=0, len:Number=(geometry as Collection).components.length; i<len; ++ i) {
-               		 intersect = (geometry as Collection).components[i].intersects(this);
-                	 if(intersect) {
-                    	 break;
-                	 }
-            	 }
-        	 }
-        	 return intersect;
+    		// No sub-geometry intersects this LinearRing
+			return false;
      	}
-     	
-     	private function getX(y:Number, x1:Number, y1:Number, x2:Number, y2:Number):Number {
-            return (((x1 - x2) * y) + ((x2 * y1) - (x1 * y2))) / (y1 - y2);
-        }
+
 	}
 }
 
