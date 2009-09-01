@@ -92,7 +92,7 @@ package org.openscales.core.geometry
 
 
 		public function set bounds(value:Bounds):void {
-			if (bounds) {
+			if (value) {
 				this._bounds = value.clone();
 			}
 		}
