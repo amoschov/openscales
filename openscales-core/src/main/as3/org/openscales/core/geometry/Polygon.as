@@ -22,10 +22,11 @@ package org.openscales.core.geometry
 			var validRings:Boolean = true;
 			if (rings) {
 				for(var i:int=0; i<rings.length; i++) {
-					if (! (rings[i] is LinearRing)) {
-						Trace.error("Polygon constructor ERROR : invalid parameter " + i);
+					if ((rings[i]==undefined) || (! (rings[i] is LinearRing))) {
+						Trace.error("Polygon constructor ERROR : invalid parameter rings[" + i + "] => " + rings[i]);
 						validRings = false;
 						rings = null;
+						break;
 					}
 				}
 			}
@@ -81,41 +82,45 @@ package org.openscales.core.geometry
 		/**
 		 * Test if a point is inside a polygon.
 		 * A point on a polygon edge is considered inside.
-		 * A point on at least one of the holes is considered outside.
+		 * A point on at least one of the holes is considered outside except if
+		 * the manageHoles parameter is setted to false.
 		 * 
 		 * @param point the point to test
+		 * @param manageHoles a boolean defining if the test must manage the
+		 * holes (default) or not.
 		 * @return a boolean defining if the point is inside or outside the polygon
 		 */
-		public function containsPoint(point:Point):Boolean {
-			var numRings:Number = this.components.length;
-        	var contained:Boolean = false;
-        	var i:Number;
-        	if(numRings > 0) {
-           		// check exterior ring - 1 means on edge, boolean otherwise
-            	contained = this.components[0].containsPoint(point);
-            	if(contained !== 1) {
-                	if(contained && numRings > 1) {
-                    	// check interior rings
-                    	var hole:Boolean;
-                    	for(i=1; i<numRings; ++i) {
-                        	hole = this.components[i].containsPoint(point);
-                        	if(hole) {
-                            	if(hole === 1) {
-                                	// on edge
-                                	contained = false;
-                            	} else {
-                                	// in hole
-                                	contained = false;
-                            	}                            
-                           		break;
-                        	}
-                    	}
-                	}
-            	}
-        	}
-        	return contained;
-    	}
-
+		public function containsPoint(point:Point, manageHoles:Boolean=true):Boolean {
+			// Stop if the polygon is void
+			if (this.components.length < 1) {
+				Trace.warning("Polygon.containsPoint called for a void Polygon");
+				return false;
+			}
+			
+			// Test if the point is inside the outer ring
+			if (! (this.components[0] as LinearRing).containsPoint(point)) {
+				return false;
+			}
+			
+			// The point is inside the outer ring. So, if the holes have not to
+			// be managed, the polygon contains the point.
+			if (! manageHoles) {
+				return true;
+			}
+			
+			// If the point is inside one of the holes, it is outside the
+			// polygon.
+			for(var i:int=1; i<this.components.length; ++i) {
+				if ((this.components[i] as LinearRing).containsPoint(point)) {
+					return false;
+				}
+			}
+			
+			// The point is inside the outer ring but outside of all the holes.
+			// So the point is definitively inside the polygon.
+        	return true;
+		}
+		
     	/**
      	* Determine if the input geometry intersects this one.
      	*

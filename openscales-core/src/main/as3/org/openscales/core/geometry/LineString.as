@@ -19,10 +19,11 @@ package org.openscales.core.geometry
 			var validVertices:Boolean = true;
 			if (vertices) {
 				for(var i:int=0; i<vertices.length; i++) {
-					if (! (vertices[i] is Point)) {
-						Trace.error("LineString constructor ERROR : invalid parameter " + i);
+					if ((vertices[i]==undefined) || (! (vertices[i] is Point))) {
+						Trace.error("LineString constructor ERROR : invalid parameter vertices[" + i + "] => " + vertices[i]);
 						validVertices = false;
 						vertices = null;
+						break;
 					}
 				}
 			}

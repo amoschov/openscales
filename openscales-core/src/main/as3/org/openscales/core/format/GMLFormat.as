@@ -23,6 +23,7 @@ package org.openscales.core.format
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.PolygonFeature;
 	import org.openscales.core.feature.MultiPolygonFeature;
+	import org.openscales.core.Trace;
 
 	/**
 	 * Read/Write GML. Supports the GML simple features profile.
@@ -93,6 +94,7 @@ package org.openscales.core.format
 
 			var features:Array = [];
 
+Trace.debug("GMLFormat.read : featureNodes.length()="+featureNodes.length());
 			for (var i:int = 0; i < featureNodes.length(); i++) {
 				var feature:VectorFeature = this.parseFeature(featureNodes[i]);
 
@@ -251,6 +253,7 @@ package org.openscales.core.format
 				rings.push(ring1);
 			}
 
+Trace.debug("GMLFormat.parsePolygonNode : rings="+rings.length);
 			var poly:Polygon = new Polygon(rings);
 			return poly;
 		}
