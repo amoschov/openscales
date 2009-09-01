@@ -9,15 +9,14 @@
 		  styleName="container">
 
 	<mx:Style>
-	 			.container {
-				   borderThicknessLeft: 0;
-				   borderThicknessTop: 0;
-				   borderThicknessBottom: 0;
-				   borderThicknessRight: 0;
-				   headerHeight: 0;
-				   } 
-
-	 		</mx:Style>
+		.container {
+			borderThicknessLeft: 0;
+			borderThicknessTop: 0;
+			borderThicknessBottom: 0;
+			borderThicknessRight: 0;
+			headerHeight: 0;
+		} 
+	</mx:Style>
 
 	<mx:Script>
 		<![CDATA[
@@ -33,12 +32,10 @@
 			private function initMap():void {
 				map=fxmap.map;
 				/* tools.x=this.width - tools.width; */
-
 				
 				// setup click handler
 				map.addEventListener(GetFeatureInfoEvent.GET_FEATURE_INFO_DATA, this.onFeatureInfoData);
 			}
-
 
 			private function onFeatureInfoData(event:GetFeatureInfoEvent):void {
 				Trace.info("Data=" + event.data);
@@ -88,69 +85,26 @@
 					  fillOpacity="0.8"
 					  strokeColor="0x0000ff"
 					  strokeWidth="2"/>
-
 		</os:WFS>
 
-
-		<mx:Panel title="PanZoom"
-							id="panzoom">
+		<mx:Panel id="panzoom" title="PanZoom">
 			<mx:VBox horizontalAlign="center">
-				<os:PanComponent id="pan"
-								 map="{map}"/>
-				<os:ZoomComponent id="zoom"
-								  map="{map}"/>
+				<os:PanComponent id="pan" map="{map}"/>
+				<os:ZoomComponent id="zoom" map="{map}"/>
 			</mx:VBox>
 		</mx:Panel>
-
-		<mx:Spacer/>
-
-		<!--mx:Panel title="Tools"
-								id="tools"
-								width="350"
-								height="575">
-			<mx:TabNavigator id="tabNav"
-							 width="100%"
-							 height="100%">
-				<os:LayerSwitcherComponent id="layerSwitcher"
-										   map="{map}"
-										   label="Layers"/>
-				<os:DrawingComponent id="tabDraw"
-									 map="{map}"
-									 width="100%"
-									 height="100%"
-									 label="Draw"/>
-				<os:CapabilitiesComponent width="100%"
-										  height="100%"
-										  map="{map}"
-										  label="Capabilities"/>
-				<os:YahooSearchComponent width="100%"
-										 height="100%"
-										 map="{map}"
-										 label="Search"
-										 appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é"/>
-				<os:TraceInfo id="trace"
-							  width="100%"
-							  height="100%"
-							  map="{map}"
-							  label="Trace"/-->
-				<!--os:MarkerManagerComponent id="markerManag" width="100%" height="100%" map="{map}" label="Marker"/-->
-			<!--/mx:TabNavigator>
-		</mx:Panel-->
-
-		<mx:Spacer/>
 
 		<os:Extent left="-124.731422"
 				   bottom="24.955967"
 				   right="-66.969849"
 				   top="49.371735"/>
 
-		<os:MousePosition/>
+		<os:MousePosition />
 
-		<os:DragHandler id="dragHandler"/>
-		<os:ClickHandler/>
-		<os:WheelHandler/>
-		<os:WMSGetFeatureInfo url="http://sigma.openplans.org/geoserver/wms"
-							  layers="tiger:poi"/>
+		<os:DragHandler id="dragHandler" />
+		<os:ClickHandler />
+		<os:WheelHandler />
+		<os:WMSGetFeatureInfo url="http://sigma.openplans.org/geoserver/wms" layers="tiger:poi" />
 		<!--os:DragFeature id="dragfeature" map="{this.map}"/-->
 
 	</os:Map>

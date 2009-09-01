@@ -45,4 +45,7 @@
 		<os:ClickHandler/>
 		<os:WheelHandler/>
 	</os:Map>
+	
+	<os:TraceInfo id="traceBox" map="{map}" x="{width-200}" y="0" />
+
 </mx:Canvas>

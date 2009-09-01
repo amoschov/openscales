@@ -57,10 +57,13 @@
 				   right="-66.969849"
 				   top="49.371735"/>
 		
-		<os:DragHandler id="dragHandler"/>
-		<os:SelectFeature/>		
-		<os:ClickHandler/>
-		<os:WheelHandler/>
+		<os:DragHandler id="dragHandler" />
+		<os:SelectFeature />		
+		<os:ClickHandler />
+		<os:WheelHandler />
 		
 	</os:Map>
+	
+	<os:TraceInfo id="traceBox" map="{map}" x="{width-200}" y="0" />
+
 </mx:Canvas>
