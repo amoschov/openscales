@@ -2,6 +2,7 @@ package org.openscales.core.geometry
 {
 	import flash.utils.getQualifiedClassName;
 	
+	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
 	import org.openscales.proj4as.ProjProjection;
 
@@ -48,6 +49,10 @@ package org.openscales.core.geometry
 			this.components = null;
 		}
 
+		override public function toShortString():String {
+			return componentsString;
+		}
+
 		/**
      	 * Get a string representing the components for this collection
      	 * 
@@ -56,7 +61,7 @@ package org.openscales.core.geometry
 		public function get componentsString():String {
 			var strings:Array = [];
 			for(var i:int = 0; i < this.components.length; i++) {
-				strings.push(this.components[i].toShortString()); 
+				strings.push((this.components[i] as Geometry).toShortString());
 			}
 			return strings.join(",");
 		}
@@ -67,10 +72,10 @@ package org.openscales.core.geometry
      	 */
 		override public function calculateBounds():void {
 			this._bounds = null;
-			if ( !this.components || (this.components.length > 0)) {
-				this._bounds = this.components[0].getBounds();
-				for (var i:int = 1; i < this.components.length; i++) {
-					this.extendBounds(this.components[i].getBounds());
+			if (this.components && (this.components.length > 0)) {
+				this._bounds = (this.components[0] as Geometry).bounds;
+				for (var i:int=1; i<this.components.length; i++) {
+					this.extendBounds((this.components[i] as Geometry).bounds);
 				}
 			}
 		}

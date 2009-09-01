@@ -23,8 +23,7 @@ package org.openscales.core.geometry
 		}		
 
 		override public function calculateBounds():void {
-			this.bounds = new Bounds(this.x, this.y,
-				this.x, this.y);
+			this.bounds = new Bounds(this.x, this.y, this.x, this.y);
 		}
 
 		override public function distanceTo(point:Geometry):Number {
@@ -48,7 +47,7 @@ package org.openscales.core.geometry
 			return equals;
 		}
 
-		public function toShortString():String {
+		override public function toShortString():String {
 			return (this.x + ", " + this.y);
 		}
 

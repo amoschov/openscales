@@ -31,7 +31,7 @@ package org.openscales.core.basetypes
 		}
 
 		public function add(x:Number, y:Number):Pixel {
-			return  new Pixel(this.x + x, this.y + y);
+			return new Pixel(this.x + x, this.y + y);
 		}
 
 		public function offset(px:Pixel):Pixel {

@@ -163,7 +163,6 @@ package org.openscales.core.basetypes
 		 * @param bounds The bounds which will extend the current bounds.
 		 */
 		public function extendFromBounds(bounds:Bounds):void {
-
 			this.left = (bounds.left < this.left) ? bounds.left : this.left;
 			this.bottom = (bounds.bottom < this.bottom) ? bounds.bottom : this.bottom;
 			this.right = (bounds.right > this.right) ? bounds.right : this.right;

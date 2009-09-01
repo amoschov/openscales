@@ -26,6 +26,11 @@ package org.openscales.core.geometry
     		this._componentTypes = ["org.openscales.core.geometry::LinearRing"];
     		super(components); 
     	}
+
+		override public function toShortString():String {
+			// FixMe
+			return "TODO(Polygon.toShortString)";
+		}
     
     	/**
      	 * Calculated by subtracting the areas of the internal holes from the 

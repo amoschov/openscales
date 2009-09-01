@@ -9,6 +9,7 @@ package org.openscales.core.geometry
 	{
 
 		public function Curve(points:Array) {
+			this.componentTypes = ["org.openscales.core.geometry::Curve"];
 			super(points);
 		}
 
