@@ -28,6 +28,7 @@
 			import org.openscales.core.handler.mouse.DragHandler;
 			import org.openscales.core.handler.Handler;
 			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
 			
 			private var lastSelection:LonLat = null;
 			private var fillColor:uint = 0x660000;
@@ -146,98 +147,15 @@
 	            			var feature:VectorFeature = ((this.map.layers[i] as VectorLayer).features[k]);
 							
                         	if (bounds.toGeometry().intersects(feature.geometry)) {
+Trace.debug("featureInclude => true");
                                 featuresToSelect.push(feature);
                             }
-							
-            				 /* if(feature is PointFeature)
-            				{ 
-            					//We compare the rectangle bounds and the x,y of the feature to see if it is include in the rectangle
-            					if((feature as PointFeature).point.x >= bounds.left && (feature as PointFeature).point.x <= bounds.right)
-            					{
-            						if((feature as PointFeature).point.y <= bounds.top && (feature as PointFeature).point.y >= bounds.bottom)
-            						{
-            							//We add the feature to the tab
-            							featuresToSelect.push(feature);
-            						}
-            					} 
-            				 } 
-            				else if(feature is MultiPointFeature)
-            				{
-            					var multiPoint:MultiPoint = ((feature as MultiPointFeature).points as MultiPoint);
-            					for(var j:int = 0;j<multiPoint.components.length;j++)
-            					{
-            						//We compare the rectangle bounds and the x,y of the feature to see if it is include in the rectangle
-            						if(multiPoint.components[j].x >= bounds.left && multiPoint.components[j].x <= bounds.right)
-	            					{
-	            						if(multiPoint.components[j].y <= bounds.top && multiPoint.components[j].y >= bounds.bottom)
-	            						{
-	            							//We add the feature to the tab
-	            							featuresToSelect.push(feature);
-	            							break;
-	            						}
-	            					}
-            					}
-            					
-            				}
-            				else if(feature is MultiLineStringFeature)
-            				{
-            					var multiLineString:MultiLineString = (feature as MultiLineStringFeature).lineStrings as MultiLineString;
-            					for(var l:int = 0;l<multiLineString.components.length;l++)
-            					{
-            						//We compare the rectangle bounds and the x,y of the feature to see if it is include in the rectangle
-            						if((multiLineString.components[l].components[0].x >= bounds.left && multiLineString.components[l].components[0].x <= bounds.right) || (multiLineString.components[l].components[1].x >= bounds.left && multiLineString.components[l].components[1].x <= bounds.right))
-            						{
-            							if((multiLineString.components[l].components[0].y <= bounds.top && multiLineString.components[l].components[0].y >= bounds.bottom) || (multiLineString.components[l].components[1].y <= bounds.top && multiLineString.components[l].components[1].y >= bounds.bottom))
-	            						{	
-	            							//We add the feature to the tab
-            								featuresToSelect.push(feature);
-	            							break;
-	            						}
-            						}
-            					}
-            				}
-            				else if(feature is PolygonFeature)
-            				{
-            					var linearRing:LinearRing = ((feature as PolygonFeature).polygon as Polygon).components[0] as LinearRing;
-            					for(var m:int = 0;m<linearRing.components.length;m++)
-            					{
-            						//We compare the rectangle bounds and the x,y of the feature to see if it is include in the rectangle
-            						if(linearRing.components[m].x >= bounds.left && linearRing.components[m].x <= bounds.right)
-            						{
-            							if(linearRing.components[m].y <= bounds.top && linearRing.components[m].y >= bounds.bottom)
-	            						{	
-	            							//We add the feature to the tab
-            								featuresToSelect.push(feature);
-	            							break;
-	            						}
-            						}
-            					}
-            				}
-            				else if(feature is MultiPolygonFeature)
-            				{
-            					var multiPolygon:MultiPolygon = ((feature as MultiPolygonFeature).polygons as MultiPolygon);
-            					for(var n:int;n<multiPolygon.components.length;n++)
-            					{
-            						linearRing = (multiPolygon.components[n] as Polygon).components[0] as LinearRing;
-            						for(var p:int = 0;p<linearRing.components.length;p++)
-	            					{
-	            						//We compare the rectangle bounds and the x,y of the feature to see if it is include in the rectangle
-	            						if(linearRing.components[p].x >= bounds.left && linearRing.components[p].x <= bounds.right)
-	            						{
-	            							if(linearRing.components[p].y <= bounds.top && linearRing.components[p].y >= bounds.bottom)
-		            						{	
-		            							//We add the feature to the tab
-            									featuresToSelect.push(feature);
-		            							break;
-		            						}
-	            						}
-	            					}
-            					}
-            				} */ 
             			}
             		}
             	}
+            	
             if(featuresToSelect.length>0){          		
+Trace.debug("featureInclude => dispatch");
             	this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTEDBOX,featuresToSelect, _ctrlStatus));
             }
             	
