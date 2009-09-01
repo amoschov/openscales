@@ -145,11 +145,11 @@
             			{
 	            			var feature:VectorFeature = ((this.map.layers[i] as VectorLayer).features[k]);
 							
-                        	/* if (bounds.toGeometry().intersects(feature.geometry)) {
+                        	if (bounds.toGeometry().intersects(feature.geometry)) {
                                 featuresToSelect.push(feature);
-                            } */
+                            }
 							
-            				 if(feature is PointFeature)
+            				 /* if(feature is PointFeature)
             				{ 
             					//We compare the rectangle bounds and the x,y of the feature to see if it is include in the rectangle
             					if((feature as PointFeature).point.x >= bounds.left && (feature as PointFeature).point.x <= bounds.right)
@@ -233,7 +233,7 @@
 	            						}
 	            					}
             					}
-            				} 
+            				} */ 
             			}
             		}
             	}
