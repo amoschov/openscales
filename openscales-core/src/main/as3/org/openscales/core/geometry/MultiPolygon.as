@@ -21,6 +21,14 @@ package org.openscales.core.geometry
 			this.removeComponent(polygon);
 		}
 
+		override public function toShortString():String {
+			var s:String = "(";
+			for each (var p:Polygon in this.components) {
+				s = s + p.toShortString();
+			}
+			return s + ")";
+		}
+
 		/**
 		 * Method to convert the multipolygon (x/y) from a projection system to an other.
 		 *

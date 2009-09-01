@@ -21,6 +21,14 @@ package org.openscales.core.geometry
 			this.removeComponent(point);
 		}
 
+		override public function toShortString():String {
+			var s:String = "(";
+			for each (var p:Point in this.components) {
+				s = s + p.toShortString();
+			}
+			return s + ")";
+		}
+
 		/**
 		 * Method to convert the multipoint (x/y) from a projection system to an other.
 		 *

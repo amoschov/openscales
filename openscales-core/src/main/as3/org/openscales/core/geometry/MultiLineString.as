@@ -25,6 +25,14 @@ package org.openscales.core.geometry
 			this.removeComponent(lineString);
 		}
 
+		override public function toShortString():String {
+			var s:String = "(";
+			for each (var p:LineString in this.components) {
+				s = s + p.toShortString();
+			}
+			return s + ")";
+		}
+
 		/**
 		 * Method to convert the multilinestring (x/y) from a projection system to an other.
 		 *
