@@ -242,20 +242,13 @@ Trace.debug("GMLFormat.read : featureNodes.length()="+featureNodes.length());
 		 */
 		public function parsePolygonNode(polygonNode:Object):Polygon {
 			var linearRings:XMLList = polygonNode..*::LinearRing;
-
 			// Optimize by specifying the array size
 			var rings:Array = new Array(linearRings.length());
-			var p:Array = null;
-
 			for (var i:int = 0; i < linearRings.length(); i++) {
-				p = this.parseCoords(linearRings[i]);
-				var ring1:LinearRing = new LinearRing(p);
-				rings.push(ring1);
+				rings[i] = new LinearRing(this.parseCoords(linearRings[i]));
 			}
-
 Trace.debug("GMLFormat.parsePolygonNode : rings="+rings.length);
-			var poly:Polygon = new Polygon(rings);
-			return poly;
+			return new Polygon(rings);
 		}
 
 		/**
