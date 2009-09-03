@@ -4,8 +4,10 @@ package org.openscales.core.handler.sketch
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
@@ -13,7 +15,6 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
-	import org.openscales.core.Trace;
 
 	/**
 	 * Handler to draw paths (multi line strings)
@@ -45,14 +46,15 @@ package org.openscales.core.handler.sketch
 
 		override protected function registerListeners():void{
 			this._dblClickHandler.active = true;
-			/* this._dblClickHandler.click=this.drawLine; */
 			this._dblClickHandler.doubleclick = this.mouseDblClick; 
 			this.map.addEventListener(MouseEvent.CLICK, this.drawLine);
+			this.map.addEventListener(MapEvent.ZOOM_END, this.updateZoom);
 		}
 
 		override protected function unregisterListeners():void{
 			this._dblClickHandler.active = false;
 			this.map.removeEventListener(MouseEvent.CLICK, this.drawLine);
+			this.map.addEventListener(MapEvent.ZOOM_END, this.updateZoom);
 		}
 
 		public function mouseDblClick(event:MouseEvent):void {
@@ -105,13 +107,14 @@ package org.openscales.core.handler.sketch
 			else {								
 				if(!point.equals(lastPoint)){
 					_lineString.addPoint(point);
+Trace.debug("drawLine => addFeature +1 => LineString.lenght = "+_lineString.components.length);
 					drawLayer.redraw();
 					lastPoint = point;
 				}								
 			}
 		}
 		
-		private function temporaryLine(evt:MouseEvent):void{
+		public function temporaryLine(evt:MouseEvent):void{
 			_drawContainer.graphics.clear();
 			_drawContainer.graphics.lineStyle(2, 0x00ff00);
 			_drawContainer.graphics.moveTo(_startPoint.x, _startPoint.y);
@@ -123,6 +126,13 @@ package org.openscales.core.handler.sketch
 			super.map = value;
 			this._dblClickHandler.map = value;
 			if(map!=null){map.addChild(_drawContainer);}
+		}
+		
+		private function updateZoom(evt:MapEvent):void{
+			_drawContainer.graphics.clear();
+			//we update the pixel of the last point which has changed
+			var tempPoint:Point = _lineString.getLastPoint();
+			_startPoint = this.map.getMapPxFromLonLat(new LonLat(tempPoint.x, tempPoint.y));
 		}
 
 		//Getters and Setters		
@@ -149,6 +159,17 @@ package org.openscales.core.handler.sketch
 		}
 		public function set lastPoint(value:Point):void {
 			_lastPoint = value;
+		}
+		
+		public function get drawContainer():Sprite{
+			return _drawContainer;
+		}
+		
+		public function get startPoint():Pixel{
+			return _startPoint;
+		}
+		public function set startPoint(pix:Pixel):void{
+			_startPoint = pix;
 		}
 	}
 }

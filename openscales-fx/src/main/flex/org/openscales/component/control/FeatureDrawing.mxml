@@ -2,6 +2,16 @@
 <control:Control xmlns:control="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="276" height="108" creationComplete="initFeatureDrawing();">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.geometry.Polygon;
+			import org.openscales.core.geometry.LinearRing;
+			import org.openscales.core.feature.PolygonFeature;
+			import org.openscales.core.feature.PointFeature;
+			import org.openscales.core.basetypes.LonLat;
+			import org.openscales.core.basetypes.Pixel;
+			import org.openscales.core.feature.LineStringFeature;
+			import org.openscales.core.geometry.LineString;
+			import mx.effects.easing.Linear;
+			import org.openscales.core.Trace;
 			import org.openscales.core.events.SpriteCursorEvent;
 			import org.openscales.core.events.DrawingEvent;
 			import org.openscales.core.feature.VectorFeature;
@@ -153,7 +163,7 @@
 			}
 			
 			private function alertDeleteHandler(event:CloseEvent):void {
-                // User click on "YES", he wants to apply changes
+                // User click on "YES", he wants to delete all
                 if (event.detail==Alert.YES){
                 	deleteAllFeatures(); 
                 }                  
@@ -161,6 +171,10 @@
             
             private function deleteAllFeatures():void{
             	drawLayer.clear();
+            	// clear the temporary line
+            	pathHandler.drawContainer.graphics.clear();
+            	//remove the listener which draw temporary line
+            	pathHandler.map.removeEventListener(MouseEvent.MOUSE_MOVE,pathHandler.temporaryLine);
 				// clear the last feature
 				selectFeatureHandler.lastfeature = null;
 				// clear the selected feature tab
@@ -182,30 +196,62 @@
 			 * User clicks on delete last feature button
 			 */
 			public function onDeleteLastClick(event:Event):void {
-				var last:Number = drawLayer.features.length - 1;
+				var last:Number = drawLayer.features.length - 1; 
 				var lastFeature:Feature = null;
 				
-				if (last >= 0) {					
-					lastFeature = drawLayer.features[last];
+				var pointToDelete:org.openscales.core.geometry.Point;
+							
+				if(drawType == ""){
 					drawLayer.removeFeature(drawLayer.features[last]);
+				}
+				else if(drawType == "point"){
+					drawLayer.removeFeature(drawLayer.features[last]);
+				}
+				else if(drawType == "path"){
+					//case the last feature is a LineString			
+					if (last >= 0 && drawLayer.features[last] is LineStringFeature) {
+						// we check if the lineString contain more than 2 points. If not, we delete the feature
+						if((drawLayer.features[last] as LineStringFeature).lineString.components.length > 2){
+							pointToDelete = (drawLayer.features[last] as LineStringFeature).lineString.getLastPoint();
+							(drawLayer.features[last] as LineStringFeature).lineString.removePoint(pointToDelete);		
+							pathHandler.lastPoint = (drawLayer.features[last] as LineStringFeature).lineString.getLastPoint();
 								
-					switch(drawType)
-					{
-						case "path":														
-							if (last - 1 >= 0 && getQualifiedClassName(drawLayer.features[last-1].geometry) == "org.openscales.core.geometry::LineString") {
-								pathHandler.lastPoint = drawLayer.features[last-1].geometry.getLastPoint();
-							}
-							else {pathHandler.newFeature = true;}
-							break;	
-												
-						case "polygon":
-							if (last-1 >= 0 && !polygonHandler.firstPointRemoved && !polygonHandler.newFeature) {
-								drawLayer.removeFeature(drawLayer.features[last - 1]);
-							}
-							polygonHandler.newFeature = true;							
-							break;
-					}   
-				}				
+							//update the starting point of the temporary line
+            				var pix:Pixel = pathHandler.map.getMapPxFromLonLat(new LonLat(pathHandler.lastPoint.x, pathHandler.lastPoint.y));
+            				pathHandler.startPoint = pix;
+						}
+						else{
+							drawLayer.removeFeature(drawLayer.features[last]);
+							pathHandler.newFeature = true;
+            				//remove the listener which draw temporary line
+            				pathHandler.map.removeEventListener(MouseEvent.MOUSE_MOVE,pathHandler.temporaryLine);
+						}
+						// clear the temporary line
+            			pathHandler.drawContainer.graphics.clear();	
+					}
+					else{
+						drawLayer.removeFeature(drawLayer.features[last]);
+					}
+				}
+				else if(drawType == "polygon"){
+					if	(last >= 0 && drawLayer.features[last] is PolygonFeature) {
+						// we check if the polygon contain more than 2 points. If not, we delete the feature									
+						if((((drawLayer.features[last] as PolygonFeature).polygon.components[0]) as LinearRing).components.length > 2){
+							var lineRing:LinearRing = (drawLayer.features[last] as PolygonFeature).polygon.components[0];
+							pointToDelete = lineRing.getLastPoint();
+							lineRing.removeComponent(pointToDelete);
+							(drawLayer.features[last] as PolygonFeature).polygon.components[0] = lineRing;
+						} 
+						else{
+							drawLayer.removeFeature(drawLayer.features[last]);
+							polygonHandler.newFeature = true;
+						}         		
+					}
+					else{
+						drawLayer.removeFeature(drawLayer.features[last]);
+					}
+				}	   			
+				drawLayer.redraw();   					
 			}
 						
 			/**
