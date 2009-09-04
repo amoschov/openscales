@@ -2,8 +2,9 @@ package org.openscales.core.handler.mouse
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-
+	
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
@@ -67,14 +68,16 @@ package org.openscales.core.handler.mouse
 			}
 
 			this.map.layerContainer.startDrag();
-			if (this.map.bitmapTransition) this.map.bitmapTransition.startDrag();
+			if (this.map.bitmapTransition)
+				this.map.bitmapTransition.startDrag();
 
 			this._start = new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY);
 			this._startCenter = this.map.center;
 			this.map.buttonMode=true;
 			this._dragging=true;
 			this.map.dispatchEvent(new MapEvent(MapEvent.DRAG_START, this.map))
-			if(this.onstart!=null) this.onstart(event as MouseEvent);
+			if(this.onstart!=null)
+				this.onstart(event as MouseEvent);
 		}
 
 		/**
@@ -142,7 +145,14 @@ package org.openscales.core.handler.mouse
 			var deltaX:Number = this._start.x - xy.x;
 			var deltaY:Number = this._start.y - xy.y;
 			var newCenter:LonLat = new LonLat(this._startCenter.lon + deltaX * this.map.resolution , this._startCenter.lat - deltaY * this.map.resolution);
-			this.map.center = newCenter; 
+			var oldCenter:LonLat = this.map.center;
+Trace.debug("drag: " + newCenter);
+			this.map.center = newCenter;
+			// Id the new center is invalid (see Map.setCenter for the conditions)
+			// we have to reset the bitmap to the initial position
+			if (newCenter.equals(oldCenter)) {
+				;//map.redraw(); // FixMe: how to reset the birtmap ???
+			}
 		}
 	}
 }
