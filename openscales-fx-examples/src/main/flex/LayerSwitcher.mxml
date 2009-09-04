@@ -14,6 +14,9 @@
 
 		]]>
 	</mx:Script>
+	
+	<os:TraceInfo id="traceBox" map="{map}" x="{width-200}" y="0" />
+
 	<os:Map id="fxmap"
 			x="0"
 			y="0"
@@ -21,6 +24,7 @@
 			width="100%"
 			numZoomLevels="20"
 			zoom="5">
+
 		<os:Mapnik name="Mapnik"
 				   maxResolution="156543.0339"
 				   minResolution="0.5971642833709717"
@@ -83,4 +87,5 @@
 		<os:WheelHandler/>
 		
 	</os:Map>
+
 </mx:Canvas>
