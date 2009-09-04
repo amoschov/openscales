@@ -424,10 +424,13 @@ Trace.debug("pan(" + dx + ", " + dy + ") => " + newCenterLonLat);
 		private function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false, resizing:Boolean = false):void {
 			var zoomChanged:Boolean = forceZoomChange || (this.isValidZoomLevel(zoom) && (zoom!=this._zoom));
 			
+			// If the map is not initialized, the center of the extent is used
+			// as the current center
 			if (!this.center && !this.isValidLonLat(lonlat)) {
 				lonlat = this.maxExtent.centerLonLat;
 			}
-			var centerChanged:Boolean = this.isValidLonLat(lonlat) && (! lonlat.equals(this.center));  
+			var validLonLat:Boolean = this.isValidLonLat(lonlat);
+			var centerChanged:Boolean = validLonLat && (! lonlat.equals(this.center));
 			
 			if (zoomChanged || centerChanged || !dragging) {
 				
@@ -482,7 +485,7 @@ Trace.debug("pan(" + dx + ", " + dy + ") => " + newCenterLonLat);
 			}
 			
 			if (centerChanged && !dragging) {
-Trace.debug("dispatchEvent('MOVE_END') ; isValidLonLat=" + this.isValidLonLat(lonlat));
+Trace.debug("dispatchEvent('MOVE_END') ; isValidLonLat=" + validLonLat);
 				this.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this));
 			}
 else Trace.debug("NO dispatchEvent('MOVE_END') : centerChanged=" + centerChanged + ", dragging=" + dragging + ", isValidLonLat=" + this.isValidLonLat(lonlat));
