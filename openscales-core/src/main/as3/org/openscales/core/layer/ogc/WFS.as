@@ -3,7 +3,7 @@ package org.openscales.core.layer.ogc
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
@@ -102,8 +102,11 @@ package org.openscales.core.layer.ogc
 
 			if (params != null)
 				this.params = params;
-			else
+			else{
 				this.params = new WFSParams("");
+				Trace.warning("The WFS Layer has no params !");
+			}
+				
 
 			this.url = url;	        
 		}
@@ -141,9 +144,7 @@ package org.openscales.core.layer.ogc
 			if (dragging) {
 				// Nothing
 			} else {
-
-				if (this.minZoomLevel && (this.map.zoom>=this.minZoomLevel)) {
-
+				if (this.minZoomLevel && (this.map.zoom < this.minZoomLevel)) {
 					if (bounds == null) {
 						bounds = this.map.extent;
 					}
