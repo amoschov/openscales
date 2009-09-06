@@ -146,11 +146,11 @@ package org.openscales.core.handler.mouse
 			var deltaY:Number = this._start.y - xy.y;
 			var newCenter:LonLat = new LonLat(this._startCenter.lon + deltaX * this.map.resolution , this._startCenter.lat - deltaY * this.map.resolution);
 			var oldCenter:LonLat = this.map.center;
-Trace.debug("drag: " + newCenter);
 			this.map.center = newCenter;
 			// Id the new center is invalid (see Map.setCenter for the conditions)
 			// we have to reset the bitmap to the initial position
 			if (newCenter.equals(oldCenter)) {
+Trace.debug("DragHandler.panMap ERROR: invalid new center not managed");
 				;//map.redraw(); // FixMe: how to reset the bitmap to have a coherent "draw" with the current map ???
 			}
 		}

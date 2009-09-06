@@ -97,7 +97,8 @@ style.strokeColor = 0xFFFF00;
 style.strokeWidth = 1;
 (layer.getChildAt(9) as VectorFeature).style = style;*/
 
-				// Point intersects a Point : true/false
+				// XXX intersects a XXX : true/false
+				// TODO
 			}
 		]]>
 	</mx:Script>

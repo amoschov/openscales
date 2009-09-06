@@ -405,7 +405,6 @@ package org.openscales.core
 			
 			var newCenterPx:Pixel = this.getMapPxFromLonLat(this.center).add(dx, dy);
 			var newCenterLonLat:LonLat = this.getLonLatFromMapPx(newCenterPx);
-Trace.debug("pan(" + dx + ", " + dy + ") => " + newCenterLonLat);
 			this.setCenter(newCenterLonLat, NaN, false, false, tween);
 		}
 
@@ -485,10 +484,8 @@ Trace.debug("pan(" + dx + ", " + dy + ") => " + newCenterLonLat);
 			}
 			
 			if (centerChanged && !dragging) {
-Trace.debug("dispatchEvent('MOVE_END') ; isValidLonLat=" + validLonLat);
 				this.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this));
 			}
-else Trace.debug("NO dispatchEvent('MOVE_END') : centerChanged=" + centerChanged + ", dragging=" + dragging + ", isValidLonLat=" + this.isValidLonLat(lonlat));
 		}
 
 		/**

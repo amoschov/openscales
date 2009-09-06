@@ -94,7 +94,6 @@ package org.openscales.core.format
 
 			var features:Array = [];
 
-Trace.debug("GMLFormat.read : featureNodes.length()="+featureNodes.length());
 			for (var i:int = 0; i < featureNodes.length(); i++) {
 				var feature:VectorFeature = this.parseFeature(featureNodes[i]);
 
@@ -246,7 +245,6 @@ Trace.debug("GMLFormat.read : featureNodes.length()="+featureNodes.length());
 			for (var i:int = 0; i < linearRings.length(); i++) {
 				rings[i] = new LinearRing(this.parseCoords(linearRings[i]));
 			}
-Trace.debug("GMLFormat.parsePolygonNode : rings="+rings.length);
 			return new Polygon(rings);
 		}
 

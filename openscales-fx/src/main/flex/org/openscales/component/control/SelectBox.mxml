@@ -154,7 +154,6 @@
             	}
             	
             if(featuresToSelect.length>0){          		
-Trace.debug("SelectBox.featureInclude => true => dispatch");
             	this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTEDBOX,featuresToSelect, _ctrlStatus));
             }
             	

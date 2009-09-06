@@ -350,7 +350,6 @@ package org.openscales.core.geometry
      	* @return The input geometry intersects this one.
      	*/
     	override public function intersects(geometry:Geometry):Boolean {
-Trace.debug("Collection.intersects");
 			if (geometry is Point) {
 				return (geometry as Point).intersects(this);
 			} else {

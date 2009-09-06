@@ -232,8 +232,9 @@ package org.openscales.core.geometry
 
 			// The tolerance must be managed to test if an approximated
 			//   intersection exists or not.
-Trace.debug("segmentsIntersect NOK but tolerance should be tested : TODO");
-return false; // TODO
+			Trace.error("segmentsIntersect NOK but tolerance should be tested : TODO");
+			return false; // TODO
+			
 			/*var dist;
 			// no calculated intersection, but segments could be within
 			// the tolerance of one another

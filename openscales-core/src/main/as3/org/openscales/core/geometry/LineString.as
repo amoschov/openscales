@@ -149,16 +149,13 @@ package org.openscales.core.geometry
 			if ( ! ((geometry is Point) || (geometry is LinearRing) || (geometry is LineString)) ) {
 				 // LinearRing should be tested before LineString if a different
 				 // action should be made for each case
-Trace.debug("Linestring:intersects - collection");
 				return (geometry as Collection).intersects(this);
 			}
-// TODO : deeply test for the intersection with a point
 			
 			// The geometry to intersect is a simple Point, a simple polyline or
 			//   a simple polygon.
 			// First, check if the bounding boxes of the two geometries intersect
 			if (! this.bounds.intersectsBounds(geometry.bounds)) {
-Trace.debug("Linestring:intersects - NOK from BBOX");
 				return false;
 			}
 			
@@ -218,14 +215,12 @@ Trace.debug("Linestring:intersects - NOK from BBOX");
 						// These two segments intersect, there is no need to
 						//   continue the tests for all the other couples of
 						//   segments
-Trace.debug("Linestring:intersects - OK for segments " + i + " and " + j);
 						return true;
 					}
 				}
     		}
     		
     		// All the couples of segment have been testes, there is no intersection
-Trace.debug("Linestring:intersects - NOK");
     		return false;
 		}
 		   
