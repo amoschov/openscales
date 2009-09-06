@@ -25,8 +25,6 @@
 			import mx.events.SliderEvent;
 			import flash.geom.Rectangle;
 
-			// FixMe : replace all LonLat by Abstract2D. Sometimes it is LonLat, other times it's Projected Coordinate and some other times it is Pixel !!!
- 
  			private var rectDrawnPxBounds:Bounds = new Bounds(0, 0+height, 0+width, 0); // the rectangle that represents the visible extent of the main map over the overview map 
 			private var rectRealPxBounds:Bounds = new Bounds(0, 0+height, 0+width, 0); // the real extent in pixels associated to the visible extent of the main map
 			private var sprite:Sprite = new Sprite(); // the sprite used to display the "rect"

@@ -151,7 +151,7 @@ Trace.debug("drag: " + newCenter);
 			// Id the new center is invalid (see Map.setCenter for the conditions)
 			// we have to reset the bitmap to the initial position
 			if (newCenter.equals(oldCenter)) {
-				;//map.redraw(); // FixMe: how to reset the birtmap ???
+				;//map.redraw(); // FixMe: how to reset the bitmap to have a coherent "draw" with the current map ???
 			}
 		}
 	}
