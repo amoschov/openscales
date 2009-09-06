@@ -1,7 +1,7 @@
 package org.openscales.core.layer
 {
 	import flash.display.Sprite;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;

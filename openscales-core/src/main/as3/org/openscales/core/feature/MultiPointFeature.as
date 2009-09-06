@@ -10,7 +10,7 @@ package org.openscales.core.feature
 	 */
 	public class MultiPointFeature extends VectorFeature
 	{
-		public function MultiPointFeature(geometry:Geometry=null, data:Object=null, style:Style=null)
+		public function MultiPointFeature(geometry:MultiPoint=null, data:Object=null, style:Style=null)
 		{
 			super(geometry, data, style);
 		}

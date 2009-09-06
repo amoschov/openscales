@@ -15,7 +15,7 @@ package org.openscales.core.feature {
 		/**
 		 * Marker constructor
 		 */
-		public function Marker(geometry:Geometry=null, data:Object=null, style:Style=null) {
+		public function Marker(geometry:Point=null, data:Object=null, style:Style=null) {
 			super(geometry,data,style);		
 		}
 

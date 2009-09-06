@@ -80,8 +80,7 @@ package org.openscales.core.layer
 
 			if (this.map != null && this.map.projection != null && this.projection != null && 
 				getQualifiedClassName(this).split("::")[1] != "WFS" && this.projection.srsCode != this.map.projection.srsCode) {
-
-		//		vectorfeature.geometry.transform(this.projection, this.map.projection);
+				//vectorfeature.geometry.transform(this.projection, this.map.projection);
 			}
 
 			if (!vectorfeature.style) {

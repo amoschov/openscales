@@ -181,50 +181,6 @@ Trace.debug("Polygon.intersects Polygon...");
 Trace.debug("Polygon.intersects collection...");
 				return (geometry as Collection).intersects(this);
 			}
-
-
-//========================================================================
-        	/*var intersect:Boolean = false;
-        	var i:Number, len:Number;
-       		if(geometry is Point) {
-            	intersect = this.containsPoint(geometry as Point);
-        	} 
-        	else if(geometry is LinearRing || geometry is LineString) {
-            	// check if rings/linestrings intersect
-            	 for(i=0, len=this.componentsLength; i<len; ++i) {
-                	intersect = (geometry as LineString).intersects(this.components[i]);
-                	if(intersect) {
-                    	break;
-                	} 
-            	}
-            	if(!intersect) {
-               	// check if this poly contains points of the ring/linestring
-                	for(i=0, len=(geometry as LineString).components.length; i<len; ++i) {
-                    	intersect = this.containsPoint((geometry as LineString).components[i]);
-                    	if(intersect) {
-                        	break;
-                    	}
-                	}
-            	}
-        	}
-        	else {
-            	for(i=0, len=(geometry as Collection).components.length; i<len; ++ i) {
-                	intersect = this.intersects((geometry as Collection).components[i]);
-                	if(intersect) {break;}
-            	}
-        	}
-        	// check case where this poly is wholly contained by another
-        	if(!intersect && getQualifiedClassName(geometry) == "org.openscales.core.geometry::Polygon") {
-            	// exterior ring points will be contained in the other geometry
-           	var ring:LinearRing = this.components[0];
-            	for(i=0, len=ring.components.length; i<len; ++i) {
-                	intersect = (geometry as Polygon).containsPoint(ring.components[i]);
-                	if(intersect) {
-                    	break;
-                	}
-            	}
-        	}
-        	return intersect;*/
     	}
 
     	/*

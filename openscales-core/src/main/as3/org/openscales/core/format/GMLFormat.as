@@ -173,21 +173,20 @@ Trace.debug("GMLFormat.read : featureNodes.length()="+featureNodes.length());
 				}
 			}
 
-			if(geom) {
-
+			if (geom) {
 				// Test more specific geom before because for is operator, a lineString is a multipoint for example (inheritance) 
-				if(geom is MultiPolygon) {
-					feature = new MultiPolygonFeature(geom);
-				} else if(geom is Polygon) {
-					feature = new PolygonFeature(geom);
-				} else if(geom is MultiLineString) {
-					feature = new MultiLineStringFeature(geom);
-				} else if(geom is LineString) {
-					feature = new LineStringFeature(geom);
-				} else if(geom is MultiPoint) {
-					feature = new MultiPointFeature(geom);
-				} else if(geom is Point) {
-					feature = new PointFeature(geom);
+				if (geom is MultiPolygon) {
+					feature = new MultiPolygonFeature(geom as MultiPolygon);
+				} else if (geom is Polygon) {
+					feature = new PolygonFeature(geom as Polygon);
+				} else if (geom is MultiLineString) {
+					feature = new MultiLineStringFeature(geom as MultiLineString);
+				} else if (geom is LineString) {
+					feature = new LineStringFeature(geom as LineString);
+				} else if (geom is MultiPoint) {
+					feature = new MultiPointFeature(geom as MultiPoint);
+				} else if (geom is Point) {
+					feature = new PointFeature(geom as Point);
 				} else {
 					trace("Unrecognized geometry);"); 
 					return null; 

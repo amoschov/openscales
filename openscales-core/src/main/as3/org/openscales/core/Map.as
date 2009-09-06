@@ -729,7 +729,6 @@ else Trace.debug("NO dispatchEvent('MOVE_END') : centerChanged=" + centerChanged
 					setCenter(null, newZoom);
 
 			}
-Trace.debug("set Zoom = "+ _zoom);
 		}
 
 		/**

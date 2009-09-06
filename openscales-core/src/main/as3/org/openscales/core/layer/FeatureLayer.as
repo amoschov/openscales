@@ -1,6 +1,6 @@
 package org.openscales.core.layer
 {
-	import flash.trace.Trace;
+	import org.openscales.core.Trace;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
@@ -96,7 +96,7 @@ package org.openscales.core.layer
 			if(map)
 				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, new Array(feature)));
 			else
-				trace("Warning : no FEATURE_PRE_INSERT dispatched because map event dispatcher is not defined");
+				Trace.warning("Warning : no FEATURE_PRE_INSERT dispatched because map event dispatcher is not defined");
 			
 			this.addChild(feature);
 
@@ -106,7 +106,7 @@ package org.openscales.core.layer
 			if(map)
 				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_INSERT, new Array(feature)));
 			else
-				trace("Warning : no FEATURE_INSERT dispatched because map event dispatcher is not defined");
+				Trace.warning("Warning : no FEATURE_INSERT dispatched because map event dispatcher is not defined");
 		}
 
 		public function removeFeatures(features:Array):void {
@@ -127,16 +127,14 @@ package org.openscales.core.layer
 			}
 		}
 
-		public function getFeatureById(featureId:String):Feature {
-			var feature:Feature = null;
+		/*public function getFeatureById(featureId:String):Feature {
 			for(var i:int=0; i<this.features.length; ++i) {
-				if(this.features[i].id == featureId) {
-					feature = this.features[i];
-					break;
+				if((this.features[i] as Feature).id == featureId) {
+					return this.features[i];
 				}
 			}
-			return feature;
-		}
+			return null;
+		}*/
 
 		//Getters and setters
 		public function get features():Array {

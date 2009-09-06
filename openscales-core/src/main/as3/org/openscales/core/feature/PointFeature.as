@@ -12,10 +12,12 @@ package org.openscales.core.feature
 	 */
 	public class PointFeature extends VectorFeature
 	{
-		public function PointFeature(geometry:Geometry=null, data:Object=null, style:Style=null)
+		public function PointFeature(geometry:Point=null, data:Object=null, style:Style=null)
 		{
 			super(geometry, data, style);
-			if(geometry!=null) this.lonlat=new LonLat(this.point.x,this.point.y);
+			if (geometry!=null) {
+				this.lonlat = new LonLat(this.point.x,this.point.y);
+			}
 		}
 
 		public function get point():Point {
