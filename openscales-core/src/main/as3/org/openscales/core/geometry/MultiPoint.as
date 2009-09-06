@@ -12,6 +12,14 @@ package org.openscales.core.geometry
 			this.componentTypes = ["org.openscales.core.geometry::Point"];
 		}
 		
+		/**
+		 * Component of the specified index, casted to the Point type
+		 */
+// TODO: how to do that in AS3 ?
+		/*override public function componentByIndex(i:int):Point {
+			return (super.componentByIndex(i) as Point);
+		}*/
+		
 		public function addPoint(point:Point, index:Number=NaN):void {
 			this.addComponent(point, index);
 		}
@@ -22,8 +30,8 @@ package org.openscales.core.geometry
 		
 		override public function toShortString():String {
 			var s:String = "(";
-			for each (var p:Point in this.components) {
-				s = s + p.toShortString();
+			for(var i:int=0; i<this.componentsLength; i++) {
+				s = s + this.componentByIndex(i).toShortString();
 			}
 			return s + ")";
 		}
@@ -35,10 +43,8 @@ package org.openscales.core.geometry
 		 * @param dest The destination projection
 		 */
 		override public function transform(source:ProjProjection, dest:ProjProjection):void {
-			if (this.components.length > 0) {
-				for each (var p:Point in this.components) {
-					p.transform(source, dest);
-				}
+			for(var i:int=0; i<this.componentsLength; i++) {
+				this.componentByIndex(i).transform(source, dest);
 			}
 		}
 		

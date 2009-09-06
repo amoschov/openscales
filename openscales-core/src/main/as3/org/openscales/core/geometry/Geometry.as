@@ -54,7 +54,6 @@ package org.openscales.core.geometry
 		 * @param dest The destination projection
 		 */
 		public function transform(source:ProjProjection, dest:ProjProjection):void {
-
 		}
 
 		/**
@@ -146,33 +145,31 @@ package org.openscales.core.geometry
       	 */
     	public function distanceTo(geometry:Geometry):Number{
     		var distance:Number;
+    		// TODO
     		return distance;
     	}
+		
+		/**
+		 * Determine if the input geometry intersects this one.
+		 * 
+		 * @param geometry Any type of geometry.
+		 * @return Boolean defining if the input geometry intersects this one.
+		 */
+		public function intersects(geometry:Geometry):Boolean {
+			return false;
+		}
     	
     	/**
- 		 * Determine whether two line segments intersect.  Optionally calculates
- 		 *     and returns the intersection point.  This function is optimized for
- 		 *     cases where seg1.x2 >= seg2.x1 || seg2.x2 >= seg1.x1.  In those
- 		 *     obvious cases where there is no intersection, the function should
- 		 *     not be called.
+ 		 * Determine whether two line segments intersect or not.
+ 		 * This function is optimized for oriented segments so that x1 <= x2.
  		 *
- 		 * @param seg1 Array representing a segment of two points. The first point1 has
-    	 * 		properties x1 (point1.x), y1 (point1.y) and the second point2 has properties 
-    	 * 		x2 (point2.x), y2 (point2.y).  The start point is represented by x1 and y1.  The end point
- 		 *     is represented by x2 and y2.  Start and end are ordered so that x1 < x2.
- 		 * 
- 		 * @param seg2 Array representing a segment of two points. The first point1 has
-    	 * 		properties x1 (point1.x), y1 (point1.y) and the second point2 has properties 
-    	 * 		x2 (point2.x), y2 (point2.y).  The start point is represented by x1 and y1.  The end point
- 		 *     is represented by x2 and y2.  Start and end are ordered so that x1 < x2.
- 		 * 
- 		 * options Optional properties for calculating the intersection (not implement yet)
- 		 *
- 		 * Valid options: (not implement yet)
-  		 * tolerance - {Number} If a non-null value is provided, if the segments are
- 		 *     within the tolerance distance, this will be considered an intersection.
- 		 *
- 		 * @return The two segments intersect.
+ 		 * @param seg1 Array representing a segment of two points ordered so
+ 		 *   that seg1.point1.x <= seg1.point2.x
+ 		 * @param seg2 Array representing a segment of two points ordered so
+ 		 *   that seg2.point1.x <= seg2.point2.x
+ 		 * @param tolerance if >0, two segments with a respective distance lower
+ 		 *   than this tolerance are considered intersecting
+ 		 * @return Boolean caracterizing if the two input segments intersect
  		 */
 		static public function segmentsIntersect(seg1:Array, seg2:Array, tolerance:Number=0.0):Boolean {
 			// Check the validity of the segments
@@ -185,35 +182,41 @@ package org.openscales.core.geometry
 				return false;
 			}
 			
-			// Compute some useful "length" needed later for computing ???
-			//   (so there is no need to have a real length using Math.abs).
-			// Compute the X-length and Y-length of the edge seg1			
-			var x12_11:Number = ((seg1[1] as Point).x - (seg1[0] as Point).x);  /* seg1.x2 - seg1.x1; */
-			var y12_11:Number = ((seg1[1] as Point).y - (seg1[0] as Point).y);  /* seg1.y2 - seg1.y1; */
-			// Compute the X-length and Y-length of the edge seg2			
-			var x22_21:Number = ((seg2[1] as Point).x - (seg2[0] as Point).x);  /* seg2.x2 - seg2.x1; */
-			var y22_21:Number = ((seg2[1] as Point).y - (seg2[0] as Point).y);  /* seg2.y2 - seg2.y1; */
-			// Compute the X-length and Y-length between the first vertex of each edge			
-			var x11_21:Number = ((seg1[0] as Point).x - (seg2[0] as Point).x);  /* seg1.x1 - seg2.x1; */
-			var y11_21:Number = ((seg1[0] as Point).y - (seg2[0] as Point).y);  /* seg1.y1 - seg2.y1; */
+			// Compute some useful oriented length needed later for computing
+			//   the cross product of 2D-vectors centered in (0,0).
+			// Compute the X-orientedLength and Y-orientedLength of the edge seg1			
+			var x12_11:Number = ((seg1[1] as Point).x - (seg1[0] as Point).x);  // seg1.x2 - seg1.x1
+			var y12_11:Number = ((seg1[1] as Point).y - (seg1[0] as Point).y);  // seg1.y2 - seg1.y1
+			// Compute the X-orientedLength and Y-orientedLength of the edge seg2			
+			var x22_21:Number = ((seg2[1] as Point).x - (seg2[0] as Point).x);  // seg2.x2 - seg2.x1
+			var y22_21:Number = ((seg2[1] as Point).y - (seg2[0] as Point).y);  // seg2.y2 - seg2.y1
+			// Compute the X-orientedLength and Y-orientedLength between the first vertex of each edge, named seg3			
+			var x11_21:Number = ((seg1[0] as Point).x - (seg2[0] as Point).x);  // seg1.x1 - seg2.x1
+			var y11_21:Number = ((seg1[0] as Point).y - (seg2[0] as Point).y);  // seg1.y1 - seg2.y1
 			
-			// Compute ???
-			var d:Number = (y22_21 * x12_11) - (x22_21 * y12_11);
-			// Compute ???
-			var n1:Number = (x22_21 * y11_21) - (y22_21 * x11_21);
-			// Compute ???
-			var n2:Number = (x12_11 * y11_21) - (y12_11 * x11_21);
+			// Compute the cross product seg1 x seg2
+			var d:Number = (x12_11 * y22_21) - (x22_21 * y12_11);
+			// Compute the cross product seg2 x seg3
+			var n1:Number = (x22_21 * y11_21) - (x11_21 * y22_21);
+			// Compute the cross product seg1 x seg3
+			var n2:Number = (x12_11 * y11_21) - (x11_21 * y12_11);
 			
-			// Check if the two segments intersect themselves or not
-			// Optionnally calculate the intersection point (if exists)
+			// Why do we use cross products ? Let's explain with d = seg1 x seg2
+			// d represents the signed area of the parallelogram defined by the
+			//   two segments seg1 and seg2 translated to have the same origin.
+			// If d==0, then seg1 and seg2 are colinear (same or opposite sense)
+			// If d<0, then seg1 is in the direct sense from seg2
+			// If d>0, then seg1 is in the indirect sens from seg2
+			
+			// Test if the two segments intersect themselves or not
 			var intersection:Boolean = false;
-			if (d == 0) {  // parallel, the segments could be coincident
+			if (d == 0) {  // seg1 and seg2 are colinear and could be coincident
 				if (n1 == 0 && n2 == 0) {  // coincident
 					return true;
 				}
          		// else there is no intersection but the Boolean to return will
          		//   depend on the tolerance management.
-			} else {  // not parallel, an intersection could exist
+			} else {  // seg1 and seg2 are not colinear, an intersection could exist
 				var along1:Number = n1 / d;
 				var along2:Number = n2 / d;
 				if ((along1 >= 0) && (along1 <= 1) && (along2 >=0) && (along2 <= 1)) {  // intersect
@@ -228,7 +231,7 @@ package org.openscales.core.geometry
 			}
 
 			// The tolerance must be managed to test if an approximated
-			//   intersection exists or not
+			//   intersection exists or not.
 Trace.debug("segmentsIntersect NOK but tolerance should be tested : TODO");
 return false; // TODO
 			/*var dist;
@@ -243,17 +246,13 @@ return false; // TODO
 				target = segs[(i+1)%2];
 				for(var j=1; j<3; ++j) {
 					p = {x: source["x"+j], y: source["y"+j]};
-					result = OpenLayers.Geometry.distanceToSegment(p, target);
+					result = distanceToSegment(p, target);
 					if (result.distance < tolerance) {
-						if (point) {
-							intersectionPoint = new OpenLayers.Geometry.Point(p.x, p.y);
-						} else {
-							intersection = true;
-						}
-						break outer;
+						return true;
 					}
 				}
-			}*/
+			}
+			return false;*/
 		 }
  
 		/**

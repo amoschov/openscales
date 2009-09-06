@@ -3,6 +3,7 @@ package org.openscales.core.feature
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LinearRing;
+	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 
 	/**
@@ -27,10 +28,10 @@ package org.openscales.core.feature
 			var linearRing:LinearRing = null;
 			var j:int = 0;
 			
-			for (var i:int = 0; i < this.polygon.components.length; i++) {
-				linearRing = this.polygon.components[i];
-				for (j = 0; j < linearRing.components.length; j++) {
-					p = this.getLayerPxFromPoint(linearRing.components[j]);
+			for (var i:int = 0; i < this.polygon.componentsLength; i++) {
+				linearRing = (this.polygon.componentByIndex(i) as LinearRing);
+				for (j=0; j<linearRing.componentsLength; j++) {
+					p = this.getLayerPxFromPoint(linearRing.componentByIndex(j) as Point);
 					if (j==0) {
 						this.graphics.moveTo(p.x, p.y);
 					} else {

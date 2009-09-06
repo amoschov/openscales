@@ -1,26 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap();">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:os="http://openscales.org"
+	creationComplete="initMap();">
+	
 	<mx:Script>
-	<![CDATA[
+		<![CDATA[
 			import org.openscales.core.handler.mouse.DragHandler;
-			import org.openscales.core.Trace;
-			import org.openscales.core.events.GetFeatureInfoEvent;
-
 			import org.openscales.core.Map;
-
-			[Bindable]
-			public var map:Map;
+			import org.openscales.core.Trace;
+			
+			[Bindable] private var map:Map;
 
 			private function initMap():void {
-				map=fxmap.map; 			
+				map = fxmap.map; 			
 			}
 		]]>
 	</mx:Script>
-	<os:Map id="fxmap"
-			x="0"
-			y="0"
-			height="100%"
-			width="100%"
+	
+	<os:Map id="fxmap" width="100%" height="100%"
 			proxy="http://openscales.org/proxy.php?url="
 			zoom="2">
 			

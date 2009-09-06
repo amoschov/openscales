@@ -9,6 +9,7 @@ package org.openscales.core.geometry
 	 */
 	public class LinearRing extends LineString
 	{
+		import org.openscales.core.Trace;
 
 		public function LinearRing(points:Array = null) {
 			super(points);
@@ -17,7 +18,7 @@ package org.openscales.core.geometry
 		override public function addComponent(point:Geometry, index:Number=NaN):Boolean {
 			var added:Boolean = false;
 
-			var lastPoint:Point = this.components[this.components.length-1];
+			var lastPoint:Point = (this.componentByIndex(this.componentsLength-1) as Point);
 			if(!isNaN(index) || !(point as Point).equals(lastPoint)) {
 				added = super.addComponent(point, index);
 			}
@@ -35,17 +36,17 @@ package org.openscales.core.geometry
      	 * @return True if the point is inside the linear ring. Otherwise false. 
      	 */
     	 public function containsPoint(point:Point):Boolean {
-        	 //check openlayers if problems        	 
+        	 //check openlayers if problems
         	 var px:Number = point.x;
         	 var py:Number = point.y;
-        	 var numSeg:int = this.components.length - 1;
+        	 var numSeg:int = this.componentsLength - 1;
         	 var startPointSeg:Point, endPointSeg:Point, x1:Number, y1:Number, x2:Number, y2:Number, cx:Number, cy:Number;
         	 var crosses:Number = 0;
         	 for(var i:int=0; i<numSeg; ++i) {
-            	 startPointSeg = this.components[i];
+            	 startPointSeg = (this.componentByIndex(i) as Point);
             	 x1 = startPointSeg.x;
             	 y1 = startPointSeg.y;
-             	 endPointSeg = this.components[i + 1];
+             	 endPointSeg = (this.componentByIndex(i+1) as Point);
             	 x2 = endPointSeg.x;
             	 y2 = endPointSeg.y;
             
@@ -60,6 +61,7 @@ package org.openscales.core.geometry
              	 *    5. the edge-ray intersection point must be strictly right
              	 *    of the point P.
              	 */
+             	 // Is the current edge horizontal ? If true
             	 if(y1 == y2) {
                 	 // horizontal edge
                 	 if(py == y1) {
@@ -67,7 +69,7 @@ package org.openscales.core.geometry
                     	 if(x1 <= x2 && (px >= x1 && px <= x2) || // right or vert
                        	 	x1 >= x2 && (px <= x1 && px >= x2)) { // left or vert
                         	 // point on edge, so contained
-                       	 	 crosses = -1;
+                       	 	 crosses = /*-*/1;
                        	  break;
                     	 }
                 	 }
@@ -80,7 +82,7 @@ package org.openscales.core.geometry
                 	 if(y1 < y2 && (py >= y1 && py <= y2) || // upward
                   	   y1 > y2 && (py <= y1 && py >= y2)) { // downward
                     	 // point on edge
-                    	 crosses = -1;
+                    	 crosses = /*-*/1;
                     	 break;
                 	 }
             	 }
@@ -101,6 +103,7 @@ package org.openscales.core.geometry
         	 if (crosses == -1){ contained = false;}
         	 else {contained=true;}
 
+Trace.debug("LinearRing.containsPoint "+contained);
         	 return contained;
     	 }
 		
@@ -119,18 +122,19 @@ package org.openscales.core.geometry
       	 */
 		override public function intersects(geometry:Geometry):Boolean {
 			if (geometry is Point) {
-				return this.containsPoint((geometry as Point));
+				return this.containsPoint(geometry as Point);
 			}
-			else if (geometry is LinearRing) { // Must be tested before LineString !!!
+			else if (geometry is LinearRing) {
+				// LinearRing must be tested before LineString !!!
 				return super.intersects(this);
 			}
 			else if (geometry is LineString) {
 				return (geometry as LineString).intersects(this);
 			}
 			else {  // geometry is a multi-geometry
-				var numSubGeometries:int = (geometry as Collection).components.length;
+				var numSubGeometries:int = (geometry as Collection).componentsLength;
 				for(var i:int=0; i<numSubGeometries; ++i) {
-					if ((geometry as Collection).components[i].intersects(this)) {
+					if ((geometry as Collection).componentByIndex(i).intersects(this)) {
 						// The sub-geometry intersects this LinearRing, there is
 						//   no need to continue the tests for all the other
 						//   sub-geometries

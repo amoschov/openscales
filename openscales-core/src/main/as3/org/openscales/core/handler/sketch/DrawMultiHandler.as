@@ -99,9 +99,8 @@ package org.openscales.core.handler.sketch
 
 					else if(f.geometry is MultiPoint)
 					{
-						for(var i:int = 0;i<(f.geometry as MultiPoint).components.length;i++)
-						{
-							multiPoint.addPoint((f.geometry as MultiPoint).components[i] as Point);
+						for(var i:int = 0;i<(f.geometry as MultiPoint).componentsLength;i++) {
+							multiPoint.addPoint((f.geometry as MultiPoint).componentByIndex(i) as Point);
 						}
 						drawType = "MultiPoint";
 						
@@ -110,9 +109,8 @@ package org.openscales.core.handler.sketch
 					}
 					else if(f.geometry is MultiLineString)
 					{
-						for(var k:int = 0;k<(f.geometry as MultiLineString).components.length;k++)
-						{
-							multiLineString.addLineString((f.geometry as MultiLineString).components[k] as LineString);
+						for(var k:int = 0;k<(f.geometry as MultiLineString).componentsLength;k++) {
+							multiLineString.addLineString((f.geometry as MultiLineString).componentByIndex(k) as LineString);
 						}
 						drawType = "MultiLineString";
 						

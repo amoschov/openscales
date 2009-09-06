@@ -66,14 +66,18 @@
 						name.Name = "Name";					
 						name.Value = evt.features[0].name;
 						properties.push(name);							
+
 					//MultiLineString = several LineString and LineString = 2 points					
-					for each(var ls:LineString in ((evt.features[0] as VectorFeature).geometry as MultiLineString).components){
-						
-						for each(currentPoint in ls.components){
+					var multiLineString:MultiLineString = (evt.features[0] as VectorFeature).geometry as MultiLineString;
+					for(var i:int=0; i<multiLineString.componentsLength; i++) {
+						var lineString:LineString = multiLineString.componentByIndex(i) as LineString;
+						for(var j:int=0; j<lineString.componentsLength; j++) {
+							currentPoint = lineString.componentByIndex(j) as org.openscales.core.geometry.Point;
 							//To prevent the same point twice
 							var pointPath:Object = {};	//We use pointPath as object to put properties correctly
 							if(first){
-								lastP = currentPoint; first = false;
+								lastP = currentPoint;
+								first = false;
 								pointPath.Name = "Point_" + pointNum; 
 								pointPath.Value = currentPoint.x + ";" + currentPoint.y;
 								properties.push(pointPath);
@@ -97,11 +101,15 @@
 					name.Value = evt.features[0].name;
 					properties.push(name);
 					
-					for each(var lr:LinearRing in ((evt.features[0] as VectorFeature).geometry as Polygon).components){
-						for each(currentPoint in lr.components){
+					var polygon:Polygon = (evt.features[0] as VectorFeature).geometry as Polygon;
+					for(i=0; i<polygon.componentsLength; i++) {
+						var linearRing:LinearRing = polygon.componentByIndex(i) as LinearRing;
+						for(j=0; j<linearRing.componentsLength; j++) {
+							currentPoint = linearRing.componentByIndex(j) as org.openscales.core.geometry.Point;
 							var pointPoly:Object = {};
-							pointPoly.Name = "Point_" + pointNum; pointNum++;
+							pointPoly.Name = "Point_" + pointNum;
 							pointPoly.Value = currentPoint.x + ";" + currentPoint.y;
+							pointNum++;
 							properties.push(pointPoly);
 						}
 					}

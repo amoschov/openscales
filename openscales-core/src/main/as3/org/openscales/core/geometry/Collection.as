@@ -45,13 +45,47 @@ package org.openscales.core.geometry
      	 * Destroy the collection.
      	 */
 		override public function destroy():void {
-			this.components.length = 0;
-			this.components = null;
+			this._components.length = 0;
+			this._components = null;
+		}
+		
+		/**
+		 * Getter and setter of the authorized types for the components
+		 *   (children) of this collection
+		 */
+		public function get componentTypes():Array {
+			return this._componentTypes;
+		}		
+		public function set componentTypes(value:Array):void {
+			this._componentTypes = value;
 		}
 
-		override public function toShortString():String {
-			return componentsString;
+		/**
+		 * Setter of the components (children) of this collection.
+		 * The getter is not defined to avoid to return a untyped array.
+		 * Use componentsLength() and componentByIndex(i) instead.
+		 */
+		/*private function get components():Array {
+			return this._components;
+		}*/		
+		public function set components(value:Array):void {
+			this._components = (value==null) ? new Array() : value;
 		}
+
+		/**
+		 * Number of components in the collection
+		 */		
+		public function get componentsLength():int {
+			return this._components.length;
+		}
+		
+		/**
+		 * Component of the specified index, casted to the Geometry type
+		 */
+		public function componentByIndex(i:int):Geometry {
+			return ((i<0)||(i>=this._components.length)) ? null : (this._components[i] as Geometry);
+		}
+
 
 		/**
      	 * Get a string representing the components for this collection
@@ -60,10 +94,17 @@ package org.openscales.core.geometry
       	 */
 		public function get componentsString():String {
 			var strings:Array = [];
-			for(var i:int = 0; i < this.components.length; i++) {
-				strings.push((this.components[i] as Geometry).toShortString());
+			for(var i:int = 0; i < this.componentsLength; i++) {
+				strings.push(this.componentByIndex(i).toShortString());
 			}
 			return strings.join(",");
+		}
+		
+		/**
+		 * 
+		 */
+		override public function toShortString():String {
+			return componentsString;
 		}
 
 		/**
@@ -72,10 +113,10 @@ package org.openscales.core.geometry
      	 */
 		override public function calculateBounds():void {
 			this._bounds = null;
-			if (this.components && (this.components.length > 0)) {
-				this._bounds = (this.components[0] as Geometry).bounds;
-				for (var i:int=1; i<this.components.length; i++) {
-					this.extendBounds((this.components[i] as Geometry).bounds);
+			if (this.componentsLength > 0) {
+				this._bounds = this.componentByIndex(0).bounds;
+				for (var i:int=1; i<this.componentsLength; i++) {
+					this.extendBounds(this.componentByIndex(i).bounds);
 				}
 			}
 		}
@@ -107,15 +148,15 @@ package org.openscales.core.geometry
 				if(!(component is Array) && (this.componentTypes == null ||
 					(Util.indexOf(this.componentTypes, getQualifiedClassName(component)) > -1))) {
 
-					if(!isNaN(index) && (index < this.components.length)) {
-						var components1:Array = this.components.slice(0, index);
-						var components2:Array = this.components.slice(index, 
-							this.components.length);
+					if(!isNaN(index) && (index < this.componentsLength)) {
+						var components1:Array = this._components.slice(0, index);
+						var components2:Array = this._components.slice(index, this.componentsLength);
 						components1.push(component);
 						this.components = components1.concat(components2);
 					} else {
-						this.components.push(component);
+						this._components.push(component);
 					}
+					
 					component.parent = this;
 					this.clearBounds();
 					added = true;
@@ -144,8 +185,37 @@ package org.openscales.core.geometry
      	 * @param component 
      	 */
 		public function removeComponent(component:Geometry):void {    
-			Util.removeItem(this.components, component);
+			Util.removeItem(this._components, component);
 			this.clearBounds();
+		}
+		
+		/**
+     	 * replace the component of specified index by the input geometry.
+     	 *
+     	 * @param index the index of the component to replace
+     	 * @param component the new component to use 
+     	 */
+		public function replaceComponent(index:int, component:Geometry):Boolean {
+			// Test if the index is valid
+			if ((i<0) || (i>=this._components.length)) {
+				Trace.error("Collection.replaceComponent ERROR : invalid index "+index);
+				return false;
+			}
+			// Test if the type of component is one of the allowed types
+			var validComponentType:Boolean = false;
+			for(var i:int=0; (!validComponentType) && (i<this.componentTypes.length); i++) {
+				if (this.componentTypes[i] == getQualifiedClassName(component)) {
+					validComponentType = true;
+				}
+			}
+			if (! validComponentType) {
+				Trace.error("Collection.replaceComponent ERROR : invalid component type "+getQualifiedClassName(component)+" for "+getQualifiedClassName(this));
+				return false;
+			}
+			// All is ok, replace the specified component by the input one
+			this._components[i] = component;
+			this.clearBounds();
+			return true;
 		}
 		
 		/**
@@ -153,13 +223,14 @@ package org.openscales.core.geometry
      	 *
      	 * @return The length of the geometry
       	 */
-		override public function get length():Number {
+// TODO (in all classes)
+		/*override public function get length():Number {
 			var length:Number = 0.0;
-			for (var i:int = 0; i < this.components.length; i++) {
-				length += this.components[i].getLength();
+			for (var i:int = 0; i < this.componentsLength; i++) {
+				length += this.componentByIndex(i).getLength();
 			}
 			return length;
-		}
+		}*/
 		
 		/**
 		 * Calculate the approximate area of this geometry (the projection and
@@ -176,8 +247,8 @@ package org.openscales.core.geometry
 		 */
 		override public function get area():Number {
 			var _area:Number = 0.0;
-			for (var i:int=0; i<this.components.length; i++) {
-				_area += this.components[i].area;
+			for (var i:int=0; i<this.componentsLength; i++) {
+				_area += this.componentByIndex(i).area;
 			}
 			return _area;
 		}
@@ -190,11 +261,12 @@ package org.openscales.core.geometry
      	 * @param x Distance to move geometry in positive x direction. 
      	 * @param y Distance to move geometry in positive y direction.
      	 */
-		public function move(x:Number, y:Number):void {
-			for(var i:int = 0; i < this.components.length; i++) {
-				this.components[i].move(x, y);
+// TODO (in all classes)
+		/*public function move(x:Number, y:Number):void {
+			for(var i:int = 0; i < this.componentsLength; i++) {
+				this.componentByIndex(i).move(x, y);
 			}
-		}
+		}*/
 		
 		/**
      	 * Rotate a geometry around some origin
@@ -203,13 +275,14 @@ package org.openscales.core.geometry
      	 *                 from the positive x-axis)
      	 * @param origin Center point for the rotation
      	 */
-   		public function rotate(angle:Number, origin:Point):void{
+// TODO (in all classes)
+   		/*public function rotate(angle:Number, origin:Point):void{
         	var i:Number=0;
-        	var len:Number = this.components.length;
+        	var len:Number = this.componentsLength;
         	for(i; i<len; ++i) {
-            	this.components[i].rotate(angle, origin);
+            	(this.components[i] as Geometry).rotate(angle, origin);
         	}
-    	}
+    	}*/
     	
     	/**
      	 * Resize a geometry relative to some origin.  Use this method to apply
@@ -224,13 +297,14 @@ package org.openscales.core.geometry
       	 * 
      	 * @return The current geometry. 
      	 */
-    	public function resize(scale:Number, origin:Point, ratio:Number):Geometry {
+// TODO (in all classes)
+    	/*public function resize(scale:Number, origin:Point, ratio:Number):Geometry {
         	var i:Number=0;
-        	for(i; i<this.components.length; ++i) {
-            	this.components[i].resize(scale, origin, ratio);
+        	for(i; i<this.componentsLength; ++i) {
+            	(this.components[i] as Geometry).resize(scale, origin, ratio);
         	}
         	return this;
-    	}
+    	}*/
 
 		/** 
      	 * Determine whether another geometry is equivalent to this one.  Geometries
@@ -240,23 +314,21 @@ package org.openscales.core.geometry
      	 *
      	 * @return The supplied geometry is equivalent to this geometry.
      	 */
-     	public function equals(geometry:Collection):Boolean {
-			var equivalent:Boolean = true;
+// TODO (in all classes)
+     	/*public function equals(geometry:Collection):Boolean {
 			if(getQualifiedClassName(this) != getQualifiedClassName(geometry)) {
-				equivalent = false;
-			} else if(!(geometry.components is Array) ||
-				(geometry.components.length != this.components.length)) {
-				equivalent = false;
+				return false;
+			} else if(geometry.componentsLength != this.componentsLength) {
+				return false;
 			} else {
-				for(var i:int=0; i<this.components.length; ++i) {
-					if(!this.components[i].equals(geometry.components[i])) {
-						equivalent = false;
-						break;
+				for(var i:int=0; i<this.componentsLength; ++i) {
+					if(! this.componentByIndex(i).equals(geometry.componentByIndex(i))) {
+						return false;
 					}
 				}
 			}
-			return equivalent;
-		}
+			return true;
+		}*/
 
 		/**
 		 * Method to convert the collection from a projection system to an other.
@@ -265,10 +337,8 @@ package org.openscales.core.geometry
 		 * @param dest The destination projection
 		 */
 		override public function transform(source:ProjProjection, dest:ProjProjection):void {
-			if (this.components.length > 0) {
-				for each (var geom:Geometry in this.components) {
-					geom.transform(source, dest);
-				}
+			for(var i:int=0; i<this.componentsLength; i++) {
+				this.componentByIndex(i).transform(source, dest);
 			}
 		}
 		
@@ -279,20 +349,20 @@ package org.openscales.core.geometry
      	*
      	* @return The input geometry intersects this one.
      	*/
-    	public function intersects(geometry:Geometry):Boolean {
-        	var intersect:Boolean = false;
-        	if(geometry is Point){
-        		intersect = (geometry as Point).intersects(this);
-        	}
-        	else{
-        		for(var i:Number=0, len:Number=this.components.length; i<len; ++ i) {
-            		intersect = (geometry as Collection).intersects(this.components[i]);
-            		if(intersect) {
-                		break;
-            		}
-        		}
-        	}
-        	return intersect;
+    	override public function intersects(geometry:Geometry):Boolean {
+Trace.debug("Collection.intersects");
+			if (geometry is Point) {
+				return (geometry as Point).intersects(this);
+			} else {
+				for(var i:int=0; i<this.componentsLength; ++i) {
+					if ((geometry as Collection).intersects(this.componentByIndex(i))) {
+						return true;
+					}
+				}
+				return false;
+			}
+			// never used
+			return false;
     	}
     	
     	/**
@@ -328,8 +398,8 @@ package org.openscales.core.geometry
         	var details = edge && options && options.details;
         	var result, best;
         	var min = Number.POSITIVE_INFINITY;
-        	for(var i=0, len=this.components.length; i<len; ++i) {
-            	result = this.components[i].distanceTo(geometry, options);
+        	for(var i=0, len=this.componentsLength; i<len; ++i) {
+            	result = this.componentByIndex(i).distanceTo(geometry, options);
             	distance = details ? result.distance : result;
             	if(distance < min) {
                 	min = distance;
@@ -341,23 +411,7 @@ package org.openscales.core.geometry
         	}
         	return best;
     	} */	
-	
-		//Getter and setters as3
-		public function get components():Array {
-			return this._components;
-		}
-
-		public function set components(value:Array):void {
-			this._components = value;
-		}
-
-		public function get componentTypes():Array {
-			return this._componentTypes;
-		}
-
-		public function set componentTypes(value:Array):void {
-			this._componentTypes = value;
-		}
+		
 	}
 }
 

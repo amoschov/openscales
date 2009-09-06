@@ -109,7 +109,7 @@ package org.openscales.core.handler.mouse
 				(getQualifiedClassName(this.feature.geometry) == "org.openscales.core.geometry::MultiPolygon")) {
 
 				//The first element move and the others will follow it
-				var FirstGeomId:Geometry=((this.feature.geometry as Collection).components[0] as Geometry);
+				var FirstGeomId:Geometry=(this.feature.geometry as Collection).componentByIndex(0);
 				this._elementDragging=this.layer[layer_number].renderer.container.getChildByName(FirstGeomId.id);
 				this._elementDragging.startDrag();
 				this.map.addEventListener(MouseEvent.MOUSE_MOVE,movefeatures);
@@ -156,9 +156,9 @@ package org.openscales.core.handler.mouse
 		{
 			var dx:Number=_elementDragging.x-event.stageX;
 			var dy:Number=_elementDragging.y-event.stageY;
-			for(var i:int=1;i<(feature.geometry as Collection).components.length;i++)
+			for(var i:int=1;i<(feature.geometry as Collection).componentsLength;i++)
 			{
-				var Geom:Geometry=((feature.geometry as Collection).components[i]as Geometry);
+				var Geom:Geometry=(feature.geometry as Collection).componentByIndex(i);
 				var Sprite:Feature=layer[layer_number].renderer.container.getChildByName(Geom.id);
 				Sprite.x=event.stageX+dx;
 				Sprite.y= event.stageY+dy;    	

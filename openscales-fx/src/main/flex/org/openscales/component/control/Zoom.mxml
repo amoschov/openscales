@@ -13,27 +13,10 @@
 					
 			private function onZoomOutClick(event:MouseEvent):void{
 				this.map.zoom--;
-
-				// For client zoom
-				//scaleOnCenter(map.layerContainer, 0.5, new Point(map.x + (map.width/2), map.y + (map.height/2)));
 			}
 			
 			private function onZoomInClick(event:MouseEvent):void{
 				this.map.zoom++;
-
-				// For client zoom
-				//scaleOnCenter(map.layerContainer, 2, new Point(map.x + (map.width/2), map.y + (map.height/2)));
-			}
-			
-			private function scaleOnCenter(o:DisplayObject, scale:Number, center:Point):void{
-				var currentMatrix:Matrix=o.transform.matrix;
-				var endMatrix:Matrix=o.transform.matrix;
-				endMatrix.tx -= center.x;
-				endMatrix.ty -= center.y;
-				endMatrix.scale(scale, scale);
-				endMatrix.tx += center.x;
-				endMatrix.ty += center.y;
-				
 			}
 			
 			public function onZoomSliderThumbPress(event:SliderEvent):void {
@@ -41,8 +24,7 @@
 				zoomSlider.addEventListener(SliderEvent.THUMB_RELEASE,this.onZoomSliderThumbRelease);
 			}
 			
-			public function onZoomSliderThumbRelease(event:SliderEvent):void{
-				
+			public function onZoomSliderThumbRelease(event:SliderEvent):void {
 				map.zoom = zoomSlider.value;
 				zoomSlider.addEventListener(SliderEvent.CHANGE,this.zoomSliderChange);
 			}
@@ -63,8 +45,7 @@
 				zoomSlider.addEventListener(SliderEvent.CHANGE,this.zoomSliderChange);
 			}
 			
-			override public function set active(value:Boolean):void
-			{
+			override public function set active(value:Boolean):void {
 				if(value) {
 					initializeZoomLevels();
 					map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.initializeZoomLevels);
@@ -73,25 +54,34 @@
 					map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED, this.initializeZoomLevels);
 					map.removeEventListener(MapEvent.ZOOM_END, this.updateZoomLevels);
 				}
-				
 				super.active = value;
 			}
 			
 			private function updateZoomLevels(event:Event = null):void {
 				zoomSlider.value = map.zoom;
 			}
-			
 		]]>
 	</mx:Script>
-
+	
+	<mx:Style>
+		.zoomSliderStyle {
+		}
+	</mx:Style>
+	
 	<mx:VBox horizontalAlign="center">
-		<mx:Button id="zoomIn" height="30" width="30" alpha="1" icon="@Embed('/org/openscales/component/images/zoomin.swf')" click="this.onZoomInClick(event);" />
-		<mx:VSlider id="zoomSlider" 
+		<mx:LinkButton id="zoomIn" 
+			icon="@Embed('/org/openscales/component/images/zoomin.swf')"
+			click="this.onZoomInClick(event);" />
+		<mx:VSlider id="zoomSlider"
 			liveDragging="true"
 			allowTrackClick="true"
 			tickInterval="1"
 			snapInterval="1"
-			 thumbPress="this.onZoomSliderThumbPress(event)"/>
-		<mx:Button id="zoomOut" height="30" width="30" icon="@Embed('/org/openscales/component/images/zoomout.swf')" click="this.onZoomOutClick(event);" />
+			thumbPress="this.onZoomSliderThumbPress(event)"
+			styleName="zoomSliderStyle" />
+		<mx:LinkButton id="zoomOut"
+			icon="@Embed('/org/openscales/component/images/zoomout.swf')"
+			click="this.onZoomOutClick(event);" />
 	</mx:VBox>
+
 </control:Control>

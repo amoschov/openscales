@@ -12,6 +12,14 @@ package org.openscales.core.geometry
 			super(components);
 			this.componentTypes = ["org.openscales.core.geometry::LineString"];
 		}
+		
+		/**
+		 * Component of the specified index, casted to the Polygon type
+		 */
+// TODO: how to do that in AS3 ?
+		/*override public function componentByIndex(i:int):LineString {
+			return (super.componentByIndex(i) as LineString);
+		}*/
 
 		/**
 		 * AddLineSring permit to add a line in the MultiLineString.
@@ -27,8 +35,8 @@ package org.openscales.core.geometry
 
 		override public function toShortString():String {
 			var s:String = "(";
-			for each (var p:LineString in this.components) {
-				s = s + p.toShortString();
+			for(var i:int=0; i<this.componentsLength; i++) {
+				s = s + this.componentByIndex(i).toShortString();
 			}
 			return s + ")";
 		}
@@ -40,18 +48,16 @@ package org.openscales.core.geometry
 		 * @param dest The destination projection
 		 */
 		override public function transform(source:ProjProjection, dest:ProjProjection):void {
-			if (this.components.length > 0) {
-				var j:int=0;
-				for each (var lS:LineString in this.components) {
+// FixMe : I think it's a bad backport from OpenLayers !!!
+			var j:int=0;
+			for(var i:int=0; i<this.componentsLength; i++) {
 				//for the first linestring we transform the two points
 				//but for the followings we just draw the second
-				if(j==0 )
-				{ 
-					lS.transformLineString(source, dest);
+				if (j==0) {
+					(this.componentByIndex(i) as LineString).transformLineString(source, dest);
 					j++;
-				}
-				else lS.transformLineString(source, dest,false)
-				
+				} else {
+					(this.componentByIndex(i) as LineString).transformLineString(source, dest, false);
 				}
 			}
 		}

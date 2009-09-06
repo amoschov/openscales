@@ -4,6 +4,7 @@ package org.openscales.core.feature
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.MultiPolygon;
+	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 
 	/**
@@ -30,12 +31,12 @@ package org.openscales.core.feature
 			var i:int = 0;
 			var j:int = 0;
 			
-			for (var k:int = 0; k < this.polygons.components.length; k++) {
-				polygon = this.polygons.components[k];
-				for (i = 0; i < polygon.components.length; i++) {
-					linearRing = polygon.components[i];
-					for (j = 0; j < linearRing.components.length; j++) {
-						p = this.getLayerPxFromPoint(linearRing.components[j]);
+			for (var k:int = 0; k < this.polygons.componentsLength; k++) {
+				polygon = (this.polygons.componentByIndex(k) as Polygon);
+				for (i=0; i<polygon.componentsLength; i++) {
+					linearRing = (polygon.componentByIndex(i) as LinearRing);
+					for (j=0; j<linearRing.componentsLength; j++) {
+						p = this.getLayerPxFromPoint(linearRing.componentByIndex(j) as Point);
 						if (j==0) {
 							this.graphics.moveTo(p.x, p.y);
 						} else {

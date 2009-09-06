@@ -3,6 +3,7 @@ package org.openscales.core.feature
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.MultiPoint;
+	import org.openscales.core.geometry.Point;
 
 	/**
 	 * Feature used to draw a MultiPoint geometry on FeatureLayer
@@ -23,13 +24,12 @@ package org.openscales.core.feature
 			
 			// Variable declaration before for loop to improve performances
 			var p:Pixel = null;
-			
-			for (var i:int = 0; i < points.components.length; i++) {
-				p = this.getLayerPxFromPoint(points.components[i]);
+			for (var i:int=0; i<points.componentsLength; i++) {
+				p = this.getLayerPxFromPoint(points.componentByIndex(i) as Point);
 				this.graphics.drawCircle(p.x, p.y, this.style.pointRadius);
 			}
-
-		}		
+		}
+			
 	}
 }
 

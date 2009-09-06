@@ -43,12 +43,20 @@ package org.openscales.core.geometry
 		}
 		
 		/**
+		 * Component of the specified index, casted to the LinearRing type
+		 */
+// TODO: how to do that in AS3 ?
+		/*override public function componentByIndex(i:int):LinearRing {
+			return (super.componentByIndex(i) as LinearRing);
+		}*/
+		
+		/**
 		 *  
 		 */
 		override public function toShortString():String {
 			var s:String = "(";
-			for each (var r:LinearRing in this.components) {
-				s = s + r.toShortString();
+			for(var i:int=0; i<this.componentsLength; i++) {
+				s = s + this.componentByIndex(i).toShortString();
 			}
 			return s + ")";
 		}
@@ -66,12 +74,12 @@ package org.openscales.core.geometry
 		 * areas of the internal holes to the area of the outer ring.
 		 */
 		override public function get area():Number {
-        	if (this.components.length < 1) {
+        	if (this.componentsLength < 1) {
         		return 0.0;
         	}
-			var _area:Number = (this.components[0] as LinearRing).area;
-        	for (var i:int=1; i<this.components.length; i++) {
-            	_area -= (this.components[i] as LinearRing).area;
+			var _area:Number = (this.componentByIndex(0) as LinearRing).area;
+        	for (var i:int=1; i<this.componentsLength; i++) {
+            	_area -= (this.componentByIndex(i) as LinearRing).area;
         	}
         	if (_area < 0) {
         		Trace.warning("Polygon.area ERROR : almost one hole is partially outside the outer ring");
@@ -92,32 +100,37 @@ package org.openscales.core.geometry
 		 */
 		public function containsPoint(point:Point, manageHoles:Boolean=true):Boolean {
 			// Stop if the polygon is void
-			if (this.components.length < 1) {
+			if (this.componentsLength < 1) {
 				Trace.warning("Polygon.containsPoint called for a void Polygon");
 				return false;
 			}
 			
 			// Test if the point is inside the outer ring
-			if (! (this.components[0] as LinearRing).containsPoint(point)) {
+			if (! (this.componentByIndex(0) as LinearRing).containsPoint(point)) {
+Trace.debug("Polygon.containsPoint false 1");
 				return false;
 			}
 			
 			// The point is inside the outer ring. So, if the holes have not to
 			// be managed, the polygon contains the point.
 			if (! manageHoles) {
+Trace.debug("Polygon.containsPoint true but without managing holes");
 				return true;
 			}
 			
 			// If the point is inside one of the holes, it is outside the
 			// polygon.
-			for(var i:int=1; i<this.components.length; ++i) {
-				if ((this.components[i] as LinearRing).containsPoint(point)) {
+			for(var i:int=1; i<this.componentsLength; ++i) {
+				if ((this.componentByIndex(i) as LinearRing).containsPoint(point)) {
+Trace.debug("Polygon.containsPoint false for "+i);
 					return false;
 				}
+Trace.debug("Polygon.containsPoint perhaps for "+i);
 			}
 			
 			// The point is inside the outer ring but outside of all the holes.
 			// So the point is definitively inside the polygon.
+Trace.debug("Polygon.containsPoint true");
         	return true;
 		}
 		
@@ -129,14 +142,56 @@ package org.openscales.core.geometry
      	* @return The input geometry intersects this one.
      	*/
     	override public function intersects(geometry:Geometry):Boolean{
-        	var intersect:Boolean = false;
+			// Stop if the polygon is void
+			if (this.componentsLength < 1) {
+				Trace.warning("Polygon.intersects called for a void Polygon");
+				return false;
+			}
+			
+			if (geometry is Point) {
+Trace.debug("Polygon.intersects point ?");
+				return this.containsPoint(geometry as Point);
+			}
+			else if ((geometry is LinearRing) || (geometry is LineString)) {
+				// LinearRing should be tested before LineString if a different
+				//   action should be made for each case..
+				// Test for the intersection of each LinearRing of tis Polygon
+				//   with the geometry (LineString or LinearRing)
+				for(var i:int=0; i<this.componentsLength; i++) {
+					if ((geometry as LineString).intersects(this.componentByIndex(i))) {
+Trace.debug("Polygon.intersects LineString/LinearRing : true");
+						return true;
+					}
+				}
+				// None of the LinearRings of this Polygon intersects with the
+				//  input geometry. We now have to test if the input geomety is
+				//  whole contained in the first LinearRing but not in one of
+				//  the holes represented by the others LinearRings. Test only
+				//  one vertex is sufficient since there is no intersection.
+Trace.debug("Polygon.intersects LineString/LinearRing : false except if contains...");
+				return this.containsPoint((geometry as LineString).componentByIndex(0) as Point);
+			}
+			else if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::Polygon") {
+				// Two holed polygon intersect if and only one of them intersects
+				//  with the outer LinearRing of the other polygon
+Trace.debug("Polygon.intersects Polygon...");
+				return this.intersects((geometry as Polygon).componentByIndex(0));
+			}
+			else {  // geometry is a multi-geometry
+Trace.debug("Polygon.intersects collection...");
+				return (geometry as Collection).intersects(this);
+			}
+
+
+//========================================================================
+        	/*var intersect:Boolean = false;
         	var i:Number, len:Number;
        		if(geometry is Point) {
             	intersect = this.containsPoint(geometry as Point);
         	} 
-        	else if(geometry is LineString || geometry is LinearRing) {
+        	else if(geometry is LinearRing || geometry is LineString) {
             	// check if rings/linestrings intersect
-            	 for(i=0, len=this.components.length; i<len; ++i) {
+            	 for(i=0, len=this.componentsLength; i<len; ++i) {
                 	intersect = (geometry as LineString).intersects(this.components[i]);
                 	if(intersect) {
                     	break;
@@ -151,7 +206,7 @@ package org.openscales.core.geometry
                     	}
                 	}
             	}
-        	} 
+        	}
         	else {
             	for(i=0, len=(geometry as Collection).components.length; i<len; ++ i) {
                 	intersect = this.intersects((geometry as Collection).components[i]);
@@ -169,7 +224,7 @@ package org.openscales.core.geometry
                 	}
             	}
         	}
-        	return intersect;
+        	return intersect;*/
     	}
 
     	/*

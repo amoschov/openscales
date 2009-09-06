@@ -28,8 +28,8 @@ package org.openscales.core.feature
 			// Variable declaration before for loop to improve performances
 			var p:Pixel = null;
 			
-			for (var i:int = 0; i < this.lineString.components.length; i++) {
-				p = this.getLayerPxFromPoint(this.lineString.components[i]);
+			for (var i:int = 0; i < this.lineString.componentsLength; i++) {
+				p = this.getLayerPxFromPoint(this.lineString.componentByIndex(i) as Point);
 				if (i==0) {
 					this.graphics.moveTo(p.x, p.y);
 				} else {

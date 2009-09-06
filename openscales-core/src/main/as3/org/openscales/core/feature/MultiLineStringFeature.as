@@ -4,6 +4,7 @@ package org.openscales.core.feature
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
+	import org.openscales.core.geometry.Point;
 
 	/**
 	 * Feature used to draw a MultiLineString geometry on FeatureLayer
@@ -30,10 +31,10 @@ package org.openscales.core.feature
 			var lineString:LineString = null;
 			var j:int = 0;
 			
-			for (var i:int = 0; i < this.lineStrings.components.length; i++) {
-				lineString = this.lineStrings.components[i];
-				for (j = 0; j < lineString.components.length; j++) {
-					p = this.getLayerPxFromPoint(lineString.components[j]);
+			for (var i:int = 0; i < this.lineStrings.componentsLength; i++) {
+				lineString = (this.lineStrings.componentByIndex(i) as LineString);
+				for (j = 0; j < lineString.componentsLength; j++) {
+					p = this.getLayerPxFromPoint(lineString.componentByIndex(j) as Point);
 
 					if (j==0) {
 						this.graphics.moveTo(p.x, p.y);

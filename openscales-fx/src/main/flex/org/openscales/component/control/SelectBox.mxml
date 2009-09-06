@@ -147,7 +147,6 @@
 	            			var feature:VectorFeature = ((this.map.layers[i] as VectorLayer).features[k]);
 							
                         	if (bounds.toGeometry().intersects(feature.geometry)) {
-Trace.debug("featureInclude => true");
                                 featuresToSelect.push(feature);
                             }
             			}
@@ -155,7 +154,7 @@ Trace.debug("featureInclude => true");
             	}
             	
             if(featuresToSelect.length>0){          		
-Trace.debug("featureInclude => dispatch");
+Trace.debug("SelectBox.featureInclude => true => dispatch");
             	this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTEDBOX,featuresToSelect, _ctrlStatus));
             }
             	

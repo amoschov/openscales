@@ -111,25 +111,25 @@ package org.openscales.core.format
 			},
 			'multipoint': function(multipoint:MultiPoint):String {
 				var array:Array = [];
-				for(var i:int=0; i<multipoint.components.length; ++i) {
-					array.push(this.extract.point.apply(this, [multipoint.components[i]]));
+				for(var i:int=0; i<multipoint.componentsLength; ++i) {
+					array.push(this.extract.point.apply(this, [multipoint.componentByIndex(i)]));
 				}
 				return array.join(',');
 			},
 
 			'linestring': function(linestring:LineString):String {
 				var array:Array = [];
-				for(var i:int=0; i<linestring.components.length; ++i) {
-					array.push(this.extract.point.apply(this, [linestring.components[i]]));
+				for(var i:int=0; i<linestring.componentsLength; ++i) {
+					array.push(this.extract.point.apply(this, [linestring.componentByIndex(i)]));
 				}
 				return array.join(',');
 			},
 
 			'multilinestring': function(multilinestring:MultiLineString):String {
 				var array:Array = [];
-				for(var i:int=0; i<multilinestring.components.length; ++i) {
+				for(var i:int=0; i<multilinestring.componentsLength; ++i) {
 					array.push('(' +
-						this.extract.linestring.apply(this, [multilinestring.components[i]]) +
+						this.extract.linestring.apply(this, [multilinestring.componentByIndex(i)]) +
 						')');
 				}
 				return array.join(',');
@@ -137,9 +137,9 @@ package org.openscales.core.format
 
 			'polygon': function(polygon:Polygon):String {
 				var array:Array = [];
-				for(var i:int=0; i<polygon.components.length; ++i) {
+				for(var i:int=0; i<polygon.componentsLength; ++i) {
 					array.push('(' +
-						this.extract.linestring.apply(this, [polygon.components[i]]) +
+						this.extract.linestring.apply(this, [polygon.componentByIndex(i)]) +
 						')');
 				}
 				return array.join(',');
@@ -147,9 +147,9 @@ package org.openscales.core.format
 
 			'multipolygon': function(multipolygon:MultiPolygon):String {
 				var array:Array = [];
-				for(var i:int=0; i<multipolygon.components.length; ++i) {
+				for(var i:int=0; i<multipolygon.componentsLength; ++i) {
 					array.push('(' +
-						this.extract.polygon.apply(this, [multipolygon.components[i]]) +
+						this.extract.polygon.apply(this, [multipolygon.componentByIndex(i)]) +
 						')');
 				}
 				return array.join(',');

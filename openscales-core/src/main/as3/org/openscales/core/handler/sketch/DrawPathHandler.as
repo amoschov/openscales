@@ -107,7 +107,7 @@ package org.openscales.core.handler.sketch
 			else {								
 				if(!point.equals(lastPoint)){
 					_lineString.addPoint(point);
-Trace.debug("drawLine => addFeature +1 => LineString.lenght = "+_lineString.components.length);
+Trace.debug("drawLine => addFeature +1 => LineString.length = "+_lineString.componentsLength);
 					drawLayer.redraw();
 					lastPoint = point;
 				}								

@@ -68,10 +68,10 @@ package org.openscales.core.geometry
 			}
 			// Check if this object will stay a LineString after the removing
 			//   (2 vertices min) and try to remove this Collection's component
-			if (this.components.length > 2) {
+			if (this.componentsLength > 2) {
 				super.removeComponent(vertex);
 			} else {
-				Trace.error("LineString.removeComponent ERROR : too few components (" + this.components.length + ")"); 
+				Trace.error("LineString.removeComponent ERROR : too few components (" + this.componentsLength + ")"); 
 			}
 		}
 		
@@ -81,17 +81,17 @@ package org.openscales.core.geometry
 		 */
 		public function getPointAt(index:Number):Point {
 			// Return null for an invalid request
-			if ((index<0) || (index>=this.components.length)) {
+			if ((index<0) || (index>=this.componentsLength)) {
 				return null;
 			}
-			return this.components[index];
+			return (this.componentByIndex(index) as Point);
 		}
 		
 		/**
 		 * @return the last vertex of the LineString
 		 */
 		public function getLastPoint():Point {
-			return this.getPointAt(this.components.length - 1);
+			return this.getPointAt(this.componentsLength - 1);
 		}
 		
 		/**
@@ -100,9 +100,9 @@ package org.openscales.core.geometry
 		 */
 		override public function get length():Number {
 			var length:Number = 0.0;
-			if (this.components.length > 1) {
-				for(var i:int=1; i<this.components.length; i++) {
-					length += this.components[i-1].distanceTo(this.components[i]);
+			if (this.componentsLength > 1) {
+				for(var i:int=1; i<this.componentsLength; i++) {
+					length += this.componentByIndex(i-1).distanceTo(this.componentByIndex(i));
 				}
 			}
 			return length;
@@ -119,14 +119,14 @@ package org.openscales.core.geometry
 		 */
 		public function transformLineString(source:ProjProjection, dest:ProjProjection, allPoints:Boolean=true):void {
 // FixMe : I think it's a bad backport from OpenLayers !!!
-			if (this.components.length > 0) {
+			if (this.componentsLength > 0) {
 				if (allPoints) {
-					for each (var p:Point in this.components) {
-						p.transform(source, dest);
+					for(var i:int=0; i<this.componentsLength; i++) {
+						this.componentByIndex(i).transform(source, dest);
 					}
 				} else {
 					// There is only two point in a Linestring
-					this.components[1].transform(source, dest);
+					this.componentByIndex(1).transform(source, dest);
 				}
 			}	
 		}
@@ -146,7 +146,9 @@ package org.openscales.core.geometry
 		override public function intersects(geometry:Geometry):Boolean {
 			// Treat the geometry as a collection if it is not a simple point,
 			// a simple polyline or a simple polygon
-			if ( ! ((geometry is Point) || (geometry is LineString) || (geometry is LinearRing)) ) {
+			if ( ! ((geometry is Point) || (geometry is LinearRing) || (geometry is LineString)) ) {
+				 // LinearRing should be tested before LineString if a different
+				 // action should be made for each case
 Trace.debug("Linestring:intersects - collection");
 				return (geometry as Collection).intersects(this);
 			}
@@ -169,7 +171,7 @@ Trace.debug("Linestring:intersects - NOK from BBOX");
 			
 			var seg1:Array, seg1y1:Number, seg1y2:Number, seg1yMin:Number, seg1yMax:Number;
 			var seg2:Array, seg2y1:Number, seg2y2:Number, seg2yMin:Number, seg2yMax:Number;
-			// Loop over each segment of this lineString
+			// Loop over each segment of this LineString
     		for(var i:int=0; i<segs1.length; ++i) {
 				seg1 = segs1[i];
 				// Loop over each segment of the requested geometry
@@ -236,11 +238,11 @@ Trace.debug("Linestring:intersects - NOK");
 		 */
 		private function getXsortedSegments():Array {
 			var point1:Point, point2:Point;
-			var numSegs:int = this.components.length-1;
+			var numSegs:int = this.componentsLength-1;
 			var segments:Array = new Array(numSegs);
 			for(var i:int=0; i<numSegs; ++i) {
-				point1 = this.components[i];
-				point2 = this.components[i+1];
+				point1 = (this.componentByIndex(i) as Point);
+				point2 = (this.componentByIndex(i+1) as Point);
 				segments[i] = (point2.x < point1.x) ? [point2,point1] : [point1,point2];
 			}
 			return segments;
