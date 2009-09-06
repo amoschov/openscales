@@ -14,9 +14,16 @@ package org.openscales.core.geometry
 		}
 		
 		/**
-		 * 
+		 * Test all the containsPoint functions for the relevant géometries.
 		 */
-		public function testIntersectLinearContainsPoint():void {
+		public function testContainsPoint():void {
+			// TODO
+		}
+		
+		/**
+		 * Test all the intersects functions for the relevant géometries.
+		 */
+		public function testIntersects():void {
 			// TODO
 		}
 		
