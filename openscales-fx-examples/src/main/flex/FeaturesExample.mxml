@@ -44,43 +44,56 @@ import org.openscales.core.feature.Style;
 			public function testContainsPoint(layer:VectorLayer):void {
 				// Useful variables for the tests
 				var geom1:Geometry, geom2:Geometry;
-				var testResult:Boolean;
+				var testResult:Boolean, testExpectedResult:Boolean;
+				var textResult:String;
 
 				// LinearRing contains a Point : true
+				testExpectedResult = true;
 				geom1 = ((layer.getChildAt(8) as PolygonFeature).geometry as Collection).componentByIndex(0);
 				geom2 = (layer.getChildAt(4) as PointFeature).geometry;
 				testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.core.geometry.Point);
-				Trace.info("Does the outer LinearRing of the blue Polygon contain the red point (true) ? => "+testResult);
+				textResult = "Does the outer LinearRing of the blue Polygon contain the red point (true) ? => "+testResult;
+				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 
 				// LinearRing contains a Point : false
+				testExpectedResult = false;
 				geom1 = ((layer.getChildAt(8) as PolygonFeature).geometry as Collection).componentByIndex(0);
 				geom2 = (layer.getChildAt(0) as PointFeature).geometry;
 				testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.core.geometry.Point);
-				Trace.info("Does the outer LinearRing of the blue Polygon contain the black point below the violet multipolygon (false) ? => "+testResult);
+				textResult = "Does the outer LinearRing of the blue Polygon contain the black point below the violet multipolygon (false) ? => "+testResult;
+				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 
 				// Polygon contains a Point without management of the holes : true
+				testExpectedResult = true;
 				geom1 = (layer.getChildAt(8) as PolygonFeature).geometry;
 				geom2 = (layer.getChildAt(4) as PointFeature).geometry;
 				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point, false);
-				Trace.info("Does the blue Polygon contain the red point without managing its holes (true) ? => "+testResult);
+				textResult = "Does the blue Polygon contain the red point without managing its holes (true) ? => "+testResult;
+				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 
 				// Polygon contains a Point with management of the holes : false
+				testExpectedResult = false;
 				geom1 = (layer.getChildAt(8) as PolygonFeature).geometry;
 				geom2 = (layer.getChildAt(4) as PointFeature).geometry;
 				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point);
-				Trace.info("Does the blue Polygon contain the red point without managing its holes (false) ? => "+testResult);
+				textResult = "Does the blue Polygon contain the red point without managing its holes (false) ? => "+testResult;
+				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 				
 				// MultiPolygon contains a Point : true
+				testExpectedResult = true;
 				geom1 = ((layer.getChildAt(9) as MultiPolygonFeature).geometry as Collection).componentByIndex(0) as Collection;
 				geom2 = (layer.getChildAt(0) as PointFeature).geometry;
 				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point);
-				Trace.info("Does the violet MultiPolygon contain the upper black point (true) ? => "+testResult);
+				textResult = "Does the violet MultiPolygon contain the upper black point (true) ? => "+testResult;
+				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 				
 				// MultiPolygon contains a Point : false
+				testExpectedResult = false;
 				geom1 = ((layer.getChildAt(9) as MultiPolygonFeature).geometry as Collection).componentByIndex(0) as Collection;
 				geom2 = (layer.getChildAt(1) as PointFeature).geometry;
 				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point);
-				Trace.info("Does the violet MultiPolygon contain the lower black point (false) ? => "+testResult);
+				textResult = "Does the violet MultiPolygon contain the lower black point (false) ? => "+testResult;
+				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 			}
 			
 			/**
@@ -89,7 +102,8 @@ import org.openscales.core.feature.Style;
 			public function testIntersects(layer:VectorLayer):void {
 				// Useful variables for the tests
 				var geom1:Geometry, geom2:Geometry;
-				var testResult:Boolean;
+				var testResult:Boolean, testExpectedResult:Boolean;
+				var textResult:String;
 // TODO : check if the referenced geometries are the good ones using their indexes !!!
 /*var style:Style = new Style();
 style.fillColor = 0xFFFF00;
