@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:os="http://openscales.org"
+	creationComplete="initMap();">
+	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.Map;
+			
+			[Bindable] private var map:Map;
+
+			private function initMap():void {
+				map = fxmap.map;
+				map.addLayer(SampleLayers.features());
+			}
+		]]>
+	</mx:Script>
+	
+	<os:Map id="fxmap" width="100%" height="100%"
+		proxy="http://openscales.org/proxy.php?url="
+		zoom="11" lon="538850.47459" lat="5740916.1243">
+			
+		<os:Mapnik name="Mapnik"
+			numZoomLevels="20"
+			isBaseLayer="true"
+			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
+			minResolution="0.5971642833709717"
+			maxResolution="156543.0339" />
+
+		<mx:Panel title="Drawing Tools" horizontalAlign="center">
+			<os:FeatureDrawingComponent map="{map}"/>
+			<os:SelectBoxComponent map="{map}" width="100%" />
+		</mx:Panel>
+											   
+		<os:ClickHandler />
+		<os:DragHandler />	   
+		<os:WheelHandler />
+
+		<os:MousePosition displayProjection="EPSG:4326"/>
+	</os:Map>
+	
+	<os:TraceInfo id="traceBox" map="{map}" x="{width-200}" y="0" />
+
+</mx:Canvas>

@@ -42,7 +42,6 @@
 				
 				vect.addFeature(new PointFeature(p));
 				map.addLayer(vect);
-				//FIXME : the point is not displayed
 			}
 
 			private function showPopup(e:MouseEvent):void {
