@@ -443,9 +443,6 @@ package org.openscales.core
 					}
 					this._center = lonlat.clone();
 				}
-				else{
-					
-				}
 				
 				if ((zoomChanged) || (this._layerContainerOrigin == null)) {
 					this._layerContainerOrigin = this.center.clone();
