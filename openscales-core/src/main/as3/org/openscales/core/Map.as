@@ -443,6 +443,9 @@ package org.openscales.core
 					}
 					this._center = lonlat.clone();
 				}
+				else{
+					
+				}
 				
 				if ((zoomChanged) || (this._layerContainerOrigin == null)) {
 					this._layerContainerOrigin = this.center.clone();
@@ -547,7 +550,13 @@ package org.openscales.core
 		 * @return Whether or not the lonlat passed in is non-null and within the maxExtent bounds
 		 */
 		private function isValidLonLat(lonlat:LonLat):Boolean {
-			return (lonlat!=null) ? this.maxExtent.containsLonLat(lonlat) : false;
+Trace.debug("isValidLonlat => start test");
+			var validLonLat:Boolean;
+			if(lonlat!=null){
+				if(this.maxExtent.containsLonLat(lonlat)){validLonLat = true;}
+				else{validLonLat = false;}
+			}
+			return validLonLat;
 		}
 
 		/**

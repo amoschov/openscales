@@ -48,20 +48,12 @@ package org.openscales.core.geometry
 		 * @param dest The destination projection
 		 */
 		override public function transform(source:ProjProjection, dest:ProjProjection):void {
-// FixMe : I think it's a bad backport from OpenLayers !!!
-			var j:int=0;
-			for(var i:int=0; i<this.componentsLength; i++) {
-				//for the first linestring we transform the two points
-				//but for the followings we just draw the second
-				if (j==0) {
+			if(this.componentsLength > 0){
+				for(var i:int=0; i<this.componentsLength; i++) {
 					(this.componentByIndex(i) as LineString).transformLineString(source, dest);
-					j++;
-				} else {
-					(this.componentByIndex(i) as LineString).transformLineString(source, dest, false);
 				}
 			}
 		}
-
 	}
 }
 

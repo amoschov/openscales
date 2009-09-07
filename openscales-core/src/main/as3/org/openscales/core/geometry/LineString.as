@@ -113,21 +113,12 @@ package org.openscales.core.geometry
 		 * 
 		 * @param source The source projection
 		 * @param dest The destination projection
-		 * @param allPoints if allPoints is equal to true we transform the
-		 *   linestring two point. If it's false we only transform the last point.
-		 *   We use it for example in the case of MultiLineString
 		 */
-		public function transformLineString(source:ProjProjection, dest:ProjProjection, allPoints:Boolean=true):void {
-// FixMe : I think it's a bad backport from OpenLayers !!!
+		public function transformLineString(source:ProjProjection, dest:ProjProjection):void {
 			if (this.componentsLength > 0) {
-				if (allPoints) {
-					for(var i:int=0; i<this.componentsLength; i++) {
-						this.componentByIndex(i).transform(source, dest);
-					}
-				} else {
-					// There is only two point in a Linestring
-					this.componentByIndex(1).transform(source, dest);
-				}
+				 for(var i:int=0; i<this.componentsLength; i++){
+					this.componentByIndex(i).transform(source, dest);
+				} 
 			}	
 		}
 		
