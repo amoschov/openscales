@@ -91,6 +91,7 @@
 			<mx:VBox horizontalAlign="center">
 				<os:PanComponent id="pan" map="{map}"/>
 				<os:ZoomComponent id="zoom" map="{map}"/>
+				<os:ZoomBoxComponent id="zoomBox" map="{map}"/>
 			</mx:VBox>
 		</mx:Panel>
 

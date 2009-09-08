@@ -60,10 +60,15 @@ package org.openscales.core.handler.zoom
             this.map.removeEventListener(MouseEvent.MOUSE_UP,endBox);
       		_drawContainer.graphics.clear();
       		var endCoordinates:LonLat = this.map.getLonLatFromMapPx(new Pixel(map.mouseX, map.mouseY));
-           	map.zoomToExtent(new Bounds(Math.min(_startCoordinates.lon,endCoordinates.lon),
+           	if(_startCoordinates.equals(endCoordinates)){
+           		this.map.zoom ++;
+           	}else{
+           		this.map.zoomToExtent(new Bounds(Math.min(_startCoordinates.lon,endCoordinates.lon),
                									Math.min(endCoordinates.lat,_startCoordinates.lat),
                									Math.max(_startCoordinates.lon,endCoordinates.lon),
                									Math.max(endCoordinates.lat,_startCoordinates.lat)));
+           	}
+           	
             this._startCoordinates = null;
             this.map.dispatchEvent(new ZoomBoxEvent(ZoomBoxEvent.END));
             this.active = false;

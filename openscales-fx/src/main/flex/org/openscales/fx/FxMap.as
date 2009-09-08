@@ -83,7 +83,9 @@ package org.openscales.fx {
 
       if(this._maxExtent != null)
         this._map.maxExtent = this._maxExtent;
-        
+
+//FIXME: order is important in drawingExample. Find why.
+       
       // Some operations must be done at the beginning, in order to do
       // not depend on declaration order
       for(var i:int=0; i < this.rawChildren.numChildren ; i++) {

@@ -23,7 +23,7 @@
 			height="100%"
 			width="100%"
 			numZoomLevels="20"
-			zoom="5">
+			zoom="3">
 
 		<os:Mapnik name="Mapnik"
 				   maxResolution="156543.0339"
@@ -76,15 +76,15 @@
 										   map="{map}"
 										   label="Layers"/>
 		</mx:Panel>
-		
-										   
+	   
 		<os:MaxExtent left="-180"
 					  bottom="-90"
 					  right="180"
 					  top="90"/>
 				   
-		<os:DragHandler id="dragHandler"/>
 		<os:WheelHandler/>
+		<os:DragHandler/>
+		
 		
 	</os:Map>
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml"
-                 xmlns:control="org.openscales.component.control.*"
-                 width="100%" height="100%">
+                 xmlns:control="org.openscales.component.control.*">
     <mx:Script>
             <![CDATA[
             	import org.openscales.core.events.ZoomBoxEvent;
@@ -12,7 +11,7 @@
                 import org.openscales.core.basetypes.Bounds;
                 import org.openscales.core.basetypes.Pixel;
                 import org.openscales.core.handler.Handler;
-                import org.openscales.core.handler.mouse.DragHandler;   
+                import org.openscales.core.handler.mouse.DragHandler;  
                 
                 /**
                 * Handler of ZoomBox
@@ -45,6 +44,6 @@
             ]]>
     </mx:Script>
 
-    <mx:Button id="zoombox" label="ZoomBox" selected="false" click="onSelectZoomBox(event)"/>
+    <mx:Button id="zoombox" icon="@Embed('/org/openscales/component/images/zoom_box_small.png')" selected="false" click="onSelectZoomBox(event)" width="40" height="40"/>
 
 </control:Control> 
