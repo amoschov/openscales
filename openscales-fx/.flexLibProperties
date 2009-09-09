@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flexLibProperties version="1">
 <includeClasses>
-<classEntry path="org.openscales.fx.feature.FxStyle"/>
 <classEntry path="org.openscales.fx.popup.FxPopup"/>
+<classEntry path="org.openscales.fx.feature.FxStyle"/>
 <classEntry path="org.openscales.component.control.layer.BaselayerComponent"/>
 <classEntry path="org.openscales.component.control.Control"/>
 <classEntry path="org.openscales.fx.layer.osm.FxMapnik"/>
@@ -11,15 +11,17 @@
 <classEntry path="org.openscales.component.control.TraceInfo"/>
 <classEntry path="org.openscales.fx.layer.osm.FxMaplint"/>
 <classEntry path="org.openscales.fx.handler.mouse.FxDragHandler"/>
-<classEntry path="org.openscales.fx.control.FxPanZoomBar"/>
+<classEntry path="org.openscales.component.control.FeatureInfo"/>
 <classEntry path="org.openscales.fx.layer.osm.FxCycleMap"/>
+<classEntry path="org.openscales.fx.control.FxPanZoomBar"/>
 <classEntry path="org.openscales.fx.handler.mouse.FxClickHandler"/>
 <classEntry path="org.openscales.fx.control.FxMousePosition"/>
 <classEntry path="org.openscales.component.control.MousePosition"/>
 <classEntry path="org.openscales.fx.control.FxLayerSwitcher"/>
 <classEntry path="org.openscales.fx.security.sample.FxSampleSecurity"/>
-<classEntry path="org.openscales.component.control.OverviewMap"/>
 <classEntry path="org.openscales.fx.layer.FxGrid"/>
+<classEntry path="org.openscales.component.control.OverviewMap"/>
+<classEntry path="org.openscales.component.control.FeatureDrawing"/>
 <classEntry path="org.openscales.fx.feature.FxMarker"/>
 <classEntry path="org.openscales.fx.control.FxPanZoom"/>
 <classEntry path="org.openscales.fx.handler.mouse.FxSelectFeature"/>
@@ -39,12 +41,13 @@
 <classEntry path="org.openscales.fx.layer.FxLayer"/>
 <classEntry path="org.openscales.fx.layer.FxHTTPRequest"/>
 <classEntry path="org.openscales.fx.handler.mouse.FxBorderPanHandler"/>
-<classEntry path="org.openscales.component.control.Capabilities"/>
 <classEntry path="org.openscales.component.control.MarkerManager"/>
+<classEntry path="org.openscales.component.control.Capabilities"/>
 <classEntry path="org.openscales.component.control.search.YahooSearch"/>
 <classEntry path="org.openscales.fx.FxMap"/>
-<classEntry path="org.openscales.component.control.Zoom"/>
 <classEntry path="org.openscales.fx.security.FxAbstractSecurity"/>
+<classEntry path="org.openscales.component.control.Zoom"/>
+<classEntry path="org.openscales.component.control.Drawing"/>
 <classEntry path="org.openscales.fx.layer.FxWFS"/>
 <classEntry path="org.openscales.fx.basetypes.FxBounds"/>
 <classEntry path="org.openscales.fx.handler.mouse.FxWheelHandler"/>
