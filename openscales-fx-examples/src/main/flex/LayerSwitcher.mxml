@@ -23,7 +23,8 @@
 			height="100%"
 			width="100%"
 			numZoomLevels="20"
-			zoom="3">
+			zoom="3"
+			proxy="http://openscales.org/proxy.php?url=">
 
 		<os:Mapnik name="Mapnik"
 				   maxResolution="156543.0339"
