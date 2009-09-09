@@ -1,24 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:os="*"
-	layout="absolute"
-	creationComplete="viewStack.selectedIndex=0;">
+	layout="horizontal"
+	creationComplete="list.selectedIndex=0; this.select(list.selectedItem);">
 	
-	<mx:TabNavigator id="viewStack" width="100%" height="100%">
-		<os:LayerSwitcher label="LayerSwitcher" toolTip="Switch the different layers"/>
-		<os:PanZoom label="PanZoom" toolTip="Drag and zoom on the map" />		
-		<os:FeaturesExample label="Features" toolTip="Draw and select features"/>
-		<os:InfoExample label="Info" toolTip="show informations of the selected feature"/>
-		<os:OpenStreetMap label="OSM and Reprojection - No test need"/>
-		<os:CapabilitiesExample label="Capabilities" toolTip="Add a WFS which is on a server"/>
-		<os:YahooSearchExample label="Yahoo Search" toolTip="Search a place with Yahoo"/>			
-		<os:MetacartaWMSC label="Metacarta WMS-C - No test need"/>
-		<os:GeovistaWMSCWFS label="WMS-C layer and 2 WFS - No test need"/>
-		<os:MetacartaWFSPolygons label="Metacarta WFS Polygons - No test need"/>
-		<os:MetacartaWFSPoints label="Metacarta WFS Points - No test need"/>
-		<os:GermanyWMS label="Germany WMS - No test need"/>
-		<os:OverView label="Overview" toolTip="Use the miniMap to move and zoom"/>
-		<os:SecurityMap label="Security" toolTip="Not implement yet"/>
-	</mx:TabNavigator>
+	<mx:Script>
+		<![CDATA[
+			import mx.core.Container;
+			
+			private function select(o:Object) : void {
+				viewStack.selectedChild = viewStack.getChildByName(o.viewStack) as Container;
+				desc.htmlText = o.description;
+			}
+			
+			private function onListClick(e:MouseEvent) : void {
+				this.select(list.selectedItem);
+			}
+		]]>
+	</mx:Script>
+	<mx:List id="list" width="300" height="100%" selectedIndex="0" click="onListClick(event)">
+		<mx:dataProvider>
+			<mx:Array>
+				<mx:Object viewStack="layerSwitcher" label="LayerSwitcher" description="Switch the different layers"/>
+                <mx:Object viewStack="panZoom" label="PanZoom" description="Drag and zoom on the map" />
+                <mx:Object viewStack="features" label="Features" description="Draw and select features" />
+                <mx:Object viewStack="osm" label="OSM and Reprojection - No test need" />
+                <mx:Object viewStack="capabilities" label="Capabilities" description="Add a WFS which is on a server" />
+                <mx:Object viewStack="search" label="Yahoo Search" description="Search a place with Yahoo" />
+                <mx:Object viewStack="wmsc1" label="Metacarta WMS-C - No test need" />
+                <mx:Object viewStack="wmsc2" label="WMS-C layer and 2 WFS - No test need" />
+                <mx:Object viewStack="polygons" label="Metacarta WFS Polygons - No test need" />
+                <mx:Object viewStack="points" label="Metacarta WFS Points - No test need" />
+                <mx:Object viewStack="wms" label="Germany WMS - No test need" />
+                <mx:Object viewStack="overview" label="Overview" description="Use the miniMap to move and zoom" />
+                <mx:Object viewStack="security" label="Security" description="Not implement yet" />
+            </mx:Array>
+		</mx:dataProvider>
+	</mx:List>
+	
+	<mx:VBox width="100%" height="100%">
+		
+		<mx:ViewStack id="viewStack" width="100%" height="100%">
+			<os:LayerSwitcher id="layerSwitcher" />
+			<os:PanZoom id="panZoom"  />		
+			<os:FeaturesExample id="features" />
+			<os:InfoExample id="info" />
+			<os:OpenStreetMap id="osm" />
+			<os:CapabilitiesExample id="capabilities" />
+			<os:YahooSearchExample id="search" />			
+			<os:MetacartaWMSC id="wmsc1" />
+			<os:GeovistaWMSCWFS id="wmsc2" />
+			<os:MetacartaWFSPolygons id="polygons" />
+			<os:MetacartaWFSPoints id="points"/>
+			<os:GermanyWMS id="wms" />
+			<os:OverView id="overview" />
+			<os:SecurityMap id="security" />
+		</mx:ViewStack>
+		
+		<mx:TextArea id="desc" width="100%" height="80" />
+	</mx:VBox>
 	
 </mx:Application>
