@@ -21,17 +21,17 @@
 	<mx:List id="list" width="300" height="100%" selectedIndex="0" click="onListClick(event)">
 		<mx:dataProvider>
 			<mx:Array>
+				<mx:Object viewStack="panZoom" label="PanZoom" description="Drag and zoom on the map" />
 				<mx:Object viewStack="layerSwitcher" label="LayerSwitcher" description="Switch the different layers"/>
-                <mx:Object viewStack="panZoom" label="PanZoom" description="Drag and zoom on the map" />
                 <mx:Object viewStack="features" label="Features" description="Draw and select features" />
-                <mx:Object viewStack="osm" label="OSM and Reprojection - No test need" />
+                <mx:Object viewStack="osm" label="OSM and Reprojection" />
                 <mx:Object viewStack="capabilities" label="Capabilities" description="Add a WFS which is on a server" />
                 <mx:Object viewStack="search" label="Yahoo Search" description="Search a place with Yahoo" />
-                <mx:Object viewStack="wmsc1" label="Metacarta WMS-C - No test need" />
-                <mx:Object viewStack="wmsc2" label="WMS-C layer and 2 WFS - No test need" />
-                <mx:Object viewStack="polygons" label="Metacarta WFS Polygons - No test need" />
-                <mx:Object viewStack="points" label="Metacarta WFS Points - No test need" />
-                <mx:Object viewStack="wms" label="Germany WMS - No test need" />
+                <mx:Object viewStack="wmsc1" label="Metacarta WMS-C" />
+                <mx:Object viewStack="wmsc2" label="WMS-C layer and 2 WFS" />
+                <mx:Object viewStack="polygons" label="Metacarta WFS Polygons" />
+                <mx:Object viewStack="points" label="Metacarta WFS Points" />
+                <mx:Object viewStack="wms" label="Germany WMS" />
                 <mx:Object viewStack="overview" label="Overview" description="Use the miniMap to move and zoom" />
                 <mx:Object viewStack="security" label="Security" description="Not implement yet" />
             </mx:Array>
