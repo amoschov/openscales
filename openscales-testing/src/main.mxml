@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:flexunit="flexunit.flexui.*" creationComplete="init()" layout="absolute">
+	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.layer.capabilities.ParsingTest;
+			import org.openscales.core.SexagecimalTest;
+			import org.openscales.core.StringUtilsTest;
+			import flexunit.framework.TestSuite;
+			private function init():void
+			{
+		 		var ts:TestSuite = new TestSuite();
+		
+		        ts.addTestSuite(StringUtilsTest);
+		        ts.addTestSuite(SexagecimalTest);
+		 		ts.addTestSuite(ParsingTest);
+
+		 		testRunner.test = ts;
+		 		testRunner.startTest();
+		 		
+		 	}
+		]]>
+	</mx:Script>
+	<flexunit:TestRunnerBase id="testRunner" width="100%" height="100%" />
+</mx:Application>
