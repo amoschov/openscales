@@ -196,7 +196,6 @@ package org.openscales.core.basetypes
 		 * @private
 		 */
 		private function contains(x:Number, y:Number, inclusive:Boolean = true):Boolean {
-
 			var contains:Boolean = false;
 			if (inclusive) {
 				contains = ((x >= this.left) && (x <= this.right) &&

@@ -158,7 +158,18 @@ package org.openscales.core.geometry
 		public function intersects(geometry:Geometry):Boolean {
 			return false;
 		}
-    	
+		
+		/**
+		 * Test if a point is at the left, at the right or on an infinite line.
+		 * @param p the point to test
+		 * @param p0,p1 two points that define an infinite line
+		 * @return 0 if p is on the line (p0,p1), >0 if p is on its left, <0 if
+		 * p is on its right
+		 */
+		static public function isLeftOrRight(p:Point, p0:Point, p1:Point):int {
+			return (p1.x-p0.x)*(p.y-p0.y) - (p.x-p0.x)*(p1.y-p0.y);
+		}
+		
     	/**
  		 * Determine whether two line segments intersect or not.
  		 * This function is optimized for oriented segments so that x1 <= x2.

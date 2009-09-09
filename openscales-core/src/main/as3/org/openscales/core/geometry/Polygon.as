@@ -107,7 +107,7 @@ package org.openscales.core.geometry
 			
 			// Test if the point is inside the outer ring
 			if (! (this.componentByIndex(0) as LinearRing).containsPoint(point)) {
-Trace.debug("Polygon.containsPoint false 1");
+Trace.debug("Polygon.containsPoint false from outer ring");
 				return false;
 			}
 			
@@ -122,10 +122,9 @@ Trace.debug("Polygon.containsPoint true but without managing holes");
 			// polygon.
 			for(var i:int=1; i<this.componentsLength; ++i) {
 				if ((this.componentByIndex(i) as LinearRing).containsPoint(point)) {
-Trace.debug("Polygon.containsPoint false for "+i);
+Trace.debug("Polygon.containsPoint false from hole "+(i-1));
 					return false;
 				}
-Trace.debug("Polygon.containsPoint perhaps for "+i);
 			}
 			
 			// The point is inside the outer ring but outside of all the holes.

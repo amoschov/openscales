@@ -53,6 +53,10 @@ package
 			point = new org.openscales.core.geometry.Point(4.63114929194725, 45.692262077956364);
 			layer.addFeature(new PointFeature(point,null,style));
 			//(layer.features[layer.features.length-1] as VectorFeature).id = "blackPoint2";
+			// A point outside of the blue Polygon but inside its BBOX.
+			point = new org.openscales.core.geometry.Point(4.910228209414947, 45.73119410607873);
+			layer.addFeature(new PointFeature(point,null,style));
+			//(layer.features[layer.features.length-1] as VectorFeature).id = "blackPoint2";
 			// A LineString intersecting all the other objects.
 			arrayComponents = new Array();
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.5714111327782625, 45.76368130194846));
@@ -163,18 +167,18 @@ package
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.863922119053991, 45.776613267874524));
 			arrayComponents.push(new LinearRing(arrayVertices));
 			arrayVertices = new Array();
+			  arrayVertices.push(new org.openscales.core.geometry.Point(4.873535156161644, 45.75889092403663));
+			  arrayVertices.push(new org.openscales.core.geometry.Point(4.860488891515543, 45.75170458597825));
+			  arrayVertices.push(new org.openscales.core.geometry.Point(4.872161865146266, 45.74547567775447));
+			  arrayVertices.push(new org.openscales.core.geometry.Point(4.886581420807746, 45.75218370397337));
+			arrayComponents.push(new LinearRing(arrayVertices));
+			arrayVertices = new Array();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.830276489177206, 45.74451732248572));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.823410034100311, 45.73684988805274));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.823410034100311, 45.727743442058525));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.8426361083156175, 45.72726411429607));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.849502563392512, 45.73637063843944));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.844696044838685, 45.74403813868174));
-			arrayComponents.push(new LinearRing(arrayVertices));
-			arrayVertices = new Array();
-			  arrayVertices.push(new org.openscales.core.geometry.Point(4.873535156161644, 45.75889092403663));
-			  arrayVertices.push(new org.openscales.core.geometry.Point(4.860488891515543, 45.75170458597825));
-			  arrayVertices.push(new org.openscales.core.geometry.Point(4.872161865146266, 45.74547567775447));
-			  arrayVertices.push(new org.openscales.core.geometry.Point(4.886581420807746, 45.75218370397337));
 			arrayComponents.push(new LinearRing(arrayVertices));
 			layer.addFeature(new PolygonFeature(new Polygon(arrayComponents),null,style));
 			//(layer.features[layer.features.length-1] as VectorFeature).id = "Polygon";
