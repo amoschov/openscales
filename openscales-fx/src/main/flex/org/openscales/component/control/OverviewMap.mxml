@@ -264,8 +264,7 @@
     	    */
     		private function startChangingMapExtent(event:MouseEvent):void {
 				// Save the clicked Pixel as the first corner of the new extent
-				// FixMe : the location of the event should be used instead of the position from overview
-				drawingExtentFirstCorner = new Pixel(overview.map.mouseX, overview.map.mouseY);
+				drawingExtentFirstCorner = new Pixel(event.currentTarget.mouseX, event.currentTarget.mouseY);
 				
 				// Draw the current extent
 				sprite.graphics.clear();
@@ -289,8 +288,7 @@
 			 */
             private function drawNewExtent(event:MouseEvent) : void {
 				// Get the current second corner of the new extent
-				// FixMe : the location of the event should be used instead of the position from overview
-				var click:Pixel = new Pixel(overview.map.mouseX, overview.map.mouseY);
+				var click:Pixel = new Pixel(event.currentTarget.mouseX, event.currentTarget.mouseY);
 
 				// Compute the rectangle defined by the two corners
 				var topLeftPixel:Pixel = new Pixel(Math.min(drawingExtentFirstCorner.x,click.x), Math.min(drawingExtentFirstCorner.y,click.y)); 
@@ -313,8 +311,7 @@
 				overview.map.removeEventListener(MouseEvent.MOUSE_UP, stopChangingMapExtent);
 
 				// Get the current second corner of the new extent
-				// FixMe : the location of the event should be used instead of the position from overview
-				var click:Pixel = new Pixel(overview.map.mouseX, overview.map.mouseY);
+				var click:Pixel = new Pixel(event.currentTarget.mouseX, event.currentTarget.mouseY);
 
 				// Compute the rectangle defined by the two corners
 				var topLeftPixel:Pixel = new Pixel(Math.min(drawingExtentFirstCorner.x,click.x), Math.min(drawingExtentFirstCorner.y,click.y)); 
