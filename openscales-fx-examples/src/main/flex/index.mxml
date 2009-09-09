@@ -41,6 +41,7 @@
 	<mx:VBox width="100%" height="100%">
 		
 		<mx:ViewStack id="viewStack" width="100%" height="100%">
+			<mx:Panel id="empty" />
 			<os:LayerSwitcher id="layerSwitcher" />
 			<os:PanZoom id="panZoom"  />		
 			<os:FeaturesExample id="features" />
