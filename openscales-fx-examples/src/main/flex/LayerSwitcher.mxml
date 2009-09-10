@@ -1,92 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap();">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:os="http://openscales.org"
+	creationComplete="initMap();">
+	
 	<mx:Script>
-	<![CDATA[
+		<![CDATA[
 			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
 
-			[Bindable]
-			public var map:Map;
-
+			// Specific imports for this example
+			// none			
+			
+			[Bindable] private var map:Map;
+			
 			private function initMap():void {
-				map=fxmap.map; 			
-				
+				map=fxmap.map;
+				this.setChildIndex(this.getChildAt(1), 0);
+				// Specific initialize for this example
+				// none
 			}
-
 		]]>
 	</mx:Script>
 	
-	<os:TraceInfo id="traceBox" map="{map}" x="{width-200}" y="0" />
-
-	<os:Map id="fxmap"
-			x="0"
-			y="0"
-			height="100%"
-			width="100%"
-			numZoomLevels="20"
-			zoom="3"
-			proxy="http://openscales.org/proxy.php?url=">
-
+	<!-- Must be defined first to display the logs of the map and of its objects during their creation -->
+	<os:TraceInfo map="{map}" x="{width-200}" y="0" />
+	
+	<os:Map id="fxmap" width="100%" height="100%"
+		proxy="http://openscales.org/proxy.php?url="
+		zoom="2" lon="538850.47459" lat="5740916.1243">
+		
+		<!-- OpenStreetMap EPSG:900913 -->
 		<os:Mapnik name="Mapnik"
-				   maxResolution="156543.0339"
-				   minResolution="0.5971642833709717"
-				   numZoomLevels="20"
-				   maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-				   isBaseLayer="true"/>	
+			numZoomLevels="20"
+			isBaseLayer="true"
+			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
+			minResolution="0.5971642833709717"
+			maxResolution="156543.0339" />
+		
+		<os:DragHandler />
+		<os:WheelHandler />
+		
+		<os:MousePosition displayProjection="EPSG:4326" />
+		
+		<!-- Specific layers and handlers of this example -->
+
 		<os:WMSC name="Metacarta"
-				 url="http://labs.metacarta.com/wms-c/Basic.py"
-				 layers="satellite"
-				 format="image/jpeg"
-				 isBaseLayer="true"/>	
+			numZoomLevels="20"
+			isBaseLayer="true"
+			maxExtent="-180,-90,180,90"
+			url="http://labs.metacarta.com/wms-c/Basic.py"
+			layers="satellite"
+			format="image/jpeg" />
 
-		<os:WMSC name="OpenstreetMap WMS"
-				 url="http://labs.metacarta.com/wms-c/Basic.py"
-				 layers="basic"
-				 isBaseLayer="true"/>
-
-		<os:WFS id="test"
-				name="test"
-				url="http://sigma.openplans.org/geoserver/wfs"
-				typename="tiger:poi"
-				srs="EPSG:4326"
-				version="1.0.0"
-				isBaseLayer="false"
-				minZoomLevel="21"
-				useCapabilities="true"
-				use110Capabilities="false"
-				proxy="http://openscales.org/proxy.php?url=">
+		<os:WMSC name="OpenLayers WMS"
+			numZoomLevels="20"
+			isBaseLayer="true"
+			maxExtent="-180,-90,180,90"
+			url="http://labs.metacarta.com/wms-c/Basic.py"
+			layers="basic"
+			format="image/jpeg" />
+		
+		<os:WFS name="Topp States (WFS)"
+			url="http://sigma.openplans.org/geoserver/wfs"
+			typename="topp:states"
+			srs="EPSG:4326"
+			version="1.0.0"
+			minZoomLevel="21">
+			<os:Style fillColor="0x00aa00"
+				fillOpacity="0.6"
+				strokeColor="0x003300"
+				strokeWidth="2" />
+		</os:WFS>
+		
+		<os:WFS name="Tiger poi (WFS)"
+			url="http://sigma.openplans.org/geoserver/wfs"
+			typename="tiger:poi"
+			srs="EPSG:4326"
+			version="1.0.0"
+			minZoomLevel="21"
+			useCapabilities="true"
+			use110Capabilities="false">
 			<os:Style fillColor="0xff0000"
-					  fillOpacity="0.8"
-					  strokeColor="0x0000ff"
-					  strokeWidth="2"/>
-
+				fillOpacity="0.7"
+				strokeColor="0x0066ff"
+				strokeWidth="1" />
 		</os:WFS>
-		
-		<os:WFS id="test2"
-			 	url="http://sigma.openplans.org/geoserver/wfs" 
-			 	typename="topp:states" 
-			 	srs="EPSG:4326"
-			 	version="1.0.0"
-			 	minZoomLevel="21"
-			 	visible="true"
-			 	isBaseLayer="false"
-			 	proxy="http://openscales.org/proxy.php?url=">
-		</os:WFS>
-		
-		<mx:Panel title="Layer Switcher">
-			<os:LayerSwitcherComponent id="layerSwitcher"
-										   map="{map}"
-										   label="Layers"/>
-		</mx:Panel>
-	   
-		<os:MaxExtent left="-180"
-					  bottom="-90"
-					  right="180"
-					  top="90"/>
-				   
-		<os:WheelHandler/>
-		<os:DragHandler/>
-		
 		
 	</os:Map>
-
+	
+	<!-- Specific tools of this example -->
+	
+	<mx:Panel title="Layers Manager" horizontalAlign="center" x="10" y="10">
+		<os:LayerSwitcherComponent map="{map}" />
+	</mx:Panel>
+	
 </mx:Canvas>

@@ -8,6 +8,7 @@
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 
+			// Specific imports for this example			
 			import org.openscales.core.feature.LineStringFeature;
 			import org.openscales.core.feature.MultiLineStringFeature;
 			import org.openscales.core.feature.MultiPointFeature;
@@ -27,11 +28,13 @@
 			import org.openscales.core.geometry.Polygon;
 			import org.openscales.core.layer.VectorLayer;
 import org.openscales.core.feature.Style;
-				
+			
 			[Bindable] private var map:Map;
-
+			
 			private function initMap():void {
-				map = fxmap.map;
+				map=fxmap.map;
+				this.setChildIndex(this.getChildAt(1), 0);
+				// Specific initialize for this example
 				var layer:VectorLayer = SampleLayers.features();
 				map.addLayer(layer);
 				testContainsPoint(layer);
@@ -125,29 +128,36 @@ style.strokeWidth = 1;
 		]]>
 	</mx:Script>
 	
+	<!-- Must be defined first to display the logs of the map and of its objects during their creation -->
+	<os:TraceInfo map="{map}" x="{width-200}" y="0" />
+	
 	<os:Map id="fxmap" width="100%" height="100%"
 		proxy="http://openscales.org/proxy.php?url="
 		zoom="11" lon="538850.47459" lat="5740916.1243">
-			
+		
+		<!-- OpenStreetMap EPSG:900913 -->
 		<os:Mapnik name="Mapnik"
 			numZoomLevels="20"
 			isBaseLayer="true"
 			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
 			minResolution="0.5971642833709717"
 			maxResolution="156543.0339" />
-
-		<mx:Panel title="Drawing Tools" horizontalAlign="center">
-			<os:FeatureDrawingComponent map="{map}"/>
-			<os:SelectBoxComponent map="{map}" width="100%" />
-		</mx:Panel>
-											   
-		<os:ClickHandler />
-		<os:DragHandler />	   
+		
+		<os:DragHandler />
 		<os:WheelHandler />
-
-		<os:MousePosition displayProjection="EPSG:4326"/>
+		
+		<os:MousePosition displayProjection="EPSG:4326" />
+		
+		<!-- Specific layers and handlers of this example -->
+		<!-- none -->
+		
 	</os:Map>
 	
-	<os:TraceInfo id="traceBox" map="{map}" x="{width-200}" y="0" />
-
+	<!-- Specific tools of this example -->
+	
+	<mx:Panel title="Drawing Tools" horizontalAlign="center" x="10" y="10">
+		<os:FeatureDrawingComponent map="{map}"/>
+		<os:SelectBoxComponent map="{map}" width="100%" />
+	</mx:Panel>
+	
 </mx:Canvas>

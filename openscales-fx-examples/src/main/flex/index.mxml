@@ -4,6 +4,28 @@
 	layout="horizontal"
 	creationComplete="list.selectedIndex=0; this.select(list.selectedItem);">
 	
+	<mx:Style>
+		ToolTip {
+			cornerRadius: 6;
+			backgroundAlpha: 0.66;
+			backgroundColor: #000000;
+			color: #ffff66;
+		}
+		Panel {
+			borderAlpha: 0.66;
+			borderColor: #000000;
+			color: #000000;
+			titleStyleName: "PanelTitle";
+		}
+		.PanelTitle {
+			color: #ffffff;
+			letterSpacing: 1;
+			fontWeight: bold;
+			fontStyle: italic;
+			text-indent: 24;
+		}
+	</mx:Style>
+	
 	<mx:Script>
 		<![CDATA[
 			import mx.core.Container;
@@ -18,35 +40,39 @@
 			}
 		]]>
 	</mx:Script>
-	<mx:List id="list" width="300" height="100%" selectedIndex="0" click="onListClick(event)">
+	
+	<mx:List id="list" width="200" height="100%" selectedIndex="0" click="onListClick(event)">
 		<mx:dataProvider>
 			<mx:Array>
-				<mx:Object viewStack="panZoom" label="PanZoom" description="Drag and zoom on the map" />
-				<mx:Object viewStack="layerSwitcher" label="LayerSwitcher" description="Switch the different layers"/>
-                <mx:Object viewStack="features" label="Features" description="Draw and select features" />
-                <mx:Object viewStack="osm" label="OSM and Reprojection" />
-                <mx:Object viewStack="capabilities" label="Capabilities" description="Add a WFS which is on a server" />
-                <mx:Object viewStack="search" label="Yahoo Search" description="Search a place with Yahoo" />
-                <mx:Object viewStack="wmsc1" label="Metacarta WMS-C" />
-                <mx:Object viewStack="wmsc2" label="WMS-C layer and 2 WFS" />
-                <mx:Object viewStack="polygons" label="Metacarta WFS Polygons" />
-                <mx:Object viewStack="points" label="Metacarta WFS Points" />
-                <mx:Object viewStack="wms" label="Germany WMS" />
-                <mx:Object viewStack="overview" label="Overview" description="Use the miniMap to move and zoom" />
-                <mx:Object viewStack="security" label="Security" description="Not implement yet" />
-            </mx:Array>
+				<mx:Object viewStack="panZoom" label="Pan &amp; zoom" description="The map displayed is OpenStreetMap Mapnik (EPSG:900913).&#13;Move the map using drag or N/S/E/W buttons.&#13;Zoom in/out using the mouse wheel, the scale slider, the +/- buttons above and below the slider or the zoom-box button.&#13;The coordinates of the mouse cursor are displayed as LongLat." />
+				<mx:Object viewStack="layersManager" label="Manage the layers" description="Choose a base layer using the combo-box.&#13;Change the order of the overlays using the up/down buttons or draging an overlay.&#13;Set the opacity of each layer (base layer or overlay) using its slider." />
+				<mx:Object viewStack="features" label="Draw and select features" description="Draw and select features" />
+				<mx:Object viewStack="informations" label="Information" description="Click on a point to see its attributes in the panel." />
+<!-- TODO: description of the following examples -->
+				<mx:Object viewStack="reprojectionAndQuery" label="Reproject and query" description="" />
+				<mx:Object viewStack="capabilities" label="Capabilities" description="Add a WFS which is on a server" />
+				<mx:Object viewStack="search" label="Yahoo Search" description="Search a place with Yahoo" />
+				<mx:Object viewStack="wmsc1" label="Metacarta WMS-C" description="" />
+				<mx:Object viewStack="wmsc2" label="WMS-C layer and 2 WFS" description="" />
+				<mx:Object viewStack="polygons" label="Metacarta WFS Polygons" description="" />
+				<mx:Object viewStack="points" label="Metacarta WFS Points" description="" />
+				<mx:Object viewStack="wms" label="Germany WMS" description="" />
+				<mx:Object viewStack="overview" label="Overview" description="Use the miniMap to move and zoom" />
+				<mx:Object viewStack="security" label="Security" description="Not implement yet" />
+				<!--mx:Object viewStack="global" label="Global" description="" /-->
+			</mx:Array>
 		</mx:dataProvider>
 	</mx:List>
 	
 	<mx:VBox width="100%" height="100%">
 		
 		<mx:ViewStack id="viewStack" width="100%" height="100%">
-			<mx:Panel id="empty" />
-			<os:LayerSwitcher id="layerSwitcher" />
+			<mx:Panel id="empty" /> <!-- needed because the view of index 0 is always loaded first -->
 			<os:PanZoom id="panZoom"  />		
+			<os:LayerSwitcher id="layersManager" />
 			<os:FeaturesExample id="features" />
-			<os:InfoExample id="info" />
-			<os:OpenStreetMap id="osm" />
+			<os:InfoExample id="informations" />
+			<os:OpenStreetMap id="reprojectionAndQuery" />
 			<os:CapabilitiesExample id="capabilities" />
 			<os:YahooSearchExample id="search" />			
 			<os:MetacartaWMSC id="wmsc1" />
@@ -56,9 +82,11 @@
 			<os:GermanyWMS id="wms" />
 			<os:OverView id="overview" />
 			<os:SecurityMap id="security" />
+			<!--os:Global id="global" /-->
 		</mx:ViewStack>
 		
-		<mx:TextArea id="desc" width="100%" height="80" />
+		<mx:TextArea id="desc" width="100%" height="100" />
+		
 	</mx:VBox>
 	
 </mx:Application>
