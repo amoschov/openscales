@@ -59,6 +59,7 @@
 				
 				if(!(isNaN(latitude) || isNaN(longitude))){
 					this.map.center=new LonLat(longitude,latitude);
+					
 				} 
 			}
 			

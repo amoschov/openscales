@@ -100,11 +100,11 @@
 				
 				<category label="Localize">
 					<example viewStack="overview" label="Localize with the overview map" description="Move or zoom the map tand see the modification on the overview map.\nClick on the overview to change the center of the main map.\nDraw a rectangle on the overview to define a new extent for the main map.\nShow or Hide the overview map using the appropriate button." />
-					<example viewStack="search" label="Geolocate using Yahoo Search" description="Search a place with Yahoo" />
+					<example viewStack="search" label="Geolocate using Yahoo Search" description="Search a place with Yahoo.\nIf there is only one search result, you will go directly to your destination !" />
 				</category>
 				
 				<category label="Protocols">
-					<example viewStack="capabilities" label="Capabilities" description="Add a WFS which is on a server" />
+					<example viewStack="capabilities" label="Capabilities" description="AAdd a WFS which is on a server.\nClick on Go! to display all WFS available.\nFor an example, choose topp:states and go to the United States (be patient, this will take few seconds)" />
 					<example viewStack="wmsc1" label="Metacarta WMS-C" description="" />
 					<example viewStack="wmsc2" label="WMS-C layer and 2 WFS" description="" />
 					<example viewStack="polygons" label="Metacarta WFS Polygons" description="" />
