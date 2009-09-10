@@ -7,12 +7,9 @@
 	<packaging>swc</packaging>
 	<name>Flex support</name>
 	<description>
-		Openscales Fx is intended to provide Flex support to the pure ActionScript 3 openscales-core.
+		Unlike Core module that is pure ActionScript3, Openscales Fx module contains all Flex Framework support for OpenScales.
 		
-		org.openscales.fx package contains Fx* classes that are Flex UIComponent wrapper for 
-		openscales-core classes.
-		
-		org.openscales.component contains native Flex components.
+		It mainly composed of native Flex components and wrapper around openscales-core classes.
 	</description>
 	
 	<parent>
@@ -50,6 +47,12 @@
 			            </goals>
 					</execution>
 				</executions>
+				<configuration>
+					<packageDescriptions>
+						<org.openscales.component.control>Contains native Flex components</org.openscales.component.control>
+						<org.openscales.fx>Contains wrapper around openscales-core pure AS3 components</org.openscales.fx>
+					</packageDescriptions>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
