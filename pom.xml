@@ -53,12 +53,10 @@
 	</profiles>
 	
 	<modules>
-		<module>openscales-i18n</module>
 		<module>openscales-core</module>
 		<module>openscales-as-examples</module>
 		<module>openscales-fx-examples</module>
 		<module>openscales-fx</module>
-		<module>openscales-proj</module>
 		<module>openscales-proj4as</module>
 	</modules>
 	
