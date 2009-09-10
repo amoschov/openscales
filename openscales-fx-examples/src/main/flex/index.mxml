@@ -2,6 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:os="*"
 	layout="horizontal"
+	paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"
 	creationComplete="init();">
 	
 	<mx:Style>
