@@ -147,6 +147,7 @@ package org.openscales.core.handler.mouse
 		}
 		
 		public function OnSelectionBySelectBox():void{			
+			 
 			var f:VectorFeature, f1:VectorFeature;
 			//if ctrl key isn't pressed
 			if(!ctrl){
@@ -271,8 +272,9 @@ package org.openscales.core.handler.mouse
 		 * Change the current feature with the select style. The feature is now selected,
 		 * placed in the tab of selected features and the current is copy to the last.
 		 */		
-		private function ChangeToSelected():void{
+		private function ChangeToSelected():void{			
 			this.currentfeature.originalStyle=this.currentfeature.style;					
+			selectStyle.strokeWidth = this.currentfeature.originalStyle.strokeWidth;
 			this.currentfeature.style = selectStyle;							 
 			this.currentfeature.selected = true;
 			this.selectFeatures[iteratorFeatures]=this.currentfeature;						

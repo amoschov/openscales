@@ -58,14 +58,13 @@ package org.openscales.core.handler.sketch
 		}
 
 		public function mouseDblClick(event:MouseEvent):void {
-			this.drawFinalPath();
-			_drawContainer.graphics.clear();
-			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,temporaryLine);
+			this.drawFinalPath();		
 		} 
 
 		public function drawFinalPath():void{			
 			newFeature = true;
-			
+			_drawContainer.graphics.clear();
+			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,temporaryLine);
 			//Change style of finished path
 			var style:Style = new Style();
 			style.strokeColor = 0x60FFE9;

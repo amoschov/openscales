@@ -119,7 +119,7 @@ package org.openscales.core.layer.capabilities
 		/**
 		 * Method to build the request url
 		 *
-		 * @return The builded url with needed parameters
+		 * @return The built url with needed parameters
 		 */
 		private function buildRequestUrl():String {
 			var url:String = this._url;
@@ -207,8 +207,6 @@ package org.openscales.core.layer.capabilities
 				}
 			}
 		}
-
-
 	}
 }
 
