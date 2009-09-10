@@ -49,7 +49,26 @@ package org.openscales.core.feature
 
 		}
 
-
+		public function clone():Style{
+			var clonedStyle:Style = new Style();
+			clonedStyle._fillColor = this._fillColor;
+			clonedStyle._fillOpacity = this._fillOpacity;
+			clonedStyle._strokeColor = this._strokeColor;
+			clonedStyle._strokeOpacity = this._strokeOpacity;
+			clonedStyle._strokeWidth = this._strokeWidth;
+			clonedStyle._strokeLinecap = this._strokeLinecap;
+			clonedStyle._pointRadius = this._pointRadius;
+			clonedStyle._hoverFillColor = this._hoverFillColor;
+			clonedStyle._hoverFillOpacity = this._hoverFillOpacity;
+			clonedStyle._hoverStrokeColor = this._hoverStrokeColor;
+			clonedStyle._hoverStrokeOpacity = this._hoverStrokeOpacity;
+			clonedStyle._hoverStrokeWidth = this._hoverStrokeWidth;
+			clonedStyle._hoverPointRadius = this._hoverPointRadius;
+			clonedStyle._isFilled = this._isFilled;
+			clonedStyle._isStroked = this._isStroked;
+			return clonedStyle;
+		}
+		
 		/* Getters & setters */
 
 		public function get fillColor():uint {

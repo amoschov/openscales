@@ -54,11 +54,6 @@ package org.openscales.core.handler.mouse
 		 * iterator for selectFeature (in the tab "selectFeatures")
 		 */
 		private var _iteratorFeatures:Number = 0;
-
-		/**
-		 * The style for selected feature
-		 */
-		private var _selectStyle:Style = new Style(); 
 		
 		/**
 		 * The layer wich contain our features
@@ -82,9 +77,6 @@ package org.openscales.core.handler.mouse
 		{
 			super(map,active);
 			this.layer=layer;
-
-			this.selectStyle.fillColor = 0xFFD700;
-			this.selectStyle.strokeColor = 0xFFD700;
 		}
 
 		override protected function registerListeners():void{
@@ -274,7 +266,9 @@ package org.openscales.core.handler.mouse
 		 */		
 		private function ChangeToSelected():void{			
 			this.currentfeature.originalStyle=this.currentfeature.style;					
-			selectStyle.strokeWidth = this.currentfeature.originalStyle.strokeWidth;
+			var selectStyle:Style = this.currentfeature.originalStyle.clone();
+			selectStyle.fillColor = 0xFFD700;
+			selectStyle.strokeColor = 0xFFD700;
 			this.currentfeature.style = selectStyle;							 
 			this.currentfeature.selected = true;
 			this.selectFeatures[iteratorFeatures]=this.currentfeature;						
@@ -410,13 +404,6 @@ package org.openscales.core.handler.mouse
 		public function set currentfeature(currentfeature:VectorFeature):void
 		{
 			this._currentfeature=currentfeature;
-		}
-
-		public function get selectStyle():Style{
-			return _selectStyle;
-		}
-		public function set selectStyle(newStyle:Style):void{
-			_selectStyle = newStyle;
 		}
 
 		public function get selectFeatures():Array{

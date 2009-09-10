@@ -144,7 +144,7 @@ style.strokeWidth = 1;
 			maxResolution="156543.0339" />
 		
 		<os:DragHandler />
-		<os:WheelHandler />
+		
 		
 		<os:MousePosition displayProjection="EPSG:4326" />
 		
