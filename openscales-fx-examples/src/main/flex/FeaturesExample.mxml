@@ -149,15 +149,16 @@ style.strokeWidth = 1;
 		<os:MousePosition displayProjection="EPSG:4326" />
 		
 		<!-- Specific layers and handlers of this example -->
-		<!-- none -->
+
+		<os:SelectFeature />		
 		
 	</os:Map>
 	
 	<!-- Specific tools of this example -->
 	
-	<mx:Panel title="Drawing Tools" horizontalAlign="center" x="10" y="10">
-		<os:FeatureDrawingComponent map="{map}"/>
-		<os:SelectBoxComponent map="{map}" width="100%" />
-	</mx:Panel>
+	<mx:VBox horizontalAlign="center" x="10" y="10">
+		<os:SelectBoxComponent map="{map}" />
+		<!--os:UnselectBoxComponent map="{map}" /--> <!-- TODO -->
+	</mx:VBox>
 	
 </mx:Canvas>

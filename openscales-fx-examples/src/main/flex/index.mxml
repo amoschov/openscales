@@ -2,7 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:os="*"
 	layout="horizontal"
-	creationComplete="list.selectedIndex=0; this.select(list.selectedItem);">
+	creationComplete="init();">
 	
 	<mx:Style>
 		ToolTip {
@@ -22,7 +22,7 @@
 			letterSpacing: 1;
 			fontWeight: bold;
 			fontStyle: italic;
-			text-indent: 24;
+			/*text-indent: 24;*/
 		}
 	</mx:Style>
 	
@@ -30,12 +30,30 @@
 		<![CDATA[
 			import mx.core.Container;
 			
-			private function select(o:Object) : void {
+			private function init():void {
+				setOSdescription();
+				list.selectedIndex = 1;
+				select(list.selectedItem);
+			}
+			
+			private function setOSdescription():void {
+				var text:String;
+				text = "OpenScales.org 1.0 bêta - 09/14/2009";
+				text += "\n\n\n";
+				text += "OpenScales.org is a user-friendly and fast interface designed to manipulate spatial data : geographic raster viewing, data-vector editing, management of smooth transitions between scales and positions, ...";
+				text += "\n\n";
+				text += "As a free open source (LGPL license) and extensible tool written in ActionScript, OpenScales is designed to be easily plugged in your Flex or Air application. OpenScales is a small but powerful core of GIS, so try it and let us know.";
+				text += "\n\n";
+				text += "OpenScales.org can be considered as an ActionScript3 port of Openlayers, since it has started from FlexLayers soure code that we actively improve to take advantage of new capabilities offered by ActionScript3 and Flex technologies.";
+				OSdescription.text = text;
+			}
+			
+			private function select(o:Object):void {
 				viewStack.selectedChild = viewStack.getChildByName(o.viewStack) as Container;
 				desc.htmlText = o.description;
 			}
 			
-			private function onListClick(e:MouseEvent) : void {
+			private function onListClick(e:MouseEvent):void {
 				this.select(list.selectedItem);
 			}
 		]]>
@@ -44,49 +62,66 @@
 	<mx:List id="list" width="200" height="100%" selectedIndex="0" click="onListClick(event)">
 		<mx:dataProvider>
 			<mx:Array>
+				<mx:Object viewStack="home" label="What is OpenScales.org" description="A short description of OpenScales.org" />
+
 				<mx:Object viewStack="panZoom" label="Pan &amp; zoom" description="The map displayed is OpenStreetMap Mapnik (EPSG:900913).&#13;Move the map using drag or N/S/E/W buttons.&#13;Zoom in/out using the mouse wheel, the scale slider, the +/- buttons above and below the slider or the zoom-box button.&#13;The coordinates of the mouse cursor are displayed as LongLat." />
 				<mx:Object viewStack="layersManager" label="Manage the layers" description="Choose a base layer using the combo-box.&#13;Change the order of the overlays using the up/down buttons or draging an overlay.&#13;Set the opacity of each layer (base layer or overlay) using its slider." />
-				<mx:Object viewStack="features" label="Draw and select features" description="Draw and select features" />
-				<mx:Object viewStack="informations" label="Information" description="Click on a point to see its attributes in the panel." />
-<!-- TODO: description of the following examples -->
+
+				<mx:Object viewStack="drawings" label="Draw features" description="TODO" />
+				<mx:Object viewStack="features" label="Use all the types of features" description="There is an example of each type of geometry: point (red), multipoint (orange), line (green), multiline (red), polygon (blue), multipolygon (violet).&#13;The additional black geometries are used to test the 'containsPoint' and 'intersects' functions of each geometry.&#13;Select one geometry by a click or several geometries using the selectBox button and drawing a box.&#13;Use CTRL+click and CTRL+selectBox to define a complex selection." />
+				<mx:Object viewStack="informations" label="Get information on the features" description="Click on a point to see its attributes in the panel." />
 				<mx:Object viewStack="reprojectionAndQuery" label="Reproject and query" description="" />
-				<mx:Object viewStack="capabilities" label="Capabilities" description="Add a WFS which is on a server" />
+
+				<mx:Object viewStack="overview" label="Overview" description="Use the miniMap to move and zoom" />
 				<mx:Object viewStack="search" label="Yahoo Search" description="Search a place with Yahoo" />
+
+				<mx:Object viewStack="capabilities" label="Capabilities" description="Add a WFS which is on a server" />
 				<mx:Object viewStack="wmsc1" label="Metacarta WMS-C" description="" />
 				<mx:Object viewStack="wmsc2" label="WMS-C layer and 2 WFS" description="" />
 				<mx:Object viewStack="polygons" label="Metacarta WFS Polygons" description="" />
 				<mx:Object viewStack="points" label="Metacarta WFS Points" description="" />
 				<mx:Object viewStack="wms" label="Germany WMS" description="" />
-				<mx:Object viewStack="overview" label="Overview" description="Use the miniMap to move and zoom" />
+
 				<mx:Object viewStack="security" label="Security" description="Not implement yet" />
+
 				<!--mx:Object viewStack="global" label="Global" description="" /-->
 			</mx:Array>
 		</mx:dataProvider>
 	</mx:List>
 	
 	<mx:VBox width="100%" height="100%">
-		
 		<mx:ViewStack id="viewStack" width="100%" height="100%">
-			<mx:Panel id="empty" /> <!-- needed because the view of index 0 is always loaded first -->
+			<mx:Panel id="home" title="OpenScales.org 1.0 bêta - september 14th 2009">
+				<!-- also needed because the view of index 0 is always loaded first -->
+				<mx:VBox horizontalAlign="center" width="100%" height="100%">
+					<mx:Image />
+					<mx:TextArea id="OSdescription" width="100%" height="100%" />
+				</mx:VBox>
+			</mx:Panel>
+			
 			<os:PanZoom id="panZoom"  />		
 			<os:LayerSwitcher id="layersManager" />
+
+			<os:DrawingExample id="drawings" />
 			<os:FeaturesExample id="features" />
 			<os:InfoExample id="informations" />
 			<os:OpenStreetMap id="reprojectionAndQuery" />
-			<os:CapabilitiesExample id="capabilities" />
+			
+			<os:OverView id="overview" />
 			<os:YahooSearchExample id="search" />			
+			
+			<os:CapabilitiesExample id="capabilities" />
 			<os:MetacartaWMSC id="wmsc1" />
 			<os:GeovistaWMSCWFS id="wmsc2" />
 			<os:MetacartaWFSPolygons id="polygons" />
 			<os:MetacartaWFSPoints id="points"/>
 			<os:GermanyWMS id="wms" />
-			<os:OverView id="overview" />
+
 			<os:SecurityMap id="security" />
+
 			<!--os:Global id="global" /-->
 		</mx:ViewStack>
-		
 		<mx:TextArea id="desc" width="100%" height="100" />
-		
 	</mx:VBox>
 	
 </mx:Application>
