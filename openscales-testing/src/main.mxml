@@ -3,6 +3,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.geometry.IntersectingTest;
 			import org.openscales.core.layer.capabilities.ParsingTest;
 			import org.openscales.core.SexagecimalTest;
 			import org.openscales.core.StringUtilsTest;
@@ -14,6 +15,7 @@
 		        ts.addTestSuite(StringUtilsTest);
 		        ts.addTestSuite(SexagecimalTest);
 		 		ts.addTestSuite(ParsingTest);
+		 		ts.addTestSuite(IntersectingTest);
 
 		 		testRunner.test = ts;
 		 		testRunner.startTest();

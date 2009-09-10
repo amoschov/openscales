@@ -25,7 +25,7 @@
 </excludedEntries>
 </libraryPathEntry>
 <libraryPathEntry kind="3" linkType="1" path="/openscales-proj4as/bin/openscales-proj4as.swc" useDefaultLinkType="false"/>
-<libraryPathEntry kind="1" linkType="2" path="libs"/>
+<libraryPathEntry kind="1" linkType="1" path="libs"/>
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>
