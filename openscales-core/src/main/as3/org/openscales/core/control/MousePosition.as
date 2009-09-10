@@ -69,7 +69,6 @@ package org.openscales.core.control
 					this.lastXy = new Pixel(map.mouseX, map.mouseY);
 					return;
 				}
-
 				this.lastXy = new Pixel(map.mouseX, map.mouseY);
 				lonLat = this.map.getLonLatFromMapPx(this.lastXy);
 			}
@@ -98,12 +97,22 @@ package org.openscales.core.control
 			if (!this.y) {this.y = this.map.size.h - 20;}
 
 			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
+			this.map.addEventListener(MapEvent.DRAG_START, this.deactivateDisplay);
+			this.map.addEventListener(MapEvent.MOVE_END, this.activateDisplay);
 		}
 
 		override public function resize(event:MapEvent):void {
 			/* if (!this.x) { */this.x = this.map.size.w - 150;/* } */
 			/* if (!this.y) { */this.y = this.map.size.h - 20;/* } */
 			super.resize(event);
+		}
+		
+		private function deactivateDisplay(evt:MapEvent):void{
+			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
+		}
+		
+		private function activateDisplay(evt:MapEvent):void{
+			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
 		}
 
 		// Getters & setters
