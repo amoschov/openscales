@@ -8,20 +8,19 @@
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 
-			// Specific imports for this example			
-			import org.openscales.core.events.GetFeatureInfoEvent;
-
+			// Specific imports for this example
+			import org.openscales.core.security.sample.SampleSecurity;
+			
 			[Bindable] private var map:Map;
 			
+			private var security:SampleSecurity;
+
 			private function initMap():void {
 				map=fxmap.map;
 				this.setChildIndex(this.getChildAt(1), 0);
 				// Specific initialize for this example
-				map.addEventListener(GetFeatureInfoEvent.GET_FEATURE_INFO_DATA, onFeatureInfoData);
-			}
-			
-			private function onFeatureInfoData(event:GetFeatureInfoEvent):void {
-				Trace.info("Data=" + event.data);
+				security = new SampleSecurity(map, "test", "t35t");
+				baselayer.layer.security=security;
 			}
 		]]>
 	</mx:Script>
@@ -34,7 +33,7 @@
 		zoom="2" lon="538850.47459" lat="5740916.1243">
 		
 		<!-- OpenStreetMap EPSG:900913 -->
-		<os:Mapnik name="Mapnik"
+		<os:Mapnik name="Mapnik" id="baselayer"
 			numZoomLevels="20"
 			isBaseLayer="true"
 			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
@@ -46,34 +45,14 @@
 		
 		<os:MousePosition displayProjection="EPSG:4326" />
 		<os:ScaleLine map="{map}" />
-		
+
 		<!-- Specific layers and handlers of this example -->
-		
-		<os:WFS name="Tiger poi (WFS)"
-			url="http://sigma.openplans.org/geoserver/wfs"
-			typename="tiger:poi"
-			srs="EPSG:4326"
-			version="1.0.0"
-			minZoomLevel="21"
-			useCapabilities="true"
-			use110Capabilities="false">
-			<os:Style fillColor="0xff0000"
-				fillOpacity="0.7"
-				strokeColor="0x0066ff"
-				strokeWidth="1" />
-		</os:WFS>
-		
-		<os:WMSGetFeatureInfo url="http://sigma.openplans.org/geoserver/wms" layers="tiger:poi" />
-		
-		<os:SelectFeature />		
-		<!--os:DragFeature map="{this.map}" /-->
+		<!-- none -->
 		
 	</os:Map>
 	
 	<!-- Specific tools of this example -->
 	
-	<mx:Panel title="Informations about the last selected feature" horizontalAlign="center" x="10" y="10">
-		<os:FeatureInfoComponent map="{map}"/>
-	</mx:Panel>
+	<!--<os:SampleSecurity map="{map}" login="test" password="t35t" /-->
 	
 </mx:Canvas>
