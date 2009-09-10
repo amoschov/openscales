@@ -41,6 +41,7 @@
 		<os:WheelHandler />
 		
 		<os:MousePosition displayProjection="EPSG:4326" />
+		<os:ScaleLine map="{map}" />
 
 		<!-- Specific layers and handlers of this example -->
 		<!-- none -->
