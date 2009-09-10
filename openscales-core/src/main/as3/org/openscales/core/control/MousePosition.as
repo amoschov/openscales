@@ -4,10 +4,10 @@ package org.openscales.core.control
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
-	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
+	import org.openscales.core.Map;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -46,9 +46,7 @@ package org.openscales.core.control
 
 		override public function draw():void {
 			super.draw();
-
 			this.addChild(label);
-
 			this.redraw();
 
 		}
@@ -93,7 +91,7 @@ package org.openscales.core.control
 		override public function set map(map:Map):void {
 			super.map = map;
 
-			if (!this.x) {this.x = this.map.size.w - 150;}
+			if (!this.x) {this.x = 10;}
 			if (!this.y) {this.y = this.map.size.h - 20;}
 
 			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
@@ -102,8 +100,8 @@ package org.openscales.core.control
 		}
 
 		override public function resize(event:MapEvent):void {
-			/* if (!this.x) { */this.x = this.map.size.w - 150;/* } */
-			/* if (!this.y) { */this.y = this.map.size.h - 20;/* } */
+			this.x = 10;
+			this.y = this.map.size.h - 20;
 			super.resize(event);
 		}
 		
