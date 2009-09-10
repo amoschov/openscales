@@ -100,4 +100,14 @@
 		</plugins>
 	</build>
 	
+	<reporting>
+        <plugins>
+            <plugin>
+                <groupId>com.adobe.ac</groupId>
+                <artifactId>flex-pmd-maven-plugin</artifactId>
+                <version>${flexpmd.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
+	
 </project>

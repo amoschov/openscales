@@ -55,6 +55,12 @@
 			            </goals>
 					</execution>
 				</executions>
+				<configuration>
+					<packageDescriptions>
+						<org.openscales.proj4as>Proj4as core classes</org.openscales.proj4as>
+						<org.openscales.proj4as.proj>Proj4as projection implementations</org.openscales.proj4as.proj>
+					</packageDescriptions>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
