@@ -61,7 +61,7 @@
 			public function onChangeListElement(event:Event):void {
 				// We show to user the informations about the layer
 				featureCap = capabilities.getValue(this.list.selectedItem);
-				var info:String = "\tInformation about the layer: \n\n";
+				var info:String = "Information about the selected layer: \n\n";
 				info += "Title: " + featureCap.getValue("Title") + "\n";
 				info += "Description: " + featureCap.getValue("Abstract") + "\n";
 				info += "SRS: " + featureCap.getValue("SRS");
@@ -103,7 +103,7 @@
 			 */
 			public function capabilitiesGetter(getCap:GetCapabilities):void {
 				this.capabilities = getCap.getAllCapabilities();
-				lblFeatures.text = "There are " + capabilities.size() + " features available on server:";
+				lblFeatures.text = capabilities.size() + " layers available";
 				this.list.dataProvider = capabilities.getKeys().sort();	
 			}
 			
@@ -118,16 +118,18 @@
 	</mx:Script>
 	
 	<mx:VBox width="100%">
-		<mx:Label text="WFS server URL:" />
-		<mx:Label id="lblFeatures" enabled="false"/>
 		<mx:HBox width="100%">
-			<mx:TextInput width="100%" id="txtUrl" text="http://sigma.openplans.org/geoserver/wfs" displayAsPassword="false" editable="true" enabled="true"/>
-			<mx:Button label="Go!" id="butGo" enabled="true" click="this.onButtonClick(event)"/>	
+			<mx:Label text="WFS server URL:" />
+			<mx:Label id="lblFeatures" enabled="false" />
 		</mx:HBox>
 		
-		<mx:List width="100%" height="114" allowMultipleSelection="false" id="list" doubleClickEnabled="true" doubleClick="this.onDblClickListElement(event)" change="this.onChangeListElement(event)"></mx:List>
-		<mx:Text width="100%" height="108" id="txtInfo" visible="true"/>
-	
+		<mx:HBox width="100%">
+			<mx:TextInput width="100%" id="txtUrl" text="http://sigma.openplans.org/geoserver/wfs" displayAsPassword="false" editable="true" enabled="true" />
+			<mx:Button label="Go!" id="butGo" enabled="true" click="this.onButtonClick(event)" />	
+		</mx:HBox>
+		
+		<mx:List width="100%" height="114" allowMultipleSelection="false" id="list" doubleClickEnabled="true" doubleClick="this.onDblClickListElement(event)" change="this.onChangeListElement(event)" />
+		<mx:Text width="100%" height="108" id="txtInfo" visible="true" text="Information about the selected layer:" />
 	</mx:VBox>
 	
 </control:Control>
