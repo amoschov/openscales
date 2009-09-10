@@ -30,10 +30,13 @@
 		<![CDATA[
 			import mx.core.Container;
 			
+			[Bindable] private var selectedNode:XML = null;
+			private var selectedView:Container = null;
+			private var oldSelectedIndex:int = 0;
+            
 			private function init():void {
 				setOSdescription();
-				list.selectedIndex = 1;
-				select(list.selectedItem);
+				expandTree();
 			}
 			
 			private function setOSdescription():void {
@@ -48,46 +51,73 @@
 				OSdescription.text = text;
 			}
 			
-			private function select(o:Object):void {
-				viewStack.selectedChild = viewStack.getChildByName(o.viewStack) as Container;
-				desc.htmlText = o.description;
+			private function expandTree():void {
+				for(var i:int=0; i<tree.dataProvider.length; i++) {
+					tree.expandChildrenOf(tree.dataProvider[i], true);
+				}
 			}
 			
-			private function onListClick(e:MouseEvent):void {
-				this.select(list.selectedItem);
+			private function collapseTree():void {
+				for(var i:int=0; i<tree.dataProvider.length; i++) {
+					tree.expandChildrenOf(tree.dataProvider[i], false);
+				}
+			}
+			
+			private function treeChanged(event:Event):void {
+				selectedNode = Tree(event.target).selectedItem as XML;
+				selectedView = viewStack.getChildByName(selectedNode.@viewStack) as Container;
+				if (selectedView) {
+					viewStack.selectedChild = selectedView;
+					description.text = selectedNode.@description;
+					oldSelectedIndex = tree.selectedIndex;
+				} else {
+					var open:Boolean = false; // FixMe: get the current state
+					tree.expandChildrenOf(tree.selectedItem, ! open);
+					tree.selectedIndex = oldSelectedIndex;
+				}
 			}
 		]]>
 	</mx:Script>
 	
-	<mx:List id="list" width="200" height="100%" selectedIndex="0" click="onListClick(event)">
-		<mx:dataProvider>
-			<mx:Array>
-				<mx:Object viewStack="home" label="What is OpenScales.org" description="A short description of OpenScales.org" />
-
-				<mx:Object viewStack="panZoom" label="Pan &amp; zoom" description="The map displayed is OpenStreetMap Mapnik (EPSG:900913).&#13;Move the map using drag or N/S/E/W buttons.&#13;Zoom in/out using the mouse wheel, the scale slider, the +/- buttons above and below the slider or the zoom-box button.&#13;The coordinates of the mouse cursor are displayed as LongLat." />
-				<mx:Object viewStack="layersManager" label="Manage the layers" description="Choose a base layer using the combo-box.&#13;Change the order of the overlays using the up/down buttons or draging an overlay.&#13;Set the opacity of each layer (base layer or overlay) using its slider." />
-
-				<mx:Object viewStack="drawings" label="Draw features" description="TODO" />
-				<mx:Object viewStack="features" label="Use all the types of features" description="There is an example of each type of geometry: point (red), multipoint (orange), line (green), multiline (red), polygon (blue), multipolygon (violet).&#13;The additional black geometries are used to test the 'containsPoint' and 'intersects' functions of each geometry.&#13;Select one geometry by a click or several geometries using the selectBox button and drawing a box.&#13;Use CTRL+click and CTRL+selectBox to define a complex selection." />
-				<mx:Object viewStack="informations" label="Get information on the features" description="Click on a point to see its attributes in the panel." />
-				<mx:Object viewStack="reprojectionAndQuery" label="Reproject and query" description="" />
-
-				<mx:Object viewStack="overview" label="Overview" description="Use the miniMap to move and zoom" />
-				<mx:Object viewStack="search" label="Yahoo Search" description="Search a place with Yahoo" />
-
-				<mx:Object viewStack="capabilities" label="Capabilities" description="Add a WFS which is on a server" />
-				<mx:Object viewStack="wmsc1" label="Metacarta WMS-C" description="" />
-				<mx:Object viewStack="wmsc2" label="WMS-C layer and 2 WFS" description="" />
-				<mx:Object viewStack="polygons" label="Metacarta WFS Polygons" description="" />
-				<mx:Object viewStack="points" label="Metacarta WFS Points" description="" />
-				<mx:Object viewStack="wms" label="Germany WMS" description="" />
-
-				<mx:Object viewStack="security" label="Security" description="Not implement yet" />
-
-				<!--mx:Object viewStack="global" label="Global" description="" /-->
-			</mx:Array>
-		</mx:dataProvider>
-	</mx:List>
+	<mx:Tree id="tree" width="230" height="100%" labelField="@label" showRoot="true" change="treeChanged(event)">
+		<mx:XMLListCollection>
+			<mx:XMLList id="treeData">
+				<example viewStack="home" label="What is OpenScales.org" description="A short description of OpenScales.org" />
+				
+				<!--example viewStack="global" label="Global" description="" /-->
+				
+				<category label="Configure the map">
+					<example viewStack="panZoom" label="Pan &amp; zoom" description="The map displayed is OpenStreetMap Mapnik (EPSG:900913).\nMove the map using drag or N/S/E/W buttons.\nZoom in/out using the mouse wheel, the scale slider, the +/- buttons above and below the slider or the zoom-box button.\nThe coordinates of the mouse cursor are displayed as LongLat." />
+					<example viewStack="layersManager" label="Manage the layers" description="Choose a base layer using the combo-box.\nChange the order of the overlays using the up/down buttons or draging an overlay.\nSet the opacity of each layer (base layer or overlay) using its slider." />
+				</category>
+				
+				<category label="Manage features">
+					<example viewStack="drawings" label="Draw features" description="Drag the map or draw some points, polylines or polygons using the buttons of the first line.\nUse click and CTRL+click to select features.\nUse the buttons of the second line to remove the last drawn vertex, to delete the selected features, to delete all the drawn features or to merge the selected features." />
+					<example viewStack="features" label="Use all the types of features" description="This is an example of each type of geometry: point (red), multipoint (orange), line (green), multiline (red), polygon (blue), multipolygon (violet).The additional black geometries are used to test the 'containsPoint' and 'intersects' functions of each geometry.Select one geometry by a click or several geometries using the selectBox button and drawing a box.Use CTRL+click and CTRL+selectBox to define a complex selection." />
+					<example viewStack="informations" label="Get information on the features" description="Click on a point to see its attributes in the panel." />
+					<example viewStack="reprojectionAndQuery" label="Reproject and query" description="" />
+				</category>
+				
+				<category label="Localize">
+					<example viewStack="overview" label="Overview" description="Use the miniMap to move and zoom" />
+					<example viewStack="search" label="Yahoo Search" description="Search a place with Yahoo" />
+				</category>
+				
+				<category label="Protocols">
+					<example viewStack="capabilities" label="Capabilities" description="Add a WFS which is on a server" />
+					<example viewStack="wmsc1" label="Metacarta WMS-C" description="" />
+					<example viewStack="wmsc2" label="WMS-C layer and 2 WFS" description="" />
+					<example viewStack="polygons" label="Metacarta WFS Polygons" description="" />
+					<example viewStack="points" label="Metacarta WFS Points" description="" />
+					<example viewStack="wms" label="Germany WMS" description="" />
+				</category>
+				
+				<category label="Security">
+					<example viewStack="security" label="Security" description="IGN GeoDRM: not implement yet" />
+				</category>
+			</mx:XMLList>
+		</mx:XMLListCollection>
+	</mx:Tree>
 	
 	<mx:VBox width="100%" height="100%">
 		<mx:ViewStack id="viewStack" width="100%" height="100%">
@@ -99,29 +129,34 @@
 				</mx:VBox>
 			</mx:Panel>
 			
+			<!--os:Global id="global" /-->
+			
+			<!-- Configure the map -->
 			<os:PanZoom id="panZoom"  />		
 			<os:LayerSwitcher id="layersManager" />
-
+			
+			<!-- Manage features -->
 			<os:DrawingExample id="drawings" />
 			<os:FeaturesExample id="features" />
 			<os:InfoExample id="informations" />
 			<os:OpenStreetMap id="reprojectionAndQuery" />
 			
+			<!-- Localize -->
 			<os:OverView id="overview" />
 			<os:YahooSearchExample id="search" />			
 			
+			<!-- Protocols -->
 			<os:CapabilitiesExample id="capabilities" />
 			<os:MetacartaWMSC id="wmsc1" />
 			<os:GeovistaWMSCWFS id="wmsc2" />
 			<os:MetacartaWFSPolygons id="polygons" />
 			<os:MetacartaWFSPoints id="points"/>
 			<os:GermanyWMS id="wms" />
-
+			
+			<!-- Security -->
 			<os:SecurityMap id="security" />
-
-			<!--os:Global id="global" /-->
 		</mx:ViewStack>
-		<mx:TextArea id="desc" width="100%" height="100" />
+		<mx:TextArea id="description" width="100%" height="100" />
 	</mx:VBox>
 	
 </mx:Application>

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<control:Control xmlns:control="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="276" height="108" creationComplete="initFeatureDrawing();">
+<control:Control xmlns:control="org.openscales.component.control.*"
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="initFeatureDrawing();">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.geometry.Polygon;
@@ -240,7 +242,6 @@
 							var lineRing:LinearRing = ((drawLayer.features[last] as PolygonFeature).polygon.componentByIndex(0) as LinearRing);
 							pointToDelete = lineRing.getLastPoint();
 							lineRing.removeComponent(pointToDelete);
-							(drawLayer.features[last] as PolygonFeature).polygon.replaceComponent(0, lineRing);
 						} 
 						else {
 							drawLayer.removeFeature(drawLayer.features[last]);
@@ -414,18 +415,26 @@
 			}		
 		]]>
 	</mx:Script>
-	<mx:Glow id="glowImage" alphaFrom="1" alphaTo="1" blurXFrom="0.0" blurXTo="15.0" blurYFrom="0.0" blurYTo="15.0" color="0xC0FF0C"/>
-	<mx:ToggleButtonBar x="44" y="10" horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="0" id="tgBar" height="31" width="186">
-		<mx:Array>
-			<mx:Object icon="@Embed('/org/openscales/component/images/IconeMouvement.swf')" id="btnMouvement" toolTip="Pan the map"/>
-			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoint.swf')" id="btnPoint" toolTip="Draw a point"/>
-			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" id="btnPath" toolTip="Draw a path"/>
-			<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoly.swf')" id="btnPolygon" toolTip="Draw a polygon"/>
-		</mx:Array>
-	</mx:ToggleButtonBar>
 	
-	<mx:Button x="46" y="49" icon="@Embed('/org/openscales/component/images/merge_small.png')" id="btnMerge" click="this.OnMergeClick(event)" width="38" toolTip="Merge features selected" enabled="false" height="38"/>
-	<mx:Button x="95" y="49" icon="@Embed('/org/openscales/component/images/delete_all_small.png')" id="btnDeleteAll" click="this.onDeleteAllClick(event)" width="38" toolTip="Delete all drawing feature on the map" height="38"/>
-	<mx:Button x="143" y="49" icon="@Embed('/org/openscales/component/images/delete_last_small.png')" id="btnDeleteLast" click="this.onDeleteLastClick(event)" width="38" toolTip="Delete the last drawing feature" height="38"/>
-	<mx:Button x="190" y="49" icon="@Embed('/org/openscales/component/images/delete_selected_small.png')" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" width="38" enabled="false" toolTip="Delete all selected features" height="38"/>
+	<mx:Glow id="glowImage" alphaFrom="1" alphaTo="1" blurXFrom="0.0" blurXTo="15.0" blurYFrom="0.0" blurYTo="15.0" color="0xC0FF0C"/>
+	
+	<mx:VBox>
+	
+		<mx:ToggleButtonBar horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="0" id="tgBar" height="38" >
+			<mx:Array>
+				<mx:Object icon="@Embed('/org/openscales/component/images/IconeMouvement.swf')" id="btnMouvement" toolTip="Pan the map" />
+				<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoint.swf')" id="btnPoint" toolTip="Draw a point" />
+				<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinLigne.swf')" id="btnPath" toolTip="Draw a path" />
+				<mx:Object icon="@Embed('/org/openscales/component/images/IconeDessinPoly.swf')" id="btnPolygon" toolTip="Draw a polygon" />
+			</mx:Array>
+		</mx:ToggleButtonBar>
+		
+		<mx:HBox>
+			<mx:Button icon="@Embed('/org/openscales/component/images/delete_last_small.png')" id="btnDeleteLast" click="this.onDeleteLastClick(event)" toolTip="Delete the last drawing vertex" width="38" height="38" />
+			<mx:Button icon="@Embed('/org/openscales/component/images/delete_selected_small.png')" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" enabled="false" toolTip="Delete all selected features" width="38" height="38" />
+			<mx:Button icon="@Embed('/org/openscales/component/images/delete_all_small.png')" id="btnDeleteAll" click="this.onDeleteAllClick(event)" toolTip="Delete all the drawn features on the map" width="38" height="38" />
+			<mx:Button icon="@Embed('/org/openscales/component/images/merge_small.png')" id="btnMerge" click="this.OnMergeClick(event)" toolTip="Merge features selected" enabled="false" width="38" height="38" />
+		</mx:HBox>
+		
+	</mx:VBox>
 </control:Control>

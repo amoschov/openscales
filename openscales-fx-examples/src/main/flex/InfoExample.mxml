@@ -20,9 +20,6 @@
 				map.addEventListener(GetFeatureInfoEvent.GET_FEATURE_INFO_DATA, onFeatureInfoData);
 			}
 			
-			/**
-			 * 
-			 */
 			private function onFeatureInfoData(event:GetFeatureInfoEvent):void {
 				Trace.info("Data=" + event.data);
 			}
