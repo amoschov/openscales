@@ -3,12 +3,12 @@ package org.openscales.core.handler.mouse
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.Map;
-	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.handler.Handler;
+	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 
 	/**
 	 *
@@ -22,7 +22,6 @@ package org.openscales.core.handler.mouse
 	 */
 	public class DragHandler extends Handler
 	{
-
 		private var _startCenter:LonLat = null;
 		private var _start:Pixel = null;
 
@@ -135,23 +134,31 @@ package org.openscales.core.handler.mouse
 		 * This function is used to recenter map after dragging
 		 */
 		private function done(xy:Pixel):void {
-			if(this.dragging) {
+			if (this.dragging) {
 				this.panMap(xy);
 				this._dragging = false;
 			}
 		}
 		private function panMap(xy:Pixel):void {
 			this._dragging = true;
+			var oldCenter:LonLat = this.map.center;
 			var deltaX:Number = this._start.x - xy.x;
 			var deltaY:Number = this._start.y - xy.y;
-			var newCenter:LonLat = new LonLat(this._startCenter.lon + deltaX * this.map.resolution , this._startCenter.lat - deltaY * this.map.resolution);
-			var oldCenter:LonLat = this.map.center;
-			this.map.center = newCenter;
-			// Id the new center is invalid (see Map.setCenter for the conditions)
-			// we have to reset the bitmap to the initial position
-			if (newCenter.equals(oldCenter)) {
-Trace.debug("DragHandler.panMap ERROR: invalid new center or same center not managed");
-				;//map.redraw(); // FixMe: how to reset the bitmap to have a coherent "draw" with the current map ???
+			var newPosition:LonLat = new LonLat(this._startCenter.lon + deltaX * this.map.resolution , this._startCenter.lat - deltaY * this.map.resolution);
+			// If the new position equals the old center, stop here
+			if (newPosition.equals(oldCenter)) {
+				Trace.info("DragHandler.panMap INFO: new center = old center, nothing to do");
+				return;
+			}
+			// Try to set the new position as the center of the map
+			this.map.center = newPosition;
+			// If the new position is invalid (see Map.setCenter for the
+			// conditions), the center of the map is always the old one but the
+			// bitmap that represents the map is centered to the new position.
+			// We have to reset the bitmap position to the right center.
+			if (this.map.center.equals(oldCenter)) {
+				Trace.info("DragHandler.panMap INFO: invalid new center submitted, the bitmap of the map is reset");
+				this.map.resetCenterLayerContainer();
 			}
 		}
 	}

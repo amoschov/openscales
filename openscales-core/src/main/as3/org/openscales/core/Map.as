@@ -489,10 +489,19 @@ package org.openscales.core
 		}
 
 		/**
+		 * Reset the bitmap center depending on the current map center
+		 * 
+		 * @param tween use tween effect if set to true (default)
+		 */
+		public function resetCenterLayerContainer(tween:Boolean = true):void {
+			this.centerLayerContainer(this.center, tween);
+		}
+		
+		/**
 		 * This function takes care to recenter the layerContainer and bitmapTransition.
 		 *
 		 * @param lonlat the new layer container center
-		 * @param tween use tween effect is set to true
+		 * @param tween use tween effect if set to true
 		 */
 		private function centerLayerContainer(lonlat:LonLat, tween:Boolean = false):void {
 			var originPx:Pixel = this.getMapPxFromLonLat(this._layerContainerOrigin);
