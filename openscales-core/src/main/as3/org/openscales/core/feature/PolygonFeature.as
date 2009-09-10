@@ -11,9 +11,9 @@ package org.openscales.core.feature
 	 */
 	public class PolygonFeature extends VectorFeature
 	{
-		public function PolygonFeature(geometry:Polygon=null, data:Object=null, style:Style=null)
+		public function PolygonFeature(geom:Polygon=null, data:Object=null, style:Style=null)
 		{
-			super(geometry, data, style);
+			super(geom, data, style);
 		}
 
 		public function get polygon():Polygon {

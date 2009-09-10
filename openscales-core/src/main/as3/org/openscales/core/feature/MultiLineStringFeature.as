@@ -11,9 +11,9 @@ package org.openscales.core.feature
 	 */
 	public class MultiLineStringFeature extends VectorFeature
 	{
-		public function MultiLineStringFeature(geometry:MultiLineString=null, data:Object=null, style:Style=null)
+		public function MultiLineStringFeature(geom:MultiLineString=null, data:Object=null, style:Style=null)
 		{
-			super(geometry, data, style);
+			super(geom, data, style);
 		}
 
 		public function get lineStrings():MultiLineString {

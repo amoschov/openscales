@@ -171,24 +171,28 @@ Trace.debug("LinearRing.containsPoint "+(wn != 0));
 		/**
      	 * Test for instersection between this LinearRing and a geometry.
      	 * 
-     	 * @param geometry the geometry (of any type) to intersect with
+     	 * @param geom the geometry (of any type) to intersect with
      	 * @return a boolean defining if an intersection exist or not
       	 */
-		override public function intersects(geometry:Geometry):Boolean {
-			if (geometry is Point) {
-				return this.containsPoint(geometry as Point);
+		override public function intersects(geom:Geometry):Boolean {
+			if (geom is Point) {
+Trace.debug("LinearRing:intersects with a Point");
+				return this.containsPoint(geom as Point);
 			}
-			else if (geometry is LinearRing) {
+			else if (geom is LinearRing) {
 				// LinearRing must be tested before LineString !!!
-				return super.intersects(this);
+Trace.debug("LinearRing:intersects with a LinearRing");
+				return super.intersects(geom);
 			}
-			else if (geometry is LineString) {
-				return (geometry as LineString).intersects(this);
+			else if (geom is LineString) {
+Trace.debug("LinearRing:intersects with a LineString");
+				return (geom as LineString).intersects(this);
 			}
-			else {  // geometry is a multi-geometry
-				var numSubGeometries:int = (geometry as Collection).componentsLength;
+			else {  // geom is a multi-geometry
+Trace.debug("LinearRing:intersects with a multi-geometry");
+				var numSubGeometries:int = (geom as Collection).componentsLength;
 				for(var i:int=0; i<numSubGeometries; ++i) {
-					if ((geometry as Collection).componentByIndex(i).intersects(this)) {
+					if ((geom as Collection).componentByIndex(i).intersects(this)) {
 						// The sub-geometry intersects this LinearRing, there is
 						//   no need to continue the tests for all the other
 						//   sub-geometries

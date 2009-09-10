@@ -310,19 +310,19 @@ package org.openscales.core.geometry
      	 * Determine whether another geometry is equivalent to this one.  Geometries
      	 *     are considered equivalent if all components have the same coordinates.
      	 * 
-     	 * @params geometry The geometry to test. 
+     	 * @params geom The geometry to test. 
      	 *
      	 * @return The supplied geometry is equivalent to this geometry.
      	 */
 // TODO (in all classes)
-     	/*public function equals(geometry:Collection):Boolean {
-			if(getQualifiedClassName(this) != getQualifiedClassName(geometry)) {
+     	/*public function equals(geom:Collection):Boolean {
+			if(getQualifiedClassName(this) != getQualifiedClassName(geom)) {
 				return false;
-			} else if(geometry.componentsLength != this.componentsLength) {
+			} else if(geom.componentsLength != this.componentsLength) {
 				return false;
 			} else {
 				for(var i:int=0; i<this.componentsLength; ++i) {
-					if(! this.componentByIndex(i).equals(geometry.componentByIndex(i))) {
+					if(! this.componentByIndex(i).equals(geom.componentByIndex(i))) {
 						return false;
 					}
 				}
@@ -345,19 +345,22 @@ package org.openscales.core.geometry
 		/**
     	* Determine if the input geometry intersects this one.
      	*
-     	* @param geometry Any type of geometry.
+     	* @param geom Any type of geometry.
      	*
      	* @return The input geometry intersects this one.
      	*/
-    	override public function intersects(geometry:Geometry):Boolean {
-			if (geometry is Point) {
-				return (geometry as Point).intersects(this);
+    	override public function intersects(geom:Geometry):Boolean {
+			if (geom is Point) {
+Trace.debug("Collection.intersects translated to Point.intersects");
+				return (geom as Point).intersects(this);
 			} else {
 				for(var i:int=0; i<this.componentsLength; ++i) {
-					if ((geometry as Collection).intersects(this.componentByIndex(i))) {
+					if ((geom as Collection).intersects(this.componentByIndex(i))) {
+Trace.debug("Collection.intersects true from component "+i);
 						return true;
 					}
 				}
+Trace.debug("Collection.intersects false for each component");
 				return false;
 			}
 			// never used

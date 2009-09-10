@@ -131,34 +131,37 @@ package org.openscales.core.geometry
      	 * X-sorted and potential intersections are only calculated when their
      	 * bounding boxes intersect.
      	 * 
-     	 * @param geometry the geometry (of any type) to intersect with
+     	 * @param geom the geometry (of any type) to intersect with
      	 * @return a boolean defining if an intersection exist or not
       	 */
-		override public function intersects(geometry:Geometry):Boolean {
+		override public function intersects(geom:Geometry):Boolean {
 			// Treat the geometry as a collection if it is not a simple point,
 			// a simple polyline or a simple polygon
-			if ( ! ((geometry is Point) || (geometry is LinearRing) || (geometry is LineString)) ) {
+			if ( ! ((geom is Point) || (geom is LinearRing) || (geom is LineString)) ) {
 				 // LinearRing should be tested before LineString if a different
 				 // action should be made for each case
-				return (geometry as Collection).intersects(this);
+Trace.debug("LineString:intersects with a Collection");
+				return (geom as Collection).intersects(this);
 			}
 			
 			// The geometry to intersect is a simple Point, a simple polyline or
 			//   a simple polygon.
 			// First, check if the bounding boxes of the two geometries intersect
-			if (! this.bounds.intersectsBounds(geometry.bounds)) {
+			if (! this.bounds.intersectsBounds(geom.bounds)) {
+Trace.debug("LineString:intersects false from BBOX");
 				return false;
 			}
+else Trace.debug("LineString:intersects BBOX test for "+this.toShortString()+" with "+geom.toShortString());
 			
 			// To test if an intersection exists, it is necessary to cut this
 			//   line string and the geometry in segments. The segments are
 			//   oriented so that x1 <= x2 (but we does not known if y1 <= y2
 			//   or not).
 			var segs1:Array = this.getXsortedSegments();
-			var segs2:Array = (geometry is Point) ? [(geometry as Point),(geometry as Point)] : (geometry as LineString).getXsortedSegments();
+			var segs2:Array = (geom is Point) ? [(geom as Point),(geom as Point)] : (geom as LineString).getXsortedSegments();
 			
-			var seg1:Array, seg1y1:Number, seg1y2:Number, seg1yMin:Number, seg1yMax:Number;
-			var seg2:Array, seg2y1:Number, seg2y2:Number, seg2yMin:Number, seg2yMax:Number;
+			var seg1:Array, seg1y0:Number, seg1y1:Number, seg1yMin:Number, seg1yMax:Number;
+			var seg2:Array, seg2y0:Number, seg2y1:Number, seg2yMin:Number, seg2yMax:Number;
 			// Loop over each segment of this LineString
     		for(var i:int=0; i<segs1.length; ++i) {
 				seg1 = segs1[i];
@@ -181,14 +184,14 @@ package org.openscales.core.geometry
            		 	}
            		 	// To perform similar tests along Y-axis, it is necessary to
            		 	//   order the vertices of each segment
-					seg1y1 = (seg1[0] as Point).y;
-					seg1y2 = (seg1[1] as Point).y;
-          		  	seg2y1 = (seg2[0] as Point).y;
-          		  	seg2y2 = (seg2[1] as Point).y;
-          		  	seg1yMin = Math.min(seg1y1, seg1y2);
-          		  	seg1yMax = Math.max(seg1y1, seg1y2);
-          		  	seg2yMin = Math.min(seg2y1, seg2y2);
-          		  	seg2yMax = Math.max(seg2y1, seg2y2);
+					seg1y0 = (seg1[0] as Point).y;
+					seg1y1 = (seg1[1] as Point).y;
+          		  	seg2y0 = (seg2[0] as Point).y;
+          		  	seg2y1 = (seg2[1] as Point).y;
+          		  	seg1yMin = Math.min(seg1y0, seg1y1);
+          		  	seg1yMax = Math.max(seg1y0, seg1y1);
+          		  	seg2yMin = Math.min(seg2y0, seg2y1);
+          		  	seg2yMax = Math.max(seg2y0, seg2y1);
 					// If the most bottom vertex of seg2 is above the most top
 					//   vertex of seg1, there is no intersection
 					if (seg2yMin > seg1yMax) {
@@ -202,14 +205,17 @@ package org.openscales.core.geometry
 					// Now it sure that the bounding box of the two segments
 					//   intersect themselves, so we have to perform the real
 					//   intersection test of the two segments
+Trace.debug("LineString:intersects with a Line* => true for BBOX ; "+(seg1[0]as Point).toShortString()+", "+(seg1[1]as Point).toShortString()+", "+(seg2[0]as Point).toShortString()+", "+(seg2[1]as Point).toShortString());
 					if (Geometry.segmentsIntersect(seg1, seg2)) {
 						// These two segments intersect, there is no need to
 						//   continue the tests for all the other couples of
 						//   segments
+Trace.debug("LineString:intersects with a Line* => true ; "+i+", "+j);
 						return true;
 					}
 				}
     		}
+Trace.debug("LineString:intersects with a Line* => false");
     		
     		// All the couples of segment have been testes, there is no intersection
     		return false;

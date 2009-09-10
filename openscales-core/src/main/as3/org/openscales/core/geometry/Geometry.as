@@ -143,7 +143,7 @@ package org.openscales.core.geometry
      	 *     properties represent the coordinates of the closest point on the
      	 *     target geometry.
       	 */
-    	public function distanceTo(geometry:Geometry):Number{
+    	public function distanceTo(geom:Geometry):Number{
     		var distance:Number;
     		// TODO
     		return distance;
@@ -155,7 +155,7 @@ package org.openscales.core.geometry
 		 * @param geometry Any type of geometry.
 		 * @return Boolean defining if the input geometry intersects this one.
 		 */
-		public function intersects(geometry:Geometry):Boolean {
+		public function intersects(geom:Geometry):Boolean {
 			return false;
 		}
 		

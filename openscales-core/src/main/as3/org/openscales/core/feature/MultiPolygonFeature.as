@@ -12,9 +12,9 @@ package org.openscales.core.feature
 	 */
 	public class MultiPolygonFeature extends VectorFeature
 	{
-		public function MultiPolygonFeature(geometry:MultiPolygon=null, data:Object=null, style:Style=null)
+		public function MultiPolygonFeature(geom:MultiPolygon=null, data:Object=null, style:Style=null)
 		{
-			super(geometry, data, style);
+			super(geom, data, style);
 		}
 
 		public function get polygons():MultiPolygon {

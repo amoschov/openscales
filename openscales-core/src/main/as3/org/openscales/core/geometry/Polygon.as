@@ -136,27 +136,29 @@ Trace.debug("Polygon.containsPoint true");
     	/**
      	* Determine if the input geometry intersects this one.
      	*
-     	* @param geometry Any type of geometry.
+     	* @param geom Any type of geometry.
      	*
      	* @return The input geometry intersects this one.
      	*/
-    	override public function intersects(geometry:Geometry):Boolean{
+    	override public function intersects(geom:Geometry):Boolean{
 			// Stop if the polygon is void
 			if (this.componentsLength < 1) {
 				Trace.warning("Polygon.intersects called for a void Polygon");
 				return false;
 			}
 			
-			if (geometry is Point) {
-				return this.containsPoint(geometry as Point);
+			if (geom is Point) {
+Trace.debug("Polygon:intersects with a Point");
+				return this.containsPoint(geom as Point);
 			}
-			else if ((geometry is LinearRing) || (geometry is LineString)) {
+			else if ((geom is LinearRing) || (geom is LineString)) {
 				// LinearRing should be tested before LineString if a different
 				//   action should be made for each case..
 				// Test for the intersection of each LinearRing of tis Polygon
 				//   with the geometry (LineString or LinearRing)
+Trace.debug("Polygon:intersects with a LinearRing or a LineString");
 				for(var i:int=0; i<this.componentsLength; i++) {
-					if ((geometry as LineString).intersects(this.componentByIndex(i))) {
+					if ((geom as LineString).intersects(this.componentByIndex(i))) {
 						return true;
 					}
 				}
@@ -165,15 +167,18 @@ Trace.debug("Polygon.containsPoint true");
 				//  whole contained in the first LinearRing but not in one of
 				//  the holes represented by the others LinearRings. Test only
 				//  one vertex is sufficient since there is no intersection.
-				return this.containsPoint((geometry as LineString).componentByIndex(0) as Point);
+Trace.debug("Polygon:intersects with a LinearRing or a LineString => contained ?");
+				return this.containsPoint((geom as LineString).componentByIndex(0) as Point);
 			}
-			else if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::Polygon") {
+			else if (getQualifiedClassName(geom) == "org.openscales.core.geometry::Polygon") {
 				// Two holed polygon intersect if and only one of them intersects
 				//  with the outer LinearRing of the other polygon
-				return this.intersects((geometry as Polygon).componentByIndex(0));
+Trace.debug("Polygon:intersects with a Polygon");
+				return this.intersects((geom as Polygon).componentByIndex(0));
 			}
-			else {  // geometry is a multi-geometry
-				return (geometry as Collection).intersects(this);
+			else {  // geom is a multi-geometry
+Trace.debug("Polygon:intersects with a Collection");
+				return (geom as Collection).intersects(this);
 			}
     	}
 
@@ -181,7 +186,7 @@ Trace.debug("Polygon.containsPoint true");
      	* Calculate the closest distance between two geometries (on the x-y plane).
      	*
      	* Parameters:
-     	* @geometry:Geometry - The target geometry.
+     	* @geom:Geometry - The target geometry.
      	* @options:Object - Optional properties for configuring the distance
      	*     calculation.
      	*
@@ -205,14 +210,14 @@ Trace.debug("Polygon.containsPoint true");
      	*/
     	// TODO : backport from OpenLayers not finish
     	
-    	/* private function distanceTo(geometry:Geometry, options:Object) {
+    	/* private function distanceTo(geom:Geometry, options:Object) {
         	var edge = !(options && options.edge === false); // === compare value and type
         	var result;
         	// this is the case where we might not be looking for distance to edge
-        	if(!edge && this.intersects(geometry)) {
+        	if(!edge && this.intersects(geom)) {
            		result = 0;
         	}
-        	else{result = OpenLayers.Geometry.Collection.prototype.distanceTo.apply(this, [geometry, options]);
+        	else{result = OpenLayers.Geometry.Collection.prototype.distanceTo.apply(this, [geom, options]);
         	}
         	return result;
     	} */

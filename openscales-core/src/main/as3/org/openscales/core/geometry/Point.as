@@ -62,15 +62,8 @@ package org.openscales.core.geometry
 		 * @param geometry Any type of geometry.
 		 * @return Boolean defining if the input geometry intersects this one.
 		 */
-		override public function intersects(geometry:Geometry):Boolean {
-        	var intersect:Boolean = false;
-        	if(geometry is Point) {
-            	intersect = this.equals(geometry as Point);
-        	} 
-        	else {      		
-            	intersect = (geometry as Collection).intersects(this);
-        	}
-        	return intersect;
+		override public function intersects(geom:Geometry):Boolean {
+			return ((geom is Point) ? this.equals(geom as Point) : (geom as Collection).intersects(this)); 
     	}
 	
 		/**

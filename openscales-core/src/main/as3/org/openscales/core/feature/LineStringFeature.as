@@ -10,9 +10,9 @@ package org.openscales.core.feature
 	 */
 	public class LineStringFeature extends VectorFeature
 	{
-		public function LineStringFeature(geometry:LineString=null, data:Object=null, style:Style=null)
+		public function LineStringFeature(geom:LineString=null, data:Object=null, style:Style=null)
 		{
-			super(geometry, data, style);
+			super(geom, data, style);
 		}
 
 		public function get lineString():LineString {

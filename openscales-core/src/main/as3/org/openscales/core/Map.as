@@ -547,13 +547,7 @@ package org.openscales.core
 		 * @return Whether or not the lonlat passed in is non-null and within the maxExtent bounds
 		 */
 		private function isValidLonLat(lonlat:LonLat):Boolean {
-Trace.debug("isValidLonlat => start test");
-			var validLonLat:Boolean;
-			if(lonlat!=null){
-				if(this.maxExtent.containsLonLat(lonlat)){validLonLat = true;}
-				else{validLonLat = false;}
-			}
-			return validLonLat;
+			return (lonlat!=null) && this.maxExtent.containsLonLat(lonlat);
 		}
 
 		/**

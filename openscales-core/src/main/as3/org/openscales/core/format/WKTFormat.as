@@ -74,7 +74,7 @@ package org.openscales.core.format
 		 * @return The WKT string representation of the input geometries
 		 */
 		override public function write(features:Object):Object {
-			var collection:Object, geometry:Geometry, type:String, data:Object, isCollection:Boolean;
+			var collection:Object, geom:Geometry, type:String, data:Object, isCollection:Boolean;
 			if(features.constructor == Array) {
 				collection = features;
 				isCollection = true;
@@ -90,12 +90,12 @@ package org.openscales.core.format
 				if(isCollection && i>0) {
 					pieces.push(',');
 				}
-				geometry = collection[i].geometry;
-				type = getQualifiedClassName(geometry).split('::')[1].toLowerCase();
+				geom = collection[i].geometry;
+				type = getQualifiedClassName(geom).split('::')[1].toLowerCase();
 				if(!extract[type]) {
 					return null;
 				}
-				data = extract[type]([geometry]);
+				data = extract[type]([geom]);
 				pieces.push(type.toUpperCase() + '(' + data + ')');
 			}
 			if(isCollection) {
