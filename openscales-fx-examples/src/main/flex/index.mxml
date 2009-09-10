@@ -79,7 +79,7 @@
 		]]>
 	</mx:Script>
 	
-	<mx:Tree id="tree" width="230" height="100%" labelField="@label" showRoot="true" change="treeChanged(event)">
+	<mx:Tree id="tree" width="250" height="100%" labelField="@label" showRoot="true" change="treeChanged(event)">
 		<mx:XMLListCollection>
 			<mx:XMLList id="treeData">
 				<example viewStack="home" label="What is OpenScales.org" description="A short description of OpenScales.org" />
@@ -99,8 +99,8 @@
 				</category>
 				
 				<category label="Localize">
-					<example viewStack="overview" label="Overview" description="Use the miniMap to move and zoom" />
-					<example viewStack="search" label="Yahoo Search" description="Search a place with Yahoo" />
+					<example viewStack="overview" label="Localize with the overview map" description="Move or zoom the map tand see the modification on the overview map.\nClick on the overview to change the center of the main map.\nDraw a rectangle on the overview to define a new extent for the main map.\nShow or Hide the overview map using the appropriate button." />
+					<example viewStack="search" label="Geolocate using Yahoo Search" description="Search a place with Yahoo" />
 				</category>
 				
 				<category label="Protocols">

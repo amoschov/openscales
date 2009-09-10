@@ -1,40 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:os="http://openscales.org"
-	creationComplete="initMap()">
+	creationComplete="initMap();"
+	resize="resizeMap();">
 	
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
+
+			// Specific imports for this example
+			// none			
 			
-			[Bindable] private var map:Map; // Fixme : on devrait pouvoir utiliser directement map !??
+			[Bindable] private var map:Map;
 			
 			private function initMap():void {
-				map = fxmap.map;
-				resizeExample();
+				map=fxmap.map;
+				this.setChildIndex(this.getChildAt(1), 0);
+				// Specific initialize for this example
+				resizeMap();
 			}
 			
-			private function resizeExample():void {
-				traceBox.x = this.width - 200;
-				
-				miniMap.height = 0.2 * this.height;
+			private function resizeMap():void {
+				miniMap.height = 0.2 * this.height + 50;
 				miniMap.width = this.width * miniMap.height / this.height;
-				miniMap.x = this.width - miniMap.width;
-				miniMap.y = this.height - miniMap.height;
 			}
 			
 			private function toggleOverview():void {
-				miniMap.visible = ! miniMap.visible;
-				overviewToggler.label = ((miniMap.visible) ? "Hide" : "Show") + " overview";
+				miniMapPanel.visible = ! miniMapPanel.visible;
+				overviewToggler.label = ((miniMapPanel.visible) ? "Hide" : "Show") + " overview";
 			}
 		]]>
 	</mx:Script>
-
+	
+	<!-- Must be defined first to display the logs of the map and of its objects during their creation -->
+	<os:TraceInfo map="{map}" x="{width-200}" y="0" />
+	
 	<os:Map id="fxmap" width="100%" height="100%"
-		zoom="5" lon="538850.47459" lat="5740916.1243"
 		proxy="http://openscales.org/proxy.php?url="
-		resize="resizeExample();">
-
+		zoom="5" lon="538850.47459" lat="5740916.1243">
+		
 		<!-- OpenStreetMap EPSG:900913 -->
 		<os:Mapnik name="Mapnik"
 			numZoomLevels="20"
@@ -43,39 +48,33 @@
 			minResolution="0.5971642833709717"
 			maxResolution="156543.0339" />
 		
-		<os:WMSC name="Metacarta"
-			numZoomLevels="20"
-			isBaseLayer="true"
-			maxExtent="-180,-90,180,90"
-			url="http://labs.metacarta.com/wms-c/Basic.py"
-			layers="satellite"
-			format="image/jpeg" />
-
-		<os:ClickHandler />
-		<os:WheelHandler />
 		<os:DragHandler />
-
+		<os:WheelHandler />
+		
+		<os:MousePosition displayProjection="EPSG:4326" />
+		
+		<!-- Specific layers and handlers of this example -->
+		<!-- none -->
+		
 	</os:Map>
-
-	<os:TraceInfo id="traceBox" map="{map}" x="{width-200}" y="0" />
-
+	
+	<!-- Specific tools of this example -->
+	
 	<mx:VBox horizontalAlign="center" x="10" y="10">
 		<os:PanComponent map="{map}" />
 		<mx:Button id="overviewToggler" label="Hide overview" click="toggleOverview();" />
 	</mx:VBox>
 
-	<mx:Panel title="Main map's layer switcher" x="10" y="120">
-		<os:LayerSwitcherComponent id="layerSwitcher" map="{map}" />
+	<mx:Panel id="miniMapPanel" title="Overview map" horizontalAlign="center" x="{width-miniMapPanel.width-10}" y="{height-miniMapPanel.height-10}">
+		<os:OverviewMapComponent id="miniMap" map="{map}" minRectPxSize="3" rectColor="0xFF3300" newExtentColor="0x00FF33">
+			<!-- Override the baselayer of the overview by OpenStreetMap EPSG:900913 -->
+			<!--os:Mapnik name="Mapnik"
+				numZoomLevels="20"
+				maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
+				minResolution="0.5971642833709717"
+				maxResolution="156543.0339"
+				isBaseLayer="true" /-->
+		</os:OverviewMapComponent>
 	</mx:Panel>
-	
-	<os:OverviewMapComponent id="miniMap" map="{map}" minRectPxSize="3" rectColor="0xFF3300" newExtentColor="0x00FF33">
-		<!-- Override the baselayer of the overview by OpenStreetMap EPSG:900913 -->
-		<!--os:Mapnik name="Mapnik"
-			numZoomLevels="20"
-			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-			minResolution="0.5971642833709717"
-			maxResolution="156543.0339"
-			isBaseLayer="true" /-->
-	</os:OverviewMapComponent>
 	
 </mx:Canvas>
