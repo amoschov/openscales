@@ -64,6 +64,38 @@
 			            </goals>
 					</execution>
 				</executions>
+				<configuration>
+					<packageDescriptions>
+						<com.gskinner.motion>Optimized tweener lib, avoid to depend on Flex</com.gskinner.motion>
+						<mx.core>Reuse a few classes from Flex in order to allow usage of @Embedded assets in this pure AS3 project</mx.core>
+						<mx.utils>Reuse a few classes from Flex in order to allow usage of @Embedded assets in this pure AS3 project</mx.utils>
+						<org.openscales.core>Root package for OpenScales core module</org.openscales.core>
+						<org.openscales.core.basetypes>Base types widely used in OpenScales like Bounds or LonLat</org.openscales.core.basetypes>
+						<org.openscales.core.basetypes.maps>Hashmap implementation since none is provided in ActionScript3</org.openscales.core.basetypes.maps>
+						<org.openscales.core.control>Controls are graphical component added on the map.</org.openscales.core.control>
+						<org.openscales.core.control.ui>Reusable control sub components</org.openscales.core.control.ui>
+						<org.openscales.core.events>OpenScales events are strongly typed, dispatched using the map as an event bus. They have a name, and usually carry the context of the event.</org.openscales.core.events>
+						<org.openscales.core.feature>Features are a geolocalized graphical element</org.openscales.core.feature>
+						<org.openscales.core.format>Protocol or file format implentations</org.openscales.core.format>
+						<org.openscales.core.geometry>Geometries are descriptions of a geographic object</org.openscales.core.geometry>
+						<org.openscales.core.handler>Handlers react to user event to modify the map state (zoom, position). Handlers can dispatch high level events that will be used to interact with controls</org.openscales.core.handler>
+						<org.openscales.core.handler.mouse>Mouse related handlers</org.openscales.core.handler.mouse>
+						<org.openscales.core.handler.sketch>Drawing related handlers</org.openscales.core.handler.sketch>
+						<org.openscales.core.handler.zoom>Zoom related handlers</org.openscales.core.handler.zoom>
+						<org.openscales.core.layer>Layers display image of vector datas on the map, usually loaded from a remote datasource. There is a lot of different kind of layers (WMS, OpenStreetMap, KML ...)</org.openscales.core.layer>
+						<org.openscales.core.layer.capabilities>Get capabilities related classes</org.openscales.core.layer.capabilities>
+						<org.openscales.core.layer.ogc>OGC standardized protocols related classes</org.openscales.core.layer.ogc>
+						<org.openscales.core.layer.osm>Open Street map related classes</org.openscales.core.layer.osm>
+						<org.openscales.core.layer.params>Abstraction of HTTP parameters</org.openscales.core.layer.params>
+						<org.openscales.core.layer.params.ogc>OGC abstract parameters</org.openscales.core.layer.params.ogc>
+						<org.openscales.core.popup>Classes related to popup display, usually displayed after a click on a feature</org.openscales.core.popup>
+						<org.openscales.core.request>OpenScales wrapper around ActionScript3 remote request (XML or data like images)</org.openscales.core.request>
+						<org.openscales.core.security>Security management for intended to access to protected GIS layers. Maybe used with WSS, IGN GeoDRM or basic authentication</org.openscales.core.security>
+						<org.openscales.core.security.events>Security events</org.openscales.core.security.events>
+						<org.openscales.core.security.sample>Security sample implementation</org.openscales.core.security.sample>
+						<org.openscales.core.tile>Tile (raster or vector) management</org.openscales.core.tile>
+					</packageDescriptions>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
