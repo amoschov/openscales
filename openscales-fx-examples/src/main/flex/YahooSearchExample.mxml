@@ -1,49 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" creationComplete="initMap();">
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:os="http://openscales.org"
+	creationComplete="initMap();">
+	
 	<mx:Script>
-	<![CDATA[
-			import org.openscales.core.handler.mouse.DragHandler;
-			import org.openscales.core.Trace;
-			import org.openscales.core.events.GetFeatureInfoEvent;
-
+		<![CDATA[
 			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
 
-			[Bindable]
-			public var map:Map;
+			// Specific imports for this example
+			// none			
 
+			[Bindable] private var map:Map;
+			
 			private function initMap():void {
-				map=fxmap.map; 			
+				map=fxmap.map;
+				this.setChildIndex(this.getChildAt(1), 0);
+				// Specific initialize for this example
+				// none
 			}
 		]]>
 	</mx:Script>
-	<os:Map id="fxmap"
-			x="0"
-			y="0"
-			height="100%"
-			width="100%"
-			numZoomLevels="20"
-			zoom="5">
-			
-		<os:WMSC name="Metacarta"
-				 url="http://labs.metacarta.com/wms-c/Basic.py"
-				 layers="satellite"
-				 format="image/jpeg"
-				 isBaseLayer="true"/>
-
-		<mx:Panel title="YahooSearch">
-			<os:YahooSearchComponent 
-							 map="{map}"
-							label="Search"
-							appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é"/>
-		</mx:Panel>						   
-		<os:MaxExtent left="-180"
-					  bottom="-90"
-					  right="180"
-					  top="90"/>
+	
+	<!-- Must be defined first to display the logs of the map and of its objects during their creation -->
+	<os:TraceInfo map="{map}" x="{width-200}" y="0" />
+	
+	<os:Map id="fxmap" width="100%" height="100%"
+		proxy="http://openscales.org/proxy.php?url="
+		zoom="2" lon="538850.47459" lat="5740916.1243">
 		
-		<os:DragHandler id="dragHandler"/>	
-		<os:ClickHandler/>
-		<os:WheelHandler/>
+		<!-- OpenStreetMap EPSG:900913 -->
+		<os:Mapnik name="Mapnik"
+			numZoomLevels="20"
+			isBaseLayer="true"
+			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
+			minResolution="0.5971642833709717"
+			maxResolution="156543.0339" />
+		
+		<os:DragHandler />
+		<os:WheelHandler />
+		
+		<os:MousePosition displayProjection="EPSG:4326" />
+		<os:ScaleLine map="{map}" />
+		
+		<!-- Specific layers and handlers of this example -->
+		<!-- none -->
 		
 	</os:Map>
+	
+	<!-- Specific tools of this example -->
+	
+	<mx:Panel title="Geolocate with Yahoo Search" horizontalAlign="center" x="10" y="10"
+		paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+		<os:YahooSearchComponent map="{map}" label="Search"
+			appId="pnxy.VPV34Eul8cEKLANb9jQzwMY62S7QNgBnJIKwqG._SWEF6WVOsnJ2NbNxtSJ1eBlOBM-é" />
+	</mx:Panel>
+	
 </mx:Canvas>

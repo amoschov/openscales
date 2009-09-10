@@ -92,6 +92,11 @@
 					<example viewStack="capabilities" label="Add layers dynamically" description="Specify a WFS a server, then click on the 'Go!' button to display all the WFS layers available.\nSelect a layer name to have its description.\nDouble-click to add the layer to the map ; for instance topp:states draws the United States (be patient, this will take few seconds).\nTry to add the same layer twice, a modal popup is displayed.\nThe layers manager is automatically updated." />
 				</category>
 				
+				<category label="Localize">
+					<example viewStack="overview" label="Localize with the overview map" description="Move or zoom the map tand see the modification on the overview map.\nClick on the overview to change the center of the main map.\nDraw a rectangle on the overview to define a new extent for the main map.\nShow or Hide the overview map using the appropriate button." />
+					<example viewStack="search" label="Geolocate with Yahoo Search" description="Search a place with Yahoo Search.\nIf only one place is returned, the map is centerd to it automatically.\nOtherwise, double-click on one of the results to center the map." />
+				</category>
+				
 				<category label="Manage features">
 					<example viewStack="drawings" label="Draw features" description="Drag the map or draw some points, polylines or polygons using the buttons of the first line.\nUse click and CTRL+click to select features.\nUse the buttons of the second line to remove the last drawn vertex, to delete the selected features, to delete all the drawn features or to merge the selected features." />
 					<example viewStack="features" label="Use all the types of features" description="This is an example of each type of geometry: point (red), multipoint (orange), line (green), multiline (red), polygon (blue), multipolygon (violet).The additional black geometries are used to test the 'containsPoint' and 'intersects' functions of each geometry.Select one geometry by a click or several geometries using the selectBox button and drawing a box.Use CTRL+click and CTRL+selectBox to define a complex selection." />
@@ -99,14 +104,9 @@
 <example viewStack="reprojectionAndQuery" label="Reproject and query" description="" />
 				</category>
 				
-				<category label="Localize">
-					<example viewStack="overview" label="Localize with the overview map" description="Move or zoom the map tand see the modification on the overview map.\nClick on the overview to change the center of the main map.\nDraw a rectangle on the overview to define a new extent for the main map.\nShow or Hide the overview map using the appropriate button." />
-					<example viewStack="search" label="Geolocate using Yahoo Search" description="Search a place with Yahoo.\nIf there is only one search result, you will go directly to your destination !" />
-				</category>
-				
 				<category label="Protocols">
-					<example viewStack="wmsc" label="Metacarta WMS-C" description="" />
-					<example viewStack="wms" label="Germany WMS" description="" />
+<example viewStack="wmsc" label="Metacarta WMS-C" description="" />
+<example viewStack="wms" label="Germany WMS" description="" />
 				</category>
 				
 				<category label="Security">
@@ -133,15 +133,15 @@
 			<os:LayersManagerExample id="layersManager" />
 			<os:CapabilitiesExample id="capabilities" />
 			
+			<!-- Localize -->
+			<os:OverviewExample id="overview" />
+			<os:YahooSearchExample id="search" />			
+			
 			<!-- Manage features -->
 			<os:DrawingExample id="drawings" />
 			<os:FeaturesExample id="features" />
 			<os:InfoExample id="informations" />
 <os:OpenStreetMap id="reprojectionAndQuery" />
-			
-			<!-- Localize -->
-			<os:OverviewExample id="overview" />
-			<os:YahooSearchExample id="search" />			
 			
 			<!-- Protocols -->
 			<os:WMSCExample id="wmsc" />
