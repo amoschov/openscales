@@ -1,21 +1,20 @@
 package org.openscales.core.handler.sketch
 {
 	import flash.events.MouseEvent;
-	import flash.utils.getQualifiedClassName;
-
+	
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.feature.PointFeature;
+	import org.openscales.core.feature.PolygonFeature;
 	import org.openscales.core.feature.Style;
-	import org.openscales.core.feature.Feature;
+	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
-	import org.openscales.core.feature.VectorFeature;
-	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.feature.PointFeature;
 
 	/**
 	 * Handler to draw polygons.
@@ -75,9 +74,10 @@ package org.openscales.core.handler.sketch
 				}
 				else {
 					//When we have at least a 2 points polygon, we can remove the first point					
-					if(!_firstPointRemoved && drawLayer.features[drawLayer.features.length-2]is PointFeature) {
+					if(!_firstPointRemoved && drawLayer.features[drawLayer.features.length-2] is PointFeature) {
 						drawLayer.removeFeature(drawLayer.features[drawLayer.features.length-2]);
 						_firstPointRemoved = true;
+Trace.debug("MouseClick => _firstPointRemoved => " + _firstPointRemoved);						
 					}
 					lring.addComponent(point);
 					drawLayer.redraw();
@@ -90,8 +90,6 @@ package org.openscales.core.handler.sketch
 		}
 
 		public function drawFinalPoly():void{
-			newFeature = true;
-
 			//Change style of finished polygon
 			var style:Style = new Style();
 			style.fillColor = 0x60FFE9;
@@ -99,11 +97,20 @@ package org.openscales.core.handler.sketch
 
 			var feature:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
 			if(feature!=null){
-				//Apply the new style
-				feature.style = style;
-				//drawLayer.clear();
-				drawLayer.redraw(); 
-			}		
+Trace.debug("DrawFinalPoly => _firstPointRemoved => " + _firstPointRemoved);
+				if(!_firstPointRemoved && drawLayer.features[drawLayer.features.length-2] is PointFeature){
+					drawLayer.removeFeature(drawLayer.features[drawLayer.features.length-2]);
+				}
+				if(((feature as PolygonFeature).polygon.componentByIndex(0) as LinearRing).componentsLength>2){
+					//Apply the new style
+					feature.style = style;					
+				}
+				else{
+					drawLayer.removeFeature(feature);
+				}
+				drawLayer.redraw();
+			}
+			newFeature = true;
 		}
 
 		override public function set map(value:Map):void {
