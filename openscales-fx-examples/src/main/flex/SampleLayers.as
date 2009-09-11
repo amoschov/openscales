@@ -15,6 +15,7 @@ package
 	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
+	import org.openscales.core.layer.osm.Mapnik;
 	import org.openscales.core.layer.VectorLayer;
 
 	public class SampleLayers
@@ -27,6 +28,13 @@ package
 			// Nothing to do
 		}
 
+		/**
+		 * Returns a sample layer of drawn features
+		 */
+		static public function baseLayerOSM():Mapnik {
+			return new Mapnik("Mapnik", true);
+		}
+		
 		/**
 		 * Returns a sample layer of drawn features
 		 */
