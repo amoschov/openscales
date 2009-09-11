@@ -15,8 +15,8 @@
 <sourceAttachmentPath/>
 </compiler>
 <applications>
-<application path="osExamples.mxml"/>
 <application path="Proj4asTest.mxml"/>
+<application path="osExamples.mxml"/>
 </applications>
 <modules/>
 <buildCSSFiles/>
