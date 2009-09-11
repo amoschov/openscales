@@ -147,7 +147,6 @@
 						for(var j:int=0; j<nf; j++) {
 							feature = (this.map.layers[i] as VectorLayer).features[j];
 							if (boundsGeom.intersects(feature.geometry)) {
-Trace.debug("SelectBox:featureInclude "+i+", "+j+" ; "+getQualifiedClassName(boundsGeom));
 								featuresToSelect.push(feature);
 							}
 						}

@@ -281,7 +281,7 @@
 			 * Click on the togglebarbutton. Index button starts from 0.
 			 */ 		
 			private function clickHandler(event:ItemClickEvent):void{
-				var handler:Number = event.index;		// handler is a number because of toggleButtonBar			
+				var handler:Number = event.index;		// handler is a number because of toggleButtonBar
 				switch(handler)
 				{
 					case 0:
