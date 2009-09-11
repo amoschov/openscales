@@ -89,7 +89,6 @@ package org.openscales.core.handler.mouse
 					}		
 					this.feature=(event as FeatureEvent).features[0] as VectorFeature;
 					if(this.onstart!=null){this.onstart((event as FeatureEvent));}
-					var index:int=0;
 					this.FeatureMove();
 					this.dragging=true;	
 					cpt=this.layer.length;	
@@ -102,7 +101,6 @@ package org.openscales.core.handler.mouse
 		 */
 		private function FeatureMove():void
 		{
-			var index:int=0;
 			//We start to differentiates MultiGeometries and simple geometry
 			if ((getQualifiedClassName(this.feature.geometry) == "org.openscales.core.geometry::MultiPoint") ||
 				(getQualifiedClassName(this.feature.geometry) == "org.openscales.core.geometry::MultiLineString") ||
