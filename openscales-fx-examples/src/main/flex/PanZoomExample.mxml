@@ -51,9 +51,9 @@
 	<!-- Specific tools of this example -->
 	
 	<mx:VBox horizontalAlign="center" x="10" y="10">
-		<os:PanComponent map="{map}"/>
-		<os:ZoomComponent map="{map}"/>
-		<os:ZoomBoxComponent map="{map}" toolTip="ZoomBox"/>
+		<os:PanComponent map="{map}" />
+		<os:ZoomComponent map="{map}" />
+		<os:ZoomBoxComponent map="{map}" />
 	</mx:VBox>
 	
 </mx:Canvas>
