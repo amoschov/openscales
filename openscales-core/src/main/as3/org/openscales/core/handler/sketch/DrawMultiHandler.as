@@ -31,7 +31,7 @@ package org.openscales.core.handler.sketch
 		/**
 		 * TEMPORARY : to determine if we show an alert or not
 		 */
-		private var _multiPolygonForbiden:Boolean = false;
+		private var _multiPolygonForbidden:Boolean = false;
 
 		public function DrawMultiHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
 		{
@@ -64,10 +64,16 @@ package org.openscales.core.handler.sketch
 			var multiPolygonFeature:MultiPolygonFeature;
 			var feature:VectorFeature;
 			
+			
+			// FixMe: the style should not be hard coded bust should be dependant
+			// on the current style of the objects
 			var style:Style = new Style();
 			style.fillColor = 0x60FFE9;
 			style.strokeColor = 0x60FFE9;
 			
+			// FixMe: if the selected features have differents typesn only the
+			// features of the type of the last one in selectedFeatures are
+			// managed
 			for each(f in selectedFeatures){
 				if(f != null) 
 				{
@@ -77,7 +83,7 @@ package org.openscales.core.handler.sketch
 						multiPoint.addPoint(f.geometry as Point);
 						drawType = "MultiPoint";
 						
-						_multiPolygonForbiden = false;
+						_multiPolygonForbidden = false;
 						drawLayer.removeFeature(f);
 					}
 					else if(f.geometry is LineString)
@@ -85,7 +91,7 @@ package org.openscales.core.handler.sketch
 						multiLineString.addLineString(f.geometry as LineString);
 						drawType = "MultiLineString";
 						
-						_multiPolygonForbiden = false;
+						_multiPolygonForbidden = false;
 						drawLayer.removeFeature(f);
 					}
 					else if(f.geometry is Polygon)
@@ -93,7 +99,7 @@ package org.openscales.core.handler.sketch
 						multiPolygon.addPolygon(f.geometry as Polygon);
 						drawType = "MultiPolygon";
 						
-						_multiPolygonForbiden = false;
+						_multiPolygonForbidden = false;
 						drawLayer.removeFeature(f);
 					}
 
@@ -104,7 +110,7 @@ package org.openscales.core.handler.sketch
 						}
 						drawType = "MultiPoint";
 						
-						_multiPolygonForbiden = false;
+						_multiPolygonForbidden = false;
 						drawLayer.removeFeature(f);
 					}
 					else if(f.geometry is MultiLineString)
@@ -114,7 +120,7 @@ package org.openscales.core.handler.sketch
 						}
 						drawType = "MultiLineString";
 						
-						_multiPolygonForbiden = false;
+						_multiPolygonForbidden = false;
 						drawLayer.removeFeature(f);
 					}
 					else if(f.geometry is MultiPolygon)
@@ -125,7 +131,7 @@ package org.openscales.core.handler.sketch
 							multiPolygon.addPolygon((f.geometry as MultiPolygon).components[l] as Polygon);
 						}
 						drawType = "MultiPolygon"; */
-						_multiPolygonForbiden = true;
+						_multiPolygonForbidden = true;
 						break;
 					}
 				}
@@ -152,11 +158,11 @@ package org.openscales.core.handler.sketch
 			return(feature);	 
 		}
 		
-		public function get multiPolygonForbiden():Boolean{
-			return _multiPolygonForbiden;
+		public function get multiPolygonForbidden():Boolean{
+			return _multiPolygonForbidden;
 		}
-		public function set multiPolygonForbiden(value:Boolean):void{
-			_multiPolygonForbiden = value;
+		public function set multiPolygonForbidden(value:Boolean):void{
+			_multiPolygonForbidden = value;
 		}
 	}
 }
