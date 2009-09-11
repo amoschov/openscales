@@ -411,7 +411,7 @@
 					polygonHandler.map = this.map;
 					this.map.addLayer(drawLayer);
 					this.map.addHandler(selectFeatureHandler);																			
-				}			
+				}
 			}		
 		]]>
 	</mx:Script>

@@ -38,7 +38,8 @@
 			private function init():void {
 				setOSdescription();
 				expandTree();
-				//tree.selectedIndex = 2;
+				tree.selectedIndex = 2;
+				updateSelectedExample();
 			}
 			
 			private function setOSdescription():void {
@@ -65,8 +66,8 @@
 				}
 			}
 			
-			private function treeChanged(event:Event):void {
-				selectedNode = (event.target as Tree).selectedItem as XML;
+			private function updateSelectedExample():void {
+				selectedNode = tree.selectedItem as XML;
 				selectedView = viewStack.getChildByName(selectedNode.@viewStack) as Container;
 				if (selectedView) {
 					viewStack.selectedChild = selectedView;
@@ -77,6 +78,10 @@
 					tree.expandChildrenOf(tree.selectedItem, ! open);
 					tree.selectedIndex = oldSelectedIndex;
 				}
+			}
+			
+			private function treeChanged(event:Event):void {
+				updateSelectedExample();
 			}
 		]]>
 	</mx:Script>
