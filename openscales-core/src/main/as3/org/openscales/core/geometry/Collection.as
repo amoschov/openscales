@@ -197,7 +197,7 @@ package org.openscales.core.geometry
      	 */
 		public function replaceComponent(index:int, component:Geometry):Boolean {
 			// Test if the index is valid
-			if ((i<0) || (i>=this._components.length)) {
+			if ((index<0) || (index>=this._components.length)) {
 				Trace.error("Collection.replaceComponent ERROR : invalid index "+index);
 				return false;
 			}
@@ -213,7 +213,7 @@ package org.openscales.core.geometry
 				return false;
 			}
 			// All is ok, replace the specified component by the input one
-			this._components[i] = component;
+			this._components[index] = component;
 			this.clearBounds();
 			return true;
 		}
@@ -351,16 +351,13 @@ package org.openscales.core.geometry
      	*/
     	override public function intersects(geom:Geometry):Boolean {
 			if (geom is Point) {
-Trace.debug("Collection.intersects translated to Point.intersects");
 				return (geom as Point).intersects(this);
 			} else {
 				for(var i:int=0; i<this.componentsLength; ++i) {
 					if ((geom as Collection).intersects(this.componentByIndex(i))) {
-Trace.debug("Collection.intersects true from component "+i);
 						return true;
 					}
 				}
-Trace.debug("Collection.intersects false for each component");
 				return false;
 			}
 			// never used
