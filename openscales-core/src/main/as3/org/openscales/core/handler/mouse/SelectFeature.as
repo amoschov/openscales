@@ -173,7 +173,7 @@ package org.openscales.core.handler.mouse
 					if(!currentfeature.selected){
 						iteratorFeatures++;
 						selectFeauturesLength++;
-						ChangeToSelected();
+						changeToSelected();
 					}
 				}			
 			}
@@ -185,7 +185,7 @@ package org.openscales.core.handler.mouse
 					if(!currentfeature.selected){
 						iteratorFeatures++;
 						selectFeauturesLength++;
-						ChangeToSelected();
+						changeToSelected();
 					}
 				}
 			}									
@@ -214,7 +214,7 @@ package org.openscales.core.handler.mouse
 					//ctrl key is pressed
 					else{iteratorFeatures++;}
 					selectFeauturesLength++;
-					ChangeToSelected();
+					changeToSelected();
 				}
 				//Feature is already selected
 				else{
@@ -257,14 +257,14 @@ package org.openscales.core.handler.mouse
 				}
 			}
 			//This is the first selection
-			else{selectFeauturesLength++; this.ChangeToSelected(); }
+			else{selectFeauturesLength++; this.changeToSelected(); }
 		}
 
 		/**
 		 * Change the current feature with the select style. The feature is now selected,
 		 * placed in the tab of selected features and the current is copy to the last.
 		 */		
-		private function ChangeToSelected():void{			
+		private function changeToSelected():void{			
 			this.currentfeature.originalStyle=this.currentfeature.style;					
 			var selectStyle:Style = this.currentfeature.originalStyle.clone();
 			selectStyle.fillColor = 0xFFD700;
