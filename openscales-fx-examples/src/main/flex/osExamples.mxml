@@ -38,6 +38,7 @@
 			private function init():void {
 				setOSdescription();
 				expandTree();
+				//tree.selectedIndex = 2;
 			}
 			
 			private function setOSdescription():void {
@@ -65,7 +66,7 @@
 			}
 			
 			private function treeChanged(event:Event):void {
-				selectedNode = Tree(event.target).selectedItem as XML;
+				selectedNode = (event.target as Tree).selectedItem as XML;
 				selectedView = viewStack.getChildByName(selectedNode.@viewStack) as Container;
 				if (selectedView) {
 					viewStack.selectedChild = selectedView;

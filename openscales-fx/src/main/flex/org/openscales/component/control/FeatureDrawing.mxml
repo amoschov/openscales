@@ -433,7 +433,7 @@
 			<mx:Button icon="@Embed('/org/openscales/component/images/delete_last_small.png')" id="btnDeleteLast" click="this.onDeleteLastClick(event)" toolTip="Delete the last drawing vertex" width="38" height="38" />
 			<mx:Button icon="@Embed('/org/openscales/component/images/delete_selected_small.png')" id="btnDeleteSelected" click="this.onDeleteSelectedClick(event)" enabled="false" toolTip="Delete all selected features" width="38" height="38" />
 			<mx:Button icon="@Embed('/org/openscales/component/images/delete_all_small.png')" id="btnDeleteAll" click="this.onDeleteAllClick(event)" toolTip="Delete all the drawn features on the map" width="38" height="38" />
-			<mx:Button icon="@Embed('/org/openscales/component/images/merge_small.png')" id="btnMerge" click="this.OnMergeClick(event)" toolTip="Merge features selected" enabled="false" width="38" height="38" />
+			<mx:Button icon="@Embed('/org/openscales/component/images/merge_small.png')" id="btnMerge" click="this.OnMergeClick(event)" toolTip="Merge the selected features" enabled="false" width="38" height="38" />
 		</mx:HBox>
 		
 	</mx:VBox>
