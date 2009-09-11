@@ -31,6 +31,8 @@
 		<![CDATA[
 			import mx.core.Container;
 			
+			[Bindable] private var displayTrace:Boolean = false;
+
 			[Bindable] private var selectedNode:XML = null;
 			private var selectedView:Container = null;
 			private var oldSelectedIndex:int = 0;
@@ -50,7 +52,7 @@
 				text += "\n\n";
 				text += "As a free open source (LGPL license) and extensible tool written in ActionScript, OpenScales is designed to be easily plugged in your Flex or Air application. OpenScales is a small but powerful core of GIS, so try it and let us know.";
 				text += "\n\n";
-				text += "OpenScales.org can be considered as an ActionScript3 port of Openlayers, since it has started from FlexLayers soure code that we actively improve to take advantage of new capabilities offered by ActionScript3 and Flex technologies.";
+				text += "OpenScales.org can be considered as an ActionScript3 port of Openlayers, since it has started from FlexLayers source code that we actively improve to take advantage of new capabilities offered by ActionScript3 and Flex technologies.";
 				OSdescription.text = text;
 			}
 			
@@ -133,21 +135,21 @@
 				</mx:VBox>
 			</mx:Panel>
 			
-			<!--os:Global id="global" /-->
+			<!--os:Global id="global" displayTrace="{displayTrace}" /-->
 			
 			<!-- Configure the map -->
-			<os:PanZoomExample id="panZoom" />
-			<os:LayersManagerExample id="layersManager" />
-			<os:CapabilitiesExample id="capabilities" />
+			<os:PanZoomExample id="panZoom" displayTrace="{displayTrace}" />
+			<os:LayersManagerExample id="layersManager" displayTrace="{displayTrace}" />
+			<os:CapabilitiesExample id="capabilities" displayTrace="{displayTrace}" />
 			
 			<!-- Localize -->
-			<os:OverviewExample id="overview" />
-			<os:YahooSearchExample id="search" />			
+			<os:OverviewExample id="overview" displayTrace="{displayTrace}" />
+			<os:YahooSearchExample id="search" displayTrace="{displayTrace}" />			
 			
 			<!-- Manage features -->
-			<os:DrawingExample id="drawings" />
-			<os:FeaturesExample id="features" />
-			<os:InfoExample id="informations" />
+			<os:DrawingExample id="drawings" displayTrace="{displayTrace}" />
+			<os:FeaturesExample id="features" displayTrace="{displayTrace}" />
+			<os:InfoExample id="informations" displayTrace="{displayTrace}" />
 <os:OpenStreetMap id="reprojectionAndQuery" />
 			
 			<!-- Protocols -->
@@ -155,7 +157,7 @@
 			<os:WMSExample id="wms" />
 			
 			<!-- Security -->
-			<os:SecurityMapExample id="security" />
+			<os:SecurityMapExample id="security" displayTrace="{displayTrace}" />
 		</mx:ViewStack>
 		<mx:TextArea id="description" width="100%" height="100" />
 	</mx:VBox>

@@ -13,6 +13,14 @@
 			// none			
 			
 			[Bindable] private var map:Map;
+
+			[Bindable] private var _displayTrace:Boolean = true;
+			public function get displayTrace():Boolean {
+				return _displayTrace;
+			}
+			public function set displayTrace(value:Boolean):void {
+				_displayTrace = value;
+			}
 			
 			private function initMap():void {
 				map=fxmap.map;
@@ -22,7 +30,7 @@
 			}
 			
 			private function resizeMap():void {
-				miniMap.height = 0.2 * this.height + 50;
+				miniMap.height = 0.2 * this.height;
 				miniMap.width = this.width * miniMap.height / this.height;
 			}
 			
@@ -34,7 +42,7 @@
 	</mx:Script>
 	
 	<!-- Must be defined first to display the logs of the map and of its objects during their creation -->
-	<os:TraceInfo map="{map}" x="{width-200}" y="0" />
+	<os:TraceInfo map="{map}" x="{width-200}" y="0" visible="{_displayTrace}" />
 	
 	<os:Map id="fxmap" width="100%" height="100%"
 		proxy="http://openscales.org/proxy.php?url="
