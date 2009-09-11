@@ -17,19 +17,44 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.layer.VectorLayer;
 
 	/**
-	 * Handler to draw paths (multi line strings)
+	 * This handler manage the function draw of the LineString (path).
+	 * Active this handler to draw a path.
 	 */
 	public class DrawPathHandler extends AbstractDrawHandler
 	{		
-		// The layer in which we'll draw
-		private var _drawLayer:VectorLayer = null;				
+		/**
+		 * A unique id of the path
+		 */ 
 		private var _id:Number = 0;
+		
+		/**
+		 * The lineString which contains all points
+		 */
 		private var _lineString:LineString=null;
-		private var _lastPoint:Point = null;
+		
+		/**
+		 * The last point of the lineString. 
+		 */
+		private var _lastPoint:Point = null; 
+		
+		/**
+		 * To know if we create a new feature, or if some points are already added
+		 */
 		private var _newFeature:Boolean = true;
+		
+		/**
+		 * The container of the temporary line
+		 */
 		private var _drawContainer:Sprite = new Sprite();
-		private var _startPoint:Pixel=new Pixel(); //for the temporary line
-
+		
+		/**
+		 * The start point of the temporary line
+		 */
+		private var _startPoint:Pixel=new Pixel();
+		
+		/**
+		 * Handler which manage the doubleClick, to finalize the lineString
+		 */
 		private var _dblClickHandler:ClickHandler = new ClickHandler();
 
 		/**
@@ -37,7 +62,7 @@ package org.openscales.core.handler.sketch
 		 *
 		 * @param map
 		 * @param active
-		 * @param drawLayer
+		 * @param drawLayer The layer on which we'll draw
 		 */
 		public function DrawPathHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
 		{
@@ -60,15 +85,22 @@ package org.openscales.core.handler.sketch
 		public function mouseDblClick(event:MouseEvent):void {
 			this.drawFinalPath();		
 		} 
-
+		
+		/**
+		 * Finish the LineString
+		 */
 		public function drawFinalPath():void{			
 			newFeature = true;
+			
+			//clear the temporary line
 			_drawContainer.graphics.clear();
 			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,temporaryLine);
+			
 			//Change style of finished path
 			var style:Style = new Style();
 			style.strokeColor = 0x60FFE9;
-
+			
+			//We finalize the last feature (of course, it's a lineString)
 			var f:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
 			if(f!=null){
 				//Apply the new style
@@ -79,15 +111,18 @@ package org.openscales.core.handler.sketch
 		}
 
 		private function drawLine(event:MouseEvent=null):void{
-			var name:String = "path." + id.toString(); id++;
-
+			
+			//we determine the point where the user clicked
 			var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY );
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
+			//manage the case where the layer projection is different from the map projection
 			if(this.drawLayer.projection.srsCode!=this.map.projection.srsCode)
 				lonlat.transform(this.map.projection,this.drawLayer.projection);
 			var point:Point = new Point(lonlat.lon,lonlat.lat);
+			//initialize the temporary line
 			_startPoint = this.map.getMapPxFromLonLat(lonlat);
 			
+			//The user click for the first time
 			if(newFeature){
 				_lineString = new LineString([point]);
 				lastPoint = point;
@@ -100,7 +135,8 @@ package org.openscales.core.handler.sketch
 				drawLayer.addFeature(lineStringFeature);
 				
 				newFeature = false;
-						
+				
+				//draw the temporary line, update each time the mouse moves		
 				this.map.addEventListener(MouseEvent.MOUSE_MOVE,temporaryLine);	
 			}
 			else {								
@@ -111,7 +147,9 @@ package org.openscales.core.handler.sketch
 				}								
 			}
 		}
-		
+		/**
+		 * Update the temporary line
+		 */
 		public function temporaryLine(evt:MouseEvent):void{
 			_drawContainer.graphics.clear();
 			_drawContainer.graphics.lineStyle(2, 0x00ff00);
