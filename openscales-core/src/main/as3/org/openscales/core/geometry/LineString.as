@@ -140,7 +140,6 @@ package org.openscales.core.geometry
 			if ( ! ((geom is Point) || (geom is LinearRing) || (geom is LineString)) ) {
 				 // LinearRing should be tested before LineString if a different
 				 // action should be made for each case
-Trace.debug("LineString:intersects with a Collection");
 				return (geom as Collection).intersects(this);
 			}
 			
@@ -148,10 +147,8 @@ Trace.debug("LineString:intersects with a Collection");
 			//   a simple polygon.
 			// First, check if the bounding boxes of the two geometries intersect
 			if (! this.bounds.intersectsBounds(geom.bounds)) {
-Trace.debug("LineString:intersects false from BBOX");
 				return false;
 			}
-else Trace.debug("LineString:intersects BBOX test for "+this.toShortString()+" with "+geom.toShortString());
 			
 			// To test if an intersection exists, it is necessary to cut this
 			//   line string and the geometry in segments. The segments are
@@ -205,17 +202,14 @@ else Trace.debug("LineString:intersects BBOX test for "+this.toShortString()+" w
 					// Now it sure that the bounding box of the two segments
 					//   intersect themselves, so we have to perform the real
 					//   intersection test of the two segments
-Trace.debug("LineString:intersects with a Line* => true for BBOX ; "+(seg1[0]as Point).toShortString()+", "+(seg1[1]as Point).toShortString()+", "+(seg2[0]as Point).toShortString()+", "+(seg2[1]as Point).toShortString());
 					if (Geometry.segmentsIntersect(seg1, seg2)) {
 						// These two segments intersect, there is no need to
 						//   continue the tests for all the other couples of
 						//   segments
-Trace.debug("LineString:intersects with a Line* => true ; "+i+", "+j);
 						return true;
 					}
 				}
     		}
-Trace.debug("LineString:intersects with a Line* => false");
     		
     		// All the couples of segment have been testes, there is no intersection
     		return false;

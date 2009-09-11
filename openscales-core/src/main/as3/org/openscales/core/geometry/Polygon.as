@@ -91,7 +91,7 @@ package org.openscales.core.geometry
 		 * Test if a point is inside a polygon.
 		 * A point on a polygon edge is considered inside.
 		 * A point on at least one of the holes is considered outside except if
-		 * the manageHoles parameter is setted to false.
+		 * the manageHoles parameter is set to false.
 		 * 
 		 * @param point the point to test
 		 * @param manageHoles a boolean defining if the test must manage the
@@ -107,14 +107,12 @@ package org.openscales.core.geometry
 			
 			// Test if the point is inside the outer ring
 			if (! (this.componentByIndex(0) as LinearRing).containsPoint(point)) {
-Trace.debug("Polygon.containsPoint false from outer ring");
 				return false;
 			}
 			
 			// The point is inside the outer ring. So, if the holes have not to
 			// be managed, the polygon contains the point.
 			if (! manageHoles) {
-Trace.debug("Polygon.containsPoint true but without managing holes");
 				return true;
 			}
 			
@@ -122,14 +120,12 @@ Trace.debug("Polygon.containsPoint true but without managing holes");
 			// polygon.
 			for(var i:int=1; i<this.componentsLength; ++i) {
 				if ((this.componentByIndex(i) as LinearRing).containsPoint(point)) {
-Trace.debug("Polygon.containsPoint false from hole "+(i-1));
 					return false;
 				}
 			}
 			
 			// The point is inside the outer ring but outside of all the holes.
 			// So the point is definitively inside the polygon.
-Trace.debug("Polygon.containsPoint true");
         	return true;
 		}
 		
@@ -148,7 +144,6 @@ Trace.debug("Polygon.containsPoint true");
 			}
 			
 			if (geom is Point) {
-Trace.debug("Polygon:intersects with a Point");
 				return this.containsPoint(geom as Point);
 			}
 			else if ((geom is LinearRing) || (geom is LineString)) {
@@ -156,7 +151,6 @@ Trace.debug("Polygon:intersects with a Point");
 				//   action should be made for each case..
 				// Test for the intersection of each LinearRing of tis Polygon
 				//   with the geometry (LineString or LinearRing)
-Trace.debug("Polygon:intersects with a LinearRing or a LineString");
 				for(var i:int=0; i<this.componentsLength; i++) {
 					if ((geom as LineString).intersects(this.componentByIndex(i))) {
 						return true;
@@ -167,17 +161,14 @@ Trace.debug("Polygon:intersects with a LinearRing or a LineString");
 				//  whole contained in the first LinearRing but not in one of
 				//  the holes represented by the others LinearRings. Test only
 				//  one vertex is sufficient since there is no intersection.
-Trace.debug("Polygon:intersects with a LinearRing or a LineString => contained ?");
 				return this.containsPoint((geom as LineString).componentByIndex(0) as Point);
 			}
 			else if (getQualifiedClassName(geom) == "org.openscales.core.geometry::Polygon") {
 				// Two holed polygon intersect if and only one of them intersects
 				//  with the outer LinearRing of the other polygon
-Trace.debug("Polygon:intersects with a Polygon");
 				return this.intersects((geom as Polygon).componentByIndex(0));
 			}
 			else {  // geom is a multi-geometry
-Trace.debug("Polygon:intersects with a Collection");
 				return (geom as Collection).intersects(this);
 			}
     	}

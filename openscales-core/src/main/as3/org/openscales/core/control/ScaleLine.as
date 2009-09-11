@@ -160,9 +160,7 @@ package org.openscales.core.control
 			}
 
 			this.graphics.drawRect(10,32,1,20);
-
 			this.graphics.drawRect(10,50,1,20); 
-
 			this.graphics.endFill();
 
 			labelMiles = new TextField();
@@ -198,14 +196,12 @@ package org.openscales.core.control
 		   labelScaleKm.text = "1/"+Math.round(scaleD).toString();
 		   labelScaleKm.x = this.position.x;
 		   labelScaleKm.y = 0;
-		 this.idScaleLine.addChild(labelScaleKm); */ 	
-
+		 this.idScaleLine.addChild(labelScaleKm); */
 		}
 
 		public function get color():int {
 			return this._color;
 		}
-
 		public function set color(value:int):void {
 			this._color = value;
 		}
