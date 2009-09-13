@@ -15,7 +15,6 @@
 		Panel {
 			borderAlpha: 0.66;
 			borderColor: #000000;
-			color: #000000;
 			titleStyleName: "PanelTitle";
 		}
 		.PanelTitle {
@@ -31,6 +30,9 @@
 		<![CDATA[
 			import mx.core.Container;
 			
+			/**
+			 * Boolean defining if the Trace component must be displayed or not
+			 */
 			[Bindable] private var displayTrace:Boolean = false;
 
 			[Bindable] private var selectedNode:XML = null;
@@ -40,20 +42,21 @@
 			private function init():void {
 				setOSdescription();
 				expandTree();
+				// Define the default example
 				tree.selectedIndex = 2;
 				updateSelectedExample();
 			}
 			
 			private function setOSdescription():void {
 				var text:String;
-				text = "OpenScales.org 1.0 bêta - 09/14/2009";
+				text = "<b>OpenScales.org 1.0 bêta - 09/14/2009</b>";
 				text += "\n\n\n";
 				text += "OpenScales.org is a user-friendly and fast interface designed to manipulate spatial data : geographic raster viewing, data-vector editing, management of smooth transitions between scales and positions, ...";
 				text += "\n\n";
 				text += "As a free open source (LGPL license) and extensible tool written in ActionScript, OpenScales is designed to be easily plugged in your Flex or Air application. OpenScales is a small but powerful core of GIS, so try it and let us know.";
 				text += "\n\n";
 				text += "OpenScales.org can be considered as an ActionScript3 port of Openlayers, since it has started from FlexLayers source code that we actively improve to take advantage of new capabilities offered by ActionScript3 and Flex technologies.";
-				OSdescription.text = text;
+				OSdescription.htmlText = text;
 			}
 			
 			private function expandTree():void {
@@ -88,7 +91,9 @@
 		]]>
 	</mx:Script>
 	
-	<mx:Tree id="tree" width="250" height="100%" labelField="@label" showRoot="true" change="treeChanged(event)">
+	<mx:Tree id="tree" width="250" height="100%" labelField="@label"
+		showRoot="true" useRollOver="false"
+		change="treeChanged(event)">
 		<mx:XMLListCollection>
 			<mx:XMLList id="treeData">
 				<example viewStack="home" label="What is OpenScales.org ?" description="A short description of OpenScales.org" />
@@ -130,8 +135,8 @@
 			<mx:Panel id="home" title="OpenScales.org 1.0 bêta - september 14th 2009">
 				<!-- also needed because the view of index 0 is always loaded first -->
 				<mx:VBox horizontalAlign="center" width="100%" height="100%">
-					<mx:Image />
-					<mx:TextArea id="OSdescription" width="100%" height="100%" />
+					<mx:Image source="@Embed('/images/OpenScales-logo.png')" />
+					<mx:RichTextEditor id="OSdescription" width="100%" height="100%" borderStyle="none" showControlBar="true" />
 				</mx:VBox>
 			</mx:Panel>
 			

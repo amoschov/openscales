@@ -44,6 +44,12 @@
             ]]>
     </mx:Script>
 
-    <mx:Button id="zoombox" icon="@Embed('/org/openscales/component/images/zoom_box_small.png')" selected="false" click="onSelectZoomBox(event)" width="40" height="40" toolTip="Draw a rectangle to define a new extent"/>
+    <mx:Button id="zoombox" width="32" height="32"
+    	toolTip="Draw a rectangle to define a new extent"
+    	upSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
+    	overSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
+    	downSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
+    	disabledSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
+    	selected="false" click="onSelectZoomBox(event)" />
 
 </control:Control> 
