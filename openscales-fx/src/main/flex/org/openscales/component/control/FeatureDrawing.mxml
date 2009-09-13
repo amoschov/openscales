@@ -14,7 +14,6 @@
 			import org.openscales.core.geometry.LineString;
 			import mx.effects.easing.Linear;
 			import org.openscales.core.Trace;
-			import org.openscales.core.events.SpriteCursorEvent;
 			import org.openscales.core.events.DrawingEvent;
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.feature.Feature;
@@ -290,7 +289,6 @@
 						drawType = "";
 						this.activeDrag();
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.DISABLED));
-						this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND));
 						break;
 					
 					case 1:		//click on button point
@@ -302,8 +300,7 @@
 						}
 						this.deactiveDrag();
 						selectFeatureHandler.active = false;
-						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
-						this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));					
+						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));				
 						break;
 					
 					case 2:		//click on button path
@@ -316,7 +313,6 @@
 						this.deactiveDrag();
 						selectFeatureHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
-						this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));					
 						break;
 						
 					case 3:		//click on button polygon
@@ -329,7 +325,6 @@
 						this.deactiveDrag();
 						selectFeatureHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
-						this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));
 						break;
 				}
 			}			

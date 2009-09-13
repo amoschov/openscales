@@ -10,7 +10,6 @@
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.feature.Feature;
 			import mx.controls.Alert;
-			import org.openscales.core.events.SpriteCursorEvent;
 			import mx.containers.TabNavigator;
 			import org.openscales.core.handler.mouse.DragFeature;
 			import org.openscales.core.handler.mouse.DragHandler;
@@ -32,10 +31,7 @@
 				//Manage switching tab
 				this.parent.addEventListener(Event.CHANGE,changingTab);
 				this.featureDrawing.indexTabDrawing = (this.parent as TabNavigator).selectedIndex;
-				
-				//Show the handcursor when mouse is hover a feature
-				this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND));
-				
+							
 				this.map.addEventListener(FeatureEvent.FEATURE_DRAGGING, onDragingFeature);
 				this.map.addEventListener(FeatureEvent.FEATURE_SELECTED, showInformations);
 			}
@@ -82,17 +78,13 @@
 						this.featureDrawing.activeDrag();
 						this.featureDrawing.selectFeatureHandler.active = false;
 					}
-					//hide handcursor
-					this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND));
-					
+				
 					this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 				}
 				//user switches to drawing tab
 				else{
 					this.featureDrawing.selectFeatureHandler.active = true;
-					//show handcursor
-					this.map.dispatchEvent(new SpriteCursorEvent(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND));
-					
+										
 					this.map.dispatchEvent(new DrawingEvent(DrawingEvent.DISABLED));
 				}
 			}		

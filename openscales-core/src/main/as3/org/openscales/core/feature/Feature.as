@@ -6,7 +6,6 @@ package org.openscales.core.feature {
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.events.FeatureEvent;
-	import org.openscales.core.events.SpriteCursorEvent;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Anchored;
 	import org.openscales.core.popup.Popup;
@@ -176,9 +175,6 @@ package org.openscales.core.feature {
 				this.addEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
 				this.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
 				this.addEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);
-
-				/* this._layer.map.addEventListener(SpriteCursorEvent.SPRITECURSOR_HIDE_HAND, hideHand);
-				this._layer.map.addEventListener(SpriteCursorEvent.SPRITECURSOR_SHOW_HAND, showHand); */ 
 			}
 		}
 
@@ -250,14 +246,6 @@ package org.openscales.core.feature {
 				return NaN;
 		}
 
-		private function hideHand(event:SpriteCursorEvent):void {
-			this.useHandCursor=false;
-		}
-
-		private function showHand(event:SpriteCursorEvent):void {
-			this.useHandCursor=true;
-		}
-		
 	}
 }
 
