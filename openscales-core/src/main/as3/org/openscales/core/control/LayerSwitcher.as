@@ -1,12 +1,12 @@
 package org.openscales.core.control
 {
 	import com.gskinner.motion.GTweeny;
-
+	
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.control.ui.Arrow;
@@ -18,6 +18,7 @@ package org.openscales.core.control
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;
+	
 
 	/**
 	 * Create a layerSwitcher that display all the layer load on the map
@@ -166,7 +167,7 @@ package org.openscales.core.control
 				// Display baselayers
 				for(var i:int=0;i<this.map.layers.length;i++) {
 					var layer:Layer = this.map.layers[i] as Layer;
-					if(layer.isBaseLayer==true) {
+					if(layer.isBaseLayer) {
 
 						var radioButton:RadioButton;
 						if(i == 0)
@@ -246,8 +247,8 @@ package org.openscales.core.control
 
 				for(i=layerArray.length-1;i>=0;i--) {
 					layer = layerArray[i] as Layer;
-					if(layer.isBaseLayer==false) {
-						if(_firstOverlays == true)
+					if(!layer.isBaseLayer) {
+						if(_firstOverlays)
 						{
 							y+=this._textOffset-15;
 							_firstOverlays = false;
@@ -295,7 +296,7 @@ package org.openscales.core.control
 						slideHorizontalButtonO.addEventListener(MouseEvent.CLICK,SlideHorizontalClick);
 
 						var check:CheckBox = new CheckBox(this.position.add(-185,y+2),layer.name);
-						if(layer.visible == false)
+						if(!layer.visible)
 						{							
 							check.status = false;					
 						}
@@ -361,18 +362,17 @@ package org.openscales.core.control
 		 */
 		private function CheckButtonClick(event:MouseEvent):void
 		{
-			var i:int = 0;
-			var layer2:Layer = this.map.getLayerByName((event.target as CheckBox).layerName);
-			if((event.target as CheckBox).status == true)
+			var eventLayer:Layer = this.map.getLayerByName((event.target as CheckBox).layerName);
+			if((event.target as CheckBox).status)
 			{
 				(event.target as CheckBox).status = false;
-				layer2.visible = false;
+				eventLayer.visible = false;
 			}
 			else
 			{
 				(event.target as CheckBox).status = true;
-				layer2.visible = true;
-				layer2.redraw();
+				eventLayer.visible = true;
+				eventLayer.redraw();
 			}
 		}
 
@@ -385,8 +385,8 @@ package org.openscales.core.control
 		{
 			_firstOverlays = true;
 			var i:int = 0;
-			var layer2:Layer = this.map.getLayerByName((event.target as RadioButton).layerName);
-			if((event.target as RadioButton).status == false)
+			var eventLayer:Layer = this.map.getLayerByName((event.target as RadioButton).layerName);
+			if(!(event.target as RadioButton).status)
 			{
 				// Hide current baselayer
 				this.map.baseLayer.visible = false;
@@ -398,8 +398,8 @@ package org.openscales.core.control
 						(child as RadioButton).status = false; 
 				}
 
-				this.map.baseLayer = layer2;
-				layer2.visible = true;
+				this.map.baseLayer = eventLayer;
+				eventLayer.visible = true;
 				(event.target as RadioButton).status = true;
 
 			}
@@ -427,8 +427,8 @@ package org.openscales.core.control
 			//calulate the layer opacity
 			var resultAlpha:Number = (mouseX/(l-k)) - (k/(l-k))
 			var resultPercentage:int = resultAlpha*100;
-			var layer2:Layer = this.map.getLayerByName(_slideVerticalTemp.layerName);
-			layer2.alpha = resultAlpha;
+			var eventLayer:Layer = this.map.getLayerByName(_slideVerticalTemp.layerName);
+			eventLayer.alpha = resultAlpha;
 
 			_percentageTextFieldTemp = this.getChildByName("percentage"+childIndex) as TextField;
 			_percentageTextFieldTemp.textColor = 0xffffff;
@@ -474,8 +474,8 @@ package org.openscales.core.control
 
 			var resultAlpha:Number = (mouseX/(l-k)) - (k/(l-k))
 			var resultPercentage:int = resultAlpha*100;
-			var layer2:Layer = this.map.getLayerByName(_slideVerticalTemp.layerName);
-			layer2.alpha = resultAlpha;
+			var eventLayer:Layer = this.map.getLayerByName(_slideVerticalTemp.layerName);
+			eventLayer.alpha = resultAlpha;
 
 			var childIndex:String = _slideVerticalTemp.name;
 			childIndex = childIndex.substring(14,15);
@@ -515,7 +515,7 @@ package org.openscales.core.control
 			for(var i:int=0;i<this.map.layers.length;i++)
 			{
 				var layerLength:Layer = this.map.layers[i] as Layer;
-				if(layerLength.isBaseLayer != true) numLayersOverlays++;
+				if(!layerLength.isBaseLayer) numLayersOverlays++;
 			}
 
 			var numBaseLayer:int = this.map.layers.length - numLayersOverlays;

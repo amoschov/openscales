@@ -16,10 +16,6 @@ package org.openscales.core.events{
 		 */
 		public static const GET_FEATURE_INFO_DATA:String="openscales.getfeatureinfodata";
 
-		/**
-		 * Class: OpenLayers.data
-		 * Instances of dataEvent are events dispatched by the data
-		 */
 		public function GetFeatureInfoEvent(type:String, data:Object, bubbles:Boolean = false, cancelable:Boolean = false){
 			this._data = data;
 			super(type, bubbles, cancelable);
