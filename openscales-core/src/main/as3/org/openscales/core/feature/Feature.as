@@ -86,16 +86,16 @@ package org.openscales.core.feature {
 		 */
 		public function onMouseHover(pevt:MouseEvent):void {
 			this.buttonMode=true;
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER, new Array(this)));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER, this));
 		}
 
 		public function onMouseMove(pevt:MouseEvent):void {
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEMOVE, new Array(this)));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEMOVE, this));
 		}
 
 		public function onMouseOut(pevt:MouseEvent):void {
 			this.buttonMode=false;
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT, new Array(this)));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT, this));
 		}
 
 		public function get attributes():Object {
@@ -191,21 +191,21 @@ package org.openscales.core.feature {
 		}
 
 		public function onMouseClick(pevt:MouseEvent):void {
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK, new Array(this), pevt.ctrlKey));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK, this, pevt.ctrlKey));
 		}
 
 		public function onMouseDoubleClick(pevt:MouseEvent):void {
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DOUBLECLICK, new Array(this)));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DOUBLECLICK, this));
 		}
 
 		public function onMouseDown(pevt:MouseEvent):void {
 			/* this.buttonMode=true; */
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEDOWN, new Array(this)));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEDOWN, this));
 		}
 
 		public function onMouseUp(pevt:MouseEvent):void {
 			/* this.buttonMode=false; */
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP, new Array(this), pevt.ctrlKey));
+			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP, this, pevt.ctrlKey));
 		}
 
 		/**

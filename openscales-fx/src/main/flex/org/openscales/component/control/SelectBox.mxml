@@ -153,8 +153,10 @@
 					}
 				}
 				
-				if (featuresToSelect.length>0){          		
-					this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTEDBOX, featuresToSelect, _ctrlStatus));
+				if (featuresToSelect.length>0){
+					var f:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_SELECTED, null, _ctrlStatus);
+					f.features = featuresToSelect;
+					this.map.dispatchEvent(f);
 				}
 			}
 

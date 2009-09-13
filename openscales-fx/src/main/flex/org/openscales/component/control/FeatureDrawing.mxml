@@ -152,7 +152,7 @@
 				btnDeleteSelected.enabled = false;
 				btnMerge.enabled = false;
 				//clear the information tab
-				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, new Array(this.selectFeatureHandler.currentfeature)));
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
 			}
 
 			/**
@@ -189,7 +189,7 @@
 				btnDeleteSelected.enabled = false;
 				btnMerge.enabled = false;
 				//clear the information tab
-				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, new Array(this.selectFeatureHandler.currentfeature)));
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
             }
 			
 			/**
@@ -258,7 +258,7 @@
 			 */
 			private function onSelectFeature(event:FeatureEvent):void {											
 				btnDeleteSelected.enabled = true;				
-				selectFeatureHandler.OnSelection();
+				selectFeatureHandler.onSelection();
 				//managing of btnDeleteSelected (in case there no more selected features)
 				if(selectFeatureHandler.selectFeauturesLength==0){btnDeleteSelected.enabled = false;}
 				//managing of btnMerge
@@ -267,7 +267,7 @@
 			}
 			
 			private function onSelectBySelectBox(event:FeatureEvent):void{
-				selectFeatureHandler.OnSelectionBySelectBox();
+				selectFeatureHandler.onSelectionBySelectBox();
 				if(selectFeatureHandler.selectFeauturesLength>0){
 					btnDeleteSelected.enabled = true;
 				}

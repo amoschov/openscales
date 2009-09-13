@@ -81,33 +81,29 @@ package org.openscales.core.handler.mouse
 
 		override protected function registerListeners():void{
 			if(map!=null){
-				this.map.addEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
-				this.map.addEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);
-				this.map.addEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
-				this.map.addEventListener(FeatureEvent.FEATURE_SELECTEDBOX,this.OnSelectBySelectBox);
-				/* this.map.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
-		 		this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp); */	
+				this.map.addEventListener(FeatureEvent.FEATURE_OVER,this.onOver);
+				this.map.addEventListener(FeatureEvent.FEATURE_OUT,this.onOut);
+				this.map.addEventListener(FeatureEvent.FEATURE_CLICK,this.onClick);
+				this.map.addEventListener(FeatureEvent.FEATURE_SELECTED,this.onSelectBySelectBox);
 			}
 		}
 		
 		override protected function unregisterListeners():void{
 			if(map!=null){		
-				this.map.removeEventListener(FeatureEvent.FEATURE_OVER,this.OnOver);
-				this.map.removeEventListener(FeatureEvent.FEATURE_OUT,this.OnOut);			
-				this.map.removeEventListener(FeatureEvent.FEATURE_CLICK,this.OnClick);
-				this.map.removeEventListener(FeatureEvent.FEATURE_SELECTEDBOX,this.OnSelectBySelectBox);
-				/* this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
-		 		this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp); */
+				this.map.removeEventListener(FeatureEvent.FEATURE_OVER,this.onOver);
+				this.map.removeEventListener(FeatureEvent.FEATURE_OUT,this.onOut);			
+				this.map.removeEventListener(FeatureEvent.FEATURE_CLICK,this.onClick);
+				this.map.removeEventListener(FeatureEvent.FEATURE_SELECTED,this.onSelectBySelectBox);
 		 	}
 		}
 
-		public function OnOut(pevt:FeatureEvent):void{
+		public function onOut(pevt:FeatureEvent):void{
 			if(pevt.features[0].layer==this.layer)
 			{
 				if(this._unselect!=null)this._unselect(pevt);
 			}
 		}
-		public function OnOver(pevt:FeatureEvent):void{
+		public function onOver(pevt:FeatureEvent):void{
 			if(hover)
 			{
 				if(pevt.features[0].layer==this.layer)
@@ -117,28 +113,34 @@ package org.openscales.core.handler.mouse
 			}
 		}
 
-		public function OnClick(pevt:FeatureEvent):void{			
+		public function onClick(pevt:FeatureEvent):void{			
 			if(!this.hover){
 				this._ctrl = pevt.ctrlPressed;
 				this.currentfeature = pevt.features[0] as VectorFeature;
 				
-				if(this._select!=null){this._select(pevt);}
-				else{OnSelection();}
+				if(this._select!=null) {
+					this._select(pevt);
+				} else {
+					onSelection();
+				}
 			}
 		}
 		
-		public function OnSelectBySelectBox(pevt:FeatureEvent):void{
+		public function onSelectBySelectBox(pevt:FeatureEvent):void{
 			if(!this.hover){
 				this._ctrl = pevt.ctrlPressed;
 				this._featureToSelect = pevt.features;
 				this.currentfeature = pevt.features[0] as VectorFeature;
 				
-				if(this._selectBySelectBox!=null){this._selectBySelectBox(pevt);}
-				else{OnSelectionBySelectBox();}				
+				if(this._selectBySelectBox!=null) {
+					this._selectBySelectBox(pevt);
+				} else { 
+					onSelectionBySelectBox();
+				}				
 			}
 		}
 		
-		public function OnSelectionBySelectBox():void{			
+		public function onSelectionBySelectBox():void{			
 			 
 			var f:VectorFeature, f1:VectorFeature;
 			//if ctrl key isn't pressed
@@ -191,7 +193,7 @@ package org.openscales.core.handler.mouse
 			}									
 		}
 
-		public function OnSelection():void{
+		public function onSelection():void{
 			var i:Number = 0;	// to iterate
 			var f:VectorFeature;
 
@@ -233,10 +235,10 @@ package org.openscales.core.handler.mouse
 							lastfeature = null;
 							currentfeature.layer.redraw();
 							selectFeauturesLength--;
-							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, new Array(this.currentfeature)));					
+							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.currentfeature));					
 						}
 						else{
-							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED, new Array(this.currentfeature)));
+							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED, this.currentfeature));
 						}				
 					}							
 					//ctrl key is pressed
@@ -251,7 +253,7 @@ package org.openscales.core.handler.mouse
 						selectFeauturesLength--;
 						
 						//clear the information tab
-						this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, new Array(this.currentfeature)));
+						this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.currentfeature));
 						
 					}
 				}
@@ -274,7 +276,7 @@ package org.openscales.core.handler.mouse
 			this.selectFeatures[iteratorFeatures]=this.currentfeature;						
 			this.currentfeature.layer.redraw();  
 			this.lastfeature = this.currentfeature;
-			this.currentfeature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,new Array(this.currentfeature)));
+			this.currentfeature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,this.currentfeature));
 		}
 
 		/**

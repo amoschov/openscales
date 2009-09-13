@@ -94,7 +94,7 @@ package org.openscales.core.layer
 			feature.layer = this;
 			
 			if(map)
-				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, new Array(feature)));
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, feature));
 			else
 				Trace.warning("Warning : no FEATURE_PRE_INSERT dispatched because map event dispatcher is not defined");
 			
@@ -104,7 +104,7 @@ package org.openscales.core.layer
 				feature.draw();
 			}
 			if(map)
-				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_INSERT, new Array(feature)));
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature));
 			else
 				Trace.warning("Warning : no FEATURE_INSERT dispatched because map event dispatcher is not defined");
 		}

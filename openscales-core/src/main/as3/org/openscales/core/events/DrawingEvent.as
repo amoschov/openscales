@@ -11,7 +11,10 @@ package org.openscales.core.events
 	public class DrawingEvent extends OpenScalesEvent
 	{
 
+		/** Drawing mode is enabled */
 		public static const ENABLED:String="openscales.drawing.enabled";
+		
+		/** Drawing mode is disabled */
 		public static const DISABLED:String="openscales.drawing.disabled";
 
 		public function DrawingEvent(type:String, bubbles:Boolean=false, cancelable:Boolean=false)
