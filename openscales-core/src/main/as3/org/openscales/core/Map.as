@@ -221,8 +221,8 @@ package org.openscales.core
 						for each(var layer:Layer in this.layers){
 							if(!layer.isBaseLayer)
 							{
-								layer.minResolution=null;
-								layer.maxResolution=null;
+								layer.minResolution=NaN;
+								layer.maxResolution=NaN;
 								layer.resolutions=null;
 								layer.initResolutions();
 								

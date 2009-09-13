@@ -28,12 +28,27 @@
 		[Bindable]
 		public var availableIcons:Array;
 		
-		[Bindable]
-		public var defaultIconPosition:LonLat = new LonLat(0,0);
+		public function get defaultIconPosition() : LonLat {
+			return new LonLat(lon, lat);
+		}
+		
+		public function set defaultIconPosition(value:LonLat) : void {
+			lon = value.lon;
+			lat = value.lat;
+		}
+		
+		[Bindable] 
+		private var lon : Number = 0;
 		
 		[Bindable]
-		public var defaultIconSize:Size = new Size(32,32);
+		private var lat : Number = 0;
 		
+		[Bindable]
+		private var defaultIconWidth : Number = 32;
+		
+		[Bindable]
+		private var defaultIconHeight : Number = 32;
+				
 		[Bindable]
 		public var defaultPopupText:String = "This is a popup";
 		
@@ -76,16 +91,16 @@
     <mx:Form width="100%" height="100%">
       <mx:FormHeading label="Add Markers"/>
       <mx:FormItem label="Longitude">
-        <mx:NumericStepper id="markerLon" minimum="-180" maximum="180" stepSize="1" value="{defaultIconPosition.lon}"/>
+        <mx:NumericStepper id="markerLon" minimum="-180" maximum="180" stepSize="1" value="{lon}"/>
       </mx:FormItem>
       <mx:FormItem label="Latitude">
-        <mx:NumericStepper id="markerLat" minimum="-90" maximum="90" stepSize="1" value="{defaultIconPosition.lat}"/>
+        <mx:NumericStepper id="markerLat" minimum="-90" maximum="90" stepSize="1" value="{lat}"/>
       </mx:FormItem>
       <mx:FormItem label="Width">
-        <mx:NumericStepper id="iconWidth" minimum="16" maximum="256" stepSize="1" value="{defaultIconSize.w}"/>
+        <mx:NumericStepper id="iconWidth" minimum="16" maximum="256" stepSize="1" value="{defaultIconWidth}"/>
       </mx:FormItem>
       <mx:FormItem label="Height">
-        <mx:NumericStepper id="iconHeight" minimum="16" maximum="256" stepSize="1" value="{defaultIconSize.h}"/>
+        <mx:NumericStepper id="iconHeight" minimum="16" maximum="256" stepSize="1" value="{defaultIconHeight}"/>
       </mx:FormItem>
       <mx:FormItem label="Icon" width="100%">
         <mx:ComboBox id="iconChoice" dataProvider="{availableIcons}" width="100%">
