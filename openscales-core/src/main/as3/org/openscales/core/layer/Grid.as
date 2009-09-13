@@ -427,8 +427,7 @@ package org.openscales.core.layer
 
 
 		public function removeTileMonitoringHooks(tile:Tile):void {
-		/*this.removeEventListener(TileEvent.TILE_LOAD_START, tile.onLoadStart);
-		 this.removeEventListener(TileEvent.TILE_LOAD_END, tile.onLoadEnd);*/
+		
 		}
 
 		public function moveGriddedTiles(bounds:Bounds):void {
