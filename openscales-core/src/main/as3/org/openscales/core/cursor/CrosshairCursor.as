@@ -43,6 +43,8 @@ package org.openscales.core.cursor
 		 * Update the cursor depending on the mouse position on the stage.
 		 */
         private function updateCursor(event:MouseEvent):void {
+        	// FixMe: replace the stage coordinates (pixels) by the map coordinates
+        	// in the current coordinate system used by MousePosition
 			xValue.text = stage.mouseX.toString();
 			yValue.text = stage.mouseY.toString();
 			event.updateAfterEvent();
