@@ -13,6 +13,7 @@
 			import org.openscales.core.layer.Layer;
 			import org.openscales.core.layer.capabilities.GetCapabilities;
 			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
 			
 			/**
 			 * Array used as data provider for the list.
@@ -74,7 +75,10 @@
 			 * <p>It will add the layer at the map (and so in the layer switcher).</p>
 			 */
 			public function onDblClickListElement(event:MouseEvent):void {
-
+				if (! this.list.selectedItem) {
+					Trace.warning("Capabilities.onDblClickListElement WARNING: no item selected");
+					return;
+				}
 				//We add the layer to the map
 				if (!addedLayers.containsKey(this.list.selectedItem)) {
 					var params:WFSParams = new WFSParams(this.list.selectedItem as String);
