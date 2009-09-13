@@ -38,8 +38,9 @@ package org.openscales.core.basetypes
 				case Unit.DEGREE:
 					return 4374754;
 					break;
+				default:
+					return 0;
 			}
-			return 0;
 		}
 
 		public static function getResolutionFromScale(scale:Number, units:String = null):Number {

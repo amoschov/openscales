@@ -362,9 +362,9 @@ package org.openscales.core.basetypes
 			if (endpos < 0) {
 				endpos = url.length;
 			}
-			var tempbbox:String = url.substring(startpos, endpos);
-			var tempbboxArr:Array = tempbbox.split("%2C");
-			return tempbboxArr[0] + "," + tempbboxArr[1] + " " + tempbboxArr[2] + "," + tempbboxArr[3];
+			var tempBbox:String = url.substring(startpos, endpos);
+			var tempBboxArr:Array = tempBbox.split("%2C");
+			return tempBboxArr[0] + "," + tempBboxArr[1] + " " + tempBboxArr[2] + "," + tempBboxArr[3];
 		}
 
 		/**

@@ -121,27 +121,6 @@ package org.openscales.core.layer
 			return loader;
 		}
 
-		/**
-		 * Create a clone of this layer
-		 *
-		 * @param obj
-		 *
-		 * @return An exact clone
-		 */
-		override public function clone(obj:Object):Object {
-			if (obj == null) {
-				obj = new Grid(this.name,
-					this.url,
-					this.params);
-			}
-
-			obj = super.clone([obj]);
-
-			obj.grid = new Array();
-
-			return obj;
-		}
-
 		override public function set map(map:Map):void {
 			super.map = map;
 			if (this.tileSize == null) {

@@ -212,21 +212,6 @@ package org.openscales.core.layer
 		}
 
 		/**
-		 * An exact clone of this Layer
-		 */
-		public function clone(obj:Object):Object {
-			if (obj == null) {
-				obj = new Layer(this.name);
-			}
-
-			Util.applyDefaults(obj, this);
-
-			obj.map = null;
-
-			return obj;
-		}
-
-		/**
 		 * A Bounds object which represents the lon/lat bounds of the current viewPort.
 		 */
 		public function get extent():Bounds {

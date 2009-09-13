@@ -10,10 +10,6 @@ package org.openscales.core
 	public class Util
 	{
 
-		private static var lastSeqID:Number = 0;
-		private var viewRequestID:Number = 0;
-		public static var MISSING_TILE_URL:String = "http://openstreetmap.org/openlayers/img/404.png";
-
 		public function Util() {
 
 		}
@@ -92,23 +88,6 @@ package org.openscales.core
 				uObject[key.toUpperCase()] = object[key];
 			}
 			return uObject;
-		}
-
-		/**
-		 * Copies any properties of an object that don't exist from
-		 *     another properties
-		 *
-		 * @param toO The destination object.
-		 * @param fromO The source object
-		 *
-		 * @return A reference to the to object
-		 */
-		public static function applyDefaults(toO:Object, fromO:Object):void {
-			for (var key:String in fromO) {
-				if (toO[key] == null) {
-					toO[key] = fromO[key];
-				}
-			}
 		}
 
 		/**

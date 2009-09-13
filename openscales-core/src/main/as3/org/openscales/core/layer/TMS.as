@@ -34,18 +34,6 @@ package org.openscales.core.layer
 
 		}
 
-		override public function clone(obj:Object):Object
-		{
-			if (obj == null)
-			{
-				obj = new TMS(this.name, this.url);
-			}
-
-			obj = super.clone([obj]);
-
-			return obj;
-		}
-
 		override public function getURL(bounds:Bounds):String
 		{
 			bounds = this.adjustBoundsByGutter(bounds);
