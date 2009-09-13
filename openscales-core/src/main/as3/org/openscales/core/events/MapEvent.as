@@ -12,21 +12,38 @@ package org.openscales.core.events{
 		 */
 		private var _map:Map = null;
 
+		/**
+		 * Event type dispatched before map move.
+		 */
 		public static const MOVE_START:String="openscales.movestart";
 
+		/**
+		 * Event type dispatched during map move.
+		 */
 		public static const MOVE:String="openscales.move";
 
+		/**
+		 * Event type dispatched after map move if the center has changed.
+		 * There is no DRAG_END since a MOVE_END event is emitted if the center has finally changed
+		 */
 		public static const MOVE_END:String="openscales.moveend";
 
+		/**
+		 * Event type dispatched after map zoom.
+		 */
 		public static const ZOOM_END:String="openscales.zoomend";
 
+		/**
+		 * Event type dispatched just before dragging the map.
+		 */
 		public static const DRAG_START:String="openscales.dragstart";
-		// There is no DRAG_END since a MOVE_END event is emitted if the center has finally changed
-
+		
+		/**
+ 		 * Event type dispatched during map resize.
+		 */
 		public static const RESIZE:String="openscales.resize";
 
 		/**
-		 * Class: OpenLayers.Map
 		 * Instances of MapEvent are events dispatched by the Map
 		 */
 		public function MapEvent(type:String, map:Map, bubbles:Boolean = false, cancelable:Boolean = false){
