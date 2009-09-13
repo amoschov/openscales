@@ -3,6 +3,8 @@
                  xmlns:control="org.openscales.component.control.*">
     <mx:Script>
             <![CDATA[
+            	import mx.managers.CursorManager;
+            	
             	import org.openscales.core.events.ZoomBoxEvent;
             	import org.openscales.core.handler.zoom.ZoomBoxHandler;
             	import org.openscales.core.events.DrawingEvent;
@@ -12,34 +14,53 @@
                 import org.openscales.core.basetypes.Pixel;
                 import org.openscales.core.handler.Handler;
                 import org.openscales.core.handler.mouse.DragHandler;  
+                import org.openscales.core.cursor.CrosshairCursor;
                 
                 /**
                 * Handler of ZoomBox
                 */
                 private var _zoomBoxHandler:ZoomBoxHandler = new ZoomBoxHandler();
+				
+				/**
+				 * ID of the cursor used during the drawing of the zoom-box.
+				 */
+				private var zoomBoxCursorID:int = CursorManager.NO_CURSOR;
                 
                 override public function set map(value:Map):void{
                     super.map = value;
-                    if(map!=null){_zoomBoxHandler.map = map;map.addEventListener(ZoomBoxEvent.END, disabled)}
+                    if (map!=null){
+                    	_zoomBoxHandler.map = map;
+                    	map.addEventListener(ZoomBoxEvent.END, disabled);
+                    }
                 }
 				
 				/**
 				 * When the user click on the button ZoomBox
 				 */
-                private function onSelectZoomBox(e:Event) : void {
-                	if(zoombox.selected == false){
-                		_zoomBoxHandler.active=true;
+                private function onSelectZoomBox(event:Event) : void {
+                	if(zoombox.selected == false) {
+                		zoombox.selected = true;
                 		_zoomBoxHandler.deactiveDrag();
-                		zoombox.selected = true;               		
-                	}
-            		else{
-						_zoomBoxHandler.active=false;
-						zoombox.selected = false;
+                		_zoomBoxHandler.active = true;
+                		// Change to the specific cursor
+                		zoomBoxCursorID = CursorManager.setCursor(CrosshairCursor);
+                	} else {
 						_zoomBoxHandler.activeDrag();
+						_zoomBoxHandler.active = false;
+						zoombox.selected = false;
+                		// Remove the specific cursor
+                		CursorManager.removeCursor((zoomBoxCursorID>0)?zoomBoxCursorID:CursorManager.currentCursorID);
+                		zoomBoxCursorID = CursorManager.NO_CURSOR;
 					}
                 }
-                private function disabled(evt:ZoomBoxEvent):void{
-                	zoombox.selected = false;              	
+                
+                private function disabled(event:ZoomBoxEvent):void {
+					_zoomBoxHandler.activeDrag();
+					_zoomBoxHandler.active = false;
+                	zoombox.selected = false;
+            		// Remove the specific cursor
+            		CursorManager.removeCursor((zoomBoxCursorID>0)?zoomBoxCursorID:CursorManager.currentCursorID);
+            		zoomBoxCursorID = CursorManager.NO_CURSOR;
                 }
             ]]>
     </mx:Script>
@@ -50,6 +71,11 @@
     	overSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
     	downSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
     	disabledSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
+    	selectedUpSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
+    	selectedOverSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
+    	selectedDownSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
+    	selectedDisabledSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
+		useHandCursor="true" buttonMode="true"
     	selected="false" click="onSelectZoomBox(event)" />
 
 </control:Control> 

@@ -22,7 +22,7 @@ package org.openscales.core.handler.zoom
 	    /**
 	     * Color of the rectangle
 	     */
-	     private var _fillColor:uint = 0x660000
+	     private var _fillColor:uint = 0xFF0000
 	     private var _drawContainer:Sprite = new Sprite();     
                 
          public function ZoomBoxHandler(map:Map=null, active:Boolean=false):void{
@@ -78,7 +78,8 @@ package org.openscales.core.handler.zoom
         private function expandArea(e:MouseEvent) : void {
             var ll:Pixel = map.getMapPxFromLonLat(_startCoordinates);
             _drawContainer.graphics.clear();
-            _drawContainer.graphics.beginFill(_fillColor,0.5);
+			_drawContainer.graphics.lineStyle(1,_fillColor);
+            _drawContainer.graphics.beginFill(_fillColor,0.25);
             _drawContainer.graphics.drawRect(ll.x,ll.y,map.mouseX - ll.x,map.mouseY - ll.y);
             _drawContainer.graphics.endFill();
         }
@@ -89,8 +90,10 @@ package org.openscales.core.handler.zoom
 		*/
         public function activeDrag():void{
             var handler:Handler;
-            for each(handler in this.map.handlers){
-            if(handler is DragHandler){handler.active = true;}
+            for each(handler in this.map.handlers) {
+            	if (handler is DragHandler) {
+            		handler.active = true;
+            	}
             }
         }
 
@@ -100,8 +103,10 @@ package org.openscales.core.handler.zoom
 		 */
          public function deactiveDrag():void{
             var handler:Handler;
-            for each(handler in this.map.handlers){
-            	if(handler is DragHandler){handler.active = false;}
+            for each(handler in this.map.handlers) {
+            	if (handler is DragHandler) {
+            		handler.active = false;
+            	}
             }
          }
 	}
