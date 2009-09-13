@@ -10,63 +10,59 @@ package org.openscales.core.events
 	{
 		/**
 		 * Layer concerned by the event.
-		 * @private
 		 */
 		private var _layer:Layer = null;
-		/**
-		 * Layer extent corresponding to map extent
-		 * is used here for the security
-		 * @private
-		 * */
-		private var _bounds:Bounds=null;
 
+		/**
+		 * Event type dispatched when a layer is added to the map.
+		 */ 
 		public static const LAYER_ADDED:String="openscales.addlayer";
 
+		/**
+		 * Event type dispatched when a layer is removed form the map.
+		 */
 		public static const LAYER_REMOVED:String="openscales.removelayer";
 
+		/**
+		 * Event type dispatched when a layer has been updated (FIXME : need to be confirmed).
+		 */
 		public static const LAYER_CHANGED:String="openscales.changelayer";
 
+		/**
+		 * Event type dispatched when the base layer of the map has changed
+		 */	
 		public static const BASE_LAYER_CHANGED:String="openscales.changebaselayer";
 
+		
+		/**
+		 * Event type dispatched when the current map resolution is within the layer's min/max range.
+		 */
 		public static const LAYER_IN_RANGE:String="openscales.layerinrange";
 
+		/**
+		 * Event type dispatched when the current map resolution is out of the layer's min/max range.
+		 */
 		public static const LAYER_OUT_RANGE:String="openscales.layeroutrange";
 
-		public static const LAYER_AUTHENTIFICATED:String="openscales.layerauthentificated";
-
+		/**
+		 * Event type dispatched when the layer is initialized and ready to request remote data if needed
+		 */		
 		public static const LAYER_INITIALIZED:String="openscales.layerinitialized";
 
-		public function LayerEvent(type:String, layer:Layer,bounds:Bounds=null, bubbles:Boolean=false,cancelable:Boolean=false)
+		public function LayerEvent(type:String, layer:Layer, bubbles:Boolean=false,cancelable:Boolean=false)
 		{
 			this._layer = layer;
-			this._bounds=bounds;
 			super(type, bubbles, cancelable);
 		}
+		
 		/**
 		 * Layer concerned by the event.
 		 */
 		public function get layer():Layer {
 			return this._layer;
 		}
-		/**
-		 *@private
-		 **/
 		public function set layer(layer:Layer):void {
 			this._layer = layer;	
-		}
-		/**
-		 * Layer extent corresponding to map extent
-		 * is used here for the security
-		 **/
-		public function get bounds():Bounds{
-			return this._bounds;
-		}
-
-		/**
-		 * @private
-		 * */
-		public function set bounds(value:Bounds):void{
-			this._bounds=value;
 		}
 
 

@@ -11,6 +11,9 @@ package org.openscales.core.events{
 		 */
 		private var _data:Object = null;
 
+		/**
+		 * Event type dispatched when the get feature info response has been received.
+		 */
 		public static const GET_FEATURE_INFO_DATA:String="openscales.getfeatureinfodata";
 
 		/**
