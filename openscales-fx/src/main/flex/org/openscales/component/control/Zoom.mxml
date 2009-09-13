@@ -69,8 +69,11 @@
 	</mx:Style>
 	
 	<mx:VBox horizontalAlign="center">
-		<mx:LinkButton id="zoomIn" 
-			icon="@Embed('/org/openscales/component/images/zoomin.swf')"
+		<mx:Button id="zoomIn" width="24" height="24"
+			upSkin="@Embed('/org/openscales/component/images/mapZoomIn-upskin.svg')"
+			overSkin="@Embed('/org/openscales/component/images/mapZoomIn-overskin.svg')"
+			downSkin="@Embed('/org/openscales/component/images/mapZoomIn-downskin.svg')"
+			disabledSkin="@Embed('/org/openscales/component/images/mapZoomIn-disabledskin.svg')"
 			click="this.onZoomInClick(event);" />
 		<mx:VSlider id="zoomSlider"
 			liveDragging="true"
@@ -79,8 +82,11 @@
 			snapInterval="1"
 			thumbPress="this.onZoomSliderThumbPress(event)"
 			styleName="zoomSliderStyle" />
-		<mx:LinkButton id="zoomOut"
-			icon="@Embed('/org/openscales/component/images/zoomout.swf')"
+		<mx:Button id="zoomOut" width="24" height="24"
+			upSkin="@Embed('/org/openscales/component/images/mapZoomOut-upskin.svg')"
+			overSkin="@Embed('/org/openscales/component/images/mapZoomOut-overskin.svg')"
+			downSkin="@Embed('/org/openscales/component/images/mapZoomOut-downskin.svg')"
+			disabledSkin="@Embed('/org/openscales/component/images/mapZoomOut-disabledskin.svg')"
 			click="this.onZoomOutClick(event);" />
 	</mx:VBox>
 

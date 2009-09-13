@@ -28,23 +28,43 @@
 		<mx:GridRow height="100%" width="100%">
 			<mx:GridItem width="100%" height="100%"/>
 			<mx:GridItem width="100%" height="100%">
-				<mx:Button id="upButton" icon="@Embed('/org/openscales/component/images/up.swf')" click="this.onButtonClick(event)" label="Up" height="20" width="20"/>
+				<mx:Button id="upButton"
+					upSkin="@Embed('/org/openscales/component/images/mapPanNorth-upskin.swf')"
+					overSkin="@Embed('/org/openscales/component/images/mapPanNorth-upskin.swf')"
+					downSkin="@Embed('/org/openscales/component/images/mapPanNorth-upskin.swf')"
+					disabledSkin="@Embed('/org/openscales/component/images/mapPanNorth-upskin.swf')"
+					click="this.onButtonClick(event)" label="Up" height="20" width="20"/>
 			</mx:GridItem>
 			<mx:GridItem width="100%" height="100%"/>
 		</mx:GridRow>
 		<mx:GridRow height="100%" width="100%">
 			<mx:GridItem width="100%" height="100%">
-				<mx:Button id="leftButton" icon="@Embed('/org/openscales/component/images/left.swf')" click="this.onButtonClick(event)" label="Left" height="20" width="20"/>	
+				<mx:Button id="leftButton"
+					upSkin="@Embed('/org/openscales/component/images/mapPanEast-upskin.swf')"
+					overSkin="@Embed('/org/openscales/component/images/mapPanEast-upskin.swf')"
+					downSkin="@Embed('/org/openscales/component/images/mapPanEast-upskin.swf')"
+					disabledSkin="@Embed('/org/openscales/component/images/mapPanEast-upskin.swf')"
+					click="this.onButtonClick(event)" label="Left" height="20" width="20"/>	
 			</mx:GridItem>
 			<mx:GridItem width="100%" height="100%"/>
 			<mx:GridItem width="100%" height="100%">
-				<mx:Button id="rightButton" icon="@Embed('/org/openscales/component/images/right.swf')" click="this.onButtonClick(event)" label="Right" height="20" width="20"/>	
+				<mx:Button id="rightButton"
+					upSkin="@Embed('/org/openscales/component/images/mapPanWest-upskin.swf')"
+					overSkin="@Embed('/org/openscales/component/images/mapPanWest-upskin.swf')"
+					downSkin="@Embed('/org/openscales/component/images/mapPanWest-upskin.swf')"
+					disabledSkin="@Embed('/org/openscales/component/images/mapPanWest-upskin.swf')"
+					click="this.onButtonClick(event)" label="Right" height="20" width="20"/>	
 			</mx:GridItem>
 		</mx:GridRow>
 		<mx:GridRow height="100%" width="100%">
 			<mx:GridItem width="100%" height="100%"/>
 			<mx:GridItem width="100%" height="100%">
-				<mx:Button id="downButton" icon="@Embed('/org/openscales/component/images/down.swf')" click="this.onButtonClick(event)" label="Down" height="20" width="20"/>	
+				<mx:Button id="downButton"
+					upSkin="@Embed('/org/openscales/component/images/mapPanSouth-upskin.swf')"
+					overSkin="@Embed('/org/openscales/component/images/mapPanSouth-upskin.swf')"
+					downSkin="@Embed('/org/openscales/component/images/mapPanSouth-upskin.swf')"
+					disabledSkin="@Embed('/org/openscales/component/images/mapPanSouth-upskin.swf')"
+					click="this.onButtonClick(event)" label="Down" height="20" width="20"/>	
 			</mx:GridItem>
 			<mx:GridItem width="100%" height="100%"/>
 		</mx:GridRow>
