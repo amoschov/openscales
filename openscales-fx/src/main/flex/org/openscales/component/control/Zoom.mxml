@@ -75,13 +75,14 @@
 			overSkin="@Embed('/org/openscales/component/images/mapZoomIn-upskin.swf')"
 			downSkin="@Embed('/org/openscales/component/images/mapZoomIn-upskin.swf')"
 			disabledSkin="@Embed('/org/openscales/component/images/mapZoomIn-upskin.swf')"
+			useHandCursor="true" buttonMode="true"
 			click="this.onZoomInClick(event);" />
 		<mx:VSlider id="zoomSlider"
-			liveDragging="true"
-			allowTrackClick="true"
-			tickInterval="1"
-			snapInterval="1"
+			toolTip="Set the scale of the map"
+			liveDragging="true" allowTrackClick="true"
+			tickInterval="1" snapInterval="1"
 			thumbPress="this.onZoomSliderThumbPress(event)"
+			useHandCursor="true" buttonMode="true"
 			styleName="zoomSliderStyle" />
 		<mx:Button id="zoomOut" width="16" height="16"
 			toolTip="Zoom out"
@@ -89,6 +90,7 @@
 			overSkin="@Embed('/org/openscales/component/images/mapZoomOut-upskin.swf')"
 			downSkin="@Embed('/org/openscales/component/images/mapZoomOut-upskin.swf')"
 			disabledSkin="@Embed('/org/openscales/component/images/mapZoomOut-upskin.swf')"
+			useHandCursor="true" buttonMode="true"
 			click="this.onZoomOutClick(event);" />
 	</mx:VBox>
 

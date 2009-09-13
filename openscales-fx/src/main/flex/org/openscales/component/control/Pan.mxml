@@ -34,6 +34,7 @@
 					overSkin="@Embed('/org/openscales/component/images/mapPanNorth-upskin.swf')"
 					downSkin="@Embed('/org/openscales/component/images/mapPanNorth-upskin.swf')"
 					disabledSkin="@Embed('/org/openscales/component/images/mapPanNorth-upskin.swf')"
+					useHandCursor="true" buttonMode="true"
 					click="this.onButtonClick(event)" />
 			</mx:GridItem>
 			<mx:GridItem width="100%" height="100%"/>
@@ -46,6 +47,7 @@
 					overSkin="@Embed('/org/openscales/component/images/mapPanEast-upskin.swf')"
 					downSkin="@Embed('/org/openscales/component/images/mapPanEast-upskin.swf')"
 					disabledSkin="@Embed('/org/openscales/component/images/mapPanEast-upskin.swf')"
+					useHandCursor="true" buttonMode="true"
 					click="this.onButtonClick(event)" />	
 			</mx:GridItem>
 			<mx:GridItem width="100%" height="100%"/>
@@ -56,6 +58,7 @@
 					overSkin="@Embed('/org/openscales/component/images/mapPanWest-upskin.swf')"
 					downSkin="@Embed('/org/openscales/component/images/mapPanWest-upskin.swf')"
 					disabledSkin="@Embed('/org/openscales/component/images/mapPanWest-upskin.swf')"
+					useHandCursor="true" buttonMode="true"
 					click="this.onButtonClick(event)" />	
 			</mx:GridItem>
 		</mx:GridRow>
@@ -68,6 +71,7 @@
 					overSkin="@Embed('/org/openscales/component/images/mapPanSouth-upskin.swf')"
 					downSkin="@Embed('/org/openscales/component/images/mapPanSouth-upskin.swf')"
 					disabledSkin="@Embed('/org/openscales/component/images/mapPanSouth-upskin.swf')"
+					useHandCursor="true" buttonMode="true"
 					click="this.onButtonClick(event)" />	
 			</mx:GridItem>
 			<mx:GridItem width="100%" height="100%"/>
