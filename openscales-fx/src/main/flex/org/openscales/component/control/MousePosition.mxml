@@ -4,7 +4,8 @@
     
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.basetypes.LonLat;
+			import org.openscales.core.Map;
+			/* import org.openscales.core.basetypes.LonLat;
 			import org.openscales.core.basetypes.Pixel;
 			import org.openscales.core.Map;
 			import org.openscales.proj4as.ProjProjection;
@@ -16,14 +17,21 @@
 			private var _granularity:int = 10;
 			private var _lastXy:Pixel = null;
 			private var _displayProjection:ProjProjection = null;
+			*/
 			
+			/**
+			 * Control of mousePoisition
+			 */
+			 private var mousePosition:MousePosition = new MousePosition();
+			  
 			/**
 			 * Set the map
 			 */
 			override public function set map(value:Map):void {
 				super.map = value;
 				if (this.map != null) {
-					this.map.addEventListener(MouseEvent.MOUSE_MOVE, recompute);
+					/* this.map.addEventListener(MouseEvent.MOUSE_MOVE, recompute); */
+					mousePosition.map = map;
 				}
 			}
 			
@@ -32,7 +40,7 @@
 			 * 
 			 * @param evt
 			 */
-			private function recompute(evt:MouseEvent = null):void {
+			/* private function recompute(evt:MouseEvent = null):void {
 				var lonLat:LonLat;
 				if (evt != null) {
 					if (this.lastXy == null ||
@@ -57,12 +65,12 @@
 					this.separator +
 					lonLat.lat.toFixed(digits) +
 					this.suffix;
-			}
+			} */
 			
 			/**
 			 * Getters & setters
 			 */
-			 public function get prefix():String {
+			/*  public function get prefix():String {
 				return _prefix;
 			}
 			public function set prefix(value:String):void {
@@ -111,7 +119,7 @@
 				if (value != null && value != "") {
 					_displayProjection = new ProjProjection(value);;
 				}
-			}
+			} */
 		]]>
 	</mx:Script>
 	

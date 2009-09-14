@@ -48,7 +48,7 @@ package org.openscales.core.handler.sketch
 		private var _firstPointRemoved:Boolean = false;
 		
 		/**
-		 * A unique id of the polygon
+		 * Single id of the polygon
 		 */
 		private var id:Number = 0;
 

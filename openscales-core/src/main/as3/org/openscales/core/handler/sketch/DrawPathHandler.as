@@ -23,7 +23,7 @@ package org.openscales.core.handler.sketch
 	public class DrawPathHandler extends AbstractDrawHandler
 	{		
 		/**
-		 * A unique id of the path
+		 * Single id of the path
 		 */ 
 		private var _id:Number = 0;
 		
