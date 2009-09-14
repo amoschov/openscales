@@ -86,7 +86,6 @@ package org.openscales.core.control
 				this.separator + 
 				lonLat.lat.toFixed(digits) +
 				this.suffix;
-
 		}
 
 		override public function set map(map:Map):void {

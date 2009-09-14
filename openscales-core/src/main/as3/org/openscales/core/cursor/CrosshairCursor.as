@@ -7,8 +7,10 @@ package org.openscales.core.cursor
 	import flash.geom.Point;
 	import flash.text.TextField;
 	
-	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.control.MousePosition;
+	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	
 	/**
 	 * Crosshair cursor that displays the coordinates of the location pointed.
@@ -18,9 +20,9 @@ package org.openscales.core.cursor
 	[Embed(source="/org/openscales/core/img/cursorCrosshair.swf", symbol="CrosshairCursor")]
 	public class CrosshairCursor extends Sprite
 	{
-		private var xValue:TextField;
-		private var yValue:TextField;
-		private var numdigits:int = 3;
+		public var xValue:TextField; // must be public for a use by cursorCrosshair.swf
+		public var yValue:TextField; // must be public for a use by cursorCrosshair.swf
+		protected var mapCoordinatesNumDigits:int = 3;
 		
 		/**
 		 * Cursor constructor
@@ -63,11 +65,21 @@ map = null; // FixMe: the display of the coordinates is limited to 3 digits curr
 			if (map) {
 				// Display the position in the map's coordinate system
 				var lonLat:LonLat = map.center;
-				/*if ((map.mousePosition) && (map.mousePosition.displayProjection.srsCode!=map.projection.srsCode)) {
-					lonLat.transform(map.projection, map.mousePosition.displayProjection);
-				}*/
-				xValue.text = lonLat.lon.toFixed(numdigits);
-				yValue.text = lonLat.lat.toFixed(numdigits);
+				var mousePosition:MousePosition = null;
+				for(i=0; i<map.controls.length; i++) {
+					if (map.controls[i] is MousePosition) {
+						mousePosition = map.controls[i];
+						break;
+					}
+				}
+				if (mousePosition) {
+					mapCoordinatesNumDigits = mousePosition.numdigits;
+					if (mousePosition.displayProjection.srsCode != map.projection.srsCode) {
+						lonLat.transform(map.projection, mousePosition.displayProjection);
+					}
+				}
+				xValue.text = lonLat.lon.toFixed(mapCoordinatesNumDigits);
+				yValue.text = lonLat.lat.toFixed(mapCoordinatesNumDigits);
 			} else {
 				// Display the position in pixels
 				xValue.text = stage.mouseX.toString();
