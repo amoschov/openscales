@@ -71,8 +71,9 @@ package org.openscales.core.control
 				lonLat = this.map.getLonLatFromMapPx(this.lastXy);
 			}
 
-			if(lonLat == null)
+			if (lonLat == null) {
 				lonLat = new LonLat(0, 0);
+			}
 
 			if (this._displayProjection) {
 				lonLat.transform(this.map.projection, this._displayProjection);
@@ -90,9 +91,13 @@ package org.openscales.core.control
 
 		override public function set map(map:Map):void {
 			super.map = map;
-
-			if (!this.x) {this.x = 10;}
-			if (!this.y) {this.y = this.map.size.h - 20;}
+			
+			if (! this.x) {
+				this.x = 10;
+			}
+			if (! this.y) {
+				this.y = this.map.size.h - 20;
+			}
 
 			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
 			this.map.addEventListener(MapEvent.DRAG_START, this.deactivateDisplay);
@@ -113,60 +118,61 @@ package org.openscales.core.control
 			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
 		}
 
-		// Getters & setters
-
+		/**
+		 * Getters & setters
+		 */
 		public function get prefix():String
 		{
 			return _prefix;
 		}
-		public function set prefix(newPrefix:String):void
+		public function set prefix(value:String):void
 		{
-			_prefix = newPrefix;
+			_prefix = value;
 		}
 
 		public function get separator():String
 		{
 			return _separator;
 		}
-		public function set separator(newSeparator:String):void
+		public function set separator(value:String):void
 		{
-			_separator = newSeparator;
+			_separator = value;
 		}
 
 		public function get suffix():String
 		{
 			return _suffix;
 		}
-		public function set suffix(newSuffix:String):void
+		public function set suffix(value:String):void
 		{
-			_suffix = newSuffix;
+			_suffix = value;
 		}
 
 		public function get numdigits():Number
 		{
 			return _numdigits;
 		}
-		public function set numdigits(newNumDigits:Number):void
+		public function set numdigits(value:Number):void
 		{
-			_numdigits = newNumDigits;
+			_numdigits = value;
 		}
 
 		public function get granularity():int
 		{
 			return _granularity;
 		}
-		public function set granularity(newGranularity:int):void
+		public function set granularity(value:int):void
 		{
-			_granularity = newGranularity;
+			_granularity = value;
 		}
 
 		public function get lastXy():Pixel
 		{
 			return _lastXy;
 		}
-		public function set lastXy(newLastXy:Pixel):void
+		public function set lastXy(value:Pixel):void
 		{
-			_lastXy = newLastXy;
+			_lastXy = value;
 		}
 
 		public function get displayProjection():ProjProjection

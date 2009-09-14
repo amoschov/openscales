@@ -18,9 +18,10 @@ package org.openscales.core.cursor
 	[Embed(source="/org/openscales/core/img/cursorCrosshair.swf", symbol="CrosshairCursor")]
 	public class CrosshairCursor extends Sprite
 	{
-		public var xValue:TextField;
-		public var yValue:TextField;
-
+		private var xValue:TextField;
+		private var yValue:TextField;
+		private var numdigits:int = 3;
+		
 		/**
 		 * Cursor constructor
 		 */		
@@ -65,8 +66,8 @@ map = null; // FixMe: the display of the coordinates is limited to 3 digits curr
 				/*if ((map.mousePosition) && (map.mousePosition.displayProjection.srsCode!=map.projection.srsCode)) {
 					lonLat.transform(map.projection, map.mousePosition.displayProjection);
 				}*/
-				xValue.text = lonLat.lon.toString();
-				yValue.text = lonLat.lat.toString();
+				xValue.text = lonLat.lon.toFixed(numdigits);
+				yValue.text = lonLat.lat.toFixed(numdigits);
 			} else {
 				// Display the position in pixels
 				xValue.text = stage.mouseX.toString();
