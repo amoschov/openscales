@@ -75,7 +75,7 @@ package org.openscales.core.control
 				lonLat = new LonLat(0, 0);
 
 			if (this._displayProjection) {
-				lonLat.transform(this.map.projection, this._displayProjection );
+				lonLat.transform(this.map.projection, this._displayProjection);
 			}    
 
 			var digits:int = int(this.numdigits);

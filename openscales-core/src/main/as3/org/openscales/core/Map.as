@@ -83,7 +83,6 @@ package org.openscales.core
 		 * @param height the map height
 		 */
 		public function Map(width:Number=600, height:Number=400) {
-
 			super();
 
 			this._controls = new Array();
