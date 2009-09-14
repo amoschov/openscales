@@ -409,24 +409,57 @@
 		]]>
 	</mx:Script>
 	
-	<mx:Glow id="glowImage" alphaFrom="1" alphaTo="1" blurXFrom="0.0" blurXTo="15.0" blurYFrom="0.0" blurYTo="15.0" color="0xC0FF0C"/>
+	<!--mx:Glow id="glowImage" duration="1000"
+		alphaFrom="1" alphaTo="1"
+		blurXFrom="0.0" blurXTo="15.0"
+		blurYFrom="0.0" blurYTo="15.0"
+		color="0xC0FF0C" /-->
 	
-	<mx:VBox>
+	<mx:VBox horizontalAlign="center">
 		
-		<mx:ToggleButtonBar horizontalGap="5" itemClick="clickHandler(event);" horizontalAlign="center" selectedIndex="0" id="tgBar" height="38" >
+		<mx:ToggleButtonBar id="tgBar" height="32"
+			horizontalGap="6" horizontalAlign="center"
+			selectedIndex="0"
+			itemClick="clickHandler(event);">
 			<mx:Array>
-				<mx:Object id="btnMouvement" icon="@Embed('/org/openscales/component/images/featureDragMap-upskin.swf')" toolTip="Pan the map" />
-				<mx:Object id="btnPoint" icon="@Embed('/org/openscales/component/images/featureDrawPoint-upskin.swf')" toolTip="Draw a point" />
-				<mx:Object id="btnPath" icon="@Embed('/org/openscales/component/images/featureDrawPolyline-upskin.swf')" toolTip="Draw a path" />
-				<mx:Object id="btnPolygon" icon="@Embed('/org/openscales/component/images/featureDrawPolygon-upskin.swf')" toolTip="Draw a polygon" />
+				<mx:Object id="btnMouvement"
+					toolTip="Pan the map"
+					icon="@Embed('/org/openscales/component/images/featureDragMap-upskin.swf')"
+					/>
+				<mx:Object id="btnPoint"
+					toolTip="Draw a point"
+					icon="@Embed('/org/openscales/component/images/featureDrawPoint-upskin.swf')"
+					/>
+				<mx:Object id="btnPath"
+					toolTip="Draw a path"
+					icon="@Embed('/org/openscales/component/images/featureDrawPolyline-upskin.swf')"
+					/>
+				<mx:Object id="btnPolygon"
+					toolTip="Draw a polygon"
+					icon="@Embed('/org/openscales/component/images/featureDrawPolygon-upskin.swf')"
+					/>
 			</mx:Array>
 		</mx:ToggleButtonBar>
 		
-		<mx:HBox>
-			<mx:Button id="btnDeleteLast" icon="@Embed('/org/openscales/component/images/featureDeleteLastVertex-upskin.png')" click="this.onDeleteLastClick(event)" toolTip="Delete the last drawing vertex" width="38" height="38" />
-			<mx:Button id="btnDeleteSelected" icon="@Embed('/org/openscales/component/images/featureDeleteLastSelected-upskin.png')" click="this.onDeleteSelectedClick(event)" enabled="false" toolTip="Delete all selected features" width="38" height="38" />
-			<mx:Button id="btnDeleteAll" icon="@Embed('/org/openscales/component/images/featureDeleteAll-upskin.png')" click="this.onDeleteAllClick(event)" toolTip="Delete all the drawn features on the map" width="38" height="38" />
-			<mx:Button id="btnMerge" icon="@Embed('/org/openscales/component/images/featureMerge-upskin.png')" click="this.onMergeClick(event)" toolTip="Merge the selected features (same type only)" enabled="false" width="38" height="38" />
+		<mx:HBox horizontalGap="6">
+			<mx:Button id="btnDeleteLast" width="38" height="38"
+				toolTip="Delete the last drawing vertex"
+				icon="@Embed('/org/openscales/component/images/featureDeleteLastVertex-upskin.png')"
+				click="this.onDeleteLastClick(event)" />
+			<mx:Button id="btnDeleteSelected" width="38" height="38"
+				toolTip="Delete all the selected features"
+				icon="@Embed('/org/openscales/component/images/featureDeleteLastSelected-upskin.png')"
+				enabled="false"
+				click="this.onDeleteSelectedClick(event)" />
+			<mx:Button id="btnDeleteAll" width="38" height="38"
+				toolTip="Delete all the drawn features"
+				icon="@Embed('/org/openscales/component/images/featureDeleteAll-upskin.png')"
+				click="this.onDeleteAllClick(event)" />
+			<mx:Button id="btnMerge" width="38" height="38"
+				toolTip="Merge the selected features (same type only)"
+				icon="@Embed('/org/openscales/component/images/featureMerge-upskin.png')"
+				enabled="false"
+				click="this.onMergeClick(event)" />
 		</mx:HBox>
 		
 	</mx:VBox>
