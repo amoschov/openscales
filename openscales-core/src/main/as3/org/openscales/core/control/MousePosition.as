@@ -8,7 +8,6 @@ package org.openscales.core.control
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.Map;
-	import org.openscales.core.Trace;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -127,22 +126,11 @@ package org.openscales.core.control
 		}
 		
 		/**
-		 * Update the position of the control
-		 * 
-		 * @param event
-		 */
-		override public function resize(event:MapEvent):void {
-			super.resize(event);
-			//FixMe: quel interet de surcharger si on appelle juste la fonction mere ?
-		}
-		
-		/**
 		 * Stop the update of coordinates. Useful while paning the map.
 		 * 
 		 * @param event
 		 */
 		private function deactivateDisplay(event:MapEvent):void {
-Trace.debug("MousePosition.deactivateDisplay");
 			this.map.removeEventListener(MouseEvent.MOUSE_MOVE, this.redraw);
 		}
 		
@@ -152,7 +140,6 @@ Trace.debug("MousePosition.deactivateDisplay");
 		 * @param event
 		 */
 		private function activateDisplay(event:MapEvent):void {
-Trace.debug("MousePosition.activateDisplay");
 			this.map.addEventListener(MouseEvent.MOUSE_MOVE, this.redraw);
 		}
 
