@@ -39,7 +39,7 @@
 	
 	<os:Map id="fxmap" width="100%" height="100%"
 		proxy="http://openscales.org/proxy.php?url="
-		zoom="2" lon="538850.47459" lat="5740916.1243">
+		zoom="15" lon="-8238609.0" lat="4969938.0">
 		
 		<!-- OpenStreetMap EPSG:900913 -->
 		<os:Mapnik name="Mapnik"
@@ -55,10 +55,11 @@
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 		<os:ScaleLine map="{map}" />
 		
+		
 		<!-- Specific layers and handlers of this example -->
 		
 		<os:WFS name="Tiger poi (WFS)"
-			url="http://sigma.openplans.org/geoserver/wfs"
+			url="http://openscales.org/geoserver/wfs"
 			typename="tiger:poi"
 			srs="EPSG:4326"
 			version="1.0.0"
@@ -71,7 +72,7 @@
 				strokeWidth="1" />
 		</os:WFS>
 		
-		<os:WMSGetFeatureInfo url="http://sigma.openplans.org/geoserver/wms" layers="tiger:poi" />
+		<os:WMSGetFeatureInfo url="http://openscales.org/geoserver/wms" layers="tiger:poi" />
 		
 		<os:SelectFeature />		
 		<!--os:DragFeature map="{this.map}" /-->

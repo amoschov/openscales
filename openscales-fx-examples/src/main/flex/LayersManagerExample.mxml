@@ -34,7 +34,6 @@
 	<os:TraceInfo map="{map}" x="{width-200}" y="0" visible="{_displayTrace}" />
 	
 	<os:Map id="fxmap" width="100%" height="100%"
-		proxy="http://openscales.org/proxy.php?url="
 		zoom="2" lon="538850.47459" lat="5740916.1243">
 		
 		<!-- OpenStreetMap EPSG:900913 -->
@@ -59,7 +58,9 @@
 			maxExtent="-180,-90,180,90"
 			url="http://labs.metacarta.com/wms-c/Basic.py"
 			layers="satellite"
-			format="image/jpeg" />
+			format="image/jpeg" 
+			proxy="http://openscales.org/proxy.php?url="
+			/>
 
 		<os:WMSC name="OpenLayers WMS"
 			numZoomLevels="20"
@@ -67,10 +68,11 @@
 			maxExtent="-180,-90,180,90"
 			url="http://labs.metacarta.com/wms-c/Basic.py"
 			layers="basic"
-			format="image/jpeg" />
+			format="image/jpeg"
+			proxy="http://openscales.org/proxy.php?url=" />
 		
 		<os:WFS name="Topp States (WFS)"
-			url="http://sigma.openplans.org/geoserver/wfs"
+			url="http://openscales.org/geoserver/wfs"
 			typename="topp:states"
 			srs="EPSG:4326"
 			version="1.0.0"
@@ -82,7 +84,7 @@
 		</os:WFS>
 		
 		<os:WFS name="Tiger poi (WFS)"
-			url="http://sigma.openplans.org/geoserver/wfs"
+			url="http://openscales.org/geoserver/wfs"
 			typename="tiger:poi"
 			srs="EPSG:4326"
 			version="1.0.0"
@@ -99,8 +101,8 @@
 	
 	<!-- Specific tools of this example -->
 	
-	<mx:Panel title="Layers Manager" horizontalAlign="center" x="10" y="10" width="230">
-	<!--id="lmp" alpha=".25" mouseOver="{lmp.alpha=1.0;}" mouseOut="{lmp.alpha=0.25;}"-->
+	<mx:Panel title="Layers Manager" horizontalAlign="center" x="10" y="10" width="230"
+		><!--id="lmp" alpha=".25" mouseOver="{lmp.alpha=1.0;}" mouseOut="{lmp.alpha=0.25;}"-->
 		<os:LayerSwitcherComponent map="{map}" />
 	</mx:Panel>
 	

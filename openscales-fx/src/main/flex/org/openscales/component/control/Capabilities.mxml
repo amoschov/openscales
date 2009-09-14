@@ -128,7 +128,7 @@
 		</mx:HBox>
 		
 		<mx:HBox width="100%">
-			<mx:TextInput width="100%" id="txtUrl" text="http://sigma.openplans.org/geoserver/wfs" displayAsPassword="false" editable="true" enabled="true" />
+			<mx:TextInput width="100%" id="txtUrl" text="http://openscales.org/geoserver/wfs" displayAsPassword="false" editable="true" enabled="true" />
 			<mx:Button label="Go!" id="butGo" enabled="true" click="this.onButtonClick(event)" />	
 		</mx:HBox>
 		
