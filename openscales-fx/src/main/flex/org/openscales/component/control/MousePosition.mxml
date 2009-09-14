@@ -23,6 +23,4 @@
 		]]>
 	</mx:Script>
 	
-	<mx:Text id="mousePoistionLabel"/>
-	
 </control:Control>

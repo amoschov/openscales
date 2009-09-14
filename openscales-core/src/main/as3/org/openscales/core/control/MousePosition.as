@@ -8,6 +8,7 @@ package org.openscales.core.control
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -110,18 +111,19 @@ package org.openscales.core.control
 		}
 
 		override public function set map(map:Map):void {
+			if (this.map) {
+				this.map.removeEventListener(MouseEvent.MOUSE_MOVE, this.redraw);
+				this.map.removeEventListener(MapEvent.DRAG_START, this.deactivateDisplay);
+				this.map.removeEventListener(MapEvent.MOVE_END, this.activateDisplay);
+			}
+			
 			super.map = map;
 			
-			/* if (! this.x) {
-				this.x = 10;
+			if (this.map) {
+				this.map.addEventListener(MouseEvent.MOUSE_MOVE, this.redraw);
+				this.map.addEventListener(MapEvent.DRAG_START, this.deactivateDisplay);
+				this.map.addEventListener(MapEvent.MOVE_END, this.activateDisplay);
 			}
-			if (! this.y) {
-				this.y = this.map.size.h - 20;
-			} */
-
-			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
-			this.map.addEventListener(MapEvent.DRAG_START, this.deactivateDisplay);
-			this.map.addEventListener(MapEvent.MOVE_END, this.activateDisplay);
 		}
 		
 		/**
@@ -131,100 +133,86 @@ package org.openscales.core.control
 		 */
 		override public function resize(event:MapEvent):void {
 			super.resize(event);
+			//FixMe: quel interet de surcharger si on appelle juste la fonction mere ?
 		}
 		
 		/**
-		 * Stop the update of coordinates. Usefull we you pan.
+		 * Stop the update of coordinates. Useful while paning the map.
 		 * 
 		 * @param event
 		 */
-		private function deactivateDisplay(evt:MapEvent):void{
-			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
+		private function deactivateDisplay(event:MapEvent):void {
+Trace.debug("MousePosition.deactivateDisplay");
+			this.map.removeEventListener(MouseEvent.MOUSE_MOVE, this.redraw);
 		}
 		
 		/**
-		 * Start the update of coordinates
+		 * Start the update of coordinates.
 		 * 
-		 * @param evt
+		 * @param event
 		 */
-		private function activateDisplay(evt:MapEvent):void{
-			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
+		private function activateDisplay(event:MapEvent):void {
+Trace.debug("MousePosition.activateDisplay");
+			this.map.addEventListener(MouseEvent.MOUSE_MOVE, this.redraw);
 		}
 
 		/**
 		 * Getters & setters
 		 */
-		public function get prefix():String
-		{
+		public function get prefix():String {
 			return _prefix;
 		}
-		public function set prefix(value:String):void
-		{
+		public function set prefix(value:String):void {
 			_prefix = value;
 		}
 
-		public function get separator():String
-		{
+		public function get separator():String {
 			return _separator;
 		}
-		public function set separator(value:String):void
-		{
+		public function set separator(value:String):void {
 			_separator = value;
 		}
 
-		public function get suffix():String
-		{
+		public function get suffix():String {
 			return _suffix;
 		}
-		public function set suffix(value:String):void
-		{
+		public function set suffix(value:String):void {
 			_suffix = value;
 		}
 
-		public function get numdigits():Number
-		{
+		public function get numdigits():Number {
 			return _numdigits;
 		}
-		public function set numdigits(value:Number):void
-		{
+		public function set numdigits(value:Number):void {
 			_numdigits = value;
 		}
 
-		public function get granularity():int
-		{
+		public function get granularity():int {
 			return _granularity;
 		}
-		public function set granularity(value:int):void
-		{
+		public function set granularity(value:int):void {
 			_granularity = value;
 		}
 
-		public function get lastXy():Pixel
-		{
+		public function get lastXy():Pixel {
 			return _lastXy;
 		}
-		public function set lastXy(value:Pixel):void
-		{
+		public function set lastXy(value:Pixel):void {
 			_lastXy = value;
 		}
 
-		public function get displayProjection():ProjProjection
-		{
+		public function get displayProjection():ProjProjection {
 			return _displayProjection;
 		}
-		public function set displayProjection(value:ProjProjection):void
-		{
+		public function set displayProjection(value:ProjProjection):void {
 			_displayProjection = value;
 		}
 
-		public function get label():TextField
-		{
+		public function get label():TextField {
 			return this._label;
 		}
-		public function set label(value:TextField):void
-		{
+		public function set label(value:TextField):void {
 			this._label = value;
 		}
 	}
 }
-

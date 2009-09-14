@@ -208,7 +208,13 @@ package org.openscales.core.handler.mouse
 						selectFeauturesLength=0;
 						for each(f in selectFeatures){
 							if(f != null){
-								if(f.selected){f.style = f.originalStyle;f.selected=false;f.layer.redraw();selectFeatures=null;selectFeatures = new Array(currentfeature);}
+								if(f.selected){
+									f.style = f.originalStyle;
+									f.selected=false;
+									f.layer.redraw();
+									selectFeatures=null;
+									selectFeatures = new Array(currentfeature);
+								}
 							}							
 						}
 						iteratorFeatures=0;
@@ -226,7 +232,13 @@ package org.openscales.core.handler.mouse
 						var others:Boolean = false;
 						for(i=0;i<=selectFeatures.length;i++){
 							f=selectFeatures[i];
-							if(f!=null && f.selected && f!=currentfeature){others=true;f.selected = false;f.style = f.originalStyle;f.layer.redraw();selectFeatures[i]=null;}
+							if(f!=null && f.selected && f!=currentfeature){
+								others=true;
+								f.selected = false;
+								f.style = f.originalStyle;
+								f.layer.redraw();
+								selectFeatures[i]=null;
+							}
 						}			
 						if(!others){
 							currentfeature.style = currentfeature.originalStyle;												 
