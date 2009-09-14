@@ -73,22 +73,23 @@ package org.openscales.fx
 			if (! isNaN(this._numZoomLevels))
 				this._map.numZoomLevels = this._numZoomLevels;
 			
+			// Some operations must be done at the begining, in order to do
+			// not depend on the declaration order
 			if (this._maxExtent != null)
 				this._map.maxExtent = this._maxExtent;
-			
-			// Some operations must be done at the beginning, in order to do
-			// not depend on the declaration order
-			var maxExtentDefined:Boolean = false;
-			for(var i:int=0; (!maxExtentDefined) && (i<this.rawChildren.numChildren); i++) {
-				var child:DisplayObject = this.rawChildren.getChildAt(i);
-				if (child is FxMaxExtent) {
-					this._map.maxExtent = (child as FxMaxExtent).bounds;
-					maxExtentDefined = true;
+			else {
+				var maxExtentDefined:Boolean = false;
+				for(var i:int=0; (!maxExtentDefined) && (i<this.rawChildren.numChildren); i++) {
+					var child:DisplayObject = this.rawChildren.getChildAt(i);
+					if (child is FxMaxExtent) {
+						this._map.maxExtent = (child as FxMaxExtent).bounds;
+						maxExtentDefined = true;
+					}
 				}
+				/*if (! maxExtentDefined) {
+					this._map.maxExtent = ;
+				}*/
 			}
-			/*if (! maxExtentDefined) {
-				this._map.maxExtent = ;
-			}*/
 			
 			for(i=0; i<this.rawChildren.numChildren; i++) {
 				child = this.rawChildren.getChildAt(i);

@@ -108,6 +108,7 @@ package org.openscales.core.tile
 					gml.externalProj = this.layer.projection;
 					gml.internalProj = this.layer.map.projection;
 				}
+else Trace.debug("WFSTile.requestSuccess: projections are not defined");
 				wfsLayer.addFeatures(gml.read(doc) as Array);
 			} else {
 				var resultFeatures:Object = doc..*::featureMember;

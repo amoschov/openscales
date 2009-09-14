@@ -153,7 +153,7 @@ package org.openscales.core
 					this.baseLayer = layer;
 				} else {
 					layer.visible = false;
-					 layer.zindex = 0; 
+					layer.zindex = 0; 
 				}
 			} else {
 				layer.redraw();
@@ -195,8 +195,6 @@ package org.openscales.core
 
 					// if we set a baselayer with a diferent projection, we change the map's projection datas
 					if ((this.projection.srsCode != newBaseLayer.projection.srsCode)||(newBaseLayer.resolutions==null)) {
-						
-						
 						if (this.center != null)
 							this.center.transform(this.projection, newBaseLayer.projection);
 
