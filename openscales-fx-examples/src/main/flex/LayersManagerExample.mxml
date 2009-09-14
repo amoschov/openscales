@@ -99,7 +99,7 @@
 	
 	<!-- Specific tools of this example -->
 	
-	<mx:Panel title="Layers Manager" horizontalAlign="center" x="10" y="10" width="250"
+	<mx:Panel title="Layers Manager" horizontalAlign="center" x="10" y="10" width="230"
 		><!--id="lmp" alpha=".25" mouseOver="{lmp.alpha=1.0;}" mouseOut="{lmp.alpha=0.25;}"-->
 		<os:LayerSwitcherComponent map="{map}" />
 	</mx:Panel>
