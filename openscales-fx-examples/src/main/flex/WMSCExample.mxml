@@ -20,7 +20,7 @@
 					  right="180"
 					  top="90"/>
 
-		<os:MousePosition/>
+		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 		<os:BorderPanHandler/>
 		<os:PanComponent/>
 		<os:ClickHandler/>

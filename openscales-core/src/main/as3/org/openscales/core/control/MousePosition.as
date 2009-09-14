@@ -12,16 +12,28 @@ package org.openscales.core.control
 
 	/**
 	 * Control displaying the coordinates (Lon, Lat) of the current mouse position.
+	 * Don't forget to initialize the position of the control, and the width
 	 */
 	public class MousePosition extends Control
 	{
-
+		/**
+		 * Texfield wich displays coordinates
+		 */
 		private var _label:TextField = null;
-
+		
+		/**
+		 * Text before coordinates in the label, which doesn't change.
+		 */
 		private var _prefix:String = "";
-
+		
+		/**
+		 * the caracter between the lon and the lat
+		 */
 		private var _separator:String = ", ";
-
+		
+		/**
+		 * Text after coordinates in the label, which doesn't change.
+		 */
 		private var _suffix:String = "";
 
 		private var _numdigits:Number = 5;
@@ -29,14 +41,23 @@ package org.openscales.core.control
 		private var _granularity:int = 10;
 
 		private var _lastXy:Pixel = null;
-
+		
+		/**
+		 * The projection display in the label
+		 * Use the model "EPSG:4326" if you want to change it
+		 */
 		private var _displayProjection:ProjProjection = null;
-
+		
+		/**
+		 * MousePosition Constructor
+		 * 
+		 * @param position
+		 */
 		public function MousePosition(position:Pixel = null) {
 			super(position);
-
+			
 			this.label = new TextField();
-			this.label.width = 150;
+			this.label.width = 200;	
 			var labelFormat:TextFormat = new TextFormat();
 			labelFormat.size = 11;
 			labelFormat.color = 0x0F0F0F;
@@ -91,28 +112,41 @@ package org.openscales.core.control
 		override public function set map(map:Map):void {
 			super.map = map;
 			
-			if (! this.x) {
+			/* if (! this.x) {
 				this.x = 10;
 			}
 			if (! this.y) {
 				this.y = this.map.size.h - 20;
-			}
+			} */
 
 			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
 			this.map.addEventListener(MapEvent.DRAG_START, this.deactivateDisplay);
 			this.map.addEventListener(MapEvent.MOVE_END, this.activateDisplay);
 		}
-
+		
+		/**
+		 * Update the position of the control
+		 * 
+		 * @param event
+		 */
 		override public function resize(event:MapEvent):void {
-			this.x = 10;
-			this.y = this.map.size.h - 20;
 			super.resize(event);
 		}
 		
+		/**
+		 * Stop the update of coordinates. Usefull we you pan.
+		 * 
+		 * @param event
+		 */
 		private function deactivateDisplay(evt:MapEvent):void{
 			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
 		}
 		
+		/**
+		 * Start the update of coordinates
+		 * 
+		 * @param evt
+		 */
 		private function activateDisplay(evt:MapEvent):void{
 			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.redraw);
 		}

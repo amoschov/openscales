@@ -20,7 +20,7 @@
 				format="image/jpeg"
 				isBaseLayer="true"/>
 
-		<os:MousePosition/>
+		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 
 		<os:DragHandler/>
 		<os:ClickHandler/>

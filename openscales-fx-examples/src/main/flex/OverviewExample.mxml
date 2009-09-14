@@ -59,7 +59,7 @@
 		<os:DragHandler />
 		<os:WheelHandler />
 		
-		<os:MousePosition displayProjection="EPSG:4326" />
+		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 		
 		<!-- Specific layers and handlers of this example -->
 		<!-- none -->

@@ -5,124 +5,24 @@
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.Map;
-			/* import org.openscales.core.basetypes.LonLat;
-			import org.openscales.core.basetypes.Pixel;
-			import org.openscales.core.Map;
-			import org.openscales.proj4as.ProjProjection;
-			
-			private var _prefix:String = "";
-			private var _separator:String = ", ";
-			private var _suffix:String = "";
-			private var _numdigits:Number = 5;
-			private var _granularity:int = 10;
-			private var _lastXy:Pixel = null;
-			private var _displayProjection:ProjProjection = null;
-			*/
 			
 			/**
-			 * Control of mousePoisition
+			 * Control of mousePosition
 			 */
 			 private var mousePosition:MousePosition = new MousePosition();
 			  
 			/**
-			 * Set the map
+			 * Set the map. Affect a default position if this position is null
 			 */
 			override public function set map(value:Map):void {
 				super.map = value;
 				if (this.map != null) {
-					/* this.map.addEventListener(MouseEvent.MOUSE_MOVE, recompute); */
 					mousePosition.map = map;
 				}
 			}
-			
-			/**
-			 * Display the coordinates of the mouse in the display projection SRS
-			 * 
-			 * @param evt
-			 */
-			/* private function recompute(evt:MouseEvent = null):void {
-				var lonLat:LonLat;
-				if (evt != null) {
-					if (this.lastXy == null ||
-						Math.abs(map.mouseX - this.lastXy.x) > this.granularity ||
-						Math.abs(map.mouseY - this.lastXy.y) > this.granularity)
-					{
-						this.lastXy = new Pixel(map.mouseX, map.mouseY);
-						return;
-					}
-					this.lastXy = new Pixel(map.mouseX, map.mouseY);
-					lonLat = this.map.getLonLatFromMapPx(this.lastXy);
-				}
-				if (lonLat == null) {
-					lonLat = new LonLat(0, 0);
-				}
-                if (this._displayProjection) {
-					lonLat.transform(this.map.projection, this._displayProjection);
-				}
-				var digits:int = int(this.numdigits);
-				this.theLabel.text = this.prefix +
-					lonLat.lon.toFixed(digits) +
-					this.separator +
-					lonLat.lat.toFixed(digits) +
-					this.suffix;
-			} */
-			
-			/**
-			 * Getters & setters
-			 */
-			/*  public function get prefix():String {
-				return _prefix;
-			}
-			public function set prefix(value:String):void {
-				_prefix = value;
-			}
-			
-			public function get separator():String {
-				return _separator;
-			}
-			public function set separator(value:String):void {
-				_separator = value;
-			}
-			
-			public function get suffix():String {
-				return _suffix;
-			}
-			public function set suffix(value:String):void {
-				_suffix = value;
-			}
-			
-			public function get numdigits():Number {
-				return _numdigits;
-			}
-			public function set numdigits(value:Number):void {
-				_numdigits = value;
-			}
-			
-			public function get granularity():int {
-				return _granularity;
-			}
-			public function set granularity(value:int):void {
-				_granularity = value;
-			}
-			
-			public function get lastXy():Pixel {
-				return _lastXy;
-			}
-			public function set lastXy(value:Pixel):void {
-				_lastXy = value;
-			}
-			
-			public function get displayProjectionSRS():String {
-				return _displayProjection.srsCode;
-			}
-			public function set displayProjectionSRS(value:String):void {
-				if (value != null && value != "") {
-					_displayProjection = new ProjProjection(value);;
-				}
-			} */
 		]]>
 	</mx:Script>
 	
-	<mx:Text id="theLabel" />
+	<mx:Text id="mousePoistionLabel"/>
 	
 </control:Control>

@@ -79,7 +79,7 @@
 		</os:WFS>-->
 
 		<!-- We choose EPSG:4326 as displayed projection in this control-->
-		<os:MousePosition displayProjection="EPSG:900913" />
+		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:900913"/>
 
 		<os:PanZoomBar />
 		<os:LayerSwitcher />
