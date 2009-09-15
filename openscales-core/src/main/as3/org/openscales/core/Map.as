@@ -39,8 +39,6 @@ package org.openscales.core
 	public class Map extends Sprite
 	{
 
-		public var DEFAULT_TILE_WIDTH:Number = 256;
-		public var DEFAULT_TILE_HEIGHT:Number = 256;
 		public var DEFAULT_NUM_ZOOM_LEVELS:Number = 20;
 		public var DEFAULT_MAX_RESOLUTION:Number = 1.40625;
 		public var DEFAULT_PROJECTION:ProjProjection = new ProjProjection("EPSG:4326");
@@ -61,7 +59,6 @@ package org.openscales.core
 		private var _layerContainer:DraggableSprite = null;
 		private var _controls:Array = null;
 		private var _handlers:Array = null;
-		private var _tileSize:Size = null;
 		private var _size:Size = null;
 		private var _center:LonLat = null;
 		private var _zoom:Number = 0;
@@ -91,7 +88,6 @@ package org.openscales.core
 			this._handlers = new Array();
 
 			this.size = new Size(width, height);
-			this.tileSize = new Size(this.DEFAULT_TILE_WIDTH, this.DEFAULT_TILE_HEIGHT);
 			this.maxExtent = new Bounds(-180,-90,180,90);
 			this.maxResolution =  this.DEFAULT_MAX_RESOLUTION;
 			this.projection = this.DEFAULT_PROJECTION;
@@ -704,18 +700,6 @@ package org.openscales.core
 		public function set center(newCenter:LonLat):void
 		{
 			this.setCenter(newCenter);
-		}
-
-		/**
-		 * Default tile size.
-		 */
-		public function get tileSize():Size
-		{
-			return _tileSize;
-		}
-		public function set tileSize(newTileSize:Size):void
-		{
-			_tileSize = newTileSize;
 		}
 
 		/**

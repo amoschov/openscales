@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-		   xmlns:os="http://openscales.org">
+		   xmlns:os="http://openscales.org"
+		   creationComplete="initMap();">
+	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
+
+			// Specific imports for this example
+			// none			
+			
+			[Bindable] private var map:Map;
+
+			[Bindable] private var _displayTrace:Boolean = true;
+			public function get displayTrace():Boolean {
+				return _displayTrace;
+			}
+			public function set displayTrace(value:Boolean):void {
+				_displayTrace = value;
+			}
+			
+			private function initMap():void {
+				map=fxmap.map;
+				this.setChildIndex(this.getChildAt(1), 0);
+				// Specific initialize for this example
+				// none
+			}
+		]]>
+	</mx:Script>
+	
+	<!-- Must be defined first to display the logs of the map and of its objects during their creation -->
+	<os:TraceInfo map="{map}" x="{width-200}" y="0" visible="{_displayTrace}" />
 	
 	<os:Map id="fxmap"
 			width="100%"
@@ -8,11 +39,15 @@
 			numZoomLevels="20"
 			zoom="5">
 
-		<os:WMSC name="Metacarta"
-				 url="http://labs.metacarta.com/wms-c/Basic.py"
-				 layers="satellite"
+		<os:WMSC name="Nasa"
+				 url="http://onearth.jpl.nasa.gov/wms.cgi"
+				 layers="global_mosaic"
 				 format="image/jpeg"
-				 isBaseLayer="true"/>
+				 isBaseLayer="true"
+				 tileWidth="512"
+				 tileHeight="512"
+				 styles="visual"
+				 />
 
 
 		<os:MaxExtent left="-180"

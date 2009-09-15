@@ -1,7 +1,6 @@
 package org.openscales.fx.layer
 {
-	import org.openscales.core.layer.ogc.WMSC;
-	import org.openscales.fx.layer.FxHTTPRequest;
+	import org.openscales.core.layer.Grid;
 
 	public class FxGrid extends FxHTTPRequest
 	{
@@ -10,7 +9,15 @@ package org.openscales.fx.layer
 			super();
 		}
 		
-		
+		public function set tileWidth(value:Number):void {
+	    	if(this.layer != null)
+	    		(this.layer as Grid).tileWidth = value;
+	    }
+	    
+	    public function set tileHeight(value:Number):void {
+	    	if(this.layer != null)
+	    		(this.layer as Grid).tileHeight = value;
+	    }	
 		
 	}
 }

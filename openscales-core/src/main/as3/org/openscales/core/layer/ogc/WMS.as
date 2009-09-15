@@ -1,10 +1,9 @@
 package org.openscales.core.layer.ogc
 {
 
-	import flash.net.URLRequestMethod;
-
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.params.ogc.WMSParams;
 	import org.openscales.core.tile.ImageTile;
@@ -57,7 +56,7 @@ package org.openscales.core.layer.ogc
 		override public function addTile(bounds:Bounds, position:Pixel):Tile {
 			var url:String = this.getURL(bounds);
 			return new ImageTile(this, position, bounds, 
-				url, this.tileSize);
+				url, new Size(this.tileWidth, this.tileHeight));
 		}
 
 		public function get reproject():Boolean {

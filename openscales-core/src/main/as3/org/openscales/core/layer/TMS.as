@@ -4,6 +4,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
 
@@ -38,8 +39,8 @@ package org.openscales.core.layer
 		{
 			bounds = this.adjustBoundsByGutter(bounds);
 			var res:Number = this.map.resolution;
-			var x:Number = Math.round((bounds.left - this._tileOrigin.lon) / (res * this.tileSize.w));
-			var y:Number = Math.round((bounds.bottom - this._tileOrigin.lat) / (res * this.tileSize.h));
+			var x:Number = Math.round((bounds.left - this._tileOrigin.lon) / (res * this.tileWidth));
+			var y:Number = Math.round((bounds.bottom - this._tileOrigin.lat) / (res * this.tileHeight));
 			var z:Number = this._serverResolutions != null ? this._serverResolutions.indexOf(res) : this.map.zoom;
 			// Overrided so commented
 			// Use name instead of layername, cf. http://trac.openlayers.org/ticket/737
@@ -50,7 +51,7 @@ package org.openscales.core.layer
 
 		override public function addTile(bounds:Bounds, position:Pixel):Tile
 		{
-			return new ImageTile(this, position, bounds, null, this.tileSize);
+			return new ImageTile(this, position, bounds, null, new Size(this.tileWidth, this.tileHeight));
 		}
 
 		override public function set map(map:Map):void {

@@ -31,8 +31,8 @@ package org.openscales.core.layer.osm
 		override public function getURL(bounds:Bounds):String
 		{
 			var res:Number = this.map.resolution;
-			var x:Number = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
-			var y:Number = Math.round((this.maxExtent.top - bounds.top) / (res * this.tileSize.h));
+			var x:Number = Math.round((bounds.left - this.maxExtent.left) / (res * this.tileWidth));
+			var y:Number = Math.round((this.maxExtent.top - bounds.top) / (res * this.tileHeight));
 			var z:Number = this.map.zoom;
 			var limit:Number = Math.pow(2, z);
 
