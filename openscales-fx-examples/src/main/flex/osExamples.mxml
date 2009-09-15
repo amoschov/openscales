@@ -161,7 +161,7 @@
 <os:OpenStreetMap id="reprojectionAndQuery" />
 			
 			<!-- Protocols -->
-			<os:WMSCExample id="wmsc" />
+			<os:WMSCExample id="wmsc" displayTrace="{displayTrace}" />
 			<os:WMSExample id="wms" />
 			
 			<!-- Security -->
