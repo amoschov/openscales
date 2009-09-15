@@ -75,6 +75,8 @@ package org.openscales.core
 		private var _units:String;
 		private var _proxy:String = null;
 		private var _bitmapTransition:DraggableSprite;
+		private var _initZoom:Number = 0;
+		private var _initCenter:LonLat = null;
 
 		/**
 		 * Map constructor
@@ -733,6 +735,18 @@ package org.openscales.core
 
 			}
 		}
+		
+		/**
+		 * Initial map zoom level.
+		 */
+		 public function get initZoom():Number
+		 {
+		 	return _initZoom;
+		 }
+		 public function set initZoom(firstZoom:Number):void
+		 {
+		 	_initZoom = firstZoom;
+		 }
 
 		/**
 		 * Copy the layerContainer in a bitmap and display this (this function is use for zoom)
@@ -985,6 +999,13 @@ package org.openscales.core
 			} 
 
 			return extent;
+		}
+		
+		public function get initCenter():LonLat {
+			return this._initCenter;
+		}
+		public function set initCenter(firstCenter:LonLat):void {
+			this._initCenter = new LonLat(firstCenter.lon,firstCenter.lat);
 		}
 
 		public function get resolution():Number {
