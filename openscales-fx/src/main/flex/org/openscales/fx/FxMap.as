@@ -36,8 +36,6 @@ package org.openscales.fx
 		private var _creationHeight:Number = NaN;
 		private var _creationWidth:Number = NaN;
 		private var _proxy:String = "";
-		private var _initZoom:Number = NaN;
-		private var _initCenter:LonLat = null;
 		
 		/**
 		 * FxMap constructor
@@ -124,12 +122,6 @@ package org.openscales.fx
 			
 			if (! isNaN(this._zoom))
 				this._map.zoom = this._zoom;
-				
-				if (! isNaN(this._initZoom))
-				this._map.initZoom = this._initZoom;
-				
-				 if (this._initCenter != null)
-				this._map.initCenter = this._initCenter; 
 			
 			// Some operations must be done at the end, in order to do
 			// not depend on the declaration order
@@ -158,10 +150,7 @@ package org.openscales.fx
 					this._map.zoomToExtent((child as FxExtent).bounds);
 					extentDefined = true;
 				}
-			}
-			if ((! extentDefined) && (this._map.maxExtent)) {
-				this._map.zoomToExtent(this._map.maxExtent);
-			}
+			}	
 			
 			this._map.addEventListener(MapEvent.DRAG_START, this.hidePopups);
 			this._map.addEventListener(MapEvent.MOVE_START, this.hidePopups);
@@ -247,10 +236,6 @@ package org.openscales.fx
 		
 		public function set zoom(value:Number):void {
 			this._zoom = value;
-		}
-		
-		public function set initZoom(value:Number):void {
-			this._initZoom = value;
 		}
 		
 		public function set lon(value:Number):void {
