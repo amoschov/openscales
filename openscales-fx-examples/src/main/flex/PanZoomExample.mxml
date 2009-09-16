@@ -35,7 +35,7 @@
 	
 	<os:Map id="fxmap" width="100%" height="100%"
 		proxy="http://openscales.org/proxy.php?url="
-		zoom="2" lon="538850.47459" lat="5740916.1243">
+		zoom="12" lon="538850.47459" lat="5740916.1243">
 		
 		<!-- OpenStreetMap EPSG:900913 -->
 		<os:Mapnik name="Mapnik"

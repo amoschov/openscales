@@ -34,6 +34,7 @@
 	<os:TraceInfo map="{map}" x="{width-200}" y="0" visible="{_displayTrace}" />
 	
 	<os:Map id="fxmap" width="100%" height="100%"
+		proxy="http://openscales.org/proxy.php?url="
 		zoom="2" lon="538850.47459" lat="5740916.1243">
 		
 		
