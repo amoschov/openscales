@@ -233,15 +233,15 @@ package org.openscales.core.feature {
 		}
 
 		public function get top():Number {
-			if (this.layer && layer.map && this.layer.map.extent)
-				return this.layer.map.extent.top / this.layer.map.resolution;
+			if (this.layer)
+				return this.layer.extent.top / this.layer.resolution;
 			else
 				return NaN;
 		}
 		
 		public function get left():Number {
-			if (this.layer && layer.map && this.layer.map.extent)
-				return -this.layer.map.extent.left / this.layer.map.resolution;
+			if (this.layer)
+				return -this.layer.extent.left / this.layer.resolution;
 			else
 				return NaN;
 		}
