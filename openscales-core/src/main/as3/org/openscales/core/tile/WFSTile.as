@@ -4,7 +4,8 @@ package org.openscales.core.tile
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
-
+	
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -14,7 +15,6 @@ package org.openscales.core.tile
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.ogc.WFS;
 	import org.openscales.core.request.XMLRequest;
-	import org.openscales.core.Trace;
 
 	/**
 	 * WFS single tile
@@ -88,10 +88,15 @@ package org.openscales.core.tile
 		 */
 		public function requestSuccess(event:Event):void {
 			var loader:URLLoader = event.target as URLLoader;
+			var startTime:Date;
+			var endTime:Date;
 
 			// To avoid errors in case of the WFS server is dead
 			try {
-				var doc:XML =  new XML(loader.data);;
+				startTime = new Date();
+				var doc:XML =  new XML(loader.data);
+				endTime = new Date();
+				Trace.debug("XML object creation : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
 			}
 			catch(error:Error) {
 				Trace.error(error.message);
@@ -108,8 +113,20 @@ package org.openscales.core.tile
 					gml.externalProj = this.layer.projection;
 					gml.internalProj = this.layer.map.projection;
 				}
-else Trace.debug("WFSTile.requestSuccess: projections are not defined");
-				wfsLayer.addFeatures(gml.read(doc) as Array);
+				else { 
+					Trace.debug("WFSTile.requestSuccess: no reprojection needed");
+				}
+				
+				startTime = new Date();
+				// TODO : Issue 217: Optimize WFS by drawing feature as soon as they are parsed
+				var features:Array = gml.read(doc) as Array;
+				endTime = new Date();
+				Trace.debug("XML parsing : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
+				
+				startTime = new Date();
+				wfsLayer.addFeatures(features);
+				endTime = new Date();
+				Trace.debug("Add features : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
 			} else {
 				var resultFeatures:Object = doc..*::featureMember;
 				this.addResults(resultFeatures);
