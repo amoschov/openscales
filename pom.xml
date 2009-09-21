@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<project>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
 	<artifactId>openscales</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 	<packaging>pom</packaging>
 	<name>OpenScales</name>
 	<description>OpenScales is a user-friendly and fast interface designed to manipulate spatial data : geographic raster viewing, data-vector editing, management of smooth transitions between scales and positions, ...</description>
@@ -165,10 +165,10 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:http:///${openscales.host}/openscales/trunk/</connection>
-		<developerConnection>scm:svn:http://${openscales.host}/svn/openscales/trunk/</developerConnection>
+		<connection>scm:svn:http:///localhost/openscales/tags/openscales-1.0</connection>
+		<developerConnection>scm:svn:http://localhost/svn/openscales/tags/openscales-1.0</developerConnection>
 		<tag>HEAD</tag>
-		<url>http://openscales.org/p/openscales/source/tree/HEAD/trunk/</url>
+		<url>http://openscales.org/p/openscales/source/tree/HEAD/tags/openscales-1.0</url>
 	</scm>
 	<ciManagement>
 		<system>hudson</system>
