@@ -14,9 +14,23 @@
 		<flexmojos.version>3.3.0</flexmojos.version>
 		<flex.target.player.version>9.0.0</flex.target.player.version>
 		<flexpmd.version>1.0.RC3</flexpmd.version>
+		<env>local</env>
 	</properties>
 	
 	<profiles>
+		<profile>
+            <id>env-local</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>env</name>
+					<value>local</value>
+				</property>
+			</activation>
+            <properties>
+				<openscales.host>openscales.org</openscales.host>
+            </properties>
+        </profile>
 		<profile>
             <id>env-dev</id>
 			<activation>
@@ -27,6 +41,7 @@
 			</activation>
             <properties>
 				<mvn.site>file:///WEBS/pht/openscales.org/docs/mvn-site</mvn.site>
+				<openscales.host>localhost</openscales.host>
             </properties>
         </profile>
 		<profile>
@@ -150,14 +165,14 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:http://localhost/svn/openscales/trunk/</connection>
-		<developerConnection>scm:svn:http://openscales.org/svn/openscales/trunk/</developerConnection>
+		<connection>scm:svn:http:///${openscales.host}/openscales/trunk/</connection>
+		<developerConnection>scm:svn:http://${openscales.host}/svn/openscales/trunk/</developerConnection>
 		<tag>HEAD</tag>
 		<url>http://openscales.org/p/openscales/source/tree/HEAD/trunk/</url>
 	</scm>
 	<ciManagement>
 		<system>hudson</system>
-		<url>http://openscales.org/hudson/job/OpenScales/</url>
+		<url>http://openscales.org/hudson/job/openscales/</url>
 	</ciManagement>
 	<licenses>
 	 	<license>
@@ -194,7 +209,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.0-beta-9</version>
 				<configuration>
-					<tagBase>http://openscales.org/svn/openscales/tags</tagBase>
+					<tagBase>http://localhost/svn/openscales/tags</tagBase>
 					<username>${scm.username}</username>
 					<password>${scm.password}</password>
 				</configuration>
@@ -238,11 +253,11 @@
 	<repositories>
 		<repository>
 			<id>central</id>
-			<url>http://openscales.org/nexus/content/groups/public</url>
+			<url>http://${openscales.host}/nexus/content/groups/public</url>
 		</repository>
 		<repository>
 			<id>snapshot</id>
-			<url>http://openscales.org/nexus/content/groups/public-snapshots</url>
+			<url>http://${openscales.host}/nexus/content/groups/public-snapshots</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -252,11 +267,11 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>central</id>
-			<url>http://openscales.org/nexus/content/groups/public</url>
+			<url>http://${openscales.host}/nexus/content/groups/public</url>
 		</pluginRepository>
 		<pluginRepository>
 			<id>snapshot</id>
-			<url>http://openscales.org/nexus/content/groups/public-snapshots</url>
+			<url>http://${openscales.host}/nexus/content/groups/public-snapshots</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
@@ -268,12 +283,12 @@
 			<repository>
 				<id>openscales-repo</id>
 				<name>OpenScales Release repository</name>
-				<url>http://openscales.org/nexus/content/repositories/releases</url>
+				<url>http://${openscales.host}/nexus/content/repositories/releases</url>
 			</repository>
 			<snapshotRepository>
 				<id>openscales-repo-snapshot</id>
 				<name>OpenScales Snapshot Repository</name>
-				<url>http://openscales.org/nexus/content/repositories/snapshots</url>
+				<url>http://${openscales.host}/nexus/content/repositories/snapshots</url>
 			</snapshotRepository>
 			<site>
 					<id>openscales.org</id>
