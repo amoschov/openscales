@@ -150,7 +150,7 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:http://openscales.org/svn/openscales/trunk/</connection>
+		<connection>scm:svn:http://localhost/svn/openscales/trunk/</connection>
 		<developerConnection>scm:svn:http://openscales.org/svn/openscales/trunk/</developerConnection>
 		<tag>HEAD</tag>
 		<url>http://openscales.org/p/openscales/source/tree/HEAD/trunk/</url>
