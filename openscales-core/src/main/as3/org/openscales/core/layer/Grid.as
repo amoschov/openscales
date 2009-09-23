@@ -2,6 +2,7 @@ package org.openscales.core.layer
 {
 	import flash.display.Loader;
 	
+	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -9,6 +10,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.tile.ImageTile;
+	import org.openscales.core.tile.LoaderWrapper;
 	import org.openscales.core.tile.Tile;
 
 	/**
@@ -18,7 +20,6 @@ package org.openscales.core.layer
 	 */
 	public class Grid extends HTTPRequest
 	{
-		private const CACHE_SIZE:int = 256;
 		
 		private const DEFAULT_TILE_WIDTH:Number = 256;
 		
@@ -33,6 +34,8 @@ package org.openscales.core.layer
 		private var _origin:Pixel = null;
 
 		private var _buffer:Number;
+
+		protected var CACHE_SIZE:int = 64;
 
 		private var cachedTiles:HashMap = null;
 		private var cachedTilesUrl:Array = null;
@@ -95,7 +98,9 @@ package org.openscales.core.layer
 		/**
 		 * Methodd to cache a tile
 		 */
-		public function addTileCache(url:String,loader:Loader):void {
+		public function addTileCache(url:String,loader:LoaderWrapper):void {
+			
+			loader.addRef();
 			//We check if there's space in the cache
 			if(cachedTiles.size() < CACHE_SIZE) {
 				cachedTiles.put(url,loader);
@@ -104,6 +109,9 @@ package org.openscales.core.layer
 			//Otherwise, we remove from the cache the older cached tile
 			else {
 				var oldUrl:String = cachedTilesUrl[cptCached];
+				var oldLW:LoaderWrapper = cachedTiles.getValue(oldUrl);
+				if(oldLW != null)
+					oldLW.removeRef();
 				cachedTiles.remove(oldUrl);
 				cachedTilesUrl[cptCached] = url;
 				cachedTiles.put(url,loader);
@@ -114,9 +122,9 @@ package org.openscales.core.layer
 		/**
 		 * Method to get a cached tile by its url
 		 */
-		public function getTileCache(url:String):Loader {
+		public function getTileCache(url:String):LoaderWrapper {
 
-			var loader:Loader = cachedTiles.getValue(url);
+			var loader:LoaderWrapper = cachedTiles.getValue(url);
 
 			return loader;
 		}
@@ -132,6 +140,12 @@ package org.openscales.core.layer
 		 */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 
+			if (zoomChanged)
+			 if (this.minZoomLevel && (this.map.zoom < this.minZoomLevel))
+			 {
+			 	return;
+			 }
+			 
 			super.moveTo(bounds, zoomChanged, dragging,resizing);
 
 			if (bounds == null) {
@@ -143,6 +157,9 @@ package org.openscales.core.layer
 			var tilesBounds:Bounds = this.getTilesBounds();            
 
 			if (this.singleTile) {
+				
+				if(zoomChanged)
+					this.clearGrid();
 
 				if ( forceReTile || 
 					(!dragging && !tilesBounds.containsBounds(bounds))) {
@@ -306,7 +323,7 @@ package org.openscales.core.layer
 						tile = this.addTile(tileBounds, px);
 						row.push(tile);
 					} else {
-						tile.moveTo(tileBounds, px, false);
+						tile.clearAndMoveTo(tileBounds, px, false);
 					}
 
 					tileoffsetlon += tilelon;       
@@ -462,7 +479,7 @@ package org.openscales.core.layer
 				bounds.bottom = bounds.bottom + deltaLat;
 				bounds.top = bounds.top + deltaLat;
 				position.y = position.y + deltaY;
-				row[i].moveTo(bounds, position);
+				row[i].clearAndMoveTo(bounds, position);
 			}
 
 			if (prepend) {
@@ -495,7 +512,7 @@ package org.openscales.core.layer
 				position.x = position.x + deltaX;
 
 				var tile:Tile = prepend ? this.grid[i].pop() : this.grid[i].shift()
-				tile.moveTo(bounds, position);
+				tile.clearAndMoveTo(bounds, position);
 				if (prepend) {
 					this.grid[i].unshift(tile);
 				} else {
@@ -537,7 +554,7 @@ package org.openscales.core.layer
 		 */
 		override public function onMapResize():void {
 			if (this.singleTile) {
-				this.clearGrid();
+				//this.clearGrid();
 				this.initSingleTile(this.map.extent);
 			}			
 		}

@@ -1,7 +1,7 @@
 package org.openscales.core.tile
 {
 	import flash.display.Sprite;
-
+	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -24,6 +24,7 @@ package org.openscales.core.tile
 		private var _drawn:Boolean = false;
 		private var _onLoadStart:Function = null;
 		private var _onLoadEnd:Function = null;
+		protected var _drawPosition:Pixel = null;
 
 		public function Tile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size) {
 			this.layer = layer;
@@ -41,6 +42,7 @@ package org.openscales.core.tile
 
 		}
 
+
 		/**
 		 * Clear whatever is currently in the tile, then return whether or not
 		 *     it should actually be re-drawn.
@@ -49,13 +51,31 @@ package org.openscales.core.tile
 		 */
 		public function draw():Boolean {
 			this.clear();
+			return withinMapBounds();
+		}
+		
+		public function withinMapBounds():Boolean
+		{
 			return ((this.layer.displayOutsideMaxExtent
 				|| (this.layer.maxExtent
 				&& this.bounds.intersectsBounds(this.layer.maxExtent, false)))
 				&& !((this.layer as Grid != null) && ((this.layer as Grid).buffer == 0)
 				&& !this.bounds.intersectsBounds(this.layer.map.extent, false)));
 		}
-
+		
+		public function moveTo(bounds:Bounds, position:Pixel, redraw:Boolean = true):void 
+		{
+			this.bounds = bounds.clone();
+			
+			_drawPosition = position.clone();
+			this.url = this.layer.getURL(this.bounds);
+			
+			if (redraw) 
+			{
+				this.draw();
+			}	
+		}
+		/**/
 		/**
 		 * Reposition the tile.
 		 *
@@ -63,11 +83,12 @@ package org.openscales.core.tile
 		 * @param position
 		 * @param redraw
 		 */
-		public function moveTo(bounds:Bounds, position:Pixel, redraw:Boolean = true):void {
-
+		public function clearAndMoveTo(bounds:Bounds, position:Pixel, redraw:Boolean = true):void
+		{
 			this.clear();
 			this.bounds = bounds.clone();
 			this.position = position.clone();
+			_drawPosition = null;
 			this.url = this.layer.getURL(this.bounds);
 			if (redraw) {
 				this.draw();

@@ -29,6 +29,8 @@ package org.openscales.core.layer.ogc
 			super(name, url, params, isBaseLayer, visible, projection, proxy);
 
 			this.singleTile = true;
+			
+			CACHE_SIZE = 2;
 
 		}
 
