@@ -67,8 +67,6 @@
 				<configuration>
 					<packageDescriptions>
 						<com.gskinner.motion>Optimized tweener lib, avoid to depend on Flex</com.gskinner.motion>
-						<mx.core>Reuse a few classes from Flex in order to allow usage of @Embedded assets in this pure AS3 project</mx.core>
-						<mx.utils>Reuse a few classes from Flex in order to allow usage of @Embedded assets in this pure AS3 project</mx.utils>
 						<org.openscales.core>Root package for OpenScales core module</org.openscales.core>
 						<org.openscales.core.basetypes>Base types widely used in OpenScales like Bounds or LonLat</org.openscales.core.basetypes>
 						<org.openscales.core.basetypes.maps>Hashmap implementation since none is provided in ActionScript3</org.openscales.core.basetypes.maps>

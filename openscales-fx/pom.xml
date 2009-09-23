@@ -26,7 +26,6 @@
 				<groupId>org.sonatype.flexmojos</groupId>
 				<artifactId>flexmojos-maven-plugin</artifactId>
 				<version>${flexmojos.version}</version>
-				<extensions>true</extensions>
 				<configuration>
 					<namespaces>
 						<namespace>
