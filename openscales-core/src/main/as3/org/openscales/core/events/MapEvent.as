@@ -11,6 +11,16 @@ package org.openscales.core.events{
 		 * Map concerned by the event.
 		 */
 		private var _map:Map = null;
+		
+		/**
+		 * old zoom of the map
+		 */
+		 private var _oldZoom:Number = 0;
+		 
+		 /**
+		 * old zoom of the map
+		 */
+		 private var _newZoom:Number = 0;
 
 		/**
 		 * Event type dispatched before map move.
@@ -27,7 +37,12 @@ package org.openscales.core.events{
 		 * There is no DRAG_END since a MOVE_END event is emitted if the center has finally changed
 		 */
 		public static const MOVE_END:String="openscales.moveend";
-
+		
+		/**
+ 		 * Event type dispatched before map zoom.
+		 */
+		public static const ZOOM_START:String="openscales.zoomstart";
+		
 		/**
 		 * Event type dispatched after map zoom.
 		 */
@@ -43,11 +58,14 @@ package org.openscales.core.events{
 		 */
 		public static const RESIZE:String="openscales.resize";
 
+
 		/**
 		 * Instances of MapEvent are events dispatched by the Map
 		 */
-		public function MapEvent(type:String, map:Map, bubbles:Boolean = false, cancelable:Boolean = false){
+		public function MapEvent(type:String, map:Map, oldZoom:Number = 0, newZoom:Number = 0, bubbles:Boolean = false, cancelable:Boolean = false){
 			this._map = map;
+			this._oldZoom = oldZoom;
+			this._newZoom = newZoom;
 			super(type, bubbles, cancelable);
 		}
 
@@ -57,6 +75,22 @@ package org.openscales.core.events{
 
 		public function set map(map:Map):void {
 			this._map = map;	
+		}
+		
+		public function get oldZoom():Number {
+			return this._oldZoom;
+		}
+
+		public function set oldZoom(value:Number):void {
+			this._oldZoom = value;	
+		}
+		
+		public function get newZoom():Number {
+			return this._newZoom;
+		}
+
+		public function set newZoom(value:Number):void {
+			this._newZoom = value;	
 		}
 	}
 }

@@ -33,6 +33,7 @@
         this.map.addEventListener(LayerEvent.LAYER_ADDED,this.refresh);
         this.map.addEventListener(LayerEvent.LAYER_CHANGED,this.refresh);
         this.map.addEventListener(LayerEvent.LAYER_REMOVED,this.refresh);
+        this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED,this.refresh);
 
         //stock layer by type : baselayer and overlays
         for(var i:int=0;i<this.map.layers.length;i++)
@@ -106,6 +107,10 @@
         overlayList.dataProvider = _overlayArray.reverse();
         
       }
+      if(event.type == LayerEvent.BASE_LAYER_CHANGED)
+      {
+      		baselayerComponent.baseLayerPrompt = this.map.baseLayer.name;
+      }
 
     }
 
@@ -172,7 +177,7 @@
     <mx:List id="overlayList" borderStyle="none" itemRenderer="org.openscales.component.control.layer.LayerRenderer" labelField="Overlays"
       dragEnabled="true" dropEnabled="true" dragMoveEnabled="true" dragDrop="changeLayerOrder(event)"
       width="100%"/>
-      <layer:BaselayerComponent id="baselayerComponent" />
+      <layer:BaselayerComponent id="baselayerComponent"/>
   </mx:VBox>
   
   

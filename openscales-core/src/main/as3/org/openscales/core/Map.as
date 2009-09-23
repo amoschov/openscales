@@ -72,8 +72,6 @@ package org.openscales.core
 		private var _units:String;
 		private var _proxy:String = null;
 		private var _bitmapTransition:DraggableSprite;
-		private var _initZoom:Number = 0;
-		private var _initCenter:LonLat = null;
 
 		/**
 		 * Map constructor
@@ -711,33 +709,25 @@ package org.openscales.core
 		}
 		public function set zoom(newZoom:Number):void 
 		{
-			if (this.isValidZoomLevel(newZoom)) {
-				if (Map.tween)					
+			this.dispatchEvent(new MapEvent(MapEvent.ZOOM_START,this,this.zoom,newZoom));
+			 if (this.isValidZoomLevel(newZoom)) {
+				if (Map.tween)
+				{
 					this.zoomTransition(newZoom);
+				}				
+					
 				else
 					setCenter(null, newZoom);
 
-			}
+			} 
 		}
-		
-		/**
-		 * Initial map zoom level.
-		 */
-		 public function get initZoom():Number
-		 {
-		 	return _initZoom;
-		 }
-		 public function set initZoom(firstZoom:Number):void
-		 {
-		 	_initZoom = firstZoom;
-		 }
 
 		/**
 		 * Copy the layerContainer in a bitmap and display this (this function is use for zoom)
 		 */
 		private function zoomTransition(newZoom:Number = -1):void {
-
 			if (!_zooming && newZoom >= 0) {
+				
 				// Disable more zooming until this zooming is complete 
 				this._zooming = true;
 
@@ -783,7 +773,6 @@ package org.openscales.core
 						x: x,
 						y: y
 					});
-
 				tween.addEventListener(Event.COMPLETE,clbZoomTween);
 			}
 
@@ -793,6 +782,7 @@ package org.openscales.core
 				_zooming = false;
 				setCenter(null, newZoom);
 				layerContainer.alpha = 1;
+				
 
 			} 
 		}
@@ -985,13 +975,6 @@ package org.openscales.core
 			} 
 
 			return extent;
-		}
-		
-		public function get initCenter():LonLat {
-			return this._initCenter;
-		}
-		public function set initCenter(firstCenter:LonLat):void {
-			this._initCenter = new LonLat(firstCenter.lon,firstCenter.lat);
 		}
 
 		public function get resolution():Number {
