@@ -67,14 +67,14 @@
 
     <mx:Button id="zoombox" width="32" height="32"
     	toolTip="Draw a rectangle to define a new extent"
-    	upSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
-    	overSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
-    	downSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
-    	disabledSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
-    	selectedUpSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
-    	selectedOverSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
-    	selectedDownSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
-    	selectedDisabledSkin="@Embed('/org/openscales/component/images/mapZoomBox-upskin-h32.png')"
+    	upSkin="@Embed('/images/mapZoomBox-upskin-h32.png')"
+    	overSkin="@Embed('/images/mapZoomBox-upskin-h32.png')"
+    	downSkin="@Embed('/images/mapZoomBox-upskin-h32.png')"
+    	disabledSkin="@Embed('/images/mapZoomBox-upskin-h32.png')"
+    	selectedUpSkin="@Embed('/images/mapZoomBox-upskin-h32.png')"
+    	selectedOverSkin="@Embed('/images/mapZoomBox-upskin-h32.png')"
+    	selectedDownSkin="@Embed('/images/mapZoomBox-upskin-h32.png')"
+    	selectedDisabledSkin="@Embed('/images/mapZoomBox-upskin-h32.png')"
 		useHandCursor="true" buttonMode="true"
     	selected="false" click="onSelectZoomBox(event)" />
 

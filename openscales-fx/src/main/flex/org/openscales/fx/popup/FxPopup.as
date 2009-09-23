@@ -33,7 +33,7 @@ package org.openscales.fx.popup {
 		private var _feature:Feature=null;
 		private var _closeBox:Boolean;
 
-		[Embed(source="/org/openscales/fx/img/close.gif")]
+		[Embed(source="/images/close.gif")]
 		private var _closeImg:Class;
 
 		public function FxPopup(lonlat:LonLat, size:Size=null, content:UIComponent=null, closeBox:Boolean=true) {

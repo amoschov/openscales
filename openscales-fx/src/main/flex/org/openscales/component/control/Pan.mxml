@@ -30,10 +30,10 @@
 			<mx:GridItem width="100%" height="100%">
 				<mx:Button id="upButton" width="16" height="16"
 					toolTip="Move the map to the North direction"
-					upSkin="@Embed('/org/openscales/component/images/mapPanNorth-upskin.swf')"
-					overSkin="@Embed('/org/openscales/component/images/mapPanNorth-upskin.swf')"
-					downSkin="@Embed('/org/openscales/component/images/mapPanNorth-upskin.swf')"
-					disabledSkin="@Embed('/org/openscales/component/images/mapPanNorth-upskin.swf')"
+					upSkin="@Embed('/images/mapPanNorth-upskin.swf')"
+					overSkin="@Embed('/images/mapPanNorth-upskin.swf')"
+					downSkin="@Embed('/images/mapPanNorth-upskin.swf')"
+					disabledSkin="@Embed('/images/mapPanNorth-upskin.swf')"
 					useHandCursor="true" buttonMode="true"
 					click="this.onButtonClick(event)" />
 			</mx:GridItem>
@@ -43,10 +43,10 @@
 			<mx:GridItem width="100%" height="100%">
 				<mx:Button id="leftButton" width="16" height="16"
 					toolTip="Move the map to the West direction"
-					upSkin="@Embed('/org/openscales/component/images/mapPanWest-upskin.swf')"
-					overSkin="@Embed('/org/openscales/component/images/mapPanWest-upskin.swf')"
-					downSkin="@Embed('/org/openscales/component/images/mapPanWest-upskin.swf')"
-					disabledSkin="@Embed('/org/openscales/component/images/mapPanWest-upskin.swf')"
+					upSkin="@Embed('/images/mapPanWest-upskin.swf')"
+					overSkin="@Embed('/images/mapPanWest-upskin.swf')"
+					downSkin="@Embed('/images/mapPanWest-upskin.swf')"
+					disabledSkin="@Embed('/images/mapPanWest-upskin.swf')"
 					useHandCursor="true" buttonMode="true"
 					click="this.onButtonClick(event)" />	
 			</mx:GridItem>
@@ -54,10 +54,10 @@
 			<mx:GridItem width="100%" height="100%">
 				<mx:Button id="rightButton" width="16" height="16"
 					toolTip="Move the map to the East direction"
-					upSkin="@Embed('/org/openscales/component/images/mapPanEast-upskin.swf')"
-					overSkin="@Embed('/org/openscales/component/images/mapPanEast-upskin.swf')"
-					downSkin="@Embed('/org/openscales/component/images/mapPanEast-upskin.swf')"
-					disabledSkin="@Embed('/org/openscales/component/images/mapPanEast-upskin.swf')"
+					upSkin="@Embed('/images/mapPanEast-upskin.swf')"
+					overSkin="@Embed('/images/mapPanEast-upskin.swf')"
+					downSkin="@Embed('/images/mapPanEast-upskin.swf')"
+					disabledSkin="@Embed('/images/mapPanEast-upskin.swf')"
 					useHandCursor="true" buttonMode="true"
 					click="this.onButtonClick(event)" />	
 			</mx:GridItem>
@@ -67,10 +67,10 @@
 			<mx:GridItem width="100%" height="100%">
 				<mx:Button id="downButton" width="16" height="16"
 					toolTip="Move the map to the South direction"
-					upSkin="@Embed('/org/openscales/component/images/mapPanSouth-upskin.swf')"
-					overSkin="@Embed('/org/openscales/component/images/mapPanSouth-upskin.swf')"
-					downSkin="@Embed('/org/openscales/component/images/mapPanSouth-upskin.swf')"
-					disabledSkin="@Embed('/org/openscales/component/images/mapPanSouth-upskin.swf')"
+					upSkin="@Embed('/images/mapPanSouth-upskin.swf')"
+					overSkin="@Embed('/images/mapPanSouth-upskin.swf')"
+					downSkin="@Embed('/images/mapPanSouth-upskin.swf')"
+					disabledSkin="@Embed('/images/mapPanSouth-upskin.swf')"
 					useHandCursor="true" buttonMode="true"
 					click="this.onButtonClick(event)" />	
 			</mx:GridItem>

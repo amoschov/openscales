@@ -424,19 +424,19 @@
 			<mx:Array>
 				<mx:Object id="btnMouvement"
 					toolTip="Pan the map"
-					icon="@Embed('/org/openscales/component/images/featureDragMap-upskin.swf')"
+					icon="@Embed('/images/featureDragMap-upskin.swf')"
 					/>
 				<mx:Object id="btnPoint"
 					toolTip="Draw a point"
-					icon="@Embed('/org/openscales/component/images/featureDrawPoint-upskin.swf')"
+					icon="@Embed('/images/featureDrawPoint-upskin.swf')"
 					/>
 				<mx:Object id="btnPath"
 					toolTip="Draw a path"
-					icon="@Embed('/org/openscales/component/images/featureDrawPolyline-upskin.swf')"
+					icon="@Embed('/images/featureDrawPolyline-upskin.swf')"
 					/>
 				<mx:Object id="btnPolygon"
 					toolTip="Draw a polygon"
-					icon="@Embed('/org/openscales/component/images/featureDrawPolygon-upskin.swf')"
+					icon="@Embed('/images/featureDrawPolygon-upskin.swf')"
 					/>
 			</mx:Array>
 		</mx:ToggleButtonBar>
@@ -444,20 +444,20 @@
 		<mx:HBox horizontalGap="6">
 			<mx:Button id="btnDeleteLast" width="38" height="38"
 				toolTip="Delete the last drawing vertex"
-				icon="@Embed('/org/openscales/component/images/featureDeleteLastVertex-upskin.png')"
+				icon="@Embed('/images/featureDeleteLastVertex-upskin.png')"
 				click="this.onDeleteLastClick(event)" />
 			<mx:Button id="btnDeleteSelected" width="38" height="38"
 				toolTip="Delete all the selected features"
-				icon="@Embed('/org/openscales/component/images/featureDeleteLastSelected-upskin.png')"
+				icon="@Embed('/images/featureDeleteLastSelected-upskin.png')"
 				enabled="false"
 				click="this.onDeleteSelectedClick(event)" />
 			<mx:Button id="btnDeleteAll" width="38" height="38"
 				toolTip="Delete all the drawn features"
-				icon="@Embed('/org/openscales/component/images/featureDeleteAll-upskin.png')"
+				icon="@Embed('/images/featureDeleteAll-upskin.png')"
 				click="this.onDeleteAllClick(event)" />
 			<mx:Button id="btnMerge" width="38" height="38"
 				toolTip="Merge the selected features (same type only)"
-				icon="@Embed('/org/openscales/component/images/featureMerge-upskin.png')"
+				icon="@Embed('/images/featureMerge-upskin.png')"
 				enabled="false"
 				click="this.onMergeClick(event)" />
 		</mx:HBox>

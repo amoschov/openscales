@@ -71,10 +71,10 @@
 	<mx:VBox horizontalAlign="center" verticalGap="2">
 		<mx:Button id="zoomIn" width="16" height="16"
 			toolTip="Zoom in"
-			upSkin="@Embed('/org/openscales/component/images/mapZoomIn-upskin.swf')"
-			overSkin="@Embed('/org/openscales/component/images/mapZoomIn-upskin.swf')"
-			downSkin="@Embed('/org/openscales/component/images/mapZoomIn-upskin.swf')"
-			disabledSkin="@Embed('/org/openscales/component/images/mapZoomIn-upskin.swf')"
+			upSkin="@Embed('/images/mapZoomIn-upskin.swf')"
+			overSkin="@Embed('/images/mapZoomIn-upskin.swf')"
+			downSkin="@Embed('/images/mapZoomIn-upskin.swf')"
+			disabledSkin="@Embed('/images/mapZoomIn-upskin.swf')"
 			useHandCursor="true" buttonMode="true"
 			click="this.onZoomInClick(event);" />
 		<mx:VSlider id="zoomSlider"
@@ -86,10 +86,10 @@
 			styleName="zoomSliderStyle" />
 		<mx:Button id="zoomOut" width="16" height="16"
 			toolTip="Zoom out"
-			upSkin="@Embed('/org/openscales/component/images/mapZoomOut-upskin.swf')"
-			overSkin="@Embed('/org/openscales/component/images/mapZoomOut-upskin.swf')"
-			downSkin="@Embed('/org/openscales/component/images/mapZoomOut-upskin.swf')"
-			disabledSkin="@Embed('/org/openscales/component/images/mapZoomOut-upskin.swf')"
+			upSkin="@Embed('/images/mapZoomOut-upskin.swf')"
+			overSkin="@Embed('/images/mapZoomOut-upskin.swf')"
+			downSkin="@Embed('/images/mapZoomOut-upskin.swf')"
+			disabledSkin="@Embed('/images/mapZoomOut-upskin.swf')"
 			useHandCursor="true" buttonMode="true"
 			click="this.onZoomOutClick(event);" />
 	</mx:VBox>
