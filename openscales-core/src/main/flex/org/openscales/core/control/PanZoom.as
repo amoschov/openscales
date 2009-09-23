@@ -20,31 +20,31 @@ package org.openscales.core.control
 		private var _slideFactor:int = 50;
 		private var _buttons:Array = null;
 
-		[Embed(source="/org/openscales/core/img/north-mini.png")]
+		[Embed(source="/images/north-mini.png")]
 		protected var northMiniImg:Class;
 
-		[Embed(source="/org/openscales/core/img/west-mini.png")]
+		[Embed(source="/images/west-mini.png")]
 		protected var westMiniImg:Class;
 
-		[Embed(source="/org/openscales/core/img/east-mini.png")]
+		[Embed(source="/images/east-mini.png")]
 		protected var eastMiniImg:Class;
 
-		[Embed(source="/org/openscales/core/img/south-mini.png")]
+		[Embed(source="/images/south-mini.png")]
 		protected var southMiniImg:Class;
 
-		[Embed(source="/org/openscales/core/img/zoom-plus-mini.png")]
+		[Embed(source="/images/zoom-plus-mini.png")]
 		protected var zoomPlusMiniImg:Class;
 
-		[Embed(source="/org/openscales/core/img/zoom-minus-mini.png")]
+		[Embed(source="/images/zoom-minus-mini.png")]
 		protected var zoomMinusMiniImg:Class;
 
-		[Embed(source="/org/openscales/core/img/zoom-world-mini.png")]
+		[Embed(source="/images/zoom-world-mini.png")]
 		protected var zoomWorldMiniImg:Class;
 
-		[Embed(source="/org/openscales/core/img/slider.png")]
+		[Embed(source="/images/slider.png")]
 		protected var sliderImg:Class;
 
-		[Embed(source="/org/openscales/core/img/zoombar.png")]
+		[Embed(source="/images/zoombar.png")]
 		protected var zoombarImg:Class;
 
 		public function PanZoom(position:Pixel = null) {

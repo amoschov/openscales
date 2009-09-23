@@ -8,7 +8,7 @@ package org.openscales.core.control.ui
 	 */
 	public class SliderHorizontal extends Button
 	{
-		[Embed(source="/org/openscales/core/img/slide-horizontal.png")]
+		[Embed(source="/images/slide-horizontal.png")]
 		private var _layerSwitcherSlideHorizontalImg:Class;
 
 		private var _layerName:String;

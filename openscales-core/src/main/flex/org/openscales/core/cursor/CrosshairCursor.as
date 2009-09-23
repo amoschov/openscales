@@ -17,7 +17,7 @@ package org.openscales.core.cursor
 	 * 
 	 * Inspired from http://jessewarden.com/2009/01/making-a-cooler-cursor-in-flex.html
 	 */
-	[Embed(source="/org/openscales/core/img/cursorCrosshair.swf", symbol="CrosshairCursor")]
+	[Embed(source="/images/cursorCrosshair.swf", symbol="CrosshairCursor")]
 	public class CrosshairCursor extends Sprite
 	{
 		public var xValue:TextField; // must be public for a use by cursorCrosshair.swf
