@@ -16,6 +16,10 @@ package org.openscales.core.basetypes
 	{
 		private var _dragging:Boolean = false;
 		private var _prev:Point;
+		
+		public function DraggableSprite() {
+			super();
+		}
 
 		override public function startDrag(lockCenter:Boolean = false, bounds:Rectangle = null):void
 		{
