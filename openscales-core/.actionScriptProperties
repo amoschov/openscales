@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actionScriptProperties mainApplicationPath="core.as" version="3">
-<compiler additionalCompilerArguments="" copyDependentFiles="false" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersion="9.0.0" htmlPlayerVersionCheck="true" outputFolderPath="bin" sourceFolderPath="src/main/as3" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
+<compiler additionalCompilerArguments="" copyDependentFiles="false" enableModuleDebug="true" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersion="9.0.0" htmlPlayerVersionCheck="true" outputFolderPath="bin" sourceFolderPath="src/main/flex" strict="true" useApolloConfig="false" verifyDigests="true" warn="true">
 <compilerSourcePath>
-<compilerSourcePathEntry kind="1" linkType="1" path="src/test/as3"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="src/test/flex"/>
 </compilerSourcePath>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="4" path="">

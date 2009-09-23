@@ -182,8 +182,8 @@
  	</licenses>
 	
 	<build>
-		<sourceDirectory>src/main/as3</sourceDirectory>
-		<testSourceDirectory>src/test/as3</testSourceDirectory>
+		<sourceDirectory>src/main/flex</sourceDirectory>
+		<testSourceDirectory>src/test/flex</testSourceDirectory>
 
 		<plugins>
 			<plugin>
