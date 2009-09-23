@@ -44,28 +44,6 @@
 				<openscales.host>localhost</openscales.host>
             </properties>
         </profile>
-		<profile>
-            <id>flex-mvn-report</id>
-			<build>
-				<plugins>
-					<plugin>
-				        <groupId>net.sf.flex-mvn-report</groupId>
-				        <artifactId>flex-mvn-report</artifactId>
-						<configuration>
-							<sourceDir>${project.build.sourceDirectory}</sourceDir>
-						</configuration>
-				    </plugin>
-				</plugins>
-			</build>
-			<reporting>
-				<plugins>
-					<plugin>
-						<groupId>net.sf.flex-mvn-report</groupId>
-						<artifactId>flex-mvn-report</artifactId>
-					</plugin>
-				</plugins>
-			</reporting>
-		</profile>
 	</profiles>
 	
 	<modules>
@@ -85,9 +63,7 @@
 		<mailingList>
 			<name>OpenScales developer group</name>
 			<subscribe>openscales-dev@googlegroups.com</subscribe>
-			<unsubscribe>
-				openscales-dev-unsubscribe@googlegroups.com
-			</unsubscribe>
+			<unsubscribe>openscales-dev-unsubscribe@googlegroups.com</unsubscribe>
 			<post>openscales-dev@googlegroups.com</post>
 			<archive>http://groups.google.com/group/openscales-dev</archive>
 		</mailingList>
@@ -203,6 +179,14 @@
 					<targetPlayer>${flex.player.version}</targetPlayer>
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
+				<!--executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>asdoc</goal>
+						</goals>
+					</execution>
+				</executions-->
 			</plugin>
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
