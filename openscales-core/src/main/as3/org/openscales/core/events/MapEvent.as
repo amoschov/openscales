@@ -62,10 +62,8 @@ package org.openscales.core.events{
 		/**
 		 * Instances of MapEvent are events dispatched by the Map
 		 */
-		public function MapEvent(type:String, map:Map, oldZoom:Number = 0, newZoom:Number = 0, bubbles:Boolean = false, cancelable:Boolean = false){
+		public function MapEvent(type:String, map:Map, bubbles:Boolean = false, cancelable:Boolean = false){
 			this._map = map;
-			this._oldZoom = oldZoom;
-			this._newZoom = newZoom;
 			super(type, bubbles, cancelable);
 		}
 

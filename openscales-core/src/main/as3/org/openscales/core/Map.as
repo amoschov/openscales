@@ -709,7 +709,12 @@ package org.openscales.core
 		}
 		public function set zoom(newZoom:Number):void 
 		{
-			this.dispatchEvent(new MapEvent(MapEvent.ZOOM_START,this,this.zoom,newZoom));
+			//Dispatch a MapEvent with the old and new zoom
+			var mapEvent:MapEvent = new MapEvent(MapEvent.ZOOM_START,this);
+			mapEvent.oldZoom = this.zoom;
+			mapEvent.newZoom = newZoom;
+			this.dispatchEvent(mapEvent);
+			
 			 if (this.isValidZoomLevel(newZoom)) {
 				if (Map.tween)
 				{
