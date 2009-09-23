@@ -10,10 +10,10 @@
 	<url>http://openscales.org/</url>
 	
 	<properties>
-		<flex.version>3.3.0.4852</flex.version>
+		<flex.sdk.version>3.4.0.9271</flex.sdk.version>
 		<flexmojos.version>3.3.0</flexmojos.version>
-		<flex.target.player.version>9.0.0</flex.target.player.version>
-		<flexpmd.version>1.0.RC3</flexpmd.version>
+		<flex.player.version>10.0.0</flex.player.version>
+		<flexpmd.version>1.0.RC4</flexpmd.version>
 		<env>local</env>
 	</properties>
 	
@@ -195,12 +195,12 @@
           				<dependency>
 						<groupId>com.adobe.flex</groupId>
 						<artifactId>compiler</artifactId>
-						<version>${flex.version}</version>
+						<version>${flex.sdk.version}</version>
 						<type>pom</type>
 					</dependency>
 				</dependencies>
 				<configuration>
-					<targetPlayer>${flex.target.player.version}</targetPlayer>
+					<targetPlayer>${flex.player.version}</targetPlayer>
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
 			</plugin>
@@ -224,12 +224,26 @@
 	</build>
 
 	<dependencies>
+
 		<dependency>
-			<groupId>com.adobe.flex.framework</groupId>
-			<artifactId>playerglobal</artifactId>
-			<version>9-${flex.version}</version>
-			<type>swc</type>
-		</dependency>
+            <groupId>com.adobe.flex.framework</groupId>
+            <artifactId>flex-framework</artifactId>
+            <version>${flex.sdk.version}</version>
+            <type>pom</type>
+            <exclusions>
+               <exclusion>
+                   <groupId>com.adobe.flex.framework</groupId>
+                   <artifactId>playerglobal</artifactId>
+               </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+           <groupId>com.adobe.flex.framework</groupId>
+           <artifactId>playerglobal</artifactId>
+           <version>${flex.sdk.version}</version>
+           <classifier>10</classifier>
+           <type>swc</type>
+        </dependency>
 		<dependency>
 			<groupId>org.sonatype.flexmojos</groupId>
 			<artifactId>flexmojos-unittest-support</artifactId>

@@ -15,7 +15,6 @@
 <classEntry path="org.openscales.core.SexagecimalTest"/>
 <classEntry path="org.openscales.core.feature.MultiPointFeature"/>
 <classEntry path="org.openscales.core.control.ui.Arrow"/>
-<classEntry path="org.openscales.core.cursor.CrosshairCursor"/>
 <classEntry path="org.openscales.core.control.LayerSwitcher"/>
 <classEntry path="org.openscales.core.handler.sketch.DrawPointHandler"/>
 <classEntry path="org.openscales.core.layer.TMS"/>
@@ -63,6 +62,7 @@
 <classEntry path="org.openscales.core.control.PanZoom"/>
 <classEntry path="org.openscales.core.basetypes.Pixel"/>
 <classEntry path="org.openscales.core.events.TraceEvent"/>
+<classEntry path="org.openscales.core.cursor.CrosshairCursor"/>
 <classEntry path="org.openscales.core.format.Format"/>
 <classEntry path="org.openscales.core.feature.Marker"/>
 <classEntry path="org.openscales.core.layer.Layer"/>
@@ -82,7 +82,6 @@
 <classEntry path="org.openscales.core.handler.mouse.WMSGetFeatureInfo"/>
 <classEntry path="org.openscales.core.geometry.Collection"/>
 <classEntry path="org.openscales.core.handler.sketch.DrawPolygonHandler"/>
-<classEntry path="mx.core.BitmapAsset"/>
 <classEntry path="org.openscales.core.layer.VectorLayer"/>
 <classEntry path="org.openscales.core.basetypes.LonLat"/>
 <classEntry path="org.openscales.core.tile.ImageTile"/>
@@ -102,7 +101,6 @@
 <classEntry path="org.openscales.core.geometry.LinearRing"/>
 <classEntry path="org.openscales.core.handler.zoom.ZoomBoxHandler"/>
 <classEntry path="mx.core.mx_internal"/>
-<classEntry path="mx.core.FlexBitmap"/>
 <classEntry path="org.openscales.core.request.IRequest"/>
 <classEntry path="org.openscales.core.geometry.IntersectingTest"/>
 <classEntry path="org.openscales.core.geometry.Geometry"/>
