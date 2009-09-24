@@ -107,6 +107,10 @@ package org.openscales.core.format
 		/**
 		 *    It creates the geometries that are then attached to the returned
 		 *    feature, and calls parseAttributes() to get attribute data out.
+		 * 
+		 *    Important note: All geom node names 'the_geom.*::' have been removed 
+		 * 	  until a config is implemented to be able to parse the geom nodes in a
+		 *    generic way. See Issue 185 for more info.
 		 *
 		 * @param node A XML feature node.
 		 *
@@ -118,8 +122,8 @@ package org.openscales.core.format
 
 			var feature:VectorFeature = null;
 
-			if (xmlNode..*::the_geom.*::MultiPolygon.length() > 0) {
-				var multipolygon:XML = xmlNode..*::the_geom.*::MultiPolygon[0];
+			if (xmlNode..*::MultiPolygon.length() > 0) {
+				var multipolygon:XML = xmlNode..*::MultiPolygon[0];
 
 				geom = new MultiPolygon();
 				var polygons:XMLList = multipolygon..*::Polygon;
@@ -127,8 +131,8 @@ package org.openscales.core.format
 					var polygon:Polygon = this.parsePolygonNode(polygons[i]);
 					geom.addComponent(polygon);
 				}
-			} else if (xmlNode..*::the_geom.*::MultiLineString.length() > 0) {
-				var multilinestring:XML = xmlNode..*::the_geom.*::MultiLineString[0];
+			} else if (xmlNode..*::MultiLineString.length() > 0) {
+				var multilinestring:XML = xmlNode..*::MultiLineString[0];
 
 				geom = new MultiLineString();
 				var lineStrings:XMLList = multilinestring..*::LineString;
@@ -140,8 +144,8 @@ package org.openscales.core.format
 						geom.addComponent(lineString);
 					}
 				}
-			} else if (xmlNode..*::the_geom.*::MultiPoint.length() > 0) {
-				var multiPoint:XML = xmlNode..*::the_geom.*::MultiPoint[0];
+			} else if (xmlNode..*::MultiPoint.length() > 0) {
+				var multiPoint:XML = xmlNode..*::MultiPoint[0];
 
 				geom = new MultiPoint();
 
@@ -151,19 +155,19 @@ package org.openscales.core.format
 					p = this.parseCoords(points[i]);
 					geom.addComponents(p[0]);
 				}
-			} else if (xmlNode..*::the_geom.*::Polygon.length() > 0) {
-				var polygon2:XML = xmlNode..*::the_geom.*::Polygon[0];
+			} else if (xmlNode..*::Polygon.length() > 0) {
+				var polygon2:XML = xmlNode..*::Polygon[0];
 
 				geom = this.parsePolygonNode(polygon2);
-			} else if (xmlNode..*::the_geom.*::LineString.length() > 0) {
-				var lineString2:XML = xmlNode..*::the_geom.*::LineString[0];
+			} else if (xmlNode..*::LineString.length() > 0) {
+				var lineString2:XML = xmlNode..*::LineString[0];
 
 				p = this.parseCoords(lineString2);
 				if (p) {
 					geom = new LineString(p);
 				}
-			} else if (xmlNode..*::the_geom.*::Point.length() > 0) {
-				var point:XML = xmlNode..*::the_geom.*::Point[0];
+			} else if (xmlNode..*::Point.length() > 0) {
+				var point:XML = xmlNode..*::Point[0];
 
 				geom = new MultiPoint();
 				p = this.parseCoords(point);
