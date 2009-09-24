@@ -143,8 +143,13 @@ package org.openscales.core.layer.ogc
 
 			if (dragging) {
 				// Nothing
-			} else {
-				if (this.minZoomLevel && (this.map.zoom < this.minZoomLevel)) {
+			} else {			
+				if ((this.minZoomLevel && (this.map.zoom > this.minZoomLevel)) ||
+			    	(this.maxZoomLevel && (this.map.zoom < this.maxZoomLevel)))	{
+		 			return;
+		 			
+			    	}
+		 		else {
 					if (bounds == null) {
 						bounds = this.map.extent;
 					}

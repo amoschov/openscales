@@ -21,6 +21,7 @@ package org.openscales.fx.layer
 
     public function init():void {
 
+		maxZoomLevel = 0; // set default value for backwards compatibility
     }
 
     public function get layer():Layer {
@@ -59,6 +60,11 @@ package org.openscales.fx.layer
       public function set minZoomLevel(value:Number):void {
         if(this.layer != null)
           this.layer.minZoomLevel = value;
+      }
+      
+      public function set maxZoomLevel(value:Number):void {
+        if(this.layer != null)
+          this.layer.maxZoomLevel = value;
       }
 
       public function set minResolution(value:Number):void {

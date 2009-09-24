@@ -372,7 +372,9 @@ package org.openscales.core
 			this.dispatchEvent(new MapEvent(MapEvent.RESIZE, this));
 
 			for(var i:int=0; i < this.layers.length; i++) {
-				this.layers[i].onMapResize();
+				if (this.layers[i].visible)	{
+					this.layers[i].onMapResize();
+				}
 			}
 
 			if (this.baseLayer != null) {

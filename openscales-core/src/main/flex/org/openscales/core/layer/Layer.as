@@ -34,6 +34,7 @@ package org.openscales.core.layer
 		private var _minResolution:Number;
 		private var _numZoomLevels:int;
 		private var _minZoomLevel:Number;
+		private var _maxZoomLevel:Number;
 		private var _displayOutsideMaxExtent:Boolean = false;
 		protected var _imageSize:Size = null;
 		private var _proxy:String = null;
@@ -360,6 +361,14 @@ package org.openscales.core.layer
 
 		public function set minZoomLevel(value:Number):void {
 			this._minZoomLevel = value;
+		}
+		
+		public function get maxZoomLevel():Number {
+			return this._maxZoomLevel;
+		}
+
+		public function set maxZoomLevel(value:Number):void {
+			this._maxZoomLevel = value;
 		}
 
 		/**
