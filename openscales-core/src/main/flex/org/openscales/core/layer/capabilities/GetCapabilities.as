@@ -124,7 +124,7 @@ package org.openscales.core.layer.capabilities
 		private function buildRequestUrl():String {
 			var url:String = this._url;
 
-			if(!url.charAt(url.length - 1) != "?") {
+			if(url.charAt(url.length - 1) != "?") {
 				url += "?";
 			}
 
