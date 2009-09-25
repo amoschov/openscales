@@ -150,25 +150,34 @@ package org.openscales.core.control
 				contentFormat.color = this._textColor;
 				contentFormat.font = "Verdana";
 
-				var y:int = this.position.y + 20;
-
-				var baselayerTextField:TextField = new TextField();
-				baselayerTextField.text="Base Layer";
-				baselayerTextField.setTextFormat(titleFormat);
-				baselayerTextField.x = this.position.x - 180;
-				baselayerTextField.y = y;
-				this.addChild(baselayerTextField);
-
+				// count displayable baselayers
+				var blCount:Number = 0;
+				for(var i:int=0;i<this.map.layers.length;i++) {
+					var layer:Layer = this.map.layers[i] as Layer;
+					if(layer.isBaseLayer && !layer.isFixedLayer) {
+						blCount++;
+					}
+				}
+				
+				if (blCount > 0) {
+					var y:int = this.position.y + 20;
+					var baselayerTextField:TextField = new TextField();
+					baselayerTextField.text="Base Layer";
+					baselayerTextField.setTextFormat(titleFormat);
+					baselayerTextField.x = this.position.x - 180;
+					baselayerTextField.y = y;
+					this.addChild(baselayerTextField);
+				}
+				
 				var k:int;
 				var l:int;
 				var resultPercentage:int;
 				var positionX:Number
 
 				// Display baselayers
-				for(var i:int=0;i<this.map.layers.length;i++) {
-					var layer:Layer = this.map.layers[i] as Layer;
-					if(layer.isBaseLayer) {
-
+				for(i=0;i<this.map.layers.length;i++) {
+					layer = this.map.layers[i] as Layer;
+					if(layer.isBaseLayer && !layer.isFixedLayer) {
 						var radioButton:RadioButton;
 						if(i == 0)
 						{
@@ -233,21 +242,32 @@ package org.openscales.core.control
 				}
 
 				y+=this._textOffset;
-				var overlayTextField:TextField = new TextField();
-				overlayTextField.text="Overlays";
-				overlayTextField.setTextFormat(titleFormat);
-				overlayTextField.x = this.position.x - 180;
-				overlayTextField.y = y;
-				overlayTextField.width = 80;
-				overlayTextField.height = 50;
-				this.addChild(overlayTextField);
-
-				// Display overlays				
+				
+				// count overlays
+				var oCount:Number = 0;
+				
 				var layerArray:Array = this.map.layers;
-
 				for(i=layerArray.length-1;i>=0;i--) {
 					layer = layerArray[i] as Layer;
-					if(!layer.isBaseLayer) {
+					if(!layer.isBaseLayer && !layer.isFixedLayer) {
+						oCount++;
+					}
+				}
+				if (oCount > 0)	{
+					var overlayTextField:TextField = new TextField();
+					overlayTextField.text="Overlays";
+					overlayTextField.setTextFormat(titleFormat);
+					overlayTextField.x = this.position.x - 180;
+					overlayTextField.y = y;
+					overlayTextField.width = 80;
+					overlayTextField.height = 50;
+					this.addChild(overlayTextField);
+				}
+				
+				// Display overlays				
+				for(i=layerArray.length-1;i>=0;i--) {
+					layer = layerArray[i] as Layer;
+					if(!layer.isBaseLayer && !layer.isFixedLayer) {
 						if(_firstOverlays)
 						{
 							y+=this._textOffset-15;

@@ -3,7 +3,6 @@ package org.openscales.core.layer
 	import flash.display.Sprite;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -23,6 +22,7 @@ package org.openscales.core.layer
 		private const RESOLUTION_TOLERANCE:Number = 0.000001;
 
 		private var _isBaseLayer:Boolean = false;
+		private var _isFixed:Boolean = false;
 		private var _inRange:Boolean = false;
 		private var _imageOffset:Pixel = null;
 		private var _gutter:Number = 0;
@@ -507,6 +507,18 @@ package org.openscales.core.layer
 
 		public function set isBaseLayer(value:Boolean):void {
 			this._isBaseLayer = value;
+		}
+
+		/**
+		 * Whether or not the layer is a fixed layer. 
+		 * Fixed layers cannot be controlled by users
+		 */
+		public function get isFixedLayer():Boolean {
+			return this._isFixed;
+		}
+
+		public function set isFixedLayer(value:Boolean):void {
+			this._isFixed = value;
 		}
 
 		/**
