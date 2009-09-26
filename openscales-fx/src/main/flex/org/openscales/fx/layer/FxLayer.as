@@ -57,9 +57,9 @@ package org.openscales.fx.layer
           this.layer.isBaseLayer = value;
       }
 
-      public function set isFixedLayer(value:Boolean):void {
+      public function set isFixed(value:Boolean):void {
         if(this.layer != null)
-          this.layer.isFixedLayer = value;
+          this.layer.isFixed = value;
       }
       
       public function set minZoomLevel(value:Number):void {

@@ -513,11 +513,11 @@ package org.openscales.core.layer
 		 * Whether or not the layer is a fixed layer. 
 		 * Fixed layers cannot be controlled by users
 		 */
-		public function get isFixedLayer():Boolean {
+		public function get isFixed():Boolean {
 			return this._isFixed;
 		}
 
-		public function set isFixedLayer(value:Boolean):void {
+		public function set isFixed(value:Boolean):void {
 			this._isFixed = value;
 		}
 

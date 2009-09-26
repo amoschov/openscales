@@ -154,7 +154,7 @@ package org.openscales.core.control
 				var blCount:Number = 0;
 				for(var i:int=0;i<this.map.layers.length;i++) {
 					var layer:Layer = this.map.layers[i] as Layer;
-					if(layer.isBaseLayer && !layer.isFixedLayer) {
+					if(layer.isBaseLayer && !layer.isFixed) {
 						blCount++;
 					}
 				}
@@ -177,7 +177,7 @@ package org.openscales.core.control
 				// Display baselayers
 				for(i=0;i<this.map.layers.length;i++) {
 					layer = this.map.layers[i] as Layer;
-					if(layer.isBaseLayer && !layer.isFixedLayer) {
+					if(layer.isBaseLayer && !layer.isFixed) {
 						var radioButton:RadioButton;
 						if(i == 0)
 						{
@@ -249,7 +249,7 @@ package org.openscales.core.control
 				var layerArray:Array = this.map.layers;
 				for(i=layerArray.length-1;i>=0;i--) {
 					layer = layerArray[i] as Layer;
-					if(!layer.isBaseLayer && !layer.isFixedLayer) {
+					if(!layer.isBaseLayer && !layer.isFixed) {
 						oCount++;
 					}
 				}
@@ -267,7 +267,7 @@ package org.openscales.core.control
 				// Display overlays				
 				for(i=layerArray.length-1;i>=0;i--) {
 					layer = layerArray[i] as Layer;
-					if(!layer.isBaseLayer && !layer.isFixedLayer) {
+					if(!layer.isBaseLayer && !layer.isFixed) {
 						if(_firstOverlays)
 						{
 							y+=this._textOffset-15;
