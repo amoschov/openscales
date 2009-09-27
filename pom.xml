@@ -11,7 +11,7 @@
 	
 	<properties>
 		<flex.sdk.version>3.4.0.9271</flex.sdk.version>
-		<flexmojos.version>3.4-SNAPSHOT</flexmojos.version>
+		<flexmojos.version>3.3.0</flexmojos.version>
 		<flex.player.version>10</flex.player.version>
 		<flexpmd.version>1.0.RC4</flexpmd.version>
 		<env>local</env>
@@ -238,13 +238,13 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>org.sonatype.flexmojos</groupId>
 			<artifactId>flexmojos-unittest-flexunit4</artifactId>
 			<version>${flexmojos.version}</version>
 			<type>swc</type>
 			<scope>test</scope>
-		</dependency> 
+		</dependency>-->
 		
 	</dependencies>
 	
