@@ -1,8 +1,6 @@
 package org.openscales.core
 {
-	import org.openscales.core.Util;
-
-	import flexunit.framework.TestCase;
+	import org.flexunit.Assert;
 
 	/**
 	 * Test Lang class.
@@ -11,7 +9,7 @@ package org.openscales.core
 	 * @playerversion Flash 9
 	 * @author didier.richard@ign.fr
 	 */
-	public class SexagecimalTest extends TestCase {
+	public class SexagecimalTest {
 
 		/**
 		 * Data set for tests
@@ -37,27 +35,6 @@ package org.openscales.core
 			}
 			];
 
-		/**
-		 * Constructor
-		 */
-		public function SexagecimalTest ( methodName:String= null ) {
-			super(methodName);
-		}
-
-		/**
-		 * Initial state.
-		 * Sets up the fixture, this method is called before a test is executed.
-		 */
-		override public function setUp ( ) : void {
-		}
-
-		/**
-		 * Clean up.
-		 * Tears down the fixture, this method is called after a test is executed.
-		 */
-		override public function tearDown ( ) : void {
-		}
-
 		// It is important to keep in mind that the order that the test methods in a TestCase are run is
 		// random. Each test should create its own data and make no assumptions about another test
 		// having already run.
@@ -65,24 +42,26 @@ package org.openscales.core
 		/**
 		 * Test 1 : dms to degree
 		 */
+		[Test]
 		public function testSexagecimalX1 ( ) : void {
 			trace("SexagecimalTest - test 1 :");
 			var dec:Number;
 			for (var i:Number= 0, l:Number= _PMS.length; i<l; i++) {
 				dec= Util.dmsToDeg(_PMS[i].dms);
-				assertEquals("dmsToDeg :",_PMS[i].dec.toFixed(6), dec.toFixed(6));
+				Assert.assertEquals("dmsToDeg :",_PMS[i].dec.toFixed(6), dec.toFixed(6));
 			}
 		}
 
 		/**
 		 * Test 2 : degree to dms
 		 */
+		[Test]
 		public function testSexagecimalX2 ( ) : void {
 			trace("SexagecimalTest - test 2 :");
 			var dms:String;
 			for (var i:Number= 0, l:Number= _PMS.length; i<l; i++) {
 				dms= Util.degToDMS(_PMS[i].dec, _PMS[i].dir, 3);
-				assertEquals("degToDMS :",_PMS[i].sexa, dms);
+				Assert.assertEquals("degToDMS :",_PMS[i].sexa, dms);
 			}
 		}
 

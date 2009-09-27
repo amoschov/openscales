@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
-	xmlns:flexunit="flexunit.flexui.*"
+	xmlns:flexunit="http://www.adobe.com/2009/flexUnitUIRunner"
 	layout="absolute"
 	creationComplete="init()">
 	
 	<mx:Script>
 		<![CDATA[
-			import flexunit.framework.TestSuite;
+			import org.openscales.core.CoreTestSuite;
+			import org.flexunit.runner.FlexUnitCore;
 
 			import org.openscales.core.geometry.IntersectingTest;
 			import org.openscales.core.layer.capabilities.ParsingTest;
 			import org.openscales.core.SexagecimalTest;
 			import org.openscales.core.StringUtilsTest;
 			
+			private var flexUnitcore:FlexUnitCore;
+			
 			private function init():void {
-		 		var ts:TestSuite = new TestSuite();
-		        ts.addTestSuite(StringUtilsTest);
-		        ts.addTestSuite(SexagecimalTest);
-		 		ts.addTestSuite(ParsingTest);
-		 		ts.addTestSuite(IntersectingTest);
-
-		 		testRunner.test = ts;
-		 		testRunner.startTest();
+		 		
+		 		flexUnitcore = new FlexUnitCore();
+				flexUnitcore.addListener(testRunner);
+				
+				// One line by test suite
+				flexUnitcore.run(CoreTestSuite);
 		 	}
 		]]>
 	</mx:Script>
