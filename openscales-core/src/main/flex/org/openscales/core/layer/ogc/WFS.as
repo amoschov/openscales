@@ -185,8 +185,7 @@ package org.openscales.core.layer.ogc
 							this.featuresBbox = tileBounds;
 						} else {
 							if ( !this.featuresBbox.containsBounds(tileBounds)) {
-								if (this.capabilities != null && 
-									!this.featuresBbox.containsBounds(this.capabilities.getValue("Extent"))) {
+								if ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent")))) {
 
 									this.featuresBbox.extendFromBounds((tileBounds));
 
