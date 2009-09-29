@@ -29,7 +29,6 @@
 	<component id="WMSGetFeatureInfo" class="org.openscales.fx.handler.mouse.FxWMSGetFeatureInfo" />
 	<component id="DrawPointHandler" class="org.openscales.fx.handler.sketch.FxDrawPointHandler" />
 	
-	
 	<component id="LayerSwitcherComponent" class="org.openscales.component.control.layer.LayerSwitcher" />
   	<component id="MousePositionComponent" class="org.openscales.component.control.MousePosition" />
 	<component id="PanComponent" class="org.openscales.component.control.Pan" />
@@ -47,7 +46,8 @@
 	<component id="TraceInfo" class="org.openscales.component.control.TraceInfo" />
 	<component id="ScaleLine" class="org.openscales.fx.control.FxScaleLine" />
 	
-	<component id="SampleSecurity" class="org.openscales.fx.security.sample.FxSampleSecurity"/>
+	<component id="WidgetWindow" class="org.openscales.component.WidgetWindow"/>
 	
+	<component id="SampleSecurity" class="org.openscales.fx.security.sample.FxSampleSecurity"/>
 	
 </componentPackage>

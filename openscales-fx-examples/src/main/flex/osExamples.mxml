@@ -43,7 +43,7 @@
 				setOSdescription();
 				expandTree();
 				// Define the default example
-				tree.selectedIndex = 2;
+				tree.selectedIndex = 1;
 				updateSelectedExample();
 			}
 			
@@ -100,7 +100,7 @@
 			<mx:XMLList id="treeData">
 				<example viewStack="home" label="What is OpenScales.org ?" description="A short description of OpenScales.org" />
 				
-				<!--example viewStack="global" label="Global" description="" /-->
+				<example viewStack="global" label="Global" description="" />
 				
 				<category label="Configure the map">
 					<example viewStack="panZoom" label="Pan &amp; zoom" description="The map displayed is OpenStreetMap Mapnik (EPSG:900913).\nMove the map using drag or N/S/E/W buttons.\nZoom in/out using the mouse wheel, the scale slider, the +/- buttons above and below the slider or the zoom-box button.\nThe coordinates of the mouse cursor are displayed as LongLat." />
@@ -143,7 +143,7 @@
 				</mx:VBox>
 			</mx:Panel>
 			
-			<!--os:Global id="global" displayTrace="{displayTrace}" /-->
+			<os:GlobalExample id="global" displayTrace="{displayTrace}" />
 			
 			<!-- Configure the map -->
 			<os:PanZoomExample id="panZoom" displayTrace="{displayTrace}" />
