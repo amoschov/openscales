@@ -4,6 +4,7 @@
 <compilerSourcePath>
 <compilerSourcePathEntry kind="1" linkType="1" path="src/test/flex"/>
 <compilerSourcePathEntry kind="1" linkType="1" path="src/main/resources"/>
+<compilerSourcePathEntry kind="1" linkType="1" path="src/test/resources"/>
 </compilerSourcePath>
 <libraryPath defaultLinkType="1">
 <libraryPathEntry kind="3" linkType="1" path="/openscales-proj4as/bin/openscales-proj4as.swc" useDefaultLinkType="false"/>

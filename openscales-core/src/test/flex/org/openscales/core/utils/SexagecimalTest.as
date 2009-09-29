@@ -1,6 +1,7 @@
-package org.openscales.core
+package org.openscales.core.utils
 {
 	import org.flexunit.Assert;
+	import org.openscales.core.Util;
 
 	/**
 	 * Test Lang class.

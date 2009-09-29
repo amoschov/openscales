@@ -10,11 +10,6 @@
 			import org.flexunit.flexui.data.filter.TestfFunctionStatuses;
 			import org.openscales.core.CoreTestSuite;
 			import org.flexunit.runner.FlexUnitCore;
-
-			import org.openscales.core.geometry.IntersectingTest;
-			import org.openscales.core.layer.capabilities.ParsingTest;
-			import org.openscales.core.SexagecimalTest;
-			import org.openscales.core.StringUtilsTest;
 			import org.flexunit.flexui.event.TestsCompleteEvent;
 
 			

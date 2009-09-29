@@ -16,6 +16,7 @@ package org.openscales.core
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.configuration.Configuration;
+	import org.openscales.core.configuration.IConfiguration;
 	import org.openscales.core.control.IControl;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
@@ -72,7 +73,7 @@ package org.openscales.core
 		private var _units:String;
 		private var _proxy:String = null;
 		private var _bitmapTransition:DraggableSprite;
-		private var _configuration:Configuration;
+		private var _configuration:IConfiguration;
 
 		/**
 		 * Map constructor
@@ -103,6 +104,8 @@ package org.openscales.core
 			this._layerContainer.height = this.size.h;
 			this.addChild(this._layerContainer);
 			Trace.map = this;
+			
+			this._configuration = new Configuration();
 
 		}
 
@@ -1034,13 +1037,10 @@ package org.openscales.core
 			this._proxy = value;
 		}
 
-		public function get configuration():Configuration{
+		public function get configuration():IConfiguration{
 		 	return _configuration;
 		}
-		
-		public function set configuration(value:Configuration):void{
-			_configuration = value;
-		}
+	
 	}
 }
 

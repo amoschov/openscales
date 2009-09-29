@@ -12,8 +12,14 @@ package org.openscales.core.configuration
 		 */		
 		function configureMap(map:Map):void;
 		
+		/**
+		 * Set and store the configuration file that will be used further
+		 */
 		function set config(value:XML):void;
 		
+		/**
+		 * Get the config file as a raw XML instance 
+		 */
 		function get config():XML;
 		
 		/**

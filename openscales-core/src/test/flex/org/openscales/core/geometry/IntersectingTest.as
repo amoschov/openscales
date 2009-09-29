@@ -1,7 +1,7 @@
 package org.openscales.core.geometry
 {	
 	import org.flexunit.Assert;
-	import org.openscales.SampleLayers;
+	import org.openscales.core.layer.SampleLayers;
 	import org.openscales.core.Map;
 	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;

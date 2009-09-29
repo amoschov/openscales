@@ -1,4 +1,4 @@
-package org.openscales
+package org.openscales.core.layer
 {
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;

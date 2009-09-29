@@ -23,62 +23,23 @@ package org.openscales.core.configuration
 
 	/**
 	 * Sample XML OpenScales configuration format.
+	 * Have a look to openscales-core/src/test/resources/configuration/sampleMapConfOk.xml for a sample valid XML file
+	 * 
 	 * TODO : create an XML schema
 	 * 
-	 * <Map id="fxmapy" width="600" height="400" maxExtent="-180,-90,180,90"
-     * zoom="6" lon="1.58313" lat="49.77813" proxy="http://openscales.org/proxy.php?url="    
-     * xmlns="http://openscales.org/schema/conf" xsi:schemaLocation="http://openscales.org/schema/conf-1.0.xsd">
-     *       
-     *        <Layers>
-     *                        
-     *       </Layers>
-     *       
-     *       <Handlers>
-     *             <DragHandler/>
-     *             <WheelHandler/>   
-     *       </Handlers>
-     *       
-     *       <Controls>
-     *             <MousePosition/>  
-     *       </Controls>
-     *       
-     *       <Catalog>
-     *             <Category label="Level1" >
-     *                         <Mapnik active="false" label="Mapnik" name="Mapnik" maxResolution="156543.0339" minResolution="0.5971642833709717" numZoomLevels="20" maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34" isBaseLayer="false"/>
-     *                         <WMSC active="false" label="Metacarta" name="Metacarta" url="http://labs.metacarta.com/wms-c/Basic.py" layers="satellite" format="image/jpeg" isBaseLayer="false"/>
-     *                         <WMSC active="false" label="OpenLayers WMS" name="OpenLayers WMS" url="http://labs.metacarta.com/wms-c/Basic.py" layers="basic" isBaseLayer="false"/>
-     *             </Category>
-     *             <Category label="level2" >
-     *                   <Category active="false" label="Level 2.1">
-     *                   <WFS active="false" label="States" name="States" isBaseLayer="false" url="http://sigma.openplans.org/geoserver/wfs" typename="topp:states" srs="EPSG:4326" version="1.0.0" minZoomLevel="21"/>
-     *             </Category>
-     *                   <WFS active="false" label="test" name="test" isBaseLayer="false" url="http://sigma.openplans.org/geoserver/wfs" typename="tiger:poi" srs="EPSG:4326" version="1.0.0" use110Capabilities="false" minZoomLevel="21"/>
-     *             </Category>
-     *       </Catalog>
-     *       
-     *       <Custom>
-     *             <Projections>
-     *                   <Projection label="WGS84G">EPSG:4326</Projection>
-     *                   <Projection label="Mapnik">EPSG:900913</Projection>
-     *             </Projections>
-     *             <!--
-     *                   ...
-     *             -->
-     *       </Custom>
-	 *	</Map>
 	 */
 	public class Configuration implements IConfiguration
 	{
 		protected var _config:XML;
 		
-		public function Configuration(config:XML)
+		public function Configuration(config:XML = null)
 		{
-			this._config = config;
+			this.config = config;
 		}
 		
 		public function configureMap(map:Map):void {
-			// Parse the XML (children of Layers, Handlers, Controls ...)
-			map.name = config.@id;
+			// Parse the XML (children of Layers, Handlers, Controls ...)	
+			map.name = config.@name;
 			map.proxy = config.@proxy;
 			
 			map.width = config.@width;
@@ -113,7 +74,7 @@ package org.openscales.core.configuration
 		
 		public function get layersFromMap():Array {
 			//we search direclty all nodes contained in <Layers> </Layers>
-			var layersNodes:XMLList = config.*::Layers.*;
+			var layersNodes:XMLList = config.Layers.*;
 			
 			//the tab which contains layers to add
 			var layers:Array = new Array ();
@@ -131,7 +92,23 @@ package org.openscales.core.configuration
 		}
 		
 		public function get layersFromCatalog():Array {			
-			return this.listCatalogLayers(this.catalog);
+			if (this.catalog.length == 0) {
+				trace("There's no layer on the catalog");return [];
+			}
+			
+			var layersNodes:XMLList = config.Catalog..Category.*;
+			var layers:Array = [];			 
+
+			for each(var layerXml:XML in layersNodes)
+			{
+				if(layerXml.name() != "Category"){
+					var layer:Layer = this.parseLayer(layerXml);
+					if (layer) {
+						layers.push(layer);
+					}
+				}
+			}
+			return layers;
 		}
 		
 		public function get catalog():XMLList {
@@ -292,26 +269,7 @@ package org.openscales.core.configuration
 		
 		protected function parseControl(xmlNode:XML):Control {
 			return null;
-		}
-		
-		protected function listCatalogLayers(layersNodes:XMLList):Array {
+		}		
 			
-			var layers:Array = [];
-			if (layersNodes.length == 0) {
-				trace("There's no layer on the map");return [];
-			} 
-
-				for each(var layerXml:XML in layersNodes)
-			{
-				if(layerXml.name() == "Category"){
-					layers = listCatalogLayers(layerXml.children());
-				}
-				var layer:Layer = this.parseLayer(layerXml);
-				if (layer) {
-					layers.push(layer);
-				}
-			}
-			return layers;
-		}	
 	}
 }
