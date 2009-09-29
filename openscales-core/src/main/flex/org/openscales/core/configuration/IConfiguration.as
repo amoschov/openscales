@@ -1,8 +1,8 @@
-package org.openscales.core.format.configuration
+package org.openscales.core.configuration
 {
 	import org.openscales.core.Map;
 	
-	public interface IConfigurationFormat
+	public interface IConfiguration
 	{
 		
 		/**
@@ -34,7 +34,17 @@ package org.openscales.core.format.configuration
 		/**
 		 * @return The child items of <Custom> </Custom> elements 
 		 */	
-		function get custom():XMLList
+		function get custom():XMLList;
+		
+		/**
+		 * @return The child items of <Handlers> </Handlers> elements 
+		 */
+		function get handlers():XMLList;
+		
+		/**
+		 * @return The child items of <Controls> </Controls> elements 
+		 */
+		 function get controls():XMLList;
 		
 	}
 }

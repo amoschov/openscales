@@ -15,13 +15,13 @@ package org.openscales.core
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.Unit;
+	import org.openscales.core.configuration.Configuration;
 	import org.openscales.core.control.IControl;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.handler.IHandler;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Popup;
-	import org.openscales.core.request.XMLRequest;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -72,6 +72,7 @@ package org.openscales.core
 		private var _units:String;
 		private var _proxy:String = null;
 		private var _bitmapTransition:DraggableSprite;
+		private var _configuration:Configuration;
 
 		/**
 		 * Map constructor
@@ -1033,17 +1034,13 @@ package org.openscales.core
 			this._proxy = value;
 		}
 
-		/**
-		 * Loading configuration of the map
-		 */
-		 public function loadConfiguration():void{
-		 	var _request:XMLRequest = new XMLRequest("/ressources/config.xml", success, this.proxy);
-		 }
-		 
-		 private function success():void {
-		 }
-		 
+		public function get configuration():Configuration{
+		 	return _configuration;
+		}
+		
+		public function set configuration(value:Configuration):void{
+			_configuration = value;
+		}
 	}
-
 }
 

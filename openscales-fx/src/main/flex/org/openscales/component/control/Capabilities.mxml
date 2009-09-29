@@ -93,9 +93,7 @@
 				}
 				else {
 					Alert.show("This layer is already added", "Message");
-				}
-				
-				
+				}			
 			}
 			
 			/**
