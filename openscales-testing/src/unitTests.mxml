@@ -6,6 +6,8 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.flexunit.flexui.controls.left.events.SearchBarEvent;
+			import org.flexunit.flexui.data.filter.TestfFunctionStatuses;
 			import org.openscales.core.CoreTestSuite;
 			import org.flexunit.runner.FlexUnitCore;
 
@@ -13,16 +15,32 @@
 			import org.openscales.core.layer.capabilities.ParsingTest;
 			import org.openscales.core.SexagecimalTest;
 			import org.openscales.core.StringUtilsTest;
+			import org.flexunit.flexui.event.TestsCompleteEvent;
+
 			
 			private var flexUnitcore:FlexUnitCore;
 			
 			private function init():void {
+		 				 		
+		 		testRunner.addEventListener(TestsCompleteEvent.EVENT_NAME, onTestComplete);
 		 		
 		 		flexUnitcore = new FlexUnitCore();
 				flexUnitcore.addListener(testRunner);
-				
 				// One line by test suite
 				flexUnitcore.run(CoreTestSuite);
+				
+		 	}
+		 	
+		 	/**
+		 	 * Tip to display all results, not only tests in error
+		 	 */
+		 	private function onTestComplete(event:TestsCompleteEvent) : void {
+		 		testRunner.leftHandSide.filterArea.resultTypeComboBox.selectedIndex = 0;
+                testRunner.leftHandSide.filterArea.resultTypeComboBox.invalidateProperties();            
+            	testRunner.model.filterModel.selectedTestFunctionStatus = TestfFunctionStatuses.ALL;
+            	testRunner.leftHandSide.filterArea.dispatchEvent( new SearchBarEvent( SearchBarEvent.FILTER_RESULT_CHANGED_EVENT ));
+            	testRunner.model.dataProvider.refresh();
+				testRunner.leftHandSide.filterArea.dispatchEvent( new SearchBarEvent( SearchBarEvent.FILTER_CHANGED_EVENT ) );
 		 	}
 		]]>
 	</mx:Script>
