@@ -35,7 +35,7 @@
 	
 	<os:Map id="fxmap" width="100%" height="100%"
 		proxy="http://openscales.org/proxy.php?url="
-		zoom="5" lon="538850.47459" lat="5740916.1243">
+		zoom="2" lon="538850.47459" lat="5740916.1243">
 		
 		<!-- OpenStreetMap EPSG:900913 -->
 		<os:Mapnik name="Mapnik"
@@ -51,45 +51,76 @@
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 		
 		<!-- Specific layers and handlers of this example -->
-		<!-- none -->
+		
+		<os:WMSC name="Nasa"
+				 url="http://onearth.jpl.nasa.gov/wms.cgi"
+				 layers="global_mosaic"
+				 format="image/jpeg"
+				 isBaseLayer="true"
+				 tileWidth="512"
+				 tileHeight="512"
+				 styles="visual"
+				 />
+				 
+		<os:WFS name="Topp States (WFS)"
+			url="http://openscales.org/geoserver/wfs"
+			typename="topp:states"
+			srs="EPSG:4326"
+			version="1.0.0"
+			minZoomLevel="21">
+			<os:Style fillColor="0x00aa00"
+				fillOpacity="0.6"
+				strokeColor="0x003300"
+				strokeWidth="2" />
+		</os:WFS>
+		
+		<os:WFS name="Tiger poi (WFS)"
+			url="http://openscales.org/geoserver/wfs"
+			typename="tiger:poi"
+			srs="EPSG:4326"
+			version="1.0.0"
+			minZoomLevel="21"
+			useCapabilities="true"
+			use110Capabilities="false">
+			<os:Style fillColor="0xff0000"
+				fillOpacity="0.7"
+				strokeColor="0x0066ff"
+				strokeWidth="1" />
+		</os:WFS>
 		
 	</os:Map>
 	
 	<!-- Specific tools of this example -->
 	
 	<os:WidgetWindow
-		x="10" y="10"
-		widgetTitle="View"
-		toolTipIconEnd="the view"
+		x="10" y="10" width="100"
+		widgetTitle="Map"
+		toolTipIconEnd="the map bar"
 		duration="1000"
 		>
 		<os:PanComponent map="{map}" />
 		<mx:HBox width="100%">
 			<os:ZoomComponent map="{map}" />
-			<mx:VBox horizontalAlign="right" verticalAlign="top">
+			<mx:VBox width="100%" horizontalAlign="right" verticalAlign="top">
 				<os:ZoomBoxComponent map="{map}" width="16" height="16" />
 			</mx:VBox>
 		</mx:HBox>
 		<os:OverviewMapComponent
-			width="100"
+			width="100%"
 			map="{map}"
 			minRectPxSize="3"
 			rectColor="0xFF3300" newExtentColor="0x00FF33" />
 	</os:WidgetWindow>
 	
-	<os:WidgetWindow id="overviewWidget"
+	<os:WidgetWindow id="layersWidget"
 		width="200"
-		x="{this.width-overviewWidget.width-10}" y="{this.height-overviewWidget.height-10}"
-		widgetTitle="Overview"
-		toolTipIconEnd="the overview"
+		x="{this.width-layersWidget.width-10}" y="10"
+		widgetTitle="Layers manager"
+		toolTipIconEnd="the layers manager"
 		useCloseButton="true"
 		duration="1000"
 		>
-		<os:OverviewMapComponent
-			width="200"
-			map="{map}"
-			minRectPxSize="3"
-			rectColor="0xFF3300" newExtentColor="0x00FF33" />
+		<os:LayerSwitcherComponent map="{map}" />
 	</os:WidgetWindow>
 	
 </mx:Canvas>

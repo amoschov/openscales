@@ -2,7 +2,8 @@
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
 	minWidth="{widgetBar.width}"
 	showEffect="{showControl}" hideEffect="{hideControl}"
-	initialize="{currentState='defaultState';}">
+	initialize="{currentState='defaultState';}"
+	creationComplete="invalidateProperties();">
 
 	<!-- Inspired from http://www.munkiihouse.com/flexapps/CustomFormItem/Main.html view source -->
 
@@ -42,10 +43,10 @@
 			 */
 			protected override function commitProperties():void {
 				super.commitProperties();
-				if(_childrenChanged) {
+				if(_childrenChanged && widgetContentBox) {
 					for each(var child:DisplayObject in _children) {
 						if (child) {
-							/*widgetContentBox.*/addChild(child);
+							widgetContentBox.addChild(child);
 						}
 					}
 					_childrenChanged = false;
@@ -170,41 +171,45 @@
 	
 	<mx:states>
 		<mx:State name="defaultState">
-			<mx:AddChild relativeTo="{this}" position="lastChild">
-				<mx:Canvas id="widgetContent"
-					width="100%" y="{widgetBar.height-6}"
-					showEffect="{showControl}" hideEffect="{hideControl}"
-					styleName="widgetContent">
-					<mx:HBox id="widgetContentBox"
-						width="100%"
-						horizontalAlign="center" verticalAlign="middle"
-						styleName="widgetContentBox">
-					</mx:HBox>
+			<mx:AddChild relativeTo="{this}" position="firstChild">
+				<mx:Canvas id="widgetContainer"
+					width="100%" height="100%">
+					
+					<mx:Canvas id="widgetContent"
+						width="100%" y="{widgetBar.height-6}"
+						showEffect="{showControl}" hideEffect="{hideControl}"
+						styleName="widgetContent">
+						<mx:VBox id="widgetContentBox"
+							width="100%" height="100%"
+							horizontalAlign="center" verticalAlign="middle"
+							styleName="widgetContentBox">
+							<!-- The children of the component are inserted here -->
+						</mx:VBox>
+					</mx:Canvas>
+					
+					<mx:Canvas id="widgetBar"
+						width="100%" y="0"
+						styleName="widgetBar">
+						<mx:HBox verticalAlign="middle" width="100%"
+							paddingLeft="6" paddingRight="6" horizontalGap="3">
+							<mx:Label text="{_widgetTitle}" styleName="widgetTitle" />
+							<mx:Spacer width="100%" />
+							<mx:Image id="widgetBarIconClose"
+								visible="{_useCloseButton}"
+								width="16" height="16"
+								source="@Embed('/images/widgetClose.png')"
+								toolTip="{'Click to close '+_toolTipIconEnd}"
+								click="closeWidget();" />
+							<mx:Image id="widgetBarIconShowHide"
+								width="16" height="16"
+								source="@Embed('/images/widgetHide.png')"
+								toolTip="{'Click to hide '+_toolTipIconEnd}"
+								click="toggleWidgetContent(widgetContent);" />
+						</mx:HBox>
+					</mx:Canvas>
+	
 				</mx:Canvas>
 			</mx:AddChild>
-			
-			<mx:AddChild relativeTo="{this}" position="firstChild">
-				<mx:Canvas id="widgetBar"
-					width="100%" y="0"
-					styleName="widgetBar">
-					<mx:HBox verticalAlign="middle" width="100%"
-						paddingLeft="6" paddingRight="6" horizontalGap="3">
-						<mx:Label text="{_widgetTitle}" styleName="widgetTitle" />
-						<mx:Spacer width="100%" />
-						<mx:Image id="widgetBarIconClose"
-							visible="{_useCloseButton}"
-							width="16" height="16"
-							source="@Embed('/images/widgetClose.png')"
-							toolTip="{'Click to close '+_toolTipIconEnd}"
-							click="closeWidget();" />
-						<mx:Image id="widgetBarIconShowHide"
-							width="16" height="16"
-							source="@Embed('/images/widgetHide.png')"
-							toolTip="{'Click to hide '+_toolTipIconEnd}"
-							click="toggleWidgetContent(widgetContent);" />
-					</mx:HBox>
-				</mx:Canvas>
-			</mx:AddChild>			
 		</mx:State>
 	</mx:states>
 	
