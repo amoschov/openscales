@@ -58,26 +58,35 @@
 	<!-- Specific tools of this example -->
 	
 	<os:WidgetWindow
-		x="{10}" y="10"
+		x="10" y="10"
 		widgetTitle="View"
 		toolTipIconEnd="the view"
 		duration="1000"
 		>
 		<os:PanComponent map="{map}" />
-		<os:ZoomComponent map="{map}" />
-		<os:ZoomBoxComponent map="{map}" />
+		<mx:HBox width="100%">
+			<os:ZoomComponent map="{map}" />
+			<mx:VBox horizontalAlign="right" verticalAlign="top">
+				<os:ZoomBoxComponent map="{map}" width="16" height="16" />
+			</mx:VBox>
+		</mx:HBox>
+		<os:OverviewMapComponent
+			width="100"
+			map="{map}"
+			minRectPxSize="3"
+			rectColor="0xFF3300" newExtentColor="0x00FF33" />
 	</os:WidgetWindow>
 	
 	<os:WidgetWindow id="overviewWidget"
 		width="200"
-		x="{10}" y="{this.height-overviewWidget.height-30}"
+		x="{this.width-overviewWidget.width-10}" y="{this.height-overviewWidget.height-10}"
 		widgetTitle="Overview"
 		toolTipIconEnd="the overview"
 		useCloseButton="true"
 		duration="1000"
 		>
-		<os:OverviewMapComponent id="overview"
-			width="100%"
+		<os:OverviewMapComponent
+			width="200"
 			map="{map}"
 			minRectPxSize="3"
 			rectColor="0xFF3300" newExtentColor="0x00FF33" />
