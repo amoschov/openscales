@@ -64,6 +64,8 @@
 		duration="1000"
 		>
 		<os:PanComponent map="{map}" />
+		<os:ZoomComponent map="{map}" />
+		<os:ZoomBoxComponent map="{map}" />
 	</os:WidgetWindow>
 	
 	<os:WidgetWindow id="overviewWidget"
