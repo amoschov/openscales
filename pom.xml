@@ -237,14 +237,6 @@
 			<type>swc</type>
 			<scope>test</scope>
 		</dependency>
-
-		<!--<dependency>
-			<groupId>org.sonatype.flexmojos</groupId>
-			<artifactId>flexmojos-unittest-flexunit4</artifactId>
-			<version>${flexmojos.version}</version>
-			<type>swc</type>
-			<scope>test</scope>
-		</dependency>-->
 		
 	</dependencies>
 	
