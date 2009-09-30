@@ -6,6 +6,10 @@ package org.openscales.core.configuration
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.control.Control;
+	import org.openscales.core.control.LayerSwitcher;
+	import org.openscales.core.control.MousePosition;
+	import org.openscales.core.control.PanZoom;
+	import org.openscales.core.control.ScaleLine;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.mouse.BorderPanHandler;
 	import org.openscales.core.handler.mouse.ClickHandler;
@@ -42,8 +46,10 @@ package org.openscales.core.configuration
 			map.name = config.@name;
 			map.proxy = config.@proxy;
 			
-			map.width = config.@width;
-			map.height = config.@height;
+			if(config.@width != ""){map.width = Number(config.@width);}
+			if(config.@height != ""){map.height = Number(config.@height);}
+			map.x = Number(config.@x);
+			map.y = Number(config.@y);
 			
 			map.minResolution = config.@minResolution;
 			map.maxResolution = config.@maxResolution;
@@ -53,9 +59,9 @@ package org.openscales.core.configuration
 			map.addLayers(layersFromMap);
 		 	
 		 	//add controls
-		 	/* for each (var control:XML in controls){
-		 		map.addControl((parseHandler(handler));
-		 	} */
+		 	 for each (var control:XML in controls){
+		 		map.addControl(parseControl(control));
+		 	} 
 		 	//add handlers
 		 	for each (var handler:XML in handlers){
 		 		map.addHandler(parseHandler(handler));
@@ -122,7 +128,7 @@ package org.openscales.core.configuration
 		}
 		
 		public function get handlers():XMLList {
-			var handlersNode:XMLList = config.*::Handlers.*;
+			var handlersNode:XMLList = config.Handlers.*;
 			return handlersNode;
 		}
 		
@@ -264,12 +270,59 @@ package org.openscales.core.configuration
 			else if (xmlNode.name() == "BorderPanHandler"){handler = new BorderPanHandler();}
 			else if (xmlNode.name() == "DragFeature"){handler = new DragFeature();}
 			else if (xmlNode.name() == "SelectFeature"){handler = new SelectFeature();}
+			else Trace.error("Handler unknown !");
 			return handler;
 		}
 		
 		protected function parseControl(xmlNode:XML):Control {
-			return null;
-		}		
-			
+			var control:Control;
+			if(xmlNode.name() == "LayerSwitcherComponent"){
+				var layerSwitcher:LayerSwitcher = new LayerSwitcher();
+				layerSwitcher.name = xmlNode.@id;
+				layerSwitcher.x = xmlNode.@x;
+				layerSwitcher.y = xmlNode.@y;
+				control = layerSwitcher;
+			}
+			else if(xmlNode.name() == "PanComponent"){
+				var pan:PanZoom = new PanZoom();
+				pan.name = xmlNode.@id;
+				pan.x = xmlNode.@x;
+				pan.y = xmlNode.@y;
+				control = pan;
+			} 
+			// need a class in openScales-FX
+			/* else if(xmlNode.name() == "ZoomComponent"){
+				var zoomComponent:Zoom = new Zoom();
+				zoomComponent.name = xmlNode.@id;
+				zoomComponent.x = xmlNode.@x;
+				zoomComponent.y = xmlNode.@y;
+				control = zoomComponent;
+			} */
+			// need a class in openScales-FX
+			/* else if(xmlNode.name() == "ZoomBoxComponent"){
+				var zoomBox:ZoomBox = new ZoomBox();
+				zoomBox.name = xmlNode.@id;
+				zoomBox.x = xmlNode.@x;
+				zoomBox.y = xmlNode.@y;
+				control = zoomBox;
+			}	 */	
+			else if(xmlNode.name() == "ScaleLine"){
+				var scaleLine:ScaleLine = new ScaleLine();
+				scaleLine.name = xmlNode.@id;
+				scaleLine.x = xmlNode.@x;
+				scaleLine.y = xmlNode.@y;
+				control = scaleLine;
+			}
+			// need a class in openScales-FX	
+			else if(xmlNode.name() == "MousePosition"){
+				var mousePosition:MousePosition = new MousePosition();
+				mousePosition.name = xmlNode.@id;
+				mousePosition.x = xmlNode.@x;
+				mousePosition.y = xmlNode.@y;
+				mousePosition.displayProjection = xmlNode.@displayProjection;
+				control = mousePosition;
+			}
+			return control;		
+		}					
 	}
 }

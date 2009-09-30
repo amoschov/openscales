@@ -1037,6 +1037,10 @@ package org.openscales.core
 			this._proxy = value;
 		}
 
+		public function set configuration(value:IConfiguration):void{
+		 	_configuration = value;
+		} 
+		
 		public function get configuration():IConfiguration{
 		 	return _configuration;
 		}

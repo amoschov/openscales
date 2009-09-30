@@ -1,6 +1,7 @@
 package org.openscales.core.configuration
 {
 	import org.openscales.core.Map;
+	import org.openscales.core.layer.Layer;
 	
 	public interface IConfiguration
 	{
@@ -51,6 +52,11 @@ package org.openscales.core.configuration
 		 * @return The child items of <Controls> </Controls> elements 
 		 */
 		 function get controls():XMLList;
+		 
+		 /**
+		 * parse layers
+		 */
+		 function parseLayer(xmlNode:XML):Layer;
 		
 	}
 }

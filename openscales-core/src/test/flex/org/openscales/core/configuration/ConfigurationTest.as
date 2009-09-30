@@ -40,6 +40,20 @@ package org.openscales.core.configuration
 		}
 		
 		[Test]
+		public function testHandlersCount( ) : void {
+			var sampleMapConfOk:XML = this.sampleMapConfOkXML();
+			var conf:IConfiguration = new Configuration(this.sampleMapConfOkXML());
+			Assert.assertEquals(2, conf.handlers.length());
+		}
+		
+		[Test]
+		public function testControlssCount( ) : void {
+			var sampleMapConfOk:XML = this.sampleMapConfOkXML();
+			var conf:IConfiguration = new Configuration(this.sampleMapConfOkXML());
+			Assert.assertEquals(1, conf.controls.length());
+		}
+		
+		[Test]
 		public function testConfigureMap( ) : void {
 			var sampleMapConfOk:XML = this.sampleMapConfOkXML();
 			var conf:IConfiguration = new Configuration(this.sampleMapConfOkXML());
