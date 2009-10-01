@@ -402,9 +402,11 @@ package org.openscales.core
 				return;
 			}
 			
-			var newCenterPx:Pixel = this.getMapPxFromLonLat(this.center).add(dx, dy);
-			var newCenterLonLat:LonLat = this.getLonLatFromMapPx(newCenterPx);
-			this.setCenter(newCenterLonLat, NaN, false, false, tween);
+			if(this.center) {
+				var newCenterPx:Pixel = this.getMapPxFromLonLat(this.center).add(dx, dy);
+				var newCenterLonLat:LonLat = this.getLonLatFromMapPx(newCenterPx);
+				this.setCenter(newCenterLonLat, NaN, false, false, tween);
+			}
 		}
 
 		/**
