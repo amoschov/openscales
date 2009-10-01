@@ -608,26 +608,6 @@ package org.openscales.core
 		}
 
 
-		//Replaced by zoom setter
-		/**
-		 * Zoom to the passed in scale, recenter.
-		 *
-		 * @param bounds
-		 */
-		/*public function zoomToScale(scale:Number):void {
-		   var res:Number = Unit.getResolutionFromScale(scale, this.baseLayer.units);
-		   var w_deg:Number = this.size.w * res;
-		   var h_deg:Number = this.size.h * res;
-		   var center:LonLat = this.center;
-
-		   var extent:Bounds = new Bounds(center.lon - w_deg / 2,
-		   center.lat - h_deg / 2,
-		   center.lon + w_deg / 2,
-		   center.lat + h_deg / 2);
-		   this.zoomToExtent(extent);
-		 }*/
-
-
 		/**
 		 * Return a LonLat which is the passed-in view port Pixel, translated into lon/lat
 		 *	by the current base layer
@@ -759,7 +739,7 @@ package org.openscales.core
 				// We draw the loaded tiles onto the background transition.
 				try {
 					// Can sometimes throw a security exception.
-					bitmapData.draw(this.baseLayer, this.layerContainer.transform.matrix);
+					bitmapData.draw(this.layerContainer, this.layerContainer.transform.matrix);
 				} catch (e:Error) {
 					Trace.error("Error zooming image: " + e);
 				}
