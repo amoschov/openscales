@@ -48,13 +48,10 @@
 		<!-- Specific layers and handlers of this example -->
 
 		<os:WMSC name="Nasa"
-				 url="http://onearth.jpl.nasa.gov/wms.cgi"
-				 layers="global_mosaic"
+				 url="http://sigma.openplans.org/geoserver/gwc/service/wms"
+				 layers="bluemarble"
 				 format="image/jpeg"
 				 isBaseLayer="true"
-				 tileWidth="512"
-				 tileHeight="512"
-				 styles="visual"
 				 />
 				 
 		<!-- OpenStreetMap EPSG:900913 -->
