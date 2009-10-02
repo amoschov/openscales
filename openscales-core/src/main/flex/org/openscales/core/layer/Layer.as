@@ -132,6 +132,8 @@ package org.openscales.core.layer
 		 * for the layer -- this array is what the layer will use to interface
 		 * between the zoom levels of the map and the resolution display
 		 * of the layer.
+		 * 
+		 * TODO : reafactor without confProps
 		 */
 		public function initResolutions():void {
 

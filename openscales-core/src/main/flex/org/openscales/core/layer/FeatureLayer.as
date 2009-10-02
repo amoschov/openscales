@@ -1,8 +1,7 @@
 package org.openscales.core.layer
 {
-	import org.openscales.core.Trace;
-	
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.events.FeatureEvent;
@@ -13,8 +12,8 @@ package org.openscales.core.layer
 		private var _featuresBbox:Bounds = null;
 
 		private var _selectedFeatures:Array = null;
-
-		private var _drawn:Boolean = false;
+		
+		protected var _drawOnMove:Boolean = true;
 
 		public function FeatureLayer(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
 			projection:String = null, proxy:String = null)
@@ -25,13 +24,16 @@ package org.openscales.core.layer
 			this.featuresBbox = new Bounds();
 
 		}
+		
+		override public function calculateInRange():Boolean {
+			return true;
+		}
 
 		override public function destroy(setNewBaseLayer:Boolean = true):void {
 			super.destroy();  
 
 			this.clear();
 			this.selectedFeatures = null;
-			this.drawn = false;
 		}
 
 		override public function set map(map:Map):void {
@@ -45,11 +47,19 @@ package org.openscales.core.layer
 		}
 
 		override public function onMapResize():void {
+			this.drawFeatures();
+		}
+		
+		public function drawFeatures():void {
+			this.graphics.clear();
+			
+			this.cacheAsBitmap = false;
 			for each (var feature:Feature in this.features){
-				this.graphics.clear();
 				feature.draw();
 			}
+			this.cacheAsBitmap = true;
 		}
+		
 
 		/**
 		 *  Reset the vector so that it once again is lined up with
@@ -63,13 +73,8 @@ package org.openscales.core.layer
 		 */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 			super.moveTo(bounds, zoomChanged, dragging,resizing);
-
-			if (!this.drawn || zoomChanged) {
-				this.drawn = true;
-				for(var i:int = 0; i < this.features.length; i++) {
-					var feature:Feature = this.features[i];
-					feature.draw();
-				}
+			if(_drawOnMove) {
+				this.drawFeatures();
 			}
 		}
 
@@ -93,20 +98,17 @@ package org.openscales.core.layer
 
 			feature.layer = this;
 			
-			if(map)
+			/* if(map)
 				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, feature));
 			else
-				Trace.warning("Warning : no FEATURE_PRE_INSERT dispatched because map event dispatcher is not defined");
+				Trace.warning("Warning : no FEATURE_PRE_INSERT dispatched because map event dispatcher is not defined"); */
 			
 			this.addChild(feature);
 
-			if (this.drawn) {
-				feature.draw();
-			}
-			if(map)
+			/* if(map)
 				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature));
 			else
-				Trace.warning("Warning : no FEATURE_INSERT dispatched because map event dispatcher is not defined");
+				Trace.warning("Warning : no FEATURE_INSERT dispatched because map event dispatcher is not defined"); */
 		}
 
 		public function removeFeatures(features:Array):void {
@@ -126,15 +128,6 @@ package org.openscales.core.layer
 				Util.removeItem(this.selectedFeatures, feature);
 			}
 		}
-
-		/*public function getFeatureById(featureId:String):Feature {
-			for(var i:int=0; i<this.features.length; ++i) {
-				if((this.features[i] as Feature).id == featureId) {
-					return this.features[i];
-				}
-			}
-			return null;
-		}*/
 
 		//Getters and setters
 		public function get features():Array {
@@ -170,14 +163,6 @@ package org.openscales.core.layer
 			while (this.numChildren > 0) {
 				this.removeChildAt(this.numChildren-1);
 			}
-		}
-
-		public function get drawn():Boolean {
-			return this._drawn;
-		}
-
-		public function set drawn(value:Boolean):void {
-			this._drawn = value;
 		}
 
 	}

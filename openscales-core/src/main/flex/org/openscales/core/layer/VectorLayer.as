@@ -31,8 +31,6 @@ package org.openscales.core.layer
 			this.style = new Style();
 			this._temporaryProjection = this.projection;
 
-			// For better performances
-			this.cacheAsBitmap = true;
 		}
 
 		override public function destroy(setNewBaseLayer:Boolean = true):void {
@@ -41,21 +39,18 @@ package org.openscales.core.layer
 		}
 
 		private function checkProjection(evt:LayerEvent = null):void {
-			//we don't have to change the projection because 
-			//the layers keep the starting resolution 
 			
-			
-		/*	if (this.features.length > 0 && this.map != null && this._temporaryProjection.srsCode != this.map.projection.srsCode) {
+		if (this.features.length > 0 && this.map != null && this._temporaryProjection.srsCode != this.map.baseLayer.projection.srsCode) {
 				for each (var f:VectorFeature in this.features) {
-					f.geometry.transform(this._temporaryProjection, this.map.projection);
+					f.geometry.transform(this._temporaryProjection, this.map.baseLayer.projection);
 				}
 				var resProj:ProjPoint = new ProjPoint(this.minResolution, this.maxResolution);
-				resProj = Proj4as.transform(this._temporaryProjection, map.projection, resProj);
+				resProj = Proj4as.transform(this._temporaryProjection, map.baseLayer.projection, resProj);
 				this.minResolution = resProj.x;
 				this.maxResolution = resProj.y;
-				this._temporaryProjection = map.projection;
+				this._temporaryProjection = map.baseLayer.projection;
 				this.redraw();
-			}*/
+			}
 		}
 
 		override public function set map(map:Map):void {
@@ -78,15 +73,13 @@ package org.openscales.core.layer
 				throw throwStr;
 			}
 
-			if (this.map != null && this.map.projection != null && this.projection != null && 
-				getQualifiedClassName(this).split("::")[1] != "WFS" && this.projection.srsCode != this.map.projection.srsCode) {
-				//vectorfeature.geometry.transform(this.projection, this.map.projection);
-			}
-
 			if (!vectorfeature.style) {
 				vectorfeature.style = this.style;
 			}
-
+			
+			/* if (this.map != null && this._temporaryProjection.srsCode != this.map.baseLayer.projection.srsCode) {
+				vectorfeature.geometry.transform(this._temporaryProjection, this.map.baseLayer.projection);
+			} */
 			super.addFeature(vectorfeature);
 		}
 
@@ -108,15 +101,18 @@ package org.openscales.core.layer
 
 		override public function set projection(value:ProjProjection):void {
 			super.projection = value;
-			var f:VectorFeature;
-
-			if (this.features.length > 0 && this.map != null && this.map.projection != null &&
-				this.projection.srsCode != this.map.projection.srsCode) {
-				for each (f in this.features) {
-					f.geometry.transform(this.projection, this.map.projection);
-				}
-			}
 		}
+		
+		/* protected function reproject() {
+			var f:VectorFeature;
+	
+				if (this.features.length > 0 && this.map != null && this.map.baseLayer.projection != null &&
+					this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
+					for each (f in this.features) {
+						f.geometry.transform(this.projection, this.map.baseLayer.projection);
+					}
+				}
+		} */
 
 	}
 }

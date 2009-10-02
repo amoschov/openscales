@@ -775,7 +775,6 @@ package org.openscales.core
 				_zooming = false;
 				setCenter(null, newZoom);
 				layerContainer.alpha = 1;
-				
 
 			} 
 		}
@@ -864,10 +863,6 @@ package org.openscales.core
 		 * Default is "EPSG:4326".
 		 */
 		public function get projection():ProjProjection {
-			/*var projection:ProjProjection = _projection;
-			   if (this.baseLayer != null) {
-			   projection = this.baseLayer.projection;
-			 }*/
 			return _projection;
 		}
 

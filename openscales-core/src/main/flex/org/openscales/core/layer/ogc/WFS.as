@@ -2,6 +2,7 @@ package org.openscales.core.layer.ogc
 {	
 	import flash.events.Event;
 	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Map;
@@ -33,11 +34,6 @@ package org.openscales.core.layer.ogc
 		 *     buffer)
 		 */
 		private var _ratio:Number = 2;
-
-		/**
-		 *  Determines whether the layer is in vector mode or marker mode.
-		 */                   
-		private var _vectorMode:Boolean = true;
 
 		private var _tile:WFSTile = null;
 
@@ -107,25 +103,19 @@ package org.openscales.core.layer.ogc
 				Trace.warning("The WFS Layer has no params !");
 			}
 				
-
-			this.url = url;	        
-		}
-
-		override public function destroy(setNewBaseLayer:Boolean = true):void {
-			if (this.vectorMode) {
-				super.destroy();
-			}
+			this.url = url;
+			
+			// Will draw features asynchronously when data have been received 
+			this._drawOnMove = false;    
 		}
 
 		override public function set map(map:Map):void {
-			if (this.vectorMode) {
-				super.map = map;
+			super.map = map;
 
-				// GetCapabilities request made here in order to have the proxy set 
-				if (url != null && url != "" && this.capabilities == null && useCapabilities == true) {
-					var getCap:GetCapabilities = new GetCapabilities("wfs", url, this.capabilitiesGetter,
-						use100Capabilities, use110Capabilities, this.proxy);
-				}
+			// GetCapabilities request made here in order to have the proxy set 
+			if (url != null && url != "" && this.capabilities == null && useCapabilities == true) {
+				var getCap:GetCapabilities = new GetCapabilities("wfs", url, this.capabilitiesGetter,
+					use100Capabilities, use110Capabilities, this.proxy);
 			}
 		}
 
@@ -137,80 +127,72 @@ package org.openscales.core.layer.ogc
 		 * @param dragging Drag action or not
 		 */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
-			if (this.vectorMode) {
-				super.moveTo(bounds, zoomChanged, dragging,resizing);
-			}  
+			super.moveTo(bounds, zoomChanged, dragging,resizing);
+			
+			if ((this.minZoomLevel && (this.map.zoom > this.minZoomLevel)) ||
+			    (this.maxZoomLevel && (this.map.zoom < this.maxZoomLevel)))	{
+		 		Trace.debug("Zoom outside min or max zoom level, don't draw layer " + this.name);
+		 		return;
+	    	}			
+				
+ 			if (bounds == null) {
+				bounds = this.map.extent;
+			}
 
-			if (dragging) {
-				// Nothing
-			} else {			
-				if ((this.minZoomLevel && (this.map.zoom > this.minZoomLevel)) ||
-			    	(this.maxZoomLevel && (this.map.zoom < this.maxZoomLevel)))	{
-		 			return;
-		 			
-			    	}
-		 		else {
-					if (bounds == null) {
-						bounds = this.map.extent;
-					}
+			var firstRendering:Boolean = (this.tile == null);
+			var outOfBounds:Boolean = (!firstRendering && !this.tile.bounds.containsBounds(bounds));
 
-					var firstRendering:Boolean = (this.tile == null);
+			if ( zoomChanged || firstRendering || (!dragging && outOfBounds) ) {
+				var center:LonLat = bounds.centerLonLat;
+				var tileWidth:Number = bounds.width * this._ratio;
+				var tileHeight:Number = bounds.height * this._ratio;
+				var tileBounds:Bounds = this.extent;
 
-					var outOfBounds:Boolean = (!firstRendering &&
-						!this.tile.bounds.containsBounds(bounds));
+				if (tileBounds.containsBounds(this.maxExtent)) {
+					tileBounds = this.maxExtent;
+				}
 
-					if ( zoomChanged || firstRendering || (!dragging && outOfBounds) ) {
-						var center:LonLat = bounds.centerLonLat;
-						var tileWidth:Number = bounds.width * this._ratio;
-						var tileHeight:Number = bounds.height * this._ratio;
-						var tileBounds:Bounds = this.extent;
+				var tileSize:Size = this.map.size;
+				tileSize.w = tileSize.w * this._ratio;
+				tileSize.h = tileSize.h * this._ratio;
 
-						if (tileBounds.containsBounds(this.maxExtent)) {
-							tileBounds = this.maxExtent;
-						}
+				var ul:LonLat = new LonLat(tileBounds.left, tileBounds.top);
+				var pos:Pixel = this.map.getLayerPxFromLonLat(ul);
 
-						var tileSize:Size = this.map.size;
-						tileSize.w = tileSize.w * this._ratio;
-						tileSize.h = tileSize.h * this._ratio;
+				this.params.bbox = tileBounds.boundsToString();
+				var url:String = this.getFullRequestString();
 
-						var ul:LonLat = new LonLat(tileBounds.left, tileBounds.top);
-						var pos:Pixel = this.map.getLayerPxFromLonLat(ul);
+				
+				if (firstRendering) {
+					// If no tile, we create and initialize the a WFSTile instance 
+					this.tile = new WFSTile(this, pos, tileBounds, url, tileSize);
+					this.featuresBbox = tileBounds;
+					this.tile.loadFeatures();
+				} else {
+					// Else reuse the existing one
+					if ( !this.featuresBbox.containsBounds(tileBounds)) {
+						
+						// Use GetCapabilities to know if all features have already been retreived.
+						// If they are, we don't request data again
+						if ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent")))) {
 
-						this.params.bbox = tileBounds.boundsToString();
-						var url:String = this.getFullRequestString();
+							this.featuresBbox.extendFromBounds((tileBounds));
 
-						if (!this.tile) {
-							this.tile = new WFSTile(this, pos, tileBounds, url, tileSize);
-							this.tile.draw();
-							this.featuresBbox = tileBounds;
+							this.params.bbox = this.featuresBbox.boundsToString();
+							url = this.getFullRequestString();				            		
+
+							this.tile.url = url;			            		
+							this.tile.loadFeatures();
 						} else {
-							if ( !this.featuresBbox.containsBounds(tileBounds)) {
-								if ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent")))) {
-
-									this.featuresBbox.extendFromBounds((tileBounds));
-
-									this.params.bbox = this.featuresBbox.boundsToString();
-									url = this.getFullRequestString();				            		
-
-									this.tile.url = url;			            		
-									this.tile.loadFeaturesForRegion(this.tile.requestSuccess);
-								}
-							}
+							this.drawFeatures();
 						}
+					} else {
+						this.drawFeatures();
 					}
 				}
 			}
+			
 		}
-
-		/**
-		 * Method called on map resize
-		 */
-		override public function onMapResize():void {	
-			if(this.vectorMode) {
-				super.onMapResize();
-			}
-		} 
-
 
 		/**
 		 * Combine the layer's url with its params and these newParams.
@@ -303,16 +285,6 @@ package org.openscales.core.layer.ogc
 			Trace.info(string);
 		}
 
-		/*public function refresh():void {
-		   if (this.tile) {
-		   if (this.vectorMode) {
-		   this.renderer.clear();
-		   Util.clearArray(this.features);
-		   }
-		   this.tile.draw();
-		   }
-		 }*/
-
 		public function set typename(value:String):void {
 			this.params.typename = value;
 		}
@@ -341,17 +313,9 @@ package org.openscales.core.layer.ogc
 				this._capabilities = caller.getLayerCapabilities(this.params.typename);
 
 			}
-			if (this._capabilities != null) {
+			/* if ((this._capabilities != null) && (this.projection == null)) {
 				this.projection = new ProjProjection(this._capabilities.getValue("SRS"));
-			}
-		}
-
-		public function get vectorMode():Boolean {
-			return this._vectorMode;
-		}
-
-		public function set vectorMode(value:Boolean):void {
-			this._vectorMode = value;
+			} */
 		}
 
 		public function get params():WFSParams {

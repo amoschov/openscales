@@ -27,6 +27,14 @@
 						<org.openscales.proj4as.proj>Proj4as projection implementations</org.openscales.proj4as.proj>
 					</packageDescriptions>
 				</configuration>
+				<executions>
+		          <execution>
+		            <phase>install</phase>
+		            <goals>
+		              <goal>asdoc</goal>
+		            </goals>
+		          </execution>
+		        </executions>
 			</plugin>
 		</plugins>
 	</build>

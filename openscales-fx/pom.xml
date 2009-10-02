@@ -19,6 +19,26 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
+	<profiles>
+		<profile>
+		<id>asdoc</id>
+		<build>
+			<plugins>
+				<plugin>
+					<groupId>org.sonatype.flexmojos</groupId>
+					<artifactId>flexmojos-maven-plugin</artifactId>
+					<extensions>true</extensions>
+					<configuration>
+						<excludeClasses>
+							<class>org.openscales.component.control.Pan</class>
+						</excludeClasses>
+					</configuration>
+				</plugin>
+			</plugins>
+		</build>
+	</profile>
+	</profiles>
+	
 	<build>
 		
 		<plugins>
@@ -42,6 +62,7 @@
 						<org.openscales.fx>Contains wrapper around openscales-core pure AS3 components</org.openscales.fx>
 					</packageDescriptions>
 				</configuration>
+				
 			</plugin>
 		</plugins>
 	</build>

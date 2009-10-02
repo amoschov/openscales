@@ -24,7 +24,7 @@ package org.openscales.proj4as {
 			}
 
 			if (!source.readyToUse || !dest.readyToUse) {
-				trace("Proj4js initialization for " + source.srsCode + " not yet complete");
+				trace("Proj4as initialization for " + source.srsCode + " not yet complete");
 				return point;
 			}
 

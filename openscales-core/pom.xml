@@ -60,6 +60,14 @@
 						<org.openscales.core.tile>Tile (raster or vector) management</org.openscales.core.tile>
 					</packageDescriptions>
 				</configuration>
+				<executions>
+		          <execution>
+		            <phase>install</phase>
+		            <goals>
+		              <goal>asdoc</goal>
+		            </goals>
+		          </execution>
+		        </executions>
 			</plugin>
 		</plugins>
 	</build>

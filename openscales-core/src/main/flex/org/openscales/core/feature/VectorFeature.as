@@ -146,15 +146,7 @@ package org.openscales.core.feature
 			if (style.isStroked) {
 				this.graphics.lineStyle(style.strokeWidth, style.strokeColor, style.strokeOpacity, false, "normal", style.strokeLinecap);
 			}
-			//The first feature drawn changes the layer srs
-			if(this.layer.projection.srsCode!=this.layer.map.projection.srsCode){
-				
-				for each(var feature:VectorFeature in (this.layer as VectorLayer).features)
-				{
-					feature.geometry.transform(this.layer.projection,this.layer.map.projection);
-				}
-				this.layer.projection=new ProjProjection(this.layer.map.projection.srsCode);
-			}
+
 		}
 		
 		protected function getLayerPxFromPoint(point:Point) : Pixel {

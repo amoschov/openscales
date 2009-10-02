@@ -62,7 +62,10 @@ package org.openscales.core.tile
 		 */
 		override public function draw():Boolean {
 			if (super.draw()) {
-				this.loadFeaturesForRegion(this.requestSuccess);
+				var startTime:Date = new Date();
+				(this.layer as WFS).drawFeatures();
+				var endTime:Date = new Date();
+				Trace.debug("Draw features : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
 			}
 			return false;
 		}
@@ -75,9 +78,11 @@ package org.openscales.core.tile
 		 * @param success
 		 * @param failure
 		 */
-		public function loadFeaturesForRegion(success:Function):void {		
+		public function loadFeatures(success:Function = null):void {		
 			if(_request)
 				_request.destroy();
+			if(success == null)
+				success = this.requestSuccess;
 			_request = new XMLRequest(this.url, success, this.layer.proxy, URLRequestMethod.GET, this.layer.security);
 		}
 
@@ -103,11 +108,8 @@ package org.openscales.core.tile
 			}
 			var wfsLayer:WFS = this.layer as WFS;
 
-			if (wfsLayer && wfsLayer.vectorMode) {
+			if (wfsLayer) {
 				wfsLayer.clear();
-			}
-
-			if (wfsLayer && wfsLayer.vectorMode) {
 				var gml:GMLFormat = new GMLFormat(wfsLayer.extractAttributes);
 				if (this.layer.map.projection != null && this.layer.projection != null && this.layer.projection.srsCode != this.layer.map.projection.srsCode) {
 					gml.externalProj = this.layer.projection;
@@ -127,6 +129,9 @@ package org.openscales.core.tile
 				wfsLayer.addFeatures(features);
 				endTime = new Date();
 				Trace.debug("Add features : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
+				
+				this.draw();				
+				
 			} else {
 				var resultFeatures:Object = doc..*::featureMember;
 				this.addResults(resultFeatures);
