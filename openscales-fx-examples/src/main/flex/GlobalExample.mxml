@@ -37,13 +37,13 @@
 		proxy="http://openscales.org/proxy.php?url="
 		zoom="2" lon="538850.47459" lat="5740916.1243">
 		
-		<os:WMSC name="Nasa"
-				 url="http://sigma.openplans.org/geoserver/gwc/service/wms"
-				 layers="bluemarble"
-				 format="image/jpeg"
-				 isBaseLayer="true"
-				 />
-		
+		<!-- OpenStreetMap EPSG:900913 -->
+		<os:Mapnik name="Mapnik"
+			numZoomLevels="20"
+			isBaseLayer="true"
+			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
+			minResolution="0.5971642833709717"
+			maxResolution="156543.0339" />
 		
 		<os:DragHandler />
 		<os:WheelHandler />
@@ -52,12 +52,15 @@
 		
 		<!-- Specific layers and handlers of this example -->
 		
-		<os:Mapnik name="Mapnik"
-			numZoomLevels="20"
-			isBaseLayer="true"
-			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-			minResolution="0.5971642833709717"
-			maxResolution="156543.0339" />
+		<os:WMSC name="Nasa"
+				 url="http://onearth.jpl.nasa.gov/wms.cgi"
+				 layers="global_mosaic"
+				 format="image/jpeg"
+				 isBaseLayer="true"
+				 tileWidth="512"
+				 tileHeight="512"
+				 styles="visual"
+				 />
 				 
 		<os:WFS name="Topp States (WFS)"
 			url="http://openscales.org/geoserver/wfs"

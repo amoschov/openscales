@@ -40,10 +40,13 @@
 			zoom="5">
 
 		<os:WMSC name="Nasa"
-				 url="http://sigma.openplans.org/geoserver/gwc/service/wms"
-				 layers="bluemarble"
+				 url="http://onearth.jpl.nasa.gov/wms.cgi"
+				 layers="global_mosaic"
 				 format="image/jpeg"
 				 isBaseLayer="true"
+				 tileWidth="512"
+				 tileHeight="512"
+				 styles="visual"
 				 />
 
 
