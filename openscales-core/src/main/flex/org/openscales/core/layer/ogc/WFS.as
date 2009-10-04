@@ -28,12 +28,6 @@ package org.openscales.core.layer.ogc
 	public class WFS extends VectorLayer
 	{
 		
-		/**
-		 * The ratio of image/tile size to map size (this is the untiled
-		 *     buffer)
-		 */
-		private var _ratio:Number = 2;
-
 		private var _writer:Format = null;
 
 		private var _featureNS:String = null;
