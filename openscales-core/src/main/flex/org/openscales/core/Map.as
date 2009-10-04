@@ -47,11 +47,6 @@ package org.openscales.core
 		public var IMAGE_RELOAD_ATTEMPTS:Number = 0;
 
 		/**
-		 * Enable tween effects.
-		 */
-		public static var tween:Boolean = true;
-
-		/**
 		 * The lonlat at which the later container was re-initialized (on-zoom)
 		 */
 		private var _layerContainerOrigin:LonLat = null;
@@ -71,6 +66,12 @@ package org.openscales.core
 		private var _resolutions:Array;
 		private var _projection:ProjProjection;
 		private var _units:String;
+		
+		/**
+		 * Enable tween effect when zooming
+		 */
+		private var _tweenZoomEnabled:Boolean = true;
+		
 		private var _proxy:String = null;
 		private var _bitmapTransition:DraggableSprite;
 		private var _configuration:IConfiguration;
@@ -382,10 +383,7 @@ package org.openscales.core
 			}
 
 			if (this.baseLayer != null) {
-				var center:Pixel = new Pixel(this.size.w /2, this.size.h / 2);
-				var centerLL:LonLat = this.getLonLatFromMapPx(center);
-				var zoom:int = this.zoom;
-				this.setCenter(null,zoom,false,true,false,true);
+				this.setCenter(null,this.zoom,false,true,false,true);
 			}
 		}
 
@@ -423,6 +421,11 @@ package org.openscales.core
 		 */
 		private function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false, resizing:Boolean = false):void {
 			var zoomChanged:Boolean = forceZoomChange || (this.isValidZoomLevel(zoom) && (zoom!=this._zoom));
+						
+			if(lonlat && !this.isValidLonLat(lonlat)) {
+				Trace.info("Not a valid center, so do nothing");
+				return;
+			}
 			
 			// If the map is not initialized, the center of the extent is used
 			// as the current center
@@ -704,13 +707,12 @@ package org.openscales.core
 			this.dispatchEvent(mapEvent);
 			
 			 if (this.isValidZoomLevel(newZoom)) {
-				if (Map.tween)
+				if (this.tweenZoomEnabled)
 				{
 					this.zoomTransition(newZoom);
-				}				
-					
-				else
+				} else {
 					setCenter(null, newZoom);
+				}
 
 			} 
 		}
@@ -1021,6 +1023,16 @@ package org.openscales.core
 		public function get configuration():IConfiguration{
 		 	return _configuration;
 		}
+		
+		public function set tweenZoomEnabled(value:Boolean):void{
+		 	_tweenZoomEnabled = value;
+		} 
+		
+		public function get tweenZoomEnabled():Boolean{
+		 	return _tweenZoomEnabled;
+		}
+	
+	
 	
 	}
 }

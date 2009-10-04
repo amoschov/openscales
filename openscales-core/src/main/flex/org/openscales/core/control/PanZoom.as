@@ -3,7 +3,7 @@ package org.openscales.core.control
 	import flash.display.Bitmap;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
@@ -19,6 +19,7 @@ package org.openscales.core.control
 		public static var Y:int = 4;
 		private var _slideFactor:int = 50;
 		private var _buttons:Array = null;
+		private var _tween:Boolean;
 
 		[Embed(source="/images/north-mini.png")]
 		protected var northMiniImg:Class;
@@ -47,8 +48,8 @@ package org.openscales.core.control
 		[Embed(source="/images/zoombar.png")]
 		protected var zoombarImg:Class;
 
-		public function PanZoom(position:Pixel = null) {
-
+		public function PanZoom(position:Pixel = null, tween:Boolean = true) {
+			this._tween = tween;
 			super(position);
 		}
 
@@ -122,16 +123,16 @@ package org.openscales.core.control
 
 			switch (btn.name) {
 				case "panup": 
-					this.map.pan(0, -100, Map.tween);
+					this.map.pan(0, -100, this._tween);
 					break;
 				case "pandown": 
-					this.map.pan(0, 100, Map.tween);
+					this.map.pan(0, 100, this._tween);
 					break;
 				case "panleft": 
-					this.map.pan(-100, 0, Map.tween);
+					this.map.pan(-100, 0, this._tween);
 					break;
 				case "panright": 
-					this.map.pan(100, 0, Map.tween);
+					this.map.pan(100, 0, this._tween);
 					break;
 				case "zoomin": 
 					this.map.zoom++; 

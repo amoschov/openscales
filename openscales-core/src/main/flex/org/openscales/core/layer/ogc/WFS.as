@@ -2,7 +2,6 @@ package org.openscales.core.layer.ogc
 {	
 	import flash.events.Event;
 	import flash.net.URLLoader;
-	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Map;
@@ -12,13 +11,13 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.maps.HashMap;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.format.Format;
-	import org.openscales.core.format.WFSFormat;
+	import org.openscales.core.format.GMLFormat;
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.layer.capabilities.GetCapabilities;
 	import org.openscales.core.layer.params.ogc.WFSParams;
 	import org.openscales.core.request.XMLRequest;
-	import org.openscales.core.tile.WFSTile;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -28,14 +27,12 @@ package org.openscales.core.layer.ogc
 	 */
 	public class WFS extends VectorLayer
 	{
-
+		
 		/**
 		 * The ratio of image/tile size to map size (this is the untiled
 		 *     buffer)
 		 */
 		private var _ratio:Number = 2;
-
-		private var _tile:WFSTile = null;
 
 		private var _writer:Format = null;
 
@@ -61,15 +58,15 @@ package org.openscales.core.layer.ogc
 		 */
 		private var _useCapabilities:Boolean = false;
 
-		private var _use100Capabilities:Boolean = true;
-
-		private var _use110Capabilities:Boolean = true;
+		private var _capabilitiesVersion:String = "1.1.0";
 
 		private var _url:String = null;
 
 		private var _params:WFSParams = null;
 
 		private var _request:XMLRequest = null;	
+		
+		private var _firstRendering:Boolean = true;
 
 		/**
 		 * WFS class constructor
@@ -115,8 +112,18 @@ package org.openscales.core.layer.ogc
 			// GetCapabilities request made here in order to have the proxy set 
 			if (url != null && url != "" && this.capabilities == null && useCapabilities == true) {
 				var getCap:GetCapabilities = new GetCapabilities("wfs", url, this.capabilitiesGetter,
-					use100Capabilities, use110Capabilities, this.proxy);
+					capabilitiesVersion, this.proxy);
 			}
+		}
+		
+		/**
+		 * Override FeatureLayer function to add time logs
+		 */
+		override public function drawFeatures():void {
+			var startTime:Date = new Date();
+			super.drawFeatures();
+			var endTime:Date = new Date();
+			Trace.debug("Draw features : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
 		}
 
 		/**
@@ -139,59 +146,41 @@ package org.openscales.core.layer.ogc
 				bounds = this.map.extent;
 			}
 
-			var firstRendering:Boolean = (this.tile == null);
-			var outOfBounds:Boolean = (!firstRendering && !this.tile.bounds.containsBounds(bounds));
-
-			if ( zoomChanged || firstRendering || (!dragging && outOfBounds) ) {
+			if ( zoomChanged || !dragging  ) {
 				var center:LonLat = bounds.centerLonLat;
-				var tileWidth:Number = bounds.width * this._ratio;
-				var tileHeight:Number = bounds.height * this._ratio;
-				var tileBounds:Bounds = this.extent;
+				var requestExtent:Bounds = this.extent; 
 
-				if (tileBounds.containsBounds(this.maxExtent)) {
-					tileBounds = this.maxExtent;
+				if (requestExtent.containsBounds(this.maxExtent)) {
+					requestExtent = this.maxExtent;
 				}
 
-				var tileSize:Size = this.map.size;
-				tileSize.w = tileSize.w * this._ratio;
-				tileSize.h = tileSize.h * this._ratio;
-
-				var ul:LonLat = new LonLat(tileBounds.left, tileBounds.top);
+				var ul:LonLat = new LonLat(requestExtent.left, requestExtent.top);
 				var pos:Pixel = this.map.getLayerPxFromLonLat(ul);
 
-				this.params.bbox = tileBounds.boundsToString();
-				var url:String = this.getFullRequestString();
-
+				this.graphics.clear();
+				this.featuresBbox = requestExtent;
+				this.params.bbox = requestExtent.boundsToString();
 				
-				if (firstRendering) {
-					// If no tile, we create and initialize the a WFSTile instance 
-					this.tile = new WFSTile(this, pos, tileBounds, url, tileSize);
-					this.featuresBbox = tileBounds;
-					this.tile.loadFeatures();
+				if (this._firstRendering) {
+					this.loadFeatures(this.getFullRequestString());
+					this._firstRendering = false;
 				} else {
-					// Else reuse the existing one
-					if ( !this.featuresBbox.containsBounds(tileBounds)) {
+					// else reuse the existing one
+					if ( this.featuresBbox.containsBounds(requestExtent)) {
+						this.drawFeatures();
+					} else {
 						
 						// Use GetCapabilities to know if all features have already been retreived.
 						// If they are, we don't request data again
 						if ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent")))) {
-
-							this.featuresBbox.extendFromBounds((tileBounds));
-
-							this.params.bbox = this.featuresBbox.boundsToString();
-							url = this.getFullRequestString();				            		
-
-							this.tile.url = url;			            		
-							this.tile.loadFeatures();
+							this.loadFeatures(this.getFullRequestString());
 						} else {
 							this.drawFeatures();
 						}
-					} else {
-						this.drawFeatures();
+
 					}
 				}
-			}
-			
+			}	
 		}
 
 		/**
@@ -200,7 +189,7 @@ package org.openscales.core.layer.ogc
 		 * @param newParams
 		 * @param altUrl Use this as the url instead of the layer's url
 		 */
-		private function getFullRequestString(altUrl:String = null):String {
+		public function getFullRequestString(altUrl:String = null):String {
 
 			var url:String;
 
@@ -233,58 +222,6 @@ package org.openscales.core.layer.ogc
 			return requestString;
 		}
 
-		/**
-		 * Write out the data to a WFS server.
-		 */
-		public function commit():void {
-			if (!this.writer) {
-				this.writer = new WFSFormat(this);
-			}
-
-			var data:Object = this.writer.write(this.features);
-
-			var url:String = this.url;
-			var proxy:String;
-
-			if (this.proxy && this.url.indexOf("http") == 0) {
-				proxy = this.proxy;
-			}
-
-			var successfailure:Function = commitSuccessFailure;
-
-			if(_request)
-				_request.destroy();
-			_request = new XMLRequest(url, successfailure, proxy, URLRequestMethod.POST, this.security, null, data);
-
-		}
-
-		/**
-		 * Callback method for commit request
-		 */
-		public function commitSuccessFailure(event:Event):void {
-			var loader:URLLoader = event.target as URLLoader;
-			var response:String = loader.data as String;
-			if (response.indexOf('SUCCESS') != -1) {
-				this.commitReport('WFS Transaction: SUCCESS', response);
-
-				for(var i:int = 0; i < this.features.length; i++) {
-					features[i].state = null;
-				}    
-					// TBD redraw the layer or reset the state of features
-					// foreach features: set state to null
-			} else if (response.indexOf('FAILED') != -1 ||
-				response.indexOf('Exception') != -1) {
-				this.commitReport('WFS Transaction: FAILED', response);
-			}
-		}
-
-		/**
-		 * Called by the callback method to report the request result
-		 */
-		public function commitReport(string:String, response:String):void{
-			Trace.info(string);
-		}
-
 		public function set typename(value:String):void {
 			this.params.typename = value;
 		}
@@ -313,9 +250,91 @@ package org.openscales.core.layer.ogc
 				this._capabilities = caller.getLayerCapabilities(this.params.typename);
 
 			}
-			/* if ((this._capabilities != null) && (this.projection == null)) {
+			if ((this._capabilities != null) && (this.projection == null)) {
 				this.projection = new ProjProjection(this._capabilities.getValue("SRS"));
-			} */
+			}
+		}
+		
+		/**
+		 * Abort any pending requests and issue another request for data.
+		 *
+		 * Input are function pointers for what to do on success and failure.
+		 *
+		 * @param success
+		 * @param failure
+		 */
+		protected function loadFeatures(url:String):void {		
+			if(_request)
+				_request.destroy();
+			_request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security);
+		}
+		
+		/**
+		 * Called on return from request succcess.
+		 *
+		 * @param request
+		 */
+		protected function onSuccess(event:Event):void {
+			var loader:URLLoader = event.target as URLLoader;
+			var startTime:Date;
+			var endTime:Date;
+
+			// To avoid errors in case of the WFS server is dead
+			try {
+				startTime = new Date();
+				var doc:XML =  new XML(loader.data);
+				endTime = new Date();
+				Trace.debug("XML object creation : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
+			}
+			catch(error:Error) {
+				Trace.error(error.message);
+			}
+
+			this.clear();
+			var gml:GMLFormat = new GMLFormat(this.extractAttributes);
+			if (this.map.projection != null && this.projection != null && this.projection.srsCode != this.map.projection.srsCode) {
+				gml.externalProj = this.projection;
+				gml.internalProj = this.map.projection;
+			}
+			else { 
+				Trace.debug("WFSTile.requestSuccess: no reprojection needed");
+			}
+			
+			startTime = new Date();
+			// TODO : Issue 217: Optimize WFS by drawing feature as soon as they are parsed
+			var features:Array = gml.read(doc) as Array;
+			endTime = new Date();
+			Trace.debug("XML parsing : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
+			
+			startTime = new Date();
+			this.addFeatures(features);
+			endTime = new Date();
+			Trace.debug("Add features : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
+			
+			this.drawFeatures();				
+				
+		}
+		
+		/**
+		 * Construct new feature and add to this.features.
+		 *
+		 * @param results
+		 */
+		protected function addResults(results:Object):void {
+			for (var i:int=0; i < results.length; i++) {
+				var data:Object = this.processXMLNode(results[i]);
+				var feature:Feature = new Feature( this, data.lonlat, data);
+				this.features.push(feature);
+			}
+		}
+		
+		protected function processXMLNode(xmlNode:XML):Object {
+			var point:XMLList = xmlNode.elements("gml::Point");
+			var text:String = point[0].elements("gml::coordinates")[0].nodeValue;
+			var floats:Array = text.split(",");
+			return {lonlat: new LonLat(Number(floats[0]),
+						Number(floats[1])),
+					id: null};
 		}
 
 		public function get params():WFSParams {
@@ -331,15 +350,8 @@ package org.openscales.core.layer.ogc
 		}
 
 		public function set url(value:String):void {
+			this._firstRendering = true;
 			this._url=value;
-		}
-
-		public function get tile():WFSTile {
-			return this._tile;
-		}
-
-		public function set tile(value:WFSTile):void {
-			this._tile = value;
 		}
 
 		public function get writer():Format {
@@ -382,21 +394,14 @@ package org.openscales.core.layer.ogc
 			this._useCapabilities = value;
 		}
 
-		public function set use100Capabilities(value:Boolean):void {
-			this._use100Capabilities = value;
+		public function set capabilitiesVersion(value:String):void {
+			this._capabilitiesVersion = value;
 		}
 
-		public function set use110Capabilities(value:Boolean):void {
-			this._use110Capabilities = value;
+		public function get capabilitiesVersion():String {
+			return this._capabilitiesVersion;
 		}
 
-		public function get use100Capabilities():Boolean {
-			return this._use100Capabilities;
-		}
-
-		public function get use110Capabilities():Boolean {
-			return this._use110Capabilities;
-		}
 
 	}
 }

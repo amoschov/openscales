@@ -34,15 +34,10 @@ package org.openscales.core.layer.capabilities
 
 		private var _cbkFunc:Function = null;
 
-		private var _use100:Boolean = true;
-
-		private var _use110:Boolean = true;
-
 		/**
 		 * Class contructor
 		 */
-		public function GetCapabilities(service:String, url:String, cbkFunc:Function=null, use100:Boolean=true,
-			use110:Boolean=true, proxy:String = null)
+		public function GetCapabilities(service:String, url:String, cbkFunc:Function=null, version:String="1.1.0", proxy:String = null)
 		{			
 			this._service = service.toUpperCase();
 			this._url = url;
@@ -56,8 +51,7 @@ package org.openscales.core.layer.capabilities
 			this.versionsToUse = [];
 			this.parsersToUse = []
 
-			this.use110 = use110;
-			this.use100 = use100;
+			this.version = version;
 
 			this.requestCapabilities();
 
@@ -186,26 +180,17 @@ package org.openscales.core.layer.capabilities
 			return this._proxy;
 		}
 
-		public function set use100(value:Boolean):void {
-			this._use100 = value;
-			if (value) {
-				var index:Number = VERSIONS.indexOf("1.0.0");
-				if(index >= 0) {
-					this.versionsToUse.push(VERSIONS[index]);
-					this.parsersToUse.push(PARSERS[index]);
-				}
+		public function set version(value:String):void {
+			var index:Number = VERSIONS.indexOf(value);
+			if(index >= 0) {
+				this.versionsToUse.push(VERSIONS[index]);
+				this.parsersToUse.push(PARSERS[index]);
 			}
+
 		}
 
-		public function set use110(value:Boolean):void {
-			this._use110 = value;
-			if (value) {
-				var index:Number = VERSIONS.indexOf("1.1.0");
-				if(index >= 0) {
-					this.versionsToUse.push(VERSIONS[index]);
-					this.parsersToUse.push(PARSERS[index]);
-				}
-			}
+		public function get version():String {
+			return this._version;
 		}
 	}
 }

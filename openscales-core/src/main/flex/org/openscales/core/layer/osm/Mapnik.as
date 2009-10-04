@@ -22,7 +22,7 @@ package org.openscales.core.layer.osm
 			super(name, url, isBaseLayer, visible, projection, proxy);
 
 			this.altUrls = alturls;
-			this.numZoomLevels = 20;
+			this.numZoomLevels = 18;
 		}
 
 	}

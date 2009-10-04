@@ -84,7 +84,7 @@
 			version="1.0.0"
 			minZoomLevel="21"
 			useCapabilities="true"
-			use110Capabilities="false">
+			capabilitiesVersion="1.0.0">
 			<os:Style fillColor="0xff0000"
 				fillOpacity="0.7"
 				strokeColor="0x0066ff"

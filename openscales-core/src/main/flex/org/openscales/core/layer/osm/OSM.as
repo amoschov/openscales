@@ -16,8 +16,7 @@ package org.openscales.core.layer.osm
 		public function OSM(name:String, url:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
 			projection:String = null, proxy:String = null) {
 
-			/* If projection string is null or empty, we init the layer's projection
-			 with EPSG:900913 (default value to OpenStreetMap layers) */
+			
 			if (projection == null || projection == "")
 				projection = "EPSG:900913";
 
@@ -25,6 +24,8 @@ package org.openscales.core.layer.osm
 
 			this.maxResolution = 156543.0339;
 			this.units = Unit.METER;
+			this.maxExtent = new Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);
+			-20037508.34,-20037508.34,20037508.34,20037508.34
 
 		}
 

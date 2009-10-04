@@ -77,9 +77,6 @@ package org.openscales.core.layer
 				vectorfeature.style = this.style;
 			}
 			
-			/* if (this.map != null && this._temporaryProjection.srsCode != this.map.baseLayer.projection.srsCode) {
-				vectorfeature.geometry.transform(this._temporaryProjection, this.map.baseLayer.projection);
-			} */
 			super.addFeature(vectorfeature);
 		}
 
@@ -103,17 +100,6 @@ package org.openscales.core.layer
 			super.projection = value;
 		}
 		
-		/* protected function reproject() {
-			var f:VectorFeature;
-	
-				if (this.features.length > 0 && this.map != null && this.map.baseLayer.projection != null &&
-					this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
-					for each (f in this.features) {
-						f.geometry.transform(this.projection, this.map.baseLayer.projection);
-					}
-				}
-		} */
-
 	}
 }
 

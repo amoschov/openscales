@@ -149,7 +149,8 @@ package org.openscales.core.tile
 				if(!this.layer.contains(this))
 					this.layer.addChild(this);
 				
-				if(Map.tween && !(this.layer is WMS)) {
+				// TODO : check this				
+				if(!(this.layer is WMS)) {
 					var tw:GTweeny = new GTweeny(this, 0.3, {alpha:1});
 					tw.addEventListener(Event.COMPLETE, removeReference, false, 0, true);
 					//removeReference(null);

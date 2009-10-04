@@ -26,6 +26,8 @@
 				this.setChildIndex(this.getChildAt(1), 0);
 				// Specific initialize for this example
 				// none
+				
+				
 			}
 		]]>
 	</mx:Script>
@@ -35,20 +37,15 @@
 	
 	<os:Map id="fxmap" width="100%" height="100%"
 		proxy="http://openscales.org/proxy.php?url="
-		zoom="2" lon="538850.47459" lat="5740916.1243">
+		zoom="3" lon="-11524747" lat="4972876">
 		
 		<!-- OpenStreetMap EPSG:900913 -->
-		<os:Mapnik name="Mapnik"
-			numZoomLevels="20"
-			isBaseLayer="true"
-			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-			minResolution="0.5971642833709717"
-			maxResolution="156543.0339" />
+		<os:Mapnik name="Mapnik" isBaseLayer="true" />
 		
 		<os:DragHandler />
 		<os:WheelHandler />
 		
-		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
+		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:900913"/>
 		
 		<!-- Specific layers and handlers of this example -->
 		
@@ -81,7 +78,7 @@
 			version="1.0.0"
 			minZoomLevel="21"
 			useCapabilities="true"
-			use110Capabilities="false">
+			capabilitiesVersion="1.0.0">
 			<os:Style fillColor="0xff0000"
 				fillOpacity="0.7"
 				strokeColor="0x0066ff"

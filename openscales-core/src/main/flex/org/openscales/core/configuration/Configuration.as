@@ -236,7 +236,6 @@ package org.openscales.core.configuration
 				var wfsLayer:WFS = new WFS(name,urlWfs,paramsWfs,isBaseLayer, visible,projection,proxy,useCapabilities,capabilities);
 				wfsLayer.minZoomLevel = Number(xmlNode.@minZoomLevel);
 				wfsLayer.maxZoomLevel = Number(xmlNode.@maxZoomLevel);
-				wfsLayer.use110Capabilities = use110Capabilities;
 				wfsLayer.minResolution = minResolution;	
 				wfsLayer.maxResolution = maxResolution;	
 				layer=wfsLayer;
