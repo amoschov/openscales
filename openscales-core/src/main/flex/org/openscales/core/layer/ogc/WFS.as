@@ -299,9 +299,7 @@ package org.openscales.core.layer.ogc
 			startTime = new Date();
 			this.addFeatures(features);
 			endTime = new Date();
-			Trace.debug("Add features : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
-			
-			this.drawFeatures();				
+			Trace.debug("Add features : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");	
 				
 		}
 		

@@ -84,9 +84,13 @@ package org.openscales.core.layer
 		 * @param features array
 		 */
 		public function addFeatures(features:Array):void {
+			this.graphics.clear();
+			this.cacheAsBitmap = false;
+			
 			for (var i:int = 0; i < features.length; i++) {
 				this.addFeature(features[i]);
 			}
+			this.cacheAsBitmap = true;
 		}
 
 		/**
@@ -104,6 +108,7 @@ package org.openscales.core.layer
 				Trace.warning("Warning : no FEATURE_PRE_INSERT dispatched because map event dispatcher is not defined"); */
 			
 			this.addChild(feature);
+			feature.draw();
 
 			/* if(map)
 				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature));
