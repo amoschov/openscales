@@ -142,22 +142,21 @@ package org.openscales.core.layer.ogc
 
 			if ( zoomChanged || !dragging  ) {
 				var center:LonLat = bounds.centerLonLat;
-				var requestExtent:Bounds = this.extent; 
 
-				if (requestExtent.containsBounds(this.maxExtent)) {
-					requestExtent = this.maxExtent;
+				if (bounds.containsBounds(this.maxExtent)) {
+					bounds = this.maxExtent;
 				}
 
 				this.graphics.clear();
-				this.featuresBbox = requestExtent;
-				this.params.bbox = requestExtent.boundsToString();
+				this.featuresBbox = bounds;
+				this.params.bbox = bounds.boundsToString();
 				
 				if (this._firstRendering) {
 					this.loadFeatures(this.getFullRequestString());
 					this._firstRendering = false;
 				} else {
 					// else reuse the existing one
-					if ( this.featuresBbox.containsBounds(requestExtent)) {
+					if ( this.featuresBbox.containsBounds(bounds)) {
 						this.drawFeatures();
 					} else {
 						
