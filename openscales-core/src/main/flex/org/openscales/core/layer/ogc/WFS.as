@@ -148,9 +148,6 @@ package org.openscales.core.layer.ogc
 					requestExtent = this.maxExtent;
 				}
 
-				var ul:LonLat = new LonLat(requestExtent.left, requestExtent.top);
-				var pos:Pixel = this.map.getLayerPxFromLonLat(ul);
-
 				this.graphics.clear();
 				this.featuresBbox = requestExtent;
 				this.params.bbox = requestExtent.boundsToString();
