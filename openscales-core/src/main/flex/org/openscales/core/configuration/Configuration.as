@@ -24,6 +24,7 @@ package org.openscales.core.configuration
 	import org.openscales.core.layer.osm.Mapnik;
 	import org.openscales.core.layer.params.ogc.WFSParams;
 	import org.openscales.core.layer.params.ogc.WMSParams;
+	import org.openscales.proj4as.ProjProjection;
 
 	/**
 	 * Sample XML OpenScales configuration format.
@@ -31,6 +32,9 @@ package org.openscales.core.configuration
 	 * 
 	 * TODO : create an XML schema
 	 * 
+	 * Don't forget : the map is create in actionScript, so values in the XML for the size are in pixel.
+	 * If you want to use the map in your flex application (and thus use widht and height in percent), you'll 
+	 * have to redefine the size in you mxml.
 	 */
 	public class Configuration implements IConfiguration
 	{
@@ -43,31 +47,61 @@ package org.openscales.core.configuration
 		
 		public function configureMap(map:Map):void {
 			// Parse the XML (children of Layers, Handlers, Controls ...)	
-			map.name = config.@name;
-			map.proxy = config.@proxy;
+			if(config.@id != ""){
+				map.name = config.@id;
+			}
+			if(String(config.@proxy) != ""){
+				map.proxy = config.@proxy;
+			}
 			
-			if(config.@width != ""){map.width = Number(config.@width);}
-			if(config.@height != ""){map.height = Number(config.@height);}
+			if(config.@width != ""){
+				map.width = Number(config.@width);
+			}
+			if(config.@height != ""){
+				map.height = Number(config.@height);
+			}
 			map.x = Number(config.@x);
 			map.y = Number(config.@y);
 			
-			map.minResolution = config.@minResolution;
-			map.maxResolution = config.@maxResolution;
-			map.maxExtent = Bounds.getBoundsFromString(config.@maxExtent);
+			if(String(config.@projection) != ""){
+				map.projection = new ProjProjection(config.@projection);
+			}
+			
+			if(config.@minResolution != ""){
+				map.minResolution = config.@minResolution;
+			}
+			if(config.@maxResolution != ""){
+				map.maxResolution = config.@maxResolution;
+			}
+			if(String(config.@maxExtent) != ""){
+				map.maxExtent = Bounds.getBoundsFromString(config.@maxExtent);
+			}
 			
 			//add layers
 			map.addLayers(layersFromMap);
 		 	
 		 	//add controls
-		 	 for each (var control:XML in controls){
-		 		map.addControl(parseControl(control));
-		 	} 
-		 	//add handlers
-		 	for each (var handler:XML in handlers){
-		 		map.addHandler(parseHandler(handler));
+		 	for each (var xmlControl:XML in controls){
+		 		var control:Control = this.parseControl(xmlControl);
+		 		if(control != null) {
+		 			map.addControl(control);
+		 		}
 		 	}
-			map.zoom = config.@zoom;
-			map.center = new LonLat(config.@lon, config.@lat);	
+		 	//add handlers
+		 	for each (var xmlHandler:XML in handlers){
+		 		var handler:Handler = this.parseHandler(xmlHandler);
+		 		if(handler != null){
+		 			map.addHandler(handler);
+		 		}
+		 		
+		 	}
+			if(config.@zoom != ""){
+				map.zoom = config.@zoom;
+			}
+			if((config.@lon != "") && (config.@lat != "")){
+				map.center = new LonLat(Number(config.@lon), Number(config.@lat));
+			}
+				
 		}
 				
 		public function set config(value:XML):void {
@@ -274,51 +308,32 @@ package org.openscales.core.configuration
 		}
 		
 		protected function parseControl(xmlNode:XML):Control {
-			var control:Control;
-			if(xmlNode.name() == "LayerSwitcherComponent"){
+			var control:Control = null;
+			if(xmlNode.name() == "LayerSwitcher"){
 				var layerSwitcher:LayerSwitcher = new LayerSwitcher();
 				layerSwitcher.name = xmlNode.@id;
 				layerSwitcher.x = xmlNode.@x;
 				layerSwitcher.y = xmlNode.@y;
 				control = layerSwitcher;
 			}
-			else if(xmlNode.name() == "PanComponent"){
+			else if(xmlNode.name() == "PanZoom"){
 				var pan:PanZoom = new PanZoom();
 				pan.name = xmlNode.@id;
 				pan.x = xmlNode.@x;
 				pan.y = xmlNode.@y;
 				control = pan;
 			} 
-			// need a class in openScales-FX
-			/* else if(xmlNode.name() == "ZoomComponent"){
-				var zoomComponent:Zoom = new Zoom();
-				zoomComponent.name = xmlNode.@id;
-				zoomComponent.x = xmlNode.@x;
-				zoomComponent.y = xmlNode.@y;
-				control = zoomComponent;
-			} */
-			// need a class in openScales-FX
-			/* else if(xmlNode.name() == "ZoomBoxComponent"){
-				var zoomBox:ZoomBox = new ZoomBox();
-				zoomBox.name = xmlNode.@id;
-				zoomBox.x = xmlNode.@x;
-				zoomBox.y = xmlNode.@y;
-				control = zoomBox;
-			}	 */	
 			else if(xmlNode.name() == "ScaleLine"){
 				var scaleLine:ScaleLine = new ScaleLine();
 				scaleLine.name = xmlNode.@id;
 				scaleLine.x = xmlNode.@x;
 				scaleLine.y = xmlNode.@y;
 				control = scaleLine;
-			}
-			// need a class in openScales-FX	
+			}	
 			else if(xmlNode.name() == "MousePosition"){
 				var mousePosition:MousePosition = new MousePosition();
 				mousePosition.name = xmlNode.@id;
-				mousePosition.x = xmlNode.@x;
-				mousePosition.y = xmlNode.@y;
-				mousePosition.displayProjection = xmlNode.@displayProjection;
+				mousePosition.displayProjection = new ProjProjection(String(xmlNode.@displayProjection));
 				control = mousePosition;
 			}
 			return control;		

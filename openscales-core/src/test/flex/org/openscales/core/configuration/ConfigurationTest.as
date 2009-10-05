@@ -47,7 +47,7 @@ package org.openscales.core.configuration
 		}
 		
 		[Test]
-		public function testControlssCount( ) : void {
+		public function testControlsCount( ) : void {
 			var sampleMapConfOk:XML = this.sampleMapConfOkXML();
 			var conf:IConfiguration = new Configuration(this.sampleMapConfOkXML());
 			Assert.assertEquals(1, conf.controls.length());
@@ -61,7 +61,14 @@ package org.openscales.core.configuration
 			
 			//Will test conf.configureMap(map) when we will have some Map unit test
 		}
-
+		
+		[Test]
+		public function testCenter( ) : void {
+			var sampleMapConfOk:XML = this.sampleMapConfOkXML();
+			var conf:IConfiguration = new Configuration(this.sampleMapConfOkXML());
+			Assert.assertEquals("1.58313", conf.config.@lon);
+			Assert.assertEquals("49.77813", conf.config.@lat);
+		}
 
 	}
 

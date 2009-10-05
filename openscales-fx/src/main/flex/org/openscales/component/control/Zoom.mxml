@@ -32,7 +32,7 @@
 			public function zoomSliderChange(event:Event):void {
 				map.zoom = zoomSlider.value;
 			}
-			
+						
 			private function initializeZoomLevels(event:Event = null):void {
 				var zoomLevels:Array = new Array();
 				for(var i:int = 0; i<map.resolutions.length; i++) {
@@ -47,9 +47,9 @@
 			
 			override public function set active(value:Boolean):void {
 				if(value) {
-					initializeZoomLevels();
 					map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.initializeZoomLevels);
 					map.addEventListener(MapEvent.ZOOM_END, this.updateZoomLevels);
+					initializeZoomLevels();				
 				} else {
 					map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED, this.initializeZoomLevels);
 					map.removeEventListener(MapEvent.ZOOM_END, this.updateZoomLevels);

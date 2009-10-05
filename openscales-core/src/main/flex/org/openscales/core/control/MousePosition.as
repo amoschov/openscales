@@ -46,6 +46,7 @@ package org.openscales.core.control
 		 * The projection display in the label
 		 * Use the model "EPSG:4326" if you want to change it
 		 */
+		[Bindable]
 		private var _displayProjection:ProjProjection = null;
 		
 		/**

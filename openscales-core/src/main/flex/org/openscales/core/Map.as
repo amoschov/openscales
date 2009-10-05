@@ -89,7 +89,6 @@ package org.openscales.core
 			this._handlers = new Array();
 
 			this.size = new Size(width, height);
-			this.maxExtent = new Bounds(-180,-90,180,90);
 			this.maxResolution =  this.DEFAULT_MAX_RESOLUTION;
 			this.projection = this.DEFAULT_PROJECTION;
 			this.numZoomLevels = this.DEFAULT_NUM_ZOOM_LEVELS;
@@ -927,9 +926,20 @@ package org.openscales.core
 		 * not using a geographic projection and displaying the whole world.
 		 */
 		public function get maxExtent():Bounds {
-			var maxExtent:Bounds = _maxExtent;
+			// use map maxExtent
+			var maxExtent:Bounds = this._maxExtent;
+			
+			// If baselayer is defined, override with baselayer maxExtent
 			if (this.baseLayer != null) {
 				maxExtent = this.baseLayer.maxExtent;
+			}
+			
+			// If no maxExtent is define, generate a worldwide maxExtent in the right projection
+			if(maxExtent == null) {
+				maxExtent = new Bounds(-180,-90,180,90);
+				if(this.projection.srsCode != this.DEFAULT_PROJECTION.srsCode) {
+					maxExtent.transform(this.DEFAULT_PROJECTION, this.projection)
+				}
 			}
 			return maxExtent;
 		}

@@ -21,7 +21,7 @@ package org.openscales.core.events{
 		 * old zoom of the map
 		 */
 		 private var _newZoom:Number = 0;
-
+		 
 		/**
 		 * Event type dispatched before map move.
 		 */

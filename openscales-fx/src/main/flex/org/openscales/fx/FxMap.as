@@ -17,11 +17,17 @@ package org.openscales.fx
 	import org.openscales.core.control.IControl;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.popup.Popup;
+	import org.openscales.fx.configuration.FxConfiguration;
 	import org.openscales.fx.control.FxControl;
 	import org.openscales.fx.handler.FxHandler;
 	import org.openscales.fx.layer.FxLayer;
 	import org.openscales.fx.popup.FxPopup;
 	
+	/**
+	 * Flex wrapper in order to create OpenScales MXML based applications.
+	 * 
+	 * It is ready to use after it throw an Event.COMPLETE event.
+	 */
 	public class FxMap extends Container
 	{
 		private var _map:Map;
@@ -44,6 +50,7 @@ package org.openscales.fx
 			super();
 			// Fix for issue 114: Error at startup when window is too small
 			this.clipContent = false;
+			
 			this.addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
 		}
 		
@@ -52,6 +59,9 @@ package org.openscales.fx
 		 */
 		private function onCreationComplete(event:Event):void {
 			this._map = new Map(this.width, this.height);
+			
+			// override configuration with a Flex aware configuration
+			this._map.configuration = new FxConfiguration();
 			
 			this.rawChildren.addChild(this._map);
 			
@@ -156,6 +166,7 @@ package org.openscales.fx
 			this._map.addEventListener(MapEvent.MOVE_START, this.hidePopups);
 			this._map.addEventListener(MapEvent.MOVE_END, this.showPopups);
 			this.addEventListener(ResizeEvent.RESIZE, this.onResize);
+			 
 		}
 		
 		private function hidePopups(event:Event):void {

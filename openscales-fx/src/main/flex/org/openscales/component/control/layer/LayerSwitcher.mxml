@@ -2,9 +2,11 @@
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" 
 	xmlns:control="org.openscales.component.control.*" 
     width="100%" horizontalScrollPolicy="off" xmlns:layer="org.openscales.component.control.layer.*">
+    
 
 <mx:Script>
   <![CDATA[
+  	import org.openscales.core.events.OpenScalesEvent;
   	import mx.core.Application;
   	import mx.events.FlexEvent;
     import org.openscales.core.handler.mouse.ClickHandler;
