@@ -33,7 +33,7 @@
 			/**
 			 * Boolean defining if the Trace component must be displayed or not
 			 */
-			[Bindable] private var displayTrace:Boolean = true;
+			[Bindable] private var displayTrace:Boolean = false;
 
 			[Bindable] private var selectedNode:XML = null;
 			private var selectedView:Container = null;
