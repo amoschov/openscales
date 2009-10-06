@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-		   xmlns:os="http://openscales.org" xmlns:controls="com.cyclomedia.controls.*">
+		   xmlns:os="http://openscales.org" xmlns:controls="com.cyclomedia.controls.*" xmlns:spinner="com.controls.spinner.*">
 
 	
  
@@ -24,7 +24,9 @@
 				layers="Germany"
 				format="image/jpeg"
 				isBaseLayer="true"/>
-	
+
+		<spinner:Spinner id="spinner" size="50" tickWidth="5" x = "{width / 2}" y = "{height / 2}" />
+		
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 
 		<os:DragHandler/>
@@ -43,12 +45,12 @@
 
             public function maploadstart(event:MapEvent):void 
             {
-                    //spinner.visible = true;
+                    spinner.visible = true;
             }
             
             public function maploadcomplete(event:MapEvent):void 
             {
-                    //spinner.visible = false;
+                    spinner.visible = false;
             }
         ]]>
     </mx:Script>

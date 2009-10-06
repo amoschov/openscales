@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:os="http://openscales.org"
-	creationComplete="initMap();" xmlns:controls="com.cyclomedia.controls.*">
+	creationComplete="initMap();" xmlns:controls="com.cyclomedia.controls.*" xmlns:spinner="com.controls.spinner.*">
 	
 	<mx:Script>
 		<![CDATA[
@@ -31,11 +31,11 @@
 			
 			
             public function maploadstart(event:MapEvent):void  {
-                    //spinner.visible = true;
+                    spinner.visible = true;
             }
             
             public function maploadcomplete(event:MapEvent):void {
-                    //spinner.visible = false;
+                    spinner.visible = false;
             }
 		]]>
 	</mx:Script>
@@ -61,6 +61,7 @@
 		<os:DragHandler />
 		<os:WheelHandler />
 		
+		<spinner:Spinner id="spinner" size="50" tickWidth="5" x = "{width / 2}" y = "{height / 2}" />
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 		<os:ScaleLine map="{map}" />
 
