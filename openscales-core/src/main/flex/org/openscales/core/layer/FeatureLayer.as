@@ -108,7 +108,9 @@ package org.openscales.core.layer
 				Trace.warning("Warning : no FEATURE_PRE_INSERT dispatched because map event dispatcher is not defined"); */
 			
 			this.addChild(feature);
-			feature.draw();
+			if(this.map) {
+				feature.draw();
+			}
 
 			/* if(map)
 				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature));
