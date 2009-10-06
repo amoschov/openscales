@@ -1,13 +1,12 @@
 package org.openscales.core.layer
 {
-	import flash.display.Loader;
-	
-	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.maps.HashMap;
+	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.events.TileEvent;
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.LoaderWrapper;
@@ -69,6 +68,8 @@ package org.openscales.core.layer
 
 			cachedTiles = new HashMap();
 			cachedTilesUrl = new Array(CACHE_SIZE);
+			
+			this.addEventListener(TileEvent.TILE_LOAD_COMPLETE,tileLoadCompleteHandler);
 		}
 
 		override public function destroy(newBaseLayer:Boolean = true):void {
@@ -584,6 +585,29 @@ package org.openscales.core.layer
 			return new Bounds(tileLeft, tileBottom,
 				tileLeft + tileMapWidth,
 				tileBottom + tileMapHeight);
+		}
+		
+		private function tileLoadCompleteHandler(event:TileEvent):void
+		{
+			switch(event.type)
+			{
+				case TileEvent.TILE_LOAD_COMPLETE:
+				{
+					// check if there are still tiles loading
+					for each(var array:Array in grid)
+					{
+						for (var i:Number = 0;i<array.length;i++)					
+						{
+							var tile:Tile = array[i];
+							if (tile != null && !tile.loadComplete)
+							  return;	
+						}
+					}
+					// all layers are done loading. dispatch LOAD_COMPLETE event					
+					this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_COMPLETE, this));
+					break;
+				}
+			}			
 		}
 
 		//Getters and Setters

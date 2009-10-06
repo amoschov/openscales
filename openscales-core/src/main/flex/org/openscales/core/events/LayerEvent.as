@@ -48,6 +48,16 @@ package org.openscales.core.events
 		 * Event type dispatched when the layer is initialized and ready to request remote data if needed
 		 */		
 		public static const LAYER_INITIALIZED:String="openscales.layerinitialized";
+		
+		/**
+		 * Event type dispatched when property visible of layer is changed
+		 */		
+		public static const LAYER_VISIBLE_CHANGED:String="openscales.visibilitychanged";
+		
+		/**
+		 * Event type dispatched when loading is completed
+		 */		
+		public static const LAYER_LOAD_COMPLETE:String="openscales.layerloadcomplete";
 
 		public function LayerEvent(type:String, layer:Layer, bubbles:Boolean=false,cancelable:Boolean=false)
 		{

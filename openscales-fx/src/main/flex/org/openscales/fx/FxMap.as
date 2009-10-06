@@ -28,6 +28,9 @@ package org.openscales.fx
 	 * 
 	 * It is ready to use after it throw an Event.COMPLETE event.
 	 */
+	 [Event(name="openscalesmaploadstart", type="org.openscales.core.events.MapEvent")]
+	 [Event(name="openscalesmaploadcomplete", type="org.openscales.core.events.MapEvent")]
+
 	public class FxMap extends Container
 	{
 		private var _map:Map;
@@ -52,6 +55,7 @@ package org.openscales.fx
 			this.clipContent = false;
 			
 			this.addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
+			
 		}
 		
 		/**
@@ -59,7 +63,8 @@ package org.openscales.fx
 		 */
 		private function onCreationComplete(event:Event):void {
 			this._map = new Map(this.width, this.height);
-			
+			_map.addEventListener(MapEvent.LOAD_START, loadEventHandler);
+			_map.addEventListener(MapEvent.LOAD_COMPLETE, loadEventHandler);
 			// override configuration with a Flex aware configuration
 			this._map.configuration = new FxConfiguration();
 			
@@ -223,6 +228,11 @@ package org.openscales.fx
 				FxPopup(popup).destroy();
 				this._popupContainer.removeChild(popup);
 			}
+		}
+		
+		private function loadEventHandler(event:MapEvent):void
+		{
+			dispatchEvent(new MapEvent(event.type, event.map));
 		}
 		
 		public function get map():Map {

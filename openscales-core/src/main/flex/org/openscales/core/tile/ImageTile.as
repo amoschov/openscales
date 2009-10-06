@@ -102,7 +102,8 @@ package org.openscales.core.tile
 				drawLoader(cachedLoader,true);
 			else {        	
 				if(_request)
-					_request.destroy();			     
+					_request.destroy();	
+				this.loading = true;		     
 				_request = new DataRequest(this.url, onTileLoadEnd, this.layer.proxy, this.layer.security, onTileLoadError);
 			}
 			return true;
@@ -110,6 +111,7 @@ package org.openscales.core.tile
 
 		public function onTileLoadEnd(event:Event):void
 		{
+			this.loading = false;
 			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
 			var loader:Loader = loaderInfo.loader as Loader;
 			drawLoader(new LoaderWrapper(loader), false);
@@ -181,7 +183,7 @@ package org.openscales.core.tile
 
 		public function onTileLoadError(event:IOErrorEvent):void
 		{
-
+			this.loading = false;
 			if (++this._attempt > this.layer.map.IMAGE_RELOAD_ATTEMPTS) {
 				Trace.error("Error when loading tile " + this.url);
 				return;

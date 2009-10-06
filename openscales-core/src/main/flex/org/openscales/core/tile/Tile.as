@@ -6,6 +6,7 @@ package org.openscales.core.tile
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.events.TileEvent;
 	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.Layer;
 
@@ -24,6 +25,7 @@ package org.openscales.core.tile
 		private var _drawn:Boolean = false;
 		private var _onLoadStart:Function = null;
 		private var _onLoadEnd:Function = null;
+		private var _loading:Boolean = false;
 		protected var _drawPosition:Pixel = null;
 
 		public function Tile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size) {
@@ -193,9 +195,24 @@ package org.openscales.core.tile
 			this._onLoadEnd = value;
 		}
 
-
-
-
+		/**
+		 * Whether or not the tile is loading
+		 */
+		public function get loadComplete():Boolean {
+			return !this._loading;
+		}
+		
+		/**
+		 * Used to set loading status of tile
+		 */
+		protected function set loading(value:Boolean):void {
+			if (value == false && this._loading == true) {
+				// need to set _loading before dispatching event
+				this._loading = value;
+				this.layer.dispatchEvent(new TileEvent(TileEvent.TILE_LOAD_COMPLETE,this));		
+			}			
+			this._loading = value;
+		}
 	}
 }
 

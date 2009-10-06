@@ -12,7 +12,6 @@ package org.openscales.core.layer
 	import org.openscales.core.security.ISecurity;
 	import org.openscales.proj4as.ProjProjection;
 
-
 	/**
 	 * A Layer display image of vector datas on the map, usually loaded from a remote datasource.
 	 * @author Bouiaw
@@ -40,6 +39,7 @@ package org.openscales.core.layer
 		private var _proxy:String = null;
 		private var _map:Map = null;
 		private var _security:ISecurity = null;
+		private var _loading:Boolean = false;
 
 		/**
 		 * Layer constructor
@@ -545,7 +545,33 @@ package org.openscales.core.layer
 		public function set security(value:ISecurity):void {
 			this._security = value;
 		}
-
+		
+		public override function set visible(value:Boolean):void{
+			super.visible = value;
+			if (this.map != null)
+			{
+			 	this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_VISIBLE_CHANGED,this));
+			}
+		}
+		
+		/**
+		 * Whether or not the layer is loading data
+		 */
+		public function get loadComplete():Boolean {
+			return !this._loading;
+		}
+		
+		/**
+		 * Used to set loading status of layer
+		 */
+		protected function set loading(value:Boolean):void {
+			if (value == false && this._loading == true) {
+				// need to set this before dispatching event
+			  _loading = value;
+			  this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_COMPLETE,this));
+			} 
+			_loading = value;
+		}
 	}
 }
 

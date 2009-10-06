@@ -8,9 +8,8 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.maps.HashMap;
+	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.format.Format;
 	import org.openscales.core.format.GMLFormat;
@@ -256,8 +255,10 @@ package org.openscales.core.layer.ogc
 		protected function loadFeatures(url:String):void {		
 			if(_request)
 				_request.destroy();
-			_request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security);
+			this.loading = true;
+			_request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security,onFailure);
 		}
+		
 		
 		/**
 		 * Called on return from request succcess.
@@ -269,6 +270,8 @@ package org.openscales.core.layer.ogc
 			var startTime:Date;
 			var endTime:Date;
 
+			this.loading = false;			
+			
 			// To avoid errors in case of the WFS server is dead
 			try {
 				startTime = new Date();
@@ -303,6 +306,14 @@ package org.openscales.core.layer.ogc
 				
 		}
 		
+		/**
+		 * Called on return from request failure.
+		 *
+		 * @param event
+		 */
+		protected function onFailure(event:Event):void {
+			this.loading = false;			
+		}
 		/**
 		 * Construct new feature and add to this.features.
 		 *

@@ -103,6 +103,9 @@ package org.openscales.core
 			this._layerContainer.width = this.size.w;
 			this._layerContainer.height = this.size.h;
 			this.addChild(this._layerContainer);
+			
+			this.addEventListener(LayerEvent.LAYER_LOAD_COMPLETE,layerLoadCompleteHandler);			
+			
 			Trace.map = this;
 			
 			this._configuration = new Configuration();
@@ -458,7 +461,7 @@ package org.openscales.core
 				}
 				
 				var bounds:Bounds = this.extent;
-				
+				this.dispatchEvent(new MapEvent(MapEvent.LOAD_START, this));
 				this.baseLayer.moveTo(bounds, zoomChanged, dragging);
 				for (var i:int = 0; i < this.layers.length; i++) {
 					var layer:Layer = this.layers[i];
@@ -780,8 +783,25 @@ package org.openscales.core
 			} 
 		}
 
-
-
+		/**	
+		 * Event handler for LayerLoadComplete event. Check here if all layers have been loaded
+		 * and if so, MapEvent.LOAD_COMPLETE can be dispatched
+		 */
+		private function layerLoadCompleteHandler(event:LayerEvent):void {
+			switch(event.type) {
+				case LayerEvent.LAYER_LOAD_COMPLETE: {
+					// check all layers 
+					for each(var layer:Layer in this.layers) {
+						if (!layer.loadComplete)
+						  return;
+					}
+					// all layers are done loading. dispatch LOAD_COMPLETE event					
+					dispatchEvent(new MapEvent(MapEvent.LOAD_COMPLETE,this));					
+					break;
+				}				
+			}
+		}
+		
 		/**
 		 * Map size.
 		 */

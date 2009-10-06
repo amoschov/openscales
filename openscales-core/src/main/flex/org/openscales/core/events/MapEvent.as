@@ -25,38 +25,50 @@ package org.openscales.core.events{
 		/**
 		 * Event type dispatched before map move.
 		 */
-		public static const MOVE_START:String="openscales.movestart";
+		public static const MOVE_START:String="openscales.mapmovestart";
 
 		/**
 		 * Event type dispatched during map move.
 		 */
-		public static const MOVE:String="openscales.move";
+		public static const MOVE:String="openscales.mapmove";
 
 		/**
 		 * Event type dispatched after map move if the center has changed.
 		 * There is no DRAG_END since a MOVE_END event is emitted if the center has finally changed
 		 */
-		public static const MOVE_END:String="openscales.moveend";
+		public static const MOVE_END:String="openscales.mapmoveend";
 		
 		/**
  		 * Event type dispatched before map zoom.
 		 */
-		public static const ZOOM_START:String="openscales.zoomstart";
+		public static const ZOOM_START:String="openscales.mapzoomstart";
 		
 		/**
 		 * Event type dispatched after map zoom.
 		 */
-		public static const ZOOM_END:String="openscales.zoomend";
+		public static const ZOOM_END:String="openscales.mapzoomend";
 
 		/**
 		 * Event type dispatched just before dragging the map.
 		 */
-		public static const DRAG_START:String="openscales.dragstart";
+		public static const DRAG_START:String="openscales.mapdragstart";
 		
 		/**
  		 * Event type dispatched during map resize.
 		 */
-		public static const RESIZE:String="openscales.resize";
+		public static const RESIZE:String="openscales.mapresize";
+		
+		/**
+ 		 * Event type dispatched during map resize.
+ 		 * Cannot use namingconvention with dot "." here because name is used in mxml
+		 */
+		public static const LOAD_START:String="openscalesmaploadstart";
+		
+		/**
+ 		 * Event type dispatched when map has been loaded completely.
+ 		 * Cannot use namingconvention with dot "." here because name is used in mxml
+		 */
+		public static const LOAD_COMPLETE:String="openscalesmaploadcomplete";
 
 
 		/**
