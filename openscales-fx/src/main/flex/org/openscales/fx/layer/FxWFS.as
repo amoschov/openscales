@@ -12,8 +12,10 @@ package org.openscales.fx.layer
   public class FxWFS extends FxLayer
   {
     private var _url:String;
-
-    private var _params:WFSParams;
+    
+    private var _typename:String;
+    
+    private var _version:String;
 
     private var _style:Style;
 
@@ -30,13 +32,12 @@ package org.openscales.fx.layer
 
     public function FxWFS()
     {
-      this._params = new WFSParams("");
       this._isBaseLayer = false;
             super();
     }
 
     override public function init():void {
-            this._layer = new WFS("", "", this._params, this._isBaseLayer, true, this._projection,null,_useCapabilities);
+            this._layer = new WFS("", "", "", this._isBaseLayer, true, this._projection,null,_useCapabilities);
     }
 
     override protected function createChildren():void
@@ -59,7 +60,7 @@ package org.openscales.fx.layer
           (this._layer as WFS).projection = new ProjProjection(this._projection);
 
       (this._layer as WFS).url = this._url;
-      (this._layer as WFS).params = this._params;
+      (this._layer as WFS).typename = this._typename;
       (this._layer as WFS).useCapabilities = this._useCapabilities;
       (this._layer as WFS).capabilitiesVersion = this._capabilitiesVersion;
 
@@ -70,23 +71,16 @@ package org.openscales.fx.layer
         this._url = value;
       }
 
-      public function set params(value:WFSParams):void {
-        this._params = value;
-      }
-
     public function set typename(value:String):void {
-        this._params.typename = value;
+        this._typename = value;
       }
 
       public function set srs(value:String):void {
-        if (value != null) {
-          this._params.srs = value;
           this._projection = value;
-        }
       }
 
       public function set version(value:String):void {
-        this._params.version = value;
+        this._version = value;
       }
 
       public function set useCapabilities(value:Boolean):void {

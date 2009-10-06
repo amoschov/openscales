@@ -7,7 +7,7 @@ package org.openscales.fx.layer {
 		}
 
 		override public function init():void {
-			this._layer=new WMSC("", "");
+			this._layer=new WMSC();
 		}
 
 	}

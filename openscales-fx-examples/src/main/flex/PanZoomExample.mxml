@@ -31,11 +31,11 @@
 			
 			
             public function maploadstart(event:MapEvent):void  {
-                    spinner.visible = true;
+                    //spinner.visible = true;
             }
             
             public function maploadcomplete(event:MapEvent):void {
-                    spinner.visible = false;
+                    //spinner.visible = false;
             }
 		]]>
 	</mx:Script>
@@ -61,7 +61,6 @@
 		<os:DragHandler />
 		<os:WheelHandler />
 		
-		<controls:Spinner id="spinner" size="50" tickWidth="5" x = "{width / 2}" y = "{height / 2}" />
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 		<os:ScaleLine map="{map}" />
 

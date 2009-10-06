@@ -203,7 +203,7 @@ package org.openscales.core.configuration
 				var paramsWms:WMSParams;
 				
 				//Params for WMSparams
-				var lay:String=xmlNode.@layers; 
+				var layers:String=xmlNode.@layers; 
 				var format:String=xmlNode.@format; 
 				
 				var transparent:Boolean;
@@ -217,15 +217,16 @@ package org.openscales.core.configuration
 				var styles:String=xmlNode.@styles; 
 				var bgcolor:String=xmlNode.@bgcolor;
 				
-				paramsWms = new WMSParams(lay,format,transparent,tiled,styles,bgcolor);
+				paramsWms = new WMSParams(layers,format,transparent,tiled,styles,bgcolor);
 				switch(type){
 					case "WMSC":{
 						Trace.info("Find WMSC Layer : " + xmlNode.name());						
 						// We create the WMSC Layer with all params
-						var wmscLayer:WMSC = new WMSC(name,urlWMS,paramsWms,isBaseLayer,visible,projection,proxy);
+						var wmscLayer:WMSC = new WMSC(name,urlWMS,layers,isBaseLayer,visible,projection,proxy);
 						wmscLayer.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);
 						wmscLayer.minResolution = minResolution;
 						wmscLayer.maxResolution = maxResolution;
+						wmscLayer.params = paramsWms;
 						layer=wmscLayer;
 						break;
 					}
@@ -233,10 +234,11 @@ package org.openscales.core.configuration
 					case "WMS":{
 						Trace.info("Find WMS Layer : " + xmlNode.name());
 						// We create the WMS Layer with all params
-						var wmslayer:WMS = new WMS(name,urlWMS,paramsWms,isBaseLayer,visible,projection,proxy);
+						var wmslayer:WMS = new WMS(name,urlWMS,layers,isBaseLayer,visible,projection,proxy);
 						wmslayer.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);
 						wmslayer.minResolution = minResolution; 
 						wmslayer.maxResolution = maxResolution; 
+						wmslayer.params = paramsWms;
 						layer=wmslayer;
 						break;
 					}						
@@ -247,9 +249,7 @@ package org.openscales.core.configuration
 				
 				//params for layer
 				var urlWfs:String=xmlNode.@url;
-				var paramsWfs:WFSParams;
-				
-				//params for WFSParams
+
 				var use110Capabilities:Boolean;
 				if(xmlNode.@use110Capabilities == "true"){use110Capabilities=true;}
 				else{use110Capabilities = false;}
@@ -260,14 +260,10 @@ package org.openscales.core.configuration
 			
 				var capabilities:HashMap;
 				
-				paramsWfs = new WFSParams(xmlNode.@typename);
-				paramsWfs.srs = xmlNode.@projection;
-				paramsWfs.version = xmlNode.@version;
-				
 				Trace.info("Find WFS Layer : " + xmlNode.name());
 				
 				// We create the WFS Layer with all params
-				var wfsLayer:WFS = new WFS(name,urlWfs,paramsWfs,isBaseLayer, visible,projection,proxy,useCapabilities,capabilities);
+				var wfsLayer:WFS = new WFS(name,urlWfs,xmlNode.@typename,isBaseLayer, visible,projection,proxy,useCapabilities,capabilities);
 				wfsLayer.minZoomLevel = Number(xmlNode.@minZoomLevel);
 				wfsLayer.maxZoomLevel = Number(xmlNode.@maxZoomLevel);
 				wfsLayer.minResolution = minResolution;	

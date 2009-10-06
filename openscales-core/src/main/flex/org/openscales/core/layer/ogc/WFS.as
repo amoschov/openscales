@@ -9,7 +9,6 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.maps.HashMap;
-	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.format.Format;
 	import org.openscales.core.format.GMLFormat;
@@ -74,7 +73,7 @@ package org.openscales.core.layer.ogc
 		 * @param capabilities
 		 * @param useCapabilities
 		 */	                    
-		public function WFS(name:String, url:String, params:WFSParams = null, isBaseLayer:Boolean = false, visible:Boolean = true, 
+		public function WFS(name:String, url:String, typename:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
 			projection:String = null, proxy:String = null, useCapabilities:Boolean=false, capabilities:HashMap=null) {
 
 			this.capabilities = capabilities;
@@ -86,12 +85,7 @@ package org.openscales.core.layer.ogc
 				this.geometryColumn = "the_geom";
 			}    
 
-			if (params != null)
-				this.params = params;
-			else{
-				this.params = new WFSParams("");
-				Trace.warning("The WFS Layer has no params !");
-			}
+			this.params = new WFSParams(typename);
 				
 			this.url = url;
 			

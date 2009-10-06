@@ -12,7 +12,7 @@ package org.openscales.fx.layer
     }
 
     override public function init():void {
-      this._layer = new WMS("", "");
+      this._layer = new WMS();
     }
 
     public function set layers(value:String):void {

@@ -52,12 +52,12 @@
 
             public function maploadstart(event:MapEvent):void 
             {
-                    spinner.visible = true;
+                    //spinner.visible = true;
             }
             
             public function maploadcomplete(event:MapEvent):void 
             {
-                    spinner.visible = false;
+                    //spinner.visible = false;
             }
 		]]>
 	</mx:Script>
@@ -89,10 +89,7 @@
 				fillOpacity="0.6"
 				strokeColor="0x0000ff"
 				strokeWidth="2" />
-		</os:WFS>-->
-
-		<controls:Spinner id="spinner" size="50" tickWidth="5" x = "{width / 2}" y = "{height / 2}" />
- 
+		</os:WFS>--> 
 
 		<!-- We choose EPSG:4326 as displayed projection in this control-->
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:900913"/>
