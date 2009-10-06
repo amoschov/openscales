@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Panel
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	title="Edition du style" layout="horizontal" xmlns:style="org.openscales.component.control.style.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.layer.VectorLayer;
+			import org.openscales.core.feature.Style;
+			
+			public static const OK_BUTTON_CLICKED:String="okClicked";
+			
+			public static const CANCEL_BUTTON_CLICKED:String="cancelClicked";
+		
+			[Bindable]
+			private var _editedStyle:Style;
+			
+			public function get editedStyle():Style{
+				
+				return this._editedStyle;
+			}
+			
+			public function set editedStyle(value:Style):void{
+				
+				this._editedStyle = value;
+			}
+			
+			private var _editedLayer:VectorLayer;
+			
+			public function get editedLayer():VectorLayer{
+				
+				return this._editedLayer;
+			}
+			
+			public function set editedLayer(value:VectorLayer):void{
+			
+				this._editedLayer = value;	
+			}
+			
+			private function onOkButtonClicked(event:MouseEvent):void{
+				
+				
+				this.dispatchEvent(new Event(OK_BUTTON_CLICKED));
+			}
+			
+			private function onCancelButtonClicked(event:MouseEvent):void{
+			
+				this.dispatchEvent(new Event(CANCEL_BUTTON_CLICKED));	
+			}
+		]]>
+	</mx:Script>
+	
+	<style:StyleEditor editedStyle="{this._editedStyle}"/>
+	<mx:VRule/>
+	
+	<mx:ControlBar>
+		<mx:Button id="okButton" label="Ok" click="this.onOkButtonClicked(event)" />
+		<mx:Button id="cancelButton" label="Cancel" click="this.onCancelButtonClicked(event)" />		
+	</mx:ControlBar>
+	
+</mx:Panel>

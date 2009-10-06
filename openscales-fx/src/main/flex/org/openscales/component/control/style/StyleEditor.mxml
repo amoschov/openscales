@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Form xmlns:mx="http://www.adobe.com/2006/mxml">
+	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.feature.Style;
+			
+			[Bindable]
+			private var _editedStyle:Style;
+			
+			public function get editedStyle():Style{
+				
+				return this._editedStyle;
+			}
+			
+			public function set editedStyle(value:Style):void{
+				
+				this._editedStyle = value;
+			}
+		]]>
+	</mx:Script>
+
+	<mx:Label text="Trait"/>
+	<mx:Box borderColor="0xeeeeee" borderThickness="2" borderStyle="inset" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" width="100%">
+		<mx:HBox width="100%">
+			<mx:Label text="Couleur :" fontWeight="bold"/><mx:ColorPicker id="strokeColorPicker" selectedColor="{this._editedStyle.strokeColor}"/>
+		</mx:HBox>
+		
+		<mx:HBox>
+			<mx:Label text="Epaisseur : " fontWeight="bold" /><mx:NumericStepper id="strokeThickness" minimum="1" maximum="4" value="{this._editedStyle.strokeWidth}" />
+		</mx:HBox>
+	</mx:Box>
+	<mx:Spacer height="20"/>
+	<mx:Label text="Remplissage"/>
+	<mx:Box borderColor="0xeeeeee" borderThickness="2" borderStyle="inset" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" width="100%">
+		<mx:HBox width="100%">
+			<mx:Label text="Couleur :" fontWeight="bold"/><mx:ColorPicker id="fillColorPicker" selectedColor="{this._editedStyle.fillColor}"/>
+		</mx:HBox>
+		
+		<mx:Label text="Opacité :" fontWeight="bold"/>
+		<mx:HBox>
+			<mx:Spacer width="12"/>
+			<mx:HSlider id="fillOpacitySlider" labelOffset="-5" value="{this._editedStyle.fillOpacity}" labels="{['0%','100%']}" minimum="0" maximum="1" tickInterval=".2" showTrackHighlight="true" dataTipOffset="5" dataTipPlacement="bottom" dataTipPrecision="2" liveDragging="true" tickLength="0" />
+		</mx:HBox>
+	</mx:Box>
+
+
+	<mx:Binding source="fillOpacitySlider.value" destination="this._editedStyle.fillOpacity" />
+	<mx:Binding source="fillColorPicker.selectedColor" destination="this._editedStyle.fillColor" />
+	<mx:Binding source="strokeThickness.value" destination="this._editedStyle.strokeWidth" />
+	<mx:Binding source="strokeColorPicker.selectedColor" destination="this._editedStyle.strokeColor" />
+</mx:Form>
