@@ -1,4 +1,4 @@
-package com.controls.spinner {
+package org.openscales.component.control.spinner {
 	import flash.display.Sprite;
 	
 	import mx.effects.Fade;

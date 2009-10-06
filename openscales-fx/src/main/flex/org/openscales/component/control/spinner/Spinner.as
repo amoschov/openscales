@@ -1,4 +1,4 @@
-package com.controls.spinner {
+package org.openscales.component.control.spinner {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	

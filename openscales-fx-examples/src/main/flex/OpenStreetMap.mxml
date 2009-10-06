@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
 		   xmlns:os="http://openscales.org"
-		   creationComplete="initMap();" xmlns:controls="com.cyclomedia.controls.*" xmlns:spinner="com.controls.spinner.*">
+		   creationComplete="initMap();" >
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.layer.FeatureLayer;
@@ -93,7 +93,7 @@
 		
 
 
-		<spinner:Spinner id="spinner" size="50" tickWidth="5" x = "{width / 2}" y = "{height / 2}" />
+		<os:Spinner id="spinner" size="50" tickWidth="5" x = "{width / 2}" y = "{height / 2}" />
  
 
 		<!-- We choose EPSG:4326 as displayed projection in this control-->
