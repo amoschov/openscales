@@ -50,4 +50,7 @@
 	
 	<component id="SampleSecurity" class="org.openscales.fx.security.sample.FxSampleSecurity"/>
 	
+	<component id="StyleEditor" class="org.openscales.component.control.style.StyleEditor"/>
+	<component id="StyleEditionWindow" class="org.openscales.component.control.style.StyleEditionWindow"/>
+	
 </componentPackage>
