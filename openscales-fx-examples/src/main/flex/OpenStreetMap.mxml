@@ -20,6 +20,7 @@
 			import org.openscales.core.geometry.Point;
 			import org.openscales.core.events.MapEvent;
 
+			[Bindable]
 			public var map:Map;
 
 			public var markLyon:Marker;
@@ -49,24 +50,12 @@
 				var pop:Popup=markLyon.createPopup();
 				map.addPopup(pop, true);
 			}			
-
-            public function maploadstart(event:MapEvent):void 
-            {
-                    spinner.visible = true;
-            }
-            
-            public function maploadcomplete(event:MapEvent):void 
-            {
-                    spinner.visible = false;
-            }
 		]]>
 	</mx:Script>
 
 	<os:Map id="fxmap" width="100%" height="100%"
 		proxy="http://openscales.org/proxy.php?url="
-		zoom="3" lon="538850.47459" lat="5740916.1243"
-		openscalesmaploadstart="maploadstart(event)"
-			openscalesmaploadcomplete="maploadcomplete(event)" >
+		zoom="3" lon="538850.47459" lat="5740916.1243">
 
 		<!-- A EPSG:900913 baselayer (OSM) -->
 		<os:Mapnik name="Mapnik"
@@ -90,15 +79,10 @@
 				strokeColor="0x0000ff"
 				strokeWidth="2" />
 		</os:WFS>-->
-		
-
-
-		<os:Spinner id="spinner" size="50" tickWidth="5" x = "{width / 2}" y = "{height / 2}" />
- 
 
 		<!-- We choose EPSG:4326 as displayed projection in this control-->
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:900913"/>
-
+		<os:Spinner map="{map}" id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
 		<os:PanZoomBar />
 		<os:LayerSwitcher />
 

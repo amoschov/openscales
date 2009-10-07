@@ -55,9 +55,14 @@ package org.openscales.core.events
 		public static const LAYER_VISIBLE_CHANGED:String="openscales.visibilitychanged";
 		
 		/**
+		 * Event type dispatched when loading is started
+		 */		
+		public static const LAYER_LOAD_START:String="openscales.layerloadstart";
+		
+		/**
 		 * Event type dispatched when loading is completed
 		 */		
-		public static const LAYER_LOAD_COMPLETE:String="openscales.layerloadcomplete";
+		public static const LAYER_LOAD_END:String="openscales.layerloadend";
 
 		public function LayerEvent(type:String, layer:Layer, bubbles:Boolean=false,cancelable:Boolean=false)
 		{

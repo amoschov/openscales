@@ -204,13 +204,18 @@ package org.openscales.core.tile
 		/**
 		 * Used to set loading status of tile
 		 */
-		protected function set loading(value:Boolean):void {
-			if (value == false && this._loading == true) {
-				// need to set _loading before dispatching event
+		protected function set loading(value:Boolean):void {		
+			if (value == true && this._loading == false) {
 				this._loading = value;
-				this.layer.dispatchEvent(new TileEvent(TileEvent.TILE_LOAD_COMPLETE,this));		
-			}			
-			this._loading = value;
+				// to inform layer that loading of tile has been started
+				this.layer.dispatchEvent(new TileEvent(TileEvent.TILE_LOAD_START,this));
+			}	
+
+			if (value == false && this._loading == true) {
+				this._loading = value;
+				// to inform layer that loading of tile has been ended				
+				this.layer.dispatchEvent(new TileEvent(TileEvent.TILE_LOAD_END,this));		
+			}		
 		}
 	}
 }

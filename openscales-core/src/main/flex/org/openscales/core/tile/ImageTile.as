@@ -183,9 +183,10 @@ package org.openscales.core.tile
 
 		public function onTileLoadError(event:IOErrorEvent):void
 		{
-			this.loading = false;
+			
 			if (++this._attempt > this.layer.map.IMAGE_RELOAD_ATTEMPTS) {
 				Trace.error("Error when loading tile " + this.url);
+				this.loading = false;
 				return;
 			}
 
@@ -203,7 +204,10 @@ package org.openscales.core.tile
 			this.alpha = 0;
 
 			if(_request)
-				_request.destroy();	
+			{
+				this.loading = false;
+				_request.destroy();
+			}	
 
 			if (this.numChildren >0)
 			{

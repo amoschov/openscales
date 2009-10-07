@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-		   xmlns:os="http://openscales.org">
+		   xmlns:os="http://openscales.org"
+		   creationComplete="initMap();">
 
-	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.Map;
+			import org.openscales.core.Trace;	
+
+			[Bindable] private var map:Map;
+			
+			private function initMap():void {
+				map=fxmap.map;
+				this.setChildIndex(this.getChildAt(1), 0);
+				// Specific initialize for this example
+				// none
+			}
+		]]>
+	</mx:Script>
  
 	<os:Map id="fxmap"
 			height="100%"
 			width="100%"
 			maxResolution="1"
 			numZoomLevels="18"
-			proxy="http://openscales.org/proxy.php?url="
-	        openscalesmaploadstart="maploadstart(event)"
-			openscalesmaploadcomplete="maploadcomplete(event)" >
+			proxy="http://openscales.org/proxy.php?url=">
 			
 
 		<os:MaxExtent left="5.60075"
@@ -25,8 +38,7 @@
 				format="image/jpeg"
 				isBaseLayer="true"/>
 
-		<os:Spinner id="spinner" size="50" tickWidth="5" x = "{width / 2}" y = "{height / 2}" />
-		
+		<os:Spinner map="{map}" id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 
 		<os:DragHandler/>
@@ -37,23 +49,7 @@
 				   bottom="47.2441"
 				   right="15.425"
 				   top="55.0317"/>
-				   
-	<mx:Script>
-        <![CDATA[
-        
-        	import org.openscales.core.events.MapEvent;            
-
-            public function maploadstart(event:MapEvent):void 
-            {
-                    spinner.visible = true;
-            }
-            
-            public function maploadcomplete(event:MapEvent):void 
-            {
-                    spinner.visible = false;
-            }
-        ]]>
-    </mx:Script>
+				   	
 
 	</os:Map>
 	

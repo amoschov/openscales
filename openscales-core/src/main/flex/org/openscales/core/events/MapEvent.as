@@ -62,13 +62,13 @@ package org.openscales.core.events{
  		 * Event type dispatched during map resize.
  		 * Cannot use namingconvention with dot "." here because name is used in mxml
 		 */
-		public static const LOAD_START:String="openscalesmaploadstart";
+		public static const LOAD_START:String="openscales.maploadstart";
 		
 		/**
  		 * Event type dispatched when map has been loaded completely.
  		 * Cannot use namingconvention with dot "." here because name is used in mxml
 		 */
-		public static const LOAD_COMPLETE:String="openscalesmaploadcomplete";
+		public static const LOAD_END:String="openscales.maploadend";
 
 
 		/**

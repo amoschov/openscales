@@ -28,15 +28,6 @@
 				// Specific initialize for this example
 				// none
 			}
-			
-			
-            public function maploadstart(event:MapEvent):void  {
-                    spinner.visible = true;
-            }
-            
-            public function maploadcomplete(event:MapEvent):void {
-                    spinner.visible = false;
-            }
 		]]>
 	</mx:Script>
 	
@@ -45,9 +36,7 @@
 	
 	<os:Map id="fxmap" width="100%" height="100%"
 		proxy="http://openscales.org/proxy.php?url="
-		zoom="12" lon="538850.47459" lat="5740916.1243" 
-		openscalesmaploadstart="maploadstart(event)"
-	    openscalesmaploadcomplete="maploadcomplete(event)" >
+		zoom="12" lon="538850.47459" lat="5740916.1243">
 		
 		<!-- OpenStreetMap EPSG:900913 -->
 		<os:Mapnik name="Mapnik"
@@ -61,7 +50,7 @@
 		<os:DragHandler />
 		<os:WheelHandler />
 		
-		<os:Spinner id="spinner" size="50" tickWidth="5" x = "{width / 2}" y = "{height / 2}" />
+		<os:Spinner map="{map}" id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 		<os:ScaleLine map="{map}" />
 

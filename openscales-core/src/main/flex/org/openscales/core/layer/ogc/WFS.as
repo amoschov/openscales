@@ -167,6 +167,14 @@ package org.openscales.core.layer.ogc
 		}
 
 		/**
+		 * Override FeatureLayer destroy function. Be sure loading is set to false.
+		 */
+		override public function destroy(setNewBaseLayer:Boolean=true):void	{
+			this.loading = false;
+			super.destroy();
+		}
+		 
+		/**
 		 * Combine the layer's url with its params and these newParams.
 		 *
 		 * @param newParams

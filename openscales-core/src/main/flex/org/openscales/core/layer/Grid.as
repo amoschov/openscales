@@ -69,7 +69,8 @@ package org.openscales.core.layer
 			cachedTiles = new HashMap();
 			cachedTilesUrl = new Array(CACHE_SIZE);
 			
-			this.addEventListener(TileEvent.TILE_LOAD_COMPLETE,tileLoadCompleteHandler);
+			this.addEventListener(TileEvent.TILE_LOAD_END,tileLoadHandler);
+			this.addEventListener(TileEvent.TILE_LOAD_START,tileLoadHandler);
 		}
 
 		override public function destroy(newBaseLayer:Boolean = true):void {
@@ -587,24 +588,23 @@ package org.openscales.core.layer
 				tileBottom + tileMapHeight);
 		}
 		
-		private function tileLoadCompleteHandler(event:TileEvent):void
-		{
-			switch(event.type)
-			{
-				case TileEvent.TILE_LOAD_COMPLETE:
-				{
+		private function tileLoadHandler(event:TileEvent):void	{
+			switch(event.type)	{
+				case TileEvent.TILE_LOAD_START:	{
+					// set layer loading to true
+					this.loading = true;
+					break;
+				}
+				case TileEvent.TILE_LOAD_END:	{
 					// check if there are still tiles loading
-					for each(var array:Array in grid)
-					{
-						for (var i:Number = 0;i<array.length;i++)					
-						{
+					for each(var array:Array in grid)	{
+						for (var i:Number = 0;i<array.length;i++)	{
 							var tile:Tile = array[i];
 							if (tile != null && !tile.loadComplete)
 							  return;	
 						}
 					}
-					// all layers are done loading. dispatch LOAD_COMPLETE event					
-					this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_COMPLETE, this));
+					this.loading = false;
 					break;
 				}
 			}			

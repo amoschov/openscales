@@ -214,7 +214,7 @@ package org.openscales.core.layer
 		}
 
 		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
-			var display:Boolean = this.visible;  
+			var display:Boolean = this.visible; 
 			if (!this.isBaseLayer) {
 				display = display  && this.inRange ;
 			}
@@ -425,12 +425,16 @@ package org.openscales.core.layer
 		 * Used to set loading status of layer
 		 */
 		protected function set loading(value:Boolean):void {
-			if (value == false && this._loading == true) {
-				// need to set this before dispatching event
+			if (value == true && this._loading == false) {
 			  _loading = value;
-			  this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_COMPLETE,this));
+			  this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_START,this));
+			}
+						 
+			if (value == false && this._loading == true) {
+			  _loading = value;
+			  this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_END,this));
 			} 
-			_loading = value;
+			
 		}
 	}
 }

@@ -64,7 +64,7 @@ package org.openscales.fx
 		private function onCreationComplete(event:Event):void {
 			this._map = new Map(this.width, this.height);
 			_map.addEventListener(MapEvent.LOAD_START, loadEventHandler);
-			_map.addEventListener(MapEvent.LOAD_COMPLETE, loadEventHandler);
+			_map.addEventListener(MapEvent.LOAD_END, loadEventHandler);
 			// override configuration with a Flex aware configuration
 			this._map.configuration = new FxConfiguration();
 			

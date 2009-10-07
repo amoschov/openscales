@@ -45,14 +45,13 @@
 	<component id="YahooSearchComponent" class="org.openscales.component.control.search.YahooSearch" />
 	<component id="TraceInfo" class="org.openscales.component.control.TraceInfo" />
 	<component id="ScaleLine" class="org.openscales.fx.control.FxScaleLine" />
+	<component id="Spinner" class="org.openscales.fx.control.FxSpinner" />
 	
 	<component id="WidgetWindow" class="org.openscales.component.WidgetWindow"/>
 	
 	<component id="SampleSecurity" class="org.openscales.fx.security.sample.FxSampleSecurity"/>
 	
 	<component id="StyleEditor" class="org.openscales.component.control.style.StyleEditor"/>
-	<component id="StyleEditionWindow" class="org.openscales.component.control.style.StyleEditionWindow"/>
-	
-	<component id="Spinner" class="org.openscales.component.control.spinner.Spinner"/>
+	<component id="StyleEditionWindow" class="org.openscales.component.control.style.StyleEditionWindow"/>	
 	
 </componentPackage>

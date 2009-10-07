@@ -66,6 +66,7 @@ package org.openscales.core
 		private var _resolutions:Array = null;
 		private var _projection:ProjProjection;
 		private var _units:String;
+		private var _loading:Boolean;
 		
 		/**
 		 * Enable tween effect when zooming
@@ -105,7 +106,8 @@ package org.openscales.core
 			this._layerContainer.height = this.size.h;
 			this.addChild(this._layerContainer);
 			
-			this.addEventListener(LayerEvent.LAYER_LOAD_COMPLETE,layerLoadCompleteHandler);			
+			this.addEventListener(LayerEvent.LAYER_LOAD_START,layerLoadHandler);
+			this.addEventListener(LayerEvent.LAYER_LOAD_END,layerLoadHandler);						
 			
 			Trace.map = this;
 			
@@ -446,7 +448,7 @@ package org.openscales.core
 					this._zoom = zoom;
 				}
 				
-				this.dispatchEvent(new MapEvent(MapEvent.LOAD_START, this));
+				
 				for (var i:int = 0; i < this.layers.length; i++) {
 					if (this.layers[i].visible && this.layers[i].inRange) {
 						this.layers[i].moveTo(this.extent, zoomChanged, dragging,resizing);
@@ -758,18 +760,23 @@ package org.openscales.core
 		 * Event handler for LayerLoadComplete event. Check here if all layers have been loaded
 		 * and if so, MapEvent.LOAD_COMPLETE can be dispatched
 		 */
-		private function layerLoadCompleteHandler(event:LayerEvent):void {
+		private function layerLoadHandler(event:LayerEvent):void {
 			switch(event.type) {
-				case LayerEvent.LAYER_LOAD_COMPLETE: {
-					// check all layers 
-					for each(var layer:Layer in this.layers) {
-						if (!layer.loadComplete)
-						  return;
-					}
-					// all layers are done loading. dispatch LOAD_COMPLETE event					
-					dispatchEvent(new MapEvent(MapEvent.LOAD_COMPLETE,this));					
+				case LayerEvent.LAYER_LOAD_START: {
+					this.loading = true;
 					break;
-				}				
+				}	
+				case LayerEvent.LAYER_LOAD_END: {
+					// check all layers 
+					for (var i:Number = 0;i<this.layers.length;i++)	{
+							var layer:Layer = this.layers[i];
+							if (layer != null && !layer.loadComplete)
+							  return;	
+						}						
+					// all layers are done loading.					
+					this.loading = false;					
+					break;
+				}						
 			}
 		}
 		
@@ -1032,9 +1039,28 @@ package org.openscales.core
 		public function get tweenZoomEnabled():Boolean{
 		 	return _tweenZoomEnabled;
 		}
-	
-	
-	
+		
+		/**
+		 * Whether or not the map is loading data
+		 */
+		public function get loadComplete():Boolean {
+			return !this._loading;
+		}
+		
+		/**
+		 * Used to set loading status of map
+		 */
+		protected function set loading(value:Boolean):void {
+			if (value == true && this._loading == false) {
+			this._loading = value;
+			  dispatchEvent(new MapEvent(MapEvent.LOAD_START,this));
+			}
+						 
+			if (value == false && this._loading == true) {
+			  this._loading = value;
+			  dispatchEvent(new MapEvent(MapEvent.LOAD_END,this));
+			} 
+		}
 	}
 }
 
