@@ -5,8 +5,10 @@ package org.openscales.component.control.spinner {
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
+	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.control.Control;
+	import org.openscales.core.events.MapEvent;
 	
 	public class Spinner extends Control {		
 		private var timer:Timer;
@@ -74,6 +76,30 @@ package org.openscales.component.control.spinner {
 			slice.graphics.drawRoundRect(-1, 0, 4, 8, 12, 12);
 			slice.graphics.endFill();
 			return slice;
+		}
+								
+		override public function set map(value:Map):void{
+			super.map = value;
+			
+			this.map.addEventListener(MapEvent.LOAD_START,mapEventHandler);
+			this.map.addEventListener(MapEvent.LOAD_END,mapEventHandler);
+			
+			// check if map is already loading.
+			if (!this.map.loadComplete)			 
+				this.start();
+		}
+		
+		private function mapEventHandler(event:MapEvent):void
+		{
+			switch (event.type) 	{
+				case MapEvent.LOAD_START:
+					this.start();
+				break;
+				case MapEvent.LOAD_END:
+				this.visible = false;
+					this.stop();
+				break;
+			}
 		}
 	}
 }

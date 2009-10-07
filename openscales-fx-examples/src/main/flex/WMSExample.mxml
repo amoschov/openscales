@@ -38,7 +38,7 @@
 				format="image/jpeg"
 				isBaseLayer="true"/>
 
-		<os:Spinner map="{map}" id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
+		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 
 		<os:DragHandler/>

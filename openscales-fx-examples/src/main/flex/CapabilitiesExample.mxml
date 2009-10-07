@@ -90,7 +90,7 @@
 		<!-- OpenStreetMap EPSG:900913 -->
 		<os:Mapnik name="Mapnik" isBaseLayer="true" />
 		
-		<os:Spinner map="{map}" id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
+		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
 		<os:DragHandler />
 		<os:WheelHandler />
 		

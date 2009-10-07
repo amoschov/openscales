@@ -82,7 +82,7 @@
 
 		<!-- We choose EPSG:4326 as displayed projection in this control-->
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:900913"/>
-		<os:Spinner map="{map}" id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
+		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
 		<os:PanZoomBar />
 		<os:LayerSwitcher />
 

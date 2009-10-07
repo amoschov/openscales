@@ -50,7 +50,7 @@
 					  bottom="-90"
 					  right="180"
 					  top="90"/>
-		<os:Spinner map="{map}" id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
+		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 		<os:BorderPanHandler/>
 		<os:PanComponent/>
