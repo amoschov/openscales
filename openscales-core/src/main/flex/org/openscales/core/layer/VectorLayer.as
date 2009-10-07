@@ -16,8 +16,6 @@ package org.openscales.core.layer
 	 */
 	public class VectorLayer extends FeatureLayer
 	{
-
-
 		private var _style:Style = null;
 
 		private var _geometryType:String = null;

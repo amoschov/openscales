@@ -89,7 +89,7 @@ package org.openscales.core.handler.sketch
 				lonlat.transform(this.map.projection,this.drawLayer.projection);
 				var point:Point = new Point(lonlat.lon,lonlat.lat);
 				
-				//2 cases a very different. If the user starts the polygon or if the user is drawing the polygon
+				//2 cases, and very different. If the user starts the polygon or if the user is drawing the polygon
 				if(newFeature) {					
 					lring = new LinearRing([point]);
 					polygon = new Polygon([lring]);

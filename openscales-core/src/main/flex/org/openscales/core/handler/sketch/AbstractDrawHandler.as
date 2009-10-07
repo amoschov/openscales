@@ -20,8 +20,8 @@ package org.openscales.core.handler.sketch
 		
 		override public function set map(value:Map):void{
 			if(value!=null){
-			super.map=value;
-			if(map.baseLayer!=null){
+				super.map=value;
+				if(map.baseLayer!=null){
 					this.drawLayer.projection=new ProjProjection(this.map.baseLayer.projection.srsCode);
 				}
 			}

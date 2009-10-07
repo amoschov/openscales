@@ -6,7 +6,7 @@ package org.openscales.core.request
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
-
+	
 	import org.openscales.core.Trace;
 	import org.openscales.core.security.ISecurity;
 

@@ -52,7 +52,7 @@ package org.openscales.core.handler.sketch
 				var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
 				
 				if(this.drawLayer.projection.srsCode!=this.map.projection.srsCode)
-				lonlat.transform(this.map.projection,this.drawLayer.projection);
+					lonlat.transform(this.map.projection,this.drawLayer.projection);
 				
 				var point:Point = new Point(lonlat.lon,lonlat.lat);
 
