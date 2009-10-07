@@ -63,7 +63,7 @@ package org.openscales.core
 		private var _maxResolution:Number;
 		private var _minResolution:Number;
 		private var _numZoomLevels:int;
-		private var _resolutions:Array;
+		private var _resolutions:Array = null;
 		private var _projection:ProjProjection;
 		private var _units:String;
 		
@@ -93,6 +93,7 @@ package org.openscales.core
 			this.projection = this.DEFAULT_PROJECTION;
 			this.numZoomLevels = this.DEFAULT_NUM_ZOOM_LEVELS;
 			this.units = this.DEFAULT_UNITS;
+			this.minResolution=0;
 
 			this._layerContainer = new DraggableSprite();
 
@@ -193,10 +194,10 @@ package org.openscales.core
 				this.bitmapTransition.alpha = 0;
 
 			if (newBaseLayer != this.baseLayer) {
-					this._baseLayer=null;
+				this._baseLayer=null;
 				if (Util.indexOf(this.layers, newBaseLayer) != -1) {
 
-					// if we set a baselayer with a diferent projection, we change the map's projection datas
+					// if we set a baselayer with a different projection, we change the map's projection datas
 					if ((this.projection.srsCode != newBaseLayer.projection.srsCode)||(newBaseLayer.resolutions==null)) {
 						if (this.center != null)
 							this.center.transform(this.projection, newBaseLayer.projection);
@@ -204,34 +205,19 @@ package org.openscales.core
 						if (this._layerContainerOrigin != null)
 							this._layerContainerOrigin.transform(this.projection, newBaseLayer.projection);
 						
-
 						oldExtent = null;
 						
-						this.maxResolution=this.DEFAULT_MAX_RESOLUTION;
-						this.numZoomLevels=this.DEFAULT_NUM_ZOOM_LEVELS;
-						this.minResolution=0;
-						if(newBaseLayer.resolutions==null)newBaseLayer.initResolutions();
-						
 						this.projection = newBaseLayer.projection;
-						this.maxResolution = newBaseLayer.maxResolution;
-						this.numZoomLevels = newBaseLayer.numZoomLevels;
-						this.maxExtent = newBaseLayer.maxExtent;
-						this.minResolution = newBaseLayer.minResolution;
-						this.resolutions = newBaseLayer.resolutions;
-						for each(var layer:Layer in this.layers){
-							if(!layer.isBaseLayer)
-							{
-								layer.minResolution=NaN;
-								layer.maxResolution=NaN;
-								layer.resolutions=null;
-								layer.initResolutions();
-								
-							}
-						}
+                        this.maxResolution = newBaseLayer.maxResolution;
+                        this.numZoomLevels = newBaseLayer.numZoomLevels;
+                        this.maxExtent = newBaseLayer.maxExtent;
+	                    this.minResolution = newBaseLayer.minResolution;
+                        this.resolutions = newBaseLayer.resolutions;
+						
 					}
 
 					this._baseLayer = newBaseLayer;
-					this.baseLayer.visible = true;
+					this._baseLayer.visible = true;
 
 					var center:LonLat = this.center;
 					if (center != null) {
@@ -460,25 +446,10 @@ package org.openscales.core
 					this._zoom = zoom;
 				}
 				
-				var bounds:Bounds = this.extent;
 				this.dispatchEvent(new MapEvent(MapEvent.LOAD_START, this));
-				this.baseLayer.moveTo(bounds, zoomChanged, dragging);
 				for (var i:int = 0; i < this.layers.length; i++) {
-					var layer:Layer = this.layers[i];
-					if (!layer.isBaseLayer) {
-						var moveLayer:Boolean;
-						var inRange:Boolean = layer.calculateInRange();
-						if (layer.inRange != inRange) {
-							layer.inRange = inRange;
-							moveLayer = true;
-							this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_CHANGED, layer));
-						} else {
-							moveLayer = (layer.visible && layer.inRange);
-						}
-						
-						if (moveLayer) {
-							layer.moveTo(bounds, zoomChanged, dragging,resizing);
-						}
+					if (this.layers[i].visible && this.layers[i].inRange) {
+						this.layers[i].moveTo(this.extent, zoomChanged, dragging,resizing);
 					}
 				}
 				

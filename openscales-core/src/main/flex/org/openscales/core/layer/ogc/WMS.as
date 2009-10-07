@@ -36,10 +36,6 @@ package org.openscales.core.layer.ogc
 		override public function getURL(bounds:Bounds):String {
 			var projection:ProjProjection = this.projection;
 
-			if(this.gutter) {
-				bounds = this.adjustBoundsByGutter(bounds);
-			}
-
 			this.params.bbox = bounds.boundsToString();
 			(this.params as WMSParams).width = this.imageSize.w;
 			(this.params as WMSParams).height = this.imageSize.h;

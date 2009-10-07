@@ -58,8 +58,7 @@ package org.openscales.core.tile
 		
 		public function withinMapBounds():Boolean
 		{
-			return ((this.layer.displayOutsideMaxExtent
-				|| (this.layer.maxExtent
+			return (((this.layer.maxExtent
 				&& this.bounds.intersectsBounds(this.layer.maxExtent, false)))
 				&& !((this.layer as Grid != null) && ((this.layer as Grid).buffer == 0)
 				&& !this.bounds.intersectsBounds(this.layer.map.extent, false)));

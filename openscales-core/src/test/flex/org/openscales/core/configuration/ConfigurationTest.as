@@ -58,6 +58,7 @@ package org.openscales.core.configuration
 			var sampleMapConfOk:XML = this.sampleMapConfOkXML();
 			var conf:IConfiguration = new Configuration(this.sampleMapConfOkXML());
 			var map:Map = new Map();		
+			conf.configureMap(map);
 			
 			//Will test conf.configureMap(map) when we will have some Map unit test
 		}

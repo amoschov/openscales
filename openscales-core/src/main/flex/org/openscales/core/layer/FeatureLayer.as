@@ -25,7 +25,7 @@ package org.openscales.core.layer
 
 		}
 		
-		override public function calculateInRange():Boolean {
+		override public function get inRange():Boolean {
 			return true;
 		}
 
@@ -40,9 +40,11 @@ package org.openscales.core.layer
 			super.map = map;
 
 			// Ugly trick due to the fact we can't set the size of and empty Sprite
-			this.graphics.drawRect(0,0,this.map.width,this.map.height);
-			this.width = this.map.width;
-			this.height = this.map.height;
+			if(map) {
+				this.graphics.drawRect(0,0,map.width,map.height);
+				this.width = map.width;
+				this.height = map.height;
+			}
 
 		}
 
