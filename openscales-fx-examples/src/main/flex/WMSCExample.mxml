@@ -40,7 +40,7 @@
 			zoom="5">
 
 		<os:WMSC name="Nasa"
-				 url="http://openscales.org:80/geoserver/wms"
+				 url="http://openscales.org/geoserver/gwc/service/wms"
 				 layers="bluemarble"
 				 format="image/jpeg"
 				 isBaseLayer="true" />
