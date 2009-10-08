@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-		   xmlns:os="http://openscales.org"
-		   creationComplete="initMap();" >
+<Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
+		 xmlns:os="http://openscales.org" creationComplete="initMap();" >
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.layer.FeatureLayer;
@@ -19,9 +18,6 @@
 			import org.openscales.core.layer.osm.Mapnik;
 			import org.openscales.core.geometry.Point;
 			import org.openscales.core.events.MapEvent;
-
-			[Bindable]
-			public var map:Map;
 
 			public var markLyon:Marker;
 
@@ -53,36 +49,17 @@
 		]]>
 	</mx:Script>
 
-	<os:Map id="fxmap" width="100%" height="100%"
-		proxy="http://openscales.org/proxy.php?url="
-		zoom="3" lon="538850.47459" lat="5740916.1243">
+	<os:Map id="fxmap" width="100%" height="100%" zoom="3" lon="538850.47459" lat="5740916.1243">
 
+		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
+		
 		<!-- A EPSG:900913 baselayer (OSM) -->
-		<os:Mapnik name="Mapnik"
-			numZoomLevels="20"
-			isBaseLayer="true"
-			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-			minResolution="0.5971642833709717"
-			maxResolution="156543.0339" />
-
-		<!-- A WFS EPSG:4326 layer -->
-	<!--	<os:WFS name="USA states"
-			isBaseLayer="false"
-			minZoomLevel="21"
-			visible="true"
-			url="http://sigma.openplans.org/geoserver/wfs"
-			typename="topp:states"
-			srs="EPSG:4326"
-			version="1.0.0">
-			<os:Style fillColor="0xff0000"
-				fillOpacity="0.6"
-				strokeColor="0x0000ff"
-				strokeWidth="2" />
-		</os:WFS>-->
+		<os:Mapnik name="Mapnik" isBaseLayer="true"
+			proxy="http://openscales.org/proxy.php?url=" />
 
 		<!-- We choose EPSG:4326 as displayed projection in this control-->
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:900913"/>
-		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
+		<os:Spinner id="spinner" x="{width / 2}" y="{height / 2}"/>	
 		<os:PanZoomBar />
 		<os:LayerSwitcher />
 
@@ -91,4 +68,4 @@
 		<os:WheelHandler />
 	</os:Map>
 
-</mx:Canvas>
+</Example>

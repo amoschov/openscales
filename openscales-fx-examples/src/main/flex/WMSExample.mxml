@@ -1,29 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-		   xmlns:os="http://openscales.org"
-		   creationComplete="initMap();">
+<Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
+		 xmlns:os="http://openscales.org" creationComplete="initMap();">
 
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;	
-
-			[Bindable] private var map:Map;
 			
 			private function initMap():void {
 				map=fxmap.map;
-				this.setChildIndex(this.getChildAt(1), 0);
-				// Specific initialize for this example
-				// none
 			}
 		]]>
 	</mx:Script>
  
-	<os:Map id="fxmap"
-			height="100%"
-			width="100%"
-			maxResolution="1"
-			numZoomLevels="18"
+	<os:Map id="fxmap" height="100%" width="100%" maxResolution="1" numZoomLevels="18"
 			proxy="http://openscales.org/proxy.php?url=">
 			
 
@@ -54,4 +44,4 @@
 	</os:Map>
 	
 	
-</mx:Canvas>
+</Example>

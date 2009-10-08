@@ -1,42 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-	xmlns:os="http://openscales.org"
-	creationComplete="initMap();">
+<Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
+		 xmlns:os="http://openscales.org" creationComplete="initMap();">
 	
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.events.MapEvent;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
-
-			// Specific imports for this example
-			// none			
-			
-			[Bindable] private var map:Map;
-
-			[Bindable] private var _displayTrace:Boolean = true;
-			public function get displayTrace():Boolean {
-				return _displayTrace;
-			}
-			public function set displayTrace(value:Boolean):void {
-				_displayTrace = value;
-			}
 			
 			private function initMap():void {
 				map=fxmap.map;
-				this.setChildIndex(this.getChildAt(1), 0);
-				// Specific initialize for this example
-				// none
 			}		
 		]]>
 	</mx:Script>
 	
-	<!-- Must be defined first to display the logs of the map and of its objects during their creation -->
-	<os:TraceInfo map="{map}" x="{width-200}" y="0" visible="{_displayTrace}" />
-	
-	<os:Map id="fxmap" width="100%" height="100%"
-		proxy="http://openscales.org/proxy.php?url="
-		zoom="3" lon="-101" lat="40">
+	<os:Map id="fxmap" width="100%" height="100%" zoom="3" lon="-101" lat="40">
+		
+		<os:TraceInfo id="traceInfo" x="{width-200}" y="0" visible="{displayTrace}" />
 
 		<os:WMSC name="Nasa"
 				 url="http://openscales.org/geoserver/gwc/service/wms"
@@ -53,7 +33,8 @@
 		<!-- Specific layers and handlers of this example -->
 		
 		<!-- OpenStreetMap EPSG:900913 -->
-		<os:Mapnik name="Mapnik" isBaseLayer="true" />
+		<os:Mapnik name="Mapnik" isBaseLayer="true"
+				   proxy="http://openscales.org/proxy.php?url="/>
 				 
 		<os:WFS name="Topp States (WFS)"
 			url="http://openscales.org/geoserver/wfs"
@@ -104,16 +85,6 @@
 			minRectPxSize="3"
 			rectColor="0xFF3300" newExtentColor="0x00FF33" />
 	</os:WidgetWindow>
+
 	
-	<os:WidgetWindow id="layersWidget"
-		width="200"
-		x="{this.width-layersWidget.width-10}" y="10"
-		widgetTitle="Layers manager"
-		toolTipIconEnd="the layers manager"
-		useCloseButton="true"
-		duration="1000"
-		>
-		<os:LayerSwitcherComponent map="{map}" />
-	</os:WidgetWindow>
-	
-</mx:Canvas>
+</Example>

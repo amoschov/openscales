@@ -1,38 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-	xmlns:os="http://openscales.org"
-	creationComplete="initMap();">
+<Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
+		 xmlns:os="http://openscales.org" creationComplete="initMap();">
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.managers.PopUpManager;
+
 			import org.openscales.component.control.style.StyleEditionWindow;
 			import org.openscales.core.feature.Style;
 			import org.openscales.core.layer.ogc.WFS;
 			import org.openscales.core.layer.VectorLayer;
-			import mx.managers.PopUpManager;
 			import org.openscales.core.events.LayerEvent;
 			import org.openscales.core.layer.Layer;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
-
-			// Specific imports for this example
-			// none			
-			
-			[Bindable] private var map:Map;
-			
+		
 			private var _styleEditorPanel:StyleEditionWindow;
-
-			[Bindable] private var _displayTrace:Boolean = true;
-			public function get displayTrace():Boolean {
-				return _displayTrace;
-			}
-			public function set displayTrace(value:Boolean):void {
-				_displayTrace = value;
-			}
 			
 			private function initMap():void {
 				map=fxmap.map;
-				this.setChildIndex(this.getChildAt(1), 0);
+				
 				// Specific initialize for this example
 				map.addEventListener(LayerEvent.LAYER_ADDED, this.onLayerAdded);
 				
@@ -65,11 +52,8 @@
 			}
 			
 			private function onOkButtonClick(event:Event):void{
-				
 				PopUpManager.removePopUp(this._styleEditorPanel);
-				trace('Plop');
 				this._styleEditorPanel.editedLayer.style = this._styleEditorPanel.editedStyle;
-				trace(this._styleEditorPanel.editedStyle.fillOpacity);
 				this._styleEditorPanel.editedLayer.redraw();
 			}
 			
@@ -79,18 +63,16 @@
 			}
 		]]>
 	</mx:Script>
-	
-	<!-- Must be defined first to display the logs of the map and of its objects during their creation -->
-	<os:TraceInfo map="{map}" x="{width-200}" y="0" visible="{_displayTrace}" />
-	
-	<os:Map id="fxmap" width="100%" height="100%"
-		proxy="http://openscales.org/proxy.php?url="
-		zoom="2" lon="538850.47459" lat="5740916.1243">
+		
+	<os:Map id="fxmap" width="100%" height="100%" zoom="2" lon="538850.47459" lat="5740916.1243">
+		
+		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
 		
 		<!-- OpenStreetMap EPSG:900913 -->
-		<os:Mapnik name="Mapnik" isBaseLayer="true" />
+		<os:Mapnik name="Mapnik" isBaseLayer="true"
+				   proxy="http://openscales.org/proxy.php?url="/>
 		
-		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
+		<os:Spinner id="spinner" x="{width / 2}" y="{height / 2}"/>	
 		<os:DragHandler />
 		<os:WheelHandler />
 		
@@ -108,8 +90,8 @@
 		<os:LayerSwitcherComponent map="{map}" />
 	</mx:Panel>
 	
-	<mx:Panel id="capabilitiesPanel" title="Add layers from capabilities" horizontalAlign="center" x="{width-capabilitiesPanel.width-10}" y="{height-capabilitiesPanel.height-10}">
+	<mx:Panel id="capabilitiesPanel" title="Add layers from capabilities" horizontalAlign="center" x="{10}" y="{height-capabilitiesPanel.height-10}">
 		<os:CapabilitiesComponent width="320" map="{map}"/>
 	</mx:Panel>
 	
-</mx:Canvas>
+</Example>

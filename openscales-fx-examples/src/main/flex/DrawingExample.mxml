@@ -1,53 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
-	xmlns:os="http://openscales.org"
-	creationComplete="initMap();">
+<Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
+		 xmlns:os="http://openscales.org" creationComplete="initMap();">
 	
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
-
-			// Specific imports for this example
-			// none			
-			
-			[Bindable] private var map:Map;
-
-			[Bindable] private var _displayTrace:Boolean = true;
-			public function get displayTrace():Boolean {
-				return _displayTrace;
-			}
-			public function set displayTrace(value:Boolean):void {
-				_displayTrace = value;
-			}
 			
 			private function initMap():void {
 				map=fxmap.map;
-				this.setChildIndex(this.getChildAt(1), 0);
-				// Specific initialize for this example
-				// none
 			}
 		]]>
 	</mx:Script>
 	
-	<!-- Must be defined first to display the logs of the map and of its objects during their creation -->
-	<os:TraceInfo map="{map}" x="{width-200}" y="0" visible="{_displayTrace}" />
-	
-	<os:Map id="fxmap" width="100%" height="100%"
-		proxy="http://openscales.org/proxy.php?url="
-		zoom="2" lon="538850.47459" lat="5740916.1243">
+	<os:Map id="fxmap" width="100%" height="100%" zoom="2" lon="538850.47459" lat="5740916.1243">
 		
+		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
+			
 		<!-- OpenStreetMap EPSG:900913 -->
-		<os:Mapnik name="Mapnik"
-			numZoomLevels="20"
-			isBaseLayer="true"
-			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-			minResolution="0.5971642833709717"
-			maxResolution="156543.0339" />
+		<os:Mapnik name="Mapnik" isBaseLayer="true"
+				   proxy="http://openscales.org/proxy.php?url=" />
 		
 		<os:DragHandler />
 		<os:WheelHandler />
-		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
+		<os:Spinner id="spinner" x="{width / 2}" y="{height / 2}"/>	
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 		<os:ScaleLine map="{map}" />
 		
@@ -63,4 +39,4 @@
 		<os:FeatureDrawingComponent map="{map}" />
 	</mx:Panel>
 	
-</mx:Canvas>
+</Example>

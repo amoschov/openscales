@@ -24,11 +24,13 @@
 			}
 			
 			override public function set map(value:Map):void {
-				super.map = value;
-				this.map.addEventListener(TraceEvent.INFO, displayLog);
-				this.map.addEventListener(TraceEvent.WARNING, displayLog);
-				this.map.addEventListener(TraceEvent.ERROR, displayLog);
-				this.map.addEventListener(TraceEvent.DEBUG, displayLog);
+				if(value) {
+					super.map = value;
+					this.map.addEventListener(TraceEvent.INFO, displayLog);
+					this.map.addEventListener(TraceEvent.WARNING, displayLog);
+					this.map.addEventListener(TraceEvent.ERROR, displayLog);
+					this.map.addEventListener(TraceEvent.DEBUG, displayLog);
+				}
 			}
 			
 			private function finalizeTraceInfo():void {

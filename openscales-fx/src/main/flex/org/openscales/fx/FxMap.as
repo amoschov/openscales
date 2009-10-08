@@ -1,8 +1,9 @@
 package org.openscales.fx
 {
-	import flash.display.DisplayObject;
+	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.display.DisplayObject;
 	
 	import mx.core.Container;
 	import mx.core.UIComponent;
@@ -10,6 +11,7 @@ package org.openscales.fx
 	import mx.events.ResizeEvent;
 	
 	import org.openscales.component.control.Control;
+	import org.openscales.component.control.TraceInfo;
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -22,6 +24,7 @@ package org.openscales.fx
 	import org.openscales.fx.handler.FxHandler;
 	import org.openscales.fx.layer.FxLayer;
 	import org.openscales.fx.popup.FxPopup;
+	import org.openscales.proj4as.ProjProjection;
 	
 	/**
 	 * Flex wrapper in order to create OpenScales MXML based applications.
@@ -45,6 +48,7 @@ package org.openscales.fx
 		private var _creationHeight:Number = NaN;
 		private var _creationWidth:Number = NaN;
 		private var _proxy:String = "";
+		private var _projection:ProjProjection = null;
 		
 		/**
 		 * FxMap constructor
@@ -65,6 +69,18 @@ package org.openscales.fx
 			this._map = new Map(this.width, this.height);
 			_map.addEventListener(MapEvent.LOAD_START, loadEventHandler);
 			_map.addEventListener(MapEvent.LOAD_END, loadEventHandler);
+			
+			var i:int = 0;
+			var child:DisplayObject = null;
+			
+			// Add traceInfo at the begining in order to trace loading logs
+			for(i=0; i<this.rawChildren.numChildren; i++) {
+				child = this.rawChildren.getChildAt(i);
+				if (child is TraceInfo) {
+					(child as TraceInfo).map = this._map;
+					this.parent.addChild(child);
+				}
+			}
 			// override configuration with a Flex aware configuration
 			this._map.configuration = new FxConfiguration();
 			
@@ -78,6 +94,9 @@ package org.openscales.fx
 			
 			if (this._proxy != "")
 				this._map.proxy = this._proxy;
+				
+			if (this._projection)
+				this._map.projection = this._projection;
 			
 			if (! isNaN(this._maxResolution))
 				this._map.maxResolution = this._maxResolution;
@@ -94,8 +113,8 @@ package org.openscales.fx
 				this._map.maxExtent = this._maxExtent;
 			else {
 				var maxExtentDefined:Boolean = false;
-				for(var i:int=0; (!maxExtentDefined) && (i<this.rawChildren.numChildren); i++) {
-					var child:DisplayObject = this.rawChildren.getChildAt(i);
+				for(i=0; (!maxExtentDefined) && (i<this.rawChildren.numChildren); i++) {
+					child = this.rawChildren.getChildAt(i);
 					if (child is FxMaxExtent) {
 						this._map.maxExtent = (child as FxMaxExtent).bounds;
 						maxExtentDefined = true;
@@ -120,7 +139,8 @@ package org.openscales.fx
 					this._map.addControl((child as FxControl).control);
 				} else if (child is IControl) {
 					this._map.addControl(child as IControl, false);
-				} else if (child is Control){
+				// Add Control, wih exception of TraceInfo that has been added at the beginning
+				} else if ((child is Control) && !(child is TraceInfo)){
 					this.parent.addChild(child);
 				} else if (child is FxHandler) {
 					this._map.addHandler((child as FxHandler).handler);
@@ -286,6 +306,10 @@ package org.openscales.fx
 		public function set proxy(value:String):void {
 			this._proxy = value;
 		}
+		
+		public function set srs(value:String):void {
+          this._projection = new ProjProjection(value);
+      	}
 		
 	}
 }
