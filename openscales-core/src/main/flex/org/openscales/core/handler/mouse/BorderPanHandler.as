@@ -61,8 +61,8 @@ package org.openscales.core.handler.mouse {
 		}
 
 		private function updateDelta(event:MouseEvent):void {
-			this._deltaX = (event.stageX - (this.map.size.w/2)) / this.ratio;
-			this._deltaY = (event.stageY - (this.map.size.h/2)) / this.ratio;
+			this._deltaX = (map.mouseX - (this.map.size.w/2)) / this.ratio;
+			this._deltaY = (map.mouseY - (this.map.size.h/2)) / this.ratio;
 		}
 
 	}

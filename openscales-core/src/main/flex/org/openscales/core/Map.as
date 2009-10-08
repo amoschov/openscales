@@ -711,6 +711,8 @@ package org.openscales.core
 					this.removeChild(this.bitmapTransition);
 					var bmp:Bitmap = bitmapTransition.removeChildAt(0) as Bitmap;
 					bmp.bitmapData.dispose();
+					bmp.bitmapData = null;
+					
 				}
 
 				// We draw the loaded tiles onto the background transition.

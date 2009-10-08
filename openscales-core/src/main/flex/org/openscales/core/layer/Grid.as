@@ -1,5 +1,7 @@
 package org.openscales.core.layer
 {
+	import flash.display.Loader;
+	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -9,7 +11,6 @@ package org.openscales.core.layer
 	import org.openscales.core.events.TileEvent;
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.tile.ImageTile;
-	import org.openscales.core.tile.LoaderWrapper;
 	import org.openscales.core.tile.Tile;
 
 	/**
@@ -40,9 +41,9 @@ package org.openscales.core.layer
 		private var cachedTilesUrl:Array = null;
 		private var cptCached:int = 0;
 		
-		private var _tileWidth:Number = 256;
+		private var _tileWidth:Number = DEFAULT_TILE_WIDTH;
 		
-		private var _tileHeight:Number = 256;
+		private var _tileHeight:Number = DEFAULT_TILE_HEIGHT;
 
 
 		/**
@@ -100,9 +101,8 @@ package org.openscales.core.layer
 		/**
 		 * Methodd to cache a tile
 		 */
-		public function addTileCache(url:String,loader:LoaderWrapper):void {
+		public function addTileCache(url:String,loader:Loader):void {
 			
-			loader.addRef();
 			//We check if there's space in the cache
 			if(cachedTiles.size() < CACHE_SIZE) {
 				cachedTiles.put(url,loader);
@@ -111,9 +111,7 @@ package org.openscales.core.layer
 			//Otherwise, we remove from the cache the older cached tile
 			else {
 				var oldUrl:String = cachedTilesUrl[cptCached];
-				var oldLW:LoaderWrapper = cachedTiles.getValue(oldUrl);
-				if(oldLW != null)
-					oldLW.removeRef();
+				var oldLW:Loader = cachedTiles.getValue(oldUrl);
 				cachedTiles.remove(oldUrl);
 				cachedTilesUrl[cptCached] = url;
 				cachedTiles.put(url,loader);
@@ -124,9 +122,9 @@ package org.openscales.core.layer
 		/**
 		 * Method to get a cached tile by its url
 		 */
-		public function getTileCache(url:String):LoaderWrapper {
+		public function getTileCache(url:String):Loader {
 
-			var loader:LoaderWrapper = cachedTiles.getValue(url);
+			var loader:Loader = cachedTiles.getValue(url);
 
 			return loader;
 		}

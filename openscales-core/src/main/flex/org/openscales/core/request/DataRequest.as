@@ -1,7 +1,11 @@
 package org.openscales.core.request {
 	import flash.display.Loader;
+	import flash.display.LoaderInfo;
+	import flash.display.Bitmap;
+
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
+	
 	import flash.net.URLRequest;
 	import flash.net.URLRequestHeader;
 	import flash.system.LoaderContext;
@@ -64,17 +68,20 @@ package org.openscales.core.request {
 
 		override public function destroy():void {
 			
-			if(this._onComplete != null)
+			if((this._onComplete != null) && (this.loader))
 				this.loader.contentLoaderInfo.removeEventListener(Event.COMPLETE, this._onComplete);
 
-			if(this._onFailure != null)
+			if((this._onFailure != null) && (this.loader))
 				this.loader.contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, this._onFailure);
 				
+			
 			try {
 				this.loader.close();
 			} catch(e:Error){
 				// Empty catch are generally evil, but it is right in this case
 			};
+			
+			this._loader = null;
 		}
 
 

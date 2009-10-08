@@ -5,6 +5,7 @@ package org.openscales.core.tile
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
+	import flash.display.Bitmap;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	
@@ -29,8 +30,6 @@ package org.openscales.core.tile
 		private var _queued:Boolean = false;
 
 		private var _request:DataRequest = null;
-		
-		private var _loaders:Array = new Array();
 
 		public function ImageTile(layer:Layer, position:Pixel, bounds:Bounds, url:String, size:Size) {
 			super(layer, position, bounds, url, size);
@@ -42,27 +41,6 @@ package org.openscales.core.tile
 
 		override public function destroy():void {
 			this.clear();
-
-			while (numChildren > 0) {
-				var child:DisplayObject = removeChildAt(0);
-				var wr:LoaderWrapper = _loaders.shift();
-				
-				if (child is Loader) {
-					try {
-						//Loader(child).unload();
-						
-						if(wr.loader != child as Loader)
-						{
-							Trace.error("loader and wrapper not the same");
-						}
-						
-						wr.removeRef();
-					}
-					catch (error:Error) {
-						Trace.error("Error when unloading tile " + this.url);
-					}
-				}
-			}
 			
 			if(this.layer.contains(this))
 				this.layer.removeChild(this);
@@ -95,7 +73,7 @@ package org.openscales.core.tile
 				this.url = this.layer.getURL(this.bounds);
 			}
 
-			var cachedLoader:LoaderWrapper = null;	
+			var cachedLoader:Loader = null;	
 
 			//If the tile (loader) was already loaded and is in the cache, we draw it
 			if (this.layer is Grid && (cachedLoader=(this.layer as Grid).getTileCache(this.url)) != null)
@@ -114,7 +92,7 @@ package org.openscales.core.tile
 			this.loading = false;
 			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
 			var loader:Loader = loaderInfo.loader as Loader;
-			drawLoader(new LoaderWrapper(loader), false);
+			drawLoader(loader, false);
 		}
 
 		/**
@@ -123,51 +101,31 @@ package org.openscales.core.tile
 		 * @param loader The loader to draw
 		 * @param cached Cached loader or not
 		 */
-		private function drawLoader(loader:LoaderWrapper, cached:Boolean):void {
+		private function drawLoader(loader:Loader, cached:Boolean):void {
 
 			if(this.layer) {
 				
 
 				if(_drawPosition != null)
-				{/*
-					var diff:Pixel = this.position.clone();
-					diff.add(-_drawPosition.x, -_drawPosition.y);
-					
-					if(this.numChildren > 0)
-					{
-						this.getChildAt(0).x = diff.x;
-						this.getChildAt(0).y = diff.y;
-					}*/
+				{
 					this.position = _drawPosition;
 					_drawPosition = null;
 				}
 
-				this.addChild(loader.loader);
-				loader.addRef();
-				_loaders.push(loader);
-				
+				this.addChild(loader);				
 
 				// Tween tile effect 
 				if(!this.layer.contains(this))
 					this.layer.addChild(this);
 				
-				// TODO : check this				
-				if(!(this.layer is WMS)) {
-					var tw:GTweeny = new GTweeny(this, 0.3, {alpha:1});
-					tw.addEventListener(Event.COMPLETE, removeReference, false, 0, true);
-					//removeReference(null);
-				} else {
-					removeReference(null);
-					this.alpha = 1;
-				} 
-				
-
-				
+				// TODO : add parameter to control tween effect
+				var tw:GTweeny = new GTweeny(this, 0.3, {alpha:1});
+				tw.addEventListener(Event.COMPLETE, removeReference, false, 0, true);
 				this.drawn = true;
 
 				//We put the loader into the cache if it's a recently loaded
 				if (this.layer is Grid && !cached)
-					(this.layer as Grid).addTileCache(loader.loader.name,loader);
+					(this.layer as Grid).addTileCache(loader.name,loader);
 			}
 		}
 		
@@ -203,23 +161,16 @@ package org.openscales.core.tile
 			super.clear();
 			this.alpha = 0;
 
-			if(_request)
+			if(this._request)
 			{
 				this.loading = false;
 				_request.destroy();
-			}	
-
-			if (this.numChildren >0)
-			{
-				var d:DisplayObject = this.removeChildAt(0);
-				var wr:LoaderWrapper = _loaders.shift();
-				if(wr.loader != d)
-				{
-					Trace.error("DisplayObject not same as Loader in LoaderWrapper.");
-				}
-				wr.removeRef();
 			}
-			//graphics.clear();
+
+			
+			while (this.numChildren > 0) {
+				var child:DisplayObject = removeChildAt(0);
+			}
 		}
 
 		//Getters and Setters
