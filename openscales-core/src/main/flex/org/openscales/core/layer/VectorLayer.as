@@ -53,8 +53,10 @@ package org.openscales.core.layer
 
 		override public function set map(map:Map):void {
 			super.map = map;
-			this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.checkProjection);
-			checkProjection();
+			 if(map != null){ 
+				this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.checkProjection);
+				checkProjection();
+			 } 
 		} 
 
 		/**

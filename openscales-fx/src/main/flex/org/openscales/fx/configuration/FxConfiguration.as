@@ -37,7 +37,7 @@ package org.openscales.fx.configuration
                               Trace.info("map.parent is null so does not add the control");
                           }
                         }
-                  }                              
+                  }                      
             }
 		
 		protected function parseFxControl(xmlNode:XML):Control {
