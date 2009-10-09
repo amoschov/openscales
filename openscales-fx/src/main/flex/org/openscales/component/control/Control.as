@@ -24,8 +24,9 @@ package org.openscales.component.control
     public function Control()
     {
       super();
+      /* this.addEventListener(Event.COMPLETE, onCreationComplete); */
+      this.addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete); 
       
-      this.addEventListener(Event.COMPLETE, onCreationComplete);
     }
     
     /**

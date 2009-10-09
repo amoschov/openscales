@@ -388,8 +388,7 @@ package org.openscales.core
 			// Is there a real offset ?
 			if ((dx==0) && (dy==0)) {
 				return;
-			}
-			
+			}		
 			if(this.center) {
 				var newCenterPx:Pixel = this.getMapPxFromLonLat(this.center).add(dx, dy);
 				var newCenterLonLat:LonLat = this.getLonLatFromMapPx(newCenterPx);
