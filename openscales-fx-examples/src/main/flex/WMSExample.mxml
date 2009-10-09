@@ -30,18 +30,17 @@
 
 		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
+		
 
 		<os:DragHandler/>
-		<os:ClickHandler/>
 		<os:WheelHandler/>
 
 		<os:Extent left="5.60075"
 				   bottom="47.2441"
 				   right="15.425"
 				   top="55.0317"/>
-				   	
+			   	
 
 	</os:Map>
-	
-	
+	<os:PanComponent map="{map}"/>
 </Example>
