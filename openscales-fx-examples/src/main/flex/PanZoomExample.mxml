@@ -39,7 +39,7 @@
 	<mx:VBox horizontalAlign="center" x="10" y="10">
 		<os:PanComponent map="{map}" />
 		<os:ZoomComponent map="{map}" />
-		<os:ZoomBoxComponent map="{map}" />
+		<os:ZoomBoxComponent map="{map}" width="32" height="32"/>
 	</mx:VBox>
 	
 </Example>

@@ -74,7 +74,7 @@
 		>
 		<os:PanComponent map="{map}" />
 		<mx:HBox width="100%">
-			<os:ZoomComponent map="{map}" />
+			<os:ZoomComponent map="{map}"/>
 			<mx:VBox width="100%" horizontalAlign="right" verticalAlign="top">
 				<os:ZoomBoxComponent map="{map}" width="16" height="16" />
 			</mx:VBox>

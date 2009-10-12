@@ -123,6 +123,7 @@
 				<category label="Protocols">
 <example viewStack="wmsc" label="NASA WMS-C" description="" />
 <example viewStack="wms" label="Germany WMS" description="" />
+<example viewStack="imageLayer" label="Image Layer" description="" />
 				</category>
 				
 				<category label="Security">
@@ -163,6 +164,7 @@
 			<!-- Protocols -->
 			<os:WMSCExample id="wmsc" displayTrace="{displayTrace}" />
 			<os:WMSExample id="wms" />
+			<os:ImageLayerExample id="imageLayer" />
 			
 			<!-- Security -->
 			<os:SecurityMapExample id="security" displayTrace="{displayTrace}" />
