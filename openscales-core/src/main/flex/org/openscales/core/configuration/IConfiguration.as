@@ -39,9 +39,10 @@ package org.openscales.core.configuration
 		function get catalog():XMLList;
 		
 		/**
-		 * @return The child items of <Custom> </Custom> elements 
+		 * @return The child items of <Custom> </Custom> elements
+		 * It's an XML and not a XMLList because in case we have several customs, we can't access specificly to a custom.
 		 */	
-		function get custom():XMLList;
+		function get custom():XML;
 		
 		/**
 		 * @return The child items of <Handlers> </Handlers> elements 

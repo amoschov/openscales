@@ -1,5 +1,7 @@
 package org.openscales.fx.configuration
 {
+	import mx.containers.Panel;
+	
 	import org.openscales.component.control.Control;
 	import org.openscales.component.control.OverviewMap;
 	import org.openscales.component.control.Pan;
@@ -12,12 +14,15 @@ package org.openscales.fx.configuration
 
 	public class FxConfiguration extends Configuration
 	{
+		private var _map:Map;
+		
 		public function FxConfiguration(config:XML=null)
 		{
 			super(config);
 		}
 		
 		override public function configureMap(map:Map):void {
+                  this._map = map
                   super.configureMap(map);
                   this.middleFxConfigureMap(map);
                   
@@ -35,7 +40,7 @@ package org.openscales.fx.configuration
                               map.parent.addChild(control);
                           } else {
                               Trace.info("map.parent is null so does not add the control");
-                          }
+                          } 
                         }
                   }                      
             }
@@ -45,29 +50,106 @@ package org.openscales.fx.configuration
 		 					 					
 	 		if(xmlNode.name() == "PanComponent"){
 	 			var panZoom:Pan = new Pan();
-	 			 control = panZoom; 
+	 			if(String(xmlNode.@id) != ""){
+	 				panZoom.id = String(xmlNode.@id);
+	 			}	 			
+	 			if(String(xmlNode.@x) != ""){
+	 				panZoom.x = Number(xmlNode.@x);
+	 			}
+	 			if(String(xmlNode.@y) != ""){
+	 				panZoom.y = Number(xmlNode.@y);
+	 			}
+	 			if(String(xmlNode.@width) != ""){
+	 				panZoom.width = Number(xmlNode.@width);
+	 			}
+	 			if(String(xmlNode.@height) != ""){
+	 				panZoom.height = Number(xmlNode.@height);
+	 			}
+	 			// for a specific example
+	 			/* var panel:Panel = Panel(this._map.parent.getChildByName("toolPanel"));
+	 			panel.addChild(panZoom); */
+	 			control = panZoom;  
 	 		}
 	 			 		
-			//FIX ME : the arrow is not update when you zoom IN (or OUT) with mouse wheel
 	 		else if(xmlNode.name() == "ZoomComponent"){
 	 			var zoom:Zoom = new Zoom();
+	 			if(String(xmlNode.@id) != ""){
+	 				zoom.id = String(xmlNode.@id);
+	 			}
+	 			if(String(xmlNode.@x) != ""){
+	 				zoom.x = Number(xmlNode.@x);
+	 			}
+	 			if(String(xmlNode.@y) != ""){
+	 				zoom.y = Number(xmlNode.@y);
+	 			}
+	 			if(String(xmlNode.@width) != ""){
+	 				zoom.width = Number(xmlNode.@width);
+	 			}
+	 			if(String(xmlNode.@height) != ""){
+	 				zoom.height = Number(xmlNode.@height);
+	 			}
 	 			control = zoom;
 	 		}
 	 		
 	 		else if(xmlNode.name() == "ZoomBox"){
 	 			var zoomBox:ZoomBox = new ZoomBox();
+	 			if(String(xmlNode.@id) != ""){
+	 				zoomBox.id = String(xmlNode.@id);
+	 			}
+	 			if(String(xmlNode.@x) != ""){
+	 				zoomBox.x = Number(xmlNode.@x);
+	 			}
+	 			if(String(xmlNode.@y) != ""){
+	 				zoomBox.y = Number(xmlNode.@y);
+	 			}
+	 			if(String(xmlNode.@width) != ""){
+	 				zoomBox.width = Number(xmlNode.@width);
+	 			}
+	 			if(String(xmlNode.@height) != ""){
+	 				zoomBox.height = Number(xmlNode.@height);
+	 			}
 	 			control = zoomBox; 
 	 		}
 	 		
 			//FIX ME : because asynchrone, we need to wait the creation complete on FXMap before setting the map		 					
 	 		else if(xmlNode.name() == "OverViewComponent"){
 	 			var overView:OverviewMap = new OverviewMap();
+	 			if(String(xmlNode.@id) != ""){
+	 				overView.id = String(xmlNode.@id);
+	 			}
+	 			if(String(xmlNode.@x) != ""){
+	 				overView.x = Number(xmlNode.@x);
+	 			}
+	 			if(String(xmlNode.@y) != ""){
+	 				overView.y = Number(xmlNode.@y);
+	 			}
+	 			if(String(xmlNode.@width) != ""){
+	 				overView.width = Number(xmlNode.@width);
+	 			}
+	 			if(String(xmlNode.@height) != ""){
+	 				overView.height = Number(xmlNode.@height);
+	 			}
 	 			control = overView; 
 	 		}  
 	 		
 			//FIX ME : because asynchrone, we need to wait the creation complete of the others flex component before setting the map		 					
 	 		else if(xmlNode.name() == "LayerSwitcherComponent"){
 	 			var layerSwitcher:LayerSwitcher = new LayerSwitcher();
+	 			if(String(xmlNode.@id) != ""){
+	 				layerSwitcher.id = String(xmlNode.@id);
+	 			}
+	 			if(String(xmlNode.@x) != ""){
+	 				layerSwitcher.x = Number(xmlNode.@x);
+	 			}
+	 			if(String(xmlNode.@y) != ""){
+	 				layerSwitcher.y = Number(xmlNode.@y);
+	 			}
+	 			if(String(xmlNode.@width) != ""){
+	 				layerSwitcher.width = Number(xmlNode.@width);
+	 			}
+	 			if(String(xmlNode.@height) != ""){
+	 				layerSwitcher.height = Number(xmlNode.@height);
+	 			}
 	 			control = layerSwitcher;
 				
 	 		}  

@@ -1,56 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="45" horizontalScrollPolicy="off" verticalScrollPolicy="off" paddingRight="17">
-  <mx:Script>
-    <![CDATA[
-    	import mx.controls.Label;
-      import mx.controls.List;
-      import mx.controls.Text;
-      import org.openscales.core.events.LayerEvent;
-      import mx.accessibility.ButtonAccImpl;
-      import mx.core.ButtonAsset;
-      import mx.skins.halo.ButtonSkin;
-      import mx.events.DragEvent;
-      import mx.binding.utils.BindingUtils;
-      import org.openscales.core.Map;
-      import org.openscales.core.layer.ogc.WFS;
-      import mx.controls.Button;
-      import org.openscales.core.basetypes.Bounds;
-      import mx.controls.CheckBox;
-      import mx.controls.RadioButtonGroup;
-      import mx.controls.RadioButton;
-      import org.openscales.core.layer.Layer;
-      import mx.events.PropertyChangeEvent;
-      import mx.binding.utils.ChangeWatcher;
+	<mx:Script>
+    	<![CDATA[
+    		import mx.controls.Label;
+		    import mx.controls.List;
+			import mx.controls.Text;
+		    import org.openscales.core.events.LayerEvent;
+		    import mx.accessibility.ButtonAccImpl;
+		    import mx.core.ButtonAsset;
+		    import mx.skins.halo.ButtonSkin;
+		    import mx.events.DragEvent;
+		    import mx.binding.utils.BindingUtils;
+		    import org.openscales.core.Map;
+		    import org.openscales.core.layer.ogc.WFS;
+		    import mx.controls.Button;
+		    import org.openscales.core.basetypes.Bounds;
+		    import mx.controls.CheckBox;
+		    import mx.controls.RadioButtonGroup;
+		    import mx.controls.RadioButton;
+		    import org.openscales.core.layer.Layer;
+		    import mx.events.PropertyChangeEvent;
+		    import mx.binding.utils.ChangeWatcher;
 
-      [Bindable]
-      private var hasCapabilities:Boolean = false;
+	      	[Bindable]
+	      	private var hasCapabilities:Boolean = false;
       
-      private var labelLayer:Label;
+      		private var labelLayer:Label;
 
-      /**
-       * Get the layer that the List into the LayerSwitcher.mxml send to display it
-       *
-       * @return return the layer
-       */
-      private function get layer():Layer {
-        return (this.data) as Layer;
-      }
+	      	/**
+	       	 * Get the layer that the List into the LayerSwitcher.mxml send to display it
+	         *
+	         * @return return the layer
+	         */
+      		private function get layer():Layer {
+        		return (this.data) as Layer;
+      		}
 
-      /**
-       * Change the layer visibility
-       *
-       * @param event Change event
-       */
-       public function layerVisible(event:MouseEvent):void
-      {
-        layer.visible = !layer.visible;
-
-        // If the layer was uncheck from the beggining, he hadn't load yet so we need
-        // to redraw it to load it.
-        if(layer.visible){
-          layer.redraw();
-        }
-      } 
+	       /**
+	        * Change the layer visibility
+	        *
+	        * @param event Change event
+	        */
+	        public function layerVisible(event:MouseEvent):void{
+	        	layer.visible = !layer.visible;
+	
+	        	// If the layer was uncheck from the beggining, he hadn't load yet so we need
+	        	// to redraw it to load it.
+	        	if(layer.visible){
+	          	layer.redraw();
+	        	}
+	      	} 
 
       /**
        * Change the opacity of the layer
@@ -59,7 +58,7 @@
        */
       public function layerOpacity(event:Event):void
       {
-        layer.alpha = (event.target as HSlider).value/100;
+        layer.alpha = (event.target as VSlider).value/100;
         if(layer.alpha == 0)
         {
         	labelLayer.setStyle("color",0xA8A8A8);
@@ -106,7 +105,7 @@
        *
        * @param value
        */
-            override public function set data(value:Object):void {
+       override public function set data(value:Object):void {
                 super.data = value;
 				
         if((this.layer != null) && (displayControl != null))
@@ -225,16 +224,17 @@
 
   <mx:HBox width="100%">
     <mx:Canvas id="displayControl" width="128"/>
-    <!--<mx:Button id="zoomButton" width="30" height="20" toolTip="Center Map" icon="@Embed('/images/zoomin.swf')" click="this.setLayerExtent(event)"/>-->
-    <mx:Image id="ArrowUp" name="ArrowUp" source="@Embed('/images/ArrowUp.swf')" click="changeLayerOrder(event)"/>
-    <mx:Image id="ArrowDown" name="ArrowDown" source="@Embed('/images/ArrowDown.swf')" click="changeLayerOrder(event)"/>
-    <mx:Button id="deleteButton" width="20" height="10" toolTip="Delete" icon="@Embed('/images/cross.swf')" click="deleteLayer(event)"/>
+    	<!--<mx:Button id="zoomButton" width="30" height="20" toolTip="Center Map" icon="@Embed('/images/zoomin.swf')" click="this.setLayerExtent(event)"/>-->
+    	<mx:Image id="ArrowUp" name="ArrowUp" source="@Embed('/images/ArrowUp.swf')" click="changeLayerOrder(event)"/>
+   	 	<mx:Image id="ArrowDown" name="ArrowDown" source="@Embed('/images/ArrowDown.swf')" click="changeLayerOrder(event)"/>
+    	<mx:Button id="deleteButton" width="20" height="10" toolTip="Delete" icon="@Embed('/images/cross.swf')" click="deleteLayer(event)"/>
   </mx:HBox>
-  <mx:HBox id="Hbox2" width="100%">
-        <mx:Label text="0%"/>
-    <mx:HSlider width="100" height="5" id="opacityControl" minimum="0" maximum="100"
-      change="layerOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
-      <mx:Label text="100%"/>
-  </mx:HBox>
+  
+  <!--mx:HBox id="Hbox2" width="100%"-->
+        <!--mx:Label text="0%"/-->
+    	<mx:VSlider width="100" height="5" id="opacityControl" minimum="0" maximum="100"
+      		change="layerOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
+      	<!--mx:Label text="100%"/-->
+  <!--/mx:HBox-->
 
 </mx:VBox>
