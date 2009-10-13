@@ -12,7 +12,7 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%" lat="0" lon="0" zoom="4">
+	<os:Map id="fxmap" width="100%" height="100%" lat="0" lon="0" zoom="2">
 		
 		<os:ImageLayer name="City Lights" url="http://openscales.org/4_m_citylights_lg.gif" bounds="-180, -88.759, 180, 88.759" />
 		
