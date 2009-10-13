@@ -42,7 +42,7 @@ package org.openscales.core.configuration
 		 * @return The child items of <Custom> </Custom> elements
 		 * It's an XML and not a XMLList because in case we have several customs, we can't access specificly to a custom.
 		 */	
-		function get custom():XML;
+		function get custom():XMLList;
 		
 		/**
 		 * @return The child items of <Handlers> </Handlers> elements 

@@ -86,9 +86,8 @@ package org.openscales.core.configuration
                   }
                   
             }
+            
             public function middleConfigureMap(map:Map):void {
-                  
-                  
                   //add layers
                   map.addLayers(layersFromMap);
                   
@@ -107,12 +106,9 @@ package org.openscales.core.configuration
                         }
                         
                   }
-                  
-                  
             }
             
             public function endConfigureMap(map:Map):void {
-                  
                   if(config.@zoom != ""){
                         map.zoom = Number(config.@zoom);
                   }
