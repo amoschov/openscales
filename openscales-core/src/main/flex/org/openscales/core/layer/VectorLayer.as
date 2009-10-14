@@ -5,7 +5,7 @@ package org.openscales.core.layer
 	import org.openscales.core.Map;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Feature;
-	import org.openscales.core.feature.Style;
+	import org.openscales.core.style.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
@@ -57,7 +57,7 @@ package org.openscales.core.layer
 				this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.checkProjection);
 				checkProjection();
 			 } 
-		} 
+		}
 
 		/**
 		 * Add Feature to the layer.
@@ -73,10 +73,6 @@ package org.openscales.core.layer
 				throw throwStr;
 			}
 
-			if (!vectorfeature.style) {
-				vectorfeature.style = this.style;
-			}
-			
 			super.addFeature(vectorfeature);
 		}
 

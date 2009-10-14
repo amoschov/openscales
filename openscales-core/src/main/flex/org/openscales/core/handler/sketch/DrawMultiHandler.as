@@ -5,7 +5,6 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPointFeature;
 	import org.openscales.core.feature.MultiPolygonFeature;
-	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
@@ -14,6 +13,12 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.style.Rule;
+	import org.openscales.core.style.Style;
+	import org.openscales.core.style.symbolizer.Fill;
+	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
+	import org.openscales.core.style.symbolizer.Stroke;
+
 
 	/**
 	 * DrawMultiHandler allow you to merge several features (withe the same geometry) in one.
@@ -68,8 +73,8 @@ package org.openscales.core.handler.sketch
 			// FixMe: the style should not be hard coded bust should be dependant
 			// on the current style of the objects
 			var style:Style = new Style();
-			style.fillColor = 0x60FFE9;
-			style.strokeColor = 0x60FFE9;
+			style.rules[0] = new Rule();
+			(style.rules[0] as Rule).symbolizers.push(new PolygonSymbolizer(new Fill(0x60FFE9,0.5),new Stroke(0x60FFE9)));
 			
 			// FixMe: if the selected features have differents typesn only the
 			// features of the type of the last one in selectedFeatures are

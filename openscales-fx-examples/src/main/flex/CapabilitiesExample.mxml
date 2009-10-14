@@ -4,10 +4,15 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.style.symbolizer.Fill;
+			import org.openscales.core.style.symbolizer.Stroke;
+			import org.openscales.core.style.symbolizer.Stroke;
+			import org.openscales.core.style.symbolizer.Mark;
+			import org.openscales.core.style.symbolizer.PointSymbolizer;
+			import org.openscales.core.style.Style;
 			import mx.managers.PopUpManager;
-
 			import org.openscales.component.control.style.StyleEditionWindow;
-			import org.openscales.core.feature.Style;
+			import org.openscales.core.style.Style;
 			import org.openscales.core.layer.ogc.WFS;
 			import org.openscales.core.layer.VectorLayer;
 			import org.openscales.core.events.LayerEvent;
@@ -34,20 +39,18 @@
 				if(event.layer is WFS) {
 					
 					trace('Layer is a WFS layer');
-					var s:Style = new Style();
-					s.fillColor = 0xff0000;
-					s.fillOpacity = .2;
-					s.strokeColor = 0xccaaaa;
-					s.strokeWidth = 2;
+					var s:Style = Style.getDefaultSurfaceStyle();
+					s.rules[0].symbolizers.push(new PointSymbolizer(new Mark(Mark.WKN_CIRCLE,new Fill(0xFFFF00,0.5),new Stroke(0xFFFF00))));
+					
 					
 					(event.layer as WFS).style=s;
 					
 					event.layer.redraw();
-					this._styleEditorPanel.editedStyle = s;
+					/*this._styleEditorPanel.editedStyle = s;
 					this._styleEditorPanel.editedLayer = (event.layer as VectorLayer);
 					
 					PopUpManager.addPopUp(this._styleEditorPanel,this);
-					PopUpManager.centerPopUp(this._styleEditorPanel);
+					PopUpManager.centerPopUp(this._styleEditorPanel);*/
 				}
 			}
 			

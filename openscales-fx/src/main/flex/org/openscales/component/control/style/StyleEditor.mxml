@@ -3,7 +3,7 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.feature.Style;
+			import org.openscales.core.style.Style;
 			
 			[Bindable]
 			private var _editedStyle:Style;
@@ -21,7 +21,7 @@
 	</mx:Script>
 
 	<mx:Label text="Trait"/>
-	<mx:Box borderColor="0xeeeeee" borderThickness="2" borderStyle="inset" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" width="100%">
+	<!--<mx:Box borderColor="0xeeeeee" borderThickness="2" borderStyle="inset" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5" width="100%">
 		<mx:HBox width="100%">
 			<mx:Label text="Couleur :" fontWeight="bold"/><mx:ColorPicker id="strokeColorPicker" selectedColor="{this._editedStyle.strokeColor}"/>
 		</mx:HBox>
@@ -48,5 +48,5 @@
 	<mx:Binding source="fillOpacitySlider.value" destination="this._editedStyle.fillOpacity" />
 	<mx:Binding source="fillColorPicker.selectedColor" destination="this._editedStyle.fillColor" />
 	<mx:Binding source="strokeThickness.value" destination="this._editedStyle.strokeWidth" />
-	<mx:Binding source="strokeColorPicker.selectedColor" destination="this._editedStyle.strokeColor" />
+	<mx:Binding source="strokeColorPicker.selectedColor" destination="this._editedStyle.strokeColor" />-->
 </mx:Form>

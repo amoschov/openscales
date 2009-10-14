@@ -8,7 +8,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.feature.Style;
+	import org.openscales.core.style.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.Point;
@@ -94,6 +94,7 @@ package org.openscales.core.handler.sketch
 					lring = new LinearRing([point]);
 					polygon = new Polygon([lring]);
 					var polygonFeature:PolygonFeature = new PolygonFeature(polygon);
+					polygonFeature.style = Style.getDrawSurfaceStyle();
 
 					// We create a point the first time to see were the user clicked
 					var pointFeature:PointFeature = new PointFeature(point);
@@ -127,9 +128,7 @@ package org.openscales.core.handler.sketch
 		 */
 		public function drawFinalPoly():void{
 			//Change style of finished polygon
-			var style:Style = new Style();
-			style.fillColor = 0x60FFE9;
-			style.strokeColor = 0x60FFE9;
+			var style:Style = Style.getDefaultSurfaceStyle();
 			
 			//We finalize the last feature (of course, it's a polygon)
 			var feature:VectorFeature = drawLayer.features[drawLayer.features.length - 1];

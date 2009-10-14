@@ -3,6 +3,7 @@
 		 xmlns:os="http://openscales.org" creationComplete="initMap();" >
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.style.Style;
 			import org.openscales.core.layer.FeatureLayer;
 			import org.openscales.core.feature.Marker;
 			import org.openscales.core.feature.PointFeature;
@@ -28,6 +29,7 @@
 				var lonlat:LonLat=new LonLat(932115.8764378761,-437484.6802551435);
 				
 				var markers:VectorLayer=new VectorLayer("Markers",false,true,"EPSG:27700");
+				markers.style = Style.getDefaultPointStyle();
 				markLyon=new Marker(new org.openscales.core.geometry.Point(lonlat.lon,lonlat.lat),{popupContentHTML: "This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
 				markLyon.addEventListener(MouseEvent.CLICK, showPopup);
 				markers.addFeature(markLyon);
@@ -36,6 +38,7 @@
 
 				
 				var vect:VectorLayer=new VectorLayer("Reprojected vector",false,true,"EPSG:27700");
+				vect.style = Style.getDefaultPointStyle();
 				var p:org.openscales.core.geometry.Point=new org.openscales.core.geometry.Point(lonlat.lon,lonlat.lat);
 				
 				vect.addFeature(new PointFeature(p));

@@ -1,10 +1,11 @@
 package org.openscales.core.feature
 {
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
+	import org.openscales.core.style.Style;
+	import org.openscales.core.style.symbolizer.Symbolizer;
 
 	/**
 	 * Feature used to draw a Polygon geometry on FeatureLayer
@@ -20,9 +21,9 @@ package org.openscales.core.feature
 			return this.geometry as Polygon;
 		}
 
-		override public function draw():void {
-			super.draw();
-			
+		override protected function executeDrawing(symbolizer:Symbolizer):void {
+
+			trace("Drawing polygon");
 			// Variable declaration before for loop to improve performances
 			var p:Pixel = null;
 			var linearRing:LinearRing = null;
@@ -30,6 +31,8 @@ package org.openscales.core.feature
 			
 			for (var i:int = 0; i < this.polygon.componentsLength; i++) {
 				linearRing = (this.polygon.componentByIndex(i) as LinearRing);
+				
+				// Draw the n-1 line of the polygon
 				for (j=0; j<linearRing.componentsLength; j++) {
 					p = this.getLayerPxFromPoint(linearRing.componentByIndex(j) as Point);
 					if (j==0) {
@@ -38,7 +41,16 @@ package org.openscales.core.feature
 						this.graphics.lineTo(p.x, p.y);
 					}
 				}
+				
+				// Draw the last line of the polygon, as Flash won't render it if there is no fill for the polygon
+				if(linearRing.componentsLength > 0){
+					
+					p = this.getLayerPxFromPoint(linearRing.componentByIndex(0) as Point);
+					this.graphics.lineTo(p.x,p.y);
+				}
 			}
+			
+			trace("End of polygon drawing");
 		}		
 	}
 }

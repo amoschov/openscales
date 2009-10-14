@@ -6,7 +6,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.feature.Style;
+	import org.openscales.core.style.Style;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.VectorLayer;
 
@@ -43,10 +43,9 @@ package org.openscales.core.handler.sketch
 		 * Create a point and draw it
 		 */		
 		private function drawPoint(event:MouseEvent):void {
-			if (drawLayer != null) {
-				var style:Style = new Style();
-				style.fillColor = 0x60FFE9;
-				style.strokeColor = 0x60FFE9;
+			if (drawLayer != null)
+				trace("Drawing point"); {
+				var style:Style = Style.getDefaultPointStyle();
 			
 				var pixel:Pixel = new Pixel(drawLayer.mouseX ,drawLayer.mouseY);
 				var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);

@@ -1,10 +1,25 @@
-package org.openscales.core.feature
+package org.openscales.core.style
 {
+	
+	import org.openscales.core.style.symbolizer.Fill;
+	import org.openscales.core.style.symbolizer.LineSymbolizer;
+	import org.openscales.core.style.symbolizer.Mark;
+	import org.openscales.core.style.symbolizer.PointSymbolizer;
+	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
+	import org.openscales.core.style.symbolizer.Stroke;
+	
 	/**
 	 * Style describe graphical attributes used to render vectors.
 	 */
 	public class Style
 	{
+		
+		private var _name:String = "Default";
+		
+		/**
+		 * The list of rules of the style
+		 */
+		private var _rules:Array = [];
 
 		private var _fillColor:uint;
 		private var _fillOpacity:Number;
@@ -23,6 +38,93 @@ package org.openscales.core.feature
 		private var _isFilled:Boolean;
 		private var _isStroked:Boolean;
 
+		public static function getDefaultPointStyle():Style{
+			
+			var fill:Fill = new Fill(0xF2620F,0.7);
+			var stroke:Stroke = new Stroke(0xA6430A,1);
+			
+			var mark:Mark = new Mark(Mark.WKN_SQUARE,fill,stroke);
+			
+			var symbolizer:PointSymbolizer = new PointSymbolizer();
+			symbolizer.graphic = mark;
+			
+			var rule:Rule = new Rule();
+			rule.symbolizers.push(symbolizer);
+			
+			var style:Style = new Style();
+			style.rules.push(rule);
+			return style;
+		}
+		
+		public static function getDrawLineStyle():Style{
+			
+			var stroke:Stroke = new Stroke(0x60D980,1);
+			var symbolizer:LineSymbolizer = new LineSymbolizer(stroke);
+			
+			var rule:Rule = new Rule();
+			rule.symbolizers.push(symbolizer);
+			
+			var style:Style = new Style();
+			style.name = "Draw linear style";
+			style.rules.push(rule);
+			
+			return style;
+		}
+		
+		public static function getDefaultLineStyle():Style{
+			
+			var rule:Rule = new Rule();
+			rule.symbolizers.push(new LineSymbolizer(new Stroke(0x184054,3)));
+			rule.symbolizers.push(new LineSymbolizer(new Stroke(0x40A6D9,1)));
+			
+			var style:Style = new Style();
+			style.name = "Linear style";
+			style.rules.push(rule);
+			return style;
+		}
+		
+		public static function getDrawSurfaceStyle():Style{
+			
+			var fill:Fill = new Fill(0xE4EDF2,0.4);
+			var stroke:Stroke = new Stroke(0xE7FF33,3);
+			
+			var rule:Rule = new Rule();
+			rule.symbolizers.push(new PolygonSymbolizer(fill,stroke));
+			
+			var style:Style = new Style();
+			style.name = "Draw surface style";
+			style.rules.push(rule);
+			
+			return style;
+		}
+		
+		public static function getDefaultSurfaceStyle():Style{
+			
+			var fill1:Fill = new Fill();
+			fill1.color = 0x99D0F2;
+			fill1.opacity = 0.4;
+			
+			var stroke1:Stroke = new Stroke();
+			stroke1.width = 1;
+			stroke1.color = 0x96A621;
+			
+			var stroke2:Stroke = new Stroke();
+			stroke2.width = 4;
+			stroke2.color = 0xffffff;
+			
+			var ps1:PolygonSymbolizer = new PolygonSymbolizer(fill1,stroke2);
+			var ps2:PolygonSymbolizer = new PolygonSymbolizer(null,stroke1);
+			
+			var rule:Rule = new Rule();
+			rule.symbolizers.push(ps1);
+			rule.symbolizers.push(ps2);
+			
+			var style:Style = new Style();
+			style.rules.push(rule);
+			style.name = "Surface Style";
+			
+			return style;
+		}
 		/**
 		 * <p>Class constructor.</p>
 		 *
@@ -70,7 +172,33 @@ package org.openscales.core.feature
 		}
 		
 		/* Getters & setters */
-
+		/**
+		 * A name for the style
+		 */
+		public function get name():String{
+			
+			return this._name;
+		}
+		
+		public function set name(value:String):void{
+			
+			this._name = value;
+		}
+		
+		/**
+		 * The list of the rules defining the style
+		 */ 
+		public function get rules():Array{
+			
+			return this._rules;
+		}
+		
+		public function set rules(value:Array):void{
+			
+			this._rules = value;
+		}
+		
+		/*
 		public function get fillColor():uint {
 			return _fillColor;
 		}
@@ -141,7 +269,7 @@ package org.openscales.core.feature
 
 		public function set isStroked(value:Boolean):void {
 			_isStroked = value;
-		}
+		}*/
 
 	}
 }

@@ -6,7 +6,7 @@
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.layer.VectorLayer;
-			import org.openscales.core.feature.Style;
+			import org.openscales.core.style.Style;
 			
 			public static const OK_BUTTON_CLICKED:String="okClicked";
 			

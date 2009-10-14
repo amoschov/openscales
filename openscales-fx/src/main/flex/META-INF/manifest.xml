@@ -6,8 +6,8 @@
 	
 	<component id="Style" class="org.openscales.fx.feature.FxStyle" />
 	
+	<component id="VectorLayer" class="org.openscales.fx.layer.FxVectorLayer" />
 	<component id="ImageLayer" class="org.openscales.fx.layer.FxImageLayer" />
-	
 	<component id="WMS" class="org.openscales.fx.layer.FxWMS" />
 	<component id="WMSC" class="org.openscales.fx.layer.FxWMSC" />
 	<component id="WFS" class="org.openscales.fx.layer.FxWFS" />

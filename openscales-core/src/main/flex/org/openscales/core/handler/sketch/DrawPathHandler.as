@@ -4,17 +4,16 @@ package org.openscales.core.handler.sketch
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.LineStringFeature;
-	import org.openscales.core.feature.Style;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.style.Style;
 
 	/**
 	 * This handler manage the function draw of the LineString (path).
@@ -97,8 +96,7 @@ package org.openscales.core.handler.sketch
 			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,temporaryLine);
 			
 			//Change style of finished path
-			var style:Style = new Style();
-			style.strokeColor = 0x60FFE9;
+			var style:Style = Style.getDefaultLineStyle();
 			
 			//We finalize the last feature (of course, it's a lineString)
 			var f:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
@@ -127,8 +125,8 @@ package org.openscales.core.handler.sketch
 				_lineString = new LineString([point]);
 				lastPoint = point;
 				
-				var lineStyle:Style = new Style();
-				lineStyle.strokeColor = 0x00ff00;
+				// Fixme : style should not be hardcoded here but externalised
+				var lineStyle:Style = Style.getDrawLineStyle();
 				
 				var lineStringFeature:LineStringFeature = new LineStringFeature(_lineString, null, lineStyle);
 				

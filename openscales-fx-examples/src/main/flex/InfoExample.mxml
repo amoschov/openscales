@@ -6,6 +6,7 @@
 		<![CDATA[
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
+			import org.openscales.core.style.Style;
 
 			// Specific imports for this example			
 			import org.openscales.core.events.GetFeatureInfoEvent;
@@ -48,11 +49,8 @@
 			version="1.0.0"
 			minZoomLevel="21"
 			useCapabilities="true"
-			capabilitiesVersion="1.0.0">
-			<os:Style fillColor="0xff0000"
-				fillOpacity="0.7"
-				strokeColor="0x0066ff"
-				strokeWidth="1" />
+			capabilitiesVersion="1.0.0"
+			style="{Style.getDefaultPointStyle()}">
 		</os:WFS>
 		
 		<os:WMSGetFeatureInfo url="http://openscales.org/geoserver/wms" layers="tiger:poi" />

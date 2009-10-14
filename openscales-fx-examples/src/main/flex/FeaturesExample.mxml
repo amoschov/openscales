@@ -14,7 +14,7 @@
 			import org.openscales.core.feature.MultiPolygonFeature;
 			import org.openscales.core.feature.PointFeature;
 			import org.openscales.core.feature.PolygonFeature;
-			import org.openscales.core.feature.Style;
+			import org.openscales.core.style.Style;
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.geometry.Collection;
 			import org.openscales.core.geometry.Geometry;
@@ -26,7 +26,6 @@
 			import org.openscales.core.geometry.Point;
 			import org.openscales.core.geometry.Polygon;
 			import org.openscales.core.layer.VectorLayer;
-			import org.openscales.core.feature.Style;
 			
 			private function initMap():void {
 				map=fxmap.map;

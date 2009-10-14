@@ -1,10 +1,11 @@
 package org.openscales.core.feature
 {
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.Point;
+	import org.openscales.core.style.Style;
+	import org.openscales.core.style.symbolizer.Symbolizer;
 
 	/**
 	 * Feature used to draw a MultiLineString geometry on FeatureLayer
@@ -20,8 +21,7 @@ package org.openscales.core.feature
 			return this.geometry as MultiLineString;
 		}
 
-		override public function draw():void {
-			super.draw();
+		override protected function executeDrawing(symbolizer:Symbolizer):void {
 			
 			// Regardless to the style, a MultiLineString is never filled
 			this.graphics.endFill();

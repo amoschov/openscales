@@ -4,6 +4,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.style.Style;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 			
@@ -33,11 +34,8 @@
 			typename="topp:states"
 			srs="EPSG:4326"
 			version="1.0.0"
-			minZoomLevel="21">
-			<os:Style fillColor="0x00aa00"
-				fillOpacity="0.6"
-				strokeColor="0x003300"
-				strokeWidth="2" />
+			minZoomLevel="21"
+			style="{Style.getDefaultSurfaceStyle()}">
 		</os:WFS>
 		
 		<os:WFS name="Tiger poi (WFS)"
@@ -47,11 +45,8 @@
 			version="1.0.0"
 			minZoomLevel="21"
 			useCapabilities="true"
-			capabilitiesVersion="1.0.0">
-			<os:Style fillColor="0xff0000"
-				fillOpacity="0.7"
-				strokeColor="0x0066ff"
-				strokeWidth="1" />
+			capabilitiesVersion="1.0.0"
+			style="{Style.getDefaultPointStyle()}">
 		</os:WFS>
 		
 	</os:Map>

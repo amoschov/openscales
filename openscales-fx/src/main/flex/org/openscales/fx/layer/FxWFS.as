@@ -2,10 +2,9 @@ package org.openscales.fx.layer
 {
   import flash.display.DisplayObject;
   
-  import org.openscales.core.feature.Style;
   import org.openscales.core.layer.Layer;
   import org.openscales.core.layer.ogc.WFS;
-  import org.openscales.core.layer.params.ogc.WFSParams;
+  import org.openscales.core.style.Style;
   import org.openscales.fx.feature.FxStyle;
   import org.openscales.proj4as.ProjProjection;
 
@@ -93,6 +92,13 @@ package org.openscales.fx.layer
       
       public function get capabilitiesVersion():String {
         return this.capabilitiesVersion;
+      }
+      
+      public function set style(value:Style):void{
+      	
+      	if(this._layer){
+      		(this._layer as WFS).style = value;
+      	}
       }
 
   }

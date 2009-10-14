@@ -1,10 +1,10 @@
 package org.openscales.core.feature {
 	import flash.display.Bitmap;
 	
-	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
+	import org.openscales.core.style.Style;
+	import org.openscales.core.style.symbolizer.Symbolizer;
 
 	/**
 	 * A Marker is an graphical element localized by a LonLat
@@ -34,8 +34,7 @@ package org.openscales.core.feature {
 		/**
 		 * Draw the marker
 		 */
-		override public function draw():void {
-			super.draw();
+		override protected function executeDrawing(symbolizer:Symbolizer):void {
 			
 			if (!this._drawn) {
 				// Eventually remove old stuff

@@ -1,13 +1,10 @@
-package
-{
+package {
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPointFeature;
 	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.feature.Style;
-	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.MultiLineString;
@@ -15,8 +12,16 @@ package
 	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
-	import org.openscales.core.layer.osm.Mapnik;
 	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.layer.osm.Mapnik;
+	import org.openscales.core.style.Rule;
+	import org.openscales.core.style.Style;
+	import org.openscales.core.style.symbolizer.Fill;
+	import org.openscales.core.style.symbolizer.LineSymbolizer;
+	import org.openscales.core.style.symbolizer.Mark;
+	import org.openscales.core.style.symbolizer.PointSymbolizer;
+	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
+	import org.openscales.core.style.symbolizer.Stroke;
 
 	public class SampleLayers
 	{
@@ -42,6 +47,7 @@ package
 			// Create the drawings layer and some useful variables
 			var layer:VectorLayer = new VectorLayer("Drawing samples",false,true,"EPSG:4326");
 			var style:Style;
+			var rule:Rule;
 			var arrayComponents:Array;
 			var arrayVertices:Array;
 			var point:org.openscales.core.geometry.Point;
@@ -49,9 +55,8 @@ package
 			// Add some (black) objects for the tests of inclusion and
 			//   intersection with all the features added below.
 			style = new Style();
-			style.fillColor = 0x999999;
-			style.strokeColor = 0x000000;
-			style.strokeWidth = 2;
+			style.rules[0] = new Rule();
+			style.rules[0].symbolizers.push(new PointSymbolizer(new Mark(Mark.WKN_TRIANGLE,new Fill(0x999999,0.5),new Stroke(0x000000,2),12)));
 			// A point inside of the MultiPolygon (its first polygon).
 			point = new org.openscales.core.geometry.Point(4.649002075147177, 45.78235984585472);
 			layer.addFeature(new PointFeature(point,null,style));
@@ -66,6 +71,9 @@ package
 			layer.addFeature(new PointFeature(point,null,style));
 			//(layer.features[layer.features.length-1] as VectorFeature).id = "blackPoint2";
 			// A LineString intersecting all the other objects.
+			style = new Style();
+			style.rules[0] = new Rule();
+			style.rules[0].symbolizers.push(new PolygonSymbolizer(new Fill(0x999999,0.5),new Stroke(0x000000,2)));
 			arrayComponents = new Array();
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.5714111327782625, 45.76368130194846));
 			  arrayComponents.push(new org.openscales.core.geometry.Point(5.117294311391419, 45.69513978441103));
@@ -86,16 +94,16 @@ package
 			// This point is inside a hole of  the sample polygon: it must
 			//   be selectable through the polygon.
 			style = new Style();
-			style.fillColor = 0xFF0000;
-			style.strokeColor = 0xFF0000;
+			style.rules[0] = new Rule();
+			(style.rules[0] as Rule).symbolizers.push(new PointSymbolizer(new Mark(Mark.WKN_CIRCLE,new Fill(0xFF0000,0.5),new Stroke(0xFF0000,2),10)));
 			point = new org.openscales.core.geometry.Point(4.830228209414947, 45.73119410607873);
 			layer.addFeature(new PointFeature(point,null,style));
 			//(layer.features[layer.features.length-1] as VectorFeature).id = "Point";
 			
 			// Add a MultiPoint.
 			style = new Style();
-			style.fillColor = 0xFF9900;
-			style.strokeColor = 0xFF9900;
+			style.rules[0] = new Rule();
+			(style.rules[0] as Rule).symbolizers.push(new PointSymbolizer(new Mark(Mark.WKN_SQUARE,new Fill(0xFF9900,0.5),new Stroke(0xFF9900,2),10)));
 			arrayComponents = new Array();
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.841262817300238, 45.790978602336864));
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.787704467700456, 45.78044438566825));
@@ -113,9 +121,8 @@ package
 			
 			// Add a LineString.
 			style = new Style();
-			style.fillColor = 0x33FF00;
-			style.strokeColor = 0x33FF00;
-			style.strokeWidth = 3;
+			style.rules[0] = new Rule();
+			(style.rules[0] as Rule).symbolizers.push(new LineSymbolizer(new Stroke(0x33FF00,3)));
 			arrayComponents = new Array();
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.841262817300238, 45.806776194899484));
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.759552001885187, 45.785711742833584));
@@ -132,9 +139,10 @@ package
 			
 			// Add a MultiLineString.
 			style = new Style();
-			style.fillColor = 0xFF6600;
-			style.strokeColor = 0xFF0000;
-			style.strokeWidth = 5;
+			style.rules[0] = new Rule();
+			(style.rules[0] as Rule).symbolizers.push(new LineSymbolizer(new Stroke(0xFF3300,5)));
+			(style.rules[0] as Rule).symbolizers.push(new LineSymbolizer(new Stroke(0xFFFFFF,2)));
+			
 			arrayComponents = new Array();
 			arrayVertices = new Array();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(5.051376342653225, 45.67595227768875));
@@ -158,8 +166,8 @@ package
 			
 			// Add a Polygon.
 			style = new Style();
-			style.fillColor = 0x0033FF;
-			style.strokeColor = 0x0033FF;
+			style.rules[0] = new Rule();
+			(style.rules[0] as Rule).symbolizers.push(new PolygonSymbolizer(new Fill(0x0033FF,0.5),new Stroke(0x0033FF,2)));
 			arrayComponents = new Array();
 			arrayVertices = new Array();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.841262817300238, 45.790978602336864));
@@ -194,8 +202,8 @@ package
 			// Add a MultiPolygon.
 			var polygonArray:Array = new Array();
 			style = new Style();
-			style.fillColor = 0xFF00FF;
-			style.strokeColor = 0xFF00FF;
+			style.rules[0] = new Rule();
+			(style.rules[0] as Rule).symbolizers.push(new PolygonSymbolizer(new Fill(0xFF00FF,0.5),new Stroke(0xFF00FF,2)));
 			// 1st polygon
 			arrayComponents = new Array();
 			arrayVertices = new Array();

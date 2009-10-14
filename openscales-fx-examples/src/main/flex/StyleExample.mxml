@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" width="400" height="300" creationComplete="this.creationCompleteHandler(event);">
+<mx:Script>
+	<![CDATA[
+		
+		public function creationCompleteHandler(event:Event):void{
+			
+			
+		}
+	]]>
+</mx:Script>
+	<os:Map id="map" height="100%" width="100%" maxResolution="18" minResolution="1">
+		<os:VectorLayer id="vectorLayer">
+			
+		</os:VectorLayer>
+	</os:Map>
+</mx:Canvas>

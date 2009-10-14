@@ -3,13 +3,20 @@ package org.openscales.core.handler.mouse
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.Feature;
-	import org.openscales.core.feature.Style;
+	import org.openscales.core.feature.MultiPointFeature;
+	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.style.Rule;
+	import org.openscales.core.style.Style;
+	import org.openscales.core.style.symbolizer.Fill;
+	import org.openscales.core.style.symbolizer.Mark;
+	import org.openscales.core.style.symbolizer.PointSymbolizer;
+	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
+	import org.openscales.core.style.symbolizer.Stroke;
 
 	/**
 	 *
@@ -279,10 +286,19 @@ package org.openscales.core.handler.mouse
 		 * placed in the tab of selected features and the current is copy to the last.
 		 */		
 		private function changeToSelected():void{			
-			this.currentfeature.originalStyle=this.currentfeature.style;					
-			var selectStyle:Style = this.currentfeature.originalStyle.clone();
-			selectStyle.fillColor = 0xFFD700;
-			selectStyle.strokeColor = 0xFFD700;
+			this.currentfeature.originalStyle=this.currentfeature.style;
+			
+			// Little test to see if the style to be created should be a point style or a polygon style
+			// Anyway, this should not be here but either to an external class or in a specific method for managing display of selected features 
+			var selectStyle:Style =  new Style();
+			selectStyle.rules[0] = new Rule();
+			if(this.currentfeature is PointFeature || this.currentfeature is MultiPointFeature){					
+				selectStyle.rules[0].symbolizers.push(new PointSymbolizer(new Mark(Mark.WKN_SQUARE,new Fill(0xFFD700,0.5),new Stroke(0xFFD700,2),12)));
+			}
+			else{
+				selectStyle.rules[0].symbolizers.push(new PolygonSymbolizer(new Fill(0xFFD700,0.5),new Stroke(0xFFD700,2)));
+			}
+
 			this.currentfeature.style = selectStyle;							 
 			this.currentfeature.selected = true;
 			this.selectFeatures[iteratorFeatures]=this.currentfeature;						

@@ -27,7 +27,7 @@
 			import org.openscales.core.handler.sketch.DrawPointHandler;
 			import org.openscales.core.layer.VectorLayer;
 			import org.openscales.core.Map;
-			import org.openscales.core.feature.Style;
+			import org.openscales.core.style.Style;
 			import org.openscales.core.events.FeatureEvent;
 			import mx.events.CloseEvent;
 			import mx.events.ItemClickEvent;
