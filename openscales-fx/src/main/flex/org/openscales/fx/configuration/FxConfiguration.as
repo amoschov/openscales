@@ -1,5 +1,6 @@
 package org.openscales.fx.configuration
 {
+	import mx.containers.Canvas;
 	import mx.containers.Panel;
 	
 	import org.openscales.component.control.Control;
@@ -14,7 +15,6 @@ package org.openscales.fx.configuration
 
 	public class FxConfiguration extends Configuration
 	{
-		private var _map:Map;
 		
 		public function FxConfiguration(config:XML=null)
 		{
@@ -22,15 +22,13 @@ package org.openscales.fx.configuration
 		}
 		
 		override public function configureMap(map:Map):void {
-                  this._map = map
                   super.configureMap(map);
                   this.middleFxConfigureMap(map);
                   
         }
             
           public function middleFxConfigureMap(map:Map):void {
-                  
-                  
+           
                   //add controls
                   for each (var xmlControl:XML in controls){
                         var control:Control = parseFxControl(xmlControl);
@@ -65,9 +63,6 @@ package org.openscales.fx.configuration
 	 			if(String(xmlNode.@height) != ""){
 	 				panZoom.height = Number(xmlNode.@height);
 	 			}
-	 			// for a specific example
-	 			/* var panel:Panel = Panel(this._map.parent.getChildByName("toolPanel"));
-	 			panel.addChild(panZoom); */
 	 			control = panZoom;  
 	 		}
 	 			 		

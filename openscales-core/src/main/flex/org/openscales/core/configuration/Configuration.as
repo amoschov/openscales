@@ -165,12 +165,12 @@ package org.openscales.core.configuration
             }
             
             public function get catalog():XMLList {
-                  var catalogNode:XMLList = config.*::Catalog.*;
+                  var catalogNode:XMLList = config.Catalog.*;
                   return catalogNode;
             }
             
-            public function get custom():XMLList {
-                  var customNode:XMLList = config.*::Custom.*;
+            public function get custom():XML {
+                  var customNode:XML = XML(config.Custom);
                   return customNode;
             }
             
@@ -180,7 +180,7 @@ package org.openscales.core.configuration
             }
             
             public function get controls():XMLList {
-                  var controlsNode:XMLList = config.*::Controls.*;
+                  var controlsNode:XMLList = config.Controls.*;
                   return controlsNode;
             }
             

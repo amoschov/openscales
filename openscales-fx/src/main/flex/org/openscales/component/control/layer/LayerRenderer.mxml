@@ -58,7 +58,7 @@
        */
       public function layerOpacity(event:Event):void
       {
-        layer.alpha = (event.target as VSlider).value/100;
+        layer.alpha = (event.target as HSlider).value/100;
         if(layer.alpha == 0)
         {
         	labelLayer.setStyle("color",0xA8A8A8);
@@ -230,11 +230,11 @@
     	<mx:Button id="deleteButton" width="20" height="10" toolTip="Delete" icon="@Embed('/images/cross.swf')" click="deleteLayer(event)"/>
   </mx:HBox>
   
-  <!--mx:HBox id="Hbox2" width="100%"-->
-        <!--mx:Label text="0%"/-->
-    	<mx:VSlider width="100" height="5" id="opacityControl" minimum="0" maximum="100"
+  <mx:HBox id="Hbox2" width="100%">
+        <mx:Label text="0%"/>
+    	<mx:HSlider width="100" height="5" id="opacityControl" minimum="0" maximum="100"
       		change="layerOpacity(event)" liveDragging="true" mouseDown="onDrag(event)"/>
-      	<!--mx:Label text="100%"/-->
-  <!--/mx:HBox-->
+      	<mx:Label text="100%"/>
+  </mx:HBox>
 
 </mx:VBox>
