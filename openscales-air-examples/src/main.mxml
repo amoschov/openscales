@@ -77,11 +77,9 @@
 				version="1.0.0"
 				isBaseLayer="false"
 				minZoomLevel="21"
-				visible="true">
-			<os:Style fillColor="0xff0000"
-					  fillOpacity="0.8"
-					  strokeColor="0x0000ff"
-					  strokeWidth="2"/>
+				visible="true"
+				style="{Style.getDefaultSurfaceStyle()}">
+			
 		</os:WFS>
 
 		<os:PanZoomBar/>
