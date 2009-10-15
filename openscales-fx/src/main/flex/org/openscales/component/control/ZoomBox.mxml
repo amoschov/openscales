@@ -18,6 +18,10 @@
                 
                 [Bindable]
                 private var _style:Object = "default";
+                [Bindable]
+                private var _icon:Object = "default";
+                [Bindable]
+                private var _toolTip:Object = "default";
                 
                 /**
                 * Handler of ZoomBox
@@ -71,13 +75,24 @@
 					 super.styleName = value; 
 					this._style = value;
 				}
+				
+				override public function set icon(value:Class):void
+				{
+					super.icon = value; 
+					this._icon = value;
+				}
+				override public function set toolTip(value:String):void
+				{
+					super.toolTip = value; 
+					this._toolTip = value;
+				}
             ]]>
     </mx:Script>
 
     <mx:Button id="zoombox" width="{this.width}" height="{this.height}"
-    	toolTip="Draw a rectangle to define a new extent"
+    	toolTip="{this._toolTip}"
 		useHandCursor="true" buttonMode="true"
-    	selected="false" click="onSelectZoomBox(event)" styleName="{this._style}" />
+    	selected="false" click="onSelectZoomBox(event)" styleName="{this._style}" icon="{this._icon}"/>
     	
     	<mx:Style>
     	.default{
