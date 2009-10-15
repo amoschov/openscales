@@ -235,7 +235,7 @@ package org.openscales.core.configuration
                              case "WMSC":{
                                    Trace.info("Find WMSC Layer : " + xmlNode.name());                                
                                    // We create the WMSC Layer with all params
-                                   var wmscLayer:WMSC = new WMSC(name,urlWMS,layers,isBaseLayer,visible,projection,proxy);
+                                   var wmscLayer:WMSC = new WMSC(name,urlWMS,layers,isBaseLayer,visible,projection,proxy);                  	   
                                    wmscLayer.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);
                                    wmscLayer.minResolution = minResolution;
                                    wmscLayer.maxResolution = maxResolution;
@@ -247,7 +247,7 @@ package org.openscales.core.configuration
                              case "WMS":{
                                    Trace.info("Find WMS Layer : " + xmlNode.name());
                                    // We create the WMS Layer with all params
-                                   var wmslayer:WMS = new WMS(name,urlWMS,layers,isBaseLayer,visible,projection,proxy);
+                                   var wmslayer:WMS = new WMS(name,urlWMS,layers,isBaseLayer,visible,projection,proxy);                       
                                    wmslayer.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);
                                    wmslayer.minResolution = minResolution; 
                                    wmslayer.maxResolution = maxResolution; 
@@ -262,7 +262,9 @@ package org.openscales.core.configuration
                         
                         //params for layer
                         var urlWfs:String=xmlNode.@url;
-
+						
+						var capabilitiesVersion:String = String(xmlNode.@capabilitiesVersion);
+						
                         var use110Capabilities:Boolean;
                         if(xmlNode.@use110Capabilities == "true"){use110Capabilities=true;}
                         else{use110Capabilities = false;}
@@ -280,7 +282,8 @@ package org.openscales.core.configuration
                         wfsLayer.minZoomLevel = Number(xmlNode.@minZoomLevel);
                         wfsLayer.maxZoomLevel = Number(xmlNode.@maxZoomLevel);
                         wfsLayer.minResolution = minResolution;  
-                        wfsLayer.maxResolution = maxResolution;  
+                        wfsLayer.maxResolution = maxResolution; 
+                        wfsLayer.capabilitiesVersion = capabilitiesVersion;
                         layer=wfsLayer;
                   }
                   // Case when the layer is Mapnik

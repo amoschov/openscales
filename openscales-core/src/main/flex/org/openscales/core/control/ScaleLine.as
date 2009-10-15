@@ -3,8 +3,9 @@ package org.openscales.core.control
 	import flash.events.Event;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
-
+	
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.events.LayerEvent;
@@ -36,9 +37,11 @@ package org.openscales.core.control
 		 * @param Units for zoomed in on bottom bar.  Default is ft.
 		 */
 		private var bottomInUnits:String = "ft";
-		private var labelMiles:TextField = null;
-		private var labelKm:TextField = null;
+		private var _labelMiles:TextField = null;
+		private var _labelKm:TextField = null;
 		private var _color:int = 0x666666;
+		
+		private var _topPx:Number;
 
 		public function ScaleLine(position:Pixel=null){
 			super(position);
@@ -106,6 +109,7 @@ package org.openscales.core.control
 		private function updateScale():void
 		{
 			var res:Number = this.map.resolution;
+			Trace.debug("resolution =>" + res);
 			if (!res) {
 				return;
 			}
@@ -113,7 +117,8 @@ package org.openscales.core.control
 			var curMapUnits:String = this.map.units;
 
 			// convert scaleMaxWidth to map units
-			var maxSizeData:Number = this.scaleMaxWidth * res * Unit.getInchesPerUnit(curMapUnits);  
+			var maxSizeData:Number = this.scaleMaxWidth * res * Unit.getInchesPerUnit(curMapUnits);
+			Trace.debug("maxSizeData =>" + maxSizeData);  
 
 			// decide whether to use large or small scale units     
 			var topUnits:String;
@@ -128,10 +133,13 @@ package org.openscales.core.control
 
 			// and to map units units
 			var topMax:Number = maxSizeData / Unit.getInchesPerUnit(topUnits);
+			Trace.debug("topMax =>" + topMax);
 			var bottomMax:Number = maxSizeData / Unit.getInchesPerUnit(bottomUnits);
 
 			// now trim this down to useful block length
+			
 			var topRounded:Number = this.getBarLen(topMax);
+			Trace.debug("toprounded =>" + topRounded);
 			var bottomRounded:Number = this.getBarLen(bottomMax);
 
 			// and back to display units
@@ -139,14 +147,15 @@ package org.openscales.core.control
 			bottomMax = bottomRounded / Unit.getInchesPerUnit(curMapUnits) * Unit.getInchesPerUnit(bottomUnits);
 
 			// and to pixel units
-			var topPx:Number = topMax / res;
+			_topPx = topMax / res;
+			Trace.debug("topPx =>" + topPx);
 			var bottomPx:Number = bottomMax / res;
 
 			this.graphics.clear();
 			this.graphics.beginFill(this._color);
 
 			//Draw the ScaleLine
-			if(Math.round(bottomPx)>Math.round(topPx))
+			 if(Math.round(bottomPx)>Math.round(topPx))
 			{
 				this.graphics.drawRect(10,50,Math.round(bottomPx),2);
 				this.graphics.drawRect(10+Math.round(topPx),+32,1,18);
@@ -161,8 +170,8 @@ package org.openscales.core.control
 
 			this.graphics.drawRect(10,32,1,20);
 			this.graphics.drawRect(10,50,1,20); 
-			this.graphics.endFill();
-
+			this.graphics.endFill(); 
+			
 			labelMiles = new TextField();
 			labelMiles.text = bottomRounded + " " + bottomUnits ;
 			labelMiles.x=13;
@@ -205,6 +214,28 @@ package org.openscales.core.control
 		public function set color(value:int):void {
 			this._color = value;
 		}
+		
+		public function get labelKm():TextField {
+			return _labelKm;
+		}
+		public function set labelKm(value:TextField):void {
+			_labelKm = value;
+		}
+		
+		public function get labelMiles():TextField {
+			return _labelMiles;
+		}
+		public function set labelMiles(value:TextField):void {
+			_labelMiles = value;
+		}
+		
+		public function get topPx():Number {
+			return _topPx;
+		}
+		public function set topPx(value:Number):void {
+			_topPx = value;
+		}
+		
 
 	}
 }
