@@ -11,6 +11,7 @@
 			import com.gskinner.motion.GTweeny;
 			import mx.events.SliderEvent;
 					
+					
 			private function onZoomOutClick(event:MouseEvent):void{
 				this.map.zoom--;
 			}
@@ -72,37 +73,47 @@
 
 		<mx:VBox height="100%">
 
-			<mx:Button id="zoomIn" width="16" height="16"
+			<mx:Button id="zoomIn" styleName="zoomIn"
 				toolTip="Zoom in"
-				upSkin="@Embed('/images/mapZoomIn-upskin.swf')"
-				overSkin="@Embed('/images/mapZoomIn-upskin.swf')"
-				downSkin="@Embed('/images/mapZoomIn-upskin.swf')"
-				disabledSkin="@Embed('/images/mapZoomIn-upskin.swf')"
 				useHandCursor="true" buttonMode="true"
 				click="this.onZoomInClick(event);" />
 
 			<mx:Spacer height="100%" />
 
-			<mx:Button id="zoomOut" width="16" height="16"
+			<mx:Button id="zoomOut" styleName="zoomOut"
 				toolTip="Zoom out"
-				upSkin="@Embed('/images/mapZoomOut-upskin.swf')"
-				overSkin="@Embed('/images/mapZoomOut-upskin.swf')"
-				downSkin="@Embed('/images/mapZoomOut-upskin.swf')"
-				disabledSkin="@Embed('/images/mapZoomOut-upskin.swf')"
 				useHandCursor="true" buttonMode="true"
 				click="this.onZoomOutClick(event);" />
 
 		</mx:VBox>
 
 		<mx:VSlider id="zoomSlider"
-			toolTip="Set the scale of the map"
+			toolTip="Set the scale of the map" styleName="zoom"
 			height="100"
 			liveDragging="true" allowTrackClick="true"
 			tickInterval="1" snapInterval="1"
 			thumbPress="this.onZoomSliderThumbPress(event)"
 			useHandCursor="true" buttonMode="true"
-			styleName="zoomSliderStyle" />
+			 />
 
 	</mx:HBox>
+
+	<mx:Style>
+		Button.zoomOut
+		{
+			upSkin: Embed('/images/mapZoomOut-upskin.swf');
+			overSkin: Embed('/images/mapZoomOut-upskin.swf');
+			downSkin: Embed('/images/mapZoomOut-upskin.swf');
+			disabledSkin: Embed('/images/mapZoomOut-upskin.swf');
+		}
+		
+		Button.zoomIn
+		{
+			upSkin: Embed('/images/mapZoomIn-upskin.swf');
+			overSkin: Embed('/images/mapZoomIn-upskin.swf');
+			downSkin: Embed('/images/mapZoomIn-upskin.swf');
+			disabledSkin: Embed('/images/mapZoomIn-upskin.swf');
+		}
+	</mx:Style>
 
 </control:Control>
