@@ -207,6 +207,11 @@ package org.openscales.core.configuration
                   
                   var maxResolution:Number= Number(xmlNode.@maxResolution);
                   
+                  var numZoomLevels:Number;
+                  if(String(xmlNode.@numZoomLevels) != ""){
+                  	numZoomLevels = Number(xmlNode.@numZoomLevels);
+                  }
+                  
                   // Case where the layer is WMS or WMSC
                   if(xmlNode.name()== "WMSC" || xmlNode.name()== "WMS"){
                         var type:String = xmlNode.name();
@@ -240,6 +245,7 @@ package org.openscales.core.configuration
                                    wmscLayer.minResolution = minResolution;
                                    wmscLayer.maxResolution = maxResolution;
                                    wmscLayer.params = paramsWms;
+                                   wmscLayer.numZoomLevels = numZoomLevels;
                                    layer=wmscLayer;
                                    break;
                              }
@@ -252,6 +258,7 @@ package org.openscales.core.configuration
                                    wmslayer.minResolution = minResolution; 
                                    wmslayer.maxResolution = maxResolution; 
                                    wmslayer.params = paramsWms;
+                                   wmslayer.numZoomLevels = numZoomLevels;
                                    layer=wmslayer;
                                    break;
                              }                                  
@@ -284,6 +291,7 @@ package org.openscales.core.configuration
                         wfsLayer.minResolution = minResolution;  
                         wfsLayer.maxResolution = maxResolution; 
                         wfsLayer.capabilitiesVersion = capabilitiesVersion;
+                        wfsLayer.numZoomLevels = numZoomLevels;
                         layer=wfsLayer;
                   }
                   // Case when the layer is Mapnik
@@ -293,7 +301,7 @@ package org.openscales.core.configuration
                         var mapnik:Mapnik=new Mapnik("Mapnik", isBaseLayer); // a base layer
                         mapnik.minResolution = xmlNode.@minResolution;
                         mapnik.maxResolution = xmlNode.@maxResolution;
-                        mapnik.numZoomLevels = Number(xmlNode.@numZoomLevels);
+                        mapnik.numZoomLevels = numZoomLevels;
                         mapnik.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);
                         layer=mapnik;
                   }

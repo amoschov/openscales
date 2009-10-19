@@ -5,6 +5,11 @@
 	<mx:Script>
 		<![CDATA[
 			
+			[Bindable] private var _toolTipNorth:String = "Move the map to the North direction";
+			[Bindable] private var _toolTipSouth:String = "Move the map to the South direction";
+			[Bindable] private var _toolTipEast:String = "Move the map to the East direction";
+			[Bindable] private var _toolTipWest:String = "Move the map to the West direction";
+			
 			public var DELTA_PX:Number = 100; // TODO: should be an attribute of the control and depending on the size of the map by default
 						
 			public function onButtonClick(event:MouseEvent):void {
@@ -21,6 +26,24 @@
 					this.map.pan(-this.DELTA_PX, 0, true);
 				}
 			}
+			
+			public function set toolTipNorth(value:String):void{
+				this._toolTipNorth = value;
+			}
+			
+			public function set toolTipSouth(value:String):void{ 
+				this._toolTipSouth = value;
+			}
+			
+			public function set toolTipEast(value:String):void{ 
+				this._toolTipEast = value;
+			}
+			
+			public function set toolTipWest(value:String):void{ 
+				this._toolTipWest = value;
+			}
+			
+			
 		]]>
 	</mx:Script>
 	
@@ -29,7 +52,7 @@
 			<mx:GridItem width="100%" height="100%"/>
 			<mx:GridItem width="100%" height="100%">
 				<mx:Button id="upButton" width="16" height="16"
-					toolTip="Move the map to the North direction"
+					toolTip="{this._toolTipNorth}"
 					upSkin="@Embed('/images/mapPanNorth-upskin.swf')"
 					overSkin="@Embed('/images/mapPanNorth-upskin.swf')"
 					downSkin="@Embed('/images/mapPanNorth-upskin.swf')"
@@ -42,7 +65,7 @@
 		<mx:GridRow height="100%" width="100%">
 			<mx:GridItem width="100%" height="100%">
 				<mx:Button id="leftButton" width="16" height="16"
-					toolTip="Move the map to the West direction"
+					toolTip="{this._toolTipWest}"
 					upSkin="@Embed('/images/mapPanWest-upskin.swf')"
 					overSkin="@Embed('/images/mapPanWest-upskin.swf')"
 					downSkin="@Embed('/images/mapPanWest-upskin.swf')"
@@ -53,7 +76,7 @@
 			<mx:GridItem width="100%" height="100%"/>
 			<mx:GridItem width="100%" height="100%">
 				<mx:Button id="rightButton" width="16" height="16"
-					toolTip="Move the map to the East direction"
+					toolTip="{this._toolTipEast}"
 					upSkin="@Embed('/images/mapPanEast-upskin.swf')"
 					overSkin="@Embed('/images/mapPanEast-upskin.swf')"
 					downSkin="@Embed('/images/mapPanEast-upskin.swf')"
@@ -66,7 +89,7 @@
 			<mx:GridItem width="100%" height="100%"/>
 			<mx:GridItem width="100%" height="100%">
 				<mx:Button id="downButton" width="16" height="16"
-					toolTip="Move the map to the South direction"
+					toolTip="{this._toolTipSouth}"
 					upSkin="@Embed('/images/mapPanSouth-upskin.swf')"
 					overSkin="@Embed('/images/mapPanSouth-upskin.swf')"
 					downSkin="@Embed('/images/mapPanSouth-upskin.swf')"

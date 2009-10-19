@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml"
-	xmlns:control="org.openscales.component.control.*" >
+	xmlns:control="org.openscales.component.control.*">
 	
 	<mx:Script>
 		<![CDATA[
@@ -10,6 +10,10 @@
 			import org.openscales.core.Map;
 			import com.gskinner.motion.GTweeny;
 			import mx.events.SliderEvent;
+			
+			[Bindable] private var _toolTipZoomIn:String = "Zoom In";
+			[Bindable] private var _toolTipZoomOut:String = "Zoom Out";
+			[Bindable] private var _toolTipZoomSlider:String = "Set the scale of the map";
 					
 					
 			private function onZoomOutClick(event:MouseEvent):void{
@@ -47,10 +51,10 @@
 			}
 			
 			override public function set active(value:Boolean):void {
-				if(value) {
+				if(value) {					
 					map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.initializeZoomLevels);
 					map.addEventListener(MapEvent.ZOOM_END, this.updateZoomLevels);
-					initializeZoomLevels();				
+					initializeZoomLevels();								
 				} else {
 					map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED, this.initializeZoomLevels);
 					map.removeEventListener(MapEvent.ZOOM_END, this.updateZoomLevels);
@@ -60,6 +64,18 @@
 			
 			private function updateZoomLevels(event:Event = null):void {
 				zoomSlider.value = map.zoom;
+			}
+			
+			public function set toolTipZoomIn(value:String):void{ 
+				this._toolTipZoomIn = value;
+			}
+			
+			public function set toolTipZoomOut(value:String):void{ 
+				this._toolTipZoomOut = value;
+			}
+			
+			public function set toolTipZoomSlider(value:String):void{ 
+				this._toolTipZoomSlider = value;
 			}
 		]]>
 	</mx:Script>
@@ -74,24 +90,24 @@
 		<mx:VBox height="100%">
 
 			<mx:Button id="zoomIn" styleName="zoomIn"
-				toolTip="Zoom in"
+				toolTip="{this._toolTipZoomIn}"
 				useHandCursor="true" buttonMode="true"
 				click="this.onZoomInClick(event);" />
 
 			<mx:Spacer height="100%" />
 
 			<mx:Button id="zoomOut" styleName="zoomOut"
-				toolTip="Zoom out"
+				toolTip="{this._toolTipZoomOut}"
 				useHandCursor="true" buttonMode="true"
 				click="this.onZoomOutClick(event);" />
 
 		</mx:VBox>
 
 		<mx:VSlider id="zoomSlider"
-			toolTip="Set the scale of the map" styleName="zoom"
+			toolTip="{this._toolTipZoomSlider}" styleName="zoom"
 			height="100"
 			liveDragging="true" allowTrackClick="true"
-			tickInterval="1" snapInterval="1"
+			tickInterval="1" snapInterval="1" 
 			thumbPress="this.onZoomSliderThumbPress(event)"
 			useHandCursor="true" buttonMode="true"
 			 />
