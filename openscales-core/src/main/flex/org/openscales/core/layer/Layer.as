@@ -114,16 +114,14 @@ package org.openscales.core.layer
 		 * of the layer.
 		 */
 		public function initResolutions():void {
-			
-			if(!this.resolutions)
-				this.resolutions = this.map.resolutions;
+				
 			if(isNaN(this.minResolution))
 				this.minResolution = this.map.minResolution;
 			if(isNaN(this.maxResolution))
 				this.maxResolution = this.map.maxResolution;
 			if(isNaN(this.numZoomLevels))
 				this.numZoomLevels = this.map.numZoomLevels;
-
+			
 			if ( (!this.numZoomLevels) && (this.maxZoomLevel) ) {
 				this.numZoomLevels = this.maxZoomLevel + 1;
 			}
@@ -133,10 +131,12 @@ package org.openscales.core.layer
 				this.numZoomLevels = Math.floor(Math.log(ratio) / Math.log(2)) + 1;
 			}
 
-			this.resolutions = new Array();
-			for (var i:int=0; i < this.numZoomLevels; i++) {
-				var res:Number = this.maxResolution / Math.pow(2, i);
-				this.resolutions.push(res);
+			if(!this.resolutions) {
+				this.resolutions = new Array();
+				for (var i:int=0; i < this.numZoomLevels; i++) {
+					var res:Number = this.maxResolution / Math.pow(2, i);
+					this.resolutions.push(res);
+				}
 			}
 
 			this.resolutions.sort(Array.NUMERIC | Array.DESCENDING);

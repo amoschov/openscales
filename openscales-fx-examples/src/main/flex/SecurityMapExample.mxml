@@ -21,7 +21,7 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%" zoom="8" lon="355360" lat="5070560"  maxExtent="-196608,4718592,655360,5570560" srs="IGNF:GEOPORTALFXX">
+	<os:Map id="fxmap" width="100%" height="100%" zoom="12" lon="355360" lat="5070560"  maxExtent="-196608,4718592,655360,5570560" srs="IGNF:GEOPORTALFXX">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
 				
