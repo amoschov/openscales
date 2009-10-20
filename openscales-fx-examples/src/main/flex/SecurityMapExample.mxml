@@ -21,7 +21,7 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%" zoom="12" lon="355360" lat="5070560"  maxExtent="-196608,4718592,655360,5570560" srs="IGNF:GEOPORTALFXX">
+	<os:Map id="fxmap" width="100%" height="100%" zoom="6" lon="355360" lat="5070560" srs="IGNF:GEOPORTALFXX">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
 				
@@ -36,7 +36,7 @@
 				 minZoomLevel="5"
 				 maxZoomLevel="18"
 				 proxy="http://openscales.org/proxy.php?url=" 
-				 maxExtent="-196608,4718592,655360,5570560"
+				 maxExtent="-556608,3718592,655360,8070560"
 				 />
 		
 		<os:DragHandler />
@@ -45,13 +45,12 @@
 		<os:MousePosition x="10" y="{height-20}" displayProjection="IGNF:GEOPORTALFXX"/>
 
 
-		<!-- Specific layers and handlers of this example -->
-		<!-- none -->
+		<mx:VBox horizontalAlign="center" x="10" y="10">
+		<os:PanComponent map="{map}" />
+		<os:ZoomComponent map="{map}" />
+		<os:ZoomBoxComponent map="{map}" width="32" height="32"/>
+	</mx:VBox>
 		
 	</os:Map>
-	
-	<!-- Specific tools of this example -->
-	
-	<!--<os:SampleSecurity map="{map}" login="test" password="t35t" /-->
 	
 </Example>
