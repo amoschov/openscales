@@ -4,37 +4,46 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.Map;
-			import org.openscales.core.Trace;
-
-			// Specific imports for this example
-			import org.openscales.core.security.sample.SampleSecurity;
+			import org.openscales.core.layer.ogc.WMS;
+			import org.openscales.core.layer.params.ogc.WMSParams;
+			import org.openscales.core.security.ign.IgnGeoRMSecurity;
 			
-			private var security:SampleSecurity;
+			private var security:IgnGeoRMSecurity;
 
 			private function initMap():void {
 				map=fxmap.map;
 				
-				// Specific initialize for this example
-				security = new SampleSecurity(map, "test", "t35t");
-				baselayer.layer.security=security;
+				// openscales.org API key
+				security = new IgnGeoRMSecurity(map, "1202474798937064747", "http://openscales.org/proxy.php?url=");
+				ortho.layer.security=security;
+				((ortho.layer as WMS).params as WMSParams).exceptions = "text/xml";
 			}
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%" zoom="2" lon="538850.47459" lat="5740916.1243">
+	<os:Map id="fxmap" width="100%" height="100%" zoom="8" lon="355360" lat="5070560"  maxExtent="-196608,4718592,655360,5570560" srs="IGNF:GEOPORTALFXX">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
-		
-		<!-- OpenStreetMap EPSG:900913 -->
-		<os:Mapnik name="Mapnik" id="baselayer" isBaseLayer="true"
-				   proxy="http://openscales.org/proxy.php?url=" />
+				
+		<os:WMSC id="ortho" 
+				 name="ORTHOPHOTOS"
+				 url="http://wxs.ign.fr/geoportail/wmsc"
+				 layers="ORTHOIMAGERY.ORTHOPHOTOS"
+				 format="image/jpeg"
+				 isBaseLayer="true"
+				 srs="IGNF:GEOPORTALFXX"
+				 resolutions="39135.7500000,19567.8750000,9783.9375000,4891.9687500,2445.9843750,2048.0000000,1024.0000000,512.0000000,256.0000000,128.0000000,64.0000000,32.0000000,16.0000000,8.0000000,4.0000000,2.0000000,1.0000000,0.5000000,0.2500000,0.1250000,0.0625000"
+				 minZoomLevel="5"
+				 maxZoomLevel="18"
+				 proxy="http://openscales.org/proxy.php?url=" 
+				 maxExtent="-196608,4718592,655360,5570560"
+				 />
 		
 		<os:DragHandler />
 		<os:WheelHandler />
 		<os:Spinner id="spinner" x="{width / 2}" y="{height / 2}"/>	
-		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
-		<os:ScaleLine />
+		<os:MousePosition x="10" y="{height-20}" displayProjection="IGNF:GEOPORTALFXX"/>
+
 
 		<!-- Specific layers and handlers of this example -->
 		<!-- none -->

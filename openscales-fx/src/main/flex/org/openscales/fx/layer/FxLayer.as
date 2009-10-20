@@ -101,6 +101,10 @@ package org.openscales.fx.layer
         if(this.layer != null)
           this.layer.visible = value;
       }
+	  
+	  public function set resolutions(value:String):void {
+		 this.layer.resolutions = value.split(",");
+	  }
 
   }
 }
