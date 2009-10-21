@@ -14,6 +14,19 @@
 			[Bindable] private var _toolTipZoomIn:String = "Zoom In";
 			[Bindable] private var _toolTipZoomOut:String = "Zoom Out";
 			[Bindable] private var _toolTipZoomSlider:String = "Set the scale of the map";
+			[Bindable] private var _showDataTip:Boolean = true;
+			
+			public function set showDataTip(value:String):void
+			{
+				if(value == true)
+				{
+					this._showDataTip = true;
+				}
+				else
+				{
+					this._showDataTip = false;
+				}
+			}
 					
 					
 			private function onZoomOutClick(event:MouseEvent):void{
@@ -109,7 +122,7 @@
 			liveDragging="true" allowTrackClick="true"
 			tickInterval="1" snapInterval="1" 
 			thumbPress="this.onZoomSliderThumbPress(event)"
-			useHandCursor="true" buttonMode="true"
+			useHandCursor="true" buttonMode="true" showDataTip="{this._showDataTip}"
 			 />
 
 	</mx:HBox>
