@@ -161,8 +161,6 @@ package org.openscales.core
 					layer.visible = false;
 					layer.zindex = 0; 
 				}
-			} else {
-				layer.redraw();
 			}
 
 			this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_ADDED, layer));

@@ -46,10 +46,6 @@ package org.openscales.core.layer
 				for each (var f:VectorFeature in this.features) {
 					f.geometry.transform(this._temporaryProjection, this.map.baseLayer.projection);
 				}
-				var resProj:ProjPoint = new ProjPoint(this.minResolution, this.maxResolution);
-				resProj = Proj4as.transform(this._temporaryProjection, map.baseLayer.projection, resProj);
-				this.minResolution = resProj.x;
-				this.maxResolution = resProj.y;
 				this._temporaryProjection = map.baseLayer.projection;
 				this.redraw();
 			}
