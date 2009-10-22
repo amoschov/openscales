@@ -1,12 +1,12 @@
 package org.openscales.core.layer
 {
 	import flash.utils.getQualifiedClassName;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Feature;
-	import org.openscales.core.style.Style;
 	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.style.Style;
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
@@ -21,14 +21,18 @@ package org.openscales.core.layer
 		private var _geometryType:String = null;
 
 		private var _temporaryProjection:ProjProjection = null;
-
+		
+		//enables Temporaries vertices on the vectorLayer
+		private var _tmpVerticesOnFeature:Boolean=false;
+		
 		public function VectorLayer(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
-			projection:String = null, proxy:String = null) {
+			projection:String = null, proxy:String = null,tmpVerticesOnFeature:Boolean=false) {
 
 			super(name,isBaseLayer, visible, projection, proxy);
 			this.style = new Style();
 			this._temporaryProjection = this.projection;
-
+			
+			
 		}
 
 		override public function destroy(setNewBaseLayer:Boolean = true):void {
@@ -96,6 +100,12 @@ package org.openscales.core.layer
 			super.projection = value;
 		}
 		
+		public function get tmpVerticesOnFeature():Boolean{
+			return this._tmpVerticesOnFeature;
+		}
+		public function set tmpVerticesOnFeature(value:Boolean):void{
+			this._tmpVerticesOnFeature=value;
+		}
 	}
 }
 

@@ -2,6 +2,7 @@ package org.openscales.core.feature
 {
 	import flash.display.CapsStyle;
 	import flash.display.JointStyle;
+	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
@@ -28,7 +29,22 @@ package org.openscales.core.feature
 		private var _state:String = null;    
 		private var _style:Style = null;	    
 		private var _originalStyle:Style = null;
-
+		
+		
+		/**
+		 * This Array  is used to record temporaries point for a feature modification
+		 * 
+		 * there are 2 types or temporaries vertices which represent real vertices and which 
+		 * represent a  temporary vertice used to represent the point of the feature  under the mouse
+		 **/
+		 
+		 
+		private var _tmpVertices:Array=new Array();
+		
+		private var _tmpVerticeTolerance:Number=10;
+		
+		
+		
 		/**
 		 * VectorFeature constructor
 		 *
@@ -250,6 +266,84 @@ package org.openscales.core.feature
 			var x:Number = (point.x / this.layer.resolution + this.left);
 			var y:Number = (this.top - point.y / this.layer.resolution);
 			return this.layer.map.getLayerPxFromMapPx(new Pixel(x, y));
+		}
+		
+		
+		
+		override protected function verticesShowing(pevt:MouseEvent):void{
+			//TODO DAMIEN NDA Remove this condition after testing on all feature
+			if((this.layer as VectorLayer).tmpVerticesOnFeature){
+			super.verticesShowing(pevt);
+			if(this.layer!=null && this.layer.map!=null)
+			{
+				var px:Pixel=new Pixel(this.layer.mouseX,this.layer.mouseY);
+				//tmpPx is used for tolerance
+				var tmpPx:Pixel=null;
+				var tmpLonLat:LonLat=null;
+				var lonlat:LonLat=this.layer.map.getLonLatFromLayerPx(px);
+				
+				var tmpVerticeUnderTheMouse:PointFeature=this.getTmpFeatureUnderTheMouse();
+				//first over
+				if(tmpVerticeUnderTheMouse!=null){
+					 tmpLonLat=new LonLat((tmpVerticeUnderTheMouse.geometry as Point).x,(tmpVerticeUnderTheMouse.geometry as Point).y);
+					 tmpPx=this.layer.map.getLayerPxFromLonLat(tmpLonLat);
+				}
+				//the point will be add on the LineString to show a vertice which could be modified
+			
+				
+				
+				if(tmpPx==null || Math.abs(px.x-tmpPx.x) >tmpVerticeTolerance ||Math.abs(px.y-tmpPx.y)>tmpVerticeTolerance)
+				{
+				var style:Style = Style.getDefaultCircleStyle();
+				//we delete the point under the mouse  from layer and from tmpVertices Array
+				(this.layer as VectorLayer).removeFeature(tmpVerticeUnderTheMouse);
+				
+				Util.removeItem(this.tmpVertices,tmpVerticeUnderTheMouse);
+				
+				var tmpVertice:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat),{isTmpFeatureUnderTheMouse:true},style,true);
+				this.tmpVertices.push(tmpVertice);						
+				(this.layer as VectorLayer).addFeature(tmpVertice);
+				tmpVertice.unregisterListeners();
+				}
+			}
+			}
+		}
+		
+		override protected function verticesHiding(pevt:MouseEvent):void{
+		 	for each(var feature:PointFeature in this.tmpVertices){
+		 		(this.layer as VectorLayer).removeFeature(feature);
+		 		this.tmpVertices.pop();
+		 	}
+		 }
+		
+		
+		/**
+		 * This function is used to get the temporary pointfeature under the mouse
+		 * when the mouse is over the the feature
+		 * */
+		protected function getTmpFeatureUnderTheMouse():PointFeature{
+			for each(var point:PointFeature in this.tmpVertices){
+				if(point.attributes.isTmpFeatureUnderTheMouse){
+					return point;
+				}
+			}
+			return null;
+		}
+		
+		
+		public function get tmpVertices():Array{
+			return this._tmpVertices;
+		}
+		
+		public function set tmpVertices(value:Array):void{
+			this._tmpVertices=value;
+		}
+		
+		public function get tmpVerticeTolerance():Number{
+			return this._tmpVerticeTolerance;	
+		}
+		public function set tmpVerticeTolerance(tolerance:Number):void{
+			this._tmpVerticeTolerance=tolerance;
 		}
 
 	}
