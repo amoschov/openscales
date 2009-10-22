@@ -396,10 +396,7 @@
 		
 		<!-- Default base layer: OpenStreetMap EPSG:900913 -->
 		<os:Mapnik name="Default(OSM-Mapnik)"
-			numZoomLevels="20"
 			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-			minResolution="0.5971642833709717"
-			maxResolution="156543.0339"
 			isBaseLayer="true" />
 		
 	</os:Map>

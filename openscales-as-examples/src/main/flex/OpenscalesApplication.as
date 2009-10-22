@@ -27,9 +27,6 @@ package {
 
 		public function OpenscalesApplication() {
 			_map=new Map();
-			
-			_map.maxResolution=156543.0339;  
-			_map.numZoomLevels=20;
 			_map.size=new Size(600, 400);
 
 			// Add layers to map

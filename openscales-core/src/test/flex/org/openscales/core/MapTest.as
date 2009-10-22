@@ -12,22 +12,6 @@ package org.openscales.core
 		}
 		
 		[Test]
-		public function testMaxResolution( ) : void {
-			var map:Map = new Map();
-			var maxResolution:Number = 156543.0339;
-			map.maxResolution = maxResolution;	
-			Assert.assertEquals(maxResolution, map.maxResolution);
-		}
-		
-		[Test]
-		public function testNumZoomLevels( ) : void {
-			var map:Map = new Map();
-			var numZoomLevels:Number = 20;
-			map.numZoomLevels = numZoomLevels;	
-			Assert.assertEquals(numZoomLevels, map.numZoomLevels);
-		}
-
-		[Test]
 		public function testSize( ) : void {
 			var map:Map = new Map();
 			var size:Size = new Size(100, 200);

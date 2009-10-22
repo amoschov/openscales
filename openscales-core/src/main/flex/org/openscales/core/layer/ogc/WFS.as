@@ -123,8 +123,7 @@ package org.openscales.core.layer.ogc
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 			super.moveTo(bounds, zoomChanged, dragging,resizing);
 			
-			if ((this.minZoomLevel && (this.map.zoom > this.minZoomLevel)) ||
-			    (this.maxZoomLevel && (this.map.zoom < this.maxZoomLevel)))	{
+			if ((this.map.zoom < this.minZoomLevel) || (this.map.zoom > this.maxZoomLevel))	{
 		 		Trace.debug("Zoom outside min or max zoom level, don't draw layer " + this.name);
 		 		return;
 	    	}			

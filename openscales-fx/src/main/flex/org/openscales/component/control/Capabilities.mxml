@@ -85,7 +85,6 @@
 					var srs:String = capabilities.getValue(this.list.selectedItem).getValue("SRS");
 					var newLayer:WFS = new WFS(typename,this.url,typename,false,true,srs,null,true,capabilities.getValue(this.list.selectedItem as String));
 					newLayer.isBaseLayer = false;
-					newLayer.minZoomLevel = this.map.numZoomLevels;
 					
 					this.map.addLayer(newLayer);
 					addedLayers.put(this.list.selectedItem,null);

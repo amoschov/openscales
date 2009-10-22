@@ -10,7 +10,15 @@ package org.openscales.core.security
 	 */
 	public class AbstractSecurity implements ISecurity
 	{
+		/**
+		 * Map used to dispatch events
+		 */
 		private var _map:Map = null;
+		
+		/**
+		 * Proxy eventually used to auhtenticate
+		 */ 
+		private var _proxy:String = null;
 
 		public function AbstractSecurity(map:Map)
 		{
@@ -38,6 +46,15 @@ package org.openscales.core.security
 		public function set map(value:Map):void {
 			this._map = value;
 		}
+		
+		public function get proxy():String {
+			return this._proxy;
+		}
+		
+		public function set proxy(value:String):void {
+			this._proxy = value;
+		}
+
 
 
 	}

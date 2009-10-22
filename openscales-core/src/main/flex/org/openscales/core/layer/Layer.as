@@ -1,5 +1,7 @@
 package org.openscales.core.layer
 {
+	import flash.display.Sprite;
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -8,8 +10,6 @@ package org.openscales.core.layer
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.security.ISecurity;
 	import org.openscales.proj4as.ProjProjection;
-	
-	import flash.display.Sprite;
 
 	/**
 	 * A Layer display image of vector datas on the map, usually loaded from a remote datasource.
@@ -17,7 +17,9 @@ package org.openscales.core.layer
 	 */
 	public class Layer extends Sprite
 	{
-		private const RESOLUTION_TOLERANCE:Number = 0.000001;
+		public static const RESOLUTION_TOLERANCE:Number = 0.000001;
+		public static const DEFAULT_NUM_ZOOM_LEVELS:uint = 20;
+		public static const DEFAULT_MAX_RESOLUTION:Number = 1.40625;
 
 		private var _isBaseLayer:Boolean = false;
 		private var _isFixed:Boolean = false;
@@ -25,9 +27,6 @@ package org.openscales.core.layer
 		private var _units:String = null;
 		private var _resolutions:Array = null;
 		private var _maxExtent:Bounds = null;
-		private var _maxResolution:Number = NaN;
-		private var _minResolution:Number = NaN;
-		private var _numZoomLevels:Number = NaN;
 		private var _minZoomLevel:Number = NaN;
 		private var _maxZoomLevel:Number = NaN;
 		protected var _imageSize:Size = null;
@@ -55,9 +54,20 @@ package org.openscales.core.layer
 				this._projection = new ProjProjection("EPSG:4326");
 
 			this._proxy = proxy;
+			
+			this.generateResolutions();
+
 		}
-
-
+		
+		public function generateResolutions(numZoomLevels:uint = Layer.DEFAULT_NUM_ZOOM_LEVELS, maxResolution:Number = Layer.DEFAULT_MAX_RESOLUTION):void {
+			// Generate default resolutions
+			this.resolutions = new Array();
+			for (var i:int=0; i < numZoomLevels; i++) {
+				var res:Number = maxResolution / Math.pow(2, i);
+				this.resolutions.push(res);
+			}
+			this.resolutions.sort(Array.NUMERIC | Array.DESCENDING);
+		}
 
 		public function destroy(setNewBaseLayer:Boolean = true):void {
 			if (this.map != null) {
@@ -100,50 +110,10 @@ package org.openscales.core.layer
 			if(!this.units)
 				this.units = this.map.units;
 			
-			this.initResolutions();
 		}
 
 		public function get map():Map {
 			return this._map;
-		}
-
-		/**
-		 * This method's responsibility is to set up the 'resolutions' array
-		 * for the layer -- this array is what the layer will use to interface
-		 * between the zoom levels of the map and the resolution display
-		 * of the layer.
-		 */
-		public function initResolutions():void {
-				
-			if(isNaN(this.minResolution))
-				this.minResolution = this.map.minResolution;
-			if(isNaN(this.maxResolution))
-				this.maxResolution = this.map.maxResolution;
-			if(isNaN(this.numZoomLevels))
-				this.numZoomLevels = this.map.numZoomLevels;
-			
-			if ( (!this.numZoomLevels) && (this.maxZoomLevel) ) {
-				this.numZoomLevels = this.maxZoomLevel + 1;
-			}
-
-			if (this.minResolution) {
-				var ratio:Number = this.maxResolution / this.minResolution;
-				this.numZoomLevels = Math.floor(Math.log(ratio) / Math.log(2)) + 1;
-			}
-
-			if(!this.resolutions) {
-				this.resolutions = new Array();
-				for (var i:int=0; i < this.numZoomLevels; i++) {
-					var res:Number = this.maxResolution / Math.pow(2, i);
-					this.resolutions.push(res);
-				}
-			}
-
-			this.resolutions.sort(Array.NUMERIC | Array.DESCENDING);
-
-			this.maxResolution = this.resolutions[0];
-			this.minResolution = this.resolutions[this.resolutions.length - 1];
-
 		}
 
 		/**
@@ -174,6 +144,7 @@ package org.openscales.core.layer
 			}
 			return (i - 1);
 		}
+
 
 		/**
 		 * Return a LonLat which is the passed-in map Pixel, translated into
@@ -266,7 +237,10 @@ package org.openscales.core.layer
 		}
 
 		public function get minZoomLevel():Number {
-			return this._minZoomLevel;
+			var minZoomLevel:Number = this._minZoomLevel;
+			if(isNaN(minZoomLevel))
+				minZoomLevel = 0;
+			return minZoomLevel;
 		}
 
 		public function set minZoomLevel(value:Number):void {
@@ -274,7 +248,10 @@ package org.openscales.core.layer
 		}
 		
 		public function get maxZoomLevel():Number {
-			return this._maxZoomLevel;
+			var maxZoomLevel:Number = this._maxZoomLevel;
+			if(isNaN(maxZoomLevel) && this.resolutions)
+				maxZoomLevel = this.resolutions.length - 1;
+			return maxZoomLevel;
 		}
 
 		public function set maxZoomLevel(value:Number):void {
@@ -285,27 +262,34 @@ package org.openscales.core.layer
 		 * Number of zoom levels
 		 */
 		public function get numZoomLevels():Number {
-			return this._numZoomLevels;
-		}
-
-		public function set numZoomLevels(value:Number):void {
-			this._numZoomLevels = value;
+			return this.resolutions.length;
 		}
 
 		public function get maxResolution():Number {
-			return this._maxResolution;
+			var maxResolution:Number = NaN;
+			if(this.resolutions && (this.resolutions.length > 0)) {
+				// By default, the max resolution 
+				maxResolution = this.resolutions[0];
+				// If a maxZoomLevel is defined and is valid, we use it
+				if(!isNaN(this._maxZoomLevel)) {
+					maxResolution = this.resolutions[(this.resolutions.length - 1) - this._maxZoomLevel];
+				}		
+			} 
+			return maxResolution;
 		}
 
-		public function set maxResolution(value:Number):void {
-			this._maxResolution = value;
-		}
-
+		
 		public function get minResolution():Number {
-			return this._minResolution;
-		}
-
-		public function set minResolution(value:Number):void {
-			this._minResolution = value;
+			var minResolution:Number = NaN;		
+			if(this.resolutions && (this.resolutions.length > 0)) {
+				// By default, the max resolution 
+				minResolution = this.resolutions[this.resolutions.length - 1];
+				// If a maxZoomLevel is defined and is valid, we use it
+				if(!isNaN(this._minZoomLevel)) {
+					minResolution = this.resolutions[(this.resolutions.length - 1) - this._minZoomLevel];
+				}				
+			} 
+			return minResolution;
 		}
 
 		/**
@@ -425,12 +409,12 @@ package org.openscales.core.layer
 		 * Used to set loading status of layer
 		 */
 		protected function set loading(value:Boolean):void {
-			if (value == true && this._loading == false && this.map != null) {
+			if (value == true && this._loading == false) {
 			  _loading = value;
 			  this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_START,this));
 			}
 						 
-			if (value == false && this._loading == true && this.map != null) {
+			if (value == false && this._loading == true) {
 			  _loading = value;
 			  this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_END,this));
 			} 

@@ -52,13 +52,8 @@
 			}
 						
 			private function initializeZoomLevels(event:Event = null):void {
-				var zoomLevels:Array = new Array();
-				for(var i:int = 0; i<map.resolutions.length; i++) {
-					zoomLevels.push(map.getZoomForResolution(map.resolutions[i]));
-				}
-				zoomSlider.tickValues = zoomLevels;
-				zoomSlider.maximum = map.getZoomForResolution(map.minResolution);
-				zoomSlider.minimum = map.getZoomForResolution(map.maxResolution);
+				zoomSlider.maximum = map.baseLayer.maxZoomLevel;
+				zoomSlider.minimum = map.baseLayer.minZoomLevel;
 				zoomSlider.value = map.zoom;
 				zoomSlider.addEventListener(SliderEvent.CHANGE,this.zoomSliderChange);
 			}

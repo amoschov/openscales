@@ -38,9 +38,6 @@ package org.openscales.fx
 	{
 		private var _map:Map;
 		private var _popupContainer:Container;
-		private var _maxResolution:Number = NaN;
-		private var _minResolution:Number = NaN;
-		private var _numZoomLevels:Number = NaN;
 		private var _maxExtent:Bounds = null;
 		private var _zoom:Number = NaN;
 		private var _lon:Number = NaN;
@@ -97,15 +94,6 @@ package org.openscales.fx
 				
 			if (this._projection)
 				this._map.projection = this._projection;
-			
-			if (! isNaN(this._maxResolution))
-				this._map.maxResolution = this._maxResolution;
-			
-			if (! isNaN(this._minResolution))
-				this._map.minResolution = this._minResolution;
-			
-			if (! isNaN(this._numZoomLevels))
-				this._map.numZoomLevels = this._numZoomLevels;
 			
 			// Some operations must be done at the begining, in order to do
 			// not depend on the declaration order
@@ -257,18 +245,6 @@ package org.openscales.fx
 		
 		public function get map():Map {
 			return this._map;
-		}
-		
-		public function set maxResolution(value:Number):void {
-			this._maxResolution = value;
-		}
-		
-		public function set minResolution(value:Number):void {
-			this._minResolution = value;
-		}
-		
-		public function set numZoomLevels(value:Number):void {
-			this._numZoomLevels = value;
 		}
 		
 		public function set maxExtent(value:String):void {

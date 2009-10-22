@@ -11,29 +11,65 @@ package org.openscales.core.security.ign
 	import org.openscales.core.security.AbstractSecurity;
 	import org.openscales.core.security.events.SecurityEvent;
 
+	/**
+	 * IGN GeoRM security implementation.
+	 * This module will retreive an GeoRM token in order to be able to request protected datas
+	 * Documentation is available at https://api.ign.fr/geoportail/api/doc/index.html 
+	 */
 	public class IgnGeoRMSecurity extends AbstractSecurity
 	{
+		
+		/** Host used to retreive the token **/
+		private var _host:String = "http://jeton-api.ign.fr";
+		
+		/** Security parameter name, the value will be the token retreived from the server **/		
+		private var _securityParameterName:String = "gppkey";
+		
+		/** 
+		 * The key that will identify you. You have to create your own key for your own domain
+		 * on https://api.ign.fr
+		 */
 		private var _key:String = null;
+		
+		/**
+		 * The token returned by the GeoRM. It will be appended as a parameter to data request.
+		 */
 		private var _token:String = null;		
-		private var _password:String = null;
+		
+		/**
+		 * Timer used to request token updates
+		 */
 		private var _timer:Timer = null;
-		private var _initialized:Boolean = false;
-		private var _proxy:String = null;
+		
+		/**
+		 * Time to live of the token in milliseconds. Default to 10 minutes.
+		 */
+		private var _ttl:int = 600000;
+		
 
-		public function IgnGeoRMSecurity(map:Map, key:String, proxy:String = null) {
+		public function IgnGeoRMSecurity(map:Map, key:String, proxy:String = null, host:String = null) {
+			if(host)
+				this.host = host;
+			if(proxy)
+				this.proxy = proxy;
 			this.key = key;
-			this.proxy = proxy;
-			this._timer = new Timer(100000);
+			this._timer = new Timer(this.ttl);
 			this._timer.addEventListener(TimerEvent.TIMER, updateHandler);
 
 			super(map);
 		}
-
+		
+		/**
+		 * Authenticate and retreive config to print it in logs
+		 */
 		override public function initialize():void {
 			new XMLRequest(this.authUrl, authenticationResponse, this.proxy);
 			new XMLRequest(this.configUrl, configResponse, this.proxy);
 		}
-
+		
+		/**
+		 * Authentication asynchronous response
+		 */
 		private function authenticationResponse(e:Event):void {
 			var loader:URLLoader = e.target as URLLoader;
 			var doc:XML =  new XML(loader.data);
@@ -42,22 +78,28 @@ package org.openscales.core.security.ign
 			this._timer.start();	
 		}
 		
+		/**
+		 * Config asynchronous response
+		 */
 		private function configResponse(e:Event):void {
 			var loader:URLLoader = e.target as URLLoader;
 			var doc:XML =  new XML(loader.data);
 			Trace.info(doc.toString());
 		}
 
+		/** Return authentication URL **/
 		private function get authUrl():String {
-			return "http://jeton-api.ign.fr/getToken?key=" + this.key + "&output=xml&random=" + Math.random().toString();		
+			return this.host + "/getToken?key=" + this.key + "&output=xml&random=" + Math.random().toString();		
 		}
 		
+		/** Return config URL **/
 		private function get configUrl():String {
-			return "http://jeton-api.ign.fr/getConfig?key=" + this.key + "&output=xml";			
+			return this.host + "/getConfig?key=" + this.key + "&output=xml";			
 		}
-			
+		
+		/** Return update URL **/
 		private function get updateUrl():String {
-			return "http://jeton-api.ign.fr/getToken?gppkey=" + this.token + "&output=xml&random=" + Math.random().toString();
+			return this.host + "/getToken?gppkey=" + this.token + "&output=xml&random=" + Math.random().toString();
 		}
 
 		private function updateHandler(e:TimerEvent):void {
@@ -65,18 +107,29 @@ package org.openscales.core.security.ign
 		}
 
 		override public function update():void {
-			new XMLRequest(this.updateUrl+"", authenticationUpdateResponse, this.proxy);
+			new XMLRequest(this.updateUrl, authenticationUpdateResponse, this.proxy);
 		}
 
+		/**
+		 * Authentication update asynchronous response
+		 */
 		private function authenticationUpdateResponse(e:Event):void {
 			var loader:URLLoader = e.target as URLLoader;
 			var doc:XML =  new XML(loader.data);
 			this.token = doc.toString();
 			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_UPDATED, this));			
 		}	
-
+		
 		override public function get securityParameter():String {
-			return "gppkey=" + this.token;
+			return this.securityParameterName + "=" + this.token;
+		}
+		
+		public function get host():String {
+			return this._host;
+		}
+		
+		public function set host(value:String):void {
+			this._host = value;
 		}
 
 		public function get key():String {
@@ -95,22 +148,24 @@ package org.openscales.core.security.ign
 			this._token = value;
 		}
 		
-		public function get initialized():Boolean {
-			return this._initialized;
+		public function get securityParameterName():String {
+			return this._securityParameterName;
 		}
 		
-		public function set initialized(value:Boolean):void {
-			this._initialized = value;
+		public function set securityParameterName(value:String):void {
+			this._securityParameterName = value;
+		}		
+		
+		public function get ttl():int {
+			return this._ttl;
 		}
 		
-		public function get proxy():String {
-			return this._proxy;
+		public function set ttl(value:int):void {
+			this._ttl = value;
+			this._timer = new Timer(value);
+			this._timer.addEventListener(TimerEvent.TIMER, updateHandler);
 		}
 		
-		public function set proxy(value:String):void {
-			this._proxy = value;
-		}
-
 	}
 }
 

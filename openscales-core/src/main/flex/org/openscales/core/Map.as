@@ -40,8 +40,6 @@ package org.openscales.core
 	public class Map extends Sprite
 	{
 
-		public var DEFAULT_NUM_ZOOM_LEVELS:Number = 20;
-		public var DEFAULT_MAX_RESOLUTION:Number = 1.40625;
 		public var DEFAULT_PROJECTION:ProjProjection = new ProjProjection("EPSG:4326");
 		public var DEFAULT_UNITS:String = Unit.DEGREE;
 		public var IMAGE_RELOAD_ATTEMPTS:Number = 0;
@@ -60,10 +58,6 @@ package org.openscales.core
 		private var _zoom:Number = 0;
 		private var _zooming:Boolean = false;
 		private var _maxExtent:Bounds = null;
-		private var _maxResolution:Number;
-		private var _minResolution:Number;
-		private var _numZoomLevels:int;
-		private var _resolutions:Array = null;
 		private var _projection:ProjProjection;
 		private var _units:String;
 		private var _loading:Boolean;
@@ -90,11 +84,8 @@ package org.openscales.core
 			this._handlers = new Array();
 
 			this.size = new Size(width, height);
-			this.maxResolution =  this.DEFAULT_MAX_RESOLUTION;
 			this.projection = this.DEFAULT_PROJECTION;
-			this.numZoomLevels = this.DEFAULT_NUM_ZOOM_LEVELS;
 			this.units = this.DEFAULT_UNITS;
-			this.minResolution=0;
 
 			this._layerContainer = new DraggableSprite();
 
@@ -208,11 +199,7 @@ package org.openscales.core
 						oldExtent = null;
 						
 						this.projection = newBaseLayer.projection;
-                        this.maxResolution = newBaseLayer.maxResolution;
-                        this.numZoomLevels = newBaseLayer.numZoomLevels;
                         this.maxExtent = newBaseLayer.maxExtent;
-	                    this.minResolution = newBaseLayer.minResolution;
-                        this.resolutions = newBaseLayer.resolutions;
 						
 					}
 
@@ -520,9 +507,8 @@ package org.openscales.core
 		 * range of zoom levels.
 		 */
 		private function isValidZoomLevel(zoomLevel:Number):Boolean {
-			return ( (!isNaN(zoomLevel)) &&
-				(zoomLevel >= 0) &&
-				(zoomLevel < this.numZoomLevels) );
+			return ( (!isNaN(zoomLevel)) && (zoomLevel >= this.baseLayer.minZoomLevel) &&
+				(zoomLevel <= this.baseLayer.maxZoomLevel) );
 		}
 
 		/**
@@ -673,7 +659,6 @@ package org.openscales.core
 		public function set zoom(newZoom:Number):void 
 		{
 			 if (this.isValidZoomLevel(newZoom)) {
-			 	//this._zoom = newZoom;
 			 	
 			 	//Dispatch a MapEvent with the old and new zoom
 				var mapEvent:MapEvent = new MapEvent(MapEvent.ZOOM_START,this);
@@ -701,7 +686,7 @@ package org.openscales.core
 				this._zooming = true;
 
 				// We calculate de scale multiplicator according to the actual and new resolution
-				var resMult:Number = this.resolution / this.resolutions[newZoom];
+				var resMult:Number = this.baseLayer.resolution / this.baseLayer.resolutions[newZoom];
 				// We intsanciate a bitmapdata with map's size
 				var bitmapData:BitmapData = new BitmapData(this.width,this.height);
 				// We draw the old transition before drawing the better-fitting tiles on top and removing the old transition. 
@@ -866,54 +851,6 @@ package org.openscales.core
 			return _projection;
 		}
 
-		public function set minResolution(value:Number):void {
-			this._minResolution = value;
-		}
-
-		/**
-		 * Minimum resolution.
-		 */
-		public function get minResolution():Number {
-			var minResolution:Number = _minResolution;
-			if (this.baseLayer != null) {
-				minResolution = this.baseLayer.minResolution;
-			}
-			return minResolution;
-		}
-
-		public function set maxResolution(value:Number):void {
-			this._maxResolution = value;
-		}
-
-		/**
-		 * Default max is 360 deg / 256 px, which corresponds to zoom level 0 on gmaps.
-		 * Specify a different value in the map options if you are not using
-		 * a geographic projection and displaying the whole world.
-		 */
-		public function get maxResolution():Number {
-			var maxResolution:Number = _maxResolution;
-			if (this.baseLayer != null) {
-				maxResolution = this.baseLayer.maxResolution;
-			}
-			return maxResolution;
-		}
-
-		public function set resolutions(value:Array):void {
-			this._resolutions = value;
-		}
-
-		/**
-		 * A list of map resolutions (map units per pixel) in descending order. If this
-		 * is not set in the layer constructor, it will be set based on other resolution
-		 * related properties (maxExtent, maxResolution, maxScale, etc.).
-		 */
-		public function get resolutions():Array {
-			var resolutions:Array = _resolutions;
-			if (this.baseLayer != null) {
-				resolutions = this.baseLayer.resolutions;
-			}
-			return resolutions;
-		}
 
 		public function set maxExtent(value:Bounds):void {
 			this._maxExtent = value;
@@ -941,22 +878,6 @@ package org.openscales.core
 				}
 			}
 			return maxExtent;
-		}
-
-		public function set numZoomLevels(value:int):void {
-			this._numZoomLevels = value;
-		}
-
-		/**
-		 * Number of zoom levels for the map. Defaults to 16.  Set a different value in
-		 * the map options if needed.
-		 */
-		public function get numZoomLevels():int {
-			var numZoomLevels:int = _numZoomLevels;
-			if (this.baseLayer != null) {
-				numZoomLevels = this.baseLayer.numZoomLevels;
-			}
-			return numZoomLevels;
 		}
 
 		public function get extent():Bounds {

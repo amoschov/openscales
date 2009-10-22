@@ -106,7 +106,7 @@ package org.openscales.core.control
 		 */
 		public function _addZoomBar(centered:Pixel):Pixel {
 
-			var zoomsToEnd:int = this.map.numZoomLevels - 1 - this.map.zoom;
+			var zoomsToEnd:int = this.map.baseLayer.numZoomLevels - 1 - this.map.zoom;
 			var sz:Size = new Size(20,9);
 			this.slider =new Button("slider",new sliderImg(),new Pixel(centered.x - 1,centered.y + zoomsToEnd * this.zoomStopHeight),sz);
 			
@@ -120,7 +120,7 @@ package org.openscales.core.control
 			this.zoomBar=new Button("zooomBar",new zoombarImg(),centered,sz);
 			
 			zoomBar.width = this.zoomStopWidth;
-			zoomBar.height = this.zoomStopHeight * this.map.numZoomLevels;
+			zoomBar.height = this.zoomStopHeight * this.map.baseLayer.numZoomLevels;
 
 			zoomBar.addEventListener(MouseEvent.MOUSE_DOWN, this.zoomBarClick);
 			zoomBar.addEventListener(MouseEvent.DOUBLE_CLICK, this.doubleClick);
@@ -134,7 +134,7 @@ package org.openscales.core.control
 			this.map.addEventListener(MapEvent.ZOOM_END,this.moveZoomBar);
 
 			centered = centered.add(0, 
-				this.zoomStopHeight * this.map.numZoomLevels);
+				this.zoomStopHeight * this.map.baseLayer.numZoomLevels);
 			return centered; 
 		}
 
@@ -148,14 +148,11 @@ package org.openscales.core.control
 			var y:Number = evt.stageY;
 			var top:Number = Util.pagePosition(evt.currentTarget)[1];
 			var levels:Number = Math.floor((y - top)/this.zoomStopHeight);
-			this.map.zoom = (this.map.numZoomLevels -1) -  levels;
+			this.map.zoom = (this.map.baseLayer.numZoomLevels -1) -  levels;
 			evt.stopPropagation();
 		}
 
 		public function zoomBarDown(evt:MouseEvent):void {
-
-
-			
 			this.mouseDragStart = new Pixel(map.mouseX, map.mouseY);
 			this.zoomStart = new Pixel(evt.stageX, evt.stageY);
 			this.useHandCursor = true;
@@ -193,7 +190,7 @@ package org.openscales.core.control
 
 		public function moveZoomBar(evt:Event = null):void {
 			var newTop:Number = 
-				((this.map.numZoomLevels-1) - this.map.zoom) * 
+				((this.map.baseLayer.numZoomLevels-1) - this.map.zoom) * 
 				this.zoomStopHeight + this.startTop + 1;
 			this.slider.y = newTop;
 		}

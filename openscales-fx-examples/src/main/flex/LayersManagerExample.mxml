@@ -34,19 +34,7 @@
 			typename="topp:states"
 			srs="EPSG:4326"
 			version="1.0.0"
-			minZoomLevel="21"
 			style="{Style.getDefaultSurfaceStyle()}">
-		</os:WFS>
-		
-		<os:WFS name="Tiger poi (WFS)"
-			url="http://openscales.org/geoserver/wfs"
-			typename="tiger:poi"
-			srs="EPSG:4326"
-			version="1.0.0"
-			minZoomLevel="21"
-			useCapabilities="true"
-			capabilitiesVersion="1.0.0"
-			style="{Style.getDefaultPointStyle()}">
 		</os:WFS>
 		
 	</os:Map>

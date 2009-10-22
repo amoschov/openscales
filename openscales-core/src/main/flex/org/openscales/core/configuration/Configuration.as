@@ -73,13 +73,6 @@ package org.openscales.core.configuration
                   if(String(config.@projection) != ""){
                         map.projection = new ProjProjection(config.@projection);
                   }
-                  if(String(config.@minResolution) != ""){
-                        map.minResolution= Number(config.@minResolution);
-                  }
-                  
-                  if(String(config.@maxResolution) != ""){
-                        map.maxResolution  = Number(config.@maxResolution);
-                  }
 
                   if(String(config.@maxExtent) != ""){
                         map.maxExtent = Bounds.getBoundsFromString(config.@maxExtent);
@@ -241,11 +234,8 @@ package org.openscales.core.configuration
                                    Trace.info("Find WMSC Layer : " + xmlNode.name());                                
                                    // We create the WMSC Layer with all params
                                    var wmscLayer:WMSC = new WMSC(name,urlWMS,layers,isBaseLayer,visible,projection,proxy);                  	   
-                                   wmscLayer.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);
-                                   wmscLayer.minResolution = minResolution;
-                                   wmscLayer.maxResolution = maxResolution;
+                                   wmscLayer.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);             
                                    wmscLayer.params = paramsWms;
-                                   wmscLayer.numZoomLevels = numZoomLevels;
                                    layer=wmscLayer;
                                    break;
                              }
@@ -255,10 +245,7 @@ package org.openscales.core.configuration
                                    // We create the WMS Layer with all params
                                    var wmslayer:WMS = new WMS(name,urlWMS,layers,isBaseLayer,visible,projection,proxy);                       
                                    wmslayer.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);
-                                   wmslayer.minResolution = minResolution; 
-                                   wmslayer.maxResolution = maxResolution; 
                                    wmslayer.params = paramsWms;
-                                   wmslayer.numZoomLevels = numZoomLevels;
                                    layer=wmslayer;
                                    break;
                              }                                  
@@ -288,10 +275,7 @@ package org.openscales.core.configuration
                         var wfsLayer:WFS = new WFS(name,urlWfs,xmlNode.@typename,isBaseLayer, visible,projection,proxy,useCapabilities,capabilities);
                         wfsLayer.minZoomLevel = Number(xmlNode.@minZoomLevel);
                         wfsLayer.maxZoomLevel = Number(xmlNode.@maxZoomLevel);
-                        wfsLayer.minResolution = minResolution;  
-                        wfsLayer.maxResolution = maxResolution; 
                         wfsLayer.capabilitiesVersion = capabilitiesVersion;
-                        wfsLayer.numZoomLevels = numZoomLevels;
                         layer=wfsLayer;
                   }
                   // Case when the layer is Mapnik
@@ -299,9 +283,6 @@ package org.openscales.core.configuration
                         Trace.info("Find Mapnik Layer : " + xmlNode.name());
                         // We create the Mapnik Layer with all params
                         var mapnik:Mapnik=new Mapnik("Mapnik", isBaseLayer); // a base layer
-                        mapnik.minResolution = xmlNode.@minResolution;
-                        mapnik.maxResolution = xmlNode.@maxResolution;
-                        mapnik.numZoomLevels = numZoomLevels;
                         mapnik.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);
                         layer=mapnik;
                   }

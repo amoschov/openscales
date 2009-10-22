@@ -55,19 +55,11 @@
 	<os:Map id="fxmap"
 			width="100%"
 			height="100%"
-			proxy="http://openscales.org/proxy.php?url="
-			maxResolution="156543.0339"
-			numZoomLevels="20"
-			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-			minResolution="0.5971642833709717">
+			proxy="http://openscales.org/proxy.php?url=" 
+			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34">
 
 		<!-- A EPSG:900913 baselayer (OSM) -->
-		<os:Mapnik name="Mapnik"
-				   maxResolution="156543.0339"
-				   minResolution="0.5971642833709717"
-				   numZoomLevels="20"
-				   maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-				   isBaseLayer="true"/>
+		<os:Mapnik name="Mapnik" maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34" />
 
 		<!-- A WFS EPSG:4326 layer -->
 		<os:WFS name="States"

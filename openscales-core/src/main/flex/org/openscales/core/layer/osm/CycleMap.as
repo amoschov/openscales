@@ -21,7 +21,8 @@ package org.openscales.core.layer.osm
 			super(name, url, isBaseLayer, visible, projection, proxy);
 
 			this.altUrls = alturls;
-			this.numZoomLevels = 17;
+			
+			this.generateResolutions(17, OSM.DEFAULT_MAX_RESOLUTION);
 		}
 
 	}

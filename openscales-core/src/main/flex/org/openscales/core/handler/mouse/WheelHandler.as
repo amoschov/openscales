@@ -27,26 +27,6 @@ package org.openscales.core.handler.mouse {
 
 		private function onMouseWheel(event:MouseEvent):void{
 
-			/* var deltaZ:int;
-
-			   if(event.delta > 0) {
-			   deltaZ = 1;
-			   } else {
-			   deltaZ = -1;
-			   }
-
-			   var newZoom:int = this.map.zoom + deltaZ;
-
-			   var size:Size    = this.map.size;
-			   var deltaX:Number  = size.w/2 - this.map.mouseX;
-			   var deltaY:Number  = size.h/2 - this.map.mouseY;
-			   var newRes:Number  = this.map.baseLayer.resolutions[newZoom];
-			   var zoomPoint:LonLat = this.map.getLonLatFromMapPx(new Pixel(this.map.mouseX, this.map.mouseY));
-			   var newCenter:LonLat = new LonLat(
-			   zoomPoint.lon + deltaX * newRes,
-			   zoomPoint.lat - deltaY * newRes );
-			   this.map.center = newCenter;
-			 this.map.zoom = newZoom; */
 			if(event.delta > 0) {
 				this.map.zoom++;
 			} else {
