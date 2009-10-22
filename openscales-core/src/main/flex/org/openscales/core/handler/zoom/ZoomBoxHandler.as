@@ -60,6 +60,7 @@ package org.openscales.core.handler.zoom
             this.map.removeEventListener(MouseEvent.MOUSE_UP,endBox);
       		_drawContainer.graphics.clear();
       		var endCoordinates:LonLat = this.map.getLonLatFromMapPx(new Pixel(map.mouseX, map.mouseY));
+           	if(_startCoordinates != null) 
            	if(_startCoordinates.equals(endCoordinates)){
            		this.map.zoom ++;
            	}else{
