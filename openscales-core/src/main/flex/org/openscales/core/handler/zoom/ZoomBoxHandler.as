@@ -71,9 +71,11 @@ package org.openscales.core.handler.zoom
            	}
            	
             this._startCoordinates = null;
-            this.map.dispatchEvent(new ZoomBoxEvent(ZoomBoxEvent.END));
-            this.active = false;
+            
+            this.active = false; 
 	        activeDrag();
+            this.map.dispatchEvent(new ZoomBoxEvent(ZoomBoxEvent.END));
+           
         }
 
         private function expandArea(e:MouseEvent) : void {
