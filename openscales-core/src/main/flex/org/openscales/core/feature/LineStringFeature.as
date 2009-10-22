@@ -39,11 +39,7 @@ package org.openscales.core.feature
 					this.graphics.lineTo(p.x, p.y); 
 				}
 			} 
-		}
-		 override protected function verticesHiding(pevt:MouseEvent):void{	 	
-			//super.verticesHiding(pevt);
-		 }
-				
+		}		
 	}
 }
 

@@ -55,9 +55,6 @@ package org.openscales.core.feature
 			
 			trace("End of polygon drawing");
 		}	
-		override protected function verticesHiding(pevt:MouseEvent):void{	 	
-			//super.verticesHiding(pevt);
-		 }	
 	}
 }
 
