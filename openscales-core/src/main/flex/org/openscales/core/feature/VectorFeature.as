@@ -7,6 +7,7 @@ package org.openscales.core.feature
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.VectorLayer;
@@ -41,7 +42,7 @@ package org.openscales.core.feature
 		 
 		private var _tmpVertices:Array=new Array();
 		
-		private var _tmpVerticeTolerance:Number=10;
+		private var _tmpVerticeTolerance:Number=0;
 		
 		
 		
@@ -268,12 +269,45 @@ package org.openscales.core.feature
 			return this.layer.map.getLayerPxFromMapPx(new Pixel(x, y));
 		}
 		
-		
-		
+		/**
+		 * To find a geometry vertices of a simple collection
+		 * @param geometry
+		 * @param vertices to use This function in recursivity when geometry
+		 * is provided from Multicollection
+		 * */
+		private function createTmpVertices(collection:Collection):void{
+					    
+			    
+				for(var i:int=0;i<collection.componentsLength;i++){
+					var geometry:Geometry=collection.componentByIndex(i);
+					if(geometry is Collection){
+						createTmpVertices(geometry as Collection);
+					}
+					else 
+					{
+						if(geometry is Point){
+							var tmpVertice:TmpPointFeature=new TmpPointFeature(new Point((geometry as Point).x,(geometry as Point).y),{id:i},Style.getDefaultCircleStyle());
+							tmpVertice.tmpPointParentGeometry=collection;
+							this.tmpVertices.push(tmpVertice);
+						}
+					}				
+				}		
+		}
 		override protected function verticesShowing(pevt:MouseEvent):void{
 			//TODO DAMIEN NDA Remove this condition after testing on all feature
 			if((this.layer as VectorLayer).tmpVerticesOnFeature){
+			if(this.geometry is Collection)
+			{						
 			super.verticesShowing(pevt);
+			
+			this.createTmpVertices(this.geometry as Collection);
+			
+			//We ad the temporaries vertices to the layer 
+			for each(var tmpVertic:TmpPointFeature in this.tmpVertices){
+				(this.layer as VectorLayer).addFeature(tmpVertic);
+			}
+			
+			//Vertice under mouse adding
 			if(this.layer!=null && this.layer.map!=null)
 			{
 				var px:Pixel=new Pixel(this.layer.mouseX,this.layer.mouseY);
@@ -300,12 +334,25 @@ package org.openscales.core.feature
 				
 				Util.removeItem(this.tmpVertices,tmpVerticeUnderTheMouse);
 				
-				var tmpVertice:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat),{isTmpFeatureUnderTheMouse:true},style,true);
-				this.tmpVertices.push(tmpVertice);						
+				var tmpVertice:TmpPointFeature=new TmpPointFeature(new Point(lonlat.lon,lonlat.lat),{isTmpFeatureUnderTheMouse:true},style);
+				this.tmpVertices.push(tmpVertice);		
+				//There is always a component because the mouse is over the component
+				//consequently we use the first
+				//we find the collection which directly have a point as component
+				var testCollection:Geometry=this.geometry;
+				var parentTmpPoint:Geometry;
+				while(testCollection is Collection)
+				{
+					parentTmpPoint=testCollection;
+					testCollection=(testCollection as Collection).componentByIndex(0);
+				}
+				tmpVertice.tmpPointParentGeometry=parentTmpPoint;
 				(this.layer as VectorLayer).addFeature(tmpVertice);
-				tmpVertice.unregisterListeners();
+				tmpVertice.registerListeners();
 				}
 			}
+			}
+			
 			}
 		}
 		

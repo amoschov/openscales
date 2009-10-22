@@ -13,18 +13,12 @@ package org.openscales.core.feature
 	 */
 	public class PointFeature extends VectorFeature
 	{
-		/**
-		 * To know if if the point is a temporary vertice
-		 * */
-		private var _isTmpVertice:Boolean=false;
-		
-		public function PointFeature(geom:Point=null, data:Object=null, style:Style=null,isTmpVertice:Boolean=false)
+		public function PointFeature(geom:Point=null, data:Object=null, style:Style=null)
 		{
 			super(geom, data, style);
 			if (geom!=null) {
 				this.lonlat = new LonLat(this.point.x,this.point.y);
 			}
-			this._isTmpVertice=isTmpVertice;
 		}
 
 		public function get point():Point {
@@ -72,11 +66,7 @@ package org.openscales.core.feature
 				}
 				// TODO : Implement other well known names and take into account opacity, rotation of the mark
 			}
-		}	
-		
-		public function get isTmpVertice():Boolean{
-			return this._isTmpVertice;
-		}	
+		}		
 	}
 }
 

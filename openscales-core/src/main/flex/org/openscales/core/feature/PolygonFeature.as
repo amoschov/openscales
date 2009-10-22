@@ -54,26 +54,7 @@ package org.openscales.core.feature
 			}
 			
 			trace("End of polygon drawing");
-		}
-		
-		override protected function verticesShowing(pevt:MouseEvent):void{
-			if((this.layer as VectorLayer).tmpVerticesOnFeature){
-			super.verticesShowing(pevt);
-			
-			for(var i:int=0;i<this.polygon.componentsLength;i++){
-				var lring:LinearRing=this.polygon.componentByIndex(i) as LinearRing;
-				for(var j:int=0;j<lring.componentsLength;j++){
-					var component:Point=lring.componentByIndex(j) as Point;
-					var tmpVertice:PointFeature=new PointFeature(new Point(component.x,component.y),{sommet:true},Style.getDefaultCircleStyle());
-					this.tmpVertices.push(tmpVertice);
-					(this.layer as VectorLayer).addFeature(tmpVertice);
-					//TODO DAMIEN NDA dragfeature by adding new listener or a handler
-					tmpVertice.unregisterListeners();
-					}
-				}
-			}
-		}
-		
+		}	
 		override protected function verticesHiding(pevt:MouseEvent):void{	 	
 			//super.verticesHiding(pevt);
 		 }	

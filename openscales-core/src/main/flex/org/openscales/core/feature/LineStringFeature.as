@@ -40,25 +40,6 @@ package org.openscales.core.feature
 				}
 			} 
 		}
-		override protected function verticesShowing(pevt:MouseEvent):void{
-			
-			if((this.layer as VectorLayer).tmpVerticesOnFeature){
-			super.verticesShowing(pevt);
-			for(var i:int=0;i<this.lineString.componentsLength;i++){
-				//Any collection is composed with points
-				//TODO DAMIEN NDA Mutualized this part of the function in Vectorfeature for example
-				var component:Point=this.lineString.componentByIndex(i) as Point;
-				var tmpVertice:PointFeature=new PointFeature(new Point(component.x,component.y),null,Style.getDefaultCircleStyle());
-				this.tmpVertices.push(tmpVertice);
-				(this.layer as VectorLayer).addFeature(tmpVertice);
-				
-				//TODO DAMIEN NDA dragfeature by adding new listener or a handler
-				tmpVertice.unregisterListeners();
-			}
-		 }
-			
-			
-		}
 		 override protected function verticesHiding(pevt:MouseEvent):void{	 	
 			//super.verticesHiding(pevt);
 		 }
