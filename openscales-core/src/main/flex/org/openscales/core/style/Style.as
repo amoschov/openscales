@@ -56,6 +56,24 @@ package org.openscales.core.style
 			return style;
 		}
 		
+		public static function getDefaultCircleStyle():Style{
+			
+			var fill:Fill = new Fill(0xF2620F,0.7);
+			var stroke:Stroke = new Stroke(0xA6430A,1);
+			
+			var mark:Mark = new Mark(Mark.WKN_CIRCLE,fill,stroke);
+			
+			var symbolizer:PointSymbolizer = new PointSymbolizer();
+			symbolizer.graphic = mark;
+			
+			var rule:Rule = new Rule();
+			rule.symbolizers.push(symbolizer);
+			
+			var style:Style = new Style();
+			style.rules.push(rule);
+			return style;
+		}
+		
 		public static function getDrawLineStyle():Style{
 			
 			var stroke:Stroke = new Stroke(0x60D980,1);

@@ -79,12 +79,16 @@ package org.openscales.core.feature {
 		 */
 		private var _selected:Boolean=false;
 
+
+		
+
 		/**
 		 * Events Management
 		 *
 		 */
 		public function onMouseHover(pevt:MouseEvent):void {
 			this.buttonMode=true;
+			this.verticesShowing(pevt);
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER, this));
 		}
 
@@ -94,7 +98,28 @@ package org.openscales.core.feature {
 
 		public function onMouseOut(pevt:MouseEvent):void {
 			this.buttonMode=false;
+			this.verticesHiding(pevt);
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT, this));
+		}
+		
+		public function registerListeners():void{
+				this.addEventListener(MouseEvent.MOUSE_OVER, this.onMouseHover);
+				this.addEventListener(MouseEvent.MOUSE_OUT, this.onMouseOut);
+				this.addEventListener(MouseEvent.CLICK, this.onMouseClick);
+				this.addEventListener(MouseEvent.DOUBLE_CLICK, this.onMouseDoubleClick);
+				this.addEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
+				this.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
+				this.addEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);
+		}
+
+		public function unregisterListeners():void{
+			this.removeEventListener(MouseEvent.MOUSE_OVER, this.onMouseHover);
+			this.removeEventListener(MouseEvent.MOUSE_OUT, this.onMouseOut);
+			this.removeEventListener(MouseEvent.CLICK, this.onMouseClick);
+			this.removeEventListener(MouseEvent.DOUBLE_CLICK, this.onMouseDoubleClick);
+			this.removeEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
+			this.removeEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
+			this.removeEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);			
 		}
 
 		public function get attributes():Object {
@@ -168,16 +193,26 @@ package org.openscales.core.feature {
 		public function set layer(value:Layer):void {
 			this._layer=value;
 			if (this._layer != null) {
-				this.addEventListener(MouseEvent.MOUSE_OVER, this.onMouseHover);
-				this.addEventListener(MouseEvent.MOUSE_OUT, this.onMouseOut);
-				this.addEventListener(MouseEvent.CLICK, this.onMouseClick);
-				this.addEventListener(MouseEvent.DOUBLE_CLICK, this.onMouseDoubleClick);
-				this.addEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
-				this.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
-				this.addEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);
+				registerListeners();
 			}
 		}
-
+		/**
+		 * This function is used to make shine the features' vertices
+		 * pevt MouseEvent referenced the event which launched the function 
+		 * */
+		protected function verticesShowing(pevt:MouseEvent):void{
+			
+			
+		}
+		
+		/**
+		 * This function is used to hide the feature's vertices showed by the verticesShowing function 
+		  * pevt MouseEvent referenced the event which launched the function 
+		 * */
+		 protected function verticesHiding(pevt:MouseEvent):void{
+		 	
+		 }
+		
 		public function get lonlat():LonLat {
 			return this._lonlat;
 		}
