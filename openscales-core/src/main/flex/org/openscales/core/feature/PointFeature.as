@@ -26,7 +26,6 @@ package org.openscales.core.feature
 		}
 		
 		override protected function executeDrawing(symbolizer:Symbolizer):void {
-			var p:Pixel = this.getLayerPxFromPoint(point);
 			
 			if(symbolizer is PointSymbolizer){
 				
@@ -46,22 +45,31 @@ package org.openscales.core.feature
 			trace("Drawing mark");
 			this.configureGraphicsFill(mark.fill);
 			this.configureGraphicsStroke(mark.stroke);
-			var p:Pixel = this.getLayerPxFromPoint(point);
+			
+			
+			var x:Number; 
+            var y:Number;
+            var resolution:Number = this.layer.map.resolution 
+            var dX:int = -int(this.layer.map.layerContainer.x) + this.left; 
+            var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
+			x = dX + point.x / resolution; 
+            y = dY - point.y / resolution;
+			
 			switch(mark.wellKnownName){
 				
 				case Mark.WKN_SQUARE:{
-					this.graphics.drawRect(p.x-(mark.size/2), p.y-(mark.size/2),mark.size,mark.size);
+					this.graphics.drawRect(x-(mark.size/2), y-(mark.size/2),mark.size,mark.size);
 					break;
 				}
 				case Mark.WKN_CIRCLE:{
-					this.graphics.drawCircle(p.x,p.y,mark.size/2);
+					this.graphics.drawCircle(x,y,mark.size/2);
 					break;
 				}
 				case Mark.WKN_TRIANGLE:{
-					this.graphics.moveTo(p.x,p.y-(mark.size/2));
-					this.graphics.lineTo(p.x+mark.size/2,p.y+mark.size/2);
-					this.graphics.lineTo(p.x-mark.size/2,p.y+mark.size/2);
-					this.graphics.lineTo(p.x,p.y-(mark.size/2));
+					this.graphics.moveTo(x,y-(mark.size/2));
+					this.graphics.lineTo(x+mark.size/2,y+mark.size/2);
+					this.graphics.lineTo(x-mark.size/2,y+mark.size/2);
+					this.graphics.lineTo(x,y-(mark.size/2));
 					break;
 				}
 				// TODO : Implement other well known names and take into account opacity, rotation of the mark

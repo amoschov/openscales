@@ -126,32 +126,32 @@ package org.openscales.core.layer.ogc
 			if ((this.map.zoom < this.minZoomLevel) || (this.map.zoom > this.maxZoomLevel))	{
 		 		Trace.debug("Zoom outside min or max zoom level, don't draw layer " + this.name);
 		 		return;
-	    	}			
-				
- 			if (bounds == null) {
-				bounds = this.map.extent;
-			}
-
+	    	}
+	    	
 			if ( zoomChanged || !dragging  ) {
-				var center:LonLat = bounds.centerLonLat;
-
-				if (bounds.containsBounds(this.maxExtent)) {
-					bounds = this.maxExtent;
+				var projectedBounds:Bounds = bounds.clone();
+				
+				if(this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
+						projectedBounds.transform(this.map.baseLayer.projection, this.projection);
 				}
+				var center:LonLat = projectedBounds.centerLonLat;
 
-				this.graphics.clear();
-				this.featuresBbox = bounds;
-				this.params.bbox = bounds.boundsToString();
+				if (projectedBounds.containsBounds(this.maxExtent)) {
+					projectedBounds = this.maxExtent;
+
+				}
+				var previousFeatureBbox:Bounds = this.featuresBbox.clone(); 
+				this.featuresBbox = projectedBounds;
+				this.params.bbox = projectedBounds.boundsToString();
 				
 				if (this._firstRendering) {
 					this.loadFeatures(this.getFullRequestString());
 					this._firstRendering = false;
 				} else {
 					// else reuse the existing one
-					if ( this.featuresBbox.containsBounds(bounds)) {
+					if ( previousFeatureBbox.containsBounds(projectedBounds)) {
 						this.drawFeatures();
 					} else {
-						
 						// Use GetCapabilities to know if all features have already been retreived.
 						// If they are, we don't request data again
 						if ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent")))) {
@@ -159,7 +159,6 @@ package org.openscales.core.layer.ogc
 						} else {
 							this.drawFeatures();
 						}
-
 					}
 				}
 			}	
@@ -257,6 +256,7 @@ package org.openscales.core.layer.ogc
 			if(_request)
 				_request.destroy();
 			this.loading = true;
+			this.drawFeatures();
 			_request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security,onFailure);
 		}
 		
@@ -283,7 +283,7 @@ package org.openscales.core.layer.ogc
 			catch(error:Error) {
 				Trace.error(error.message);
 			}
-
+			
 			this.clear();
 			var gml:GMLFormat = new GMLFormat(this.extractAttributes);
 			if (this.map.projection != null && this.projection != null && this.projection.srsCode != this.map.projection.srsCode) {

@@ -28,7 +28,13 @@ package org.openscales.core.feature
 
 			trace("Drawing polygon");
 			// Variable declaration before for loop to improve performances
-			var p:Pixel = null;
+			// Variable declaration before for loop to improve performances
+			var p:Point = null;
+			var x:Number; 
+            var y:Number;
+            var resolution:Number = this.layer.map.resolution 
+            var dX:int = -int(this.layer.map.layerContainer.x) + this.left; 
+            var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
 			var linearRing:LinearRing = null;
 			var j:int = 0;
 			
@@ -37,19 +43,22 @@ package org.openscales.core.feature
 				
 				// Draw the n-1 line of the polygon
 				for (j=0; j<linearRing.componentsLength; j++) {
-					p = this.getLayerPxFromPoint(linearRing.componentByIndex(j) as Point);
+					p = linearRing.componentByIndex(j) as Point;
+					x = dX + p.x / resolution; 
+                	y = dY - p.y / resolution;
 					if (j==0) {
-						this.graphics.moveTo(p.x, p.y);
+						this.graphics.moveTo(x, y);
 					} else {
-						this.graphics.lineTo(p.x, p.y);
+						this.graphics.lineTo(x, y);
 					}
 				}
 				
 				// Draw the last line of the polygon, as Flash won't render it if there is no fill for the polygon
 				if(linearRing.componentsLength > 0){
-					
-					p = this.getLayerPxFromPoint(linearRing.componentByIndex(0) as Point);
-					this.graphics.lineTo(p.x,p.y);
+					p = linearRing.componentByIndex(0) as Point;
+					x = dX + p.x / resolution; 
+                    y = dY - p.y / resolution;
+					this.graphics.lineTo(x,y);
 				}
 			}
 			

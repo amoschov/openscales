@@ -46,10 +46,17 @@ package org.openscales.core.feature {
 			}
 			var marker:Bitmap = this.getChildAt(0) as Bitmap;
 			if(marker != null) {
-				//var px:Pixel=this.layer.map.getLayerPxFromLonLat(this.lonlat);
-				var px:Pixel=this.getLayerPxFromPoint(point);
-				this.x=px.x - marker.width / 2;
-				this.y=px.y - marker.height / 2;
+				
+				var x:Number; 
+	            var y:Number;
+	            var resolution:Number = this.layer.map.resolution 
+	            var dX:int = -int(this.layer.map.layerContainer.x) + this.left; 
+	            var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
+	            x = dX + point.x / resolution; 
+                y = dY - point.y / resolution;
+                
+				this.x = x - marker.width / 2;
+				this.y = y - marker.height / 2;
 			} else {
 				trace("No marker found !");
 			}

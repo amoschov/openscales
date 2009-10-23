@@ -29,14 +29,22 @@ package org.openscales.core.feature
 			this.graphics.endFill();
 			
 			// Variable declaration before for loop to improve performances
-			var p:Pixel = null;
+			var p:Point = null;
+			var x:Number; 
+            var y:Number;
+            var resolution:Number = this.layer.map.resolution 
+            var dX:int = -int(this.layer.map.layerContainer.x) + this.left; 
+            var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
 			
 			for (var i:int = 0; i < this.lineString.componentsLength; i++) {
-				p = this.getLayerPxFromPoint(this.lineString.componentByIndex(i) as Point);
+				p = this.lineString.componentByIndex(i) as Point;
+				x = dX + p.x / resolution; 
+                y = dY - p.y / resolution;
+                 
 				if (i==0) {
-					this.graphics.moveTo(p.x, p.y);
+					this.graphics.moveTo(x, y);
 				} else {
-					this.graphics.lineTo(p.x, p.y); 
+					this.graphics.lineTo(x, y); 
 				}
 			} 
 		}		
