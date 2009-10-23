@@ -22,8 +22,9 @@ package org.openscales.core.layer.osm
 				projection = "EPSG:900913";
 
 			super(name, url, isBaseLayer, visible, projection, proxy);
-
-			this.units = Unit.METER;
+			
+			// Use the projection to access to the unit
+			/* this.units = Unit.METER; */
 			this.maxExtent = new Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);
 			-20037508.34,-20037508.34,20037508.34,20037508.34
 

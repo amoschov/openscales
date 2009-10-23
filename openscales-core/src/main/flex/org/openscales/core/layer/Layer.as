@@ -13,6 +13,8 @@ package org.openscales.core.layer
 
 	/**
 	 * A Layer display image of vector datas on the map, usually loaded from a remote datasource.
+	 * Unit of the baseLayer is hanging by the projection. To access : this.projection.projParams.units
+	 * 
 	 * @author Bouiaw
 	 */
 	public class Layer extends Sprite
@@ -24,7 +26,6 @@ package org.openscales.core.layer
 		private var _isBaseLayer:Boolean = false;
 		private var _isFixed:Boolean = false;
 		private var _projection:ProjProjection = null;
-		private var _units:String = null;
 		private var _resolutions:Array = null;
 		private var _maxExtent:Bounds = null;
 		private var _minZoomLevel:Number = NaN;
@@ -107,8 +108,8 @@ package org.openscales.core.layer
 			
 			if(!this.maxExtent)
 				this.maxExtent = this.map.maxExtent;
-			if(!this.units)
-				this.units = this.map.units;
+			/* if(!this.units) */
+				/* this.units = this.map.units; */ 
 			
 		}
 
@@ -307,17 +308,6 @@ package org.openscales.core.layer
 
 		public function set resolutions(value:Array):void {
 			this._resolutions = value;
-		}
-
-		/**
-		 * The layer units. Check possible values in the Unit class.
-		 */
-		public function get units():String {
-			return this._units;
-		}
-
-		public function set units(value:String):void {
-			this._units = value;
 		}
 
 		/**

@@ -9,7 +9,7 @@ package org.openscales.core.basetypes
 	 */
 	public class Unit
 	{
-		public static var DEGREE:String = "degree";
+		public static var DEGREE:String = "degrees";
 		public static var METER:String = "m";
 		public static var KILOMETER:String = "km";
 		public static var FOOT:String = "ft";

@@ -59,7 +59,7 @@ package org.openscales.core
 		private var _zooming:Boolean = false;
 		private var _maxExtent:Bounds = null;
 		private var _projection:ProjProjection;
-		private var _units:String;
+		/* private var _units:String; */
 		private var _loading:Boolean;
 		
 		/**
@@ -85,7 +85,7 @@ package org.openscales.core
 
 			this.size = new Size(width, height);
 			this.projection = this.DEFAULT_PROJECTION;
-			this.units = this.DEFAULT_UNITS;
+			/* this.units = this.DEFAULT_UNITS; */
 
 			this._layerContainer = new DraggableSprite();
 
@@ -823,20 +823,23 @@ package org.openscales.core
 			this._bitmapTransition = value;
 		}
 
-		public function set units(value:String):void {
+		// TODO : remove me, I'm useless
+		/* public function set units(value:String):void {
 			this._units = value;
-		}
+		} */
 
 		/**
 		 * The map units. Check possible values in the Unit class.
+		 * 
+		 * TODO : remove me, I'm useless
 		 */
-		public function get units():String {
+		/* public function get units():String {
 			var units:String = _units;
 			if (this.baseLayer != null) {
 				units = this.baseLayer.units;
 			}
 			return units;
-		}
+		} */
 
 		public function set projection(value:ProjProjection):void {
 			this._projection = value;
@@ -909,7 +912,7 @@ package org.openscales.core
 			var scale:Number = undefined;
 			if (this.baseLayer != null) {
 				var res:Number = this.resolution;
-				var units:String = this.baseLayer.units;
+				var units:String = this.baseLayer.projection.projParams.units;
 				scale = Unit.getScaleFromResolution(res, units);
 			}
 			return scale;

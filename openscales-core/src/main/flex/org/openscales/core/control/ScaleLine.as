@@ -16,7 +16,7 @@ package org.openscales.core.control
 		/**
 		 * @param Maximum width of the scale line in pixels.  Default is 100.
 		 */
-		private var scaleMaxWidth:int = 200;
+		private var _scaleMaxWidth:Number = 100;
 
 		/**
 		 * @param Units for zoomed out on top bar.  Default is km.
@@ -82,11 +82,11 @@ package org.openscales.core.control
 		private function getBarLen(maxLen:Number):Number 
 		{
 			// nearest power of 10 lower than maxLen
-			var digits:Number = parseInt((Math.log(maxLen) / Math.log(10)).toString());
+			var digits:Number = int(Math.log(maxLen) / Math.log(10));
 			var pow10:Number = Math.pow(10, digits);
 
 			// ok, find first character
-			var firstChar:Number = parseInt((maxLen / pow10).toString());
+			var firstChar:Number = int(maxLen / pow10);
 
 			// right, put it into the correct bracket
 			var barLen:Number;
@@ -103,66 +103,72 @@ package org.openscales.core.control
 		}
 
 		/**
-		 * Method: update
+		 * update
 		 * Update the size of the bars, and the labels they contain.
 		 */
-		private function updateScale():void
+		 private function updateScale():void
 		{
-			var res:Number = this.map.resolution;
-			Trace.debug("resolution =>" + res);
-			if (!res) {
-				return;
-			}
+			// Get the resolution of the map
+			var mapResolution:Number = this.map.resolution;
+			Trace.debug("Resolution of the map => " + mapResolution);
+			
+			// Map has no resolution, return.
+			if (!mapResolution) {return;}
 
-			var curMapUnits:String = this.map.units;
+			// get the current units of the map
+			/* var currentBaseLayerUnits:String = this.map.units; */
+			var currentBaseLayerUnits:String = this.map.baseLayer.projection.projParams.units;
+			Trace.debug("Current units of the map => " + currentBaseLayerUnits);
 
-			// convert scaleMaxWidth to map units
-			var maxSizeData:Number = this.scaleMaxWidth * res * Unit.getInchesPerUnit(curMapUnits);
-			Trace.debug("maxSizeData =>" + maxSizeData);  
+			// convert the scaleMaxWidth to map units
+			// The result is the max distance IN MAP UNIT, represent in the scaleline
+			var maxSizeData:Number = this._scaleMaxWidth * mapResolution * Unit.getInchesPerUnit(currentBaseLayerUnits);
+			Trace.debug("maxSizeData => " + maxSizeData);  
 
-			// decide whether to use large or small scale units     
-			var topUnits:String;
-			var bottomUnits:String;
+			// decide whether to use large or small scale units. it's independent of the map unit    
+			var topUnits:String;		
+			var bottomUnits:String;	
 			if(maxSizeData > 100000) {
 				topUnits = this.topOutUnits;
+				Trace.debug("Units => " + topUnits); 
 				bottomUnits = this.bottomOutUnits;
 			} else {
 				topUnits = this.topInUnits;
+				Trace.debug("Units => " + topUnits);
 				bottomUnits = this.bottomInUnits;
 			}
 
 			// and to map units units
 			var topMax:Number = maxSizeData / Unit.getInchesPerUnit(topUnits);
-			Trace.debug("topMax =>" + topMax);
+			Trace.debug("topMax => " + topMax);
 			var bottomMax:Number = maxSizeData / Unit.getInchesPerUnit(bottomUnits);
 
 			// now trim this down to useful block length
 			
 			var topRounded:Number = this.getBarLen(topMax);
-			Trace.debug("toprounded =>" + topRounded);
+			Trace.debug("toprounded => " + topRounded);
 			var bottomRounded:Number = this.getBarLen(bottomMax);
 
 			// and back to display units
-			topMax = topRounded / Unit.getInchesPerUnit(curMapUnits) * Unit.getInchesPerUnit(topUnits);
-			bottomMax = bottomRounded / Unit.getInchesPerUnit(curMapUnits) * Unit.getInchesPerUnit(bottomUnits);
-
+			topMax = topRounded / Unit.getInchesPerUnit(currentBaseLayerUnits) * Unit.getInchesPerUnit(topUnits);
+			Trace.debug("topMax rounded => " + topMax);
+			bottomMax = bottomRounded / Unit.getInchesPerUnit(currentBaseLayerUnits) * Unit.getInchesPerUnit(bottomUnits);
+	
 			// and to pixel units
-			_topPx = topMax / res;
+			_topPx = topMax / mapResolution;
 			Trace.debug("topPx =>" + topPx);
-			var bottomPx:Number = bottomMax / res;
-
+			var bottomPx:Number = bottomMax / mapResolution;
+			
 			this.graphics.clear();
 			this.graphics.beginFill(this._color);
 
 			//Draw the ScaleLine
-			 if(Math.round(bottomPx)>Math.round(topPx))
-			{
+			 if(Math.round(bottomPx)>Math.round(topPx)){
 				this.graphics.drawRect(10,50,Math.round(bottomPx),2);
 				this.graphics.drawRect(10+Math.round(topPx),+32,1,18);
 				this.graphics.drawRect(10+Math.round(bottomPx),+50,1,20);
 			}
-			else
-			{
+			else{
 				this.graphics.drawRect(10,50,Math.round(topPx),2);  	
 				this.graphics.drawRect(10+Math.round(topPx),+32,1,20);
 				this.graphics.drawRect(10+Math.round(bottomPx),+52,1,18);
@@ -205,7 +211,7 @@ package org.openscales.core.control
 		   labelScaleKm.text = "1/"+Math.round(scaleD).toString();
 		   labelScaleKm.x = this.position.x;
 		   labelScaleKm.y = 0;
-		 this.idScaleLine.addChild(labelScaleKm); */
+		 this.idScaleLine.addChild(labelScaleKm);*/
 		}
 
 		public function get color():int {
