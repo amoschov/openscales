@@ -127,7 +127,7 @@
 				</category>
 				
 				<category label="Security">
-					<example viewStack="security" label="IGN's GeoDRM" description="Not implement yet: wait for OpenScales.org 1.1 beta in october 2009..." />
+					<example viewStack="security" label="IGN's GeoRM" description="Access to IGN layers with GeoRM. More information on https://api.ign.fr/geoportail/" />
 				</category>
 			</mx:XMLList>
 		</mx:XMLListCollection>
