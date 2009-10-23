@@ -34,6 +34,7 @@
 			typename="topp:states"
 			srs="EPSG:4326"
 			version="1.0.0"
+			maxExtent="-124.731422,24.955967,-66.969849,49.371735"
 			style="{Style.getDefaultSurfaceStyle()}">
 		</os:WFS>
 		
