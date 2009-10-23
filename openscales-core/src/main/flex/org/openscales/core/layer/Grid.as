@@ -569,7 +569,7 @@ package org.openscales.core.layer
 		 */
 		public function getTileBounds(viewPortPx:Pixel):Bounds {
 			var maxExtent:Bounds = this.maxExtent;
-			var resolution:Number = this.resolution;
+			var resolution:Number = this.map.resolution;
 			var tileMapWidth:Number = resolution * this.tileWidth;
 			var tileMapHeight:Number = resolution * this.tileHeight;
 			var mapPoint:LonLat = this.getLonLatFromMapPx(viewPortPx);

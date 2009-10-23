@@ -264,8 +264,8 @@ package org.openscales.core.feature
 		}
 		
 		protected function getLayerPxFromPoint(point:Point) : Pixel {
-			var x:Number = (point.x / this.layer.resolution + this.left);
-			var y:Number = (this.top - point.y / this.layer.resolution);
+			var x:Number = (point.x / this.layer.map.resolution + this.left);
+			var y:Number = (this.top - point.y / this.layer.map.resolution);
 			return this.layer.map.getLayerPxFromMapPx(new Pixel(x, y));
 		}
 		

@@ -269,14 +269,14 @@ package org.openscales.core.feature {
 
 		public function get top():Number {
 			if (this.layer)
-				return this.layer.extent.top / this.layer.resolution;
+				return this.layer.extent.top / this.layer.map.resolution;
 			else
 				return NaN;
 		}
 		
 		public function get left():Number {
 			if (this.layer)
-				return -this.layer.extent.left / this.layer.resolution;
+				return -this.layer.extent.left / this.layer.map.resolution;
 			else
 				return NaN;
 		}

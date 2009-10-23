@@ -686,7 +686,7 @@ package org.openscales.core
 				this._zooming = true;
 
 				// We calculate de scale multiplicator according to the actual and new resolution
-				var resMult:Number = this.baseLayer.resolution / this.baseLayer.resolutions[newZoom];
+				var resMult:Number = this.resolution / this.baseLayer.resolutions[newZoom];
 				// We intsanciate a bitmapdata with map's size
 				var bitmapData:BitmapData = new BitmapData(this.width,this.height);
 				// We draw the old transition before drawing the better-fitting tiles on top and removing the old transition. 
@@ -898,9 +898,9 @@ package org.openscales.core
 		}
 
 		public function get resolution():Number {
-			var resolution:Number = undefined;
+			var resolution:Number = NaN;
 			if (this.baseLayer != null) {
-				resolution = this.baseLayer.resolution;
+				resolution = this.baseLayer.resolutions[this.zoom];
 			}
 			return resolution;
 		}

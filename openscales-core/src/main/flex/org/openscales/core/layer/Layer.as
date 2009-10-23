@@ -201,16 +201,6 @@ package org.openscales.core.layer
 			return inRange; 
 		}
 
-
-		/**
-		 * The currently selected resolution of the map, taken from the
-		 * resolutions array, indexed by current zoom level
-		 */
-		public function get resolution():Number {
-			var zoom:Number = this.map.zoom;
-			return this.resolutions[zoom];
-		}
-
 		public function getURL(bounds:Bounds):String {
 			return null;
 		}

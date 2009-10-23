@@ -69,8 +69,8 @@ package org.openscales.core.layer
 		private function updateImage():void  {
 			if(numChildren != 0) {
 				var image:DisplayObject = this.getChildAt(0);
-				image.width = this.maxExtent.width/this.resolution;
-				image.height = this.maxExtent.height/this.resolution;
+				image.width = this.maxExtent.width/this.map.resolution;
+				image.height = this.maxExtent.height/this.map.resolution;
 				var ul:LonLat = new LonLat(this.maxExtent.left, this.maxExtent.top);
 				var ulPx:Pixel = this.map.getLayerPxFromLonLat(ul);
 				image.x = ulPx.x;
