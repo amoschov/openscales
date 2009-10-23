@@ -195,16 +195,7 @@ package org.openscales.core.configuration
                   var proxy:String=xmlNode.@proxy;
                   
                   var projection:String=xmlNode.@projection;
-                  
-                  var minResolution:Number= Number(xmlNode.@minResolution);
-                  
-                  var maxResolution:Number= Number(xmlNode.@maxResolution);
-                  
-                  var numZoomLevels:Number;
-                  if(String(xmlNode.@numZoomLevels) != ""){
-                  	numZoomLevels = Number(xmlNode.@numZoomLevels);
-                  }
-                  
+                                    
                   // Case where the layer is WMS or WMSC
                   if(xmlNode.name()== "WMSC" || xmlNode.name()== "WMS"){
                         var type:String = xmlNode.name();
@@ -289,6 +280,11 @@ package org.openscales.core.configuration
                   // Case when the layer is unknown
                   else{
                         Trace.error("Layer unknown or not managed");
+                  }
+                  
+                  
+                  if((String(xmlNode.@numZoomLevels) != "") && (String(xmlNode.@maxResolution) != "")){
+                  	layer.generateResolutions(Number(xmlNode.@numZoomLevels), Number(xmlNode.@maxResolution));
                   }
                   
                   //Init layer parameters

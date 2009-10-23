@@ -23,7 +23,7 @@
 	<Catalog>
 		<Category label="Level1">
 			<Mapnik active="false" label="Mapnik" name="Mapnik"
-				maxResolution="156543.0339" minResolution="0.5971642833709717"
+				maxResolution="156543.0339" 
 				numZoomLevels="20" maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
 				isBaseLayer="false" />
 			<WMSC active="false" label="Metacarta" name="Metacarta"
@@ -37,12 +37,11 @@
 			<Category active="false" label="Level 2.1">
 				<WFS active="false" label="States" name="States" isBaseLayer="false"
 					url="http://sigma.openplans.org/geoserver/wfs" typename="topp:states"
-					srs="EPSG:4326" version="1.0.0" minZoomLevel="21" />
+					srs="EPSG:4326" version="1.0.0" />
 			</Category>
 			<WFS active="false" label="test" name="test" isBaseLayer="false"
 				url="http://sigma.openplans.org/geoserver/wfs" typename="tiger:poi"
-				srs="EPSG:4326" version="1.0.0" use110Capabilities="false"
-				minZoomLevel="21" />
+				srs="EPSG:4326" version="1.0.0" use110Capabilities="false" />
 		</Category>
 	</Catalog>
 

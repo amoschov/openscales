@@ -59,8 +59,6 @@ package org.openscales.core.configuration
 			var conf:IConfiguration = new Configuration(this.sampleMapConfOkXML());
 			var map:Map = new Map();		
 			conf.configureMap(map);
-			
-			//Will test conf.configureMap(map) when we will have some Map unit test
 		}
 		
 		[Test]
@@ -69,6 +67,30 @@ package org.openscales.core.configuration
 			var conf:IConfiguration = new Configuration(this.sampleMapConfOkXML());
 			Assert.assertEquals("1.58313", conf.config.@lon);
 			Assert.assertEquals("49.77813", conf.config.@lat);
+		}
+		
+		[Test]
+		public function testDefaultResolutions( ) : void {
+			var sampleMapConfOk:XML = this.sampleMapConfOkXML();
+			var conf:IConfiguration = new Configuration(this.sampleMapConfOkXML());
+			var map:Map = new Map();		
+			conf.configureMap(map);
+			
+			Assert.assertEquals("20", map.getLayerByName("Metacarta").resolutions.length);
+			Assert.assertEquals("1.40625", map.getLayerByName("Metacarta").resolutions[0]);			
+		}
+		
+		[Test]
+		public function testGenerateResolutions( ) : void {
+			var sampleMapConfOk:XML = this.sampleMapConfOkXML();
+			var conf:IConfiguration = new Configuration(this.sampleMapConfOkXML());
+			var map:Map = new Map();		
+			conf.configureMap(map);
+			
+			Assert.assertEquals("20", map.baseLayer.resolutions.length);
+			Assert.assertEquals("156543.0339", map.baseLayer.resolutions[0]);
+			Assert.assertEquals("0.29858214168548586", map.baseLayer.resolutions[19]);
+			
 		}
 
 	}

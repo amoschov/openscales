@@ -399,12 +399,12 @@ package org.openscales.core.layer
 		 * Used to set loading status of layer
 		 */
 		protected function set loading(value:Boolean):void {
-			if (value == true && this._loading == false) {
+			if (value == true && this._loading == false && this.map != null) {
 			  _loading = value;
 			  this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_START,this));
 			}
 						 
-			if (value == false && this._loading == true) {
+			if (value == false && this._loading == true && this.map != null) {
 			  _loading = value;
 			  this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_END,this));
 			} 
