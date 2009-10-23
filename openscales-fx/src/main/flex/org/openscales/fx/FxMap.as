@@ -1,9 +1,9 @@
 package org.openscales.fx
 {
 	
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.display.DisplayObject;
 	
 	import mx.core.Container;
 	import mx.core.UIComponent;
@@ -108,9 +108,6 @@ package org.openscales.fx
 						maxExtentDefined = true;
 					}
 				}
-				/*if (! maxExtentDefined) {
-					this._map.maxExtent = ;
-				}*/
 			}
 			
 			for(i=0; i<this.rawChildren.numChildren; i++) {
@@ -151,6 +148,12 @@ package org.openscales.fx
 			for(i=0; i<this.rawChildren.numChildren; i++) {
 				child = this.rawChildren.getChildAt(i);
 				if (child is FxLayer) {
+					var l:FxLayer = child as FxLayer;
+					// Generate resolution if needed
+					if((l.numZoomLevels) && (l.maxResolution)) {
+						l.layer.generateResolutions(Number(l.numZoomLevels), Number(l.maxResolution));
+					}
+					
 					// BaseLayers have been added at the begining
 					if (! (child as FxLayer).layer.isBaseLayer) {
 						(child as FxLayer).fxmap = this;
@@ -158,13 +161,6 @@ package org.openscales.fx
 					}
 				}
 			}
-
-			/*for(i=0; i<this.rawChildren.numChildren; i++) {
-				child = this.rawChildren.getChildAt(i);
-				if (child is FxSecurities) {
-					(child as FxSecurities).map = this._map;
-				}
-			}*/
 			
 			var extentDefined:Boolean = false;
 			for(i=0; (!extentDefined) && (i<this.rawChildren.numChildren); i++) {

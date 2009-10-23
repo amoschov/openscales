@@ -10,6 +10,10 @@ package org.openscales.fx.layer
   public class FxLayer extends Container
   {
     protected var _layer:Layer;
+    
+    protected var _maxResolution:String = null;
+    
+    protected var _numZoomLevels:String = null;
 
     protected var _fxmap:FxMap;
 
@@ -84,6 +88,22 @@ package org.openscales.fx.layer
       override public function set visible(value:Boolean):void {
         if(this.layer != null)
           this.layer.visible = value;
+      }
+      
+      public function set maxResolution(value:String):void {
+          this._maxResolution = value;
+      }
+      
+      public function get maxResolution():String {
+          return this._maxResolution;
+      }
+      
+      public function set numZoomLevels(value:String):void {
+          this._numZoomLevels = value;
+      }
+      
+      public function get numZoomLevels():String {
+          return this._numZoomLevels;
       }
 	  
 	  public function set resolutions(value:String):void {
