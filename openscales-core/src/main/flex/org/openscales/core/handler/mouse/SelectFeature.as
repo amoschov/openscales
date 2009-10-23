@@ -285,7 +285,7 @@ package org.openscales.core.handler.mouse
 		 * Change the current feature with the select style. The feature is now selected,
 		 * placed in the tab of selected features and the current is copy to the last.
 		 */		
-		private function changeToSelected():void{			
+		public function changeToSelected():void{			
 			this.currentfeature.originalStyle=this.currentfeature.style;
 			
 			// Little test to see if the style to be created should be a point style or a polygon style

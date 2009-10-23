@@ -11,44 +11,67 @@ package org.openscales.core.control
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
 
+	/**
+	 * The scaleLine
+	 * Calcul and display an approximate scale of the current baselayer.
+	 */	
 	public class ScaleLine extends Control
 	{
 		/**
-		 * @param Maximum width of the scale line in pixels.  Default is 100.
+		 * Maximum width of the scale line in pixels.  Default is 100.
 		 */
 		private var _scaleMaxWidth:Number = 100;
 
 		/**
-		 * @param Units for zoomed out on top bar.  Default is km.
+		 * Units for zoomed out on top bar.  Default is km.
 		 */
-		private var topOutUnits:String = "km";
+		private var _topOutUnits:String = "km";
 
 		/**
-		 * @param Units for zoomed in on top bar.  Default is m.
+		 * Units for zoomed in on top bar.  Default is m.
 		 */
-		private var topInUnits:String = "m";
+		private var _topInUnits:String = "m";
 
 		/**
-		 * @param Units for zoomed out on bottom bar.  Default is mi.
+		 * Units for zoomed out on bottom bar.  Default is mi.
 		 */
-		private var bottomOutUnits:String = "mi";
+		private var _bottomOutUnits:String = "mi";
 
 		/**
-		 * @param Units for zoomed in on bottom bar.  Default is ft.
+		 * Units for zoomed in on bottom bar.  Default is ft.
 		 */
-		private var bottomInUnits:String = "ft";
-		private var _labelMiles:TextField = null;
-		private var _labelKm:TextField = null;
-		private var _color:int = 0x666666;
+		private var _bottomInUnits:String = "ft";
 		
+		/**
+		 * Label wich display the distance in miles, or feet represented by the scaleLine.
+		 */
+		private var _labelMiles:TextField = null;
+		
+		/**
+		 * Label wich display the distance in kilometers, or meters represented by the scaleLine.
+		 */
+		private var _labelKm:TextField = null;
+		
+		/**
+		 * Color of the text in labels. Default is grey (0x666666)
+		 */
+		private var _color:int = 0x666666;
+			
+		/**
+		 * Size (or lenght) in pixel of the scaleLine, just before drawing (and after calculating size)
+		 */
 		private var _topPx:Number;
 
+		/**
+		 * Constructor
+		 * 
+		 */
 		public function ScaleLine(position:Pixel=null){
 			super(position);
 		}
 
 		/**
-		 * Get the existing map
+		 * Get the existing map and add event listener on event Zoom end and baseLayer change.
 		 *
 		 * @param value
 		 */
@@ -65,13 +88,17 @@ package org.openscales.core.control
 			super.draw();
 			this.updateScale();
 		}
-
+		
+		/**
+		 * Redraw the scaleline with new parameters.
+		 * 
+		 * @param event the event can be a MapEvent.ZOOM_END or LayerEvent.BASE_LAYER_CHANGED.
+		 */
 		public function updateScaleLine(event:Event):void {
 			this.draw()
 		}
 
 		/**
-		 * Method: getBarLen
 		 * Given a number, round it down to the nearest 1,2,5 times a power of 10.
 		 * That seems a fairly useful set of number groups to use.
 		 *
@@ -103,8 +130,7 @@ package org.openscales.core.control
 		}
 
 		/**
-		 * update
-		 * Update the size of the bars, and the labels they contain.
+		 * Update the size of the bars, and the labels which contains.
 		 */
 		 private function updateScale():void
 		{
@@ -131,11 +157,11 @@ package org.openscales.core.control
 			if(maxSizeData > 100000) {
 				topUnits = this.topOutUnits;
 				Trace.debug("Units => " + topUnits); 
-				bottomUnits = this.bottomOutUnits;
+				bottomUnits = this._bottomOutUnits;
 			} else {
 				topUnits = this.topInUnits;
 				Trace.debug("Units => " + topUnits);
-				bottomUnits = this.bottomInUnits;
+				bottomUnits = this._bottomInUnits;
 			}
 
 			// and to map units units
@@ -199,21 +225,23 @@ package org.openscales.core.control
 			this.addChild(labelKm);
 
 			//Calcul scale
-		/* var sizeCM:Number = (topPx)/((this.parentApplication.height)*(this.parentApplication.width))*2.54;
-		 var scaleD:Number; */
-
-			 //Show the scale 1/xxxxx
-		/* if(labelScaleKm != null)
-		   {
-		   idScaleLine.removeChild(labelScaleKm);
-		   }
-		   labelScaleKm = new Label();
-		   labelScaleKm.text = "1/"+Math.round(scaleD).toString();
-		   labelScaleKm.x = this.position.x;
-		   labelScaleKm.y = 0;
-		 this.idScaleLine.addChild(labelScaleKm);*/
+			/* var sizeCM:Number = (topPx)/((this.parentApplication.height)*(this.parentApplication.width))*2.54;
+			 var scaleD:Number; */
+	
+				 //Show the scale 1/xxxxx
+			/* if(labelScaleKm != null)
+			   {
+			   idScaleLine.removeChild(labelScaleKm);
+			   }
+			   labelScaleKm = new Label();
+			   labelScaleKm.text = "1/"+Math.round(scaleD).toString();
+			   labelScaleKm.x = this.position.x;
+			   labelScaleKm.y = 0;
+			 this.idScaleLine.addChild(labelScaleKm);*/
 		}
 
+		// GETTERS AND SETTERS
+		
 		public function get color():int {
 			return this._color;
 		}
@@ -242,7 +270,40 @@ package org.openscales.core.control
 			_topPx = value;
 		}
 		
-
+		public function get scaleMaxWidth():Number {
+			return _scaleMaxWidth;
+		}
+		public function set scaleMaxWidth(value:Number):void {
+			_scaleMaxWidth = value;
+		}
+		
+		public function get topOutUnits():String {
+			return _topOutUnits;
+		}
+		public function set topOutUnits(value:String):void {
+			_topOutUnits = value;
+		}
+		
+		public function get topInUnits():String {
+			return _topInUnits;
+		}
+		public function set topInUnits(value:String):void {
+			_topInUnits = value;
+		}
+		
+		public function get bottomOutUnits():String {
+			return _bottomOutUnits;
+		}
+		public function set bottomOutUnits(value:String):void {
+			_bottomOutUnits = value;
+		}
+		
+		public function get bottomInUnits():String {
+			return _bottomInUnits;
+		}
+		public function set bottomInUnits(value:String):void {
+			_bottomInUnits = value;
+		}
 	}
 }
 
