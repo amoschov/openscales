@@ -36,7 +36,7 @@
 				 minZoomLevel="5"
 				 maxZoomLevel="15"
 				 proxy="http://openscales.org/proxy.php?url=" 
-				 maxExtent="-1048576,3670016,2097152,6815744"
+				 maxExtent="-1048576,3670016,1597152,6815744"
 				 />
 		
 		<os:DragHandler />
