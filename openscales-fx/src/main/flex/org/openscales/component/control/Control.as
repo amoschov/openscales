@@ -58,19 +58,20 @@ package org.openscales.component.control
       this.map = this._fxmap.map;
     }
 
+	[Bindable(event="propertyChange")]
     public function get map():Map
     {
       return this._map;
     }
-
     public function set map(value:Map):void
     {
       this._map = value;
-      
       // Activate the control only if this control has already thrown an Event.COMPLETE
       if(this._isInitialized) {
       	this.active = true;
       }
+      // Dispatch an event to allow binding for the map of this Control
+      dispatchEvent(new Event("propertyChange"));
     }
 
     public function get active():Boolean
