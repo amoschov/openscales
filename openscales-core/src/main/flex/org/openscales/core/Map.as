@@ -59,7 +59,6 @@ package org.openscales.core
 		private var _zooming:Boolean = false;
 		private var _maxExtent:Bounds = null;
 		private var _projection:ProjProjection;
-		/* private var _units:String; */
 		private var _loading:Boolean;
 		
 		/**
@@ -85,7 +84,6 @@ package org.openscales.core
 
 			this.size = new Size(width, height);
 			this.projection = this.DEFAULT_PROJECTION;
-			/* this.units = this.DEFAULT_UNITS; */
 
 			this._layerContainer = new DraggableSprite();
 
@@ -393,7 +391,7 @@ package org.openscales.core
 		 * @param dragTween
 		 *
 		 */
-		private function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false, resizing:Boolean = false):void {
+		public function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false, resizing:Boolean = false):void {
 			var zoomChanged:Boolean = forceZoomChange || (this.isValidZoomLevel(zoom) && (zoom!=this._zoom));
 						
 			if(lonlat && !this.isValidLonLat(lonlat)) {

@@ -21,7 +21,7 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%" zoom="6">
+	<os:Map id="fxmap" width="100%" height="100%" zoom="6" lon="2.6" lat="47" srs="EPSG:4326">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
 				
@@ -42,7 +42,7 @@
 		<os:DragHandler />
 		<os:WheelHandler />
 		<os:Spinner id="spinner" x="{width / 2}" y="{height / 2}"/>	
-		<os:MousePosition x="10" y="{height-20}" displayProjection="IGNF:GEOPORTALFXX"/>
+		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 
 
 		<mx:VBox horizontalAlign="center" x="10" y="10">

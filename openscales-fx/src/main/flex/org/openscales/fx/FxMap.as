@@ -110,6 +110,9 @@ package org.openscales.fx
 				}
 			}
 			
+			if (!isNaN(this._creationWidth) && !isNaN(this._creationHeight))
+				this._map.size = new Size(this._creationWidth, this._creationHeight);
+			
 			for(i=0; i<this.rawChildren.numChildren; i++) {
 				child = this.rawChildren.getChildAt(i);
 				if (child is FxLayer) {
@@ -134,15 +137,6 @@ package org.openscales.fx
 				}
 			}
 			
-			if (!isNaN(this._lon) && !isNaN(this._lat))
-				this._map.center = new LonLat(this._lon, this._lat);
-			
-			if (!isNaN(this._creationWidth) && !isNaN(this._creationHeight))
-				this._map.size = new Size(this._creationWidth, this._creationHeight);
-			
-			if (! isNaN(this._zoom))
-				this._map.zoom = this._zoom;
-			
 			// Some operations must be done at the end, in order to do
 			// not depend on the declaration order
 			for(i=0; i<this.rawChildren.numChildren; i++) {
@@ -161,6 +155,12 @@ package org.openscales.fx
 					}
 				}
 			}
+			
+			// Set both center and zoom to avoid unvalid request set when we define both separately
+			var center:LonLat = null;
+			if(!isNaN(this._lon) && !isNaN(this._lat))
+				center = new LonLat(this._lon, this._lat);
+			this._map.setCenter(center, this._zoom);
 			
 			var extentDefined:Boolean = false;
 			for(i=0; (!extentDefined) && (i<this.rawChildren.numChildren); i++) {
