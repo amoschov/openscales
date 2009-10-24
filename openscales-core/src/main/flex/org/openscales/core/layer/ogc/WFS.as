@@ -9,6 +9,7 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.maps.HashMap;
+	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.format.Format;
 	import org.openscales.core.format.GMLFormat;
@@ -253,6 +254,11 @@ package org.openscales.core.layer.ogc
 		 * @param failure
 		 */
 		protected function loadFeatures(url:String):void {		
+			if(map)
+                this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_START, this ));
+            else
+                Trace.warning("Warning : no LAYER_LOAD_START dispatched because map event dispatcher is not defined");
+                 
 			if(_request)
 				_request.destroy();
 			this.loading = true;
@@ -303,7 +309,12 @@ package org.openscales.core.layer.ogc
 			startTime = new Date();
 			this.addFeatures(features);
 			endTime = new Date();
-			Trace.debug("Add features : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");	
+			Trace.debug("Add features : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
+			
+			if(map)
+                this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_END, this ));
+            else
+                Trace.warning("Warning : no LAYER_LOAD_END dispatched because map event dispatcher is not defined"); 	
 				
 		}
 		
