@@ -1,5 +1,6 @@
 package org.openscales.core.layer
 {
+	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
@@ -22,17 +23,18 @@ package org.openscales.core.layer
 
 		private var _temporaryProjection:ProjProjection = null;
 		
-		//enables Temporaries vertices on the vectorLayer
-		private var _tmpVerticesOnFeature:Boolean=false;
+		/**
+		 *To know if the vector layer is in edition mode 
+		 **/
+		private var _isInEditionMode:Boolean=false;
+		
 		
 		public function VectorLayer(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
-			projection:String = null, proxy:String = null,tmpVerticesOnFeature:Boolean=false) {
+			projection:String = null, proxy:String = null) {
 
 			super(name,isBaseLayer, visible, projection, proxy);
 			this.style = new Style();
 			this._temporaryProjection = this.projection;
-			
-			
 		}
 
 		override public function destroy(setNewBaseLayer:Boolean = true):void {
@@ -95,13 +97,20 @@ package org.openscales.core.layer
 		override public function set projection(value:ProjProjection):void {
 			super.projection = value;
 		}
+		/**
+		 * To know if the layer is in edition mode
+		 * */
+		public function get IsInEditionMode():Boolean{
+			return this._isInEditionMode;
+		}
+		/**
+		 * @private
+		 * */
+		public function set isInEditionMode(value:Boolean):void{
+			this._isInEditionMode=value;
+		}
 		
-		public function get tmpVerticesOnFeature():Boolean{
-			return this._tmpVerticesOnFeature;
-		}
-		public function set tmpVerticesOnFeature(value:Boolean):void{
-			this._tmpVerticesOnFeature=value;
-		}
+		
 	}
 }
 

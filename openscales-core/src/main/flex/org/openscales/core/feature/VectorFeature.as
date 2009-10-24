@@ -3,10 +3,14 @@ package org.openscales.core.feature
 	import flash.display.CapsStyle;
 	import flash.display.JointStyle;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
+	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
@@ -31,20 +35,57 @@ package org.openscales.core.feature
 		private var _style:Style = null;	    
 		private var _originalStyle:Style = null;
 		
+		//Edition Mode 
+		//a feature could also be a temporary feature used for Edition Mode
 		
 		/**
 		 * This Array  is used to record temporaries point for a feature modification
-		 * 
-		 * there are 2 types or temporaries vertices which represent real vertices and which 
-		 * represent a  temporary vertice used to represent the point of the feature  under the mouse
-		 **/
-		 
-		 
+		 **/	 
+		//TODO Damien Nda replace this with editionFeaturesArray 
+		//WORK ON FEATURE STATE
 		private var _tmpVertices:Array=new Array();
 		
-		private var _tmpVerticeTolerance:Number=0;
+		/** 
+		 * represents a  temporary vertice which represent the point of the feature  under the mouse
+		 * */
+		private var _tmpVerticeUnderTheMouse:TmpPointFeature=null;
+	
+		/**
+		 * This tolerance is here for feature vertices and point under mouse differenciation
+		 * */
+		private var _tmpVerticeTolerance:Number=10;
 		
+		/**
+		 * This Timer is used to delete the temporaries vertices
+		 * when the mouse are not on the feature since a long time
+		 * and to avoid temporary vertices flashing
+		 * */
+		private var _tmpVerticesTimer:Timer=null;
 		
+		/**
+		 * value of Temporary Timer  
+		 **/
+		private var _tmpTimerValue:Number=5000;
+		
+		/**
+		 * To know if the vector feature is editable when its
+		 * vector layer is in edit mode
+		 **/
+		private var _isEditable:Boolean=false;
+		/**
+		 * To know if the vector feature  is a temporary used 
+		 * for edition mode
+		 **/
+		private var _isEditionFeature:Boolean=false;
+		/**
+		 * the geometry of the parent when the feature is an edition feature  
+		 **/
+		private var _editionFeatureParentGeometry:Collection=null;
+		
+		/**
+		 *Link to all temporary features used to edit the feature 
+		 * */
+		protected var _editionFeaturesArray:Array;
 		
 		/**
 		 * VectorFeature constructor
@@ -53,7 +94,7 @@ package org.openscales.core.feature
 		 * @param data
 		 * @param style The feature's style
 		 */
-		public function VectorFeature(geom:Geometry = null, data:Object = null, style:Style = null) {
+		public function VectorFeature(geom:Geometry = null, data:Object = null, style:Style = null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null) {
 			super(null, null, data);
 			this.lonlat = null;
 			this.geometry = geom;
@@ -65,6 +106,23 @@ package org.openscales.core.feature
 				this.attributes = Util.extend(this.attributes, data);
 			}
 			this.style = style ? style : null;
+			
+			this._isEditable=isEditable;
+			//A feature can't be editable and editionfeature(temporary feature )
+			if(isEditable)
+			{
+				if(isEditionFeature || (editionFeatureParentGeometry!=null)){
+					Trace.error("A feature can't be editable and edition feature(temporary feature ) at the same time");
+					this._isEditionFeature=false;
+					this._editionFeatureParentGeometry=null;
+				}
+			} 
+			else
+			{
+				this._isEditionFeature=isEditionFeature;
+				if(!isEditionFeature && editionFeatureParentGeometry!=null) this._editionFeatureParentGeometry=null;
+				else this._editionFeatureParentGeometry=editionFeatureParentGeometry;
+			}
 		}
 
 		/**
@@ -264,13 +322,10 @@ package org.openscales.core.feature
 		}
 		
 		/**
-		 * To find a geometry vertices of a simple collection
+		 * To find the vertices of a simple collection
 		 * @param geometry
-		 * @param vertices to use This function in recursivity when geometry
-		 * is provided from Multicollection
 		 * */
 		private function createTmpVertices(collection:Collection):void{
-					    
 			    
 				for(var i:int=0;i<collection.componentsLength;i++){
 					var geometry:Geometry=collection.componentByIndex(i);
@@ -284,93 +339,162 @@ package org.openscales.core.feature
 							tmpVertice.tmpPointParentGeometry=collection;
 							this.tmpVertices.push(tmpVertice);
 						}
-					}				
-				}		
+					}
+				}						
 		}
-		override protected function verticesShowing(pevt:MouseEvent):void{
-			//TODO DAMIEN NDA Remove this condition after testing on all feature
-			if((this.layer as VectorLayer).tmpVerticesOnFeature){
-			if(this.geometry is Collection)
-			{						
-			super.verticesShowing(pevt);
-			
-			this.createTmpVertices(this.geometry as Collection);
-			
-			//We ad the temporaries vertices to the layer 
-			for each(var tmpVertic:TmpPointFeature in this.tmpVertices){
-				(this.layer as VectorLayer).addFeature(tmpVertic);
-			}
-			
-			//Vertice under mouse adding
+		
+		
+		private function createVerticesUnderMouse(pevt:MouseEvent):void{
+			//point under mouse adding
 			if(this.layer!=null && this.layer.map!=null)
 			{
+				
+				this.layer.map.buttonMode=true;
+				var drawing:Boolean=true;
 				var px:Pixel=new Pixel(this.layer.mouseX,this.layer.mouseY);
-				//tmpPx is used for tolerance
 				var tmpPx:Pixel=null;
-				var tmpLonLat:LonLat=null;
-				var lonlat:LonLat=this.layer.map.getLonLatFromLayerPx(px);
+				var tmpLonLat:LonLat=new LonLat();
 				
-				var tmpVerticeUnderTheMouse:PointFeature=this.getTmpFeatureUnderTheMouse();
-				//first over
-				if(tmpVerticeUnderTheMouse!=null){
-					 tmpLonLat=new LonLat((tmpVerticeUnderTheMouse.geometry as Point).x,(tmpVerticeUnderTheMouse.geometry as Point).y);
-					 tmpPx=this.layer.map.getLayerPxFromLonLat(tmpLonLat);
-				}
-				//the point will be add on the LineString to show a vertice which could be modified
-			
-				
-				
-				if(tmpPx==null || Math.abs(px.x-tmpPx.x) >tmpVerticeTolerance ||Math.abs(px.y-tmpPx.y)>tmpVerticeTolerance)
+				for each(var tmpVertic:TmpPointFeature in this.tmpVertices)
 				{
-				var style:Style = Style.getDefaultCircleStyle();
-				//we delete the point under the mouse  from layer and from tmpVertices Array
-				(this.layer as VectorLayer).removeFeature(tmpVerticeUnderTheMouse);
+					//It's a real vertice
+					if(tmpVertic.attributes.id!=null)
+					{					
+						//we don't show vertice under mouse so close from real vertice
+						tmpLonLat.lon=(tmpVertic.geometry as Point).x;
+						tmpLonLat.lat=(tmpVertic.geometry as Point).y;
+						tmpPx=tmpVertic.layer.map.getLayerPxFromLonLat(tmpLonLat);
+						if(Math.abs(px.x-tmpPx.x)<tmpVerticeTolerance && Math.abs(px.y-tmpPx.y)<tmpVerticeTolerance){
+							drawing=false;
+							break;
+						}
+					}
+				}
 				
-				Util.removeItem(this.tmpVertices,tmpVerticeUnderTheMouse);
 				
-				var tmpVertice:TmpPointFeature=new TmpPointFeature(new Point(lonlat.lon,lonlat.lat),{isTmpFeatureUnderTheMouse:true},style);
-				this.tmpVertices.push(tmpVertice);		
-				//There is always a component because the mouse is over the component
+				if(drawing)
+				{
+					//we delete the point under the mouse  from layer and from tmpVertices Array
+					(this.layer as VectorLayer).removeFeature(this._tmpVerticeUnderTheMouse);
+					var lonlat:LonLat=this.layer.map.getLonLatFromLayerPx(px);	
+					var tmpPoint:Point=new Point(lonlat.lon,lonlat.lat);
+					//There is always a component because the mouse is over the component
 				//consequently we use the first
 				//we find the collection which directly have a point as component
-				var testCollection:Geometry=this.geometry;
-				var parentTmpPoint:Geometry;
-				while(testCollection is Collection)
-				{
-					parentTmpPoint=testCollection;
-					testCollection=(testCollection as Collection).componentByIndex(0);
-				}
-				tmpVertice.tmpPointParentGeometry=parentTmpPoint;
-				(this.layer as VectorLayer).addFeature(tmpVertice);
-				tmpVertice.registerListeners();
-				}
-			}
-			}
+					var testCollection:Geometry=this.geometry;
+					var parentTmpPoint:Geometry;
+					while(testCollection is Collection)
+					{
+						parentTmpPoint=testCollection;
+						testCollection=(testCollection as Collection).componentByIndex(0);
+					}
+				/*	var bob:LinearRing=parentTmpPoint as LinearRing;
+					if(bob.getSegmentsIntersection(tmpPoint)!=-1){*/
 			
+						var style:Style = Style.getDefaultCircleStyle();		
+					//isTmpFeatureUnderTheMouse attributes use to specify type of temporary feature
+						var tmpVertice:TmpPointFeature=new TmpPointFeature(tmpPoint,{isTmpFeatureUnderTheMouse:true},style);
+						this._tmpVerticeUnderTheMouse=tmpVertice;		
+				
+						tmpVertice.tmpPointParentGeometry=parentTmpPoint;
+						(this.layer as VectorLayer).addFeature(tmpVertice);
+					//}
+
+				
+				}
 			}
+		}
+		
+		/**
+		 * When a feature is drag
+		 * 
+		 * */
+		protected function onTmpFeaturedragStart(evt:FeatureEvent):void{
+			
+			//We test if the temporary point belongs to the vectorfeature 
+			if((this._tmpVerticeUnderTheMouse==evt.feature)||Util.indexOf(this._tmpVertices,evt.feature)!=-1){
+				this.unregisterListeners();
+				this.removeEventListener(MouseEvent.MOUSE_MOVE,createVerticesUnderMouse);
+				//We stop the Timer if it's not null
+				if(this._tmpVerticesTimer!=null) 
+				{
+					this._tmpVerticesTimer.stop();
+					this._tmpVerticesTimer.removeEventListener(TimerEvent.TIMER,deleteTmpVertices);
+					this._tmpVerticesTimer=null;
+				}
+			}
+		}
+		protected function onTmpFeaturedragStop(evt:FeatureEvent):void{
+			//We test if the temporary point belongs to the vectorfeature 
+			if((this._tmpVerticeUnderTheMouse==evt.feature)||Util.indexOf(this._tmpVertices,evt.feature)!=-1){
+				this.registerListeners();
+				this.addEventListener(MouseEvent.MOUSE_MOVE,createVerticesUnderMouse);
+				
+				//this.layer.map.removeEventListener(MouseEvent.MOUSE_MOVE,createVerticesUnderMouse);
+				
+				//To know when a temporary feature is drag
+				this.layer.map.removeEventListener(FeatureEvent.TMP_FEATURE_DRAG_START,onTmpFeaturedragStart);
+				this.layer.map.removeEventListener(FeatureEvent.TMP_FEATURE_DRAG_STOP,onTmpFeaturedragStop);
+			}
+		}
+		override protected function verticesShowing(pevt:MouseEvent):void{
+			
+			//if((this.layer as VectorLayer).tmpVerticesOnFeature){
+		/*	if(this.geometry is Collection)
+			{
+				//To know when a temporary feature is drag
+				this.layer.map.addEventListener(FeatureEvent.TMP_FEATURE_DRAG_START,onTmpFeaturedragStart);
+				this.layer.map.addEventListener(FeatureEvent.TMP_FEATURE_DRAG_STOP,onTmpFeaturedragStop);
+				//We stop the Timer if it's not null
+				if(this._tmpVerticesTimer!=null) 
+				{
+					this._tmpVerticesTimer.stop();
+					this._tmpVerticesTimer.removeEventListener(TimerEvent.TIMER,deleteTmpVertices);
+					this._tmpVerticesTimer=null;
+				}						
+				super.verticesShowing(pevt);
+				var tmpVertic:TmpPointFeature;
+				for each( tmpVertic in this.tmpVertices){
+					(this.layer as VectorLayer).removeFeature(tmpVertic);
+				}
+				this._tmpVertices=new Array();
+				this.createTmpVertices(this.geometry as Collection);
+			
+			//We ad the new temporaries vertices to the layer 
+				for each( tmpVertic in this.tmpVertices){
+					(this.layer as VectorLayer).addFeature(tmpVertic);
+				}
+				this.addEventListener(MouseEvent.MOUSE_MOVE,createVerticesUnderMouse);
+			
+			//}
+			
+			}*/
 		}
 		
 		override protected function verticesHiding(pevt:MouseEvent):void{
-		 	for each(var feature:PointFeature in this.tmpVertices){
-		 		(this.layer as VectorLayer).removeFeature(feature);
-		 		this.tmpVertices.pop();
-		 	}
+		 	//when  a tmpVertices is dragged the mousout event is dispatched
+		 	//but we don't want the deleting of vertices in this case
+		/*  if((this.layer as VectorLayer).tmpVerticesOnFeature){
+		 		this.createVerticesUnderMouse(pevt);
+		 		this._tmpVerticesTimer=new Timer(_tmpTimerValue,1);
+		 		this._tmpVerticesTimer.addEventListener(TimerEvent.TIMER_COMPLETE,deleteTmpVertices);
+		 		this._tmpVerticesTimer.start();
+		 	}*/
 		 }
-		
-		
 		/**
-		 * This function is used to get the temporary pointfeature under the mouse
-		 * when the mouse is over the the feature
+		 * This function is used to delete the temporaries vertices
+		 * when the time between 2 Mousehover  is finished
 		 * */
-		protected function getTmpFeatureUnderTheMouse():PointFeature{
-			for each(var point:PointFeature in this.tmpVertices){
-				if(point.attributes.isTmpFeatureUnderTheMouse){
-					return point;
-				}
-			}
-			return null;
+		public function deleteTmpVertices(pevt:TimerEvent):void
+		{
+			this.layer.map.buttonMode=false;
+			for each(var feature:TmpPointFeature in this.tmpVertices){
+		 		(this.layer as VectorLayer).removeFeature(feature); 	
+		 	}
+		 	(this.layer as VectorLayer).removeFeature(this._tmpVerticeUnderTheMouse);
+		 	this.tmpVertices.pop();
+		 	
 		}
-		
 		
 		public function get tmpVertices():Array{
 			return this._tmpVertices;
@@ -386,7 +510,33 @@ package org.openscales.core.feature
 		public function set tmpVerticeTolerance(tolerance:Number):void{
 			this._tmpVerticeTolerance=tolerance;
 		}
-
+		
+		/**
+		 * To know if the vector feature is editable when its
+		 * vector layer is in edit mode
+		 **/
+		public function get isEditable():Boolean{
+			return this._isEditable;
+		}
+		/**
+		 * @private
+		 * */
+		 public function set isEditable(value:Boolean):void{
+		 	this._isEditable=isEditable;
+		 }
+		 /**
+		 * To know if the vector feature  is a temporary vector only used 
+		 * for edition mode
+		 **/
+		 public function get isEditionFeature():Boolean{
+		 	return this._isEditionFeature;
+		 }
+		 /**
+		 * the geometry of the parent when the feature is an edition feature  
+		 **/
+		public function get editionFeatureParentGeometry():Collection{
+			return this._editionFeatureParentGeometry;
+		}
 	}
 }
 

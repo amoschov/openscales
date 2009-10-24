@@ -7,15 +7,15 @@ package org.openscales.core.feature
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
-
+	import org.openscales.core.geometry.Collection;
 	/**
 	 * Feature used to draw a MultiPolygon geometry on FeatureLayer
 	 */
 	public class MultiPolygonFeature extends VectorFeature
 	{
-		public function MultiPolygonFeature(geom:MultiPolygon=null, data:Object=null, style:Style=null)
+		public function MultiPolygonFeature(geom:MultiPolygon=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null)
 		{
-			super(geom, data, style);
+			super(geom, data, style,isEditable,isEditionFeature,editionFeatureParentGeometry);
 		}
 
 		public function get polygons():MultiPolygon {

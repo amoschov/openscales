@@ -6,15 +6,15 @@ package org.openscales.core.feature
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
-
+	import org.openscales.core.geometry.Collection;
 	/**
 	 * Feature used to draw a MultiLineString geometry on FeatureLayer
 	 */
 	public class MultiLineStringFeature extends VectorFeature
 	{
-		public function MultiLineStringFeature(geom:MultiLineString=null, data:Object=null, style:Style=null)
+		public function MultiLineStringFeature(geom:MultiLineString=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null) 
 		{
-			super(geom, data, style);
+			super(geom, data, style,isEditable,isEditionFeature,editionFeatureParentGeometry);
 		}
 
 		public function get lineStrings():MultiLineString {

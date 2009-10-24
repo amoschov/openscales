@@ -7,15 +7,15 @@ package org.openscales.core.feature
 	import org.openscales.core.style.symbolizer.Mark;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
 	import org.openscales.core.style.symbolizer.Symbolizer;
-
+	import org.openscales.core.geometry.Collection;
 	/**
 	 * Feature used to draw a MultiPoint geometry on FeatureLayer
 	 */
 	public class MultiPointFeature extends VectorFeature
 	{
-		public function MultiPointFeature(geom:MultiPoint=null, data:Object=null, style:Style=null)
+		public function MultiPointFeature(geom:MultiPoint=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null)
 		{
-			super(geom, data, style);
+			super(geom, data, style,isEditable,isEditionFeature,editionFeatureParentGeometry);
 		}
 
 		public function get points():MultiPoint {

@@ -9,15 +9,15 @@ package org.openscales.core.feature
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
-
+	import org.openscales.core.geometry.Collection;
 	/**
 	 * Feature used to draw a Polygon geometry on FeatureLayer
 	 */
 	public class PolygonFeature extends VectorFeature
 	{
-		public function PolygonFeature(geom:Polygon=null, data:Object=null, style:Style=null)
+		public function PolygonFeature(geom:Polygon=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null)
 		{
-			super(geom, data, style);
+			super(geom, data, style,isEditable,isEditionFeature,editionFeatureParentGeometry);
 		}
 
 		public function get polygon():Polygon {

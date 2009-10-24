@@ -1,26 +1,43 @@
 package org.openscales.core.feature
 {
+	import flash.events.MouseEvent;
+	
 	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Mark;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
 	import org.openscales.core.style.symbolizer.Symbolizer;
-
+	import org.openscales.core.geometry.Collection;
 	/**
 	 * Feature used to draw a Point geometry on FeatureLayer
 	 */
 	public class PointFeature extends VectorFeature
 	{
-		public function PointFeature(geom:Point=null, data:Object=null, style:Style=null)
+		//This attributes is use in features edition mode
+		private var IsTemporary:Boolean=false;
+		
+		public function PointFeature(geom:Point=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null) 
 		{
-			super(geom, data, style);
+			super(geom, data, style,isEditable,isEditionFeature,editionFeatureParentGeometry);
 			if (geom!=null) {
 				this.lonlat = new LonLat(this.point.x,this.point.y);
 			}
 		}
-
+		
+		override public function registerListeners():void{		
+			if(this.IsTemporary){
+				this.addEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
+				this.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
+			}
+		}
+		override public function unregisterListeners():void{
+			if(this.IsTemporary){
+				this.removeEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
+				this.removeEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
+			}
+		}
+		
 		public function get point():Point {
 			return this.geometry as Point;
 		}

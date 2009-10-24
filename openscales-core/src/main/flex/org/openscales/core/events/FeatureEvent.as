@@ -81,7 +81,18 @@ package org.openscales.core.events
 		 */
 		public static const FEATURE_UNSELECTED:String="org.openscales.feature.unselected";
 
-
+		/**
+		 * Event type dispatched when we start dragging of a temporary features
+		 * */
+		
+		public static const TMP_FEATURE_DRAG_START:String="org.openscales.tmpfeature.dragstart";	
+		/**
+		 * Event type dispatched when we stop dragging of a temporary features
+		 * */
+		
+		public static const TMP_FEATURE_DRAG_STOP:String="org.openscales.tmpfeature.dragstop";	
+			
+		
 		/**
 		 * FeatureEvent constructor
 		 *

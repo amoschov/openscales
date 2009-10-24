@@ -1,11 +1,8 @@
 package org.openscales.core.feature
 {
-	import flash.events.MouseEvent;
-	
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
-	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
 
@@ -14,9 +11,9 @@ package org.openscales.core.feature
 	 */
 	public class LineStringFeature extends VectorFeature
 	{
-		public function LineStringFeature(geom:LineString=null, data:Object=null, style:Style=null)
+		public function LineStringFeature(geom:LineString=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null) 
 		{
-			super(geom, data, style);
+			super(geom, data, style,isEditable,isEditionFeature,editionFeatureParentGeometry);
 		}
 
 		public function get lineString():LineString {
