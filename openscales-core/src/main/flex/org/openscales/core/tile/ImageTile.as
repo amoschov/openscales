@@ -120,23 +120,12 @@ package org.openscales.core.tile
 				
 				// TODO : add parameter to control tween effect
 				var tw:GTweeny = new GTweeny(this, 0.3, {alpha:1});
-				tw.addEventListener(Event.COMPLETE, removeReference, false, 0, true);
 				this.drawn = true;
 
 				//We put the loader into the cache if it's a recently loaded
 				if (this.layer is Grid && !cached)
 					(this.layer as Grid).addTileCache(loader.name,loader);
 			}
-		}
-		
-		private function removeReference(event:Event):void
-		{
-			var al:Number = this.alpha;
-			
-			if(numChildren > 1)
-				clear();
-				
-			this.alpha = al;
 		}
 
 		public function onTileLoadError(event:IOErrorEvent):void
