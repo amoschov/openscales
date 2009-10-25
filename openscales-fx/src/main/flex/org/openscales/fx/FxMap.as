@@ -18,12 +18,14 @@ package org.openscales.fx
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.IControl;
 	import org.openscales.core.events.MapEvent;
+	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Popup;
 	import org.openscales.fx.configuration.FxConfiguration;
 	import org.openscales.fx.control.FxControl;
 	import org.openscales.fx.handler.FxHandler;
 	import org.openscales.fx.layer.FxLayer;
 	import org.openscales.fx.popup.FxPopup;
+	import org.openscales.fx.security.FxAbstractSecurity;
 	import org.openscales.proj4as.ProjProjection;
 	
 	/**
@@ -121,9 +123,7 @@ package org.openscales.fx
 						(child as FxLayer).fxmap = this;
 						this._map.addLayer((child as FxLayer).layer);
 					}
-				}
-				// else if (child is FxSecurities){}
-				else if (child is FxControl) {
+				} else if (child is FxControl) {
 					this._map.addControl((child as FxControl).control);
 				} else if (child is IControl) {
 					this._map.addControl(child as IControl, false);
@@ -132,7 +132,7 @@ package org.openscales.fx
 					this.parent.addChild(child);
 				} else if (child is FxHandler) {
 					this._map.addHandler((child as FxHandler).handler);
-				} else if ((child is UIComponent) && !(child is FxMaxExtent) && !(child is FxExtent) ){
+				} else if ((child is UIComponent) && !(child is Map) && !(child is FxMaxExtent) && !(child is FxExtent) && !(child is FxAbstractSecurity) ){
 					this.parent.addChild(child);
 				}
 			}
@@ -156,6 +156,22 @@ package org.openscales.fx
 				}
 			}
 			
+			for(i=0; i<this.rawChildren.numChildren; i++) {
+				child = this.rawChildren.getChildAt(i);
+			
+			 	if (child is FxAbstractSecurity){
+					var layers:Array = (child as FxAbstractSecurity).layers.split(",");
+					var layer:Layer = null;
+					 for each (var name:String in layers) {
+						layer = map.getLayerByName(name);
+						if(layer) {
+							(child as FxAbstractSecurity).map = this._map;
+							layer.security = (child as FxAbstractSecurity).security;
+						}
+					 }
+				}
+			}
+						
 			// Set both center and zoom to avoid unvalid request set when we define both separately
 			var center:LonLat = null;
 			if(!isNaN(this._lon) && !isNaN(this._lat))
@@ -169,7 +185,9 @@ package org.openscales.fx
 					this._map.zoomToExtent((child as FxExtent).bounds);
 					extentDefined = true;
 				}
-			}	
+			}
+			
+			
 			
 			this._map.addEventListener(MapEvent.DRAG_START, this.hidePopups);
 			this._map.addEventListener(MapEvent.MOVE_START, this.hidePopups);

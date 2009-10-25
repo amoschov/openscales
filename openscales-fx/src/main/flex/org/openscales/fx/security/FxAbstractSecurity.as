@@ -9,23 +9,16 @@ package org.openscales.fx.security
 	 */
 	public class FxAbstractSecurity extends UIComponent
 	{
-		/**
-		 * @private
-		 * */
-		private var _security:ISecurity;
-		/**
-		 * @private
-		 * */
+	
 		private var _map:Map=null;
 		
-		public function FxAbstractSecurity(map:Map=null)
+		private var _layers:String=null;
+		
+		public function FxAbstractSecurity()
 		{
-			if(map!=null) this._map=map;
-			this.init();
+			
 		}
-		public function init():void {
 
-   		 }
    		 /**
    		 * Map instance
    		 * */
@@ -41,15 +34,19 @@ package org.openscales.fx.security
    		 /**
    		 * Security mecanism used for authentification
    		 * */
-   		 protected function get security():ISecurity {
-   		 	return this._security;
+   		 public function get security():ISecurity {
+   		 	return null;
    		 }
    		 
    		 /**
-   		 * @private
-   		 * */
-   		 protected function set security(value:ISecurity):void{
-   		 	this._security=value;
+   		  * Name of layers that use this Security manager, separated by commas
+   		  */ 
+   		 public function set layers(value:String):void {
+			 this._layers = value;
+		  }
+		  
+		  public function get layers():String {
+   		 	return this._layers;
    		 }
 	}
 }

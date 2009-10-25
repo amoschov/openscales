@@ -14,8 +14,6 @@
 				map=fxmap.map;
 				
 				// openscales.org API key
-				security = new IgnGeoRMSecurity(map, "1202474798937064747", "http://openscales.org/proxy.php?url=");
-				ortho.layer.security=security;
 				((ortho.layer as WMS).params as WMSParams).exceptions = "text/xml";
 			}
 		]]>
@@ -24,7 +22,8 @@
 	<os:Map id="fxmap" width="100%" height="100%" zoom="6" lon="2.6" lat="47" srs="EPSG:4326">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
-				
+		<os:IgnGeoRMSecurity key="1202474798937064747" proxy="http://openscales.org/proxy.php?url=" layers="ORTHOPHOTOS" />
+			
 		<os:WMSC id="ortho" 
 				 name="ORTHOPHOTOS"
 				 url="http://wxs.ign.fr/geoportail/wmsc"
