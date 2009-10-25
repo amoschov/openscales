@@ -6,9 +6,9 @@
 		<![CDATA[
 			import org.openscales.core.layer.ogc.WMS;
 			import org.openscales.core.layer.params.ogc.WMSParams;
-			import org.openscales.core.security.ign.IgnGeoRMSecurity;
+			import org.openscales.core.security.ign.IGNGeoRMSecurity;
 			
-			private var security:IgnGeoRMSecurity;
+			private var security:IGNGeoRMSecurity;
 
 			private function initMap():void {
 				map=fxmap.map;
@@ -22,7 +22,7 @@
 	<os:Map id="fxmap" width="100%" height="100%" zoom="6" lon="2.6" lat="47" srs="EPSG:4326">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
-		<os:IgnGeoRMSecurity key="1202474798937064747" proxy="http://openscales.org/proxy.php?url=" layers="ORTHOPHOTOS" />
+		<os:IGNGeoRMSecurity key="1202474798937064747" proxy="http://openscales.org/proxy.php?url=" layers="ORTHOPHOTOS" />
 			
 		<os:WMSC id="ortho" 
 				 name="ORTHOPHOTOS"

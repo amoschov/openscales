@@ -1,19 +1,19 @@
 package org.openscales.fx.security.ign
 {
 	import org.openscales.core.security.ISecurity;
-	import org.openscales.core.security.ign.IgnGeoRMSecurity;
+	import org.openscales.core.security.ign.IGNGeoRMSecurity;
 	import org.openscales.fx.security.FxAbstractSecurity;
 	
 	/**
 	 * This class is a Flex wrapper for IGN GeoRM Security
 	 * */
-	public class FxIgnGeoRMSecurity extends FxAbstractSecurity
+	public class FxIGNGeoRMSecurity extends FxAbstractSecurity
 	{
 		private var _key:String;
 		private var _proxy:String;
 		private var _host:String;
 		
-		public function FxIgnGeoRMSecurity()
+		public function FxIGNGeoRMSecurity()
 		{			
 			super();
 		}
@@ -35,7 +35,7 @@ package org.openscales.fx.security.ign
 		}
 		
 		override public function get security():ISecurity {
-			return new IgnGeoRMSecurity(this.map,this._key,this._proxy, this._host);
+			return new IGNGeoRMSecurity(this.map,this._key,this._proxy, this._host);
 		}
 	}
 }

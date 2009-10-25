@@ -16,7 +16,7 @@ package org.openscales.core.security.ign
 	 * This module will retreive an GeoRM token in order to be able to request protected datas
 	 * Documentation is available at https://api.ign.fr/geoportail/api/doc/index.html 
 	 */
-	public class IgnGeoRMSecurity extends AbstractSecurity
+	public class IGNGeoRMSecurity extends AbstractSecurity
 	{
 		
 		/** Host used to retreive the token **/
@@ -47,7 +47,7 @@ package org.openscales.core.security.ign
 		private var _ttl:int = 600000;
 		
 
-		public function IgnGeoRMSecurity(map:Map, key:String, proxy:String = null, host:String = null) {
+		public function IGNGeoRMSecurity(map:Map, key:String, proxy:String = null, host:String = null) {
 			if(host)
 				this.host = host;
 			if(proxy)

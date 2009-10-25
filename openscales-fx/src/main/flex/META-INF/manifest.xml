@@ -51,7 +51,7 @@
 	
 	<component id="WidgetWindow" class="org.openscales.component.WidgetWindow"/>
 	
-	<component id="IgnGeoRMSecurity" class="org.openscales.fx.security.ign.FxIgnGeoRMSecurity"/>
+	<component id="IGNGeoRMSecurity" class="org.openscales.fx.security.ign.FxIGNGeoRMSecurity"/>
 	
 	<component id="StyleEditor" class="org.openscales.component.control.style.StyleEditor"/>
 	<component id="StyleEditionWindow" class="org.openscales.component.control.style.StyleEditionWindow"/>	
