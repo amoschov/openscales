@@ -1,7 +1,6 @@
 package org.openscales.core.security
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.layer.Layer;
 	import org.openscales.core.security.events.SecurityEvent;
 
 
@@ -52,7 +51,10 @@ package org.openscales.core.security
 		}
 		
 		public function get proxy():String {
-			return this._proxy;
+			var p:String = this._proxy;
+			if(!p && map && map.proxy)
+				p = map.proxy;
+			return p;
 		}
 		
 		public function set proxy(value:String):void {

@@ -179,8 +179,7 @@ package org.openscales.core.security.ign
 		
 		public function set ttl(value:int):void {
 			this._ttl = value;
-			this._timer = new Timer(value);
-			this._timer.addEventListener(TimerEvent.TIMER, updateHandler);
+			this._timer.delay = value;
 		}
 		
 	}
