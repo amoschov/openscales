@@ -1,15 +1,12 @@
 package org.openscales.core.feature
 {
-	import flash.events.MouseEvent;
-	
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.geometry.Collection;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
-	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
-	import org.openscales.core.geometry.Collection;
 	/**
 	 * Feature used to draw a Polygon geometry on FeatureLayer
 	 */
@@ -63,6 +60,15 @@ package org.openscales.core.feature
 			}
 			
 			trace("End of polygon drawing");
+		}
+		/**
+		 * To obtain feature clone 
+		 * */
+		override public function clone():Feature{
+			var geometryClone:Geometry=this.geometry.clone();
+			var PolygonFeatureClone:PolygonFeature=new PolygonFeature(geometryClone as Polygon,null,this.style,this.isEditable,this.isEditionFeature,this.editionFeatureParentGeometry);
+			return PolygonFeatureClone;
+			
 		}	
 	}
 }

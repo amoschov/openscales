@@ -54,6 +54,15 @@ package org.openscales.core.geometry
 				}
 			}
 		}
+		/**
+		 * To get this geometry clone
+		 * */
+		override public function clone():Geometry{
+			var MultiLineStringClone:MultiLineString=new MultiLineString();
+			var component:Array=this.getcomponentsClone();
+			MultiLineStringClone.addComponents(component);
+			return MultiLineStringClone;
+		}
 	}
 }
 

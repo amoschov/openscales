@@ -107,7 +107,8 @@ package org.openscales.core.geometry
 			}
 			return length;
 		}
-
+		
+		
 		/**
 		 * Method to convert the multipoint (x/y) from a projection system to an other.
 		 * 
@@ -244,6 +245,14 @@ package org.openscales.core.geometry
 			}
 			return segments;
 		}
-		
+		/**
+		 * To get this geometry clone
+		 * */
+		override public function clone():Geometry{
+			var lineStringClone:LineString=new LineString(null);
+			var component:Array=this.getcomponentsClone();
+			lineStringClone.addComponents(component);
+			return lineStringClone;
+		}
 	}
 }

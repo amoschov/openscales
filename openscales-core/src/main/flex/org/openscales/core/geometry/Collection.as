@@ -88,6 +88,31 @@ package org.openscales.core.geometry
 
 
 		/**
+		 * TO get component clone
+		 * */
+		
+		public function getcomponentsClone():Array{
+			var componentsClone:Array=null;
+			var componentslength:Number=this._components.length;
+			if(componentslength<=0) return null;
+			for(var i:int=0;i<componentslength;i++)	{
+				componentsClone=new Array();
+				componentsClone.push((this._components[i] as Geometry).clone());
+			}
+			return componentsClone;
+	}
+		/**
+		 * To get this geometry clone
+		 * */
+		override public function clone():Geometry{		
+			//All collection
+			var Collectionclone:Collection=new Collection(null);
+			var component:Array=this.getcomponentsClone();
+			Collectionclone.addComponents(component);
+			return Collectionclone;		
+		}
+		
+		/**
      	 * Get a string representing the components for this collection
      	 * 
      	 * @return A string representation of the components of this collection

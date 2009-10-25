@@ -1,12 +1,12 @@
 package org.openscales.core.feature
 {
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.geometry.Collection;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
-	import org.openscales.core.geometry.Collection;
 	/**
 	 * Feature used to draw a MultiLineString geometry on FeatureLayer
 	 */
@@ -51,7 +51,16 @@ package org.openscales.core.feature
 					}
 				}
 			}
-		}		
+		}
+		/**
+		 * To obtain feature clone 
+		 * */
+		override public function clone():Feature{
+			var geometryClone:Geometry=this.geometry.clone();
+			var MultilineStringFeatureClone:MultiLineStringFeature=new MultiLineStringFeature(geometryClone as MultiLineString,null,this.style,this.isEditable,this.isEditionFeature,this.editionFeatureParentGeometry);
+			return MultilineStringFeatureClone;
+			
+		}			
 	}
 }
 

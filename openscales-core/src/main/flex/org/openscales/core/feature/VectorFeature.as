@@ -320,6 +320,21 @@ package org.openscales.core.feature
 		protected function executeDrawing(symbolizer:Symbolizer):void{
 			trace("Drawing");
 		}
+		/**
+		 * To obtain feature clone 
+		 * */
+		override public function clone():Feature{
+			return null;
+		}
+		/**
+		 *To get an editable clone 
+		 **/
+		public function getEditableClone():VectorFeature{
+			var editableClone:VectorFeature=this.clone() as VectorFeature;
+			this._isEditionFeature=true;
+			return editableClone;
+		}
+		
 		
 		/**
 		 * To find the vertices of a simple collection
@@ -523,6 +538,10 @@ package org.openscales.core.feature
 		 * */
 		 public function set isEditable(value:Boolean):void{
 		 	this._isEditable=isEditable;
+		 	if(_isEditable) {
+		 		this._isEditionFeature=false;
+		 		this._editionFeatureParentGeometry=null;
+		 	}
 		 }
 		 /**
 		 * To know if the vector feature  is a temporary vector only used 

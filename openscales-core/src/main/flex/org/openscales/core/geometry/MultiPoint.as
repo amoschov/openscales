@@ -55,7 +55,15 @@ package org.openscales.core.geometry
 		override public function get area():Number {
 			return 0.0;
 		}
-		
+		/**
+		 * To get this geometry clone
+		 * */
+		override public function clone():Geometry{
+			var MultiPointClone:MultiPoint=new MultiPoint();
+			var component:Array=this.getcomponentsClone();
+			MultiPointClone.addComponents(component);
+			return MultiPointClone;
+		}
 	}
 }
 

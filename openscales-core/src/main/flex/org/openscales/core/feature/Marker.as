@@ -1,7 +1,8 @@
 package org.openscales.core.feature {
 	import flash.display.Bitmap;
 	
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.geometry.Collection;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
@@ -15,8 +16,8 @@ package org.openscales.core.feature {
 		/**
 		 * Marker constructor
 		 */
-		public function Marker(geom:Point=null, data:Object=null, style:Style=null) {
-			super(geom,data,style);		
+		public function Marker(geom:Point=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null) {
+			super(geom, data, style,isEditable,isEditionFeature,editionFeatureParentGeometry);
 		}
 
 		/**
@@ -62,7 +63,8 @@ package org.openscales.core.feature {
 			}
 				
 		}
-
+		
+		
 		public function get image():Class {
 			return this._image;
 		}
@@ -72,6 +74,15 @@ package org.openscales.core.feature {
 			this._drawn = false;
 			
 		}
+		/**
+		 * To obtain feature clone 
+		 * */
+		override public function clone():Feature{
+			var geometryClone:Geometry=this.geometry.clone();
+			var MarkerClone:Marker=new Marker(geometryClone as Point,null,this.style,this.isEditable,this.isEditionFeature,this.editionFeatureParentGeometry);
+			return MarkerClone;
+			
+		}	
 	}
 }
 

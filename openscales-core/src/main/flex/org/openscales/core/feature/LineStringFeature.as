@@ -1,6 +1,7 @@
 package org.openscales.core.feature
 {
 	import org.openscales.core.geometry.Collection;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.style.Style;
@@ -44,6 +45,15 @@ package org.openscales.core.feature
 					this.graphics.lineTo(x, y); 
 				}
 			} 
+		}
+		/**
+		 * To obtain feature clone 
+		 * */
+		override public function clone():Feature{
+			var geometryClone:Geometry=this.geometry.clone();
+			var lineStringFeatureClone:LineStringFeature=new LineStringFeature(geometryClone as LineString,null,this.style,this.isEditable,this.isEditionFeature,this.editionFeatureParentGeometry);
+			return lineStringFeatureClone;
+			
 		}		
 	}
 }

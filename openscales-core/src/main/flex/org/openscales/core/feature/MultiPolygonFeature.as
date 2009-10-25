@@ -1,13 +1,14 @@
 package org.openscales.core.feature
 {
 	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.geometry.Collection;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
-	import org.openscales.core.geometry.Collection;
 	/**
 	 * Feature used to draw a MultiPolygon geometry on FeatureLayer
 	 */
@@ -66,6 +67,15 @@ package org.openscales.core.feature
             	} 
             	trace("End of multipolygon drawing"); 
 			}	
+			/**
+		 * To obtain feature clone 
+		 * */
+		override public function clone():Feature{
+			var geometryClone:Geometry=this.geometry.clone();
+			var MultiPolygonFeatureClone:MultiPolygonFeature=new MultiPolygonFeature(geometryClone as MultiPolygon,null,this.style,this.isEditable,this.isEditionFeature,this.editionFeatureParentGeometry);
+			return MultiPolygonFeatureClone;
+			
+		}	
 		}
 	}
 

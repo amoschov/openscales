@@ -108,7 +108,16 @@ package org.openscales.core.geometry
 		override public function get area():Number {
 			return 0.0;  // TODO, FixMe
 		}
-
+		
+		/**
+		 * To get this geometry clone
+		 * */
+		override public function clone():Geometry{
+			var LinearRingClone:LinearRing=new LinearRing();
+			var component:Array=this.getcomponentsClone();
+			LinearRingClone.addComponents(component);
+			return LinearRingClone;
+		}
 	}
 }
 

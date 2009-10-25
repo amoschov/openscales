@@ -1,8 +1,8 @@
 package org.openscales.core.geometry
 {
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.Trace;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -157,6 +157,12 @@ package org.openscales.core.geometry
 		 */
 		public function intersects(geom:Geometry):Boolean {
 			return false;
+		}
+		/**
+		 * To get this geometry clone
+		 * */
+		public function clone():Geometry{
+			return null;
 		}
 		
 		/**

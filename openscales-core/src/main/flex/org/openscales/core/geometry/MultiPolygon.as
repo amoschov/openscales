@@ -20,7 +20,7 @@ package org.openscales.core.geometry
 		/*override public function componentByIndex(i:int):Polygon {
 			return (super.componentByIndex(i) as Polygon);
 		}*/
-
+		
 		public function addPolygon(polygon:Polygon, index:Number=NaN):void {
 			this.addComponent(polygon, index);
 		}
@@ -48,7 +48,15 @@ package org.openscales.core.geometry
 				this.componentByIndex(i).transform(source, dest);
 			}
 		}
-
+		/**
+		 * To get this geometry clone
+		 * */
+		override public function clone():Geometry{
+			var MultiPolygonClone:MultiPolygon=new MultiPolygon();
+			var component:Array=this.getcomponentsClone();
+			MultiPolygonClone.addComponents(component);
+			return MultiPolygonClone;
+		}
 	}
 }
 

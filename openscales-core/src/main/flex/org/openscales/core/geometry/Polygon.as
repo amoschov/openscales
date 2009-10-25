@@ -239,5 +239,14 @@ package org.openscales.core.geometry
     		var ring:LinearRing = new LinearRing(points);
     		return new Polygon([ring]);
 		} 
+		/**
+		 * To get this geometry clone
+		 * */
+		override public function clone():Geometry{
+			var PolygonClone:Polygon=new Polygon(null);
+			var component:Array=this.getcomponentsClone();
+			PolygonClone.addComponents(component);
+			return PolygonClone;
+		}
 	}
 }

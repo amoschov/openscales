@@ -177,7 +177,13 @@ package org.openscales.core.feature {
 			this.popup.destroy();
 			this.popup=null;
 		}
-
+		/**
+		 * To obtain feature clone 
+		 * */
+		public function clone():Feature{
+			return null;
+		}
+		
 		/**
 		 * The function allow to customize the display of this feature.
 		 * Inherited Feature classes usually override this function.
