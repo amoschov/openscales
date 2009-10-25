@@ -17,6 +17,11 @@ package org.openscales.core.security
 		 * Update this security, and dispatch a SecurityEvent.SECURITY_UPDATED event
 		 */
 		function update():void;
+		
+		/**
+		 * Logout and dispatch a SecurityEvent.SECURITY_LOGOUT event
+		 */
+		function logout():void;
 
 		/**
 		 * Return the string that will be appended to the request in order to make it autenticated

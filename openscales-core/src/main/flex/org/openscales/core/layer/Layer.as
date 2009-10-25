@@ -108,8 +108,6 @@ package org.openscales.core.layer
 			
 			if(!this.maxExtent)
 				this.maxExtent = this.map.maxExtent;
-			/* if(!this.units) */
-				/* this.units = this.map.units; */ 
 			
 		}
 

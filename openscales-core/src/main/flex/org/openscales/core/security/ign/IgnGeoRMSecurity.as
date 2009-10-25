@@ -87,21 +87,26 @@ package org.openscales.core.security.ign
 			Trace.info(doc.toString());
 		}
 
-		/** Return authentication URL **/
+		/** Return authentication URL, use random parameter to avoid caching **/
 		private function get authUrl():String {
 			return this.host + "/getToken?key=" + this.key + "&output=xml&random=" + Math.random().toString();		
 		}
 		
-		/** Return config URL **/
+		/** Return config URL, use random parameter to avoid caching  **/
 		private function get configUrl():String {
 			return this.host + "/getConfig?key=" + this.key + "&output=xml";			
 		}
 		
-		/** Return update URL **/
+		/** Return update URL, use random parameter to avoid caching  **/
 		private function get updateUrl():String {
 			return this.host + "/getToken?gppkey=" + this.token + "&output=xml&random=" + Math.random().toString();
 		}
-
+		
+		/** Return release URL, use random parameter to avoid caching  **/
+		private function get releaseUrl():String {
+			return this.host + "/release?gppkey=" + this.token + "&output=xml&random=" + Math.random().toString();
+		}
+		
 		private function updateHandler(e:TimerEvent):void {
 			update();
 		}
@@ -122,6 +127,18 @@ package org.openscales.core.security.ign
 		
 		override public function get securityParameter():String {
 			return this.securityParameterName + "=" + this.token;
+		}
+		
+		override public function logout():void {
+			new XMLRequest(this.releaseUrl, authenticationLogoutResponse, this.proxy);
+		}
+		
+		/**
+		 * Authentication release asynchronous response
+		 */
+		private function authenticationLogoutResponse(e:Event):void {
+			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_LOGOUT, this));
+			Trace.info("token " + this._key + " released");
 		}
 		
 		public function get host():String {

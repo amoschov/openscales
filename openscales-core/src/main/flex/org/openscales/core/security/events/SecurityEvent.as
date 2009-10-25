@@ -23,10 +23,15 @@ package org.openscales.core.security.events
 		public static const SECURITY_INITIALIZED:String="openscales.security.initialized";
 
 		/**
-		 * The security servuce is updated. Usually, this event is dispatched in the callback of the authentication URL
+		 * The security service is updated. Usually, this event is dispatched in the callback of the authentication URL
 		 * used to update the authentication credentials.
 		 */
 		public static const SECURITY_UPDATED:String="openscales.security.updated";
+		
+		/**
+		 * The security service is no more authenticated
+		 */
+		public static const SECURITY_LOGOUT:String="openscales.security.logout";
 
 		public function SecurityEvent(type:String, security:ISecurity, bubbles:Boolean=false, cancelable:Boolean=false)
 		{

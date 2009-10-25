@@ -33,6 +33,10 @@ package org.openscales.core.security
 		public function update():void {
 			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_UPDATED, this));
 		}
+		
+		public function logout():void {
+			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_LOGOUT, this));
+		}
 
 		public function get securityParameter():String
 		{
