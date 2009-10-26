@@ -42,7 +42,7 @@ package org.openscales.core.handler.sketch
 		/**
 		 * Create a point and draw it
 		 */		
-		private function drawPoint(event:MouseEvent):void {
+		protected function drawPoint(event:MouseEvent):void {
 			if (drawLayer != null)
 				trace("Drawing point"); {
 				var style:Style = Style.getDefaultPointStyle();

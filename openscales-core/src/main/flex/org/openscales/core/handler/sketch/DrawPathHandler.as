@@ -108,7 +108,7 @@ package org.openscales.core.handler.sketch
 			}	
 		}
 
-		private function drawLine(event:MouseEvent=null):void{
+		protected function drawLine(event:MouseEvent=null):void{
 			
 			//we determine the point where the user clicked
 			var pixel:Pixel = new Pixel(drawLayer.mouseX,drawLayer.mouseY );

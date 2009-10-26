@@ -76,7 +76,7 @@ package org.openscales.core.handler.sketch
 			this.map.removeEventListener(MouseEvent.CLICK, this.mouseClick);
 		}
 		
-		public function mouseClick(event:MouseEvent):void {
+		protected function mouseClick(event:MouseEvent):void {
 
 			if (drawLayer != null) {
 
