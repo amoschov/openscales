@@ -88,17 +88,15 @@ package org.openscales.core.feature {
 		 */
 		public function onMouseHover(pevt:MouseEvent):void {
 			this.buttonMode=true;
-			this.verticesShowing(pevt);
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER, this));
 		}
 				
 		public function onMouseMove(pevt:MouseEvent):void {
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEMOVE, this));
-		}
-
+		}		
+		
 		public function onMouseOut(pevt:MouseEvent):void {
 			this.buttonMode=false;
-			this.verticesHiding(pevt);
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT, this));
 		}
 		
@@ -202,22 +200,6 @@ package org.openscales.core.feature {
 				registerListeners();
 			}
 		}
-		/**
-		 * This function is used to make shine the features' vertices
-		 * pevt MouseEvent referenced the event which launched the function 
-		 * */
-		protected function verticesShowing(pevt:MouseEvent):void{
-			
-			
-		}
-		
-		/**
-		 * This function is used to hide the feature's vertices showed by the verticesShowing function 
-		  * pevt MouseEvent referenced the event which launched the function 
-		 * */
-		 protected function verticesHiding(pevt:MouseEvent):void{
-		 	
-		 }
 		
 		public function get lonlat():LonLat {
 			return this._lonlat;

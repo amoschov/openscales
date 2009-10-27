@@ -44,24 +44,7 @@ package org.openscales.core.feature
 				this._editionFeatureParentGeometry=null;
 			}
 		}
-		
-		override public function registerListeners():void{	
-			super.registerListeners()	
-			if(this._IsEditionFeature){
-				this.addEventListener(MouseEvent.MOUSE_DOWN, this.EditMouseDown);
-				this.addEventListener(MouseEvent.MOUSE_UP, this.EditMouseUp);
-				//The edition point don"t launch event when it's over by the mouse
-				this.removeEventListener(MouseEvent.MOUSE_MOVE, this.onMouseMove);	
-			}
-		}
-		override public function unregisterListeners():void{
-			super.unregisterListeners();
-			if(this._IsEditionFeature){
-				this.removeEventListener(MouseEvent.MOUSE_DOWN, this.EditMouseDown);
-				this.removeEventListener(MouseEvent.MOUSE_UP, this.EditMouseUp);
-			}
-		}
-		
+			
 		public function get point():Point {
 			return this.geometry as Point;
 		}
@@ -120,21 +103,16 @@ package org.openscales.core.feature
 		
 		public function EditMouseDown(evt:MouseEvent):void{
 			
-				this.buttonMode=true;
+			/*	this.buttonMode=true;
 				this.startDrag();
 				if(this._IsEditionFeature)this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_START,this));
-		}
+		*/}
 		
 		public function EditMouseUp(evt:MouseEvent):void{		
-			this.buttonMode=false;
+			/*this.buttonMode=false;
 			this.stopDrag();
 			if(this._IsEditionFeature)this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,this));
-		}
-		
-		public function doubleclick():void{
-			var a:String="bob";
-		}
-		
+		*/}
 		
 		//END FEATURE Edition Mode
 		/**
@@ -163,6 +141,7 @@ package org.openscales.core.feature
 				var distance:Array=new Array();
 				var node:Number=-1;
 				var index:Number=0;
+				var tolerance:Number=10;
 				var pointPX:Pixel=this.layer.map.getLayerPxFromLonLat(new LonLat(point.x,point.y));
 				for(var j:int=0;j<collection.componentsLength;j++){
 					var px:Pixel=null;
@@ -190,19 +169,36 @@ package org.openscales.core.feature
 					distance.push(new Array(Math.floor(Math.abs(coeffdir*pointPX.x+b-pointPX.y)),index));
 				}
 			 index=0;
-			for(var i:int=0;i<distance.length;i++){
-				if(i==0)
-				{
-					node=distance[i][1];
-					index=i;
-				}
-				else
-				{
-					if(distance[index][0]>distance[i][0])
+			 var nodes:Array=new Array();
+			 //The closest point
+			 var i:int=0;
+			for(i=0;i<distance.length;i++){
+					if(distance[i][0]<tolerance)
 					{
-						index=i;
-						node=distance[i][1];
+						nodes.push(distance[i][1]);
 					}
+					if(distance[i][0]<distance[index][0]){
+						node=distance[i][1];
+						index=i;
+					}
+			}
+			if(nodes.length==0) 
+			return node;
+			if(nodes.length==1) return nodes[0] as int;
+			else 
+			{
+				for(i=0;i<nodes.length;i++){
+					var point1:Point=null;
+					var point2:Point=null;
+					point1=collection.componentByIndex(0) as Point;
+					if(nodes[i]==0)	
+					point2=collection.componentByIndex(collection.componentsLength-1) as Point;
+					else point2=collection.componentByIndex(i-1) as Point; 	
+					var seglength:Number=point1.distanceTo(point2);		
+					if(point1.distanceTo(point)<seglength && point2.distanceTo(point)<seglength){
+						node=nodes[i];
+						break;
+					}	
 				}
 			}
 			return node;

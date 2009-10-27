@@ -31,7 +31,12 @@ package org.openscales.core.handler.mouse
 		/**
 		 * This tolerance is to discern Virtual vertices from point under the mouse
 		 * */
-		 private var _tolerance:Number=5;
+		 private var _tolerance:Number=15;
+		 
+		 /**
+		 * Click handler to detect double click on feature
+		 * */
+		 private var _featureclickHandler:FeatureClickHandler;
 		/**
 		 * This handler is used to edit feature on a VectorLayer
 		 * @param map Map Object
@@ -60,20 +65,29 @@ package org.openscales.core.handler.mouse
 						this._layerToEdit.addFeature(clonefeature);
 						clonefeature.createEditionVertices();
 						this._layerToEdit.addFeatures(clonefeature.editionFeaturesArray);
-						this._layerToEdit.redraw();			
-					}			
+						this._layerToEdit.redraw();	
+						if(this._featureclickHandler==null){
+							this._featureclickHandler=new FeatureClickHandler(this.map,true);
+							this._featureclickHandler.doubleclick=deleteVertice;
+						}
+						this._featureclickHandler.addControledFeatures(clonefeature.editionFeaturesArray);			
 					}
+					}
+				
+				//this._clickHandler.doubleclick=OnDoubleClick
 				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);	
 				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));				
 				return true;
 			}
 				return false;			
 		}
+		
+		
 		//End of edition mode
 		private function EditionModeStop():Boolean{
 			if(_layerToEdit !=null)
 			{
-				this..map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,this._layerToEdit));
+				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,this._layerToEdit));
 				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 				for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
 					if(vectorFeature.isEditionFeature)
@@ -82,6 +96,7 @@ package org.openscales.core.handler.mouse
 					}
 				}
 				this._layerToEdit.redraw();
+				this._featureclickHandler.active=false;
 				return true;
 			}
 				return false;			
@@ -142,6 +157,7 @@ package org.openscales.core.handler.mouse
 						this._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse as Point,null,Style.getDefaultCircleStyle(),true,parentTmpPoint as Collection);	
 						this._pointUnderTheMouse.editionFeatureParent=vectorfeature;
 						this._layerToEdit.addFeature(this._pointUnderTheMouse);	
+						this._featureclickHandler.addControledFeature(this._pointUnderTheMouse);
 					}			
 			}
 		 }
@@ -150,7 +166,7 @@ package org.openscales.core.handler.mouse
 		 	var vectorfeature:VectorFeature=evt.feature as VectorFeature;
 		 		//Vector feature is not null and belong to the target layer
 		 		if(vectorfeature != null && Util.indexOf(this._layerToEdit.features,vectorfeature)!=-1){
-		 			
+		 			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);	
 		 		}
 		 }
 		 private function editionPointDragStop(evt:FeatureEvent):void{
@@ -174,13 +190,42 @@ package org.openscales.core.handler.mouse
 					}	
 					//we get the temporary edition parent which is parent of the edition feature
 					var editionfeatureparent:VectorFeature=vectorfeature.editionFeatureParent;
+					this._featureclickHandler.removeControledFeatures(editionfeatureparent.editionFeaturesArray);
 					editionfeatureparent.RefreshEditionVertices();
+					this._featureclickHandler.addControledFeatures(editionfeatureparent.editionFeaturesArray);
 					this._layerToEdit.removeFeature(this._pointUnderTheMouse);
 					this._pointUnderTheMouse=null;
 					this._layerToEdit.addFeatures(editionfeatureparent.editionFeaturesArray);
+					
 					this._layerToEdit.redraw();		
+					this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);	
 		 		}
 		 }
+		 /**
+		 * delete a verice
+		 * */
+		 public function deleteVertice(evt:FeatureEvent):void{
+		 	var vectorfeature:PointFeature=evt.feature as PointFeature;
+		 	var index:int=0;
+		 	var componentLength:Number=(vectorfeature.editionFeatureParentGeometry as Collection).componentsLength;
+		 	var editionfeaturegeom:Point=null;
+		 	for(index=0;index<componentLength;index++){		
+						 editionfeaturegeom=(vectorfeature.editionFeatureParentGeometry as Collection).componentByIndex(index) as Point;
+						if((vectorfeature.geometry as Point).x==editionfeaturegeom.x && (vectorfeature.geometry as Point).y==editionfeaturegeom.y) break;
+					}
+			(vectorfeature.editionFeatureParentGeometry as Collection).removeComponent(editionfeaturegeom);
+			//we get the temporary edition parent which is parent of the edition feature
+			var editionfeatureparent:VectorFeature=vectorfeature.editionFeatureParent;
+			this._featureclickHandler.removeControledFeatures(editionfeatureparent.editionFeaturesArray);
+			editionfeatureparent.RefreshEditionVertices();
+			this._featureclickHandler.addControledFeatures(editionfeatureparent.editionFeaturesArray);
+			this._layerToEdit.removeFeature(this._pointUnderTheMouse);
+			this._pointUnderTheMouse=null;
+			this._layerToEdit.addFeatures(editionfeatureparent.editionFeaturesArray);
+			this._layerToEdit.redraw();
+			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);	
+		 }
+		 
 		 /**
 		 * To record Modification
 		 * */	 

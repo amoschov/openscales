@@ -69,7 +69,7 @@ package org.openscales.core.handler.mouse
 		/**
 		 * The MouseDown Listener
 		 */
-		private function mouseDown(evt:MouseEvent):void
+		protected function mouseDown(evt:MouseEvent):void
 		{
 			this._StartPixel=new Pixel(evt.stageX,evt.stageY);
 		}
@@ -77,7 +77,7 @@ package org.openscales.core.handler.mouse
 		/**
 		 * MouseUp Listener
 		 */
-		private function mouseUp(evt:MouseEvent):void
+		protected function mouseUp(evt:MouseEvent):void
 		{
 			if(this._StartPixel!=null){
 				//dx and dy variables are use to know if there was a drag or a click
