@@ -128,10 +128,10 @@
 			borderStyle: "solid";
 			borderColor: #A8A8A8;
 			backgroundAlpha: .75;
-			dropShadowEnabled: "true";
-			shadowDistance: 6;
-			shadowDirection: "right";
 			backgroundColor: #0B3D6E;
+			/*dropShadowEnabled: "true";
+			shadowDistance: 6;
+			shadowDirection: "right";*/
     	}
     	.widgetTitle {
     		color: #FFFFFF;
@@ -142,10 +142,10 @@
 			borderStyle: "solid";
 			borderColor: #A8A8A8;
 			backgroundAlpha: .75;
-			dropShadowEnabled: "true";
-			shadowDistance: 6;
-			shadowDirection: "right";
 			backgroundColor: #F3F3F3;
+			/*dropShadowEnabled: "true";
+			shadowDistance: 6;
+			shadowDirection: "right";*/
     	}
     	.widgetContentBox {
 			paddingLeft: 6;
