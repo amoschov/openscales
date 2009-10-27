@@ -296,13 +296,39 @@ package org.openscales.core.configuration
             
             protected function parseHandler(xmlNode:XML):Handler {
                   var handler:Handler;
-                  if(xmlNode.name() == "DragHandler"){handler = new DragHandler();}
-                  else if (xmlNode.name() == "WheelHandler"){handler = new WheelHandler();}
-                  else if (xmlNode.name() == "ClickHandler"){handler = new ClickHandler();}
-                  else if (xmlNode.name() == "BorderPanHandler"){handler = new BorderPanHandler();}
-                  else if (xmlNode.name() == "DragFeature"){handler = new DragFeature();}
-                  else if (xmlNode.name() == "SelectFeature"){handler = new SelectFeature();}
-                  else Trace.error("Handler unknown !");
+                  if(xmlNode.name() == "DragHandler"){
+                  	handler = new DragHandler();
+                  	if(String(xmlNode.@active) == "true"){handler.active = true;}
+                  	else {handler.active = false};
+                  }
+                  else if (xmlNode.name() == "WheelHandler"){
+                  	handler = new WheelHandler();
+                  	if(String(xmlNode.@active) == "true"){handler.active = true;}
+                  	else {handler.active = false};
+                  }
+                  else if (xmlNode.name() == "ClickHandler"){
+                  	handler = new ClickHandler();
+                  	if(String(xmlNode.@active) == "true"){handler.active = true;}
+                  	else {handler.active = false};
+                  }
+                  else if (xmlNode.name() == "BorderPanHandler"){
+                  	handler = new BorderPanHandler();
+                  	if(String(xmlNode.@active) == "true"){handler.active = true;}
+                  	else {handler.active = false};
+                  }
+                  else if (xmlNode.name() == "DragFeature"){
+                  	handler = new DragFeature();
+                  	if(String(xmlNode.@active) == "true"){handler.active = true;}
+                  	else {handler.active = false};
+                  }
+                  else if (xmlNode.name() == "SelectFeature"){
+                  	handler = new SelectFeature();
+                  	if(String(xmlNode.@active) == "true"){handler.active = true;}
+                  	else {handler.active = false};
+                  }
+                  else {
+                  	Trace.error("Handler unknown !");
+                  }
                   return handler;
             }
             
