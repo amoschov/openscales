@@ -151,7 +151,11 @@ package org.openscales.core
 					layer.zindex = 0; 
 				}
 			}
-
+			//commit temporaly to correct the fact if you  add layer dynamicaly (wms/wmcs) , that not draw the layer
+			if(layer.visible){
+			  layer.redraw();	
+			}
+            
 			this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_ADDED, layer));
 
 			return true;
