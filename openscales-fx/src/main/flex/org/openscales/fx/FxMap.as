@@ -97,8 +97,8 @@ package org.openscales.fx
 			if (this._projection)
 				this._map.projection = this._projection;
 			
-			// Some operations must be done at the begining, in order to do
-			// not depend on the declaration order
+			// Some operations must be done at the begining, in order to not
+			// depend on the declaration order
 			if (this._maxExtent != null)
 				this._map.maxExtent = this._maxExtent;
 			else {
@@ -137,8 +137,8 @@ package org.openscales.fx
 				}
 			}
 			
-			// Some operations must be done at the end, in order to do
-			// not depend on the declaration order
+			// Some operations must be done at the end, in order to not depend
+			// on the declaration order
 			for(i=0; i<this.rawChildren.numChildren; i++) {
 				child = this.rawChildren.getChildAt(i);
 				if (child is FxLayer) {
@@ -172,7 +172,7 @@ package org.openscales.fx
 				}
 			}
 						
-			// Set both center and zoom to avoid unvalid request set when we define both separately
+			// Set both center and zoom to avoid invalid request set when we define both separately
 			var center:LonLat = null;
 			if(!isNaN(this._lon) && !isNaN(this._lat))
 				center = new LonLat(this._lon, this._lat);
@@ -186,8 +186,6 @@ package org.openscales.fx
 					extentDefined = true;
 				}
 			}
-			
-			
 			
 			this._map.addEventListener(MapEvent.DRAG_START, this.hidePopups);
 			this._map.addEventListener(MapEvent.MOVE_START, this.hidePopups);

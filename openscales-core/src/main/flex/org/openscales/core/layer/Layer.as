@@ -3,6 +3,7 @@ package org.openscales.core.layer
 	import flash.display.Sprite;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -61,6 +62,10 @@ package org.openscales.core.layer
 		}
 		
 		public function generateResolutions(numZoomLevels:uint = Layer.DEFAULT_NUM_ZOOM_LEVELS, maxResolution:Number = Layer.DEFAULT_MAX_RESOLUTION):void {
+			// numZoomLevels must be strictly greater than zero
+			if (numZoomLevels == 0) {
+				numZoomLevels = 1;
+			}
 			// Generate default resolutions
 			this.resolutions = new Array();
 			for (var i:int=0; i < numZoomLevels; i++) {
@@ -233,7 +238,12 @@ package org.openscales.core.layer
 		}
 
 		public function set minZoomLevel(value:Number):void {
-			this._minZoomLevel = value;
+			if ((value>=0) && (value<this.resolutions.length)) {
+				this._minZoomLevel = value;
+			} else {
+				Trace.error("Invalid minZoomLevel for the layer "+this.name+": "
+					+value+" is not in [0;"+(this.resolutions.length-1)+"]");
+			}
 		}
 		
 		public function get maxZoomLevel():Number {
@@ -244,7 +254,12 @@ package org.openscales.core.layer
 		}
 
 		public function set maxZoomLevel(value:Number):void {
-			this._maxZoomLevel = value;
+			if ((value>=0) && (value<this.resolutions.length)) {
+				this._maxZoomLevel = value;
+			} else {
+				Trace.error("Invalid maxZoomLevel for the layer "+this.name+": "
+					+value+" is not in [0;"+(this.resolutions.length-1)+"]");
+			}
 		}
 
 		/**
@@ -273,7 +288,7 @@ package org.openscales.core.layer
 			if(this.resolutions && (this.resolutions.length > 0)) {
 				// By default, the max resolution 
 				minResolution = this.resolutions[this.resolutions.length - 1];
-				// If a maxZoomLevel is defined and is valid, we use it
+				// If a minZoomLevel is defined and is valid, we use it
 				if(!isNaN(this._minZoomLevel)) {
 					minResolution = this.resolutions[(this.resolutions.length - 1) - this._minZoomLevel];
 				}				
@@ -306,6 +321,7 @@ package org.openscales.core.layer
 
 		public function set resolutions(value:Array):void {
 			this._resolutions = value;
+			this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
 		}
 
 		/**
@@ -396,7 +412,6 @@ package org.openscales.core.layer
 			  _loading = value;
 			  this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_END,this));
 			} 
-			
 		}
 	}
 }
