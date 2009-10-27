@@ -282,12 +282,13 @@ package org.openscales.core.configuration
                         Trace.error("Layer unknown or not managed");
                   }
                   
-                  
-                  if((String(xmlNode.@numZoomLevels) != "") && (String(xmlNode.@maxResolution) != "")){
-                  	layer.generateResolutions(Number(xmlNode.@numZoomLevels), Number(xmlNode.@maxResolution));
-                  }
-                  if(String(xmlNode.@resolutions) != ""){
+                  if(layer != null){
+                    if((String(xmlNode.@numZoomLevels) != "") && (String(xmlNode.@maxResolution) != "")){
+                  	  layer.generateResolutions(Number(xmlNode.@numZoomLevels), Number(xmlNode.@maxResolution));
+                    }
+                    if(String(xmlNode.@resolutions) != ""){
                   	layer.resolutions = String(xmlNode.@resolutions).split(",");
+                   }
                   }
                   
                   //Init layer parameters
@@ -295,8 +296,8 @@ package org.openscales.core.configuration
             }
             
             protected function parseHandler(xmlNode:XML):Handler {
-                  var handler:Handler;
-                  if(xmlNode.name() == "DragHandler"){
+                 var handler:Handler;
+                if(xmlNode.name() == "DragHandler"){
                   	handler = new DragHandler();
                   	if(String(xmlNode.@active) == "true"){handler.active = true;}
                   	else {handler.active = false};
@@ -328,7 +329,7 @@ package org.openscales.core.configuration
                   }
                   else {
                   	Trace.error("Handler unknown !");
-                  }
+                  }   
                   return handler;
             }
             

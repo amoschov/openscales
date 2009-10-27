@@ -351,7 +351,7 @@ package org.openscales.core.layer
 		 *    and iterate through the queue (thus reversing the spiral order from
 		 *    outside-in to inside-out), calling draw() on each tile.
 		 */
-		private function spiralTileLoad():void {
+		protected function spiralTileLoad():void {
 			var tileQueue:Array = new Array();
 
 			var directions:Array = ["right", "down", "left", "up"];
