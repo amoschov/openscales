@@ -254,10 +254,10 @@ package org.openscales.core.handler.mouse
 							lastfeature = null;
 							currentfeature.layer.redraw();
 							selectFeauturesLength--;
-							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.currentfeature));					
+							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.currentfeature,ctrl));					
 						}
 						else{
-							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED, this.currentfeature));
+							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED, this.currentfeature,ctrl));
 						}				
 					}							
 					//ctrl key is pressed
@@ -304,7 +304,7 @@ package org.openscales.core.handler.mouse
 			this.selectFeatures[iteratorFeatures]=this.currentfeature;						
 			this.currentfeature.layer.redraw();  
 			this.lastfeature = this.currentfeature;
-			this.currentfeature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,this.currentfeature));
+			this.currentfeature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,this.currentfeature,ctrl));
 		}
 
 		/**
