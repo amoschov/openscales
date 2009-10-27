@@ -71,7 +71,9 @@ package org.openscales.core.handler.mouse
 							this._featureclickHandler.doubleclick=deleteVertice;
 							this._featureclickHandler.click=VerticeClickManagement;
 						}
+						vectorFeature.editionFeaturesArray.push(clonefeature);
 						this._featureclickHandler.addControledFeatures(clonefeature.editionFeaturesArray);			
+						this._featureclickHandler.active=true;
 					}
 					}
 				
@@ -95,9 +97,10 @@ package org.openscales.core.handler.mouse
 					{
 						this._layerToEdit.removeFeature(vectorFeature);
 					}
+					else vectorFeature.visible=true;
 				}
 				this._layerToEdit.redraw();
-				this._featureclickHandler.active=false;
+				if(this._featureclickHandler!=null) this._featureclickHandler.active=false;
 				return true;
 			}
 				return false;			
@@ -120,7 +123,7 @@ package org.openscales.core.handler.mouse
 		 private function createPointUndertheMouse(evt:FeatureEvent):void{
 		 		var vectorfeature:VectorFeature=evt.feature as VectorFeature;
 		 		//Vector feature is not null and belong to the target layer
-		 		if(vectorfeature != null && Util.indexOf(this._layerToEdit.features,vectorfeature)!=-1 && vectorfeature.isEditable){
+		 		if(vectorfeature != null && Util.indexOf(this._layerToEdit.features,vectorfeature)!=-1 && vectorfeature.isEditionFeature && !(vectorfeature is PointFeature)){
 					this.map.buttonMode=true;
 					var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
 					//drawing equals false if the mouse is too close from Virtual vertice
@@ -153,13 +156,15 @@ package org.openscales.core.handler.mouse
 							parentTmpPoint=testCollection;
 							testCollection=(testCollection as Collection).componentByIndex(0);
 						}
-					
-						var style:Style = Style.getDefaultCircleStyle();		
-						//isTmpFeatureUnderTheMouse attributes use to specify type of temporary feature
-						this._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse as Point,null,Style.getDefaultCircleStyle(),true,parentTmpPoint as Collection);	
-						this._pointUnderTheMouse.editionFeatureParent=vectorfeature;
-						this._layerToEdit.addFeature(this._pointUnderTheMouse);	
-						this._featureclickHandler.addControledFeature(this._pointUnderTheMouse);
+						
+							var style:Style = Style.getDefaultCircleStyle();		
+							//isTmpFeatureUnderTheMouse attributes use to specify type of temporary feature
+							this._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse as Point,null,Style.getDefaultCircleStyle(),true,parentTmpPoint as Collection);	
+							this._pointUnderTheMouse.layer=this.layerToEdit;	
+							this._pointUnderTheMouse.editionFeatureParent=vectorfeature;
+							this._layerToEdit.addFeature(this._pointUnderTheMouse);	
+							this._featureclickHandler.addControledFeature(this._pointUnderTheMouse);
+						
 					}			
 			}
 		 }
@@ -231,6 +236,9 @@ package org.openscales.core.handler.mouse
 				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);	
 				this.map.buttonMode=false;
 		 		}
+		 		if(vectorfeature!=null) vectorfeature.stopDrag();
+		 		this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);	
+				this.map.buttonMode=false;
 		 }
 		 
 		 /**
@@ -261,15 +269,25 @@ package org.openscales.core.handler.mouse
 		 public function RecordModification():void{
 		 	
 		 	var realFeatureArray:Array=new Array(); 
+		 	var editionfeatureArray:Array=new Array();
 		 	var feature:VectorFeature=null;
+		 	
 		 	for each(feature in this._layerToEdit.features){
 		 		if(feature.isEditable) realFeatureArray.push(feature);
+		 		else editionfeatureArray.push(feature);
 		 	}
+		 	
 		 	for each(feature in realFeatureArray){
-		 		if(feature.editionFeaturesArray!=null)
+		 		if(feature.editionFeaturesArray.length!=0)
 		 		{
+		 			feature.geometry=(feature.editionFeaturesArray[0] as VectorFeature).geometry;
+		 			feature.visible=true;
 		 		}
 		 	}
+		 	EditionModeStop();
+		 	EditionModeStart();
+		 	this.layerToEdit.removeFeatures(editionfeatureArray);
+		 	this.layerToEdit.redraw();	 	
 		 }
 		//getters && setters
 		/**

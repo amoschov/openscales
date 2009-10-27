@@ -384,7 +384,7 @@ package org.openscales.core.feature
 		 * @private
 		 * */
 		 public function set isEditable(value:Boolean):void{
-		 	this._isEditable=isEditable;
+		 	this._isEditable=value;
 		 	if(_isEditable) {
 		 		this._isEditionFeature=false;
 		 	}

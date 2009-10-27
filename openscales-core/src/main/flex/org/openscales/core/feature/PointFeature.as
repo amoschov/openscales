@@ -1,13 +1,11 @@
 package org.openscales.core.feature
 {
-	import flash.events.MouseEvent;
-	
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Mark;
@@ -99,22 +97,7 @@ package org.openscales.core.feature
 				// TODO : Implement other well known names and take into account opacity, rotation of the mark
 			}
 		}
-		//EDITION MODE
-		
-		public function EditMouseDown(evt:MouseEvent):void{
-			
-			/*	this.buttonMode=true;
-				this.startDrag();
-				if(this._IsEditionFeature)this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_START,this));
-		*/}
-		
-		public function EditMouseUp(evt:MouseEvent):void{		
-			/*this.buttonMode=false;
-			this.stopDrag();
-			if(this._IsEditionFeature)this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,this));
-		*/}
-		
-		//END FEATURE Edition Mode
+
 		/**
 		 * To obtain feature clone 
 		 * */
@@ -137,6 +120,14 @@ package org.openscales.core.feature
 		 * @return the segment number
 		 * */
 		public function getSegmentsIntersection(collection:Collection):int{	
+			
+		/*	var index:int=0;
+			for(var j:int=0;j<collection.componentsLength-1;j++){			
+				var LineString1:LineString=new LineString(new Array(collection.componentByIndex(j) as Point,collection.componentByIndex(j+1) as Point));
+				var intersect:Boolean=point.bounds.intersectsBounds(LineString1.bounds);
+				if(intersect) index=j+1;		
+			}
+			return index;*/
 			//We have to improve this algorithm, because we just use  line equation
 				var distance:Array=new Array();
 				var node:Number=-1;
