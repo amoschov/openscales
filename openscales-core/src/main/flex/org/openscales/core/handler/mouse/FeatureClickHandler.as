@@ -71,11 +71,13 @@ package org.openscales.core.handler.mouse
 		private  function chooseClick(event:TimerEvent):void{
 			if(_clickNum == 1) {
 				if(_click != null)
-				if(Util.indexOf(_featureArray,_featureEvent.feature)!=-1)
+				{
+				if(Util.indexOf(_featureArray,_featureEvent.feature)!=-1){
 				_click(_featureEvent);
-				
+				}
 				_timer.stop();
 				_clickNum=0;
+				}
 			}    
 			else {
 				if(Util.indexOf(_featureArray,_featureEvent.feature)!=-1)
@@ -175,6 +177,12 @@ package org.openscales.core.handler.mouse
 		}
 		public function set doubleclick(value:Function):void{
 			this._doubleClick=value;
+		}
+		public function get click():Function{
+			return this._click;
+		}
+		public function set click(value:Function):void{
+			this._click=value;
 		}
 	}
 }

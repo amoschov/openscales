@@ -69,6 +69,7 @@ package org.openscales.core.handler.mouse
 						if(this._featureclickHandler==null){
 							this._featureclickHandler=new FeatureClickHandler(this.map,true);
 							this._featureclickHandler.doubleclick=deleteVertice;
+							this._featureclickHandler.click=VerticeClickManagement;
 						}
 						this._featureclickHandler.addControledFeatures(clonefeature.editionFeaturesArray);			
 					}
@@ -139,6 +140,7 @@ package org.openscales.core.handler.mouse
 						if(this._pointUnderTheMouse!=null)
 						{
 							this._layerToEdit.removeFeature(this._pointUnderTheMouse);
+							this._featureclickHandler.removeControledFeature(this._pointUnderTheMouse);
 						}
 					
 						//There is always a component because the mouse is over the component
@@ -199,49 +201,75 @@ package org.openscales.core.handler.mouse
 					
 					this._layerToEdit.redraw();		
 					this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);	
+					this.map.buttonMode=false;
 		 		}
 		 }
 		 /**
 		 * delete a verice
 		 * */
 		 public function deleteVertice(evt:FeatureEvent):void{
-		 	var vectorfeature:PointFeature=evt.feature as PointFeature;
-		 	var index:int=0;
-		 	var componentLength:Number=(vectorfeature.editionFeatureParentGeometry as Collection).componentsLength;
-		 	var editionfeaturegeom:Point=null;
-		 	for(index=0;index<componentLength;index++){		
+		 		//disable double click on point under the mouse
+		 		var vectorfeature:PointFeature=evt.feature as PointFeature;
+		 		if(!(vectorfeature==this._pointUnderTheMouse)){
+		 		var index:int=0;
+		 		var componentLength:Number=(vectorfeature.editionFeatureParentGeometry as Collection).componentsLength;
+		 		var editionfeaturegeom:Point=null;
+		 		for(index=0;index<componentLength;index++){		
 						 editionfeaturegeom=(vectorfeature.editionFeatureParentGeometry as Collection).componentByIndex(index) as Point;
 						if((vectorfeature.geometry as Point).x==editionfeaturegeom.x && (vectorfeature.geometry as Point).y==editionfeaturegeom.y) break;
 					}
-			(vectorfeature.editionFeatureParentGeometry as Collection).removeComponent(editionfeaturegeom);
-			//we get the temporary edition parent which is parent of the edition feature
-			var editionfeatureparent:VectorFeature=vectorfeature.editionFeatureParent;
-			this._featureclickHandler.removeControledFeatures(editionfeatureparent.editionFeaturesArray);
+				(vectorfeature.editionFeatureParentGeometry as Collection).removeComponent(editionfeaturegeom);
+				//we get the temporary edition parent which is parent of the edition feature
+				var editionfeatureparent:VectorFeature=vectorfeature.editionFeatureParent;
+				this._featureclickHandler.removeControledFeatures(editionfeatureparent.editionFeaturesArray);
+				editionfeatureparent.RefreshEditionVertices();
+				this._featureclickHandler.addControledFeatures(editionfeatureparent.editionFeaturesArray);
+				this._layerToEdit.removeFeature(this._pointUnderTheMouse);
+				this._pointUnderTheMouse=null;
+				this._layerToEdit.addFeatures(editionfeatureparent.editionFeaturesArray);
+				this._layerToEdit.redraw();
+				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);	
+				this.map.buttonMode=false;
+		 		}
+		 }
+		 
+		 /**
+		 * The way to follow when there is a click
+		 * when the event is not a drag and is not a double click
+		 * */
+		 private function VerticeClickManagement(event:FeatureEvent):void{
+		 
+		 	var vectorfeature:VectorFeature=event.feature as VectorFeature;
+		 	vectorfeature.stopDrag();
+		 	if(this._pointUnderTheMouse==vectorfeature){
+		 		this._layerToEdit.removeFeature(this._pointUnderTheMouse);
+				this._featureclickHandler.removeControledFeature(this._pointUnderTheMouse);
+		 	}
+		 	var editionfeatureparent:VectorFeature=vectorfeature.editionFeatureParent;
+		 	this._featureclickHandler.removeControledFeatures(editionfeatureparent.editionFeaturesArray);
 			editionfeatureparent.RefreshEditionVertices();
 			this._featureclickHandler.addControledFeatures(editionfeatureparent.editionFeaturesArray);
-			this._layerToEdit.removeFeature(this._pointUnderTheMouse);
-			this._pointUnderTheMouse=null;
 			this._layerToEdit.addFeatures(editionfeatureparent.editionFeaturesArray);
 			this._layerToEdit.redraw();
-			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);	
+			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);		
+			this.map.buttonMode=false;	 		
 		 }
 		 
 		 /**
 		 * To record Modification
 		 * */	 
 		 public function RecordModification():void{
-		 	/*for each(var feature:VectorFeature in this._layerToEdit){
-		 		if(!feature.isEditionFeature){
-		 			//We will use this vector next time to backup for example
-		 			if(feature.editionFeaturesArray!=null)
-		 			{
-		 				this._layerToEdit.removeFeature(feature);
-		 				feature=feature.editionFeaturesArray[0] as VectorFeature;
-		 				feature.isEditionFeature=false;
-		 			} 
-		 		}
 		 	
-		 	}*/
+		 	var realFeatureArray:Array=new Array(); 
+		 	var feature:VectorFeature=null;
+		 	for each(feature in this._layerToEdit.features){
+		 		if(feature.isEditable) realFeatureArray.push(feature);
+		 	}
+		 	for each(feature in realFeatureArray){
+		 		if(feature.editionFeaturesArray!=null)
+		 		{
+		 		}
+		 	}
 		 }
 		//getters && setters
 		/**
