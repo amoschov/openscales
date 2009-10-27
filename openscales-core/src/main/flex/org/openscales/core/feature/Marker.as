@@ -16,8 +16,8 @@ package org.openscales.core.feature {
 		/**
 		 * Marker constructor
 		 */
-		public function Marker(geom:Point=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null) {
-			super(geom, data, style,isEditable,isEditionFeature,editionFeatureParentGeometry);
+		public function Marker(geom:Point=null, data:Object=null, style:Style=null) {
+			super(geom, data, style,false);
 		}
 
 		/**
@@ -79,7 +79,7 @@ package org.openscales.core.feature {
 		 * */
 		override public function clone():Feature{
 			var geometryClone:Geometry=this.geometry.clone();
-			var MarkerClone:Marker=new Marker(geometryClone as Point,null,this.style,this.isEditable,this.isEditionFeature,this.editionFeatureParentGeometry);
+			var MarkerClone:Marker=new Marker(geometryClone as Point,null,this.style);
 			return MarkerClone;
 			
 		}	

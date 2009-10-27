@@ -4,7 +4,6 @@ package org.openscales.core.feature
 	
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
@@ -42,7 +41,7 @@ package org.openscales.core.feature
 		override public function onMouseDown(pevt:MouseEvent):void{
 			this.buttonMode=true;
 			
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.TMP_FEATURE_DRAG_START,this));
+			//this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_FEATURE_DRAG_START,this));
 			
 			this.startDrag();		
 		}
@@ -58,7 +57,8 @@ package org.openscales.core.feature
 			if(this.attributes.id!=null) (this.tmpPointParentGeometry as Collection).replaceComponent(this.attributes.id,newVertice);
 			else 	
 			{
-				var index:Number=getSegmentsIntersection();
+				//var index:Number=getSegmentsIntersection();
+				var index:Number=0;
 				(this.tmpPointParentGeometry as Collection).addComponent(newVertice,index);
 			}
 			//we delete temporaries point
@@ -67,7 +67,7 @@ package org.openscales.core.feature
 				if(tmpfeature is TmpPointFeature) (this.layer as VectorLayer).removeFeature(tmpfeature);
 			}
 			layer.redraw();
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.TMP_FEATURE_DRAG_STOP,this));
+			//this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_FEATURE_DRAG_STOP,this));
 		}
 		
 		/**
@@ -75,7 +75,7 @@ package org.openscales.core.feature
 		 * @param point:geometry point to test 
 		 * @return the segment number
 		 * */
-		public function getSegmentsIntersection():int{
+		//public function getSegmentsIntersection():int{
 			/*var tmpLineString:LineString=null;
 			var tmpPointArray:Array;
 			var segmts:Array=new Array();
@@ -100,7 +100,7 @@ package org.openscales.core.feature
 			//else
 		//	{
 		//TODO damien nda ameliorer algo
-		var distance:Array=new Array();
+	/*	var distance:Array=new Array();
 		var noeud:Number=-1;
 			
 				for(var j:int=0;j<(this.tmpPointParentGeometry as Collection).componentsLength;j++){
@@ -147,7 +147,7 @@ package org.openscales.core.feature
 				}
 			}
 	return noeud;			
-		}
+		}*/
 		
 		
 		//getters && setters

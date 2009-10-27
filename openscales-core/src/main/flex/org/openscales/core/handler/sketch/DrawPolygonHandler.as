@@ -98,7 +98,7 @@ package org.openscales.core.handler.sketch
 					
 				//	var polygonFeature:PolygonFeature = new PolygonFeature(polygon);
 					
-					this._polygonFeature=new PolygonFeature(polygon);
+					this._polygonFeature=new PolygonFeature(polygon,null,null,true);
 					
 					
 					//this._polygonFeature=new PolygonFeature(				

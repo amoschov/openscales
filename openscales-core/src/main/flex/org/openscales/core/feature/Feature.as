@@ -91,7 +91,7 @@ package org.openscales.core.feature {
 			this.verticesShowing(pevt);
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER, this));
 		}
-
+				
 		public function onMouseMove(pevt:MouseEvent):void {
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEMOVE, this));
 		}

@@ -15,7 +15,7 @@ package org.openscales.core.feature
 	{
 		public function MultiPointFeature(geom:MultiPoint=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null)
 		{
-			super(geom, data, style,isEditable,isEditionFeature,editionFeatureParentGeometry);
+			super(geom, data, style,isEditable,isEditionFeature);
 		}
 
 		public function get points():MultiPoint {
@@ -80,7 +80,7 @@ package org.openscales.core.feature
 		 * */
 		override public function clone():Feature{
 			var geometryClone:Geometry=this.geometry.clone();
-			var MultiPointFeatureClone:MultiPointFeature=new MultiPointFeature(geometryClone as MultiPoint,null,this.style,this.isEditable,this.isEditionFeature,this.editionFeatureParentGeometry);
+			var MultiPointFeatureClone:MultiPointFeature=new MultiPointFeature(geometryClone as MultiPoint,null,this.style,this.isEditable,this.isEditionFeature);
 			return MultiPointFeatureClone;
 			
 		}	

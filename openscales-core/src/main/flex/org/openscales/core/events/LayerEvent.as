@@ -1,6 +1,5 @@
 package org.openscales.core.events
 {
-	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.layer.Layer;
 
 	/**
@@ -63,6 +62,16 @@ package org.openscales.core.events
 		 * Event type dispatched when loading is completed
 		 */		
 		public static const LAYER_LOAD_END:String="openscales.layerloadend";
+
+		/**
+		 * Event type dispatched when the edition mode is started
+		 * */
+		public static const LAYER_EDITION_MODE_START:String="openscales.layerEditionModeStart";
+		/**
+		 * Event type dispatched when the edition mode is finished
+		 * */
+		public static const LAYER_EDITION_MODE_END:String="openscales.layerEditionModeEnd";
+		
 
 		public function LayerEvent(type:String, layer:Layer, bubbles:Boolean=false,cancelable:Boolean=false)
 		{

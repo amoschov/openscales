@@ -1,6 +1,5 @@
 package org.openscales.core.layer
 {
-	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
@@ -8,8 +7,6 @@ package org.openscales.core.layer
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.style.Style;
-	import org.openscales.proj4as.Proj4as;
-	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -100,13 +97,13 @@ package org.openscales.core.layer
 		/**
 		 * To know if the layer is in edition mode
 		 * */
-		public function get IsInEditionMode():Boolean{
+		public function get inEditionMode():Boolean{
 			return this._isInEditionMode;
 		}
 		/**
 		 * @private
 		 * */
-		public function set isInEditionMode(value:Boolean):void{
+		public function set inEditionMode(value:Boolean):void{
 			this._isInEditionMode=value;
 		}
 		

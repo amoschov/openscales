@@ -95,8 +95,8 @@ package org.openscales.core.geometry
 			var componentsClone:Array=null;
 			var componentslength:Number=this._components.length;
 			if(componentslength<=0) return null;
+			else componentsClone=new Array();
 			for(var i:int=0;i<componentslength;i++)	{
-				componentsClone=new Array();
 				componentsClone.push((this._components[i] as Geometry).clone());
 			}
 			return componentsClone;

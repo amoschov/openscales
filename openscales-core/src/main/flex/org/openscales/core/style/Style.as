@@ -92,7 +92,7 @@ package org.openscales.core.style
 		public static function getDefaultLineStyle():Style{
 			
 			var rule:Rule = new Rule();
-			rule.symbolizers.push(new LineSymbolizer(new Stroke(0x184054,3)));
+			rule.symbolizers.push(new LineSymbolizer(new Stroke(0x184054,7)));
 			rule.symbolizers.push(new LineSymbolizer(new Stroke(0x40A6D9,1)));
 			
 			var style:Style = new Style();

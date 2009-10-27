@@ -11,9 +11,11 @@ package org.openscales.core.feature
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
+	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
+	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
@@ -67,6 +69,8 @@ package org.openscales.core.feature
 		 **/
 		private var _tmpTimerValue:Number=5000;
 		
+		
+		//Edition Attribute
 		/**
 		 * To know if the vector feature is editable when its
 		 * vector layer is in edit mode
@@ -77,15 +81,24 @@ package org.openscales.core.feature
 		 * for edition mode
 		 **/
 		private var _isEditionFeature:Boolean=false;
-		/**
-		 * the geometry of the parent when the feature is an edition feature  
-		 **/
-		private var _editionFeatureParentGeometry:Collection=null;
+		
+		
 		
 		/**
 		 *Link to all temporary features used to edit the feature 
 		 * */
-		protected var _editionFeaturesArray:Array;
+		private var _editionFeaturesArray:Array=new Array();
+		
+		/**
+		 * Edition feature parent
+		 * when the feature is an edition feature
+		 * */
+		private var _editionFeatureParent:VectorFeature=null;
+		/**
+		 * Point under the mouse
+		 * */
+		protected var _pointFeatureUnderTheMouse:PointFeature=null;
+		
 		
 		/**
 		 * VectorFeature constructor
@@ -94,7 +107,7 @@ package org.openscales.core.feature
 		 * @param data
 		 * @param style The feature's style
 		 */
-		public function VectorFeature(geom:Geometry = null, data:Object = null, style:Style = null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null) {
+		public function VectorFeature(geom:Geometry = null, data:Object = null, style:Style = null,isEditable:Boolean=false,isEditionFeature:Boolean=false) {
 			super(null, null, data);
 			this.lonlat = null;
 			this.geometry = geom;
@@ -111,20 +124,17 @@ package org.openscales.core.feature
 			//A feature can't be editable and editionfeature(temporary feature )
 			if(isEditable)
 			{
-				if(isEditionFeature || (editionFeatureParentGeometry!=null)){
+				if(isEditionFeature){
 					Trace.error("A feature can't be editable and edition feature(temporary feature ) at the same time");
 					this._isEditionFeature=false;
-					this._editionFeatureParentGeometry=null;
 				}
 			} 
 			else
 			{
 				this._isEditionFeature=isEditionFeature;
-				if(!isEditionFeature && editionFeatureParentGeometry!=null) this._editionFeatureParentGeometry=null;
-				else this._editionFeatureParentGeometry=editionFeatureParentGeometry;
 			}
 		}
-
+		
 		/**
 		 * Destroys the VectorFeature
 		 */
@@ -136,7 +146,40 @@ package org.openscales.core.feature
 			this.geometry = null;
 			super.destroy();
 		}
-
+		
+		/**
+		 *we overrided this function for edition mode
+		 **/
+		override public function set layer(value:Layer):void{
+			super.layer=value;
+			if(layer!=null && (this.layer as VectorLayer).inEditionMode)
+			{
+				//EditionModeStart();
+			}
+		}
+		/**
+		 * Events Management
+		 */
+		override public function registerListeners():void{
+			super.registerListeners();
+			if(!this._isEditionFeature && this.layer!=null && this.layer.map!=null)
+				{
+				this.layer.map.addEventListener(LayerEvent.LAYER_EDITION_MODE_START,EditionModeStart);
+				this.layer.map.addEventListener(LayerEvent.LAYER_EDITION_MODE_END,EditionModeStop);
+				}
+		}
+		
+		override public function unregisterListeners():void{
+			super.registerListeners();
+			if(!this._isEditionFeature && this.layer!=null && this.layer.map!=null)
+				{	
+					this.layer.map.removeEventListener(LayerEvent.LAYER_EDITION_MODE_START,EditionModeStart);
+					this.layer.map.removeEventListener(LayerEvent.LAYER_EDITION_MODE_END,EditionModeStop);
+				}
+			
+		}
+		
+		
 		/**
 		 * Determines if the feature is placed at the given point with a certain tolerance (or not).
 		 *
@@ -331,37 +374,19 @@ package org.openscales.core.feature
 		 **/
 		public function getEditableClone():VectorFeature{
 			var editableClone:VectorFeature=this.clone() as VectorFeature;
-			this._isEditionFeature=true;
+			editableClone._isEditionFeature=true;
+			editableClone.isEditable=false;
+			editableClone.editionFeatureParent=this;
 			return editableClone;
 		}
 		
 		
-		/**
-		 * To find the vertices of a simple collection
-		 * @param geometry
-		 * */
-		private function createTmpVertices(collection:Collection):void{
-			    
-				for(var i:int=0;i<collection.componentsLength;i++){
-					var geometry:Geometry=collection.componentByIndex(i);
-					if(geometry is Collection){
-						createTmpVertices(geometry as Collection);
-					}
-					else 
-					{
-						if(geometry is Point){
-							var tmpVertice:TmpPointFeature=new TmpPointFeature(new Point((geometry as Point).x,(geometry as Point).y),{id:i},Style.getDefaultCircleStyle());
-							tmpVertice.tmpPointParentGeometry=collection;
-							this.tmpVertices.push(tmpVertice);
-						}
-					}
-				}						
-		}
+		
 		
 		
 		private function createVerticesUnderMouse(pevt:MouseEvent):void{
 			//point under mouse adding
-			if(this.layer!=null && this.layer.map!=null)
+		/*	if(this.layer!=null && this.layer.map!=null)
 			{
 				
 				this.layer.map.buttonMode=true;
@@ -406,7 +431,7 @@ package org.openscales.core.feature
 				/*	var bob:LinearRing=parentTmpPoint as LinearRing;
 					if(bob.getSegmentsIntersection(tmpPoint)!=-1){*/
 			
-						var style:Style = Style.getDefaultCircleStyle();		
+					/*	var style:Style = Style.getDefaultCircleStyle();		
 					//isTmpFeatureUnderTheMouse attributes use to specify type of temporary feature
 						var tmpVertice:TmpPointFeature=new TmpPointFeature(tmpPoint,{isTmpFeatureUnderTheMouse:true},style);
 						this._tmpVerticeUnderTheMouse=tmpVertice;		
@@ -416,8 +441,8 @@ package org.openscales.core.feature
 					//}
 
 				
-				}
-			}
+				//}
+			}*/
 		}
 		
 		/**
@@ -448,11 +473,15 @@ package org.openscales.core.feature
 				//this.layer.map.removeEventListener(MouseEvent.MOUSE_MOVE,createVerticesUnderMouse);
 				
 				//To know when a temporary feature is drag
-				this.layer.map.removeEventListener(FeatureEvent.TMP_FEATURE_DRAG_START,onTmpFeaturedragStart);
-				this.layer.map.removeEventListener(FeatureEvent.TMP_FEATURE_DRAG_STOP,onTmpFeaturedragStop);
+				/*this.layer.map.removeEventListener(FeatureEvent.TMP_FEATURE_DRAG_START,onTmpFeaturedragStart);
+				this.layer.map.removeEventListener(FeatureEvent.TMP_FEATURE_DRAG_STOP,onTmpFeaturedragStop);*/
 			}
 		}
-		override protected function verticesShowing(pevt:MouseEvent):void{
+		/**
+		 * To show vertices of edition feature
+		 * 
+		 **/		
+		override protected function verticesShowing(event:MouseEvent):void{
 			
 			//if((this.layer as VectorLayer).tmpVerticesOnFeature){
 		/*	if(this.geometry is Collection)
@@ -511,6 +540,109 @@ package org.openscales.core.feature
 		 	
 		}
 		
+		
+		//Edition Mode Management
+		/**
+		 * This function is launched when the feature layer is in edition Mode
+		 * 
+		 * */
+		protected function EditionModeStart(event:LayerEvent=null):void{
+			
+		}
+		protected function EditionModeStop(event:LayerEvent=null):void{
+			
+		}
+		
+		private function editionFeatureDragStop(event:FeatureEvent):void{
+			if(Util.indexOf(this._editionFeaturesArray,event.feature)!=-1 || this._pointFeatureUnderTheMouse==event.feature){			
+				(this.layer as VectorLayer).removeFeatures(this._editionFeaturesArray);
+				this._editionFeaturesArray=new Array();
+				this.createEditionVertices(this.geometry as Collection);
+				(this.layer as VectorLayer).addFeatures(this._editionFeaturesArray);
+				layer.redraw();
+			}
+		}
+		
+		/**
+		 * create edition vertice(Virtual) only for edition feature
+		 * @param geometry
+		 * */
+		public function createEditionVertices(collection:Collection=null):void{
+			    if(collection==null) collection=this.geometry as Collection;
+				for(var i:int=0;i<collection.componentsLength;i++){
+					var geometry:Geometry=collection.componentByIndex(i);
+					if(geometry is Collection){
+						createEditionVertices(geometry as Collection);
+					}
+					else 
+					{
+						if(geometry is Point){
+							var EditionVertice:PointFeature=new PointFeature(geometry.clone() as Point,null,Style.getDefaultCircleStyle(),true,collection);
+							this._editionFeaturesArray.push(EditionVertice);
+							EditionVertice.editionFeatureParent=this;
+						}
+					}
+				}						
+		}
+		/**
+		 * delete edition vertice(Virtual) only for edition feature
+		 * */
+		public function deleteEditionVertices():void{
+			
+			(this.layer as VectorLayer).removeFeatures(this._editionFeaturesArray);
+			this._editionFeaturesArray=null;
+			this._editionFeaturesArray=new Array();
+			
+		}
+		/**
+		 * Refresh edition vertice(Virtual) only for edition feature
+		 * @param geometry
+		 * */
+		 public function RefreshEditionVertices():void{
+			  deleteEditionVertices();
+			  createEditionVertices();	
+		}
+		
+		private function createVirtualPointUnderMouse(event:MouseEvent):void{
+			//if the mouse is on a segment of edition feature we add point
+			if(this.layer!=null && this.layer.map!=null)
+			{
+					
+				this.layer.map.buttonMode=true;
+				var px:Pixel=new Pixel(this.layer.mouseX,this.layer.mouseY);
+				var lonlat:LonLat=this.layer.map.getLonLatFromLayerPx(px);	
+				var PointGeomUnderTheMouse:Point=new Point(lonlat.lon,lonlat.lat);
+			//	if((this.geometry as LinearRing).containsPoint(PointGeomUnderTheMouse)){
+					//we delete the point under the mouse  from layer and from tmpVertices Array
+					if(_pointFeatureUnderTheMouse!=null)
+					{
+						(this.layer as VectorLayer).removeFeature(this._pointFeatureUnderTheMouse);
+					}
+					
+				//There is always a component because the mouse is over the component
+				//consequently we use the first
+				//we find the collection which directly have a point as component
+					var testCollection:Geometry=this.geometry;
+					var parentTmpPoint:Geometry;
+					while(testCollection is Collection)
+					{
+						parentTmpPoint=testCollection;
+						testCollection=(testCollection as Collection).componentByIndex(0);
+					}
+					
+						var style:Style = Style.getDefaultCircleStyle();		
+					//isTmpFeatureUnderTheMouse attributes use to specify type of temporary feature
+						this._pointFeatureUnderTheMouse=new PointFeature(PointGeomUnderTheMouse as Point,null,Style.getDefaultCircleStyle(),true,parentTmpPoint as Collection);	
+						(this.layer as VectorLayer).addFeature(this._pointFeatureUnderTheMouse);			
+			}
+			
+			//}
+		}
+		
+		
+		//FIN EDITION MODE
+		
+		
 		public function get tmpVertices():Array{
 			return this._tmpVertices;
 		}
@@ -540,7 +672,6 @@ package org.openscales.core.feature
 		 	this._isEditable=isEditable;
 		 	if(_isEditable) {
 		 		this._isEditionFeature=false;
-		 		this._editionFeatureParentGeometry=null;
 		 	}
 		 }
 		 /**
@@ -550,11 +681,20 @@ package org.openscales.core.feature
 		 public function get isEditionFeature():Boolean{
 		 	return this._isEditionFeature;
 		 }
-		 /**
-		 * the geometry of the parent when the feature is an edition feature  
-		 **/
-		public function get editionFeatureParentGeometry():Collection{
-			return this._editionFeatureParentGeometry;
+		
+		/**
+		 *Link to all temporary features used to edit the feature 
+		 * */
+		public function get editionFeaturesArray():Array{
+			return this._editionFeaturesArray;
+		}
+		
+		public function get  editionFeatureParent():VectorFeature{
+			if(!this.isEditionFeature) return null;
+			return this._editionFeatureParent;
+		}
+		public function set  editionFeatureParent(value:VectorFeature):void{
+			if(this.isEditionFeature)this._editionFeatureParent=value;
 		}
 	}
 }

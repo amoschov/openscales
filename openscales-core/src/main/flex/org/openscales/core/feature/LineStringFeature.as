@@ -14,7 +14,7 @@ package org.openscales.core.feature
 	{
 		public function LineStringFeature(geom:LineString=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null) 
 		{
-			super(geom, data, style,isEditable,isEditionFeature,editionFeatureParentGeometry);
+			super(geom, data, style,isEditable,isEditionFeature);
 		}
 
 		public function get lineString():LineString {
@@ -51,7 +51,7 @@ package org.openscales.core.feature
 		 * */
 		override public function clone():Feature{
 			var geometryClone:Geometry=this.geometry.clone();
-			var lineStringFeatureClone:LineStringFeature=new LineStringFeature(geometryClone as LineString,null,this.style,this.isEditable,this.isEditionFeature,this.editionFeatureParentGeometry);
+			var lineStringFeatureClone:LineStringFeature=new LineStringFeature(geometryClone as LineString,null,this.style,this.isEditable,this.isEditionFeature);
 			return lineStringFeatureClone;
 			
 		}		

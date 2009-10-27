@@ -128,7 +128,7 @@ package org.openscales.core.handler.sketch
 				// Fixme : style should not be hardcoded here but externalised
 				var lineStyle:Style = Style.getDrawLineStyle();
 				
-				var lineStringFeature:LineStringFeature = new LineStringFeature(_lineString, null, lineStyle);
+				var lineStringFeature:LineStringFeature = new LineStringFeature(_lineString, null, lineStyle,true);
 				
 				drawLayer.addFeature(lineStringFeature);
 				
