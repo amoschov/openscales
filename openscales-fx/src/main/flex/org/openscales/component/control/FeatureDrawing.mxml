@@ -179,7 +179,7 @@
 				// clear the selected feature tab
 				selectFeatureHandler.selectFeatures = null;
 				// there's no more selected feature
-				selectFeatureHandler.selectFeauturesLength = 0;				
+				selectFeatureHandler.selectFeaturesLength = 0;				
 				switch(drawType)
 				{
 					case "path":{pathHandler.newFeature = true; break;}
@@ -259,7 +259,7 @@
 				btnDeleteSelected.enabled = true;				
 				selectFeatureHandler.onSelection();
 				//managing of btnDeleteSelected (in case there no more selected features)
-				if(selectFeatureHandler.selectFeauturesLength==0){btnDeleteSelected.enabled = false;}
+				if(selectFeatureHandler.selectFeaturesLength==0){btnDeleteSelected.enabled = false;}
 				//managing of btnMerge
 				if(selectFeatureHandler.Comparison()){btnMerge.enabled = true;}
 				else{btnMerge.enabled = false;}
@@ -267,7 +267,7 @@
 			
 			private function onSelectBySelectBox(event:FeatureEvent):void{
 				selectFeatureHandler.onSelectionBySelectBox();
-				if(selectFeatureHandler.selectFeauturesLength>0){
+				if(selectFeatureHandler.selectFeaturesLength>0){
 					btnDeleteSelected.enabled = true;
 				}
 				if(selectFeatureHandler.Comparison()){btnMerge.enabled = true;}

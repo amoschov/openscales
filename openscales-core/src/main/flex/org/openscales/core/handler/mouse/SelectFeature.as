@@ -55,7 +55,7 @@ package org.openscales.core.handler.mouse
 		/**
 		 * real number of feature in the tab. We don't use lenght, because selectFeatures maybe contain null.
 		 */
-		private var _selectFeauturesLength:int = 0;	
+		private var _selectFeaturesLength:int = 0;	
 
 		/**
 		 * iterator for selectFeature (in the tab "selectFeatures")
@@ -170,7 +170,7 @@ package org.openscales.core.handler.mouse
 								f.layer.redraw();
 								selectFeatures[i]=null;
 								iteratorFeatures--; 
-								selectFeauturesLength--;
+								selectFeaturesLength--;
 							}
 						}
 					}
@@ -204,7 +204,7 @@ package org.openscales.core.handler.mouse
 								f.layer.redraw();
 								selectFeatures[i]=null;
 								iteratorFeatures--; 
-								selectFeauturesLength--;
+								selectFeaturesLength--;
 							}
 						}
 					}
@@ -216,7 +216,7 @@ package org.openscales.core.handler.mouse
 					currentfeature = f;
 					if(!currentfeature.selected){
 						iteratorFeatures++;
-						selectFeauturesLength++;
+						selectFeaturesLength++;
 						changeToSelected();
 					}
 				}			
@@ -228,7 +228,7 @@ package org.openscales.core.handler.mouse
 					currentfeature = f;
 					if(!currentfeature.selected){
 						iteratorFeatures++;
-						selectFeauturesLength++;
+						selectFeaturesLength++;
 						changeToSelected();
 					}
 				}
@@ -247,7 +247,7 @@ package org.openscales.core.handler.mouse
 				if(!currentfeature.selected){
 					//ctrl key isn't pressed
 					if(!ctrl){
-						selectFeauturesLength=0;
+						selectFeaturesLength=0;
 						for each(f in selectFeatures){
 							if(f != null){
 								if(f.selected){
@@ -263,14 +263,14 @@ package org.openscales.core.handler.mouse
 					}
 					//ctrl key is pressed
 					else{iteratorFeatures++;}
-					selectFeauturesLength++;
+					selectFeaturesLength++;
 					changeToSelected();
 				}
 				//Feature is already selected
 				else{
 					//ctrl key isn't pressed
 					if(!ctrl){
-						selectFeauturesLength=1;
+						selectFeaturesLength=1;
 						var others:Boolean = false;
 						for(i=0;i<=selectFeatures.length;i++){
 							f=selectFeatures[i];
@@ -288,7 +288,7 @@ package org.openscales.core.handler.mouse
 							selectFeatures[iteratorFeatures]= null;
 							lastfeature = null;
 							currentfeature.layer.redraw();
-							selectFeauturesLength--;
+							selectFeaturesLength--;
 							this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.currentfeature,ctrl));					
 						}
 						else{
@@ -304,7 +304,7 @@ package org.openscales.core.handler.mouse
 							if(f == currentfeature){selectFeatures[i]=null;}
 						}
 						currentfeature.layer.redraw();
-						selectFeauturesLength--;
+						selectFeaturesLength--;
 						
 						//clear the information tab
 						this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.currentfeature));
@@ -313,7 +313,7 @@ package org.openscales.core.handler.mouse
 				}
 			}
 			//This is the first selection
-			else{selectFeauturesLength++; this.changeToSelected(); }
+			else{selectFeaturesLength++; this.changeToSelected(); }
 		}
 
 		/**
@@ -325,14 +325,16 @@ package org.openscales.core.handler.mouse
 			
 			// Little test to see if the style to be created should be a point style or a polygon style
 			// Anyway, this should not be here but either to an external class or in a specific method for managing display of selected features 
-			var selectStyle:Style =  new Style();
-			selectStyle.rules[0] = new Rule();
+			
+			var selectStyle:Style= Style.getDefaultPointStyle();
+			/*var selectStyle:Style =  new Style();
+			 selectStyle.rules[0] = new Rule();
 			if(this.currentfeature is PointFeature || this.currentfeature is MultiPointFeature){					
 				selectStyle.rules[0].symbolizers.push(new PointSymbolizer(new Mark(Mark.WKN_SQUARE,new Fill(0xFFD700,0.5),new Stroke(0xFFD700,2),12)));
 			}
 			else{
 				selectStyle.rules[0].symbolizers.push(new PolygonSymbolizer(new Fill(0xFFD700,0.5),new Stroke(0xFFD700,2)));
-			}
+			} */
 
 			this.currentfeature.style = selectStyle;							 
 			this.currentfeature.selected = true;
@@ -349,7 +351,7 @@ package org.openscales.core.handler.mouse
 		 */
 		public function Comparison():Boolean{
 			var rep:Boolean = false;
-			if(selectFeauturesLength >= 2) 
+			if(selectFeaturesLength >= 2) 
 			{
 				for(var k:int=0;k<selectFeatures.length;k++)
 				{
@@ -479,11 +481,11 @@ package org.openscales.core.handler.mouse
 			_selectFeatures = newArray;
 		}
 
-		public function get selectFeauturesLength():Number{
-			return _selectFeauturesLength;
+		public function get selectFeaturesLength():Number{
+			return _selectFeaturesLength;
 		}
-		public function set selectFeauturesLength(value:Number):void{
-			_selectFeauturesLength = value;
+		public function set selectFeaturesLength(value:Number):void{
+			_selectFeaturesLength = value;
 		}
 
 		public function get iteratorFeatures():Number{

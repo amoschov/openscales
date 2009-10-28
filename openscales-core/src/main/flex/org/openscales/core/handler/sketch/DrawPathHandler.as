@@ -78,7 +78,7 @@ package org.openscales.core.handler.sketch
 		override protected function unregisterListeners():void{
 			this._dblClickHandler.active = false;
 			this.map.removeEventListener(MouseEvent.CLICK, this.drawLine);
-			this.map.addEventListener(MapEvent.ZOOM_END, this.updateZoom);
+			this.map.removeEventListener(MapEvent.ZOOM_END, this.updateZoom);
 		}
 
 		public function mouseDblClick(event:MouseEvent):void {
