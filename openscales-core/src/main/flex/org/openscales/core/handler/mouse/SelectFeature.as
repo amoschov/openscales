@@ -137,6 +137,7 @@ package org.openscales.core.handler.mouse
 			if(!this.hover){
 				this._ctrl = pevt.ctrlPressed;
 				this._featureToSelect = pevt.features;
+
 				this.currentfeature = pevt.features[0] as VectorFeature;
 				
 				if(this._selectBySelectBox!=null) {
@@ -144,6 +145,40 @@ package org.openscales.core.handler.mouse
 				} else { 
 					onSelectionBySelectBox();
 				}				
+			}
+		}
+		
+		public function test():void
+		{
+			var f:VectorFeature, f1:VectorFeature;
+			if(!ctrl)
+			{
+				for(var i:int=0;i<selectFeatures.length;i++)
+				{
+					f=selectFeatures[i];
+					if(f != null){
+						if(f.selected){
+							//we check if the feature is not in the selection area
+							var find:Boolean=false;
+							for each (f1 in _featureToSelect){
+								if(f == f1){find=true;break;}
+							}
+							//if the features is not in the area, we deselect it.
+							if(!find){
+								f.style = f.originalStyle;
+								f.selected=false;
+								f.layer.redraw();
+								selectFeatures[i]=null;
+								iteratorFeatures--; 
+								selectFeauturesLength--;
+							}
+						}
+					}
+				}
+			}
+			for(var k:int=0;k<this._featureToSelect.length;k++)
+			{
+					selectFeatures.push(_featureToSelect[k]);
 			}
 		}
 		
@@ -219,8 +254,8 @@ package org.openscales.core.handler.mouse
 									f.style = f.originalStyle;
 									f.selected=false;
 									f.layer.redraw();
-									selectFeatures=null;
-									selectFeatures = new Array(currentfeature);
+									 selectFeatures=null;
+									selectFeatures = new Array(currentfeature); 
 								}
 							}							
 						}
@@ -304,7 +339,8 @@ package org.openscales.core.handler.mouse
 			this.selectFeatures[iteratorFeatures]=this.currentfeature;						
 			this.currentfeature.layer.redraw();  
 			this.lastfeature = this.currentfeature;
-			this.currentfeature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,this.currentfeature,ctrl));
+			//this.currentfeature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SELECTED,this.currentfeature,ctrl));
+			this.currentfeature.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_SHOW_INFORMATIONS,this.currentfeature));
 		}
 
 		/**

@@ -91,7 +91,11 @@ package org.openscales.core.events
 		 * */
 		
 		public static const EDITION_POINT_FEATURE_DRAG_STOP:String="org.openscales.editionFeature.dragstop";	
-			
+		
+		/**
+		 * Event type dispatched when a feature is selected, and we want to update information in FeatureInfo component
+		 */
+		 public static const FEATURE_SHOW_INFORMATIONS:String="org.openscales.feature.showinformations";
 		
 		/**
 		 * FeatureEvent constructor

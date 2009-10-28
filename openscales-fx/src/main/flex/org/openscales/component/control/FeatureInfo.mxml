@@ -137,7 +137,7 @@
 				if (value != null) {
 					super.map = value;	
 					this.map.addEventListener(FeatureEvent.FEATURE_UNSELECTED, clearInformations);
-					this.map.addEventListener(FeatureEvent.FEATURE_SELECTED, showInfo);
+					this.map.addEventListener(FeatureEvent.FEATURE_SHOW_INFORMATIONS, showInfo);
 				}
 			}
 			
