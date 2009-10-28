@@ -2,16 +2,10 @@ package org.openscales.core.feature
 {
 	import flash.display.CapsStyle;
 	import flash.display.JointStyle;
-	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	
 	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.events.FeatureEvent;
-	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
@@ -70,6 +64,11 @@ package org.openscales.core.feature
 		 * */
 		protected var _pointFeatureUnderTheMouse:PointFeature=null;
 		
+		/**
+		 * To know if the vector feature is selected
+		 * */
+		
+		private var _isselected:Boolean=true;
 		
 		/**
 		 * VectorFeature constructor
@@ -410,6 +409,12 @@ package org.openscales.core.feature
 		}
 		public function set  editionFeatureParent(value:VectorFeature):void{
 			if(this.isEditionFeature)this._editionFeatureParent=value;
+		}
+		public function set isSelected(value:Boolean):void{
+			this._isselected=value;
+		}
+		public function get isSelected():Boolean{
+			return this._isselected;
 		}
 	}
 }

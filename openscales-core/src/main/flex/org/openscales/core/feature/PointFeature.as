@@ -121,78 +121,65 @@ package org.openscales.core.feature
 		 * */
 		public function getSegmentsIntersection(collection:Collection):int{	
 			
-		/*	var index:int=0;
-			for(var j:int=0;j<collection.componentsLength-1;j++){			
-				var LineString1:LineString=new LineString(new Array(collection.componentByIndex(j) as Point,collection.componentByIndex(j+1) as Point));
-				var intersect:Boolean=point.bounds.intersectsBounds(LineString1.bounds);
-				if(intersect) index=j+1;		
-			}
-			return index;*/
-			//We have to improve this algorithm, because we just use  line equation
-				var distance:Array=new Array();
-				var node:Number=-1;
-				var index:Number=0;
-				var tolerance:Number=10;
-				var pointPX:Pixel=this.layer.map.getLayerPxFromLonLat(new LonLat(point.x,point.y));
-				for(var j:int=0;j<collection.componentsLength;j++){
-					var px:Pixel=null;
-					var px2:Pixel=null;
-					 index=j+1;
-					//For the Ring
-					if(j==collection.componentsLength-1)
-					{
-						px=this.layer.map.getLayerPxFromLonLat(new LonLat((collection.componentByIndex(0) as Point).x,(collection.componentByIndex(0) as Point).y));
-						px2=this.layer.map.getLayerPxFromLonLat(new LonLat((collection.componentByIndex(j) as Point).x,(collection.componentByIndex(j) as Point).y));
-						index=0;
-					} 
-					else
-					{
-					 	px=this.layer.map.getLayerPxFromLonLat(new LonLat((collection.componentByIndex(j) as Point).x,(collection.componentByIndex(j) as Point).y));
-					 	px2=this.layer.map.getLayerPxFromLonLat(new LonLat((collection.componentByIndex(j+1) as Point).x,(collection.componentByIndex(j+1) as Point).y));
-					}
-					var x1:Number=px.x;
-					var x2:Number=px2.x;
-					var y1:Number=px.y;
-					var y2:Number=px2.y;
-						//Line equation
-					var coeffdir:Number=(y1-y2)/(x1-x2);
-					var b:Number=y2+x2*(y2-y1)/(x1-x2);
-					distance.push(new Array(Math.floor(Math.abs(coeffdir*pointPX.x+b-pointPX.y)),index));
-				}
-			 index=0;
-			 var nodes:Array=new Array();
-			 //The closest point
-			 var i:int=0;
-			for(i=0;i<distance.length;i++){
-					if(distance[i][0]<tolerance)
-					{
-						nodes.push(distance[i][1]);
-					}
-					if(distance[i][0]<distance[index][0]){
-						node=distance[i][1];
-						index=i;
-					}
-			}
-			if(nodes.length==0) 
-			return node;
-			if(nodes.length==1) return nodes[0] as int;
-			else 
-			{
-				for(i=0;i<nodes.length;i++){
-					var point1:Point=null;
-					var point2:Point=null;
-					point1=collection.componentByIndex(0) as Point;
-					if(nodes[i]==0)	
-					point2=collection.componentByIndex(collection.componentsLength-1) as Point;
-					else point2=collection.componentByIndex(i-1) as Point; 	
-					var seglength:Number=point1.distanceTo(point2);		
-					if(point1.distanceTo(point)<seglength && point2.distanceTo(point)<seglength){
-						node=nodes[i];
-						break;
-					}	
+			var arrayResult:Array=new Array();
+			var tolerance:Number=3;	
+			var LineString1:LineString=null;
+			var intersect:Boolean=true;
+			var distanceArray:Array=new Array();
+			if(collection!=null){
+				for(var i:int=0;i<collection.componentsLength-1;i++){		
+					LineString1=new LineString(new Array(collection.componentByIndex(i) as Point,collection.componentByIndex(i+1) as Point));
+					 intersect=point.bounds.intersectsBounds(LineString1.bounds);
+					if(intersect) arrayResult.push(new Array(LineString1,i+1));
 				}
 			}
-			return node;
+			//The last segment
+			LineString1=new LineString(new Array(collection.componentByIndex(0) as Point,collection.componentByIndex(collection.componentsLength-1) as Point));
+			intersect=point.bounds.intersectsBounds(LineString1.bounds);
+			if(intersect) arrayResult.push(new Array(LineString1,i+1));
+			
+			if(arrayResult.length==1){
+				return arrayResult[0][1];
+			}
+			else if(arrayResult.length>1){
+				//There is at less 2 segments	
+				//We test if this is followers segments
+				if((arrayResult[0][1]+1==arrayResult[1][1]) ||(arrayResult[0][1]==1 && arrayResult[1][1]==collection.componentsLength-1)){
+					distanceArray=new Array();
+					for(var k:int=0;k<arrayResult.length;k++){
+						var pointA:Point=(arrayResult[k][0] as LineString).componentByIndex(0) as Point;
+						var pointB:Point=(arrayResult[k][0] as LineString).componentByIndex(1) as Point;
+						
+						var pointPx:Pixel=this.layer.map.getLayerPxFromLonLat(new LonLat(point.x,point.y));
+						
+						var pointPxA:Pixel=this.layer.map.getLayerPxFromLonLat(new LonLat(pointA.x,pointA.y));
+						
+						var pointPxB:Pixel=this.layer.map.getLayerPxFromLonLat(new LonLat(pointB.x,pointB.y));
+						
+						var scalarPointAPointBPower:Number=Math.pow((pointPxA.x-pointPxB.x),2) +Math.pow((pointPxA.y-pointPxB.y),2);
+						
+						var scalarPointPointAPower:Number=Math.pow((pointPx.x-pointPxA.x),2)+Math.pow((pointPxA.y-pointPx.y),2);
+						
+						var scalarAHAB:Number=Math.pow((pointPx.x-pointPxA.x)*(pointPxB.x-pointPxA.x)+(pointPx.y-pointPxA.y)*(pointPxB.y-pointPxA.y),2);
+						
+						var bob:Number=scalarPointPointAPower-scalarAHAB/scalarPointPointAPower;
+						
+						var distance:Number=Math.pow((scalarPointPointAPower-scalarAHAB/scalarPointAPointBPower),1/2);
+						if(distance<tolerance)
+						{
+							distanceArray.push(new Array(distance,arrayResult[k][1]));
+						} 
+					}
+					if(distanceArray.length>0)
+					{
+						distanceArray.sort();
+						return distanceArray[0][1];
+					}
+				}
+				else return arrayResult[0][1];
+				
+			}
+			return -1;
 		}
 	}
 }
