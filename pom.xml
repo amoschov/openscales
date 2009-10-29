@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
 	<artifactId>openscales</artifactId>
-	<version>1.1-beta6</version>
+	<version>1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>OpenScales</name>
 	<description>OpenScales is a user-friendly and fast interface designed to manipulate spatial data : geographic raster viewing, data-vector editing, management of smooth transitions between scales and positions, ...</description>
@@ -141,9 +141,9 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:http:///localhost/openscales/tags/openscales-1.1-beta6</connection>
-		<developerConnection>scm:svn:http://localhost/svn/openscales/tags/openscales-1.1-beta6</developerConnection>
-		<url>http://openscales.org/p/openscales/source/tree/HEAD/tags/openscales-1.1-beta6</url>
+		<connection>scm:svn:http:///localhost/openscales/trunk/</connection>
+		<developerConnection>scm:svn:http://localhost/svn/openscales/trunk/</developerConnection>
+		<url>http://openscales.org/p/openscales/source/tree/HEAD/trunk/</url>
 	</scm>
 	<ciManagement>
 		<system>hudson</system>
