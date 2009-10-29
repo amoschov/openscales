@@ -64,7 +64,7 @@ package org.openscales.core.handler.mouse
 			}
 		}
 		//Edition Mode Start
-		private function EditionModeStart():Boolean{
+		protected function EditionModeStart():Boolean{
 			if(_layerToEdit !=null)
 			{
 				//We create an editable clone for all existant vector feature
@@ -98,7 +98,7 @@ package org.openscales.core.handler.mouse
 		
 		
 		//End of edition mode
-		private function EditionModeStop():Boolean{
+		protected function EditionModeStop():Boolean{
 			if(_layerToEdit !=null)
 			{
 				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,this._layerToEdit));
@@ -131,7 +131,7 @@ package org.openscales.core.handler.mouse
 		 /**
 		 * This function create the point under the mouse
 		 * */	
-		 private function createPointUndertheMouse(evt:FeatureEvent):void{
+		 protected function createPointUndertheMouse(evt:FeatureEvent):void{
 		 		var vectorfeature:VectorFeature=evt.feature as VectorFeature;
 		 		//Vector feature is not null and belong to the target layer
 		 		if(vectorfeature != null && Util.indexOf(this._layerToEdit.features,vectorfeature)!=-1 && vectorfeature.isEditionFeature && !(vectorfeature is PointFeature)){
@@ -190,7 +190,7 @@ package org.openscales.core.handler.mouse
 			}
 		 }
 		 
-		 private function editionPointDragStart(evt:FeatureEvent):void{
+		 protected function editionPointDragStart(evt:FeatureEvent):void{
 		 	var vectorfeature:VectorFeature=evt.feature as VectorFeature;
 		 	_dragTimer.start();
 		 		//Vector feature is not null and belong to the target layer
@@ -204,7 +204,7 @@ package org.openscales.core.handler.mouse
 		 		}
 		 }
 		 
-		 private function drawTemporaryFeature(evt:TimerEvent):void{
+		 protected function drawTemporaryFeature(evt:TimerEvent):void{
 		 	var vectorfeature:PointFeature=this._featureCurrentlyDraged as PointFeature;
 		 	//Vector feature is not null and belong to the target layer
 		 	if(vectorfeature != null && Util.indexOf(this._layerToEdit.features,vectorfeature)!=-1 && vectorfeature.isEditionFeature){
@@ -226,7 +226,7 @@ package org.openscales.core.handler.mouse
 		 	}
 		 }
 		 
-		 private function editionPointDragStop(evt:FeatureEvent):void{
+		 protected function editionPointDragStop(evt:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=evt.feature as PointFeature;
 		 		//Vector feature is not null and belong to the target layer
 		 		this._dragTimer.stop();
@@ -268,7 +268,7 @@ package org.openscales.core.handler.mouse
 		 * To know if a dragged point is a under the mouse or is a vertice
 		 * if it's a point returns its index else returns -1
 		 * */
-		 private function IspointUndertheMouse(vectorfeature:PointFeature):Number{
+		 protected function IspointUndertheMouse(vectorfeature:PointFeature):Number{
 		 	//new point to add
 				
 					
@@ -319,7 +319,7 @@ package org.openscales.core.handler.mouse
 		 * The way to follow when there is a click
 		 * when the event is not a drag and is not a double click
 		 * */
-		 private function VerticeClickManagement(event:FeatureEvent):void{
+		 protected function VerticeClickManagement(event:FeatureEvent):void{
 		 
 		 	var vectorfeature:VectorFeature=event.feature as VectorFeature;
 		 	vectorfeature.stopDrag();
