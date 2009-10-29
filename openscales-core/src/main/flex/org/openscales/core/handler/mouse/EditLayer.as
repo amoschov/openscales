@@ -25,7 +25,7 @@ package org.openscales.core.handler.mouse
 		/**
 		 * The layer concerned by the Modification
 		 * */
-		private var _layerToEdit:VectorLayer=null;
+		protected var _layerToEdit:VectorLayer=null;
 		/**
 		 * point under the mouse during the edit operation
 		 * */
