@@ -327,7 +327,7 @@ package org.openscales.core.handler.mouse
 			// Anyway, this should not be here but either to an external class or in a specific method for managing display of selected features 
 			
 			var selectStyle:Style= Style.getDefaultPointStyle();
-			var selectStyle:Style =  new Style();
+			/* var selectStyle:Style =  new Style(); */
 			 selectStyle.rules[0] = new Rule();
 			if(this.currentfeature is PointFeature || this.currentfeature is MultiPointFeature){					
 				selectStyle.rules[0].symbolizers.push(new PointSymbolizer(new Mark(Mark.WKN_SQUARE,new Fill(0xFFD700,0.5),new Stroke(0xFFD700,2),12)));
