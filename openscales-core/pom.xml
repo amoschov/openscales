@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
 	<artifactId>openscales-core</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1-beta7</version>
 	<packaging>swc</packaging>
 	<name>Core</name>
 	
 	<parent>
 		<groupId>org.openscales</groupId>
 		<artifactId>openscales</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.1-beta7</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>org.openscales</groupId>
 			<artifactId>openscales-proj4as</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>1.1-beta7</version>
 			<type>swc</type>
 		</dependency>
 	</dependencies>
