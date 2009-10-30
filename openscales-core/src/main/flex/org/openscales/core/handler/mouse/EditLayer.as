@@ -39,7 +39,7 @@ package org.openscales.core.handler.mouse
 		 /**
 		 * Click handler to detect click on the feature
 		 * */
-		 private var _featureclickHandler:FeatureClickHandler;
+		 protected var _featureclickHandler:FeatureClickHandler;
 		 
 		 //Used for drag
 		 private var _featureCurrentlyDraged:VectorFeature=null;

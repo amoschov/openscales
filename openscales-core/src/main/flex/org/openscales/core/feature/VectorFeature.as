@@ -395,6 +395,14 @@ package org.openscales.core.feature
 		 public function get isEditionFeature():Boolean{
 		 	return this._isEditionFeature;
 		 }
+		 
+		  /**
+		 * To know if the vector feature  is a temporary vector only used 
+		 * for edition mode
+		 **/
+		 public function set isEditionFeature(value:Boolean):void{
+		 	this._isEditionFeature = value;
+		 }
 		
 		/**
 		 *Link to all temporary features used to edit the feature 
