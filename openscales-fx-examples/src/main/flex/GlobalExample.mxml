@@ -76,7 +76,9 @@
 			width="100%"
 			map="{map}"
 			minRectPxSize="3"
-			rectColor="0xFF3300" newExtentColor="0x00FF33" />
+			rectColor="0xFF3300" newExtentColor="0x00FF33">
+			<os:Mapnik name="Mapnik" isBaseLayer="true" />
+		</os:OverviewMapComponent>
 	</os:WidgetWindow>
 
 	
