@@ -252,7 +252,7 @@ package org.openscales.core
 		}
 
 		/**
-		 * Removes a layer from the map by removing its visual element , then removing
+		 * Removes a layer from the map by removing its visual element, then removing
 		 * it from the map's internal list of layers, setting the layer's map property
 		 * to null.
 		 *
@@ -281,6 +281,12 @@ package org.openscales.core
 			this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_REMOVED, layer));
 		}
 
+		public function removeAllLayers():void {
+			for(var i:int=this.layers.length-1; i>=0; i--) {
+				removeLayer(this.layers[i], false);
+			}
+		}
+		
 		/**
 		 * Add a new control to the map.
 		 *
@@ -509,8 +515,9 @@ package org.openscales.core
 		 * range of zoom levels.
 		 */
 		private function isValidZoomLevel(zoomLevel:Number):Boolean {
-			return ( (!isNaN(zoomLevel)) && (zoomLevel >= this.baseLayer.minZoomLevel) &&
-				(zoomLevel <= this.baseLayer.maxZoomLevel) );
+			return ( (! isNaN(zoomLevel)) && (this.baseLayer)
+				&& (zoomLevel >= this.baseLayer.minZoomLevel)
+				&& (zoomLevel <= this.baseLayer.maxZoomLevel) );
 		}
 
 		/**

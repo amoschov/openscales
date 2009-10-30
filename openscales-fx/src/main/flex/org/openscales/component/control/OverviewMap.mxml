@@ -4,8 +4,6 @@
 	xmlns:os="http://openscales.org"
 	width="100" height="100"
 	initialize="{currentState='defaultState';}"
-	creationComplete="finalizeOverview();"
-	resize="resizeOverview();"
 	toolTip="Click to change the center of the main map.&#13;Draw a rectangle to define a new extent for the main map.">
 	
 
@@ -56,23 +54,31 @@
 			 * to their intended target
 			 */
 			protected override function commitProperties():void {
+				// commi the properties of the super class
 				super.commitProperties();
-				if(_childrenChanged && overview) {
-					if (overview.getChildren().length > 0) {
-						overview.removeAllChildren();
-					}
-					for each(var child:DisplayObject in _children) {
-						if (child) {
-							overview.addChild(child);
-						}
-					}
-					_childrenChanged = false;
+				// Is it anything to do ? 
+				if ((! _childrenChanged) || (! overview) || (! overview.map)) {
+					return;
 				}
+				// Remove all the layers of the current overview map
+				overview.map.removeAllLayers();
+				// Add the children to the overview
+				for each(var child:DisplayObject in _children) {
+					if (child) {
+						overview.addChild(child);
+					}
+				}
+      			// Zoom out the overview to display the maximum extent of its map
+				overview.map.zoomToMaxExtent();
+				// Update the rectangle of the overview that represents the visible extent of the main map (even if null)
+				updateRectFromMainMap();
+				// All the children are treated
+				_childrenChanged = false;
 			}
 			
  			private var rectDrawnPxBounds:Bounds = new Bounds(0, 0+height, 0+width, 0); // the rectangle that represents the visible extent of the main map over the overview map 
 			private var rectRealPxBounds:Bounds = new Bounds(0, 0+height, 0+width, 0); // the real extent in pixels associated to the visible extent of the main map
-			private var sprite:Sprite = new Sprite(); // the sprite used to display the "rect"
+			private var sprite:Sprite; // the sprite used to display the "rect"
 	    	private var drawingExtentFirstCorner:Pixel; // the first corner defined for a definition of a new extent by drawing on the overview map
 			
 			[Bindable] public var _minRectPxSize:Number = 5; // the display of the rect is limited to a minimum width and height of minRectPxSize pixels
@@ -106,6 +112,7 @@
 			 */
 			private function finalizeOverview():void {
 				// Create the sprite that will display the rect and add to the overview
+				sprite = new Sprite();
 				overview.map.addChild(sprite);
 			
 				// Change the center (and the scale) of the main map depending on the action on the overview map.
@@ -120,6 +127,9 @@
 			 * Resize the overview to fit to the maximum size avaible for this component
 			 */
 			private function resizeOverview():void {
+				if (! overview.map) {
+					return;
+				}
 				Trace.debug("current overview zoom = "+overview.map.zoom);
 			    overview.map.zoomToMaxExtent();
 				Trace.debug("new overview fitted zoom = "+overview.map.zoom);
@@ -168,6 +178,7 @@
 			 * maximum size.
 			 */		
 			override public function set map(value:Map):void {
+Trace.error("Overview - set map "+map+" ; "+value);
 				// Remove the event listeners defined on the previous main map
 	      		if (map != null) {
 					// Remove the listeners on when the main map is moved or zoomed	
@@ -180,13 +191,19 @@
 	      		
 	      		// Change the main map associated to the overview map
 	      		super.map = value;
-      			// Zoom out the overview to display the maximum extent of its map
-				overview.map.zoomToMaxExtent();
-				// Update the rectangle of the overview that represents the visible extent of the main map (even if null)
-				updateRectFromMainMap();
-	      		
+Trace.error("Overview - set map 2");
+				if (overview && overview.map) {
+	      			// Zoom out the overview to display the maximum extent of its map
+					overview.map.zoomToMaxExtent();
+Trace.error("Overview - set map 3");
+					// Update the rectangle of the overview that represents the visible extent of the main map (even if null)
+					updateRectFromMainMap();
+				}
+Trace.error("Overview - set map 4");
+				
 	      		// Add the event listeners to the new main map
 	      		if (map != null) {
+Trace.error("Overview - map listeners");
 					// Update the overview when the main map is moved or zoomed	
 					map.addEventListener(MapEvent.MOVE_END, updateRectFromMainMap);			
 					map.addEventListener(MapEvent.ZOOM_END, updateRectFromMainMap);
@@ -438,7 +455,10 @@
 	<control:states>
 		<mx:State name="defaultState">
 			<mx:AddChild relativeTo="{this}" position="firstChild">
-				<os:Map id="overview" width="100%" height="100%" proxy="{this.map.baseLayer.proxy}">
+				<os:Map id="overview" width="100%" height="100%"
+					proxy="{this.map.baseLayer.proxy}"
+					creationComplete="finalizeOverview();"
+					resize="resizeOverview();">
 					<!-- The children of the component are inserted here -->
 				</os:Map>
 			</mx:AddChild>
