@@ -5,7 +5,7 @@ package org.openscales.core.layer.osm
 	import org.openscales.core.layer.TMS;
 
 	/**
-	 * Base class for Open Streert Map layers
+	 * Base class for Open Street Map layers
 	 *
 	 * @author Bouiaw
 	 */	
@@ -15,8 +15,8 @@ package org.openscales.core.layer.osm
 		
 		public static const DEFAULT_MAX_RESOLUTION:Number = 156543.0339;
 		
-		public function OSM(name:String, url:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
-			projection:String = null, proxy:String = null) {
+		public function OSM(name:String, url:String, isBaseLayer:Boolean = false,
+			visible:Boolean = true, projection:String = null, proxy:String = null) {
 			
 			if (projection == null || projection == "")
 				projection = "EPSG:900913";
@@ -26,8 +26,6 @@ package org.openscales.core.layer.osm
 			// Use the projection to access to the unit
 			/* this.units = Unit.METER; */
 			this.maxExtent = new Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);
-			-20037508.34,-20037508.34,20037508.34,20037508.34
-
 		}
 
 		override public function getURL(bounds:Bounds):String
@@ -38,25 +36,19 @@ package org.openscales.core.layer.osm
 			var z:Number = this.map.zoom;
 			var limit:Number = Math.pow(2, z);
 
-			if (y < 0 || y >= limit ||x < 0 || x >= limit)
-			{
+			if (y < 0 || y >= limit ||x < 0 || x >= limit) {
 				return OSM.MISSING_TILE_URL;
-			}
-			else
-			{
+			} else {
 				x = ((x % limit) + limit) % limit;
 				y = ((y % limit) + limit) % limit;
 				var url:String = this.url;
 				var path:String = z + "/" + x + "/" + y + ".png";
-
 				if (this.altUrls != null) {
 					url = this.selectUrl(this.url + path, this.getUrls());
-				}  
-
+				}
 				return url + path;
 			}
 		}
 
 	}
 }
-

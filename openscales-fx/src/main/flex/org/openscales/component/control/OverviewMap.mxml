@@ -3,28 +3,73 @@
 	xmlns:control="org.openscales.component.control.*"
 	xmlns:os="http://openscales.org"
 	width="100" height="100"
+	initialize="{currentState='defaultState';}"
 	creationComplete="finalizeOverview();"
 	resize="resizeOverview();"
 	toolTip="Click to change the center of the main map.&#13;Draw a rectangle to define a new extent for the main map.">
 	
+
+	<!-- Inspired from http://www.munkiihouse.com/flexapps/CustomFormItem/Main.html view source -->
+
+    <!-- Set "children" to be the default property so we can easily set it from mxml -->
+    <mx:Metadata>
+        [DefaultProperty("children")]
+    </mx:Metadata>
+
 	<mx:Script>
 		<![CDATA[
-			import mx.effects.easing.Bounce;
 			import org.openscales.core.basetypes.Bounds;
 			import org.openscales.core.basetypes.LonLat;
 			import org.openscales.core.basetypes.Pixel;
 			import org.openscales.core.basetypes.Size;
 			import org.openscales.core.events.LayerEvent;
 			import org.openscales.core.events.MapEvent;
-			import org.openscales.core.geometry.Geometry;
-			import org.openscales.core.layer.Layer;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
+			import org.openscales.fx.layer.FxLayer;
 
-			import com.gskinner.motion.GTweeny;
-			import mx.events.SliderEvent;
-			import flash.geom.Rectangle;
-
+			private var _children:Array = [];
+			private var _childrenChanged:Boolean = false;
+			
+			/**
+			 * Set the 'content' of this component, and then call invalidateProperties
+			 * 
+			 * Note that if only one child is defined in mxml, then that child
+			 * itself is passed in.
+			 * If more than one child is defined, then an Array is passed in.
+			 */
+			public function set children(value:*):void {
+				if (value is DisplayObject) {
+					_children = [ value ];
+				} else {
+					_children = value;
+				}
+				_childrenChanged = true;
+				invalidateProperties(); // so flex calls the commitProperties()
+            }
+            public function get children():Array {
+				return _children;
+			}
+			
+			/**
+			 * The commit properties phase is the best time to add the children
+			 * to their intended target
+			 */
+			protected override function commitProperties():void {
+				super.commitProperties();
+				if(_childrenChanged && overview) {
+					if (overview.getChildren().length > 0) {
+						overview.removeAllChildren();
+					}
+					for each(var child:DisplayObject in _children) {
+						if (child) {
+							overview.addChild(child);
+						}
+					}
+					_childrenChanged = false;
+				}
+			}
+			
  			private var rectDrawnPxBounds:Bounds = new Bounds(0, 0+height, 0+width, 0); // the rectangle that represents the visible extent of the main map over the overview map 
 			private var rectRealPxBounds:Bounds = new Bounds(0, 0+height, 0+width, 0); // the real extent in pixels associated to the visible extent of the main map
 			private var sprite:Sprite = new Sprite(); // the sprite used to display the "rect"
@@ -60,17 +105,6 @@
 			 * Init the overview once the creation is completed
 			 */
 			private function finalizeOverview():void {
-				// Override the base layer if defined
-				// TODO
-				/*var child:DisplayObject;
-				for(i:int=0; i < this.rawChildren.numChildren; i++) {
-					child = this.rawChildren.getChildAt(i);
-					if (child is FxLayer) {
-						(child as FxLayer).fxmap = this;
-						this.overview.map.addLayer((child as FxLayer).layer);
-					}
-				}*/
-				
 				// Create the sprite that will display the rect and add to the overview
 				overview.map.addChild(sprite);
 			
@@ -86,8 +120,17 @@
 			 * Resize the overview to fit to the maximum size avaible for this component
 			 */
 			private function resizeOverview():void {
-			    overview.width = width;
-			    overview.height = height;
+				Trace.debug("current overview zoom = "+overview.map.zoom);
+			    overview.map.zoomToMaxExtent();
+				Trace.debug("new overview fitted zoom = "+overview.map.zoom);
+				Trace.debug("overview resolution of fitted zoom = "+overview.map.baseLayer.resolutions[overview.map.zoom]);
+				Trace.debug("overview component size = "+overview.width+" ; "+overview.height);
+				Trace.debug("overview map size = "+overview.map.width+" ; "+overview.map.height);
+				var tmp:Number = Math.min(overview.map.width,overview.map.height);
+				var tmp2:Array = [ overview.map.extent.width/tmp, overview.map.extent.height/tmp ];
+				Trace.debug("overview extent ideal resolutions = "+tmp2[0]+" ; "+tmp2[1]);
+				var targetResolution:Number = Math.max(tmp2[0], tmp2[1]);
+				Trace.error("maxResolution vs targetResolution : "+overview.map.baseLayer.maxResolution+" vs "+targetResolution);
 			}
 
 			/**
@@ -392,13 +435,14 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="overview" height="100%" width="100%">
-		
-		<!-- Default base layer: OpenStreetMap EPSG:900913 -->
-		<os:Mapnik name="Default(OSM-Mapnik)"
-			maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-			isBaseLayer="true" />
-		
-	</os:Map>
+	<control:states>
+		<mx:State name="defaultState">
+			<mx:AddChild relativeTo="{this}" position="firstChild">
+				<os:Map id="overview" width="100%" height="100%" proxy="{this.map.baseLayer.proxy}">
+					<!-- The children of the component are inserted here -->
+				</os:Map>
+			</mx:AddChild>
+		</mx:State>
+	</control:states>
 
 </control:Control>

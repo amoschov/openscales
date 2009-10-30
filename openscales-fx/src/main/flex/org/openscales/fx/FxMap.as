@@ -13,6 +13,7 @@ package org.openscales.fx
 	import org.openscales.component.control.Control;
 	import org.openscales.component.control.TraceInfo;
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Size;
@@ -59,6 +60,48 @@ package org.openscales.fx
 			
 			this.addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
 			
+		}
+
+		/**
+		 * After CreationComplete, addChild is restricted to the insertion of a
+		 * new FxLayer
+		 */		
+		override public function addChild(child:DisplayObject):DisplayObject {
+			if (! this._map) {
+				return super.addChild(child);
+			}
+			
+			// Only layers lay be added
+			if (! (child is FxLayer)) {
+				Trace.warning("Invalid child to add : only FxLayer may be added to FxMap");
+				return child;
+			}
+			// Add the layer/baselayer
+			//super.addChild(child);
+			addFxLayer(child as FxLayer);
+			return child;
+		}
+		
+		/**
+		 * After CreationComplete, the insertion order is not managed and
+		 * addChild is called
+		 */
+		override public function addChildAt(child:DisplayObject, index:int):DisplayObject {
+			return (this._map) ? addChild(child) : super.addChildAt(child,index);
+		}
+		
+		/**
+		 * Add a layer to the map
+		 */
+		private function addFxLayer(l:FxLayer):void {
+			// Generate resolution if needed
+			if((l.numZoomLevels) && (l.maxResolution)) {
+Trace.error("generateResolutions");
+				l.layer.generateResolutions(Number(l.numZoomLevels), Number(l.maxResolution));
+			}
+			// Add the layer to the map
+			l.fxmap = this;
+			this._map.addLayer(l.layer);
 		}
 		
 		/**
@@ -147,11 +190,10 @@ package org.openscales.fx
 					if((l.numZoomLevels) && (l.maxResolution)) {
 						l.layer.generateResolutions(Number(l.numZoomLevels), Number(l.maxResolution));
 					}
-					
 					// BaseLayers have been added at the begining
-					if (! (child as FxLayer).layer.isBaseLayer) {
-						(child as FxLayer).fxmap = this;
-						this._map.addLayer((child as FxLayer).layer);
+					if (! l.layer.isBaseLayer) {
+						l.fxmap = this;
+						this._map.addLayer(l.layer);
 					}
 				}
 			}

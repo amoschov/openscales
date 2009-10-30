@@ -14,15 +14,9 @@ package org.openscales.core.layer.osm
 			projection:String = null, proxy:String = null)
 		{
 			var url:String = "http://a.tile.openstreetmap.org/";
-
-			var alturls:Array = [	"http://b.tile.openstreetmap.org/",
-				"http://c.tile.openstreetmap.org/"];
-
-
 			super(name, url, isBaseLayer, visible, projection, proxy);
 
-			this.altUrls = alturls;
-			
+			this.altUrls = [ "http://b.tile.openstreetmap.org/", "http://c.tile.openstreetmap.org/"];
 			this.generateResolutions(18, OSM.DEFAULT_MAX_RESOLUTION);
 		}
 

@@ -26,14 +26,17 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%" zoom="5" lon="538850.47459" lat="5740916.1243">
+	<os:Map id="fxmap" width="100%" height="100%" zoom="5">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
 		
-		<!-- OpenStreetMap EPSG:900913 -->
-		<os:Mapnik name="Mapnik" isBaseLayer="true" 
-			proxy="http://openscales.org/proxy.php?url=" />
-		
+		<os:WMSC name="Nasa"
+			url="http://openscales.org/geoserver/gwc/service/wms"
+			layers="bluemarble"
+			format="image/jpeg"
+			maxExtent="-180,-90,180,90"
+			isBaseLayer="true" />
+
 		<os:DragHandler />
 		<os:WheelHandler />
 		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
@@ -51,15 +54,15 @@
 		<mx:Button id="overviewToggler" label="Hide overview" click="toggleOverview();" />
 	</mx:VBox>
 
-	<mx:Panel id="miniMapPanel" title="Overview map" horizontalAlign="center" x="{width-miniMapPanel.width-10}" y="{height-miniMapPanel.height-10}">
-		<os:OverviewMapComponent id="miniMap" map="{map}" minRectPxSize="3" rectColor="0xFF3300" newExtentColor="0x00FF33">
-			<!-- Override the baselayer of the overview by OpenStreetMap EPSG:900913 -->
-			<!--os:Mapnik name="Mapnik"
-				numZoomLevels="20"
-				maxExtent="-20037508.34,-20037508.34,20037508.34,20037508.34"
-				minResolution="0.5971642833709717"
-				maxResolution="156543.0339"
-				isBaseLayer="true" /-->
+	<mx:Panel id="miniMapPanel" title="Overview map" horizontalAlign="center"
+		x="{width-miniMapPanel.width-10}" y="{height-miniMapPanel.height-10}">
+		<os:OverviewMapComponent id="miniMap" map="{map}"
+			width="100%" height="100%"
+			minRectPxSize="3" rectColor="0xFF3300" newExtentColor="0x00FF33">
+			
+			<!-- OpenStreetMap EPSG:900913 -->
+			<os:Mapnik name="Mapnik" isBaseLayer="true" />
+			
 		</os:OverviewMapComponent>
 	</mx:Panel>
 	
