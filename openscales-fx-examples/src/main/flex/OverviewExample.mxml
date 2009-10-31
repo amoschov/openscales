@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
-		 xmlns:os="http://openscales.org" creationComplete="initMap();" resize="resizeMap();">
+<Example xmlns="*"
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:os="http://openscales.org"
+	creationComplete="initMap();"
+	resize="resizeMap();">
 	
 	<mx:Script>
 		<![CDATA[
@@ -26,7 +29,8 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%" zoom="5">
+	<os:Map id="fxmap" width="100%" height="100%"
+		zoom="5" lon="4.833" lat="45.767">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
 		
@@ -53,7 +57,7 @@
 		<os:PanComponent map="{map}" />
 		<mx:Button id="overviewToggler" label="Hide overview" click="toggleOverview();" />
 	</mx:VBox>
-
+	
 	<mx:Panel id="miniMapPanel" title="Overview map" horizontalAlign="center"
 		x="{width-miniMapPanel.width-10}" y="{height-miniMapPanel.height-10}">
 		<os:OverviewMapComponent id="miniMap" map="{map}"
@@ -64,6 +68,7 @@
 			<os:Mapnik name="Mapnik" isBaseLayer="true" />
 			
 		</os:OverviewMapComponent>
+
 	</mx:Panel>
 	
 </Example>

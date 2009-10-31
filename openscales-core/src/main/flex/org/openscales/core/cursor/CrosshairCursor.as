@@ -74,8 +74,8 @@ map = null; // FixMe: the display of the coordinates is limited to 3 digits curr
 				}
 				if (mousePosition) {
 					mapCoordinatesNumDigits = mousePosition.numdigits;
-					if (mousePosition.displayProjection.srsCode != map.projection.srsCode) {
-						lonLat.transform(map.projection, mousePosition.displayProjection);
+					if (mousePosition.displayProjection.srsCode != map.baseLayer.projection.srsCode) {
+						lonLat.transform(map.baseLayer.projection, mousePosition.displayProjection);
 					}
 				}
 				xValue.text = lonLat.lon.toFixed(mapCoordinatesNumDigits);

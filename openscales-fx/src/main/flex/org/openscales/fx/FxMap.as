@@ -41,14 +41,13 @@ package org.openscales.fx
 	{
 		private var _map:Map;
 		private var _popupContainer:Container;
-		private var _maxExtent:Bounds = null;
 		private var _zoom:Number = NaN;
 		private var _lon:Number = NaN;
 		private var _lat:Number = NaN;
 		private var _creationHeight:Number = NaN;
 		private var _creationWidth:Number = NaN;
 		private var _proxy:String = "";
-		private var _projection:ProjProjection = null;
+		private var _maxExtent:Bounds = null;
 		
 		/**
 		 * FxMap constructor
@@ -59,7 +58,6 @@ package org.openscales.fx
 			this.clipContent = false;
 			
 			this.addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
-			
 		}
 
 		/**
@@ -96,7 +94,6 @@ package org.openscales.fx
 		private function addFxLayer(l:FxLayer):void {
 			// Generate resolution if needed
 			if((l.numZoomLevels) && (l.maxResolution)) {
-Trace.error("generateResolutions");
 				l.layer.generateResolutions(Number(l.numZoomLevels), Number(l.maxResolution));
 			}
 			// Add the layer to the map
@@ -137,9 +134,6 @@ Trace.error("generateResolutions");
 			if (this._proxy != "")
 				this._map.proxy = this._proxy;
 				
-			if (this._projection)
-				this._map.projection = this._projection;
-			
 			// Some operations must be done at the begining, in order to not
 			// depend on the declaration order
 			if (this._maxExtent != null)
@@ -233,7 +227,6 @@ Trace.error("generateResolutions");
 			this._map.addEventListener(MapEvent.MOVE_START, this.hidePopups);
 			this._map.addEventListener(MapEvent.MOVE_END, this.showPopups);
 			this.addEventListener(ResizeEvent.RESIZE, this.onResize);
-			 
 		}
 		
 		private function hidePopups(event:Event):void {
@@ -301,10 +294,6 @@ Trace.error("generateResolutions");
 			return this._map;
 		}
 		
-		public function set maxExtent(value:String):void {
-			this._maxExtent = Bounds.getBoundsFromString(value);
-		}
-		
 		public function set zoom(value:Number):void {
 			this._zoom = value;
 		}
@@ -337,9 +326,9 @@ Trace.error("generateResolutions");
 			this._proxy = value;
 		}
 		
-		public function set srs(value:String):void {
-          this._projection = new ProjProjection(value);
-      	}
+		public function set maxExtent(value:String):void {
+			this._maxExtent = Bounds.getBoundsFromString(value);
+		}
 		
 	}
 }

@@ -33,10 +33,6 @@
 		
 		<!-- Specific layers and handlers of this example -->
 		
-		<!-- OpenStreetMap EPSG:900913 -->
-		<os:Mapnik name="Mapnik" isBaseLayer="true"
-				   proxy="http://openscales.org/proxy.php?url="/>
-				 
 		<os:WFS name="Topp States (WFS)"
 			url="http://openscales.org/geoserver/wfs"
 			typename="topp:states"
@@ -72,14 +68,9 @@
 				<os:ZoomBoxComponent map="{map}" width="16" height="16" />
 			</mx:VBox>
 		</mx:HBox>
-		<os:OverviewMapComponent
-			width="100%"
-			map="{map}"
-			minRectPxSize="3"
-			rectColor="0xFF3300" newExtentColor="0x00FF33">
+		<os:OverviewMapComponent map="{map}" width="75" height="75">
 			<os:Mapnik name="Mapnik" isBaseLayer="true" />
 		</os:OverviewMapComponent>
 	</os:WidgetWindow>
-
 	
 </Example>

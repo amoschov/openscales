@@ -23,7 +23,6 @@ package org.openscales.core
 	import org.openscales.core.handler.IHandler;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Popup;
-	import org.openscales.proj4as.ProjProjection;
 
 	/**
 	 * Instances of Map are interactive maps that can be embedded in a web pages or in
@@ -39,9 +38,6 @@ package org.openscales.core
 	 */
 	public class Map extends Sprite
 	{
-
-		public var DEFAULT_PROJECTION:ProjProjection = new ProjProjection("EPSG:4326");
-		public var DEFAULT_UNITS:String = Unit.DEGREE;
 		public var IMAGE_RELOAD_ATTEMPTS:Number = 0;
 
 		/**
@@ -54,12 +50,11 @@ package org.openscales.core
 		private var _controls:Array = null;
 		private var _handlers:Array = null;
 		private var _size:Size = null;
-		private var _center:LonLat = null;
 		private var _zoom:Number = 0;
 		private var _zooming:Boolean = false;
-		private var _maxExtent:Bounds = null;
-		private var _projection:ProjProjection;
 		private var _loading:Boolean;
+		private var _center:LonLat = null;
+		private var _maxExtent:Bounds = null;
 		
 		/**
 		 * Enable tween effect when zooming
@@ -73,26 +68,26 @@ package org.openscales.core
 		/**
 		 * Map constructor
 		 *
-		 * @param width the map width
-		 * @param height the map height
+		 * @param width the map's width in pixels
+		 * @param height the map's height in pixels
 		 */
 		public function Map(width:Number=600, height:Number=400) {
 			super();
-
+			
 			this._controls = new Array();
 			this._handlers = new Array();
-
+			
 			this.size = new Size(width, height);
-			this.projection = this.DEFAULT_PROJECTION;
-
+			
 			this._layerContainer = new DraggableSprite();
-
+			// It is necessary to draw something before to define the size...
 			this._layerContainer.graphics.beginFill(0xFFFFFF,0);
 			this._layerContainer.graphics.drawRect(0,0,this.size.w,this.size.h);
 			this._layerContainer.graphics.endFill();
-
+			// ... and then the size may be defined.
 			this._layerContainer.width = this.size.w;
 			this._layerContainer.height = this.size.h;
+			// The sprite is now fully defined.
 			this.addChild(this._layerContainer);
 			
 			this.addEventListener(LayerEvent.LAYER_LOAD_START,layerLoadHandler);
@@ -101,7 +96,6 @@ package org.openscales.core
 			Trace.map = this;
 			
 			this._configuration = new Configuration();
-
 		}
 
 		private function destroy():Boolean {
@@ -178,31 +172,32 @@ package org.openscales.core
 		 * @param newBaseLayer the new base layer.
 		 */
 		public function set baseLayer(newBaseLayer:Layer):void {
-			var oldExtent:Bounds = null;
-			if (this.baseLayer != null) {
-				oldExtent = this.baseLayer.extent;
+			if (! newBaseLayer) {
+				return;
 			}
-
+			
+			var oldExtent:Bounds = (this.baseLayer) ? this.baseLayer.extent : null;
+			
 			if (this.bitmapTransition != null)
 				this.bitmapTransition.alpha = 0;
-
+			
 			if (newBaseLayer != this.baseLayer) {
-				this._baseLayer=null;
 				if (Util.indexOf(this.layers, newBaseLayer) != -1) {
-
-					// if we set a baselayer with a different projection, we change the map's projection datas
-					if ((this.projection.srsCode != newBaseLayer.projection.srsCode)||(newBaseLayer.resolutions==null)) {
-						if (this.center != null)
-							this.center.transform(this.projection, newBaseLayer.projection);
-
-						if (this._layerContainerOrigin != null)
-							this._layerContainerOrigin.transform(this.projection, newBaseLayer.projection);
-						
-						oldExtent = null;
-						
-						this.projection = newBaseLayer.projection;
-                        this.maxExtent = newBaseLayer.maxExtent;
-						
+					// if we set a baselayer with a different projection, we
+					// change the map's projected datas
+					if (this.baseLayer) {
+						if ((this.baseLayer.projection.srsCode != newBaseLayer.projection.srsCode)
+							||(newBaseLayer.resolutions==null)) {
+							// FixMe : why testing (newBaseLayer.resolutions==null) ?
+							if (this.center != null)
+								this.center.transform(this.baseLayer.projection, newBaseLayer.projection);
+	
+							if (this._layerContainerOrigin != null)
+								this._layerContainerOrigin.transform(this.baseLayer.projection, newBaseLayer.projection);
+							
+							oldExtent = null;
+	                        this.maxExtent = newBaseLayer.maxExtent;
+						}
 					}
 
 					this._baseLayer = newBaseLayer;
@@ -220,15 +215,14 @@ package org.openscales.core
 					}
 
 					this.dispatchEvent(new LayerEvent(LayerEvent.BASE_LAYER_CHANGED, newBaseLayer));
-
 				}
 			}
 		}
 
 		/**
 		 * The currently selected base layer.
-		 * A BaseLayer is a special kind of Layer, it determines min/max zoom level,
-		 * projection, etc.
+		 * A BaseLayer is a special kind of Layer that determines the projection,
+		 * min/max zoom level, etc...
 		 */
 		public function get baseLayer():Layer {
 			return this._baseLayer;
@@ -350,7 +344,6 @@ package org.openscales.core
 		 * Update map content after a resize
 		 */
 		private function updateSize():void {
-
 			this.graphics.clear();
 			this.graphics.beginFill(0xFFFFFF);
 			this.graphics.drawRect(0,0,this.size.w,this.size.h);
@@ -776,49 +769,60 @@ package org.openscales.core
 		}
 		
 		/**
-		 * Map size.
+		 * Map size in pixels.
 		 */
-		public function get size():Size
-		{
-			var size:Size = null;
-			if (_size != null) {
-				size = _size.clone();
+		public function get size():Size {
+			return (_size) ? _size.clone() : null;
+		}
+		public function set size(value:Size):void {
+			if (value) {
+				_size = value;
+				this.updateSize();
+			} else {
+				Trace.error("Map - size not changed since the value is not valid");
 			}
-			return size;
-		}
-
-		public function set size(newSize:Size):void
-		{
-			_size= newSize;
-			this.updateSize();
-		}
-
-		override public function set width(value:Number):void {
-			this._size.w = value;
-			this.updateSize();
-		}
-
-		override public function set height(value:Number):void {
-			this._size.h = value;
-			this.updateSize();
 		}
 
 		/**
-		 * Layer controls
+		 * Map width in pixels.
+		 */
+		override public function set width(value:Number):void {
+			if (! isNaN(value)) {
+				this._size.w = value;
+				this.updateSize();
+			} else {
+				Trace.error("Map - width not changed since the value is not valid");
+			}
+		}
+
+		/**
+		 * Map height in pixels.
+		 */
+		override public function set height(value:Number):void {
+			if (! isNaN(value)) {
+				this._size.h = value;
+				this.updateSize();
+			} else {
+				Trace.error("Map - height not changed since the value is not valid");
+			}
+		}
+
+		/**
+		 * Map controls
 		 */
 		public function get controls():Array {
 			return this._controls;
 		}
 
 		/**
-		 * Layer handlers
+		 * Map handlers
 		 */
 		public function get handlers():Array {
 			return this._handlers;
 		}
 
 		/**
-		 * Layer container where layers are added. It is used for panning, scaling layers.
+		 * Map container where layers are added. It is used for panning and scaling layers.
 		 */
 		public function get layerContainer():DraggableSprite {
 			return this._layerContainer;
@@ -832,61 +836,27 @@ package org.openscales.core
 			this._bitmapTransition = value;
 		}
 
-		// TODO : remove me, I'm useless
-		/* public function set units(value:String):void {
-			this._units = value;
-		} */
-
-		/**
-		 * The map units. Check possible values in the Unit class.
-		 * 
-		 * TODO : remove me, I'm useless
-		 */
-		/* public function get units():String {
-			var units:String = _units;
-			if (this.baseLayer != null) {
-				units = this.baseLayer.units;
-			}
-			return units;
-		} */
-
-		public function set projection(value:ProjProjection):void {
-			this._projection = value;
-		}
-
-		/**
-		 * Set in the map options to override the default projection.
-		 * Also set maxExtent, maxResolution, and units if appropriate.
-		 * Default is "EPSG:4326".
-		 */
-		public function get projection():ProjProjection {
-			return _projection;
-		}
-
-
 		public function set maxExtent(value:Bounds):void {
 			this._maxExtent = value;
 		}
 
 		/**
-		 * The maximum extent for the map. Defaults to the whole world in decimal degrees
-		 * (-180, -90, 180, 90). Specify a different extent in the map options if you are
-		 * not using a geographic projection and displaying the whole world.
+		 * The maximum extent for the map.
 		 */
 		public function get maxExtent():Bounds {
 			// use map maxExtent
 			var maxExtent:Bounds = this._maxExtent;
 			
 			// If baselayer is defined, override with baselayer maxExtent
-			if (this.baseLayer != null) {
+			if (this.baseLayer) {
 				maxExtent = this.baseLayer.maxExtent;
 			}
 			
-			// If no maxExtent is define, generate a worldwide maxExtent in the right projection
+			// If no maxExtent is defined, generate a worldwide maxExtent in the right projection
 			if(maxExtent == null) {
-				maxExtent = new Bounds(-180,-90,180,90);
-				if(this.projection.srsCode != this.DEFAULT_PROJECTION.srsCode) {
-					maxExtent.transform(this.DEFAULT_PROJECTION, this.projection)
+				maxExtent = Layer.DEFAULT_MAXEXTENT();
+				if (this.baseLayer && (this.baseLayer.projection.srsCode != Layer.DEFAULT_SRS_CODE)) {
+					maxExtent.transform(Layer.DEFAULT_PROJECTION(), this.baseLayer.projection)
 				}
 			}
 			return maxExtent;
@@ -909,20 +879,19 @@ package org.openscales.core
 			return extent;
 		}
 
+		/*public function get projection():ProjProjection {
+			return (this._baseLayer) ? this._baseLayer.projection : null;
+		}*/
+
 		public function get resolution():Number {
-			var resolution:Number = NaN;
-			if (this.baseLayer != null) {
-				resolution = this.baseLayer.resolutions[this.zoom];
-			}
-			return resolution;
+			return (this.baseLayer) ? this.baseLayer.resolutions[this.zoom] : NaN;
 		}
 
 		public function get scale():Number {
-			var scale:Number = undefined;
-			if (this.baseLayer != null) {
-				var res:Number = this.resolution;
+			var scale:Number = NaN;
+			if (this.baseLayer) {
 				var units:String = this.baseLayer.projection.projParams.units;
-				scale = Unit.getScaleFromResolution(res, units);
+				scale = Unit.getScaleFromResolution(this.resolution, units);
 			}
 			return scale;
 		}

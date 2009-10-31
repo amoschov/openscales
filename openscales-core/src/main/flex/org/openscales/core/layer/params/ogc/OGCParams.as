@@ -1,6 +1,7 @@
 package org.openscales.core.layer.params.ogc
 {
 	import org.openscales.core.basetypes.maps.HashMap;
+	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.params.AbstractParams;
 	import org.openscales.core.layer.params.IHttpParams;
 
@@ -27,7 +28,7 @@ package org.openscales.core.layer.params.ogc
 
 			_additionalParams = new HashMap();
 
-			_srs = "EPSG:4326";
+			_srs = Layer.DEFAULT_SRS_CODE;
 		}
 
 

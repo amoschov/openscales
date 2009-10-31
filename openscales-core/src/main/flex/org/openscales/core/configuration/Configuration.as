@@ -70,9 +70,10 @@ package org.openscales.core.configuration
                   map.x = Number(config.@x);
                   map.y = Number(config.@y);
                   
-                  if(String(config.@projection) != ""){
+                  // The projection must be defined by the baselayer
+                  /*if(String(config.@projection) != ""){
                         map.projection = new ProjProjection(config.@projection);
-                  }
+                  }*/
 
                   if(String(config.@maxExtent) != ""){
                         map.maxExtent = Bounds.getBoundsFromString(config.@maxExtent);

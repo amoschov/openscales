@@ -19,7 +19,9 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%" zoom="6" lon="2.6" lat="47" srs="EPSG:4326" proxy="http://openscales.org/proxy.php?url=">
+	<os:Map id="fxmap" width="100%" height="100%"
+		zoom="6" lon="2.6" lat="47"
+		proxy="http://openscales.org/proxy.php?url=">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
 		<os:IGNGeoRMSecurity key="1202474798937064747" layers="ORTHOPHOTOS" />

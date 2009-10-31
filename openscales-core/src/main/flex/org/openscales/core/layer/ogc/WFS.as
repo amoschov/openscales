@@ -191,8 +191,8 @@ package org.openscales.core.layer.ogc
 			var requestString:String = url;
 
 			var projection:ProjProjection = this.projection;
-			if (projection != null || this.map.projection != null)
-				this.params.srs = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
+			if (projection != null || this.map.baseLayer.projection != null)
+				this.params.srs = (projection == null) ? this.map.baseLayer.projection.srsCode : projection.srsCode;
 
 
 			var lastServerChar:String = url.charAt(url.length - 1);
@@ -292,9 +292,9 @@ package org.openscales.core.layer.ogc
 			
 			this.clear();
 			var gml:GMLFormat = new GMLFormat(this.extractAttributes);
-			if (this.map.projection != null && this.projection != null && this.projection.srsCode != this.map.projection.srsCode) {
+			if (this.map.baseLayer.projection != null && this.projection != null && this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
 				gml.externalProj = this.projection;
-				gml.internalProj = this.map.projection;
+				gml.internalProj = this.map.baseLayer.projection;
 			}
 			/*else { 
 				Trace.debug("WFSTile.requestSuccess: no reprojection needed");

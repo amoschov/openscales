@@ -8,6 +8,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	//import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.security.ISecurity;
 	import org.openscales.proj4as.ProjProjection;
@@ -20,9 +21,18 @@ package org.openscales.core.layer
 	 */
 	public class Layer extends Sprite
 	{
+		public static const DEFAULT_SRS_CODE:String = "EPSG:4326";
+		//public static const DEFAULT_UNITS:String = Unit.DEGREE;
+		public static function DEFAULT_PROJECTION():ProjProjection {
+			return new ProjProjection(DEFAULT_SRS_CODE);
+		}
+		public static function DEFAULT_MAXEXTENT():Bounds {
+			return new Bounds(-180,-90,180,90);
+		}
+		public static const DEFAULT_NOMINAL_RESOLUTION:Number = 1.40625;
 		public static const RESOLUTION_TOLERANCE:Number = 0.000001;
-		public static const DEFAULT_NUM_ZOOM_LEVELS:uint = 20;
-		public static const DEFAULT_MAX_RESOLUTION:Number = 1.40625;
+		public static const DEFAULT_NUM_ZOOM_LEVELS:uint = 16;
+
 
 		private var _isBaseLayer:Boolean = false;
 		private var _isFixed:Boolean = false;
@@ -48,29 +58,28 @@ package org.openscales.core.layer
 			this.isBaseLayer = isBaseLayer;
 			this.visible = visible;
 
-			/* If projection string is null or empty, we init the layer's projection
-			 with EPSG:4326 */
+			// If the projection is not defined, we init it with the default one
 			if (projection != null && projection != "")
 				this._projection = new ProjProjection(projection);
 			else
-				this._projection = new ProjProjection("EPSG:4326");
+				this._projection = new ProjProjection(Layer.DEFAULT_SRS_CODE);
 
 			this._proxy = proxy;
 			
 			this.generateResolutions();
-
 		}
 		
-		public function generateResolutions(numZoomLevels:uint = Layer.DEFAULT_NUM_ZOOM_LEVELS, maxResolution:Number = Layer.DEFAULT_MAX_RESOLUTION):void {
+		public function generateResolutions(numZoomLevels:uint = Layer.DEFAULT_NUM_ZOOM_LEVELS,
+							nominalResolution:Number = Layer.DEFAULT_NOMINAL_RESOLUTION):void {
 			// numZoomLevels must be strictly greater than zero
 			if (numZoomLevels == 0) {
 				numZoomLevels = 1;
 			}
 			// Generate default resolutions
 			this.resolutions = new Array();
-			for (var i:int=0; i < numZoomLevels; i++) {
-				var res:Number = maxResolution / Math.pow(2, i);
-				this.resolutions.push(res);
+			this.resolutions.push(nominalResolution);
+			for (var i:int=1; i < numZoomLevels; i++) {
+				this.resolutions.push(this.resolutions[i-1]/2);
 			}
 			this.resolutions.sort(Array.NUMERIC | Array.DESCENDING);
 		}
@@ -181,8 +190,8 @@ package org.openscales.core.layer
 				var resolution:Number = this.map.resolution;
 				var extent:Bounds = this.map.extent;
 				px = new Pixel(
-					Math.round(1/resolution * (lonlat.lon - extent.left)),
-					Math.round(1/resolution * (extent.top - lonlat.lat))
+					Math.round((lonlat.lon - extent.left) / resolution),
+					Math.round((extent.top - lonlat.lat) / resolution)
 					);
 			}
 			return px;
@@ -271,11 +280,11 @@ package org.openscales.core.layer
 
 		public function get maxResolution():Number {
 			var maxResolution:Number = NaN;
-			if(this.resolutions && (this.resolutions.length > 0)) {
-				// By default, the max resolution 
+			if (this.resolutions && (this.resolutions.length > 0)) {
+				// By default, the max resolution is used
 				maxResolution = this.resolutions[0];
 				// If a maxZoomLevel is defined and is valid, we use it
-				if(!isNaN(this._maxZoomLevel)) {
+				if (!isNaN(this._maxZoomLevel)) {
 					maxResolution = this.resolutions[(this.resolutions.length - 1) - this._maxZoomLevel];
 				}		
 			} 
@@ -285,11 +294,11 @@ package org.openscales.core.layer
 		
 		public function get minResolution():Number {
 			var minResolution:Number = NaN;		
-			if(this.resolutions && (this.resolutions.length > 0)) {
-				// By default, the max resolution 
+			if (this.resolutions && (this.resolutions.length > 0)) {
+				// By default, the min resolution is used
 				minResolution = this.resolutions[this.resolutions.length - 1];
 				// If a minZoomLevel is defined and is valid, we use it
-				if(!isNaN(this._minZoomLevel)) {
+				if (!isNaN(this._minZoomLevel)) {
 					minResolution = this.resolutions[(this.resolutions.length - 1) - this._minZoomLevel];
 				}				
 			} 

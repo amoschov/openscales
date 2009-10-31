@@ -25,9 +25,6 @@ package org.openscales.core.request
 		 */
 		public function XMLRequest(url:String, onComplete:Function, proxy:String = null, method:String = URLRequestMethod.GET, security:ISecurity = null, onFailure:Function = null, postBody:Object = null) {
 			try {
-
-				Trace.info(url);
-
 				if(security != null) {
 					if(url.indexOf("?") == -1) {
 						// No ? in the url, will have to add it	

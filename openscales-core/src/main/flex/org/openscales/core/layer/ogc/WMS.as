@@ -40,8 +40,8 @@ package org.openscales.core.layer.ogc
 			(this.params as WMSParams).width = this.imageSize.w;
 			(this.params as WMSParams).height = this.imageSize.h;
 
-			if (projection != null || this.map.projection != null)
-				(this.params as WMSParams).srs = (projection == null) ? this.map.projection.srsCode : projection.srsCode;
+			if (projection != null || this.map.baseLayer.projection != null)
+				(this.params as WMSParams).srs = (projection == null) ? this.map.baseLayer.projection.srsCode : projection.srsCode;
 
 			var requestString:String;
 			if(this.url.indexOf("?")==-1) requestString = this.url+"?"+this.params.toGETString();

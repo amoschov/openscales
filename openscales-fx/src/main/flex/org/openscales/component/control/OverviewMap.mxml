@@ -54,7 +54,7 @@
 			 * to their intended target
 			 */
 			protected override function commitProperties():void {
-				// commi the properties of the super class
+				// commit the properties of the super class
 				super.commitProperties();
 				// Is it anything to do ? 
 				if ((! _childrenChanged) || (! overview) || (! overview.map)) {
@@ -111,6 +111,11 @@
 			 * Init the overview once the creation is completed
 			 */
 			private function finalizeOverview():void {
+				// Manage the layers added dynamically if needed
+				if (_childrenChanged) {
+					invalidateProperties();
+				}
+				
 				// Create the sprite that will display the rect and add to the overview
 				sprite = new Sprite();
 				overview.map.addChild(sprite);
@@ -135,7 +140,8 @@
 				var tmp2:Array = [ overview.map.extent.width/tmp, overview.map.extent.height/tmp ];
 				Trace.debug("overview extent ideal resolutions = "+tmp2[0]+" ; "+tmp2[1]);
 				var targetResolution:Number = Math.max(tmp2[0], tmp2[1]);
-				Trace.debug("maxResolution vs targetResolution : "+overview.map.baseLayer.maxResolution+" vs "+targetResolution);
+				var maxRes:Number = (overview.map.baseLayer) ? overview.map.baseLayer.maxResolution : -1;
+				Trace.debug("maxResolution vs targetResolution : "+maxRes+" vs "+targetResolution);
 			}
 
 			/**
@@ -217,8 +223,8 @@
 		        var rightTopCoord:LonLat = pixelToCoordinate(new Pixel(rectRealPxBounds.right, rectRealPxBounds.top));
 				var mapBounds:Bounds = new Bounds(leftBottomCoord.lon, leftBottomCoord.lat, rightTopCoord.lon, rightTopCoord.lat);
 				// If necessary, convert mapBounds in the projection of the main map	
-				if (map.projection != overview.map.projection) {
-					mapBounds.transform(overview.map.projection,map.projection);
+				if (map.baseLayer.projection != overview.map.baseLayer.projection) {
+					mapBounds.transform(overview.map.baseLayer.projection,map.baseLayer.projection);
 				}
 				// Update the visible extent of the main map
         		map.zoomToExtent(mapBounds);
@@ -251,8 +257,8 @@
 					mapBounds.right = Math.min(mapBounds.right, mapMaxExtent.right);
 					mapBounds.top = Math.min(mapBounds.top, mapMaxExtent.top);
 					// Reproject the extent in the projection of the overview map	
-					if (overview.map.projection != map.projection) {
-						mapBounds.transform(map.projection,overview.map.projection);
+					if (overview.map.baseLayer.projection != map.baseLayer.projection) {
+						mapBounds.transform(map.baseLayer.projection,overview.map.baseLayer.projection);
 					}
 					// Intersect the (reprojected) map extent with the overview map maxExtent
 					var overviewMapMaxExtent:Bounds = overview.map.maxExtent;
@@ -400,8 +406,8 @@
 					// Convert the new pixel center in a location on the overview map in its projection
 			        var newCenterCoord:LonLat = pixelToCoordinate(newCenter);
 					// If necessary, convert the point in the projection of the main map	
-					if (map.projection != overview.map.projection) {
-						newCenterCoord.transform(overview.map.projection,map.projection);
+					if (map.baseLayer.projection != overview.map.baseLayer.projection) {
+						newCenterCoord.transform(overview.map.baseLayer.projection,map.baseLayer.projection);
 					}
 					// Change the center of the main map, and so, indirectly update the overview.
 	        		map.center = newCenterCoord;

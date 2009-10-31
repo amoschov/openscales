@@ -44,7 +44,6 @@ package org.openscales.core.control
 		
 		/**
 		 * The projection display in the label
-		 * Use the model "EPSG:4326" if you want to change it
 		 */
 		[Bindable]
 		private var _displayProjection:ProjProjection = null;
@@ -97,8 +96,8 @@ package org.openscales.core.control
 				lonLat = new LonLat(0, 0);
 			}
 
-			if (this._displayProjection) {
-				lonLat.transform(this.map.projection, this._displayProjection);
+			if (this._displayProjection && this.map.baseLayer) {
+				lonLat.transform(this.map.baseLayer.projection, this._displayProjection);
 			}    
 
 			var digits:int = int(this.numdigits);

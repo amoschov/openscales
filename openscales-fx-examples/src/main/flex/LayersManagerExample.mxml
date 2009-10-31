@@ -14,7 +14,9 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%" zoom="4" lon="-100" lat="30">
+	<os:Map id="fxmap" width="100%" height="100%"
+		zoom="4" lon="-100" lat="30"
+		proxy="http://openscales.org/proxy.php?url=">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />		
 		
@@ -27,7 +29,14 @@
 		<!-- Specific layers and handlers of this example -->
 				 
 		<!-- OpenStreetMap EPSG:900913 -->
-		<os:Mapnik name="Mapnik" isBaseLayer="true" proxy="http://openscales.org/proxy.php?url="/>
+		<os:Mapnik name="Mapnik" isBaseLayer="true" />
+		
+		<os:WMSC name="Nasa"
+			url="http://openscales.org/geoserver/gwc/service/wms"
+			layers="bluemarble"
+			format="image/jpeg"
+			maxExtent="-180,-90,180,90"
+			isBaseLayer="true" />
 		
 		<os:WFS name="Topp States (WFS)"
 			url="http://openscales.org/geoserver/wfs"
@@ -38,12 +47,21 @@
 			style="{Style.getDefaultSurfaceStyle()}">
 		</os:WFS>
 		
+		<os:WFS name="Tiger poi (WFS)"
+			url="http://openscales.org/geoserver/wfs"
+			typename="tiger:poi"
+			srs="EPSG:4326"
+			version="1.0.0"
+			useCapabilities="true"
+			capabilitiesVersion="1.0.0"
+			style="{Style.getDefaultPointStyle()}">
+		</os:WFS>
+		
 	</os:Map>
 	
 	<!-- Specific tools of this example -->
 	
-	<mx:Panel title="Layers Manager" horizontalAlign="center" x="10" y="10" width="230"
-		><!--id="lmp" alpha=".25" mouseOver="{lmp.alpha=1.0;}" mouseOut="{lmp.alpha=0.25;}"-->
+	<mx:Panel title="Layers Manager" horizontalAlign="center" x="10" y="10" width="230">
 		<os:LayerSwitcherComponent map="{map}" />
 	</mx:Panel>
 	
