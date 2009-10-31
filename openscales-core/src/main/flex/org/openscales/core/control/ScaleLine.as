@@ -136,7 +136,6 @@ package org.openscales.core.control
 		{
 			// Get the resolution of the map
 			var mapResolution:Number = this.map.resolution;
-			Trace.debug("Resolution of the map => " + mapResolution);
 			
 			// Map has no resolution, return.
 			if (!mapResolution) {return;}
@@ -144,45 +143,37 @@ package org.openscales.core.control
 			// get the current units of the map
 			/* var currentBaseLayerUnits:String = this.map.units; */
 			var currentBaseLayerUnits:String = this.map.baseLayer.projection.projParams.units;
-			Trace.debug("Current units of the map => " + currentBaseLayerUnits);
 
 			// convert the scaleMaxWidth to map units
 			// The result is the max distance IN MAP UNIT, represent in the scaleline
 			var maxSizeData:Number = this._scaleMaxWidth * mapResolution * Unit.getInchesPerUnit(currentBaseLayerUnits);
-			Trace.debug("maxSizeData => " + maxSizeData);  
 
 			// decide whether to use large or small scale units. it's independent of the map unit    
 			var topUnits:String;		
 			var bottomUnits:String;	
 			if(maxSizeData > 100000) {
 				topUnits = this.topOutUnits;
-				Trace.debug("Units => " + topUnits); 
 				bottomUnits = this._bottomOutUnits;
 			} else {
 				topUnits = this.topInUnits;
-				Trace.debug("Units => " + topUnits);
 				bottomUnits = this._bottomInUnits;
 			}
 
 			// and to map units units
 			var topMax:Number = maxSizeData / Unit.getInchesPerUnit(topUnits);
-			Trace.debug("topMax => " + topMax);
 			var bottomMax:Number = maxSizeData / Unit.getInchesPerUnit(bottomUnits);
 
 			// now trim this down to useful block length
 			
 			var topRounded:Number = this.getBarLen(topMax);
-			Trace.debug("toprounded => " + topRounded);
 			var bottomRounded:Number = this.getBarLen(bottomMax);
 
 			// and back to display units
 			topMax = topRounded / Unit.getInchesPerUnit(currentBaseLayerUnits) * Unit.getInchesPerUnit(topUnits);
-			Trace.debug("topMax rounded => " + topMax);
 			bottomMax = bottomRounded / Unit.getInchesPerUnit(currentBaseLayerUnits) * Unit.getInchesPerUnit(bottomUnits);
 	
 			// and to pixel units
 			_topPx = topMax / mapResolution;
-			Trace.debug("topPx =>" + topPx);
 			var bottomPx:Number = bottomMax / mapResolution;
 			
 			this.graphics.clear();

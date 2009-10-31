@@ -130,17 +130,12 @@
 				if (! overview.map) {
 					return;
 				}
-				Trace.debug("current overview zoom = "+overview.map.zoom);
 			    overview.map.zoomToMaxExtent();
-				Trace.debug("new overview fitted zoom = "+overview.map.zoom);
-				Trace.debug("overview resolution of fitted zoom = "+overview.map.baseLayer.resolutions[overview.map.zoom]);
-				Trace.debug("overview component size = "+overview.width+" ; "+overview.height);
-				Trace.debug("overview map size = "+overview.map.width+" ; "+overview.map.height);
 				var tmp:Number = Math.min(overview.map.width,overview.map.height);
 				var tmp2:Array = [ overview.map.extent.width/tmp, overview.map.extent.height/tmp ];
 				Trace.debug("overview extent ideal resolutions = "+tmp2[0]+" ; "+tmp2[1]);
 				var targetResolution:Number = Math.max(tmp2[0], tmp2[1]);
-				Trace.error("maxResolution vs targetResolution : "+overview.map.baseLayer.maxResolution+" vs "+targetResolution);
+				Trace.debug("maxResolution vs targetResolution : "+overview.map.baseLayer.maxResolution+" vs "+targetResolution);
 			}
 
 			/**
@@ -178,7 +173,6 @@
 			 * maximum size.
 			 */		
 			override public function set map(value:Map):void {
-Trace.error("Overview - set map "+map+" ; "+value);
 				// Remove the event listeners defined on the previous main map
 	      		if (map != null) {
 					// Remove the listeners on when the main map is moved or zoomed	
@@ -191,19 +185,15 @@ Trace.error("Overview - set map "+map+" ; "+value);
 	      		
 	      		// Change the main map associated to the overview map
 	      		super.map = value;
-Trace.error("Overview - set map 2");
 				if (overview && overview.map) {
 	      			// Zoom out the overview to display the maximum extent of its map
 					overview.map.zoomToMaxExtent();
-Trace.error("Overview - set map 3");
 					// Update the rectangle of the overview that represents the visible extent of the main map (even if null)
 					updateRectFromMainMap();
 				}
-Trace.error("Overview - set map 4");
 				
 	      		// Add the event listeners to the new main map
 	      		if (map != null) {
-Trace.error("Overview - map listeners");
 					// Update the overview when the main map is moved or zoomed	
 					map.addEventListener(MapEvent.MOVE_END, updateRectFromMainMap);			
 					map.addEventListener(MapEvent.ZOOM_END, updateRectFromMainMap);
