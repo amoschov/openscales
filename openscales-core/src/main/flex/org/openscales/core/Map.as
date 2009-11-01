@@ -41,7 +41,7 @@ package org.openscales.core
 		public var IMAGE_RELOAD_ATTEMPTS:Number = 0;
 
 		/**
-		 * The lonlat at which the later container was re-initialized (on-zoom)
+		 * The lonlat at which the layer container was re-initialized (on-zoom)
 		 */
 		private var _layerContainerOrigin:LonLat = null;
 
@@ -110,7 +110,6 @@ package org.openscales.core
 				}
 				this._controls = null;
 			}
-
 			return true;
 		}
 
@@ -212,6 +211,11 @@ package org.openscales.core
 								this.getZoomForExtent(oldExtent),
 								false, true);
 						}
+					} else {
+						// The map must be fully defined as soon as its baseLayer is defined
+						this.setCenter(this._baseLayer.maxExtent.centerLonLat,
+							this.getZoomForExtent(this._baseLayer.maxExtent),
+							false, true);
 					}
 
 					this.dispatchEvent(new LayerEvent(LayerEvent.BASE_LAYER_CHANGED, newBaseLayer));

@@ -37,21 +37,19 @@ package org.openscales.core.configuration
        */
       public class Configuration implements IConfiguration
       {
-            protected var _config:XML;
+			protected var _config:XML;
+			
+			public function Configuration(config:XML = null) {
+				this.config = config;
+			}
+			
+			public function configureMap(map:Map):void {
+				this.beginConfigureMap(map);
+				this.middleConfigureMap(map);
+				this.endConfigureMap(map);
+			}
             
-            public function Configuration(config:XML = null)
-            {
-                  this.config = config;
-            }
-            public function configureMap(map:Map):void{
-                  
-                  this.beginConfigureMap(map);
-                  this.middleConfigureMap(map);
-                  this.endConfigureMap(map);   
-                  
-            }
-            
-            public function beginConfigureMap(map:Map):void{
+            public function beginConfigureMap(map:Map):void {
                   
                   // Parse the XML (children of Layers, Handlers, Controls ...)    
                   if(config.@id != ""){
