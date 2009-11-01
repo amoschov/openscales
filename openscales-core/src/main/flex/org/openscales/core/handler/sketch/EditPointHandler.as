@@ -25,13 +25,7 @@ package org.openscales.core.handler.sketch
 			super(map,active,layerToEdit,featureClickHandler);			
 			this.featureClickHandler=featureClickHandler;
 			
-		}
-		/**
-		 * 
-		 * */
-		override public function featureClick(event:FeatureEvent):void{
-			
-		}
+		}	
 		
 		override public function featureDoubleClick(event:FeatureEvent):void{
 			
@@ -70,18 +64,5 @@ package org.openscales.core.handler.sketch
 			}
 		 	return true;
 		 }
-		 
-		/* public function dragVerticeStart(event:FeatureEvent):Boolean{
-		 	return true;
-		 }
-		 public function dragVerticeStop(event:FeatureEvent):Boolean{
-		 	return true;
-		 }
-		 public function registersListeners():void{
-		 	
-		 }
-		 public function unregistersListeners():void{
-		 	
-		 } */
 	}
 }

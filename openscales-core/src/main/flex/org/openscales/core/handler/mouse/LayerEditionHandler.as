@@ -4,18 +4,27 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.geometry.LineString;
+	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.sketch.AbstractEditHandler;
 	import org.openscales.core.handler.sketch.EditPathHandler;
 	import org.openscales.core.handler.sketch.EditPointHandler;
+	import org.openscales.core.handler.sketch.EditPolygonHandler;
 	import org.openscales.core.handler.sketch.IEditVectorFeature;
 	import org.openscales.core.layer.VectorLayer;
 	
 	public class LayerEditionHandler extends Handler
 	{
+		/**
+		 *Layer to edit
+		 * @private 
+		 **/
 		private var _layerToEdit:VectorLayer=null;
+		
 		private var iEditPoint:IEditVectorFeature=null; 
 		private var iEditPath:IEditVectorFeature=null;
+		private var iEditPolygon:IEditVectorFeature=null;
 		private var _featureclickhandler:FeatureClickHandler=null;
 		
 		
@@ -25,7 +34,7 @@ package org.openscales.core.handler.mouse
 		 * @param editPath to know if the edition of path is allowed
 		 * @param editPolygon to know if the edition of polygon is allowed
 		 * */
-		public function LayerEditionHandler(map:Map = null,layer:VectorLayer=null,active:Boolean = false,editPoint:Boolean=true,editPath:Boolean=true)
+		public function LayerEditionHandler(map:Map = null,layer:VectorLayer=null,active:Boolean = false,editPoint:Boolean=true,editPath:Boolean=true,editPolygon:Boolean=true)
 		{
 			//Handler click Management
 			
@@ -39,46 +48,77 @@ package org.openscales.core.handler.mouse
 			this._layerToEdit=layer;
 			if(editPoint)iEditPoint=new EditPointHandler(map,active,layer);
 			if(editPath)iEditPath=new EditPathHandler(map,active,layer);
+			if(editPolygon)iEditPolygon=new EditPolygonHandler(map,active,layer);
 			super(map,active);
 		}
 		
-		public function dragVerticeStart(event:FeatureEvent):void{
+		private function dragVerticeStart(event:FeatureEvent):void{
 			
-			var vectorfeature:VectorFeature=(event.feature) as VectorFeature;
-			if(vectorfeature!=null && vectorfeature is PointFeature){
-				//The vertice is a point
-				if(iEditPoint!=null) iEditPoint.dragVerticeStart(event);
+			var vectorfeature:PointFeature=(event.feature) as PointFeature;
+			if(vectorfeature!=null){
+				
+				//real point feature
+				if(vectorfeature.editionFeatureParentGeometry==null && iEditPoint!=null) iEditPoint.dragVerticeStart(event);
 				//The vertice belongs to a line
-				if(iEditPath!=null) iEditPath.dragVerticeStart(event);
+				else if(vectorfeature.editionFeatureParentGeometry is LineString && iEditPath!=null) iEditPath.dragVerticeStart(event);
+				//The Vertice belongs to a polygon
+				else if	(vectorfeature.editionFeatureParentGeometry is Polygon && iEditPolygon!=null) iEditPolygon.dragVerticeStart(event);
+				
+				
 			}
 		 
 		 }
-		 public function dragVerticeStop(event:FeatureEvent):void{
-		 	var vectorfeature:VectorFeature=(event.feature) as VectorFeature;
-			if(vectorfeature!=null && vectorfeature is PointFeature){
-					//The vertice is a point
-					if(iEditPoint!=null) iEditPoint.dragVerticeStop(event);
+		 private function dragVerticeStop(event:FeatureEvent):void{
+		 	var vectorfeature:PointFeature=(event.feature) as PointFeature;
+			if(vectorfeature!=null){
+					var featureParent:VectorFeature=vectorfeature.editionFeatureParent;
+					///real point feature
+					if(vectorfeature.editionFeatureParentGeometry==null && iEditPoint!=null) iEditPoint.dragVerticeStop(event);
 					//The vertice belongs to a line
-					if(iEditPath!=null) iEditPath.dragVerticeStop(event);
+					else if(vectorfeature.editionFeatureParentGeometry is LineString && iEditPath!=null) iEditPath.dragVerticeStop(event);
+					//The Vertice belongs to a polygon
+					else if	(vectorfeature.editionFeatureParentGeometry is Polygon && iEditPolygon!=null) iEditPolygon.dragVerticeStop(event);
+					
+					if(featureParent!=null){			
+		 			//Vertices update
+		 			this._layerToEdit.removeFeatures(featureParent.editionFeaturesArray);
+		 			featureParent.RefreshEditionVertices();
+		 			this._layerToEdit.addFeatures(featureParent.editionFeaturesArray);
+		 			this._featureclickhandler.addControledFeatures(featureParent.editionFeaturesArray);
+		 			
+					}
+				this._layerToEdit.redraw();
 				}
 			}
-		 public function featureClick(event:FeatureEvent):void{
-		 	var vectorfeature:VectorFeature=(event.feature) as VectorFeature;
-			if(vectorfeature!=null && vectorfeature is PointFeature){
-					//The vertice is a point
-					if(iEditPoint!=null) iEditPoint.featureClick(event);
+		 private function featureClick(event:FeatureEvent):void{
+		 	var vectorfeature:PointFeature=(event.feature) as PointFeature;
+			if(vectorfeature!=null){
+					///real point feature
+					if(vectorfeature.editionFeatureParentGeometry==null && iEditPoint!=null) iEditPoint.featureClick(event);
 					//The vertice belongs to a line
-					if(iEditPath!=null) iEditPath.featureClick(event);
+					else if(vectorfeature.editionFeatureParentGeometry is LineString && iEditPath!=null) iEditPath.featureClick(event);
+					//The Vertice belongs to a polygon
+					else if	(vectorfeature.editionFeatureParentGeometry is Polygon && iEditPolygon!=null) iEditPolygon.featureClick(event);
 				}	 
 		 }
-		 public function featureDoubleClick(event:FeatureEvent):void{
-		 var vectorfeature:VectorFeature=(event.feature) as VectorFeature;
-			if(vectorfeature!=null && vectorfeature is PointFeature){
-				//The vertice is a point
-				if(iEditPoint!=null) iEditPoint.featureDoubleClick(event);
+		 private function featureDoubleClick(event:FeatureEvent):void{
+		 var vectorfeature:PointFeature=(event.feature) as PointFeature;
+			if(vectorfeature!=null){
+				var featureParent:VectorFeature=vectorfeature.editionFeatureParent;
+				///real point feature
+				if(vectorfeature.editionFeatureParentGeometry==null && iEditPoint!=null) iEditPoint.featureDoubleClick(event);
 				//The vertice belongs to a line
-				if(iEditPath!=null) iEditPath.featureDoubleClick(event);
-				
+					else if(vectorfeature.editionFeatureParentGeometry is LineString && iEditPath!=null) iEditPath.featureDoubleClick(event);
+					//The Vertice belongs to a polygon
+					else if	(vectorfeature.editionFeatureParentGeometry is Polygon && iEditPolygon!=null) iEditPolygon.featureDoubleClick(event);
+					if(featureParent!=null){			
+		 			//Vertices update
+		 			this._layerToEdit.removeFeatures(featureParent.editionFeaturesArray);
+		 			featureParent.RefreshEditionVertices();
+		 			this._layerToEdit.addFeatures(featureParent.editionFeaturesArray);
+		 			this._featureclickhandler.addControledFeatures(featureParent.editionFeaturesArray);
+					}
+					this._layerToEdit.redraw();		
 			}
 		 
 		 }
@@ -96,12 +136,16 @@ package org.openscales.core.handler.mouse
 						(this.iEditPath as AbstractEditHandler).map=this.map;
 						iEditPath.editionModeStart();
 					}
-					for each(var vectorfeature:VectorFeature in _layerToEdit.features){
-					//	if(vectorfeature.isEditionFeature)
-							this._featureclickhandler.addControledFeature(vectorfeature);
-						
+					if(iEditPolygon!=null){
+						(this.iEditPolygon as AbstractEditHandler).map=this.map;
+						iEditPolygon.editionModeStart();
 					}
-				
+					//We had point and virtual vertice
+				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
+					if(vectorfeature is PointFeature /*&& vectorfeature.isEditionFeature*/){
+						this._featureclickhandler.addControledFeature(vectorfeature);
+					}
+				}
 			}
 			return true;
 		}
@@ -109,7 +153,17 @@ package org.openscales.core.handler.mouse
 		protected function EditionModeStop():Boolean{
 			if(_layerToEdit !=null)
 			{
-				
+				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
+					if(vectorfeature.isEditionFeature){
+						this._featureclickhandler.removeControledFeature(vectorfeature);
+						this._layerToEdit.removeFeature(vectorfeature);
+					}
+				}
+				if(iEditPoint!=null) (this.iEditPoint as AbstractEditHandler).editionModeStop();
+					
+				if(iEditPath!=null)(this.iEditPath as AbstractEditHandler).editionModeStop();
+					
+				if(iEditPolygon!=null)(this.iEditPolygon as AbstractEditHandler).editionModeStop();
 			}
 			return true;
 		}

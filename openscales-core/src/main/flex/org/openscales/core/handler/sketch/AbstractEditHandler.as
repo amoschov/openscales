@@ -3,6 +3,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.VectorLayer;
@@ -42,6 +43,12 @@ package org.openscales.core.handler.sketch
 				if(this._featureClickHandler!=null){
 					this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,this._layerToEdit));
 					this._featureClickHandler.removeControledFeatures();
+				
+				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
+					if(vectorfeature.isEditionFeature){
+						this._layerToEdit.removeFeature(vectorfeature);
+					}
+					}
 				}
 			}
 		 	return true;
