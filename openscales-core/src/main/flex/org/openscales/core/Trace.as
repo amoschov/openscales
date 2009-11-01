@@ -15,7 +15,7 @@ package org.openscales.core
 	 */
 	public class Trace
 	{
-		public static var map:Map = null;
+		public static var map:Map = null; // FixMe: it's strange to use a global variable in a static class
 		public static const INFO:String="openscales.info";
 		public static const WARNING:String="openscales.warning";
 		public static const ERROR:String="openscales.error";
@@ -26,28 +26,28 @@ package org.openscales.core
 		}
 		
 		public static function info(text:String):void {
-			if(map != null) {
+			if (map != null) {
 				map.dispatchEvent(new TraceEvent(TraceEvent.INFO,text));					
 			}
 			trace(text);
 		}
 		
 		public static function warning(text:String):void {
-			if(map != null) {
+			if (map != null) {
 				map.dispatchEvent(new TraceEvent(TraceEvent.WARNING,text));					
 			}
 			trace(text);
 		}
 		
 		public static function error(text:String):void {
-			if(map != null) {
+			if (map != null) {
 				map.dispatchEvent(new TraceEvent(TraceEvent.ERROR,text));					
 			}
 			trace(text);
 		}
 		
 		public static function debug(text:String):void {
-			if(map != null) {
+			if (map != null) {
 				map.dispatchEvent(new TraceEvent(TraceEvent.DEBUG,text));					
 			}
 			trace(text);

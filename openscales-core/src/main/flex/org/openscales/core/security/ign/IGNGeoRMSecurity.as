@@ -120,9 +120,10 @@ package org.openscales.core.security.ign
 		 */
 		private function authenticationUpdateResponse(e:Event):void {
 			var loader:URLLoader = e.target as URLLoader;
+// FixMe: add a try/catch to manage invalid loader.data => "<hr> mest be terminated by a </hr> for instance"
 			var doc:XML =  new XML(loader.data);
 			this.token = doc.toString();
-			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_UPDATED, this));			
+			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_UPDATED, this));
 		}	
 		
 		override public function get securityParameter():String {
