@@ -47,6 +47,10 @@ package org.openscales.core.handler.mouse
 		 */
 		private var _tolerance:Number=2;
 		
+		private var _startDrag:Function=null;
+		
+		private var _stopDrag:Function=null;
+		
 		public function FeatureClickHandler(map:Map=null, active:Boolean=false)
 		{
 			super(map, active);
@@ -136,9 +140,16 @@ package org.openscales.core.handler.mouse
 			feature.removeEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
 			feature.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
 		}
-		public function removeControledFeatures(features:Array):void{
-			for each(var feature:VectorFeature in features){
-				removeControledFeature(feature);
+		public function removeControledFeatures(features:Array=null):void{
+			if(features==null){
+				for(var i:int=0;i<features.length;i++){
+					features.pop();
+				}
+			}
+			else{
+				for each(var feature:VectorFeature in features){
+					removeControledFeature(feature);
+				}
 			}
 		}
 		public function addControledFeatures(features:Array):void{
@@ -155,21 +166,29 @@ package org.openscales.core.handler.mouse
 		public function dragfeatureStart(event:FeatureEvent):void{
 			var vectorfeature:VectorFeature=event.feature as VectorFeature;
 			if(Util.indexOf(_featureArray,vectorfeature)!=-1){
-				vectorfeature.buttonMode=true;
-				this._isdragging=true;
-				vectorfeature.startDrag();
+				//vectorfeature.buttonMode=true;
+				
+		//		vectorfeature.startDrag();
 				//we dispatch an event for the edition point feature
-				if(vectorfeature.isEditionFeature)this.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_START,vectorfeature));
+		//		if(vectorfeature.isEditionFeature)this.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_START,vectorfeature));
+			if(this._startDrag!=null) 
+				{
+				this._startDrag(event);
+				this._isdragging=true;
+				}
 			}
 		}
 		public function dragfeatureStop(event:FeatureEvent):void{
 			var vectorfeature:VectorFeature=event.feature as VectorFeature;
 			if(Util.indexOf(_featureArray,_featureEvent.feature)!=-1){
-				vectorfeature.buttonMode=false;
-				vectorfeature.stopDrag();
+				//vectorfeature.buttonMode=false;
+				//vectorfeature.stopDrag();
+				
+		//	if(vectorfeature.isEditionFeature)this.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,vectorfeature));
+			if(this._stopDrag!=null){
+				this._stopDrag(event);
 				this._isdragging=false;
-			if(vectorfeature.isEditionFeature)this.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,vectorfeature));
-			
+				} 
 			}
 		}
 		public function get doubleclick():Function{
@@ -184,5 +203,20 @@ package org.openscales.core.handler.mouse
 		public function set click(value:Function):void{
 			this._click=value;
 		}
+		public function set startDrag(value:Function):void{
+			this._startDrag=value;
+		}
+		
+		public function get startDrag():Function{
+			return this._startDrag;
+		}
+		
+		public function set stopDrag(value:Function):void{
+			this._stopDrag=value;
+		}
+		public function get stopDrag():Function{
+			return this._stopDrag;
+		}
+		
 	}
 }

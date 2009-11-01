@@ -85,6 +85,8 @@ package org.openscales.core.handler.mouse
 						vectorFeature.editionFeaturesArray.push(clonefeature);
 						this._featureclickHandler.addControledFeatures(clonefeature.editionFeaturesArray);			
 						this._featureclickHandler.active=true;
+						this._featureclickHandler.startDrag=editionPointDragStart;
+						this._featureclickHandler.stopDrag=editionPointDragStop;
 					}
 					}
 				
@@ -192,6 +194,7 @@ package org.openscales.core.handler.mouse
 		 
 		 protected function editionPointDragStart(evt:FeatureEvent):void{
 		 	var vectorfeature:VectorFeature=evt.feature as VectorFeature;
+		 	vectorfeature.startDrag();
 		 	_dragTimer.start();
 		 		//Vector feature is not null and belong to the target layer
 		 		if(vectorfeature != null && Util.indexOf(this._layerToEdit.features,vectorfeature)!=-1){
@@ -228,6 +231,7 @@ package org.openscales.core.handler.mouse
 		 
 		 protected function editionPointDragStop(evt:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=evt.feature as PointFeature;
+		 	vectorfeature.stopDrag();
 		 		//Vector feature is not null and belong to the target layer
 		 		this._dragTimer.stop();
 		 		

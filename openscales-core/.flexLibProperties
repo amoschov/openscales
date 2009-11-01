@@ -2,6 +2,7 @@
 <flexLibProperties version="1">
 <includeClasses>
 <classEntry path="org.openscales.core.geometry.Polygon"/>
+<classEntry path="org.openscales.core.handler.sketch.EditPointHandler"/>
 <classEntry path="org.openscales.core.configuration.Configuration"/>
 <classEntry path="org.openscales.core.layer.params.AbstractParams"/>
 <classEntry path="org.openscales.core.layer.osm.Maplint"/>
@@ -43,6 +44,7 @@
 <classEntry path="org.openscales.core.handler.mouse.SelectFeature"/>
 <classEntry path="org.openscales.core.control.ui.Button"/>
 <classEntry path="org.openscales.core.layer.params.ogc.OGCParams"/>
+<classEntry path="org.openscales.core.handler.sketch.AbstractEditHandler"/>
 <classEntry path="org.openscales.core.popup.Popup"/>
 <classEntry path="org.openscales.core.basetypes.maps.HashMap"/>
 <classEntry path="org.openscales.core.format.WKTFormat"/>
@@ -78,12 +80,12 @@
 <classEntry path="org.openscales.core.handler.mouse.FeatureClickHandler"/>
 <classEntry path="org.openscales.core.basetypes.maps.IHashMapEntry"/>
 <classEntry path="org.openscales.core.StringUtils"/>
-<classEntry path="org.openscales.core.basetypes.maps.IHashMapEntry"/>
 <classEntry path="org.openscales.core.basetypes.maps.HashMapEntry"/>
 <classEntry path="org.openscales.core.configuration.IConfiguration"/>
 <classEntry path="org.openscales.core.events.FeatureEvent"/>
 <classEntry path="org.openscales.core.style.symbolizer.Fill"/>
 <classEntry path="org.openscales.core.format.WFSFormat"/>
+<classEntry path="org.openscales.core.handler.sketch.EditPolygonHandler"/>
 <classEntry path="org.openscales.core.feature.Feature"/>
 <classEntry path="org.openscales.core.style.symbolizer.Stroke"/>
 <classEntry path="org.openscales.core.layer.capabilities.GetCapabilities"/>
@@ -96,7 +98,9 @@
 <classEntry path="org.openscales.core.handler.sketch.DrawPolygonHandler"/>
 <classEntry path="org.openscales.core.basetypes.LonLat"/>
 <classEntry path="org.openscales.core.layer.VectorLayer"/>
+<classEntry path="org.openscales.core.handler.sketch.EditCollectionHandler"/>
 <classEntry path="org.openscales.core.tile.ImageTile"/>
+<classEntry path="org.openscales.core.handler.sketch.EditPathHandler"/>
 <classEntry path="org.openscales.core.geometry.Point"/>
 <classEntry path="org.openscales.core.events.GetFeatureInfoEvent"/>
 <classEntry path="org.openscales.core.style.symbolizer.FillSymbolizer"/>
@@ -132,6 +136,7 @@
 <classEntry path="org.openscales.core.style.symbolizer.StrokeSymbolizer"/>
 <classEntry path="org.openscales.core.handler.mouse.WheelHandler"/>
 <classEntry path="org.openscales.core.layer.ogc.WMS"/>
+<classEntry path="org.openscales.core.handler.mouse.LayerEditionHandler"/>
 <classEntry path="org.openscales.core.handler.mouse.BorderPanHandler"/>
 <classEntry path="org.openscales.core.layer.osm.Osmarender"/>
 <classEntry path="org.openscales.core.layer.params.ogc.WFSParams"/>

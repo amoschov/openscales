@@ -70,6 +70,21 @@ package org.openscales.core.events
 		 * Event type dispatched while dragging a feature. 
 		 */
 		public static const FEATURE_DRAGGING:String="openscales.feature.dragging";
+		/**
+		 * Event type dispatched when  a feature is deleting
+		 * */
+		public static const FEATURE_DELETING:String="openscales.feature.deleting";
+		
+		
+		/**
+		 * Event type dispatched when  a feature's dragging start
+		 * */
+		public static const FEATURE_DRAG_START:String="openscales.feature.dragstart";
+		
+		/**
+		 * Event type dispatched when  a feature's dragging stop
+		 * */
+		public static const FEATURE_DRAG_STOP:String="openscales.feature.dragstop";
 		
 		/**
 		 * Event type dispatched when one or more features are selected. 
