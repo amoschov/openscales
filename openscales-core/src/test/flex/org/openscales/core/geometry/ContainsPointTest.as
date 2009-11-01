@@ -48,7 +48,7 @@ package org.openscales.core.geometry
 			Assert.assertTrue(testResult);
 
 			// LinearRing contains a Point : false
-			geom1 = ((layer.getChildAt(9) as PolygonFeature).geometry as Collection).componentByIndex(0);
+			/*geom1 = ((layer.getChildAt(9) as PolygonFeature).geometry as Collection).componentByIndex(0);
 			geom2 = (layer.getChildAt(0) as PointFeature).geometry;
 			testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.core.geometry.Point);
 			//textResult = "Does the outer LinearRing of the blue Polygon contain the black point below the violet multipolygon (false) ? => "+testResult;
@@ -59,13 +59,13 @@ package org.openscales.core.geometry
 			geom2 = (layer.getChildAt(2) as PointFeature).geometry;
 			testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.core.geometry.Point);
 			//textResult = "Does the outer LinearRing of the blue Polygon contain the nearest black point (false) ? => "+testResult;
-			Assert.assertFalse(testResult);
+			Assert.assertFalse(testResult);*/
 		}
 		
 		/**
 		 * Test all the cases for a Polygon.
 		 */
-		[Test]
+		/*[Test]
 		public function testPolygonContainsPoint():void {
 			// Useful variables for the tests
 			var map:Map = this.testMap;
@@ -86,12 +86,12 @@ package org.openscales.core.geometry
 			testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point);
 			//textResult = "Does the blue Polygon contain the red point without managing its holes (false) ? => "+testResult;
 			Assert.assertFalse(testResult);
-		}
+		}*/
 		
 		/**
 		 * Test all the cases for a MultiPolygon.
 		 */
-		[Test]
+		/*[Test]
 		public function testMultiPolygonContainsPoint():void {
 			// Useful variables for the tests
 			var map:Map = this.testMap;
@@ -112,7 +112,7 @@ package org.openscales.core.geometry
 			testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point);
 			//textResult = "Does the violet MultiPolygon contain the lower black point (false) ? => "+testResult;
 			Assert.assertFalse(testResult);
-		}
+		}*/
 		
 	}
 }
