@@ -1,5 +1,7 @@
 package org.openscales.core.handler.sketch
 {
+	import flash.display.Sprite;
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -7,6 +9,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.VectorLayer;
 	
@@ -20,9 +23,9 @@ package org.openscales.core.handler.sketch
 		 * @param layerToEdit:VectorLayer 
 		 * @param featureClickHandler:FeatureClickHandler handler only use it when you want to use this handler alone
 		 * */
-		public function EditPointHandler(map:Map = null, active:Boolean = false,layerToEdit:VectorLayer=null,featureClickHandler:FeatureClickHandler=null)
+		public function EditPointHandler(map:Map = null, active:Boolean = false,layerToEdit:VectorLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
 		{
-			super(map,active,layerToEdit,featureClickHandler);			
+			super(map,active,layerToEdit,featureClickHandler,drawContainer);			
 			this.featureClickHandler=featureClickHandler;
 			
 		}	
@@ -43,8 +46,15 @@ package org.openscales.core.handler.sketch
 			//update geometry
 			var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
 			var lonlat:LonLat=this.map.getLonLatFromLayerPx(px);
+			this._layerToEdit.removeFeature(event.feature);
+			//if(this._featureClickHandler!=null)this._featureClickHandler.removeControledFeature(event.feature as VectorFeature);
+		//	 bug this is why we have created a new point
 			(event.feature as PointFeature).point.x=lonlat.lon;
 			(event.feature as PointFeature).point.y=lonlat.lat;
+			
+			/*var newPointFeature:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat));
+			this._layerToEdit.addFeature(newPointFeature);*/
+			//if(this._featureClickHandler!=null)this._featureClickHandler.addControledFeature(newPointFeature);
 			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_STOP,event.feature));
 		}
 		

@@ -1,5 +1,8 @@
 package org.openscales.core.handler.sketch
 {
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -14,9 +17,15 @@ package org.openscales.core.handler.sketch
 
 	public class EditCollectionHandler extends AbstractEditHandler
 	{
-		public function EditCollectionHandler(map:Map=null, active:Boolean=false, layerToEdit:VectorLayer=null, featureClickHandler:FeatureClickHandler=null)
+		/**
+		 * index of the feature currently drag in the geometry collection
+		 * 
+		 * */
+		protected var indexOfFeatureCurrentlyDrag:int=-1;
+		
+		public function EditCollectionHandler(map:Map=null, active:Boolean=false, layerToEdit:VectorLayer=null, featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
 		{
-			super(map, active, layerToEdit, featureClickHandler);
+			super(map, active, layerToEdit, featureClickHandler,drawContainer);
 			this.featureClickHandler=featureClickHandler;
 		}
 		override public function editionModeStart():Boolean{
@@ -43,7 +52,9 @@ package org.openscales.core.handler.sketch
 			var vectorfeature:PointFeature=event.feature as PointFeature;
 			if(vectorfeature!=null){
 				vectorfeature.startDrag();
-				//drawTemporaryFeature()
+				indexOfFeatureCurrentlyDrag=IsRealVertice(vectorfeature)
+				this._featureCurrentlyDrag=vectorfeature;
+				this.map.addEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 				
 			}
 			
@@ -70,6 +81,8 @@ package org.openscales.core.handler.sketch
 		 			}
 		 		}
 		 	}
+		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
+		 	this._drawContainer.graphics.clear();
 		 }
 		 
 		  /**
@@ -110,7 +123,7 @@ package org.openscales.core.handler.sketch
 		 		}
 		 	}
 		 }
-		 protected function drawTemporaryFeature():void{
+		 protected function drawTemporaryFeature(event:MouseEvent):void{
 		 	
 		 }
 		 

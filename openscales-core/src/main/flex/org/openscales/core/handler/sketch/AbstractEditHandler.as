@@ -1,5 +1,7 @@
 package org.openscales.core.handler.sketch
 {
+	import flash.display.Sprite;
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
@@ -12,11 +14,19 @@ package org.openscales.core.handler.sketch
 	{
 		protected var _layerToEdit:VectorLayer=null;
 		protected var _featureClickHandler:FeatureClickHandler=null;
+		protected var _featureCurrentlyDrag:VectorFeature=null;
+		
+		/**
+		 * This sprite is used to draw temporary feature during dragging
+		 * 
+		 * */
+		protected var _drawContainer:Sprite=null;
+		
 		/**
 		 * Abstract edit handler don't instanciate this class
 		 * 
 		 * */
-		public function AbstractEditHandler(map:Map = null, active:Boolean = false,layerToEdit:VectorLayer=null,featureClickHandler:FeatureClickHandler=null)
+		public function AbstractEditHandler(map:Map = null, active:Boolean = false,layerToEdit:VectorLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
 		{
 			if(_featureClickHandler!=null){
 				this._featureClickHandler=featureClickHandler;
@@ -24,8 +34,7 @@ package org.openscales.core.handler.sketch
 			}
 			this._layerToEdit=layerToEdit;
 			super(map,active);
-			
-			
+			this._drawContainer=drawContainer; 
 		}
 		
 		override public function set active(value:Boolean):void{
@@ -91,8 +100,12 @@ package org.openscales.core.handler.sketch
 		 override public function set map(value:Map):void{
 		 	if(value!=null){
 		 		super.map=value;
-		 		if(this._featureClickHandler!=null) this._featureClickHandler.map=value;		 	
+		 		if(this._featureClickHandler!=null) this._featureClickHandler.map=value;
+		 		if( this._drawContainer==null){
+					this._drawContainer=new Sprite();
+					this.map.addChild(_drawContainer);
+				}
+			}		 	
 		 	}
-		 }
 	}
 }

@@ -1,11 +1,14 @@
 package org.openscales.core.handler.mouse
 {
+	import flash.display.Sprite;
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.events.FeatureEvent;
+	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.Polygon;
+	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.sketch.AbstractEditHandler;
 	import org.openscales.core.handler.sketch.EditPathHandler;
@@ -27,6 +30,7 @@ package org.openscales.core.handler.mouse
 		private var iEditPolygon:IEditVectorFeature=null;
 		private var _featureclickhandler:FeatureClickHandler=null;
 		
+		private var _drawContainer:Sprite=new Sprite();
 		
 		/**
 		 * Handler of edition mode 
@@ -45,13 +49,17 @@ package org.openscales.core.handler.mouse
 			this._featureclickhandler.stopDrag=dragVerticeStop;
 			
 			
+			
 			this._layerToEdit=layer;
-			if(editPoint)iEditPoint=new EditPointHandler(map,active,layer);
-			if(editPath)iEditPath=new EditPathHandler(map,active,layer);
-			if(editPolygon)iEditPolygon=new EditPolygonHandler(map,active,layer);
+			if(editPoint)iEditPoint=new EditPointHandler(map,active,layer,null,_drawContainer);
+			if(editPath)iEditPath=new EditPathHandler(map,active,layer,null,_drawContainer);
+			if(editPolygon)iEditPolygon=new EditPolygonHandler(map,active,layer,null,_drawContainer);
 			super(map,active);
 		}
-		
+		/**
+		 * drag vertice start function
+		 * 
+		 * */
 		private function dragVerticeStart(event:FeatureEvent):void{
 			
 			var vectorfeature:PointFeature=(event.feature) as PointFeature;
@@ -59,25 +67,31 @@ package org.openscales.core.handler.mouse
 				
 				//real point feature
 				if(vectorfeature.editionFeatureParentGeometry==null && iEditPoint!=null) iEditPoint.dragVerticeStart(event);
+				//The Vertice belongs to a polygon
+				else if	(vectorfeature.editionFeatureParentGeometry is LinearRing && iEditPolygon!=null) iEditPolygon.dragVerticeStart(event);
 				//The vertice belongs to a line
 				else if(vectorfeature.editionFeatureParentGeometry is LineString && iEditPath!=null) iEditPath.dragVerticeStart(event);
-				//The Vertice belongs to a polygon
-				else if	(vectorfeature.editionFeatureParentGeometry is Polygon && iEditPolygon!=null) iEditPolygon.dragVerticeStart(event);
+				
 				
 				
 			}
 		 
 		 }
+		 /**
+		 * 
+		 * drag vertice stop function
+		 * */
 		 private function dragVerticeStop(event:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=(event.feature) as PointFeature;
 			if(vectorfeature!=null){
 					var featureParent:VectorFeature=vectorfeature.editionFeatureParent;
 					///real point feature
 					if(vectorfeature.editionFeatureParentGeometry==null && iEditPoint!=null) iEditPoint.dragVerticeStop(event);
+					//The Vertice belongs to a polygon
+					else if	(vectorfeature.editionFeatureParentGeometry is LinearRing && iEditPolygon!=null) iEditPolygon.dragVerticeStop(event);
+					
 					//The vertice belongs to a line
 					else if(vectorfeature.editionFeatureParentGeometry is LineString && iEditPath!=null) iEditPath.dragVerticeStop(event);
-					//The Vertice belongs to a polygon
-					else if	(vectorfeature.editionFeatureParentGeometry is Polygon && iEditPolygon!=null) iEditPolygon.dragVerticeStop(event);
 					
 					if(featureParent!=null){			
 		 			//Vertices update
@@ -90,27 +104,35 @@ package org.openscales.core.handler.mouse
 				this._layerToEdit.redraw();
 				}
 			}
+			/**
+			 * feature click function
+			 * */
 		 private function featureClick(event:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=(event.feature) as PointFeature;
 			if(vectorfeature!=null){
 					///real point feature
 					if(vectorfeature.editionFeatureParentGeometry==null && iEditPoint!=null) iEditPoint.featureClick(event);
+					//The Vertice belongs to a polygon
+					else if	(vectorfeature.editionFeatureParentGeometry is LinearRing && iEditPolygon!=null) iEditPolygon.featureClick(event);
 					//The vertice belongs to a line
 					else if(vectorfeature.editionFeatureParentGeometry is LineString && iEditPath!=null) iEditPath.featureClick(event);
-					//The Vertice belongs to a polygon
-					else if	(vectorfeature.editionFeatureParentGeometry is Polygon && iEditPolygon!=null) iEditPolygon.featureClick(event);
+					
 				}	 
 		 }
+		 /**
+		 * feature double click
+		 * */
 		 private function featureDoubleClick(event:FeatureEvent):void{
 		 var vectorfeature:PointFeature=(event.feature) as PointFeature;
 			if(vectorfeature!=null){
 				var featureParent:VectorFeature=vectorfeature.editionFeatureParent;
 				///real point feature
 				if(vectorfeature.editionFeatureParentGeometry==null && iEditPoint!=null) iEditPoint.featureDoubleClick(event);
+				//The Vertice belongs to a polygon
+					else if	(vectorfeature.editionFeatureParentGeometry is LinearRing && iEditPolygon!=null) iEditPolygon.featureDoubleClick(event);
 				//The vertice belongs to a line
 					else if(vectorfeature.editionFeatureParentGeometry is LineString && iEditPath!=null) iEditPath.featureDoubleClick(event);
-					//The Vertice belongs to a polygon
-					else if	(vectorfeature.editionFeatureParentGeometry is Polygon && iEditPolygon!=null) iEditPolygon.featureDoubleClick(event);
+					
 					if(featureParent!=null){			
 		 			//Vertices update
 		 			this._layerToEdit.removeFeatures(featureParent.editionFeaturesArray);
@@ -147,6 +169,8 @@ package org.openscales.core.handler.mouse
 					}
 				}
 			}
+			this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,_layerToEdit));
+			//this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 			return true;
 		}
 		//Edition Mode Stop
@@ -165,8 +189,21 @@ package org.openscales.core.handler.mouse
 					
 				if(iEditPolygon!=null)(this.iEditPolygon as AbstractEditHandler).editionModeStop();
 			}
+			if(map!=null)this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,_layerToEdit));
 			return true;
 		}
+		
+		/**
+		 * This function create the point under the mouse
+		 * */	
+		 private function createPointUndertheMouse(evt:FeatureEvent):void{
+		 /* 	var vectorfeature:VectorFeature=evt.feature as VectorFeature;
+		 	//Vector feature is not null and belong to the target layer
+		 		if(vectorfeature != null && Util.indexOf(this._layerToEdit.features,vectorfeature)!=-1 && vectorfeature.isEditionFeature && !(vectorfeature is PointFeature)){
+		 			
+		 		} */
+		 }
+		
 		//getters && setters
 		/**
 		 * The layer concerned by the Modification
@@ -178,7 +215,9 @@ package org.openscales.core.handler.mouse
 		 * @private
 		 * */
 		 public function set layerToEdit(value:VectorLayer):void{
-		 	 this._layerToEdit=value;
+		 	 if(value!=null){
+		 	 	this._layerToEdit=value;
+		 	 }
 		 }
 		 
 		 override public function set map(value:Map):void{
@@ -186,6 +225,7 @@ package org.openscales.core.handler.mouse
 		 		super.map=value;
 		 		if(iEditPoint!=null)(this.iEditPoint as AbstractEditHandler).map=this.map;
 		 		this._featureclickhandler.map=value;
+		 		this.map.addChild(_drawContainer);
 		 	}
 		 }
 
