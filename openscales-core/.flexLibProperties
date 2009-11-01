@@ -116,7 +116,7 @@
 <classEntry path="org.openscales.core.handler.zoom.ZoomBoxHandler"/>
 <classEntry path="org.openscales.core.request.IRequest"/>
 <classEntry path="org.openscales.core.geometry.Geometry"/>
-<classEntry path="org.openscales.core.geometry.IntersectingTest"/>
+<classEntry path="org.openscales.core.geometry.ContainsPointTest"/>
 <classEntry path="org.openscales.core.layer.capabilities.WFS110"/>
 <classEntry path="org.openscales.core.utils.SexagecimalTest"/>
 <classEntry path="org.openscales.core.basetypes.Bounds"/>

@@ -1,7 +1,7 @@
 package org.openscales.core
 {
 	import org.openscales.core.configuration.ConfigurationTest;
-	import org.openscales.core.geometry.IntersectingTest;
+	import org.openscales.core.geometry.ContainsPointTest;
 	import org.openscales.core.layer.capabilities.ParsingTest;
 	import org.openscales.core.utils.SexagecimalTest;
 	import org.openscales.core.utils.StringUtilsTest;
@@ -14,7 +14,7 @@ package org.openscales.core
 		public var t2:StringUtilsTest;
 		public var t3:SexagecimalTest;
 		public var t4:ParsingTest;
-		public var t5:IntersectingTest;
+		public var t5:ContainsPointTest;
 		public var t6:ConfigurationTest;
 	}
 }

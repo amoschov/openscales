@@ -8,7 +8,7 @@ package org.openscales.core.geometry
 	import org.openscales.core.feature.PolygonFeature;
 	import org.openscales.core.layer.VectorLayer;
 
-	public class IntersectingTest
+	public class ContainsPointTest
 	{
 		// Useful variables for the tests
 		
@@ -29,10 +29,10 @@ package org.openscales.core.geometry
 		}
 		
 		/**
-		 * Test all the containsPoint functions for the relevant geometries.
+		 * Test all the cases for a LinearRing.
 		 */
 		[Test]
-		public function testContainsPoint():void {
+		public function testLinearRingContainsPoint():void {
 			// Useful variables for the tests
 			var map:Map = this.testMap;
 			var layer:VectorLayer = this.testLayer;
@@ -60,6 +60,18 @@ package org.openscales.core.geometry
 			testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.core.geometry.Point);
 			//textResult = "Does the outer LinearRing of the blue Polygon contain the nearest black point (false) ? => "+testResult;
 			Assert.assertFalse(testResult);
+		}
+		
+		/**
+		 * Test all the cases for a Polygon.
+		 */
+		[Test]
+		public function testPolygonContainsPoint():void {
+			// Useful variables for the tests
+			var map:Map = this.testMap;
+			var layer:VectorLayer = this.testLayer;
+			var geom1:Geometry, geom2:Geometry;
+			var testResult:Boolean;
 
 			// Polygon contains a Point without management of the holes : true
 			geom1 = (layer.getChildAt(9) as PolygonFeature).geometry;
@@ -74,6 +86,18 @@ package org.openscales.core.geometry
 			testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point);
 			//textResult = "Does the blue Polygon contain the red point without managing its holes (false) ? => "+testResult;
 			Assert.assertFalse(testResult);
+		}
+		
+		/**
+		 * Test all the cases for a MultiPolygon.
+		 */
+		[Test]
+		public function testMultiPolygonContainsPoint():void {
+			// Useful variables for the tests
+			var map:Map = this.testMap;
+			var layer:VectorLayer = this.testLayer;
+			var geom1:Geometry, geom2:Geometry;
+			var testResult:Boolean;
 			
 			// MultiPolygon contains a Point : true
 			geom1 = ((layer.getChildAt(10) as MultiPolygonFeature).geometry as Collection).componentByIndex(0) as Collection;
