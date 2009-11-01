@@ -191,7 +191,7 @@
 	      		
 	      		// Change the main map associated to the overview map
 	      		super.map = value;
-				if (overview && overview.map) {
+				if (overview && overview.map && overview.map.baseLayer) {
 	      			// Zoom out the overview to display the maximum extent of its map
 					overview.map.zoomToMaxExtent();
 					// Update the rectangle of the overview that represents the visible extent of the main map (even if null)
@@ -201,7 +201,7 @@
 	      		// Add the event listeners to the new main map
 	      		if (map != null) {
 					// Update the overview when the main map is moved or zoomed	
-					map.addEventListener(MapEvent.MOVE_END, updateRectFromMainMap);			
+					map.addEventListener(MapEvent.MOVE_END, updateRectFromMainMap);
 					map.addEventListener(MapEvent.ZOOM_END, updateRectFromMainMap);
 					
 					// Change the overview map if the base layer of the main map is changed
@@ -213,8 +213,13 @@
 			 * Update the main map from the current position and size of the rectangle of the overview
 			 */
 			private function updateMainMapFromRect():void {
+				// Check if the overview map is fully defined
+				if (! overview.map.baseLayer) {
+					Trace.warning("Overview - updateMainMapFromRect : stop, overview map have not a baseLayer");
+					return;
+				}
 				Trace.info("Overview - updateMainMapFromRect");
-				if (map == null) {
+				if ((! map) || (! map.baseLayer)) {
 					// Main map is not defined, nothing has to be done	
 					return;
 				}
@@ -240,8 +245,13 @@
 			 * @param event the event is not used to perform the update, the main map is sufficient
 			 */
 			private function updateRectFromMainMap(event:Event=null):void {
+				// Check if the overview map is fully defined
+				if (! overview.map.baseLayer) {
+					Trace.warning("Overview - updateRectFromMainMap("+((event==null)?"null":event.type)+") : stop, overview map have not a baseLayer");
+					return;
+				}
 				var mapBounds:Bounds;
-				if (map == null) {
+				if ((! map) || (! map.baseLayer)) {
 					Trace.warning("Overview - updateRectFromMainMap("+((event==null)?"null":event.type)+") : stop, map is null");
 					// Main map is not defined, the extent of the overview map is used instead	
 					mapBounds = overview.map.extent;
@@ -256,7 +266,7 @@
 					mapBounds.bottom = Math.max(mapBounds.bottom, mapMaxExtent.bottom);
 					mapBounds.right = Math.min(mapBounds.right, mapMaxExtent.right);
 					mapBounds.top = Math.min(mapBounds.top, mapMaxExtent.top);
-					// Reproject the extent in the projection of the overview map	
+					// Reproject the extent in the projection of the overview map
 					if (overview.map.baseLayer.projection != map.baseLayer.projection) {
 						mapBounds.transform(map.baseLayer.projection,overview.map.baseLayer.projection);
 					}
