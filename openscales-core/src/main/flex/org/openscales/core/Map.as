@@ -433,7 +433,6 @@ package org.openscales.core
 					this._zoom = zoom;
 				}
 				
-				
 				for (var i:int = 0; i < this.layers.length; i++) {
 					if (this.layers[i].visible && this.layers[i].inRange) {
 						this.layers[i].moveTo(this.extent, zoomChanged, dragging,resizing);
@@ -736,7 +735,6 @@ package org.openscales.core
 
 			// The zoom tween callback method defined here to avoid a class attribute for newZoom
 			function clbZoomTween(evt:Event):void {
-
 				_zooming = false;
 				setCenter(null, newZoom);
 				layerContainer.alpha = 1;
