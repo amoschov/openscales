@@ -136,12 +136,12 @@
 					return;
 				}
 			    overview.map.zoomToMaxExtent();
-				var tmp:Number = Math.min(overview.map.width,overview.map.height);
+				/*var tmp:Number = Math.min(overview.map.width,overview.map.height);
 				var tmp2:Array = [ overview.map.extent.width/tmp, overview.map.extent.height/tmp ];
 				Trace.debug("overview extent ideal resolutions = "+tmp2[0]+" ; "+tmp2[1]);
 				var targetResolution:Number = Math.max(tmp2[0], tmp2[1]);
 				var maxRes:Number = (overview.map.baseLayer) ? overview.map.baseLayer.maxResolution : -1;
-				Trace.debug("maxResolution vs targetResolution : "+maxRes+" vs "+targetResolution);
+				Trace.debug("maxResolution vs targetResolution : "+maxRes+" vs "+targetResolution);*/
 			}
 
 			/**
