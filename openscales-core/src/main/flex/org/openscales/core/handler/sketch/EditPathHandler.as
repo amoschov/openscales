@@ -101,17 +101,17 @@ package org.openscales.core.handler.sketch
 		 		 point2=parentgeom.componentByIndex(indexOfFeatureCurrentlyDrag-1) as Point;
 		 		}
 		 	}
-		 	point1Px=this.map.getLayerPxFromLonLat(new LonLat(point1.x,point1.y));
+		 	if(point1!=null)point1Px=this.map.getLayerPxFromLonLat(new LonLat(point1.x,point1.y));
 		 	
 		 	//We draw the temporaries lines
-		 	if(point2==null){
+		 	if(point2==null && point1!=null){
 		 		_drawContainer.graphics.clear();
 		 		_drawContainer.graphics.lineStyle(1, 0x00ff00);	 		
 		 		_drawContainer.graphics.moveTo(point1Px.x,point1Px.y);
 		 		_drawContainer.graphics.lineTo(map.mouseX-7, map.mouseY-7);
 		 		_drawContainer.graphics.endFill();
 		 	}
-		 	else{
+		 	else if (point2!=null && point1!=null){
 		 		point2Px=this.map.getLayerPxFromLonLat(new LonLat(point2.x,point2.y));
 		 		_drawContainer.graphics.clear();
 		 		_drawContainer.graphics.lineStyle(1, 0x00ff00);	 
