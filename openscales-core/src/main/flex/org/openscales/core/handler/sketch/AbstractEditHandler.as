@@ -52,7 +52,7 @@ package org.openscales.core.handler.sketch
 				if(this._featureClickHandler!=null){
 					this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,this._layerToEdit));
 					this._featureClickHandler.removeControledFeatures();
-				
+					
 				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
 					if(vectorfeature.isEditionFeature){
 						this._layerToEdit.removeFeature(vectorfeature);
@@ -65,8 +65,8 @@ package org.openscales.core.handler.sketch
 		 public function dragVerticeStart(event:FeatureEvent):void{
 		
 		 }
-		 public function dragVerticeStop(event:FeatureEvent):void{
-		 	
+		 public function dragVerticeStop(event:FeatureEvent):VectorFeature{
+		 	return null;
 		 }
 		 public function featureClick(event:FeatureEvent):void{
 		 	

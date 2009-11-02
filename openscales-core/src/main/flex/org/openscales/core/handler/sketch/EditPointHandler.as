@@ -12,6 +12,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.style.Style;
 	
 	public class EditPointHandler extends AbstractEditHandler
 	{
@@ -41,7 +42,7 @@ package org.openscales.core.handler.sketch
 			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_START,event.feature));
 		}
 		
-		override public function dragVerticeStop(event:FeatureEvent):void{
+		override public function dragVerticeStop(event:FeatureEvent):VectorFeature{
 			event.feature.stopDrag();
 			//update geometry
 			var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
@@ -49,13 +50,14 @@ package org.openscales.core.handler.sketch
 			this._layerToEdit.removeFeature(event.feature);
 			//if(this._featureClickHandler!=null)this._featureClickHandler.removeControledFeature(event.feature as VectorFeature);
 		//	 bug this is why we have created a new point
-			(event.feature as PointFeature).point.x=lonlat.lon;
-			(event.feature as PointFeature).point.y=lonlat.lat;
-			
-			/*var newPointFeature:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat));
-			this._layerToEdit.addFeature(newPointFeature);*/
-			//if(this._featureClickHandler!=null)this._featureClickHandler.addControledFeature(newPointFeature);
+			//(event.feature as PointFeature).geometry= new Point(lonlat.lon,lonlat.lat);
+			//this._layerToEdit.redraw();
+			var newPointFeature:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat));
+			newPointFeature.style=Style.getDefaultPointStyle(); 
+			this._layerToEdit.addFeature(newPointFeature);
+			if(this._featureClickHandler!=null)this._featureClickHandler.addControledFeature(newPointFeature);
 			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_STOP,event.feature));
+			return newPointFeature;
 		}
 		
 		 override public function editionModeStart():Boolean{
