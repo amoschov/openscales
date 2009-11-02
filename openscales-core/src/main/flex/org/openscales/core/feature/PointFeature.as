@@ -113,6 +113,9 @@ package org.openscales.core.feature
 			return this._editionFeatureParentGeometry;
 		}
 		
+		public function set editionFeatureParentGeometry(value:Collection):void{
+			this._editionFeatureParentGeometry=value;
+		}
 		
 		/**
 		 * To know the segment of the Collection the edition point belongs to

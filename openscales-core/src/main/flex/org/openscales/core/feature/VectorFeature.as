@@ -122,10 +122,7 @@ package org.openscales.core.feature
 		 **/
 		override public function set layer(value:Layer):void{
 			super.layer=value;
-			if(layer!=null && (this.layer as VectorLayer).inEditionMode)
-			{
-				//EditionModeStart();
-			}
+	
 		}
 			
 		/**

@@ -9,10 +9,12 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.LineStringFeature;
+	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LineString;
+	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.VectorLayer;
@@ -28,7 +30,7 @@ package org.openscales.core.handler.sketch
 		 **/
 		 override public function editionModeStart():Boolean{
 		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
-					if(/*vectorFeature.isEditable && */vectorFeature.geometry is LineString){
+					if(/*vectorFeature.isEditable && */vectorFeature.geometry is LineString || vectorFeature.geometry is MultiLineString){
 						
 						//Clone or not
 						
@@ -44,14 +46,14 @@ package org.openscales.core.handler.sketch
 		 }
 		  override public function dragVerticeStart(event:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
-		 	if(vectorfeature.editionFeatureParent is LineStringFeature){
+		 	if(vectorfeature.editionFeatureParent is LineStringFeature || vectorfeature.editionFeatureParent is MultiLineStringFeature){
 		 		super.dragVerticeStart(event);
 		 	}
 		 	
 		 }
 		 override  public function dragVerticeStop(event:FeatureEvent):VectorFeature{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
-		 	if(vectorfeature.editionFeatureParent is LineStringFeature){
+		 	if(vectorfeature.editionFeatureParent is LineStringFeature || vectorfeature.editionFeatureParent is MultiLineStringFeature){
 		 		return super.dragVerticeStop(event);
 		 	}
 		 	return null;

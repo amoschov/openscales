@@ -120,7 +120,6 @@
 <classEntry path="org.openscales.core.handler.zoom.ZoomBoxHandler"/>
 <classEntry path="org.openscales.core.request.IRequest"/>
 <classEntry path="org.openscales.core.geometry.Geometry"/>
-<classEntry path="org.openscales.core.geometry.ContainsPointTest"/>
 <classEntry path="org.openscales.core.layer.capabilities.WFS110"/>
 <classEntry path="org.openscales.core.utils.SexagecimalTest"/>
 <classEntry path="org.openscales.core.basetypes.Bounds"/>
@@ -133,6 +132,7 @@
 <classEntry path="org.openscales.core.layer.FeatureLayer"/>
 <classEntry path="org.openscales.core.events.LayerEvent"/>
 <classEntry path="org.openscales.core.control.ScaleLine"/>
+<classEntry path="org.openscales.core.geometry.ContainsPointTest"/>
 <classEntry path="org.openscales.core.style.symbolizer.StrokeSymbolizer"/>
 <classEntry path="org.openscales.core.handler.mouse.WheelHandler"/>
 <classEntry path="org.openscales.core.layer.ogc.WMS"/>

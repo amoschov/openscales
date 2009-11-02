@@ -8,10 +8,12 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
+	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
@@ -25,7 +27,7 @@ package org.openscales.core.handler.sketch
 		}
 		override public function editionModeStart():Boolean{
 		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
-					if(/*vectorFeature.isEditable && */vectorFeature.geometry is Polygon){
+					if(/*vectorFeature.isEditable && */vectorFeature.geometry is Polygon || vectorFeature.geometry is MultiPolygon){
 						
 						//Clone or not
 						vectorFeature.createEditionVertices();
@@ -43,14 +45,14 @@ package org.openscales.core.handler.sketch
 		 
 		 override public function dragVerticeStart(event:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
-		 	if(vectorfeature.editionFeatureParent is PolygonFeature){
+		 	if(vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature){
 		 		super.dragVerticeStart(event);
 		 	}
 		 	
 		 }
 		 override  public function dragVerticeStop(event:FeatureEvent):VectorFeature{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
-		 	if(vectorfeature.editionFeatureParent is PolygonFeature){
+		 	if(vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature){
 		 		return super.dragVerticeStop(event);
 		 	}
 		 	return null;

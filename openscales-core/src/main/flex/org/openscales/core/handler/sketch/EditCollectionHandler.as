@@ -12,6 +12,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.VectorLayer;
@@ -157,6 +158,7 @@ package org.openscales.core.handler.sketch
 		 		}
 		 	}
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
+		 	this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this._drawContainer.graphics.clear();
 		 }
 		 public function createPointUndertheMouse(evt:FeatureEvent):void{
@@ -188,17 +190,21 @@ package org.openscales.core.handler.sketch
 						//There is always a component because the mouse is over the component
 						//consequently we use the first
 						//we find the collection which directly have a point as component
-						var testCollection:Geometry=vectorfeature.geometry;
+						/* var testCollection:Geometry=vectorfeature.geometry;
 						var parentTmpPoint:Geometry;
+						var parentArray:Array=new Array();
 						while(testCollection is Collection)
 						{
 							parentTmpPoint=testCollection;
+							parentArray=testCollection;
 							testCollection=(testCollection as Collection).componentByIndex(0);
-						}		
+						} */		
 							//isTmpFeatureUnderTheMouse attributes use to specify type of temporary feature
-							EditCollectionHandler._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse as Point,null,Style.getDefaultCircleStyle(),true,parentTmpPoint as Collection);	
+							EditCollectionHandler._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse as Point,null,Style.getDefaultCircleStyle(),true/*,parentTmpPoint as Collection*/);	
 							EditCollectionHandler._pointUnderTheMouse.layer=this._layerToEdit;
-						if(EditCollectionHandler._pointUnderTheMouse.getSegmentsIntersection(parentTmpPoint as Collection)!=-1){
+							findPointUnderMouseCollection(vectorfeature.geometry,EditCollectionHandler._pointUnderTheMouse);
+							
+						if(EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry!=null){
 							EditCollectionHandler._pointUnderTheMouse.editionFeatureParent=vectorfeature;
 							this._layerToEdit.addFeature(EditCollectionHandler._pointUnderTheMouse);	
 							if(this._featureClickHandler!=null)this._featureClickHandler.addControledFeature(EditCollectionHandler._pointUnderTheMouse);
@@ -209,6 +215,31 @@ package org.openscales.core.handler.sketch
 		 }
 		 
 		 protected function drawTemporaryFeature(event:MouseEvent):void{
+		 	
+		 }
+		 
+		 private function findPointUnderMouseCollection(vectorfeatureGeometry:Geometry,pointUnderTheMouse:PointFeature):void{
+		 			for (var i:int=0;i<(vectorfeatureGeometry as Collection).componentsLength;i++){
+		 				var geometry:Geometry=(vectorfeatureGeometry as Collection).componentByIndex(i);
+		 				if(geometry is Collection){
+		 					//we test if we have a Linestring or a linearring which extends LinesTRING because 
+		 					//there are the basics components of MultiLineString or MultiPolygon
+		 					if(!(geometry is LineString)){
+		 						findPointUnderMouseCollection(geometry,pointUnderTheMouse);
+		 					}
+		 					else{
+		 						if(pointUnderTheMouse.getSegmentsIntersection(geometry as Collection)!=-1){
+		 							pointUnderTheMouse.editionFeatureParentGeometry=geometry as Collection;
+		 							break;
+		 						}
+		 					}
+		 				}
+		 				else{
+		 					 pointUnderTheMouse.editionFeatureParentGeometry=vectorfeatureGeometry as Collection;
+		 					 break;
+		 				}
+		 			} 
+		 	
 		 	
 		 }
 		 
