@@ -14,6 +14,8 @@ package org.openscales.core.security
 		 */
 		private var _map:Map = null;
 		
+		protected var _initialized:Boolean = false;
+		
 		/**
 		 * Proxy eventually used to auhtenticate
 		 */ 
@@ -26,6 +28,7 @@ package org.openscales.core.security
 		}
 
 		public function initialize():void {
+			this._initialized = true;
 			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_INITIALIZED, this));
 		}
 
@@ -61,7 +64,9 @@ package org.openscales.core.security
 			this._proxy = value;
 		}
 
-
+		public function get initialized():Boolean {
+			return this._initialized;
+		}
 
 	}
 }

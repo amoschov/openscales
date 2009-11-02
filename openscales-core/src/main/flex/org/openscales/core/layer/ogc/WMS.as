@@ -63,6 +63,14 @@ package org.openscales.core.layer.ogc
 		public function set reproject(value:Boolean):void {
 			this._reproject = value;
 		}
+		
+		public function get exception():String {
+			return (this.params as WMSParams).exceptions;
+		}
+		
+		public function set exception(value:String):void {
+			(this.params as WMSParams).exceptions = value;
+		}
 
 	}
 }

@@ -12,6 +12,11 @@ package org.openscales.core.security
 		 * Intialize this security, and dispatch a SecurityEvent.SECURITY_INITIALIZED event
 		 */
 		function initialize():void;
+		
+		/**
+		 * Return true if the security has been initilized, else false.
+		 */
+		function get initialized():Boolean;
 
 		/**
 		 * Update this security, and dispatch a SecurityEvent.SECURITY_UPDATED event

@@ -44,6 +44,12 @@ package org.openscales.core.request {
 				var finalUrl:String = url;
 
 				if(security != null) {
+					
+					if(!security.initialized) {
+						// A redraw will be called on the layer when a SecurityEvent.SECURITY_INITIALIZED will be dispatched 
+						Trace.info("Security not initialized so cancel request");
+						return;	
+					}
 					if(url.indexOf("?") == -1) {
 						// No ? in the url, will have to add it	
 						finalUrl = url + "?" + security.securityParameter;

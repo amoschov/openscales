@@ -26,6 +26,11 @@ package org.openscales.core.request
 		public function XMLRequest(url:String, onComplete:Function, proxy:String = null, method:String = URLRequestMethod.GET, security:ISecurity = null, onFailure:Function = null, postBody:Object = null) {
 			try {
 				if(security != null) {
+					if(!security.initialized) {
+						// A redraw will be called on the layer when a SecurityEvent.SECURITY_INITIALIZED will be dispatched 
+						Trace.info("Security not initialized so cancel request");
+						return;	
+					}
 					if(url.indexOf("?") == -1) {
 						// No ? in the url, will have to add it	
 						url = url + "?" + security.securityParameter;

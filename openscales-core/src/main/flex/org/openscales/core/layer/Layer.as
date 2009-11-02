@@ -8,9 +8,9 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
-	//import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.security.ISecurity;
+	import org.openscales.core.security.events.SecurityEvent;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -120,9 +120,18 @@ package org.openscales.core.layer
 		public function set map(map:Map):void {
 			this._map = map;
 			
-			if(!this.maxExtent)
-				this.maxExtent = this.map.maxExtent;
+			if(map) {
+				map.addEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
+				
+				if(!this.maxExtent) {
+					this.maxExtent = this.map.maxExtent;
+				}
+			}
 			
+		}
+		
+		public function onSecurityInitialized(e:SecurityEvent):void {
+			this.redraw();
 		}
 
 		public function get map():Map {

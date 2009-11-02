@@ -74,6 +74,7 @@ package org.openscales.core.security.ign
 			var loader:URLLoader = e.target as URLLoader;
 			var doc:XML =  new XML(loader.data);
 			this.token = doc.toString();
+			this._initialized = true;
 			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_INITIALIZED, this));
 			this._timer.start();	
 		}

@@ -51,6 +51,11 @@ package org.openscales.fx.layer
         if(this.layer != null)
           ((this.layer as WMS).params as WMSParams).tiled = value;
       }
+      
+      public function set exceptions(value:String):void {
+        if(this.layer != null)
+          ((this.layer as WMS).params as WMSParams).exceptions = value;
+      }
 
   }
 }
