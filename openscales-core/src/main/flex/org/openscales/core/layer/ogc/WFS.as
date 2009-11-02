@@ -126,6 +126,7 @@ package org.openscales.core.layer.ogc
 			
 			if ((this.map.zoom < this.minZoomLevel) || (this.map.zoom > this.maxZoomLevel))	{
 		 		Trace.info("Zoom outside min or max zoom level, don't draw layer " + this.name);
+		 		this.clear();
 		 		return;
 	    	}
 	    	
