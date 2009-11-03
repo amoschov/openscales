@@ -7,6 +7,7 @@ package org.openscales.core.security.ign
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
+	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.request.XMLRequest;
 	import org.openscales.core.security.AbstractSecurity;
 	import org.openscales.core.security.events.SecurityEvent;
@@ -44,7 +45,17 @@ package org.openscales.core.security.ign
 		/**
 		 * Time to live of the token in milliseconds. Default to 10 minutes.
 		 */
-		private var _ttl:int = 600000;
+		private var _ttl:int = 60000;
+		
+		/**
+		 * Is a init or update request pending ?
+		 */
+		private var _requestPending:Boolean = false;
+		
+		/**
+		 * How many time since last token update
+		 */
+		private var _lastTokenUpdate:Date = null;
 		
 
 		public function IGNGeoRMSecurity(map:Map, key:String, proxy:String = null, host:String = null) {
@@ -53,18 +64,31 @@ package org.openscales.core.security.ign
 			if(proxy)
 				this.proxy = proxy;
 			this.key = key;
-			this._timer = new Timer(this.ttl);
-			this._timer.addEventListener(TimerEvent.TIMER, updateHandler);
-
+			this._timer = new Timer(this.ttl, 1);
+			this._timer.addEventListener(TimerEvent.TIMER, tokenExpiredHandler);
+			map.addEventListener(LayerEvent.LAYER_LOAD_START, userActivityHandler); 
 			super(map);
+		}
+		
+		public function userActivityHandler(e:LayerEvent):void {
+			if(!this._requestPending) {
+				
+				if(!this._initialized) {
+					Trace.debug("Token has expired, so get a new one");
+					this.initialize();
+				} else if((new Date().valueOf() - this._lastTokenUpdate.valueOf()) > (ttl/2)) {
+					this.update();
+				}				
+			}			
 		}
 		
 		/**
 		 * Authenticate and retreive config to print it in logs
 		 */
 		override public function initialize():void {
+			Trace.debug("Request a new token");
+			this._requestPending = true;
 			new XMLRequest(this.authUrl, authenticationResponse, this.proxy);
-			new XMLRequest(this.configUrl, configResponse, this.proxy);
 		}
 		
 		/**
@@ -72,11 +96,25 @@ package org.openscales.core.security.ign
 		 */
 		private function authenticationResponse(e:Event):void {
 			var loader:URLLoader = e.target as URLLoader;
-			var doc:XML =  new XML(loader.data);
-			this.token = doc.toString();
-			this._initialized = true;
-			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_INITIALIZED, this));
-			this._timer.start();	
+			try {
+				var doc:XML =  new XML(loader.data);
+				this.token = doc.toString();
+				this._initialized = true;
+				map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_INITIALIZED, this));
+				this.reset();
+			} catch (err:Error) {
+ 				Trace.error("Error during parsing XML response : " + loader.data)
+			}
+		}
+		
+		/**
+		 * Reset timer after reveived an init or update response
+		 */
+		private function reset():void {
+			this._requestPending = false;
+			this._lastTokenUpdate = new Date();
+			this._timer.reset();
+			this._timer.start();
 		}
 		
 		/**
@@ -84,8 +122,12 @@ package org.openscales.core.security.ign
 		 */
 		private function configResponse(e:Event):void {
 			var loader:URLLoader = e.target as URLLoader;
-			var doc:XML =  new XML(loader.data);
-			Trace.info(doc.toString());
+			try {
+				var doc:XML =  new XML(loader.data);
+				Trace.info(doc.toString());
+			} catch (err:Error) {
+ 				Trace.error("Error during parsing XML response : " + loader.data)
+			}
 		}
 
 		/** Return authentication URL, use random parameter to avoid caching **/
@@ -108,11 +150,15 @@ package org.openscales.core.security.ign
 			return this.host + "/release?gppkey=" + this.token + "&output=xml&random=" + Math.random().toString();
 		}
 		
-		private function updateHandler(e:TimerEvent):void {
-			update();
+		/** Will use the same mechanism than at layer startup to update datas when the token will be retreived **/ 		
+		private function tokenExpiredHandler(e:TimerEvent):void {
+			Trace.debug("Token expired");
+			this._initialized = false;
 		}
 
 		override public function update():void {
+			Trace.debug("Update token");
+			this._requestPending = true;
 			new XMLRequest(this.updateUrl, authenticationUpdateResponse, this.proxy);
 		}
 
@@ -121,10 +167,16 @@ package org.openscales.core.security.ign
 		 */
 		private function authenticationUpdateResponse(e:Event):void {
 			var loader:URLLoader = e.target as URLLoader;
-// FixMe: add a try/catch to manage invalid loader.data => "<hr> mest be terminated by a </hr> for instance"
-			var doc:XML =  new XML(loader.data);
-			this.token = doc.toString();
-			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_UPDATED, this));
+			
+			try {
+				var doc:XML =  new XML(loader.data);
+				this.token = doc.toString();
+				map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_UPDATED, this));
+				this.reset();
+			} catch (err:Error) {
+ 				Trace.error("Error during parsing XML response : " + loader.data)
+			}
+
 		}	
 		
 		override public function get securityParameter():String {
@@ -140,6 +192,7 @@ package org.openscales.core.security.ign
 		 */
 		private function authenticationLogoutResponse(e:Event):void {
 			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_LOGOUT, this));
+			this._initialized = false;
 			Trace.info("token " + this._key + " released");
 		}
 		
