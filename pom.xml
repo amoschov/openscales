@@ -179,14 +179,6 @@
 					<targetPlayer>${flex.player.version}.0.0</targetPlayer>
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
-				<!--executions>
-					<execution>
-						<phase>install</phase>
-						<goals>
-							<goal>asdoc</goal>
-						</goals>
-					</execution>
-				</executions-->
 			</plugin>
 			<plugin>
 				<artifactId>maven-release-plugin</artifactId>
