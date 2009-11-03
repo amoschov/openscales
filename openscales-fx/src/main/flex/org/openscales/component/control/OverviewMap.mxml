@@ -81,7 +81,7 @@
 			private var sprite:Sprite; // the sprite used to display the "rect"
 	    	private var drawingExtentFirstCorner:Pixel; // the first corner defined for a definition of a new extent by drawing on the overview map
 			
-			[Bindable] public var _minRectPxSize:Number = 5; // the display of the rect is limited to a minimum width and height of minRectPxSize pixels
+			[Bindable] private var _minRectPxSize:Number = 5; // the display of the rect is limited to a minimum width and height of minRectPxSize pixels
 			public function get minRectPxSize():Number {
 				return _minRectPxSize;
 			}
@@ -91,7 +91,7 @@
 				}
 			}
 			
-			[Bindable] public var _rectColor:uint = 0xFF0000; // the color of the rect that represents the visible extent of the main map
+			[Bindable] private var _rectColor:uint = 0xFF0000; // the color of the rect that represents the visible extent of the main map
 			public function get rectColor():uint {
 				return _rectColor;
 			}
@@ -99,7 +99,7 @@
 				_rectColor = value;
 			}
 			
-			[Bindable] public var _newExtentColor:uint = 0x0000FF; // the color of the extent defined with a drawing on the overview map
+			[Bindable] private var _newExtentColor:uint = 0x0000FF; // the color of the extent defined with a drawing on the overview map
 			public function get newExtentColor():uint {
 				return _newExtentColor;
 			}
