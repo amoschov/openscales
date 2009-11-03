@@ -1,17 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:os="http://openscales.org" width="400" height="300" creationComplete="this.creationCompleteHandler(event);">
-<mx:Script>
-	<![CDATA[
+<Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:os="http://openscales.org"
+	creationComplete="initMap();">
+	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
+			import org.openscales.core.style.Style;
+
+			// Specific imports for this example			
+			// none
+			
+			private function initMap():void {
+				map=fxmap.map;
+
+				// Specific initialize for this example
+				// none
+			}
+		]]>
+	</mx:Script>
+	
+	<os:Map id="fxmap" width="100%" height="100%" zoom="15" lon="-8238609.0" lat="4969938.0">
 		
-		public function creationCompleteHandler(event:Event):void{
-			
-			
-		}
-	]]>
-</mx:Script>
-	<os:Map id="map" height="100%" width="100%">
+		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
+		
+		<!-- OpenStreetMap EPSG:900913 -->
+		<os:Mapnik name="Mapnik"
+			isBaseLayer="true"
+			proxy="http://openscales.org/proxy.php?url=" />
+		
+		<os:DragHandler />
+		<os:WheelHandler />
+		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
+		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
+		<os:ScaleLine />
+		
+		<!-- Specific layers and handlers of this example -->
+		
 		<os:VectorLayer id="vectorLayer">
-			
 		</os:VectorLayer>
+		
 	</os:Map>
-</mx:Canvas>
+	
+	<!-- Specific tools of this example -->
+	<!-- none -->	
+	
+</Example>

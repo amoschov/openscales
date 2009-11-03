@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
-		 xmlns:os="http://openscales.org" creationComplete="initMap();">
+	xmlns:os="http://openscales.org"
+	creationComplete="initMap();">
 	
 	<mx:Script>
 		<![CDATA[
