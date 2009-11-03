@@ -21,7 +21,8 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%" zoom="15" lon="-8238609.0" lat="4969938.0">
+	<os:Map id="fxmap" width="100%" height="100%"
+		zoom="5" lon="538850.47459" lat="5740916.1243">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
 		
@@ -44,6 +45,12 @@
 	</os:Map>
 	
 	<!-- Specific tools of this example -->
-	<!-- none -->	
+
+	<mx:VBox horizontalAlign="center" x="10" y="10">
+		<os:PanComponent map="{map}" />
+		<os:ZoomComponent map="{map}" />
+	</mx:VBox>
+	
+	<os:StyleEditionWindow />
 	
 </Example>
