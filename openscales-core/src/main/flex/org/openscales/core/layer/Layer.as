@@ -404,10 +404,9 @@ Trace.debug("maxZoomLevel("+this.name+"): "+this._maxZoomLevel+" => "+level+"  ;
 			return this._resolutions;
 		}
 
-		/*public function set resolutions(value:Array):void {
+		public function set resolutions(value:Array):void {
 			this._resolutions = value;
-			this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
-		}*/
+		}
 
 		/**
 		 * Override the default projection. You should also set maxExtent,

@@ -68,11 +68,6 @@ package org.openscales.core.configuration
                   map.x = Number(config.@x);
                   map.y = Number(config.@y);
                   
-                  // The projection must be defined by the baselayer
-                  /*if(String(config.@projection) != ""){
-                        map.projection = new ProjProjection(config.@projection);
-                  }*/
-
                   if(String(config.@maxExtent) != ""){
                         map.maxExtent = Bounds.getBoundsFromString(config.@maxExtent);
                   }
@@ -285,9 +280,9 @@ package org.openscales.core.configuration
                     if((String(xmlNode.@numZoomLevels) != "") && (String(xmlNode.@maxResolution) != "")){
                   	  layer.generateResolutions(Number(xmlNode.@numZoomLevels), Number(xmlNode.@maxResolution));
                     }
-                    /*if(String(xmlNode.@resolutions) != ""){
+                    if(String(xmlNode.@resolutions) != ""){
                   	  layer.resolutions = String(xmlNode.@resolutions).split(",");
-                    }*/
+                    }
                   }
                   
                   //Init layer parameters

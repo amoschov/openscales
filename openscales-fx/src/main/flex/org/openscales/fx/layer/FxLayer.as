@@ -106,9 +106,9 @@ package org.openscales.fx.layer
           return this._numZoomLevels;
       }
 	  
-	  /*public function set resolutions(value:String):void {
+	  public function set resolutions(value:String):void {
 		 this.layer.resolutions = value.split(",");
-	  }*/
+	  }
 
   }
 }
