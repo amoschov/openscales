@@ -76,12 +76,12 @@ package org.openscales.core.layer
 				numZoomLevels = 1;
 			}
 			// Generate default resolutions
-			this.resolutions = new Array();
-			this.resolutions.push(nominalResolution);
+			this._resolutions = new Array();
+			this._resolutions.push(nominalResolution);
 			for (var i:int=1; i < numZoomLevels; i++) {
-				this.resolutions.push(this.resolutions[i-1]/2);
+				this._resolutions.push(this.resolutions[i-1]/2);
 			}
-			this.resolutions.sort(Array.NUMERIC | Array.DESCENDING);
+			this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
 		}
 
 		public function destroy(setNewBaseLayer:Boolean = true):void {
@@ -127,7 +127,6 @@ package org.openscales.core.layer
 					this.maxExtent = this.map.maxExtent;
 				}
 			}
-			
 		}
 		
 		public function onSecurityInitialized(e:SecurityEvent):void {
@@ -247,35 +246,103 @@ package org.openscales.core.layer
 		public function set zindex(value:int):void {
 			this.parent.setChildIndex(this, value);
 		}
-
+		
+		/**
+		 * @return Return the minimum zoom level allowed to display the layer.
+		 * If the layer is attached to a map, the level returned is the level
+		 * of the corresponding resolution in the array of the resolutions of
+		 * the current base layer of the map.
+		 */ 
 		public function get minZoomLevel():Number {
-			var minZoomLevel:Number = this._minZoomLevel;
-			if(isNaN(minZoomLevel))
-				minZoomLevel = 0;
-			return minZoomLevel;
+			var level:Number = this._minZoomLevel;
+			// If the level is not defined explicitely, use the default one
+			if (isNaN(level)) {
+				// By default the minimum zoom level is the first level
+				level = 0;
+			}
+			// Find the zoom level of the map corresponding to the resolution of the layer
+			if (this.map && this.resolutions) {
+				var i:int = 0;
+				while ((i < this.map.baseLayer.resolutions.length)
+					&& (this.map.baseLayer.resolutions[i] > this.resolutions[level])) {
+					i++;
+				}
+				level = i;
+				// "level" may be out of the range of the valid zoom levels of
+				// the current map defined by the current base layer.
+				// In this case the layer must not be displayed.
+				// The layer would be displayed when a base layer will define a
+				// larger range of resolutions for the map. 
+			}
+			// Return the zoom level depending on the current configuration of the map
+Trace.debug("minZoomLevel("+this.name+"): "+this._minZoomLevel+" => "+level+"  ;  map.zoom="+this.map.zoom+" ; "+this.resolutions);
+			return level;
 		}
-
+		
+		/**
+		 * Set the minimum zoom level of the layer. There is no link with the
+		 * allowed levels of the map depending on its baselayer(s).
+		 * 
+		 * @param value one of the index of the resolutions of the layer
+		 */
 		public function set minZoomLevel(value:Number):void {
 			if ((value>=0) && (value<this.resolutions.length)) {
 				this._minZoomLevel = value;
 			} else {
-				Trace.error("Invalid minZoomLevel for the layer "+this.name+": "
+				Trace.error("Layer: invalid minZoomLevel for the layer "+this.name+": "
 					+value+" is not in [0;"+(this.resolutions.length-1)+"]");
 			}
 		}
 		
+		/**
+		 * @return Return the maximum zoom level allowed to display the layer.
+		 * If the layer is attached to a map, the level returned is the level
+		 * of the corresponding resolution in the array of the resolutions of
+		 * the current base layer of the map.
+		 */ 
 		public function get maxZoomLevel():Number {
-			var maxZoomLevel:Number = this._maxZoomLevel;
-			if(isNaN(maxZoomLevel) && this.resolutions)
-				maxZoomLevel = this.resolutions.length - 1;
-			return maxZoomLevel;
+			var level:Number = this._maxZoomLevel;
+			// If the level is not defined explicitely, use the default one
+			if (isNaN(level)) {
+				// By default the maximum zoom level is the last level
+				if (this.resolutions) {
+					level = this.resolutions.length - 1;
+				} else if (this.map) {
+					level = this.map.baseLayer.resolutions.length - 1;
+				} else {
+					level = 0;
+				}
+			}
+			// Find the zoom level of the map corresponding to the resolution of the layer
+			if (this.map && this.resolutions) {
+				var i:int = this.map.baseLayer.resolutions.length - 1;
+				while ((i >= 0)
+					&& (this.map.baseLayer.resolutions[i] < this.resolutions[level])) {
+					i--;
+				}
+				level = i;
+				// "level" may be out of the range of the valid zoom levels of
+				// the current map defined by the current base layer.
+				// In this case the layer must not be displayed.
+				// The layer would be displayed when a base layer will define a
+				// larger range of resolutions for the map. 
+			}
+			// Return the zoom level depending on the current configuration of the map
+Trace.debug("maxZoomLevel("+this.name+"): "+this._maxZoomLevel+" => "+level+"  ;  map.zoom="+this.map.zoom);
+			return level;
 		}
-
+		
+		/**
+		 * Set the minimum zoom level of the layer. There is no link with the
+		 * allowed levels of the map depending on its baselayer(s).
+		 * 
+		 * @param value one of the index of the resolutions of the layer
+		 */
 		public function set maxZoomLevel(value:Number):void {
 			if ((value>=0) && (value<this.resolutions.length)) {
 				this._maxZoomLevel = value;
 			} else {
-				Trace.error("Invalid maxZoomLevel for the layer "+this.name+": "
+				Trace.error("Layer: invalid maxZoomLevel for the layer "+this.name+": "
 					+value+" is not in [0;"+(this.resolutions.length-1)+"]");
 			}
 		}
@@ -337,10 +404,10 @@ package org.openscales.core.layer
 			return this._resolutions;
 		}
 
-		public function set resolutions(value:Array):void {
+		/*public function set resolutions(value:Array):void {
 			this._resolutions = value;
 			this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
-		}
+		}*/
 
 		/**
 		 * Override the default projection. You should also set maxExtent,
