@@ -48,10 +48,10 @@ package org.openscales.core.control
 
 		private var _firstOverlays:Boolean = true;
 
-		[Embed(source="/images/layer-switcher-maximize.png")]
+		[Embed(source="/assets/images/layer-switcher-maximize.png")]
 		private var _layerSwitcherMaximizeImg:Class;
 
-		[Embed(source="/images/layer-switcher-minimize.png")]
+		[Embed(source="/assets/images/layer-switcher-minimize.png")]
 		private var _layerSwitcherMinimizeImg:Class;
 
 		/**

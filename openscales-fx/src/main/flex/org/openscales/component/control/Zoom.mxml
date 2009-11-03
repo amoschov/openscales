@@ -125,18 +125,18 @@
 	<mx:Style>
 		Button.zoomOut
 		{
-			upSkin: Embed('/images/mapZoomOut-upskin.swf');
-			overSkin: Embed('/images/mapZoomOut-upskin.swf');
-			downSkin: Embed('/images/mapZoomOut-upskin.swf');
-			disabledSkin: Embed('/images/mapZoomOut-upskin.swf');
+			upSkin: Embed('/assets/images/mapZoomOut-upskin.swf');
+			overSkin: Embed('/assets/images/mapZoomOut-upskin.swf');
+			downSkin: Embed('/assets/images/mapZoomOut-upskin.swf');
+			disabledSkin: Embed('/assets/images/mapZoomOut-upskin.swf');
 		}
 		
 		Button.zoomIn
 		{
-			upSkin: Embed('/images/mapZoomIn-upskin.swf');
-			overSkin: Embed('/images/mapZoomIn-upskin.swf');
-			downSkin: Embed('/images/mapZoomIn-upskin.swf');
-			disabledSkin: Embed('/images/mapZoomIn-upskin.swf');
+			upSkin: Embed('/assets/images/mapZoomIn-upskin.swf');
+			overSkin: Embed('/assets/images/mapZoomIn-upskin.swf');
+			downSkin: Embed('/assets/images/mapZoomIn-upskin.swf');
+			disabledSkin: Embed('/assets/images/mapZoomIn-upskin.swf');
 		}
 	</mx:Style>
 

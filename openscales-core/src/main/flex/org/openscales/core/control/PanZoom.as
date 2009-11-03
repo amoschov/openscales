@@ -21,31 +21,31 @@ package org.openscales.core.control
 		private var _buttons:Array = null;
 		private var _tween:Boolean;
 
-		[Embed(source="/images/north-mini.png")]
+		[Embed(source="/assets/images/north-mini.png")]
 		protected var northMiniImg:Class;
 
-		[Embed(source="/images/west-mini.png")]
+		[Embed(source="/assets/images/west-mini.png")]
 		protected var westMiniImg:Class;
 
-		[Embed(source="/images/east-mini.png")]
+		[Embed(source="/assets/images/east-mini.png")]
 		protected var eastMiniImg:Class;
 
-		[Embed(source="/images/south-mini.png")]
+		[Embed(source="/assets/images/south-mini.png")]
 		protected var southMiniImg:Class;
 
-		[Embed(source="/images/zoom-plus-mini.png")]
+		[Embed(source="/assets/images/zoom-plus-mini.png")]
 		protected var zoomPlusMiniImg:Class;
 
-		[Embed(source="/images/zoom-minus-mini.png")]
+		[Embed(source="/assets/images/zoom-minus-mini.png")]
 		protected var zoomMinusMiniImg:Class;
 
-		[Embed(source="/images/zoom-world-mini.png")]
+		[Embed(source="/assets/images/zoom-world-mini.png")]
 		protected var zoomWorldMiniImg:Class;
 
-		[Embed(source="/images/slider.png")]
+		[Embed(source="/assets/images/slider.png")]
 		protected var sliderImg:Class;
 
-		[Embed(source="/images/zoombar.png")]
+		[Embed(source="/assets/images/zoombar.png")]
 		protected var zoombarImg:Class;
 
 		public function PanZoom(position:Pixel = null, tween:Boolean = true) {

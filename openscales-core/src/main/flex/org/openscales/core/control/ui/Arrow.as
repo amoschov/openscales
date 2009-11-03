@@ -11,10 +11,10 @@ package org.openscales.core.control.ui
 	public class Arrow extends Button
 	{
 
-		[Embed(source="/images/arrow_down.png")]
+		[Embed(source="/assets/images/arrow_down.png")]
 		private var _arrowDownImg:Class;
 
-		[Embed(source="/images/arrow_up.png")]
+		[Embed(source="/assets/images/arrow_up.png")]
 		private var _arrowUpImg:Class;
 
 		private var _state:String;

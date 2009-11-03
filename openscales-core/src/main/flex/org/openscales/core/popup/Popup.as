@@ -38,7 +38,7 @@ package org.openscales.core.popup
 		private var _htmlText:String = null;
 		private var _closeBox:Boolean;
 
-		[Embed(source="/images/close.gif")]
+		[Embed(source="/assets/images/close.gif")]
 		private var _closeImg:Class;
 
 		public function Popup(lonlat:LonLat, background:uint = 0, border:Number = NaN, size:Size = null, htmlText:String = "", closeBox:Boolean = true) {

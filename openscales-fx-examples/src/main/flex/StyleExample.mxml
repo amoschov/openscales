@@ -9,7 +9,7 @@
 		}
 	]]>
 </mx:Script>
-	<os:Map id="map" height="100%" width="100%" maxResolution="18" minResolution="1">
+	<os:Map id="map" height="100%" width="100%">
 		<os:VectorLayer id="vectorLayer">
 			
 		</os:VectorLayer>

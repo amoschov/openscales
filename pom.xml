@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
@@ -43,6 +43,31 @@
 				<mvn.site>file:///WEBS/pht/openscales.org/docs/mvn-site</mvn.site>
 				<openscales.host>localhost</openscales.host>
             </properties>
+        </profile>
+		<profile>
+            <id>asdoc</id>
+			<activation>
+				<property>
+					<name>env</name>
+					<value>dev</value>
+				</property>
+			</activation>
+            <build>
+		    <plugins>
+		      <plugin>
+		        <groupId>org.sonatype.flexmojos</groupId>
+		        <artifactId>flexmojos-maven-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <phase>install</phase>
+		            <goals>
+		              <goal>asdoc</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+		      </plugin>
+		    </plugins>
+		  </build>
         </profile>
 	</profiles>
 	

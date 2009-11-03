@@ -11,10 +11,10 @@ package org.openscales.core.control.ui
 	public class CheckBox extends Button
 	{
 
-		[Embed(source="/images/check.png")]
+		[Embed(source="/assets/images/check.png")]
 		private var _layerSwitchercheckImg:Class;
 
-		[Embed(source="/images/uncheck.png")]
+		[Embed(source="/assets/images/uncheck.png")]
 		private var _layerSwitcherUncheckImg:Class;
 
 		private var _status:Boolean=false;

@@ -101,8 +101,8 @@
 			 * Show/Hide the content of the WidgetWindow.
 			 * The icon always stays visible
 			 */
-			[Embed(source='/images/widgetHide.png')] private var iconWidgetHide:Class;
-			[Embed(source='/images/widgetShow.png')] private var iconWidgetShow:Class;
+			[Embed(source='/assets/images/widgetHide.png')] private var iconWidgetHide:Class;
+			[Embed(source='/assets/images/widgetShow.png')] private var iconWidgetShow:Class;
 			private function toggleWidgetContent(widget:DisplayObject):void {
 				if (widget.visible) {
 					widgetBarIconShowHide.source = new iconWidgetShow();
@@ -197,12 +197,12 @@
 							<mx:Image id="widgetBarIconClose"
 								visible="{_useCloseButton}"
 								width="16" height="16"
-								source="@Embed('/images/widgetClose.png')"
+								source="@Embed('/assets/images/widgetClose.png')"
 								toolTip="{'Click to close '+_toolTipIconEnd}"
 								click="closeWidget();" />
 							<mx:Image id="widgetBarIconShowHide"
 								width="16" height="16"
-								source="@Embed('/images/widgetHide.png')"
+								source="@Embed('/assets/images/widgetHide.png')"
 								toolTip="{'Click to hide '+_toolTipIconEnd}"
 								click="toggleWidgetContent(widgetContent);" />
 						</mx:HBox>

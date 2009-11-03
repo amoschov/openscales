@@ -11,10 +11,10 @@ package org.openscales.core.control.ui
 	public class RadioButton extends Button
 	{
 
-		[Embed(source="/images/radiobutton-selected.png")]
+		[Embed(source="/assets/images/radiobutton-selected.png")]
 		private var _layerSwitcherRadioButtonSelectedImg:Class;
 
-		[Embed(source="/images/radiobutton-noselected.png")]
+		[Embed(source="/assets/images/radiobutton-noselected.png")]
 		private var _layerSwitcherRadioButtonNoSelectedImg:Class;
 
 		private var _status:Boolean=false;

@@ -9,7 +9,7 @@ package org.openscales.core.control.ui
 	public class SliderVertical extends Button
 	{
 
-		[Embed(source="/images/slide-vertical.png")]
+		[Embed(source="/assets/images/slide-vertical.png")]
 		private var _layerSwitcherSlideVerticalImg:Class;
 
 		private var _layerName:String;

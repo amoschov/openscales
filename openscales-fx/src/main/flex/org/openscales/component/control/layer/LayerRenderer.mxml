@@ -224,10 +224,10 @@
 
   <mx:HBox width="100%">
     <mx:Canvas id="displayControl" width="128"/>
-    	<!--<mx:Button id="zoomButton" width="30" height="20" toolTip="Center Map" icon="@Embed('/images/zoomin.swf')" click="this.setLayerExtent(event)"/>-->
-    	<mx:Image id="ArrowUp" name="ArrowUp" source="@Embed('/images/ArrowUp.swf')" click="changeLayerOrder(event)"/>
-   	 	<mx:Image id="ArrowDown" name="ArrowDown" source="@Embed('/images/ArrowDown.swf')" click="changeLayerOrder(event)"/>
-    	<mx:Button id="deleteButton" width="20" height="10" toolTip="Delete" icon="@Embed('/images/cross.swf')" click="deleteLayer(event)"/>
+    	<!--<mx:Button id="zoomButton" width="30" height="20" toolTip="Center Map" icon="@Embed('/assets/images/zoomin.swf')" click="this.setLayerExtent(event)"/>-->
+    	<mx:Image id="ArrowUp" name="ArrowUp" source="@Embed('/assets/images/ArrowUp.swf')" click="changeLayerOrder(event)"/>
+   	 	<mx:Image id="ArrowDown" name="ArrowDown" source="@Embed('/assets/images/ArrowDown.swf')" click="changeLayerOrder(event)"/>
+    	<mx:Button id="deleteButton" width="20" height="10" toolTip="Delete" icon="@Embed('/assets/images/cross.swf')" click="deleteLayer(event)"/>
   </mx:HBox>
   
   <mx:HBox id="Hbox2" width="100%">

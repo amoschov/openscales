@@ -96,14 +96,14 @@
     	
     	<mx:Style>
     	.default{
-	    	upSkin: Embed("/images/mapZoomBox-upskin-h32.png");
-	    	overSkin: Embed("/images/mapZoomBox-upskin-h32.png");
-	    	downSkin: Embed("/images/mapZoomBox-upskin-h32.png");
-	    	disabledSkin: Embed("/images/mapZoomBox-upskin-h32.png");
-	    	selectedUpSkin: Embed("/images/mapZoomBox-upskin-h32.png");
-	    	selectedOverSkin: Embed("/images/mapZoomBox-upskin-h32.png");
-	    	selectedDownSkin: Embed("/images/mapZoomBox-upskin-h32.png");
-	    	selectedDisabledSkin: Embed("/images/mapZoomBox-upskin-h32.png");
+	    	upSkin: Embed("/assets/images/mapZoomBox-upskin-h32.png");
+	    	overSkin: Embed("/assets/images/mapZoomBox-upskin-h32.png");
+	    	downSkin: Embed("/assets/images/mapZoomBox-upskin-h32.png");
+	    	disabledSkin: Embed("/assets/images/mapZoomBox-upskin-h32.png");
+	    	selectedUpSkin: Embed("/assets/images/mapZoomBox-upskin-h32.png");
+	    	selectedOverSkin: Embed("/assets/images/mapZoomBox-upskin-h32.png");
+	    	selectedDownSkin: Embed("/assets/images/mapZoomBox-upskin-h32.png");
+	    	selectedDisabledSkin: Embed("/assets/images/mapZoomBox-upskin-h32.png");
     	}
     	</mx:Style>
 

@@ -29,7 +29,7 @@ package org.openscales.core.feature {
 		/**
 		 * The image that will be drawn at the feature localization
 		 */
-		[Embed(source="/images/marker-blue.png")]
+		[Embed(source="/assets/images/marker-blue.png")]
 		private var _image:Class;
 
 		/**
