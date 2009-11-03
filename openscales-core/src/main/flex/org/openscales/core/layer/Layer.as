@@ -265,6 +265,8 @@ package org.openscales.core.layer
 				var i:int = 0;
 				while ((i < this.map.baseLayer.resolutions.length)
 					&& (this.map.baseLayer.resolutions[i] > this.resolutions[level])) {
+					// FixMe: the 2 resolutions may be in different SRS !
+					// Proj4as.transformResolution(this.projection, this.map.baseLayer.projection, this.resolutions[level]);
 					i++;
 				}
 				level = i;
@@ -275,7 +277,7 @@ package org.openscales.core.layer
 				// larger range of resolutions for the map. 
 			}
 			// Return the zoom level depending on the current configuration of the map
-Trace.debug("minZoomLevel("+this.name+"): "+this._minZoomLevel+" => "+level+"  ;  map.zoom="+this.map.zoom+" ; "+this.resolutions);
+Trace.debug("minZoomLevel("+this.name+"): "+this._minZoomLevel+" => "+level+"  ;  map.zoom="+this.map.zoom+" ; layerRes="+this.resolutions+" ; mapRes="+this.map.baseLayer.resolutions);
 			return level;
 		}
 		
@@ -318,6 +320,7 @@ Trace.debug("minZoomLevel("+this.name+"): "+this._minZoomLevel+" => "+level+"  ;
 				var i:int = this.map.baseLayer.resolutions.length - 1;
 				while ((i >= 0)
 					&& (this.map.baseLayer.resolutions[i] < this.resolutions[level])) {
+					// FixMe: the 2 resolutions may be in different SRS !
 					i--;
 				}
 				level = i;
@@ -328,7 +331,7 @@ Trace.debug("minZoomLevel("+this.name+"): "+this._minZoomLevel+" => "+level+"  ;
 				// larger range of resolutions for the map. 
 			}
 			// Return the zoom level depending on the current configuration of the map
-Trace.debug("maxZoomLevel("+this.name+"): "+this._maxZoomLevel+" => "+level+"  ;  map.zoom="+this.map.zoom);
+Trace.debug("maxZoomLevel("+this.name+"): "+this._maxZoomLevel+" => "+level);
 			return level;
 		}
 		

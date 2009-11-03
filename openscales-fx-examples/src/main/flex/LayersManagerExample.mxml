@@ -58,7 +58,7 @@
 			useCapabilities="true"
 			capabilitiesVersion="1.0.0"
 			style="{Style.getDefaultPointStyle()}"
-			maxResolution="{OSM.DEFAULT_MAX_RESOLUTION/Math.pow(2,5)}" numZoomLevels="{Layer.DEFAULT_NUM_ZOOM_LEVELS-5}">
+			maxResolution="{Layer.DEFAULT_NOMINAL_RESOLUTION/Math.pow(2,5)}" numZoomLevels="{Layer.DEFAULT_NUM_ZOOM_LEVELS-5}">
 		</os:WFS>
 		
 	</os:Map>
