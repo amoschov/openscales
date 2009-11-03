@@ -178,6 +178,7 @@
 				<configuration>
 					<targetPlayer>${flex.player.version}.0.0</targetPlayer>
 					<testFailureIgnore>true</testFailureIgnore>
+					<outputDirectory>${project.build.directory}/site/asdoc</outputDirectory>
 				</configuration>
 			</plugin>
 			<plugin>
