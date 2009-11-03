@@ -56,7 +56,7 @@
 						<org.openscales.core.request>OpenScales wrapper around ActionScript3 remote request (XML or data like images)</org.openscales.core.request>
 						<org.openscales.core.security>Security management for intended to access to protected GIS layers. Maybe used with WSS, IGN GeoDRM or basic authentication</org.openscales.core.security>
 						<org.openscales.core.security.events>Security events</org.openscales.core.security.events>
-						<org.openscales.core.security.sample>Security sample implementation</org.openscales.core.security.sample>
+						<org.openscales.core.security.ign>IGN GeoRM Security implementation</org.openscales.core.security.ign>
 						<org.openscales.core.tile>Tile (raster or vector) management</org.openscales.core.tile>
 					</packageDescriptions>
 				</configuration>

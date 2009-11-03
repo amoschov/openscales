@@ -10,7 +10,7 @@ package org.openscales.core.configuration
 	 */
 	public class ConfigurationTest {
 		
-		[Embed(source="/configuration/sampleMapConfOk.xml", mimeType="application/octet-stream")]
+		[Embed(source="/assets/configuration/sampleMapConfOk.xml", mimeType="application/octet-stream")]
 		protected const SampleMapConfOk:Class;
 		
 		protected function sampleMapConfOkXML():XML {
