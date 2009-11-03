@@ -76,7 +76,7 @@ package org.openscales.core.configuration
 			var map:Map = new Map();		
 			conf.configureMap(map);
 			
-			Assert.assertEquals("20", map.getLayerByName("Metacarta").resolutions.length);
+			Assert.assertEquals("16", map.getLayerByName("Metacarta").resolutions.length);
 			Assert.assertEquals("1.40625", map.getLayerByName("Metacarta").resolutions[0]);			
 		}
 		
