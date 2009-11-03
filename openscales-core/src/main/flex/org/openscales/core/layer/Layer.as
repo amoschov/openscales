@@ -71,6 +71,7 @@ package org.openscales.core.layer
 		
 		public function generateResolutions(numZoomLevels:uint = Layer.DEFAULT_NUM_ZOOM_LEVELS,
 							nominalResolution:Number = Layer.DEFAULT_NOMINAL_RESOLUTION):void {
+//FixMe: be careful, the nominalResolution specified may be in a different SRS than the projection's one !
 			// numZoomLevels must be strictly greater than zero
 			if (numZoomLevels == 0) {
 				numZoomLevels = 1;
@@ -409,6 +410,7 @@ Trace.debug("maxZoomLevel("+this.name+"): "+this._maxZoomLevel+" => "+level);
 
 		public function set resolutions(value:Array):void {
 			this._resolutions = value;
+			this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
 		}
 
 		/**
