@@ -107,7 +107,12 @@ package org.openscales.fx.layer
       }
 	  
 	  public function set resolutions(value:String):void {
-		 this.layer.resolutions = value.split(",");
+		 var resString:String = null;
+		 var resNumberArray:Array = new Array();
+		 for each (resString in value.split(",")) {
+		 	resNumberArray.push(Number(resString));
+		 }
+		 this.layer.resolutions = resNumberArray;
 	  }
 
   }
