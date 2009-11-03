@@ -4,6 +4,13 @@
 	creationComplete="initFeatureDrawing();">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.sketch.EditPolygonHandler;
+			import org.openscales.core.handler.sketch.EditPathHandler;
+			import org.openscales.core.handler.mouse.LayerEditionHandler;
+			import org.openscales.core.handler.mouse.FeatureClickHandler;
+			import org.openscales.core.handler.sketch.EditPointHandler;
+			import org.openscales.core.handler.mouse.EditLayer;
+			import org.openscales.core.layer.Layer;
 			import org.openscales.core.geometry.Polygon;
 			import org.openscales.core.geometry.LinearRing;
 			import org.openscales.core.feature.PolygonFeature;
@@ -45,7 +52,7 @@
 			/**
 			 * Layer of drawing, which contains all drawing features
 			 */
-			public var drawLayer:VectorLayer = new VectorLayer("Drawings");
+			public var drawLayer:VectorLayer = new VectorLayer("Drawings",false,true,null,null);
 			
 			/**
 			 * Handler of PointFeature
@@ -67,6 +74,14 @@
 			 */
 			public var multiFeaturesHandler:DrawMultiHandler = new DrawMultiHandler(null, false, drawLayer);
 			
+			/**
+			 * Modification Vector Layer Handler
+			 * */
+			//public var editLayer:EditLayer=new EditLayer(null,drawLayer,false);
+			public var  editLayer:LayerEditionHandler=new LayerEditionHandler(null,drawLayer,false,true); 
+			//new EditPointHandler(null,false,drawLayer,new FeatureClickHandler());
+			//public var  editLayer:EditPathHandler=new EditPathHandler(null,false,drawLayer,new FeatureClickHandler());
+			//public var  editLayer:EditPolygonHandler=new EditPolygonHandler(null,false,drawLayer,new FeatureClickHandler());
 			/**
 			 * Dragging state
 			 */
@@ -297,6 +312,7 @@
 							else if(polygonHandler.active){this.finishPolygon();}												
 							pointHandler.active = true;
 							drawType = "point";
+							editLayer.active=false;
 						}
 						this.deactiveDrag();
 						selectFeatureHandler.active = false;
@@ -308,6 +324,7 @@
 							if(polygonHandler.active){this.finishPolygon();}						
 							pointHandler.active = false;
 							pathHandler.active = true;
+							editLayer.active=false;
 							drawType = "path";
 						}
 						this.deactiveDrag();
@@ -320,14 +337,32 @@
 							if(pathHandler.active){this.finishPath();}						
 							pointHandler.active = false;
 							polygonHandler.active = true;
+							editLayer.active=false;
 							drawType = "polygon";
 						}
 						this.deactiveDrag();
 						selectFeatureHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 						break;
+					case 4:    //Edit Vector Layer Draw Layer
+						editLayer.active=true;
+						polygonHandler.active = false;
+						pointHandler.active = false;
+						pathHandler.active = false;
+						drawType="editlayer";
+						this.deactiveDrag();
+						selectFeatureHandler.active = false;
+						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
+						break;
 				}
 			}			
+			
+			public function onSaveLayerModification(event:Event){
+				if(editLayer.active) 
+				{
+				//	editLayer.RecordModification();
+				}
+			}
 			
 			/**
 			 * Finish a polygon
@@ -402,6 +437,7 @@
 					pointHandler.map = this.map;
 					pathHandler.map = this.map;
 					polygonHandler.map = this.map;
+					editLayer.map=this.map;
 					this.map.addLayer(drawLayer);
 					this.map.addHandler(selectFeatureHandler);																			
 				}
@@ -438,6 +474,10 @@
 					toolTip="Draw a polygon"
 					icon="@Embed('/assets/images/featureDrawPolygon-upskin.swf')"
 					/>
+				<mx:Object id="editFeature"
+					toolTip="Edit Feature on draw Layer"
+					icon="@Embed('/assets/images/layerEyeOpen.png')"
+					/>
 			</mx:Array>
 		</mx:ToggleButtonBar>
 		
@@ -460,6 +500,11 @@
 				icon="@Embed('/assets/images/featureMerge-upskin.png')"
 				enabled="false"
 				click="this.onMergeClick(event)" />
+			<mx:Button id="btnSaveEdit" width="38" height="38"
+				toolTip="Save the layer modification"
+				icon="@Embed('/assets/images/featureMerge-upskin.png')"
+				enabled="true"
+				click="this.onSaveLayerModification(event)" />
 		</mx:HBox>
 		
 	</mx:VBox>

@@ -173,11 +173,12 @@ package org.openscales.core.feature
 							distanceArray.push(new Array(distance,arrayResult[k][1]));
 						} 
 					}
-					if(distanceArray.length>0)
+					if(distanceArray.length>1)
 					{
 						distanceArray.sort();
 						return distanceArray[0][1];
 					}
+					else if(distanceArray.length==1) return distanceArray[0][1];
 				}
 				else return arrayResult[0][1];
 				

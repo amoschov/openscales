@@ -76,7 +76,7 @@ package org.openscales.core.handler.sketch
 				indexOfFeatureCurrentlyDrag=IsRealVertice(vectorfeature);
 				if(indexOfFeatureCurrentlyDrag==-1) indexOfFeatureCurrentlyDrag=vectorfeature.getSegmentsIntersection(vectorfeature.editionFeatureParentGeometry as Collection);
 				if(vectorfeature!=EditCollectionHandler._pointUnderTheMouse)this._featureCurrentlyDrag=vectorfeature;
-				else this._featureCurrentlyDrag==null;
+				else this._featureCurrentlyDrag=null;
 				//we add the new mouseEvent move and remove the previous
 				this.map.addEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
@@ -108,6 +108,9 @@ package org.openscales.core.handler.sketch
 		 				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 				this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
 		 				EditCollectionHandler._pointUnderTheMouse=null;
+		 				this._featureCurrentlyDrag=null;
+		 				this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+						EditCollectionHandler._pointUnderTheMouse=null;
 		 				this._layerToEdit.redraw();
 		 			}
 		 		}
@@ -138,6 +141,8 @@ package org.openscales.core.handler.sketch
 		 override public function featureClick(event:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
+		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+			EditCollectionHandler._pointUnderTheMouse=null;
 		 	this._drawContainer.graphics.clear();
 		 	
 		 }
@@ -158,7 +163,8 @@ package org.openscales.core.handler.sketch
 		 		}
 		 	}
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
-		 	this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+			EditCollectionHandler._pointUnderTheMouse=null;
 		 	this._drawContainer.graphics.clear();
 		 }
 		 public function createPointUndertheMouse(evt:FeatureEvent):void{

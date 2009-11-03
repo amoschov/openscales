@@ -105,11 +105,11 @@ package org.openscales.core.handler.sketch
 			}
 			//We draw the temporaries lines of the polygon
 			if(point1!=null && point2!=null){
-				point1Px=this.map.getLayerPxFromLonLat(new LonLat(point1.x,point1.y));
-				point2Px=this.map.getLayerPxFromLonLat(new LonLat(point2.x,point2.y));
+				point1Px=this.map.getMapPxFromLonLat(new LonLat(point1.x,point1.y));
+				point2Px=this.map.getMapPxFromLonLat(new LonLat(point2.x,point2.y));
 				
 		 		_drawContainer.graphics.clear();
-		 		_drawContainer.graphics.lineStyle(1, 0x00ff00);	 
+		 		_drawContainer.graphics.lineStyle(1, 0xFF00BB);	 
 		 		_drawContainer.graphics.moveTo(point1Px.x,point1Px.y);
 		 		_drawContainer.graphics.lineTo(map.mouseX-4, map.mouseY-4);
 		 		_drawContainer.graphics.moveTo(point2Px.x,point2Px.y);

@@ -26,7 +26,7 @@ package org.openscales.core.handler.mouse
 		 *Layer to edit
 		 * @private 
 		 **/
-		private var _layerToEdit:VectorLayer=null;
+		protected var _layerToEdit:VectorLayer=null;
 		
 		private var iEditPoint:IEditVectorFeature=null; 
 		private var iEditPath:IEditVectorFeature=null;
@@ -112,7 +112,10 @@ package org.openscales.core.handler.mouse
 		 			
 					}
 				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+				this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+				EditCollectionHandler._pointUnderTheMouse=null;
 				this._layerToEdit.redraw();
+				
 				}
 			}
 			/**
@@ -127,7 +130,8 @@ package org.openscales.core.handler.mouse
 					else if	((vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature ) && iEditPolygon!=null) iEditPolygon.featureClick(event);
 					//The vertice belongs to a line
 					else if((vectorfeature.editionFeatureParent is LineStringFeature ||  vectorfeature.editionFeatureParent is MultiLineStringFeature) && iEditPath!=null) iEditPath.featureClick(event);
-					
+					this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+					EditCollectionHandler._pointUnderTheMouse=null;
 				}	 
 		 }
 		 /**
@@ -153,6 +157,8 @@ package org.openscales.core.handler.mouse
 		 			this._featureclickhandler.addControledFeatures(featureParent.editionFeaturesArray);
 					}
 					this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+					this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+					EditCollectionHandler._pointUnderTheMouse=null;
 					this._layerToEdit.redraw();		
 			}
 		 
@@ -210,6 +216,8 @@ package org.openscales.core.handler.mouse
 				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,_layerToEdit));
 				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 			}
+			this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+			EditCollectionHandler._pointUnderTheMouse=null;
 			return true;
 		}
 		
