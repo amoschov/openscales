@@ -285,9 +285,9 @@ package org.openscales.core.configuration
                     if((String(xmlNode.@numZoomLevels) != "") && (String(xmlNode.@maxResolution) != "")){
                   	  layer.generateResolutions(Number(xmlNode.@numZoomLevels), Number(xmlNode.@maxResolution));
                     }
-                    if(String(xmlNode.@resolutions) != ""){
-                  	layer.resolutions = String(xmlNode.@resolutions).split(",");
-                   }
+                    /*if(String(xmlNode.@resolutions) != ""){
+                  	  layer.resolutions = String(xmlNode.@resolutions).split(",");
+                    }*/
                   }
                   
                   //Init layer parameters
