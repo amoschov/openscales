@@ -140,9 +140,7 @@ package org.openscales.core.layer
 		 */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 
-			if ((this.minZoomLevel && (this.map.zoom < this.minZoomLevel)) ||
-			    (this.maxZoomLevel && (this.map.zoom > this.maxZoomLevel)))			 
-		 	{
+			if ((this.map.zoom < this.minZoomLevel) || (this.map.zoom > this.maxZoomLevel)) {
 		 		this.clearGrid();
 		 		return;
 		 	}
