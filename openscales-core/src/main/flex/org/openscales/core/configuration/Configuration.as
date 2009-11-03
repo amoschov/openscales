@@ -258,10 +258,11 @@ package org.openscales.core.configuration
                         
                         // We create the WFS Layer with all params
                         var wfsLayer:WFS = new WFS(name,urlWfs,xmlNode.@typename,isBaseLayer, visible,projection,proxy,useCapabilities,capabilities);
-						if (xmlNode.@minZoomLevel && (! isNaN(Number(xmlNode.@minZoomLevel)))) {
+
+						if (String(xmlNode.@minZoomLevel) != "" ) {
 							wfsLayer.minZoomLevel = Number(xmlNode.@minZoomLevel);
 						}
-						if (xmlNode.@maxZoomLevel && (! isNaN(Number(xmlNode.@maxZoomLevel)))) {
+						if (String(xmlNode.@minZoomLevel) != "") {
 							wfsLayer.maxZoomLevel = Number(xmlNode.@maxZoomLevel);
 						}
                         wfsLayer.capabilitiesVersion = capabilitiesVersion;
