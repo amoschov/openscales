@@ -1,38 +1,38 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties version="1">
-<includeClasses>
-<classEntry path="org.openscales.proj4as.Datum"/>
-<classEntry path="org.openscales.proj4as.Proj4as"/>
-<classEntry path="org.openscales.proj4as.ProjConstants"/>
-<classEntry path="org.openscales.proj4as.ProjPoint"/>
-<classEntry path="org.openscales.proj4as.ProjProjection"/>
-<classEntry path="org.openscales.proj4as.proj.AbstractProjProjection"/>
-<classEntry path="org.openscales.proj4as.proj.IProjection"/>
-<classEntry path="org.openscales.proj4as.proj.ProjAea"/>
-<classEntry path="org.openscales.proj4as.proj.ProjAeqd"/>
-<classEntry path="org.openscales.proj4as.proj.ProjEqc"/>
-<classEntry path="org.openscales.proj4as.proj.ProjEqdc"/>
-<classEntry path="org.openscales.proj4as.proj.ProjEqui"/>
-<classEntry path="org.openscales.proj4as.proj.ProjGauss"/>
-<classEntry path="org.openscales.proj4as.proj.ProjGstmerc"/>
-<classEntry path="org.openscales.proj4as.proj.ProjLaea"/>
-<classEntry path="org.openscales.proj4as.proj.ProjLcc"/>
-<classEntry path="org.openscales.proj4as.proj.ProjLonglat"/>
-<classEntry path="org.openscales.proj4as.proj.ProjMerc"/>
-<classEntry path="org.openscales.proj4as.proj.ProjMill"/>
-<classEntry path="org.openscales.proj4as.proj.ProjMoll"/>
-<classEntry path="org.openscales.proj4as.proj.ProjNzmg"/>
-<classEntry path="org.openscales.proj4as.proj.ProjOmerc"/>
-<classEntry path="org.openscales.proj4as.proj.ProjOrtho"/>
-<classEntry path="org.openscales.proj4as.proj.ProjParams"/>
-<classEntry path="org.openscales.proj4as.proj.ProjSinu"/>
-<classEntry path="org.openscales.proj4as.proj.ProjSoMerc"/>
-<classEntry path="org.openscales.proj4as.proj.ProjStere"/>
-<classEntry path="org.openscales.proj4as.proj.ProjSterea"/>
-<classEntry path="org.openscales.proj4as.proj.ProjTmerc"/>
-<classEntry path="org.openscales.proj4as.proj.ProjUtm"/>
-<classEntry path="org.openscales.proj4as.proj.ProjVandg"/>
-</includeClasses>
-<includeResources/>
-<namespaceManifests/>
+  <includeClasses>
+    <classEntry path="org.openscales.proj4as.Datum"/>
+    <classEntry path="org.openscales.proj4as.Proj4as"/>
+    <classEntry path="org.openscales.proj4as.ProjConstants"/>
+    <classEntry path="org.openscales.proj4as.ProjPoint"/>
+    <classEntry path="org.openscales.proj4as.ProjProjection"/>
+    <classEntry path="org.openscales.proj4as.proj.AbstractProjProjection"/>
+    <classEntry path="org.openscales.proj4as.proj.IProjection"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjAea"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjAeqd"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjEqc"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjEqdc"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjEqui"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjGauss"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjGstmerc"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjLaea"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjLcc"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjLonglat"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjMerc"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjMill"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjMoll"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjNzmg"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjOmerc"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjOrtho"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjParams"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjSinu"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjSoMerc"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjStere"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjSterea"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjTmerc"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjUtm"/>
+    <classEntry path="org.openscales.proj4as.proj.ProjVandg"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
 </flexLibProperties>
