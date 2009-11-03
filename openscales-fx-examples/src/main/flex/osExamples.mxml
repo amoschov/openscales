@@ -43,7 +43,7 @@
 				setOSdescription();
 				expandTree();
 				// Define the default example
-				tree.selectedIndex = 1;
+				tree.selectedIndex = 4;
 				updateSelectedExample();
 			}
 			
@@ -104,7 +104,7 @@
 				
 				<category label="Configure the map">
 					<example viewStack="panZoom" label="Pan &amp; zoom" description="The map displayed is OpenStreetMap Mapnik (EPSG:900913).\nMove the map using drag or N/S/E/W buttons.\nZoom in/out using the mouse wheel, the scale slider, the +/- buttons above and below the slider or the zoom-box button.\nThe coordinates of the mouse cursor are displayed as LongLat." />
-					<example viewStack="layersManager" label="Manage the layers" description="Choose a base layer using the combo-box.\nChange the order of the overlays using the up/down buttons or draging an overlay.\nSet the opacity of each layer (base layer or overlay) using its slider." />
+					<example viewStack="layersManager" label="Manage the layers" description="Choose a base layer using the combo-box.\nChange the order of the overlays using the up/down buttons or draging an overlay.\nSet the opacity of each layer (base layer or overlay) using its slider.\nThe POI layer is only visible when the full name of the states are displayed using Mapnik as the base layer: zoom in one time." />
 					<example viewStack="capabilities" label="Add layers dynamically" description="Specify a WFS a server, then click on the 'Go!' button to display all the WFS layers available.\nSelect a layer name to have its description.\nDouble-click to add the layer to the map ; for instance topp:states draws the United States (be patient, this will take few seconds).\nYou can modify the style of the layer you add.\n Try to add the same layer twice, a modal popup is displayed.\nThe layers manager is automatically updated." />
 					<example viewStack="styleManager" label="Style vector layers" description="Example not efficient : AT WORK" />
 				</category>

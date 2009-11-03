@@ -4,6 +4,9 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.layer.Layer;
+			import org.openscales.core.layer.osm.Mapnik;
+			import org.openscales.core.layer.osm.OSM;
 			import org.openscales.core.style.Style;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
@@ -15,7 +18,7 @@
 	</mx:Script>
 	
 	<os:Map id="fxmap" width="100%" height="100%"
-		zoom="4" lon="-100" lat="30"
+		zoom="4" lon="-8238609.0" lat="4969938.0"
 		proxy="http://openscales.org/proxy.php?url=">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />		
@@ -54,7 +57,8 @@
 			version="1.0.0"
 			useCapabilities="true"
 			capabilitiesVersion="1.0.0"
-			style="{Style.getDefaultPointStyle()}">
+			style="{Style.getDefaultPointStyle()}"
+			maxResolution="{OSM.DEFAULT_MAX_RESOLUTION/Math.pow(2,5)}" numZoomLevels="{Layer.DEFAULT_NUM_ZOOM_LEVELS-5}">
 		</os:WFS>
 		
 	</os:Map>
