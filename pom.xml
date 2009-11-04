@@ -179,6 +179,7 @@
 					<targetPlayer>${flex.player.version}.0.0</targetPlayer>
 					<headlessServer>true</headlessServer>
 					<outputDirectory>${project.build.directory}/site/asdoc</outputDirectory>
+					<testTimeout>10000</testTimeout>
 				</configuration>
 			</plugin>
 			<plugin>
