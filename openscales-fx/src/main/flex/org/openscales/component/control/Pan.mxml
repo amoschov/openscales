@@ -4,6 +4,8 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
+			import org.openscales.core.basetypes.LonLat;
 			
 			[Bindable] private var _toolTipNorth:String = "Move the map to the North direction";
 			[Bindable] private var _toolTipSouth:String = "Move the map to the South direction";
@@ -13,18 +15,34 @@
 			public var DELTA_PX:Number = 100; // TODO: should be an attribute of the control and depending on the size of the map by default
 						
 			public function onButtonClick(event:MouseEvent):void {
+				
+			var oldCenter:LonLat = this.map.center;
+			var deltaX:Number = 0;
+			var deltaY:Number = 0;
+
 				if(event.currentTarget==this.upButton) {
-					this.map.pan(0, -this.DELTA_PX, true);
+					//this.map.pan(0, -this.DELTA_PX, true);
+			 		deltaY = -DELTA_PX;
+			
 				}
 				else if(event.currentTarget==this.rightButton) {
-					this.map.pan(this.DELTA_PX, 0, true);
+					//this.map.pan(this.DELTA_PX, 0, true);
+					deltaX = DELTA_PX;
+					
 				}
 				else if(event.currentTarget==this.downButton) {
-					this.map.pan(0, this.DELTA_PX, true);
+					//this.map.pan(0, this.DELTA_PX, true);
+					deltaY = DELTA_PX;
+					
 				}
 				else if(event.currentTarget==this.leftButton) {
-					this.map.pan(-this.DELTA_PX, 0, true);
+					//this.map.pan(-this.DELTA_PX, 0, true);
+					deltaX = -DELTA_PX;
+					
 				}
+				// update position
+				var newPosition:LonLat = new LonLat(oldCenter.lon + deltaX * this.map.resolution , oldCenter.lat - deltaY * this.map.resolution);
+				this.map.center = newPosition;
 			}
 			
 			public function set toolTipNorth(value:String):void{
