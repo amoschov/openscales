@@ -177,7 +177,7 @@
 				</dependencies>
 				<configuration>
 					<targetPlayer>${flex.player.version}.0.0</targetPlayer>
-					<testFailureIgnore>true</testFailureIgnore>
+					<headlessServer>true</headlessServer>
 					<outputDirectory>${project.build.directory}/site/asdoc</outputDirectory>
 				</configuration>
 			</plugin>
