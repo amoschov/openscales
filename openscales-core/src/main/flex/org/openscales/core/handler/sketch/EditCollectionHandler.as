@@ -169,7 +169,8 @@ package org.openscales.core.handler.sketch
 		 }
 		 public function createPointUndertheMouse(evt:FeatureEvent):void{
 		 	var vectorfeature:VectorFeature=evt.feature as VectorFeature;
-		 	if(vectorfeature!=null && vectorfeature.geometry is Collection){
+		 	
+		 	if(vectorfeature.layer==_layerToEdit && vectorfeature!=null && vectorfeature.geometry is Collection){
 		 		var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
 				//drawing equals false if the mouse is too close from Virtual vertice
 				var drawing:Boolean=true;
