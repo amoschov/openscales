@@ -42,8 +42,7 @@ package org.openscales.fx
 		private var _map:Map;
 		private var _popupContainer:Container;
 		private var _zoom:Number = NaN;
-		private var _lon:Number = NaN;
-		private var _lat:Number = NaN;
+		private var _centerLonLat:LonLat = null;
 		private var _creationHeight:Number = NaN;
 		private var _creationWidth:Number = NaN;
 		private var _proxy:String = "";
@@ -209,10 +208,13 @@ package org.openscales.fx
 			}
 						
 			// Set both center and zoom to avoid invalid request set when we define both separately
-			var center:LonLat = null;
-			if(!isNaN(this._lon) && !isNaN(this._lat))
-				center = new LonLat(this._lon, this._lat);
-			this._map.setCenter(center, this._zoom);
+			var mapCenter:LonLat = this._centerLonLat;
+			if (mapCenter && this._map.baseLayer) {
+				mapCenter.transform(new ProjProjection("EPSG:4326"), this._map.baseLayer.projection);
+			}
+			if (mapCenter || (! isNaN(this._zoom))) {
+				this._map.setCenter(mapCenter, this._zoom);
+			}
 			
 			var extentDefined:Boolean = false;
 			for(i=0; (!extentDefined) && (i<this.rawChildren.numChildren); i++) {
@@ -298,12 +300,19 @@ package org.openscales.fx
 			this._zoom = value;
 		}
 		
-		public function set lon(value:Number):void {
-			this._lon = value;
-		}
-		
-		public function set lat(value:Number):void {
-			this._lat = value;
+		/**
+		 * Set the center of the map using its longitude and its latitude.
+		 * 
+		 * @param value a string of two coordinates separated by a coma, in
+		 * WGS84 = EPSG:4326 only (not in the SRS of the base layer) !
+		 */
+		public function set centerLonLat(value:String):void {
+			var strCenterLonLat:Array = value.split(",");
+			if (strCenterLonLat.length != 2) {
+				Trace.error("Map.centerLonLat: invalid number of components");
+				return ;
+			}
+			_centerLonLat = new LonLat(Number(strCenterLonLat[0]), Number(strCenterLonLat[1]));
 		}
 		
 		override public function set width(value:Number):void {

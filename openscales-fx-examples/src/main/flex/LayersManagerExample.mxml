@@ -18,7 +18,7 @@
 	</mx:Script>
 	
 	<os:Map id="fxmap" width="100%" height="100%"
-		zoom="4" lon="-8238609.0" lat="4969938.0"
+		zoom="4" centerLonLat="-74.011,40.710"
 		proxy="http://openscales.org/proxy.php?url=">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />		

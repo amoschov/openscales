@@ -19,7 +19,7 @@
 	<!-- Keep proxy since there is a blocking bug in Firefox at referer level
 		 https://bugzilla.mozilla.org/show_bug.cgi?id=410904 -->
 	<os:Map id="fxmap" width="100%" height="100%"
-		zoom="6" lon="374928" lat="5001520"
+		zoom="6" centerLonLat="4.833,45.767"
 		proxy="http://openscales.org/proxy.php?url=">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />

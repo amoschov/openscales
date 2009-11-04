@@ -499,8 +499,7 @@ package org.openscales.core
 					bitmapTransition.x = bx;
 					bitmapTransition.y = by;
 				} 
-			}  
-
+			}
 		}
 
 		/**
