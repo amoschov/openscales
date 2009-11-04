@@ -278,7 +278,6 @@ package org.openscales.core.layer
 				// larger range of resolutions for the map. 
 			}
 			// Return the zoom level depending on the current configuration of the map
-Trace.debug("minZoomLevel("+this.name+"): "+this._minZoomLevel+" => "+level+"  ;  map.zoom="+this.map.zoom+" ; layerRes="+this.resolutions+" ; mapRes="+this.map.baseLayer.resolutions);
 			return level;
 		}
 		
