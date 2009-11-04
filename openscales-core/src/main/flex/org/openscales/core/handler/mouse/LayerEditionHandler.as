@@ -183,7 +183,7 @@ package org.openscales.core.handler.mouse
 					}
 					//We had point and virtual vertice
 				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
-					if(vectorfeature is PointFeature /*&& vectorfeature.isEditionFeature*/){
+					if(vectorfeature is PointFeature && vectorfeature.isEditionFeature){
 						this._featureclickhandler.addControledFeature(vectorfeature);
 					}
 				}
