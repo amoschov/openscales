@@ -370,30 +370,30 @@ Trace.debug("maxZoomLevel("+this.name+"): "+this._maxZoomLevel+" => "+level);
 		}
 
 		public function get maxResolution():Number {
-			var maxResolution:Number = NaN;
+			var maxRes:Number = NaN;
 			if (this.resolutions && (this.resolutions.length > 0)) {
 				// By default, the max resolution is used
-				maxResolution = this.resolutions[0];
+				maxRes = this.resolutions[0];
 				// If a maxZoomLevel is defined and is valid, we use it
 				if (!isNaN(this._maxZoomLevel)) {
-					maxResolution = this.resolutions[(this.resolutions.length - 1) - this._maxZoomLevel];
+					maxRes = this.resolutions[(this.resolutions.length - 1) - this._maxZoomLevel];
 				}		
 			} 
-			return maxResolution;
+			return maxRes;
 		}
 
 		
 		public function get minResolution():Number {
-			var minResolution:Number = NaN;		
+			var minRes:Number = NaN;		
 			if (this.resolutions && (this.resolutions.length > 0)) {
 				// By default, the min resolution is used
-				minResolution = this.resolutions[this.resolutions.length - 1];
+				minRes = this.resolutions[this.resolutions.length - 1];
 				// If a minZoomLevel is defined and is valid, we use it
 				if (!isNaN(this._minZoomLevel)) {
-					minResolution = this.resolutions[(this.resolutions.length - 1) - this._minZoomLevel];
+					minRes = this.resolutions[(this.resolutions.length - 1) - this._minZoomLevel];
 				}				
 			} 
-			return minResolution;
+			return minRes;
 		}
 
 		/**
