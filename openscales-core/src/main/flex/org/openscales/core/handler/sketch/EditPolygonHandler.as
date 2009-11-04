@@ -83,10 +83,10 @@ package org.openscales.core.handler.sketch
 		 		point2=parentgeom.componentByIndex(parentgeom.componentsLength-1) as Point;
 		 		}
 			}
-			else if(indexOfFeatureCurrentlyDrag==parentgeom.componentsLength-1){
+			else if(indexOfFeatureCurrentlyDrag==parentgeom.componentsLength){
 				if(pointUnderTheMouse){
 		 			point1=parentgeom.componentByIndex(indexOfFeatureCurrentlyDrag-1) as Point;
-		 			point2=parentgeom.componentByIndex(indexOfFeatureCurrentlyDrag) as Point;
+		 			point2=parentgeom.componentByIndex(0) as Point;
 		 		}
 		 		else{
 				point1=parentgeom.componentByIndex(0) as Point;

@@ -146,8 +146,8 @@ package org.openscales.core.feature
 			}
 			else if(arrayResult.length>1){
 				//There is at less 2 segments	
-				//We test if this is followers segments
-				if((arrayResult[0][1]+1==arrayResult[1][1]) ||(arrayResult[0][1]==1 && arrayResult[1][1]==collection.componentsLength-1)){
+				//We test if there are followers segments
+				//if((arrayResult[1][1]+1==arrayResult[2][1])||(arrayResult[0][1]+1==arrayResult[1][1]) ||(arrayResult[0][1]==1 && arrayResult[1][1]==collection.componentsLength)){
 					distanceArray=new Array();
 					for(var k:int=0;k<arrayResult.length;k++){
 						var pointA:Point=(arrayResult[k][0] as LineString).componentByIndex(0) as Point;
@@ -179,8 +179,8 @@ package org.openscales.core.feature
 						return distanceArray[0][1];
 					}
 					else if(distanceArray.length==1) return distanceArray[0][1];
-				}
-				else return arrayResult[0][1];
+				//}
+				//else return arrayResult[0][1];
 				
 			}
 			return -1;

@@ -1,5 +1,6 @@
 package org.openscales.core.handler.mouse
 {
+	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	
@@ -51,6 +52,7 @@ package org.openscales.core.handler.mouse
 		
 		private var _stopDrag:Function=null;
 		
+		
 		public function FeatureClickHandler(map:Map=null, active:Boolean=false)
 		{
 			super(map, active);
@@ -99,7 +101,12 @@ package org.openscales.core.handler.mouse
 			var vectorFeature:VectorFeature=evt.feature as VectorFeature;
 			if(vectorFeature!=null)this._StartPixel=new Pixel(evt.feature.layer.mouseX ,evt.feature.layer.mouseY);
 			this._featureEvent=evt;
+			//This function is used in  the case mouse is not on the feature
+			//and the drop function is not launched
+			this.map.addEventListener(MouseEvent.MOUSE_UP,this.dropMouseUp);
+			
 			this.dragfeatureStart(evt);
+			
 		}
 
 		/**
@@ -187,8 +194,18 @@ package org.openscales.core.handler.mouse
 		//	if(vectorfeature.isEditionFeature)this.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,vectorfeature));
 			if(this._stopDrag!=null){
 				this._stopDrag(event);
+				
+				}
 				this._isdragging=false;
-				} 
+				_featureEvent=null; 
+			}
+		}
+		public function dropMouseUp(evt:MouseEvent):void{
+			if(_featureEvent!=null && _isdragging){
+				if(this._stopDrag!=null){
+				this._stopDrag(new FeatureEvent(FeatureEvent.FEATURE_DRAG_STOP,_featureEvent.feature));
+				this._isdragging=false;
+				}
 			}
 		}
 		public function get doubleclick():Function{

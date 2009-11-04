@@ -1,5 +1,6 @@
 package org.openscales.core.handler.sketch
 {
+	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
@@ -52,6 +53,19 @@ package org.openscales.core.handler.sketch
 		 * Single id of the polygon
 		 */
 		private var id:Number = 0;
+		
+		/**
+		 * The container of the temporary line
+		 */
+		private var _drawContainer:Sprite = new Sprite();
+		/**
+		 * position of the first point drawn
+		 * */
+		private var _firstPointPixel:Pixel=null;
+		/**
+		 * position of the last point drawn
+		 * */
+		private var _lastPointPixel:Pixel=null;
 
 		/**
 		 * Constructor of the polygon handler
@@ -81,9 +95,10 @@ package org.openscales.core.handler.sketch
 			if (drawLayer != null) {
 
 				var name:String = "polygon."+id.toString(); id++;
-				
+				_drawContainer.graphics.clear();
 				//we determine the point where the user clicked
 				var pixel:Pixel = new Pixel(drawLayer.mouseX ,drawLayer.mouseY);
+				this._lastPointPixel= new Pixel(drawLayer.mouseX ,drawLayer.mouseY);
 				var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
 				//manage the case where the layer projection is different from the map projection
 				if(this.drawLayer.projection.srsCode!=this.map.baseLayer.projection.srsCode)
@@ -95,7 +110,7 @@ package org.openscales.core.handler.sketch
 				if(newFeature) {					
 					 lring = new LinearRing([point]);
 					 polygon = new Polygon([lring]);
-					
+					this._firstPointPixel= new Pixel(drawLayer.mouseX ,drawLayer.mouseY);
 				//	var polygonFeature:PolygonFeature = new PolygonFeature(polygon);
 					
 					this._polygonFeature=new PolygonFeature(polygon,null,null,true);
@@ -114,6 +129,7 @@ package org.openscales.core.handler.sketch
 					this._firstPointFeature.unregisterListeners();
 
 					newFeature = false;
+					this.map.addEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryPolygon);
 				}
 				else {
 					drawLayer.removeFeature(this._firstPointFeature);
@@ -129,13 +145,29 @@ package org.openscales.core.handler.sketch
 			drawFinalPoly();
 		}
 		
+		
+		public function drawTemporaryPolygon(event:MouseEvent):void{
+			//position of the last point drawn
+			
+			if(this._firstPointPixel.x!=this._lastPointPixel.x || this._lastPointPixel.y!=this._firstPointPixel.y ){
+			
+			_drawContainer.graphics.clear();
+			_drawContainer.graphics.beginFill(0x00ff00,0.5);
+			_drawContainer.graphics.lineStyle(2, 0x00ff00);		
+			_drawContainer.graphics.moveTo(map.mouseX, map.mouseY);
+			_drawContainer.graphics.lineTo(this._firstPointPixel.x, this._firstPointPixel.y);
+			_drawContainer.graphics.moveTo(map.mouseX, map.mouseY);
+			_drawContainer.graphics.lineTo(this._lastPointPixel.x, this._lastPointPixel.y);	
+			_drawContainer.graphics.endFill();
+			}
+		}
 		/**
 		 * Finish the polygon
 		 */
 		public function drawFinalPoly():void{
 			//Change style of finished polygon
 			var style:Style = Style.getDefaultSurfaceStyle();
-			
+			_drawContainer.graphics.clear();
 			//We finalize the last feature (of course, it's a polygon)
 			//var feature:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
 			
@@ -161,6 +193,7 @@ package org.openscales.core.handler.sketch
 		override public function set map(value:Map):void {
 			super.map = value;
 			this._dblClickHandler.map = value;
+			if(map!=null) map.addChild(_drawContainer);
 		}
 
 		//Getters and Setters
