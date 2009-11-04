@@ -45,11 +45,16 @@ package org.openscales.core.geometry
 				return false;
 			}
 			
-			var wn:int = 0; // the winding number
-			var p0:Point = (this.componentByIndex(0) as Point); // first vertex of the current edge
+			var wn:int = 0; // the winding number-
+			var p0:Point; // first vertex of the current edge
 			var p1:Point;  // second vertex of the current edge
-			for(var i:int=1; i<this.componentsLength; i++, p0=p1) {
-				p1 = (this.componentByIndex(i) as Point);
+			for(var i:int=0; i<this.componentsLength; i++) {
+				p0 = (this.componentByIndex(i) as Point);
+				if(i==this.componentsLength-1) {
+					p1 = (this.componentByIndex(0) as Point);
+				} else {
+					p1 = (this.componentByIndex(i + 1) as Point);
+				}
 				if (p0.y <= p.y) {
 					if (p1.y > p.y) {
 						if (Geometry.isLeftOrRight(p, p0, p1) > 0) {

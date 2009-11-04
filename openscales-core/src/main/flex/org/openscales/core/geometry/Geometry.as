@@ -167,12 +167,13 @@ package org.openscales.core.geometry
 		
 		/**
 		 * Test if a point is at the left, at the right or on an infinite line.
+		 * Since x and y are number, result is also a number too
 		 * @param p the point to test
 		 * @param p0,p1 two points that define an infinite line
 		 * @return 0 if p is on the line (p0,p1), >0 if p is on its left, <0 if
 		 * p is on its right
 		 */
-		static public function isLeftOrRight(p:Point, p0:Point, p1:Point):int {
+		static public function isLeftOrRight(p:Point, p0:Point, p1:Point):Number {
 			return (p1.x-p0.x)*(p.y-p0.y) - (p.x-p0.x)*(p1.y-p0.y);
 		}
 		
