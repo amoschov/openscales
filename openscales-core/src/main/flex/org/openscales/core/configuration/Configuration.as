@@ -216,7 +216,7 @@ package org.openscales.core.configuration
                         paramsWms = new WMSParams(layers,format,transparent,tiled,styles,bgcolor);
                         switch(type){
                              case "WMSC":{
-                                   Trace.info("Find WMSC Layer : " + xmlNode.name());                                
+                                   Trace.info("Configuration - Find WMSC Layer : " + xmlNode.name());                                
                                    // We create the WMSC Layer with all params
                                    var wmscLayer:WMSC = new WMSC(name,urlWMS,layers,isBaseLayer,visible,projection,proxy);                  	   
                                    wmscLayer.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);             
@@ -226,7 +226,7 @@ package org.openscales.core.configuration
                              }
                                    
                              case "WMS":{
-                                   Trace.info("Find WMS Layer : " + xmlNode.name());
+                                   Trace.info("Configuration - Find WMS Layer : " + xmlNode.name());
                                    // We create the WMS Layer with all params
                                    var wmslayer:WMS = new WMS(name,urlWMS,layers,isBaseLayer,visible,projection,proxy);                       
                                    wmslayer.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);
@@ -237,7 +237,7 @@ package org.openscales.core.configuration
                         }                 
                   }
                   // Case when the layer is WFS 
-                  else if(xmlNode.name()== "WFS"){
+                  else if(xmlNode.name() == "WFS"){
                         
                         //params for layer
                         var urlWfs:String=xmlNode.@url;
@@ -254,7 +254,7 @@ package org.openscales.core.configuration
                   
                         var capabilities:HashMap;
                         
-                        Trace.info("Find WFS Layer : " + xmlNode.name());
+                        Trace.info("Configuration - Find WFS Layer : " + xmlNode.name());
                         
                         // We create the WFS Layer with all params
                         var wfsLayer:WFS = new WFS(name,urlWfs,xmlNode.@typename,isBaseLayer, visible,projection,proxy,useCapabilities,capabilities);
@@ -269,16 +269,16 @@ package org.openscales.core.configuration
                         layer=wfsLayer;
                   }
                   // Case when the layer is Mapnik
-                  else if(xmlNode.name()=="Mapnik"){
-                        Trace.info("Find Mapnik Layer : " + xmlNode.name());
+                  else if(xmlNode.name() == "Mapnik"){
+                        Trace.info("Configuration - Find Mapnik Layer : " + xmlNode.name());
                         // We create the Mapnik Layer with all params
                         var mapnik:Mapnik=new Mapnik("Mapnik", isBaseLayer); // a base layer
                         mapnik.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);
                         layer=mapnik;
                   }
                   // Case when the layer is unknown
-                  else{
-                        Trace.error("Layer unknown or not managed");
+                  else {
+                        Trace.error("Configuration - Layer unknown or not managed : "+xmlNode.name());
                   }
                   
                   if(layer != null){
