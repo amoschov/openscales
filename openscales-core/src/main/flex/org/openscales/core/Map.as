@@ -401,7 +401,7 @@ package org.openscales.core
 		public function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false, resizing:Boolean = false):void {
 			var zoomChanged:Boolean = forceZoomChange || (this.isValidZoomLevel(zoom) && (zoom!=this._zoom));
 						
-			if(lonlat && !this.isValidLonLat(lonlat)) {
+			if (lonlat && !this.isValidLonLat(lonlat)) {
 				Trace.info("Not a valid center, so do nothing");
 				return;
 			}
@@ -511,9 +511,7 @@ package org.openscales.core
 		 * range of zoom levels.
 		 */
 		private function isValidZoomLevel(zoomLevel:Number):Boolean {
-			return ( (! isNaN(zoomLevel)) && (this.baseLayer)
-				&& (zoomLevel >= this.baseLayer.minZoomLevel)
-				&& (zoomLevel <= this.baseLayer.maxZoomLevel) );
+			return (this.baseLayer && this.baseLayer.isVisibleAtZoomLevel(zoomLevel));
 		}
 
 		/**

@@ -352,6 +352,18 @@ Trace.debug("maxZoomLevel("+this.name+"): "+this._maxZoomLevel+" => "+level);
 		}
 
 		/**
+		 * Check if the layer is visible at a specified zoom level.
+		 *
+		 * @param zoomLevel the zoom level to test
+		 * @return Whether or not the layer is visible at the specified zoom level
+		 */
+		public function isVisibleAtZoomLevel(zoomLevel:Number):Boolean {
+			return ( (! isNaN(zoomLevel))
+				&& (zoomLevel >= this.minZoomLevel)
+				&& (zoomLevel <= this.maxZoomLevel) );
+		}
+
+		/**
 		 * Number of zoom levels
 		 */
 		public function get numZoomLevels():Number {
