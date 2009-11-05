@@ -122,17 +122,6 @@ package org.openscales.core.geometry
 				} 
 			}	
 		}
-		//There is some bug with intersects when the geometry is a point 
-		public function intersectPoint(point:Point):Boolean
-		{	
-			// The geometry to intersect is a simple Point, a simple polyline or
-			//   a simple polygon.
-			// First, check if the bounding boxes of the two geometries intersect
-			if (! this.bounds.intersectsBounds(point.bounds)) {
-				return false;
-			}
-			else return true;
-		}
 		
 		/**
      	 * Test for instersection between this LineString and a geometry.
@@ -161,7 +150,7 @@ package org.openscales.core.geometry
 			if (! this.bounds.intersectsBounds(geom.bounds)) {
 				return false;
 			}
-			else return true;
+			
 			// To test if an intersection exists, it is necessary to cut this
 			//   line string and the geometry in segments. The segments are
 			//   oriented so that x1 <= x2 (but we does not known if y1 <= y2
