@@ -71,13 +71,13 @@ package org.openscales.core.handler.mouse
 			var vectorfeature:PointFeature=(event.feature) as PointFeature;
 			if(vectorfeature!=null){
 				
-				//real point feature
-				if(iEditPoint!=null) iEditPoint.dragVerticeStart(event);
+			
 				//The Vertice belongs to a polygon
-				else if	((vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature )&& iEditPolygon!=null) iEditPolygon.dragVerticeStart(event);
+				 if	((vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature )&& iEditPolygon!=null) iEditPolygon.dragVerticeStart(event);
 				//The vertice belongs to a line
 				else if((vectorfeature.editionFeatureParent is LineStringFeature ||  vectorfeature.editionFeatureParent is MultiLineStringFeature)&& iEditPath!=null) iEditPath.dragVerticeStart(event);
 		
+				else if(iEditPoint!=null) iEditPoint.dragVerticeStart(event);
 				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 				
 				
@@ -106,6 +106,7 @@ package org.openscales.core.handler.mouse
 					if(featureParent!=null){			
 		 			//Vertices update
 		 			this._layerToEdit.removeFeatures(featureParent.editionFeaturesArray);
+		 			this._featureclickhandler.removeControledFeatures(featureParent.editionFeaturesArray);
 		 			featureParent.RefreshEditionVertices();
 		 			this._layerToEdit.addFeatures(featureParent.editionFeaturesArray);
 		 			this._featureclickhandler.addControledFeatures(featureParent.editionFeaturesArray);
@@ -152,6 +153,7 @@ package org.openscales.core.handler.mouse
 					if(featureParent!=null){			
 		 			//Vertices update
 		 			this._layerToEdit.removeFeatures(featureParent.editionFeaturesArray);
+		 			this._featureclickhandler.removeControledFeatures(featureParent.editionFeaturesArray);
 		 			featureParent.RefreshEditionVertices();
 		 			this._layerToEdit.addFeatures(featureParent.editionFeaturesArray);
 		 			this._featureclickhandler.addControledFeatures(featureParent.editionFeaturesArray);

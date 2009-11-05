@@ -100,6 +100,7 @@ package org.openscales.core.handler.sketch
 		 			if(this._featureClickHandler!=null){
 		 				//Vertices update
 		 				this._layerToEdit.removeFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
+		 				this._featureClickHandler.removeControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
 		 				vectorfeature.editionFeatureParent.RefreshEditionVertices();
 		 				this._layerToEdit.addFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
 		 				this._featureClickHandler.addControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
@@ -156,7 +157,8 @@ package org.openscales.core.handler.sketch
 		 		if(this._featureClickHandler!=null){
 		 		//Vertices update
 		 			this._layerToEdit.removeFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 			vectorfeature.editionFeatureParent.createEditionVertices();
+		 			this._featureClickHandler.removeControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
+		 			vectorfeature.editionFeatureParent.RefreshEditionVertices();
 		 			this._layerToEdit.addFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
 		 			this._featureClickHandler.addControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
 		 			this._layerToEdit.redraw();
