@@ -72,7 +72,7 @@ package org.openscales.core.handler.mouse
 			if(vectorfeature!=null){
 				
 				//real point feature
-				if(vectorfeature.editionFeatureParentGeometry==null && iEditPoint!=null) iEditPoint.dragVerticeStart(event);
+				if(iEditPoint!=null) iEditPoint.dragVerticeStart(event);
 				//The Vertice belongs to a polygon
 				else if	((vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature )&& iEditPolygon!=null) iEditPolygon.dragVerticeStart(event);
 				//The vertice belongs to a line
@@ -183,7 +183,7 @@ package org.openscales.core.handler.mouse
 					}
 					//We had point and virtual vertice
 				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
-					if(vectorfeature is PointFeature && vectorfeature.isEditionFeature){
+					if(vectorfeature is PointFeature /*&& vectorfeature.isEditionFeature*/){
 						this._featureclickhandler.addControledFeature(vectorfeature);
 					}
 				}

@@ -125,22 +125,27 @@ package org.openscales.core.feature
 		public function getSegmentsIntersection(collection:Collection):int{	
 			
 			var arrayResult:Array=new Array();
-			var tolerance:Number=3;	
+			var tolerance:Number=2;	
 			var LineString1:LineString=null;
 			var intersect:Boolean=true;
 			var distanceArray:Array=new Array();
 			if(collection!=null){
 				for(var i:int=0;i<collection.componentsLength-1;i++){		
 					LineString1=new LineString(new Array(collection.componentByIndex(i) as Point,collection.componentByIndex(i+1) as Point));
-					 intersect=point.bounds.intersectsBounds(LineString1.bounds);
-					if(intersect) arrayResult.push(new Array(LineString1,i+1));
+					 intersect=LineString1.bounds.containsBounds(point.bounds);
+					if(intersect)
+					{
+						intersect=LineString1.bounds.containsBounds(point.bounds);
+						 arrayResult.push(new Array(LineString1,i+1));
+					}
 				}
 			}
 			//The last segment
-			LineString1=new LineString(new Array(collection.componentByIndex(0) as Point,collection.componentByIndex(collection.componentsLength-1) as Point));
-			intersect=point.bounds.intersectsBounds(LineString1.bounds);
-			if(intersect) arrayResult.push(new Array(LineString1,i+1));
-			
+			if((collection.componentByIndex(0) as Point).x !=(collection.componentByIndex(collection.componentsLength-1) as Point).x || (collection.componentByIndex(0) as Point).y !=(collection.componentByIndex(collection.componentsLength-1) as Point).y){
+				LineString1=new LineString(new Array(collection.componentByIndex(0) as Point,collection.componentByIndex(collection.componentsLength-1) as Point));
+				intersect=point.bounds.intersectsBounds(LineString1.bounds);
+				if(intersect) arrayResult.push(new Array(LineString1,i+1));
+			}
 			if(arrayResult.length==1){
 				return arrayResult[0][1];
 			}
@@ -167,16 +172,46 @@ package org.openscales.core.feature
 						
 						var bob:Number=scalarPointPointAPower-scalarAHAB/scalarPointPointAPower;
 						
-						var distance:Number=Math.pow((scalarPointPointAPower-scalarAHAB/scalarPointAPointBPower),1/2);
+						var distanceProjette:Number=Math.pow((scalarPointPointAPower-scalarAHAB/scalarPointAPointBPower),1/2);
+						
+						var scalarPointPointBPower:Number=Math.pow((pointPx.x-pointPxB.x),2)+Math.pow((pointPxB.y-pointPx.y),2);
+						
+						var distanceAPoint:Number=Math.pow(scalarPointPointAPower,1/2); 
+						var distanceBPoint:Number=Math.pow(scalarPointPointBPower,1/2);
+						
+						//var distance:Number=Math.min(distanceProjette,distanceBPoint,distanceAPoint);
+						
+						var distance:Number=Math.min(distanceProjette,distanceBPoint,distanceAPoint);
+						
 						if(distance<tolerance)
 						{
-							distanceArray.push(new Array(distance,arrayResult[k][1]));
+							distanceArray.push(new Array(distance,arrayResult[k][1],distanceAPoint,distanceBPoint,distanceProjette));
 						} 
 					}
 					if(distanceArray.length>1)
-					{
+					{	
 						distanceArray.sort();
-						return distanceArray[0][1];
+						var index:Number=0;
+						for(var i:int=0;i<distanceArray.length-1;i++){
+							if(distanceArray[i][0]<distanceArray[i+1][0]){
+								index=i;
+							}
+							//contiguous segments
+							else if(distanceArray[i][0]==distanceArray[i+1][0]){
+								if(distanceArray[i][0]==distanceArray[i][2]){
+									if(distanceArray[i][3]<distanceArray[i+1][3]) index=i;
+									else index=i+1;
+								}
+								else if(distanceArray[i][0]==distanceArray[i][3]){
+									if(distanceArray[i][2]<distanceArray[i+1][2]) index=i;
+									else index=i+1;
+								}
+								else index=i;
+							}
+						}
+						
+						return distanceArray[index][1];
+						
 					}
 					else if(distanceArray.length==1) return distanceArray[0][1];
 				//}
