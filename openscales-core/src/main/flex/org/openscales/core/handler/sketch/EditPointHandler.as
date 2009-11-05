@@ -12,7 +12,6 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.VectorLayer;
-	import org.openscales.core.style.Style;
 	
 	public class EditPointHandler extends AbstractEditHandler
 	{
@@ -53,7 +52,7 @@ package org.openscales.core.handler.sketch
 			//(event.feature as PointFeature).geometry= new Point(lonlat.lon,lonlat.lat);
 			//this._layerToEdit.redraw();
 			var newPointFeature:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat));
-			newPointFeature.style=Style.getDefaultPointStyle(); 
+			newPointFeature.style=(event.feature as VectorFeature).style;
 			this._layerToEdit.addFeature(newPointFeature);
 			if(this._featureClickHandler!=null)this._featureClickHandler.addControledFeature(newPointFeature);
 			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_STOP,event.feature));
