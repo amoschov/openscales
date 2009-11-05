@@ -97,9 +97,9 @@ package org.openscales.core.handler.sketch
 				var name:String = "polygon."+id.toString(); id++;
 				_drawContainer.graphics.clear();
 				//we determine the point where the user clicked
-				var pixel:Pixel = new Pixel(drawLayer.mouseX ,drawLayer.mouseY);
-				this._lastPointPixel= new Pixel(drawLayer.mouseX ,drawLayer.mouseY);
-				var lonlat:LonLat = this.map.getLonLatFromLayerPx(pixel);
+				var pixel:Pixel = new Pixel(map.mouseX ,map.mouseY);
+				this._lastPointPixel= new Pixel(map.mouseX ,map.mouseY);
+				var lonlat:LonLat = this.map.getLonLatFromMapPx(pixel);
 				//manage the case where the layer projection is different from the map projection
 				if(this.drawLayer.projection.srsCode!=this.map.baseLayer.projection.srsCode)
 				lonlat.transform(this.map.baseLayer.projection,this.drawLayer.projection);
@@ -110,7 +110,7 @@ package org.openscales.core.handler.sketch
 				if(newFeature) {					
 					 lring = new LinearRing([point]);
 					 polygon = new Polygon([lring]);
-					this._firstPointPixel= new Pixel(drawLayer.mouseX ,drawLayer.mouseY);
+					this._firstPointPixel= new Pixel(map.mouseX ,map.mouseY);
 				//	var polygonFeature:PolygonFeature = new PolygonFeature(polygon);
 					
 					this._polygonFeature=new PolygonFeature(polygon,null,null,true);
@@ -129,6 +129,7 @@ package org.openscales.core.handler.sketch
 					this._firstPointFeature.unregisterListeners();
 
 					newFeature = false;
+					
 					this.map.addEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryPolygon);
 				}
 				else {
@@ -136,8 +137,10 @@ package org.openscales.core.handler.sketch
 					//add the point to the linearRing
 					 lring=(this._polygonFeature.geometry as Polygon).componentByIndex(0) as LinearRing;
 					lring.addComponent(point);
-					drawLayer.redraw();
 				}
+				//final redraw layer
+				drawLayer.redraw();
+				
 			}		
 		}
 
@@ -188,6 +191,8 @@ package org.openscales.core.handler.sketch
 			}
 			//the polygon is finished
 			newFeature = true;
+			//remove listener for temporaries polygons
+			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryPolygon); 
 		}
 
 		override public function set map(value:Map):void {
