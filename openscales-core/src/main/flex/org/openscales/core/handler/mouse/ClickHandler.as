@@ -25,12 +25,12 @@ package org.openscales.core.handler.mouse
 		/**
 		 * We use a tolerance to detect a drag or a click
 		 */
-		private var _tolerance:Number=0;
+		private var _tolerance:Number=10;
 
 		/**
 		 * We use a timer to detect double click, without throwing a click before.
 		 */
-		private var _timer:Timer = new Timer(180,1);
+		private var _timer:Timer = new Timer(250,1);
 
 		private var _clickNum:Number = 0;
 
