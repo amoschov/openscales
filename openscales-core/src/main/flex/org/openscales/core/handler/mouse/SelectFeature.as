@@ -3,6 +3,7 @@ package org.openscales.core.handler.mouse
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.MultiPointFeature;
@@ -53,12 +54,12 @@ package org.openscales.core.handler.mouse
 		private var _selectFeatures:Array = new Array();
 
 		/**
-		 * real number of feature in the tab. We don't use lenght, because selectFeatures maybe contain null.
+		 * real number of feature in the array. We don't use lenght, because selectFeatures maybe contain null.
 		 */
 		private var _selectFeaturesLength:int = 0;	
 
 		/**
-		 * iterator for selectFeature (in the tab "selectFeatures")
+		 * iterator for selectFeature (in the array "selectFeatures")
 		 */
 		private var _iteratorFeatures:Number = 0;
 		
@@ -134,6 +135,7 @@ package org.openscales.core.handler.mouse
 		}
 		
 		public function onSelectBySelectBox(pevt:FeatureEvent):void{
+Trace.debug("onSelectBySelectBox "+pevt.features.length);
 			if(!this.hover){
 				this._ctrl = pevt.ctrlPressed;
 				this._featureToSelect = pevt.features;
@@ -183,56 +185,64 @@ package org.openscales.core.handler.mouse
 		}
 		
 		public function onSelectionBySelectBox():void{			
-			 
-			var f:VectorFeature, f1:VectorFeature;
-			//if ctrl key isn't pressed
-			if(!ctrl){
-				//we deselect all features on the layer
-				for(var i:int=0;i<selectFeatures.length;i++){
-					f=selectFeatures[i];
-					if(f != null){
-						if(f.selected){
-							//we check if the feature is not in the selection area
-							var find:Boolean=false;
-							for each (f1 in _featureToSelect){
-								if(f == f1){find=true;break;}
+			var f:VectorFeature;
+			// If ctrl key isn't pressed, first unselect all the currently
+			// selected features that are not reselected
+			if (! ctrl) {
+				var f1:VectorFeature;
+				var found:Boolean = false;
+				var layersToRedraw:Array = new Array();
+				var i:int, j:int;
+				for(i=0; i<selectFeatures.length; i++) {
+					f = selectFeatures[i];
+					if ((f != null) && f.selected) { // FixMe: It should not be possible that a selectFeature is null or not selected !
+						// Check if the feature is reselected in the new area
+						found = false;
+						for each (f1 in _featureToSelect) {
+							if (f == f1) {
+								found = true;
+								break;
 							}
-							//if the features is not in the area, we deselect it.
-							if(!find){
-								f.style = f.originalStyle;
-								f.selected=false;
-								f.layer.redraw();
-								selectFeatures[i]=null;
-								iteratorFeatures--; 
-								selectFeaturesLength--;
+						}
+						// If the feature is not in the area, unselect it.
+						if (! found){
+							selectFeatures[i] = null;
+							iteratorFeatures--; 
+							selectFeaturesLength--;
+							f.style = f.originalStyle;
+							f.selected = false;
+							// Add the layer of the feature to the array of the
+							// layers to redraw (if necessary)
+							found = false;
+							for (j=0; (!found) && (i<layersToRedraw.length); j++) {
+								if (layersToRedraw[j].name == f.layer.name) {
+									found = true;
+								}
+							}
+							if (! found) {
+								layersToRedraw.push(f.layer.name);
 							}
 						}
 					}
 				}
-				//we select features in the area
-				for each (f in _featureToSelect){
-					var featureIterator:VectorFeature;
-					
-					currentfeature = f;
-					if(!currentfeature.selected){
-						iteratorFeatures++;
-						selectFeaturesLength++;
-						changeToSelected();
-					}
-				}			
-			}
-			// ctrl key is pressed
-			else{
-				//We just add all features selected by the area in the global selection
-				for each (f in _featureToSelect){
-					currentfeature = f;
-					if(!currentfeature.selected){
-						iteratorFeatures++;
-						selectFeaturesLength++;
-						changeToSelected();
-					}
+				// Redraw all the layers that have almost one feature unselected
+				for(i=0; i<layersToRedraw.length; i++) {
+					this.map.getLayerByName(layersToRedraw[j]).redraw();
 				}
-			}									
+			}
+			
+			// Add all the new selected features in the global selection
+			var featureIterator:VectorFeature;
+			for each (f in _featureToSelect) {
+				currentfeature = f;
+				if (! currentfeature.selected) {
+					iteratorFeatures++;
+					selectFeaturesLength++;
+					changeToSelected();
+				}
+			}
+var sfList:String=""; for each (f in selectFeatures) { sfList += ((f) ? f.name : "null") + ", "; }
+Trace.debug("onSelectionBySelectBox - ctrl="+ctrl+" => "+sfList);
 		}
 
 		public function onSelection():void{
@@ -306,7 +316,7 @@ package org.openscales.core.handler.mouse
 						currentfeature.layer.redraw();
 						selectFeaturesLength--;
 						
-						//clear the information tab
+						//clear the information array
 						this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.currentfeature));
 						
 					}
@@ -318,9 +328,10 @@ package org.openscales.core.handler.mouse
 
 		/**
 		 * Change the current feature with the select style. The feature is now selected,
-		 * placed in the tab of selected features and the current is copy to the last.
+		 * placed in the array of selected features and the current is copy to the last.
 		 */		
 		public function changeToSelected():void{			
+Trace.debug("changeToSelected "+this.currentfeature.name);
 			this.currentfeature.originalStyle=this.currentfeature.style;
 			
 			// Little test to see if the style to be created should be a point style or a polygon style
