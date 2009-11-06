@@ -88,7 +88,7 @@ package org.openscales.core.handler.mouse
 		}
 
 		override protected function registerListeners():void{
-			if(map!=null){
+			if (this.map){
 				this.map.addEventListener(FeatureEvent.FEATURE_OVER,this.onOver);
 				this.map.addEventListener(FeatureEvent.FEATURE_OUT,this.onOut);
 				this.map.addEventListener(FeatureEvent.FEATURE_CLICK,this.onClick);
@@ -97,7 +97,7 @@ package org.openscales.core.handler.mouse
 		}
 		
 		override protected function unregisterListeners():void{
-			if(map!=null){		
+			if (this.map){		
 				this.map.removeEventListener(FeatureEvent.FEATURE_OVER,this.onOver);
 				this.map.removeEventListener(FeatureEvent.FEATURE_OUT,this.onOut);			
 				this.map.removeEventListener(FeatureEvent.FEATURE_CLICK,this.onClick);
@@ -122,11 +122,10 @@ package org.openscales.core.handler.mouse
 		}
 
 		public function onClick(pevt:FeatureEvent):void{			
-			if(!this.hover){
+			if (! this.hover) {
 				this._ctrl = pevt.ctrlPressed;
 				this.currentfeature = pevt.features[0] as VectorFeature;
-				
-				if(this._select!=null) {
+				if (this._select != null) {
 					this._select(pevt);
 				} else {
 					onSelection();
@@ -134,15 +133,13 @@ package org.openscales.core.handler.mouse
 			}
 		}
 		
-		public function onSelectBySelectBox(pevt:FeatureEvent):void{
+		public function onSelectBySelectBox(pevt:FeatureEvent):void {
 Trace.debug("onSelectBySelectBox "+pevt.features.length);
-			if(!this.hover){
+			if (! this.hover) {
 				this._ctrl = pevt.ctrlPressed;
 				this._featureToSelect = pevt.features;
-
 				this.currentfeature = pevt.features[0] as VectorFeature;
-				
-				if(this._selectBySelectBox!=null) {
+				if (this._selectBySelectBox != null) {
 					this._selectBySelectBox(pevt);
 				} else { 
 					onSelectionBySelectBox();
@@ -241,20 +238,26 @@ Trace.debug("onSelectBySelectBox "+pevt.features.length);
 					changeToSelected();
 				}
 			}
+			
+			// Clear the array of features to select
+			_featureToSelect = null;
 var sfList:String=""; for each (f in selectFeatures) { sfList += ((f) ? f.name : "null") + ", "; }
 Trace.debug("onSelectionBySelectBox - ctrl="+ctrl+" => "+sfList);
 		}
 
 		public function onSelection():void{
+Trace.debug("onSelection");
 			var i:Number = 0;	// to iterate
 			var f:VectorFeature;
 
-			if(selectFeatures == null){selectFeatures = new Array();} 
+			if (selectFeatures == null) {
+				selectFeatures = new Array();
+			} 
 
 			//It's not the first selection
 			if(lastfeature != null){		
 				//Feature is not already selected
-				if(!currentfeature.selected){
+				if (! currentfeature.selected) {
 					//ctrl key isn't pressed
 					if(!ctrl){
 						selectFeaturesLength=0;
