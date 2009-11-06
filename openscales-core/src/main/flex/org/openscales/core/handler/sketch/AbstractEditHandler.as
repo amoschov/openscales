@@ -69,7 +69,8 @@ package org.openscales.core.handler.sketch
 		 	return null;
 		 }
 		 public function featureClick(event:FeatureEvent):void{
-		 	
+		 	event.feature.stopDrag();
+		 	this._layerToEdit.redraw();
 		 }
 		 public function featureDoubleClick(event:FeatureEvent):void{
 		 

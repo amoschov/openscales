@@ -64,11 +64,13 @@ package org.openscales.core.handler.sketch
 		override protected function drawTemporaryFeature(event:MouseEvent):void{
 		 	var pointUnderTheMouse:Boolean=false;
 		 	var parentgeom:Collection=null;
+		 	
 		 	if(this._featureCurrentlyDrag!=null) parentgeom=(this._featureCurrentlyDrag as PointFeature).editionFeatureParentGeometry;
 		 	else{
 		 		parentgeom=EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry;
 		 		pointUnderTheMouse=true;
 		 	}
+		 	if(event.buttonDown){
 		 	var point1:Point=null;
 		 	var point2:Point=null;
 			var point1Px:Pixel=null;
@@ -115,7 +117,11 @@ package org.openscales.core.handler.sketch
 		 		_drawContainer.graphics.moveTo(point2Px.x,point2Px.y);
 		 		_drawContainer.graphics.lineTo(map.mouseX-4, map.mouseY-4);
 		 		_drawContainer.graphics.endFill();
-		 }
+				 }
+		 	}
+		 	else{
+		 		_drawContainer.graphics.clear();
+		 	}
 		 }
 	}
 }

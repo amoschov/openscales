@@ -125,7 +125,7 @@ package org.openscales.core.feature
 		public function getSegmentsIntersection(collection:Collection):int{	
 			
 			var arrayResult:Array=new Array();
-			var tolerance:Number=2;	
+			var tolerance:Number=1;	
 			var LineString1:LineString=null;
 			var intersect:Boolean=false;
 			var distanceArray:Array=new Array();

@@ -78,7 +78,7 @@ package org.openscales.core.handler.mouse
 				else if((vectorfeature.editionFeatureParent is LineStringFeature ||  vectorfeature.editionFeatureParent is MultiLineStringFeature)&& iEditPath!=null) iEditPath.dragVerticeStart(event);
 		
 				else if(iEditPoint!=null) iEditPoint.dragVerticeStart(event);
-				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+				this.map.removeEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
 				
 				
 			}
@@ -112,7 +112,7 @@ package org.openscales.core.handler.mouse
 		 			this._featureclickhandler.addControledFeatures(featureParent.editionFeaturesArray);
 		 			
 					}
-				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+				this.map.addEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
 				this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
 				EditCollectionHandler._pointUnderTheMouse=null;
 				this._layerToEdit.redraw();
@@ -132,6 +132,16 @@ package org.openscales.core.handler.mouse
 					//The vertice belongs to a line
 					else if((vectorfeature.editionFeatureParent is LineStringFeature ||  vectorfeature.editionFeatureParent is MultiLineStringFeature) && iEditPath!=null) iEditPath.featureClick(event);
 					this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+					
+					
+						//This is a bug we redraw the layer
+						this._featureclickhandler.removeControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
+		 				this._layerToEdit.removeFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);	
+		 				vectorfeature.editionFeatureParent.RefreshEditionVertices();
+		 				this._layerToEdit.addFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
+		 				this._featureclickhandler.addControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
+		 				this.map.removeEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
+
 					EditCollectionHandler._pointUnderTheMouse=null;
 				}	 
 		 }
@@ -158,7 +168,7 @@ package org.openscales.core.handler.mouse
 		 			this._layerToEdit.addFeatures(featureParent.editionFeaturesArray);
 		 			this._featureclickhandler.addControledFeatures(featureParent.editionFeaturesArray);
 					}
-					this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+					this.map.addEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
 					this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
 					EditCollectionHandler._pointUnderTheMouse=null;
 					this._layerToEdit.redraw();		
@@ -192,7 +202,7 @@ package org.openscales.core.handler.mouse
 			}
 			if(map!=null){
 			this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,_layerToEdit));
-			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+			this.map.addEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
 			}
 			return true;
 		}
@@ -216,10 +226,10 @@ package org.openscales.core.handler.mouse
 			if(map!=null)
 			{
 				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,_layerToEdit));
-				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+				this.map.removeEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
 			}
 			this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-			EditCollectionHandler._pointUnderTheMouse=null;
+			EditCollectionHandler._pointUnderTheMouse=null; 
 			return true;
 		}
 		
