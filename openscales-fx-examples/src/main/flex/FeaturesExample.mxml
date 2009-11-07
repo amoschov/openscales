@@ -4,6 +4,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.Handler;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 
@@ -133,21 +134,47 @@
 		<os:Mapnik name="Mapnik" isBaseLayer="true"
 				   proxy="http://openscales.org/proxy.php?url=" />
 		
-		<os:DragHandler />
+		<os:DragHandler id="dragHandler" />
 		<os:WheelHandler />
 		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
 		
 		<!-- Specific layers and handlers of this example -->
 
-		<os:SelectFeature />		
+		<os:SelectFeaturesHandler id="selectFeaturesHandler" creationComplete="{selectFeaturesHandler.handler.active=false;}"/>
 		
 	</os:Map>
 	
 	<!-- Specific tools of this example -->
 	
 	<mx:VBox horizontalAlign="center" x="10" y="10">
-		<os:SelectBoxComponent map="{map}" />
+		<mx:ToggleButtonBar id="buttons" selectedIndex="0">
+			<mx:dataProvider>
+				<mx:Array>
+					<mx:String>Pan</mx:String>
+					<mx:String>Select</mx:String>
+				</mx:Array>
+			</mx:dataProvider>
+			<mx:itemClick>
+				<![CDATA[
+					switch (buttons.selectedIndex) {
+						case 0 :
+							Trace.info("pan mode");
+							selectFeaturesHandler.handler.active = false;
+							dragHandler.handler.active = true;
+							break;
+						case 1 :
+							Trace.info("select mode");
+							dragHandler.handler.active = false;
+							selectFeaturesHandler.handler.active = true;
+							break;
+						default:
+							Trace.info("unknown mode");
+					}
+				]]>
+			</mx:itemClick>
+		</mx:ToggleButtonBar>
+		<!--os:SelectBoxComponent map="{map}" /-->
 		<!--os:UnselectBoxComponent map="{map}" /--> <!-- TODO -->
 	</mx:VBox>
 	
