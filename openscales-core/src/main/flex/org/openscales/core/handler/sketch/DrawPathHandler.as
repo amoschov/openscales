@@ -70,7 +70,7 @@ package org.openscales.core.handler.sketch
 
 		override protected function registerListeners():void{
 			this._dblClickHandler.active = true;
-			this._dblClickHandler.doubleclick = this.mouseDblClick; 
+			this._dblClickHandler.doubleClick = this.mouseDblClick; 
 			this.map.addEventListener(MouseEvent.CLICK, this.drawLine);
 			this.map.addEventListener(MapEvent.ZOOM_END, this.updateZoom);
 		}

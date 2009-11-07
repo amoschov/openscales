@@ -3,151 +3,261 @@ package org.openscales.core.handler.mouse
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
-
+	
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.handler.Handler;
-
+	
 	/**
+	 * ClickHandler detects a click-actions on the map: simple click, double
+	 * click and drag&drop are managed.
 	 *
-	 * ClickHandler detects a click on the map
-	 * Create a new instance of  ClickHandler with the constructor
-	 *
-	 * To use this handler, it's  necessary to add it to the map
-	 * ClickHandler is a pure ActionScript class. Flex wrapper and components can be found in the
-	 * openscales-fx module FxClickHandler.
-	 *
+	 * To use this handler, it's  necessary to add it to the map.
+	 * It is a pure ActionScript class. Flex wrapper and components can be found
+	 * in the openscales-fx module (same name prefixed by Fx).
 	 */
 	public class ClickHandler extends Handler
 	{
-		private var _StartPixel:Pixel;
-
 		/**
-		 * We use a tolerance to detect a drag or a click
-		 */
-		private var _tolerance:Number=10;
-
-		/**
-		 * We use a timer to detect double click, without throwing a click before.
-		 */
-		private var _timer:Timer = new Timer(250,1);
-
-		private var _clickNum:Number = 0;
-
-		private var _mouseEvent:MouseEvent = null;
-
-		/**
-		 * callback function oneclick(evt:MouseEvent):void
+		 * Callback function click(evt:MouseEvent):void
+		 * This function is called after a MouseUp event (in the case of a
+		 * simple click)
 		 */
 		private var _click:Function = null;
+		
 		/**
-		 * callback function doubleClick(evt:MouseEvent):void
+		 * Callback function doubleClick(evt:MouseEvent):void
+		 * This function is called after a MouseUp event (in the case of a
+		 * double click)
 		 */
 		private var _doubleClick:Function = null;
+		
+		/**
+		 * Callback function drag(evt:MouseEvent):void
+		 * This function is called during a MouseMove event (in the case of a
+		 * drag&drop click) ; the function is not called at the MouseDown time.
+		 */
+		private var _drag:Function = null;
+		
+		/**
+		 * Callback function drop(evt:MouseEvent):void
+		 * This function is called after a MouseUp event (in the case of a
+		 * drag&drop click)
+		 */
+		private var _drop:Function = null;
+		
+		/**
+		 * Tolerance (in pixels) used to detect a drag or a click: distance
+		 * between the two positions at mouseDown and MouseUp times.
+		 */
+		private var _tolerance:Number = 5;
+		
+		/**
+		 * Pixel clicked (at the beginning of a drag)
+		 */
+		protected var _startPixel:Pixel = null;
+		
+		/**
+		 * Boolean defining if the mouse is dragging or not
+		 */
+		private var _dragging:Boolean = false;
+		
+		/**
+		 * Timer used to detect a double click without throwing a simple click
+		 */
+		private var _timer:Timer = new Timer(250,1);
+		
+		/**
+		 * Number of click since the begining of the timer.
+		 * It is used to decide if the user has done a simple or a double click.
+		 */
+		private var _clickNum:Number = 0;
+		
+		/**
+		 * Save the MouseEvent of the simple/double/drag click during the time
+		 * needed to know the kind of the click.
+		 */
+		private var _mouseEvent:MouseEvent = null;
+		
 		/**
 		 * ClickHandler constructor
 		 *
-		 * @param map the ClickHandler map
-		 * @param active to determinates if the handler is active
+		 * @param map the map associated to the handler
+		 * @param active boolean defining if the handler is active or not
 		 */
-		public function ClickHandler(map:Map=null, active:Boolean=false)
-		{
+		public function ClickHandler(map:Map=null, active:Boolean=false) {
 			super(map, active);
 		}
-		override protected function registerListeners():void{
-			this.map.addEventListener(MouseEvent.MOUSE_DOWN,this.mouseDown);
-			this.map.addEventListener(MouseEvent.MOUSE_UP,this.mouseUp);
-			_timer.addEventListener(TimerEvent.TIMER, chooseClick);
-		}
-		override protected function unregisterListeners():void{
-			_timer.stop();
-			_timer.removeEventListener(TimerEvent.TIMER, chooseClick);
-			this.map.removeEventListener(MouseEvent.MOUSE_DOWN,this.mouseDown);
-			this.map.removeEventListener(MouseEvent.MOUSE_UP,this.mouseUp);
-		}
-
+		
 		/**
-		 * The MouseDown Listener
+		 * Click function getter and setter
 		 */
-		protected function mouseDown(evt:MouseEvent):void
-		{
-			this._StartPixel=new Pixel(evt.stageX,evt.stageY);
-		}
-
-		/**
-		 * MouseUp Listener
-		 */
-		protected function mouseUp(evt:MouseEvent):void
-		{
-			if(this._StartPixel!=null){
-				//dx and dy variables are use to know if there was a drag or a click
-				var dx :Number = Math.abs(this._StartPixel.x-evt.stageX);
-				var dy :Number = Math.abs(this._StartPixel.y-evt.stageY);
-				if(dx<=this.tolerance && dy<=this.tolerance)
-				{
-					this.mouseClick(evt);
-				}
-			}		
-		}
-
-		private function mouseClick(evt:MouseEvent):void
-		{
-			_mouseEvent = evt;
-			_clickNum++;
-			_timer.start() 
-		}
-		/**
-		 *To know if there was a double click or a click
-		 */
-		private function chooseClick(event:TimerEvent):void{
-			if(_clickNum == 1) {
-				if(_click != null)
-					_click(_mouseEvent);
-				_timer.stop()
-				_clickNum=0
-			}    
-			else {
-				if(_doubleClick != null)
-					_doubleClick(_mouseEvent);
-				_timer.stop()
-				_clickNum=0
-			}
-		}
-		// Getters & setters as3
-		/**
-		 * Click Function
-		 */
-		public function set click(Click:Function):void
-		{
-			this._click=Click;
-		}
-		public function set doubleclick(doubleclick:Function):void
-		{
-			this._doubleClick=doubleclick;
-		}
-		/**
-		 * Double Click Function
-		 */
-		public function get click():Function
-		{
+		public function get click():Function {
 			return this._click;
 		}
-		public function get doubleclick():Function
-		{
+		public function set click(value:Function):void {
+			this._click = value;
+		}
+		
+		/**
+		 * Double click function getter and setter
+		 */
+		public function get doubleClick():Function {
 			return this._doubleClick;
 		}
-		/**
-		 * We use a tolerance to detect a drag or a click
-		 */
-		public function set tolerance(tolerance:Number):void
-		{
-			this._tolerance=tolerance;
+		public function set doubleClick(value:Function):void {
+			this._doubleClick = value;
 		}
-		public function get tolerance():Number
-		{
+		
+		/**
+		 * Drag function getter and setter
+		 */
+		public function get drag():Function {
+			return this._drag;
+		}
+		public function set drag(value:Function):void {
+			this._drag = value;
+		}
+		
+		/**
+		 * Drop function getter and setter
+		 */
+		public function get drop():Function {
+			return this._drop;
+		}
+		public function set drop(value:Function):void {
+			this._drop = value;
+		}
+		
+		/**
+		 * Tolerance (in pixels) used to detect a drag or a click.
+		 * The default value is 5 pixels.
+		 */
+		public function get tolerance():Number {
 			return this._tolerance;
 		}
-
+		public function set tolerance(value:Number):void {
+			this._tolerance = value;
+		}
+		
+		/**
+		 * Add the listeners to the associated map
+		 */
+		override protected function registerListeners():void {
+			// Listeners of the super class
+			super.registerListeners();
+			// Listeners of the internal timer
+			this._timer.addEventListener(TimerEvent.TIMER, useRightCallback);
+			// Listeners of the associated map
+			if (this.map) {
+				this.map.addEventListener(MouseEvent.MOUSE_DOWN,this.mouseDown);
+				this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.mouseMove);
+				this.map.addEventListener(MouseEvent.MOUSE_UP,this.mouseUp);
+			}
+		}
+		
+		/**
+		 * Remove the listeners to the associated map
+		 */
+		override protected function unregisterListeners():void {
+			// Listeners of the associated map
+			if (this.map) {
+				this.map.removeEventListener(MouseEvent.MOUSE_DOWN,this.mouseDown);
+				this.map.removeEventListener(MouseEvent.MOUSE_MOVE,this.mouseMove);
+				this.map.removeEventListener(MouseEvent.MOUSE_UP,this.mouseUp);
+			}
+			this._startPixel = null;
+			this._dragging = false;
+			// Listeners of the internal timer
+			this._timer.removeEventListener(TimerEvent.TIMER, useRightCallback);
+			this._timer.stop();
+			this._clickNum = 0;
+			this._mouseEvent = null;
+			// Listeners of the super class
+			super.unregisterListeners();
+		}
+		
+		/**
+		 * The MouseDown Listener
+		 * @param evt the MouseEvent
+		 */
+		protected function mouseDown(evt:MouseEvent):void {
+			if (evt) {
+				this._startPixel = new Pixel(evt.currentTarget.mouseX, evt.currentTarget.mouseY);
+				this._dragging = false;
+			}
+		}
+		
+		/**
+		 * The MouseMove Listener
+		 * @param evt the MouseEvent
+		 */
+		protected function mouseMove(evt:MouseEvent):void {
+			if (evt) {
+				if ((! this._dragging) && (this._startPixel != null)) {
+					// Compute the distance to the _startPixel at the MouseDown time
+					var dx:Number = Math.abs(this._startPixel.x-evt.currentTarget.mouseX);
+					var dy:Number = Math.abs(this._startPixel.y-evt.currentTarget.mouseY);
+					if ((dx>this.tolerance) || (dy>this.tolerance)) {
+						this._dragging = true;
+					}
+				}
+				// Event if the distance to the _startPixel is currently lower
+				// than the tolerance, if the _dragging mode is active we have
+				// to call the _drag function if it is defined.
+				if (this._dragging && (this.drag != null)) {
+					// Use the callback function for a drag click
+					this.drag(evt);
+				}
+			}
+		}
+		
+		/**
+		 * MouseUp Listener
+		 * @param evt the MouseEvent
+ 		 */
+		protected function mouseUp(evt:MouseEvent):void {
+			if (evt) {
+				if (this._dragging) {
+					if (this.drop != null) {
+						// Use the callback function for a drop click
+						this.drop(evt);
+					}
+				}
+				else if (this._startPixel != null) {
+					// It was not a drag, but was it a simple or a double click ?
+					// Just wait for a timer duration to know and call the right function.
+					this._mouseEvent = evt;
+					this._clickNum++;
+					this._timer.start();
+				}
+			}
+			this._startPixel = null;
+			this._dragging = false;
+		}
+		
+		/**
+		 * Define if there was a double click or a simple click (drag&drop is
+		 * managed before if needed).
+		 * @param evt the TimerEvent (not used)
+		 */
+		private function useRightCallback(evt:TimerEvent):void {
+			if (this._clickNum == 1) {
+				if (this.click != null) {
+					// Use the callback function for a simple click
+					this.click(this._mouseEvent);
+				}
+			} else {
+				if (this.doubleClick != null) {
+					// Use the callback function for a double click
+					this.doubleClick(this._mouseEvent);
+				}
+			}
+			this._timer.stop();
+			this._clickNum = 0;
+			this._mouseEvent = null;
+		}
+		
 	}
 }
-

@@ -59,12 +59,10 @@ package org.openscales.component.control
     }
 
 	[Bindable(event="propertyChange")]
-    public function get map():Map
-    {
+    public function get map():Map {
       return this._map;
     }
-    public function set map(value:Map):void
-    {
+    public function set map(value:Map):void {
       this._map = value;
       // Activate the control only if this control has already thrown an Event.COMPLETE
       if(this._isInitialized) {
@@ -74,13 +72,11 @@ package org.openscales.component.control
       dispatchEvent(new Event("propertyChange"));
     }
 
-    public function get active():Boolean
-    {
+    public function get active():Boolean {
       return this._active;
     }
 
-    public function set active(value:Boolean):void
-    {
+    public function set active(value:Boolean):void {
       this._active = value;
     }
 

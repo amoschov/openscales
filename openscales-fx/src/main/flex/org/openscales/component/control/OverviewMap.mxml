@@ -388,6 +388,7 @@
 					setPxBoundsAndDraw(new Bounds(topLeftPixel.x, topLeftPixel.y+size.h, topLeftPixel.x+size.w, topLeftPixel.y));
 					updateMainMapFromRect();
 				} else {
+					// Trace.info is managed by setCenterFromOverview
 					var centerPixel:Pixel = new Pixel(topLeftPixel.x+Math.round(size.w/2), topLeftPixel.y+Math.round(size.h/2));
 					setCenterFromOverview(centerPixel);
 				}

@@ -3,6 +3,8 @@
 	<mx:Script>
 		<![CDATA[
 			import flash.utils.getQualifiedClassName;
+			import mx.effects.easing.Bounce;
+
 			import org.openscales.core.geometry.Geometry;
 			import org.openscales.core.events.DrawingEvent;
 			import org.openscales.core.geometry.MultiPoint;
@@ -22,7 +24,6 @@
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.layer.VectorLayer;
 			import org.openscales.core.basetypes.Bounds;
-			import mx.effects.easing.Bounce;
 			import org.openscales.core.feature.Feature;
 			import org.openscales.core.events.FeatureEvent;
 			import org.openscales.core.basetypes.Pixel;
