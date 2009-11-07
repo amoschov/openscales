@@ -134,7 +134,6 @@ package org.openscales.core.handler.mouse
 		}
 		
 		public function onSelectBySelectBox(pevt:FeatureEvent):void {
-Trace.debug("onSelectBySelectBox "+pevt.features.length);
 			if (! this.hover) {
 				this._ctrl = pevt.ctrlPressed;
 				this._featureToSelect = pevt.features;
@@ -241,12 +240,9 @@ Trace.debug("onSelectBySelectBox "+pevt.features.length);
 			
 			// Clear the array of features to select
 			_featureToSelect = null;
-var sfList:String=""; for each (f in selectFeatures) { sfList += ((f) ? f.name : "null") + ", "; }
-Trace.debug("onSelectionBySelectBox - ctrl="+ctrl+" => "+sfList);
 		}
 
 		public function onSelection():void{
-Trace.debug("onSelection");
 			var i:Number = 0;	// to iterate
 			var f:VectorFeature;
 
@@ -334,7 +330,6 @@ Trace.debug("onSelection");
 		 * placed in the array of selected features and the current is copy to the last.
 		 */		
 		public function changeToSelected():void{			
-Trace.debug("changeToSelected "+this.currentfeature.name);
 			this.currentfeature.originalStyle=this.currentfeature.style;
 			
 			// Little test to see if the style to be created should be a point style or a polygon style
@@ -517,4 +512,3 @@ Trace.debug("changeToSelected "+this.currentfeature.name);
 		} 		
 	}
 }
-
