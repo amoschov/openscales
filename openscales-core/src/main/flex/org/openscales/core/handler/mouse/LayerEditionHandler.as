@@ -32,7 +32,7 @@ package org.openscales.core.handler.mouse
 		private var iEditPath:IEditVectorFeature=null;
 		private var iEditPolygon:IEditVectorFeature=null;
 		
-		private var _featureclickhandler:FeatureClickHandler=null;
+		private var _featureClickHandler:FeatureClickHandler=null;
 		
 		private var _drawContainer:Sprite=new Sprite();
 		
@@ -46,11 +46,11 @@ package org.openscales.core.handler.mouse
 		{
 			//Handler click Management
 			
-			this._featureclickhandler=new FeatureClickHandler(map,active);
-			this._featureclickhandler.click=featureClick;
-			this._featureclickhandler.doubleclick=featureDoubleClick;
-			this._featureclickhandler.startDrag=dragVerticeStart;
-			this._featureclickhandler.stopDrag=dragVerticeStop;
+			this._featureClickHandler=new FeatureClickHandler(map,active);
+			this._featureClickHandler.click=featureClick;
+			this._featureClickHandler.doubleclick=featureDoubleClick;
+			this._featureClickHandler.startDrag=dragVerticeStart;
+			this._featureClickHandler.stopDrag=dragVerticeStop;
 			
 			
 			
@@ -94,7 +94,7 @@ package org.openscales.core.handler.mouse
 					///real point feature
 					if(vectorfeature.editionFeatureParentGeometry==null && iEditPoint!=null){
 						var newfeature:VectorFeature=iEditPoint.dragVerticeStop(event);
-					    this._featureclickhandler.addControledFeature(newfeature);
+					    this._featureClickHandler.addControledFeature(newfeature);
 					} 
 					//The Vertice belongs to a polygon
 					else if	((vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature ) && iEditPolygon!=null) iEditPolygon.dragVerticeStop(event);
@@ -106,10 +106,10 @@ package org.openscales.core.handler.mouse
 					if(featureParent!=null){			
 		 			//Vertices update
 		 			this._layerToEdit.removeFeatures(featureParent.editionFeaturesArray);
-		 			this._featureclickhandler.removeControledFeatures(featureParent.editionFeaturesArray);
+		 			this._featureClickHandler.removeControledFeatures(featureParent.editionFeaturesArray);
 		 			featureParent.RefreshEditionVertices();
 		 			this._layerToEdit.addFeatures(featureParent.editionFeaturesArray);
-		 			this._featureclickhandler.addControledFeatures(featureParent.editionFeaturesArray);
+		 			this._featureClickHandler.addControledFeatures(featureParent.editionFeaturesArray);
 		 			
 					}
 				this.map.addEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
@@ -135,11 +135,11 @@ package org.openscales.core.handler.mouse
 					
 					
 						//This is a bug we redraw the layer
-						this._featureclickhandler.removeControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
+						this._featureClickHandler.removeControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
 		 				this._layerToEdit.removeFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);	
 		 				vectorfeature.editionFeatureParent.RefreshEditionVertices();
 		 				this._layerToEdit.addFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 				this._featureclickhandler.addControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
+		 				this._featureClickHandler.addControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
 		 				this.map.removeEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
 
 					EditCollectionHandler._pointUnderTheMouse=null;
@@ -163,10 +163,10 @@ package org.openscales.core.handler.mouse
 					if(featureParent!=null){			
 		 			//Vertices update
 		 			this._layerToEdit.removeFeatures(featureParent.editionFeaturesArray);
-		 			this._featureclickhandler.removeControledFeatures(featureParent.editionFeaturesArray);
+		 			this._featureClickHandler.removeControledFeatures(featureParent.editionFeaturesArray);
 		 			featureParent.RefreshEditionVertices();
 		 			this._layerToEdit.addFeatures(featureParent.editionFeaturesArray);
-		 			this._featureclickhandler.addControledFeatures(featureParent.editionFeaturesArray);
+		 			this._featureClickHandler.addControledFeatures(featureParent.editionFeaturesArray);
 					}
 					this.map.addEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
 					this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
@@ -196,7 +196,7 @@ package org.openscales.core.handler.mouse
 					//We had point and virtual vertice
 				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
 					if(vectorfeature is PointFeature /*&& vectorfeature.isEditionFeature*/){
-						this._featureclickhandler.addControledFeature(vectorfeature);
+						this._featureClickHandler.addControledFeature(vectorfeature);
 					}
 				}
 			}
@@ -212,7 +212,7 @@ package org.openscales.core.handler.mouse
 			{
 				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
 					if(vectorfeature.isEditionFeature){
-						this._featureclickhandler.removeControledFeature(vectorfeature);
+						this._featureClickHandler.removeControledFeature(vectorfeature);
 						this._layerToEdit.removeFeature(vectorfeature);
 					}
 				}
@@ -229,7 +229,7 @@ package org.openscales.core.handler.mouse
 				this.map.removeEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
 			}
 			this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-			EditCollectionHandler._pointUnderTheMouse=null; 
+			EditCollectionHandler._pointUnderTheMouse=null;
 			return true;
 		}
 		
@@ -242,7 +242,7 @@ package org.openscales.core.handler.mouse
 					 if	((vectorfeature is PolygonFeature ||  vectorfeature is MultiPolygonFeature) && iEditPolygon!=null) (iEditPolygon as EditCollectionHandler).createPointUndertheMouse(evt);
 				//The vertice belongs to a line
 					else if((vectorfeature is LineStringFeature ||  vectorfeature is MultiLineStringFeature) && iEditPath!=null) (iEditPath as EditCollectionHandler).createPointUndertheMouse(evt);
-					if(EditCollectionHandler._pointUnderTheMouse!=null)this._featureclickhandler.addControledFeature(EditCollectionHandler._pointUnderTheMouse);
+					if(EditCollectionHandler._pointUnderTheMouse!=null)this._featureClickHandler.addControledFeature(EditCollectionHandler._pointUnderTheMouse);
 		 }
 		
 		//getters && setters
@@ -265,7 +265,7 @@ package org.openscales.core.handler.mouse
 		 	if(value!=null){
 		 		super.map=value;
 		 		if(iEditPoint!=null)(this.iEditPoint as AbstractEditHandler).map=this.map;
-		 		this._featureclickhandler.map=value;
+		 		this._featureClickHandler.map=value;
 		 		this.map.addChild(_drawContainer);
 		 	}
 		 }
@@ -274,7 +274,7 @@ package org.openscales.core.handler.mouse
 		override public function set active(value:Boolean):void{
 			super.active=value;
 			if(iEditPoint!=null)  (this.iEditPoint as AbstractEditHandler).active=value;
-			this._featureclickhandler.active=active;
+			this._featureClickHandler.active=active;
 			if(value) EditionModeStart();
 			else EditionModeStop();
 		}

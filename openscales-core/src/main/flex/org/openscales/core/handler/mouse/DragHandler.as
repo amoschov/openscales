@@ -11,14 +11,11 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.Trace;
 
 	/**
+	 * DragHandler allows to drag (pan) the map
 	 *
-	 * DragHandler is use to drag the map
-	 * Create a new instance of  DragHandler with the constructor
-	 *
-	 * To use this handler, it's  necessary to add it to the map
-	 * DragHandler is a pure ActionScript class. Flex wrapper and components can be found in the
-	 * openscales-fx module FxClickHandler.
-	 *
+	 * To use this handler, it's  necessary to add it to the map.
+	 * It is a pure ActionScript class. Flex wrapper and components can be found
+	 * in the openscales-fx module (same name prefixed by Fx).
 	 */
 	public class DragHandler extends Handler
 	{

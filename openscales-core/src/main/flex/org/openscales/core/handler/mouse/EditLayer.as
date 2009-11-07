@@ -39,7 +39,7 @@ package org.openscales.core.handler.mouse
 		 /**
 		 * Click handler to detect click on the feature
 		 * */
-		 protected var _featureclickHandler:FeatureClickHandler;
+		 protected var _featureClickHandler:FeatureClickHandler;
 		 
 		 //Used for drag
 		 private var _featureCurrentlyDraged:VectorFeature=null;
@@ -77,20 +77,19 @@ package org.openscales.core.handler.mouse
 						clonefeature.createEditionVertices();
 						this._layerToEdit.addFeatures(clonefeature.editionFeaturesArray);
 						this._layerToEdit.redraw();	
-						if(this._featureclickHandler==null){
-							this._featureclickHandler=new FeatureClickHandler(this.map,true);
-							this._featureclickHandler.doubleclick=deleteVertice;
-							this._featureclickHandler.click=VerticeClickManagement;
+						if(this._featureClickHandler==null){
+							this._featureClickHandler=new FeatureClickHandler(this.map,true);
+							this._featureClickHandler.doubleclick=deleteVertice;
+							this._featureClickHandler.click=VerticeClickManagement;
 						}
 						vectorFeature.editionFeaturesArray.push(clonefeature);
-						this._featureclickHandler.addControledFeatures(clonefeature.editionFeaturesArray);			
-						this._featureclickHandler.active=true;
-						this._featureclickHandler.startDrag=editionPointDragStart;
-						this._featureclickHandler.stopDrag=editionPointDragStop;
+						this._featureClickHandler.addControledFeatures(clonefeature.editionFeaturesArray);			
+						this._featureClickHandler.active=true;
+						this._featureClickHandler.startDrag=editionPointDragStart;
+						this._featureClickHandler.stopDrag=editionPointDragStop;
 					}
-					}
+				}
 				
-				//this._clickHandler.doubleclick=OnDoubleClick
 				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);	
 				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));				
 				return true;
@@ -113,7 +112,7 @@ package org.openscales.core.handler.mouse
 					else vectorFeature.visible=true;
 				}
 				this._layerToEdit.redraw();
-				if(this._featureclickHandler!=null) this._featureclickHandler.active=false;
+				if(this._featureClickHandler!=null) this._featureClickHandler.active=false;
 				return true;
 			}
 				return false;			
@@ -151,7 +150,7 @@ package org.openscales.core.handler.mouse
 					}
 				if(this._pointUnderTheMouse!=null){
 					this._layerToEdit.removeFeature(this._pointUnderTheMouse);
-					this._featureclickHandler.removeControledFeature(this._pointUnderTheMouse);
+					this._featureClickHandler.removeControledFeature(this._pointUnderTheMouse);
 					this._layerToEdit.removeFeature(this._pointUnderTheMouse);
 					this._pointUnderTheMouse=null;
 					this._layerToEdit.redraw();
@@ -181,7 +180,7 @@ package org.openscales.core.handler.mouse
 						if(this._pointUnderTheMouse.getSegmentsIntersection(parentTmpPoint as Collection)!=-1){
 							this._pointUnderTheMouse.editionFeatureParent=vectorfeature;
 							this._layerToEdit.addFeature(this._pointUnderTheMouse);	
-							this._featureclickHandler.addControledFeature(this._pointUnderTheMouse);
+							this._featureClickHandler.addControledFeature(this._pointUnderTheMouse);
 						}
 						else {
 							this._pointUnderTheMouse=null;
@@ -256,9 +255,9 @@ package org.openscales.core.handler.mouse
 					
 					//we get the temporary edition parent which is parent of the edition feature
 					var editionfeatureparent:VectorFeature=vectorfeature.editionFeatureParent;
-					this._featureclickHandler.removeControledFeatures(editionfeatureparent.editionFeaturesArray);
+					this._featureClickHandler.removeControledFeatures(editionfeatureparent.editionFeaturesArray);
 					editionfeatureparent.RefreshEditionVertices();
-					this._featureclickHandler.addControledFeatures(editionfeatureparent.editionFeaturesArray);
+					this._featureClickHandler.addControledFeatures(editionfeatureparent.editionFeaturesArray);
 					this._layerToEdit.removeFeature(this._pointUnderTheMouse);
 					this._pointUnderTheMouse=null;
 					this._layerToEdit.addFeatures(editionfeatureparent.editionFeaturesArray);
@@ -304,9 +303,9 @@ package org.openscales.core.handler.mouse
 				(vectorfeature.editionFeatureParentGeometry as Collection).removeComponent(editionfeaturegeom);
 				//we get the temporary edition parent which is parent of the edition feature
 				var editionfeatureparent:VectorFeature=vectorfeature.editionFeatureParent;
-				this._featureclickHandler.removeControledFeatures(editionfeatureparent.editionFeaturesArray);
+				this._featureClickHandler.removeControledFeatures(editionfeatureparent.editionFeaturesArray);
 				editionfeatureparent.RefreshEditionVertices();
-				this._featureclickHandler.addControledFeatures(editionfeatureparent.editionFeaturesArray);
+				this._featureClickHandler.addControledFeatures(editionfeatureparent.editionFeaturesArray);
 				this._layerToEdit.removeFeature(this._pointUnderTheMouse);
 				this._pointUnderTheMouse=null;
 				this._layerToEdit.addFeatures(editionfeatureparent.editionFeaturesArray);
@@ -329,12 +328,12 @@ package org.openscales.core.handler.mouse
 		 	vectorfeature.stopDrag();
 		 	if(this._pointUnderTheMouse==vectorfeature){
 		 		this._layerToEdit.removeFeature(this._pointUnderTheMouse);
-				this._featureclickHandler.removeControledFeature(this._pointUnderTheMouse);
+				this._featureClickHandler.removeControledFeature(this._pointUnderTheMouse);
 		 	}
 		 	var editionfeatureparent:VectorFeature=vectorfeature.editionFeatureParent;
-		 	this._featureclickHandler.removeControledFeatures(editionfeatureparent.editionFeaturesArray);
+		 	this._featureClickHandler.removeControledFeatures(editionfeatureparent.editionFeaturesArray);
 			editionfeatureparent.RefreshEditionVertices();
-			this._featureclickHandler.addControledFeatures(editionfeatureparent.editionFeaturesArray);
+			this._featureClickHandler.addControledFeatures(editionfeatureparent.editionFeaturesArray);
 			this._layerToEdit.addFeatures(editionfeatureparent.editionFeaturesArray);
 			this._layerToEdit.redraw();
 			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);		

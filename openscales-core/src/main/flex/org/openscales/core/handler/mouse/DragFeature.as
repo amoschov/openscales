@@ -48,7 +48,7 @@ package org.openscales.core.handler.mouse
 		/**
 		 * DragFeature constructor
 		 *
-		 * @param map the ClickHandler map
+		 * @param map the map associated to the handler
 		 * @param active to determinates if the handler is active
 		 * @param target  use to specify the layers we can drag to it
 		 */
