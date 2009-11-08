@@ -30,34 +30,25 @@ package org.openscales.core.style.symbolizer
 			this.size = size;
 		}
 		
-		public function get fill():Fill{
-			
+		public function get fill():Fill {	
 			return this._fill;
 		}
-		
-		public function set fill(value:Fill):void{
-			
+		public function set fill(value:Fill):void {	
 			this._fill = value;
 		}
 		
 		
-		public function get stroke():Stroke{
-			
+		public function get stroke():Stroke {
 			return this._stroke;
 		}
-		
-		public function set stroke(value:Stroke):void{
-			
+		public function set stroke(value:Stroke):void {	
 			this._stroke = value;
 		}
 		
-		public function get wellKnownName():String{
-			
+		public function get wellKnownName():String {
 			return this._wkn;
 		}
-		
-		public function set wellKnownName(value:String):void{
-			
+		public function set wellKnownName(value:String):void {
 			this._wkn = value;
 		}
 

@@ -8,9 +8,22 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.events.FeatureEvent;
+	import org.openscales.core.feature.LineStringFeature;
+	import org.openscales.core.feature.MultiLineStringFeature;
+	import org.openscales.core.feature.MultiPointFeature;
+	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.layer.FeatureLayer;
+	import org.openscales.core.style.Rule;
+	import org.openscales.core.style.Style;
+	import org.openscales.core.style.symbolizer.Fill;
+	import org.openscales.core.style.symbolizer.LineSymbolizer;
+	import org.openscales.core.style.symbolizer.Mark;
+	import org.openscales.core.style.symbolizer.PointSymbolizer;
+	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
+	import org.openscales.core.style.symbolizer.Stroke;
+	import org.openscales.core.style.symbolizer.Symbolizer;
 	
 	/**
 	 * Select Features by clicking, by drawing a selection box or by drawing a
@@ -39,22 +52,22 @@ package org.openscales.core.handler.mouse
 		private var _selectedFeatures:Array = new Array();
 		
 		/**
-		 * Callback function onOverFeature(evt:FeatureEvent):void
+		 * Callback function onOverFeature(feature:VectorFeature):void
 		 */
 		private var _onOverFeature:Function = null;
 		
 		/**
-		 * Callback function onOutFeature(evt:FeatureEvent):void
+		 * Callback function onOutFeature(feature:VectorFeature):void
 		 */
 		private var _onOutFeature:Function = null;
 		
 		/**
-		 * Callback function onSelectedFeature(evt:FeatureEvent):void
+		 * Callback function onSelectedFeature(feature:VectorFeature):void
 		 */
 		private var _onSelectedFeature:Function = null;
 		
 		/**
-		 * Callback function onUnselectedFeature(evt:FeatureEvent):void
+		 * Callback function onUnselectedFeature(feature:VectorFeatur):void
 		 */
 		private var _onUnselectedFeature:Function = null;
 		
@@ -255,83 +268,107 @@ package org.openscales.core.handler.mouse
 		/**
 		 * If defined, use the onOverFeature callback function for all the
 		 * features of the input event.
+		 * If the array of layers is defined, only the features of these layers
+		 * are treated.
 		 * @param evt the FeatureEvent
 		 */
 		private function onOver(evt:FeatureEvent):void {
-			if (this.onOverFeature == null) {
-				return;
-			}
-			var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers();
-			for each (var feature:VectorFeature in evt.features) {
-				for each (var layer:FeatureLayer in layersToTest) {
-					if (feature.layer == layer) {
-						this.onOverFeature(evt);
-						break;
-					}
-				}
-			}
+			this.onSomething(evt, null, this.onOverFeature);
 		}
 		
 		/**
 		 * If defined, use the onOutFeature callback function for all the
 		 * features of the input event.
+		 * If the array of layers is defined, only the features of these layers
+		 * are treated.
 		 * @param evt the FeatureEvent
 		 */
 		private function onOut(evt:FeatureEvent):void {
-			if (this.onOutFeature == null) {
-				return;
-			}
-			var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers();
-			for each (var feature:VectorFeature in evt.features) {
-				for each (var layer:FeatureLayer in layersToTest) {
-					if (feature.layer == layer) {
-						this.onOutFeature(evt);
-						break;
-					}
-				}
-			}
+			this.onSomething(evt, null, this.onOutFeature);
 		}
 		
 		/**
 		 * If defined, use the onSelectedFeature callback function for all the
 		 * features of the input event.
+		 * If the array of layers is defined, only the features of these layers
+		 * are treated.
 		 * @param evt the FeatureEvent
 		 */
 		private function onSelected(evt:FeatureEvent):void {
-			if (this.onSelectedFeature == null) {
-				return;
-			}
-			var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers();
-			for each (var feature:VectorFeature in evt.features) {
-				for each (var layer:FeatureLayer in layersToTest) {
-					if (feature.layer == layer) {
-						this.onSelectedFeature(evt);
-						break;
-					}
-				}
-			}
+			this.onSomething(evt, this.setSelectedStyle, this.onSelectedFeature);
 		}
 		
 		/**
 		 * If defined, use the onUnselectedFeature callback function for all the
 		 * features of the input event.
+		 * If the array of layers is defined, only the features of these layers
+		 * are treated.
 		 * @param evt the FeatureEvent
 		 */
 		private function onUnselected(evt:FeatureEvent):void {
-			if (this.onUnselectedFeature == null) {
-				return;
-			}
+			this.onSomething(evt, this.resetStyle, this.onUnselectedFeature);
+		}
+		
+		/**
+		 * Generic function called by all the onOver, onOut, onSelected and
+		 * onUnselected functions.
+		 * If the array of layers is defined, only the features of these layers
+		 * are treated.
+		 * @param evt the FeatureEvent that defines the array of the features to
+		 * treat
+		 * @param updateStyleFeature the function to use for updating the style
+		 * of the features
+		 * @param onSomethingFeature the callback function to use for each of
+		 * the features
+		 */
+		private function onSomething(evt:FeatureEvent,
+									updateStyleFeature:Function,
+									onSomethingFeature:Function):void {
+			var layersToRedraw:Array = new Array();
 			var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers();
+			var i:int, layer:FeatureLayer;
 			for each (var feature:VectorFeature in evt.features) {
-				for each (var layer:FeatureLayer in layersToTest) {
+				for each (layer in layersToTest) {
+					// if the layer of the feature is one of the layersToTest,
+					// then manage the feature
 					if (feature.layer == layer) {
-						this.onUnselectedFeature(evt);
+						// Update the style of the feature if needed
+						if (updateStyleFeature != null) {
+							updateStyleFeature(feature);
+						}
+						// Add the layer of this feature to the array of the
+						// layers already known to need a redraw
+						if (this.map) {
+							// Look for the layer of this feature in the array
+							// of the layers to redraw
+							for(i=0; i<layersToRedraw.length; i++) {
+								if (layersToRedraw[i] == layer) {
+									break;
+								}
+							}
+							// If the layer of the feature is not in the array
+							// of the layers to redraw, add it
+							if (i == layersToRedraw.length) {
+								layersToRedraw.push(layer);
+							}
+						}
+						// Use the callback function for this feature if needed
+						if (onSomethingFeature != null) {
+							onSomethingFeature(feature);
+						}
+						// Go to the next feature of the array of the input event
 						break;
 					}
 				}
 			}
+			// All the features that are in one of the managed layers are
+			// treated, now it is time to redraw the layers that contains these
+			// features
+			for each (layer in layersToRedraw) {
+				layer.redraw();
+			}
 		}
-		
+				
 		/**
 		 * Select all the features that contain the location clicked (the
 		 * selectionBuffer is used to enlarge the selection area).
@@ -413,29 +450,18 @@ package org.openscales.core.handler.mouse
 		 * current selection ; if false they replace it
 		 */
 		private function select(featuresToSelect:Array, additiveMode:Boolean=false):void {
+			var removedFeatures:Array = new Array(); // the features to remove of the current selection
 			var feature:VectorFeature;
+			var fevt:FeatureEvent;
 			// If the current selection is not void, first we restrict the
-			// features of the input array to the really new selected features.
+			// features of the input array to the really new selected features
+			// and we unselect the features that need it.
 			if (this.selectedFeatures.length > 0) {
-				var nsf:Array = new Array();
+				var sf:Array = new Array(); // the features to keep selected
 				var i:int, found:Boolean;
-				if (additiveMode) {
-					// If additive mode is selected, remove all the reselected
-					// features of the input array.
-					for each (feature in featuresToSelect) {
-						for (i=0, found=false; (!found) && (i<this.selectedFeatures.length); i++) {
-							if (feature == this.selectedFeatures[i]) {
-								found = true;
-							}
-						}
-						if (! found) {
-							nsf.push(feature);
-						}
-					}
-				} else {
+				if (! additiveMode) {
 					// If additive mode is not selected, remove all the current
 					// selected features that are not in the input array.
-					var sf:Array = new Array();
 					for each (feature in this.selectedFeatures) {
 						for (i=0, found=false; (!found) && (i<featuresToSelect.length); i++) {
 							if (feature == featuresToSelect[i]) {
@@ -447,26 +473,66 @@ package org.openscales.core.handler.mouse
 							// keep it in the current selection
 							sf.push(feature);
 						} else {
-							// Otherwise add it to the really new features to select
-							nsf.push(feature);
+							// Otherwise add it to the features to remove
+							feature.selected = false;
+							removedFeatures.push(feature);
 						}
 					}
+					// Update the array of the selected features
 					this._selectedFeatures = sf;
+				}
+				// Remove from the input array all the reselected features
+				var nsf:Array = new Array(); // the really new features in the input array
+				for each (feature in featuresToSelect) {
+					for (i=0, found=false; (!found) && (i<this.selectedFeatures.length); i++) {
+						if (feature == this.selectedFeatures[i]) {
+							found = true;
+						}
+					}
+					if (! found) {
+						nsf.push(feature);
+					}
 				}
 				featuresToSelect = nsf;
 			}
 			// Add all the really new selected features to the selection
 			for each (feature in featuresToSelect) {
+				feature.selected = true;
 				this._selectedFeatures.push(feature);
 			}
-			// Dispatch an FeatureEvent for all the really new selected features
-			/*if (this.map && (featuresToSelect.length>0)) {
-				var f:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_SELECTED, null, additiveMode);
-				f.features = featuresToSelect;
-				this.map.dispatchEvent(f);
-			}*/
+			// Dispatch a FEATURE_UNSELECTED event for all the unselected features
+			if (this.map && (removedFeatures.length>0)) {
+				fevt = new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, null, additiveMode);
+				fevt.features = removedFeatures;
+				this.map.dispatchEvent(fevt);
+			}
+			// Dispatch a FEATURE_SELECTED event for all the newly selected features
+			if (this.map && (featuresToSelect.length>0)) {
+				fevt = new FeatureEvent(FeatureEvent.FEATURE_SELECTED, null, additiveMode);
+				fevt.features = featuresToSelect;
+				this.map.dispatchEvent(fevt);
+			}
 			// Log the selection modification
-			Trace.info("SelectFeaturesHandler: "+featuresToSelect.length+" features (re)selected with additive mode "+((additiveMode)?"ON":"OFF")+" => "+this.selectedFeatures.length+" features selected");
+			Trace.info("SelectFeaturesHandler: "+featuresToSelect.length+" new features selected with additive mode "+((additiveMode)?"ON":"OFF")+" => "+this.selectedFeatures.length+" features selected");
+		}
+		
+		/**
+		 * Set the style of a selected feature depending on its type (point,
+		 * multipoint, linestring, multilinestring, polygon, multipolygon).
+		 * The current style is saved for a possible future reset of the style.
+		 * @param feature the feature to update its style
+		 */
+		private function setSelectedStyle(feature:VectorFeature):void {
+			feature.originalStyle = feature.style;
+			feature.style = defaultSelectedStyle(feature);
+		}
+		
+		/**
+		 * Reset the style of a unselected feature
+		 * @param feature the feature to update its style
+		 */
+		private function resetStyle(feature:VectorFeature):void {
+			feature.style = feature.originalStyle;
 		}
 		
 		/**
@@ -498,6 +564,42 @@ package org.openscales.core.handler.mouse
 			drawContainer.graphics.drawPath(???); // TODO
 			drawContainer.graphics.endFill();
 		}*/
+		
+		/**
+		 * Default style used for a selected feature.
+		 * The style depends on the type of the input feature (point, multipoint,
+		 * linestring, multilinestring, polygon, multipolygon).
+		 */
+		static public function defaultSelectedStyle(feature:VectorFeature):Style {
+			var selectedStyle:Style;
+			var symbolizer:Symbolizer;
+			var color:uint = 0xFFFF00;
+			var opacity:Number = 0.5;
+			var borderThin:int = 2;
+			if (feature is PointFeature || feature is MultiPointFeature) {
+				var markType:String = Mark.WKN_SQUARE;
+				var markSize:Number = 12;
+				var currentMarkSymbolizer:Symbolizer = feature.style.rules[0].symbolizers[0];
+				if (currentMarkSymbolizer && (currentMarkSymbolizer is PointSymbolizer)) {
+					var currentMark:Mark = (currentMarkSymbolizer as PointSymbolizer).graphic as Mark;
+					markType = currentMark.wellKnownName;
+					markSize = currentMark.size;
+				}
+				selectedStyle = Style.getDefaultPointStyle();
+				symbolizer = new PointSymbolizer(new Mark(markType, new Fill(color,opacity), new Stroke(color,borderThin), markSize));
+			}
+			else if (feature is LineStringFeature || feature is MultiLineStringFeature) {
+				selectedStyle = Style.getDefaultSurfaceStyle();
+				symbolizer = new LineSymbolizer(new Stroke(color,borderThin));
+			}
+			else { //if (feature is PolygonFeature || feature is MultiPolygonFeature) {
+				selectedStyle = Style.getDefaultSurfaceStyle();
+				symbolizer = new PolygonSymbolizer(new Fill(color,opacity), new Stroke(color,borderThin));
+			}
+			selectedStyle.rules[0] = new Rule();
+			selectedStyle.rules[0].symbolizers.push(symbolizer);
+			return selectedStyle;
+		}
 		
 	}
 }
