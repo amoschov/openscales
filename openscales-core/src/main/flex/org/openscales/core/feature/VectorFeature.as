@@ -2,6 +2,7 @@ package org.openscales.core.feature
 {
 	import flash.display.CapsStyle;
 	import flash.display.JointStyle;
+	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
@@ -25,7 +26,6 @@ package org.openscales.core.feature
 	 */
 	public class VectorFeature extends Feature
 	{
-
 		private var _geometry:Geometry = null;
 		private var _state:String = null;    
 		private var _style:Style = null;	    
@@ -34,20 +34,18 @@ package org.openscales.core.feature
 		//Edition Mode 
 		//a feature could also be a temporary feature used for Edition Mode
 		
-		
 		//Edition Attribute
 		/**
 		 * To know if the vector feature is editable when its
 		 * vector layer is in edit mode
 		 **/
 		private var _isEditable:Boolean=false;
+		
 		/**
 		 * To know if the vector feature  is a temporary used 
 		 * for edition mode
 		 **/
 		private var _isEditionFeature:Boolean=false;
-		
-		
 		
 		/**
 		 *Link to all temporary features used to edit the feature 
@@ -59,6 +57,7 @@ package org.openscales.core.feature
 		 * when the feature is an edition feature
 		 * */
 		private var _editionFeatureParent:VectorFeature=null;
+		
 		/**
 		 * Point under the mouse
 		 * */
@@ -91,16 +90,13 @@ package org.openscales.core.feature
 			this.style = style ? style : null;
 			
 			this._isEditable=isEditable;
-			//A feature can't be editable and editionfeature(temporary feature )
-			if(isEditable)
-			{
-				if(isEditionFeature){
+			// A feature can't be editable and editionfeature(temporary feature )
+			if (isEditable) {
+				if (isEditionFeature) {
 					Trace.error("A feature can't be editable and edition feature(temporary feature ) at the same time");
 					this._isEditionFeature=false;
 				}
-			} 
-			else
-			{
+			} else {
 				this._isEditionFeature=isEditionFeature;
 			}
 		}
@@ -112,13 +108,12 @@ package org.openscales.core.feature
 			if (this.layer) {
 				this.layer = null;
 			}
-
 			this.geometry = null;
 			super.destroy();
 		}
 		
 		/**
-		 *we overrided this function for edition mode
+		 * we overrided this function for edition mode
 		 **/
 		override public function set layer(value:Layer):void{
 			super.layer=value;
@@ -154,7 +149,6 @@ package org.openscales.core.feature
 		}
 
 		public function set state(value:String):void {
-
 			if (value == State.UPDATE) {
 				switch (this.state) {
 					case State.UNKNOWN:
@@ -218,8 +212,7 @@ package org.openscales.core.feature
 				style = this.style;
 			}			
 
-			trace("Drawing feature "+this.data["nom_region"]);
-			trace("Drawing feature with style : "+style.name);
+			//Trace.debug("VectorFeature.draw feature "+this.data["nom_region"]+" with style : "+style.name);
 			var rulesCount:uint = style.rules.length;
 			var rule:Rule;
 			var symbolizer:Symbolizer;
@@ -227,16 +220,13 @@ package org.openscales.core.feature
 			var symbolizersCount:uint;
 			var j:uint;
 			
-			for(var i:uint = 0;i<rulesCount;i++){
-				
+			for(var i:uint = 0;i<rulesCount;i++){				
 				// TODO : Test if rule applies to the feature
 				rule = style.rules[i];
-				
 				symbolizersCount = rule.symbolizers.length;
 				for(j = 0; j<symbolizersCount; j++){
-					
 					symbolizer = rule.symbolizers[j];
-					if(this.acceptSymbolizer(symbolizer)){
+					if (this.acceptSymbolizer(symbolizer)){
 						this.setStyle(symbolizer);
 						this.executeDrawing(symbolizer);
 					}
@@ -244,22 +234,17 @@ package org.openscales.core.feature
 			}
 		}
 		
-		protected function setStyle(symbolizer:Symbolizer):void{
-			
+		protected function setStyle(symbolizer:Symbolizer):void {
 			var symbolizerType:String = typeof(symbolizer);
 			if (symbolizer is FillSymbolizer) {
-				
 				this.configureGraphicsFill((symbolizer as FillSymbolizer).fill);
 			}
-
 			if (symbolizer is StrokeSymbolizer) {
-				
 				this.configureGraphicsStroke((symbolizer as StrokeSymbolizer).stroke);
 			}
 		}
 		
-		protected function configureGraphicsFill(fill:Fill):void{
-			
+		protected function configureGraphicsFill(fill:Fill):void {
 			if(fill){
 				this.graphics.beginFill(fill.color, fill.opacity);
 			} else {
@@ -306,7 +291,7 @@ package org.openscales.core.feature
 		}
 		
 		protected function executeDrawing(symbolizer:Symbolizer):void{
-			trace("Drawing");
+			//Trace.debug("VectorFeature.executeDrawing");
 		}
 		/**
 		 * To obtain feature clone 
@@ -347,6 +332,7 @@ package org.openscales.core.feature
 					}
 				}						
 		}
+		
 		/**
 		 * delete edition vertice(Virtual) only for edition feature
 		 * */
@@ -365,8 +351,7 @@ package org.openscales.core.feature
 			  deleteEditionVertices();
 			  createEditionVertices();	
 		}		
-		//FIN EDITION MODE
-		
+		// END OF EDITION MODE
 		
 		
 		/**
@@ -420,6 +405,19 @@ package org.openscales.core.feature
 		}
 		public function get isSelected():Boolean{
 			return this._isselected;
+		}
+		
+		static public function compatibleFeatures(features:Array):Boolean {
+			if ((! features) || (features.length==0) || (! features[0]) || (! (features[0] is VectorFeature))) {
+				return false;
+			}
+			var firstFeatureClassName:String = getQualifiedClassName(features[0]);
+			for each (var feature:VectorFeature in features) {
+				if ((! (feature is VectorFeature)) || (getQualifiedClassName(feature) != firstFeatureClassName)) {
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 }
