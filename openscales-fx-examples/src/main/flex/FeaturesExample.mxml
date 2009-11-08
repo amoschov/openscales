@@ -4,6 +4,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.mouse.SelectFeaturesHandler;
 			import org.openscales.core.handler.Handler;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
@@ -153,6 +154,7 @@
 				<mx:Array>
 					<mx:String>Pan</mx:String>
 					<mx:String>Select</mx:String>
+					<mx:String>Clear</mx:String>
 				</mx:Array>
 			</mx:dataProvider>
 			<mx:itemClick>
@@ -167,6 +169,18 @@
 							Trace.info("select mode");
 							dragHandler.handler.active = false;
 							selectFeaturesHandler.handler.active = true;
+							break;
+						case 2 :
+							Trace.info("clear selection");
+							(selectFeaturesHandler.handler as SelectFeaturesHandler).clearSelection();
+							// Once the selection is cleared, return in previous mode
+							if (dragHandler.handler.active) {
+								Trace.info("back to pan mode");
+								buttons.selectedIndex = 0;
+							} else if (selectFeaturesHandler.handler.active) {
+								Trace.info("back to select mode");
+								buttons.selectedIndex = 1;
+							}
 							break;
 						default:
 							Trace.info("unknown mode");
