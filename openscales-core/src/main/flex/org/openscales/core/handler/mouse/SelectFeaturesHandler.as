@@ -30,6 +30,8 @@ package org.openscales.core.handler.mouse
 	 * freehand selection area.
 	 * If the CTRL key is pressed, the previous selection is not cleared and the
 	 * new selection is added.
+	 * If the SHIFT key is pressed, the previous selection is not cleared and
+	 * the new selection is removed.
 	 * A click on a selected feature unselect it.
 	 */
 	public class SelectFeaturesHandler extends ClickHandler
@@ -67,42 +69,50 @@ package org.openscales.core.handler.mouse
 		private var _onSelectedFeature:Function = null;
 		
 		/**
-		 * Callback function onUnselectedFeature(feature:VectorFeatur):void
+		 * Callback function onUnselectedFeature(feature:VectorFeature):void
 		 */
 		private var _onUnselectedFeature:Function = null;
 		
 		/**
+		 * Callback function selectedStyle(feature:VectorFeature):Style
+		 * The default style function used is SelectFeaturesHandler.defaultSelectedStyle
+		 */
+		private var _selectedStyle:Function = SelectFeaturesHandler.defaultSelectedStyle;
+		
+		/**
 		 * Sprite used to display the selection box.
 		 */
-        private var drawContainer:Sprite = new Sprite();
+        private var _drawContainer:Sprite = new Sprite();
 		
 		/**
-		 * Style of the selection geometry: border thin (default=1)
+		 * Style of the selection area: border thin (default=1)
 		 */        
-		private var _selectionBorderThin:Number = 2;
+		private var _selectionAreaBorderThin:Number = 2;
 		
 		/**
-		 * Style of the selection geometry: border color (default=0xFFCC00)
+		 * Style of the selection area: border color (default=0xFFCC00)
 		 */        
-		private var _selectionBorderColor:uint = 0xFFCC00;
+		private var _selectionAreaBorderColor:uint = 0xFFCC00;
 		
 		/**
-		 * Style of the selection geometry: fill color (default=0xCC0000)
+		 * Style of the selection area: fill color (default=0xCC0000)
 		 */        
-		private var _selectionFillColor:uint = 0xCC0000;
+		private var _selectionAreaFillColor:uint = 0xCC0000;
 		
 		/**
-		 * Style of the selection geometry: opacity (default=0.5)
+		 * Style of the selection area: opacity (default=0.33)
 		 */        
-		private var _selectionFillOpacity:Number = 0.33;
+		private var _selectionAreaFillOpacity:Number = 0.33;
 
 		/**
-		 * Constructor
+		 * Constructor of the handler.
+		 * @param map the map associated to the handler
+		 * @param active boolean defining if the handler is active or not
 		 */
 		public function SelectFeaturesHandler(map:Map=null, active:Boolean=false) {
 			super(map, active);
 			if (this.map) {
-				this.map.addChild(drawContainer);
+				this.map.addChild(_drawContainer);
 			}
 			this.click = this.selectByClick;
 			this.drag = this.drawSelectionBox;
@@ -131,13 +141,6 @@ package org.openscales.core.handler.mouse
 		}
 		public function set selectionBuffer(value:Number):void {
 			this._selectionBuffer = Math.max(0,value);
-		}
-		
-		/**
-		 * Array of the selected features
-		 */
-		public function get selectedFeatures():Array {
-			return this._selectedFeatures;
 		}
 		
 		/**
@@ -181,43 +184,60 @@ package org.openscales.core.handler.mouse
 		}
 		
 		/**
+		 * selectedStyle function getter and setter
+		 */
+		public function get selectedStyle():Function {
+			return this._selectedStyle;
+		}
+		public function set selectedStyle(value:Function):void {
+			this._selectedStyle = value;
+		}
+		
+		/**
 		 * Selection geometry's border thin getter and setter
 		 */
-		public function get selectionBorderThin():Number {
-			return this._selectionBorderThin;
+		public function get selectionAreaBorderThin():Number {
+			return this._selectionAreaBorderThin;
 		}
-		public function set selectionBorderThin(value:Number):void {
-			this._selectionBorderThin = value;
+		public function set selectionAreaBorderThin(value:Number):void {
+			this._selectionAreaBorderThin = value;
 		}
 		
 		/**
 		 * Selection geometry's border color getter and setter
 		 */
-		public function get selectionBorderColor():uint {
-			return this._selectionBorderColor;
+		public function get selectionAreaBorderColor():uint {
+			return this._selectionAreaBorderColor;
 		}
-		public function set selectionBorderColor(value:uint):void {
-			this._selectionBorderColor = value;
+		public function set selectionAreaBorderColor(value:uint):void {
+			this._selectionAreaBorderColor = value;
 		}
 		
 		/**
 		 * Selection geometry's fill color getter and setter
 		 */
-		public function get selectionFillColor():uint {
-			return this._selectionFillColor;
+		public function get selectionAreaFillColor():uint {
+			return this._selectionAreaFillColor;
 		}
-		public function set selectionFillColor(value:uint):void {
-			this._selectionFillColor = value;
+		public function set selectionAreaFillColor(value:uint):void {
+			this._selectionAreaFillColor = value;
 		}
 		
 		/**
 		 * Selection geometry's fill opacity thin getter and setter
 		 */
-		public function get selectionFillOpacity():Number {
-			return this._selectionFillOpacity;
+		public function get selectionAreaFillOpacity():Number {
+			return this._selectionAreaFillOpacity;
 		}
-		public function set selectionFillOpacity(value:Number):void {
-			this._selectionFillOpacity = value;
+		public function set selectionAreaFillOpacity(value:Number):void {
+			this._selectionAreaFillOpacity = value;
+		}
+		
+		/**
+		 * Array of the selected features
+		 */
+		public function get selectedFeatures():Array {
+			return this._selectedFeatures;
 		}
 		
 		/**
@@ -225,11 +245,11 @@ package org.openscales.core.handler.mouse
 		 */
 		override public function set map(value:Map):void {
 			if (this.map) {
-				this.map.removeChild(drawContainer);
+				this.map.removeChild(_drawContainer);
 			}
 			super.map = value;
 			if (this.map) {
-				this.map.addChild(drawContainer);
+				this.map.addChild(_drawContainer);
 			}
 		}
 		
@@ -243,7 +263,6 @@ package org.openscales.core.handler.mouse
 			if (this.map) {
 				this.map.addEventListener(FeatureEvent.FEATURE_OVER, this.onOver);
 				this.map.addEventListener(FeatureEvent.FEATURE_OUT, this.onOut);
-				//this.map.addEventListener(FeatureEvent.FEATURE_CLICK, this.onClick);
 				this.map.addEventListener(FeatureEvent.FEATURE_SELECTED, this.onSelected);
 				this.map.addEventListener(FeatureEvent.FEATURE_UNSELECTED, this.onUnselected);
 			}
@@ -257,7 +276,6 @@ package org.openscales.core.handler.mouse
 			if (this.map) {
 				this.map.removeEventListener(FeatureEvent.FEATURE_OVER, this.onOver);
 				this.map.removeEventListener(FeatureEvent.FEATURE_OUT, this.onOut);
-				//this.map.removeEventListener(FeatureEvent.FEATURE_CLICK, this.onClick);
 				this.map.removeEventListener(FeatureEvent.FEATURE_SELECTED, this.onSelected);
 				this.map.removeEventListener(FeatureEvent.FEATURE_UNSELECTED, this.onUnselected);
 			}
@@ -370,12 +388,12 @@ package org.openscales.core.handler.mouse
 		}
 				
 		/**
-		 * Select all the features that contain the location clicked (the
+		 * (Un)select all the features that contain the location clicked (the
 		 * selectionBuffer is used to enlarge the selection area).
 		 * If the array of layers is defined, only the features of these layers
 		 * are treated.
 		 * @param evt the MouseEvent (useful for the position of MouseUp and for
-		 * the status of the CTRL key)
+		 * the status of the CTRL and SHIFT keys)
 		 */
 		private function selectByClick(evt:MouseEvent):void {
 			// A point and a selectionBuffer define a selection box...
@@ -383,48 +401,52 @@ package org.openscales.core.handler.mouse
 		}
 		
 		/**
-		 * Select all the features that intersect the box drawn (the
+		 * (Un)select all the features that intersect the box drawn (the
 		 * selectionBuffer is used to enlarge the selection area).
 		 * If the array of layers is defined, only the features of these layers
 		 * are treated.
 		 * @param evt the MouseEvent (useful for the position of MouseUp and for
-		 * the status of the CTRL key)
+		 * the status of the CTRL and SHIFT keys)
 		 */
 		private function selectByBox(evt:MouseEvent):void {
 			// Clear the selection drawing
-			drawContainer.graphics.clear();
-			// Get the selection geometry
+			_drawContainer.graphics.clear();
+			// Get the selection area
 			var sbox:Bounds = this.selectionBoxCoordinates(evt, this.selectionBuffer);
         	var sboxGeom:Geometry = (sbox) ? sbox.toGeometry() : null;
         	// Select the features that intersect the geometry
-			this.selectByGeometry(sboxGeom, evt.ctrlKey);
+			this.selectByGeometry(sboxGeom, evt.ctrlKey, evt.shiftKey);
 		}
 		
 		/**
-		 * Select all the features that intersect the freehand selection area
-		 * (the selection buffer is not added).
+		 * (Un)select all the features that intersect the freehand selection
+		 * area (the selection buffer is not added).
 		 * If the array of layers is defined, only the features of these layers
 		 * are treated.
 		 * @param evt the MouseEvent (useful for the position of MouseUp and for
-		 * the status of the CTRL key)
+		 * the status of the CTRL and SHIFT keys)
 		 */
 		/*private function selectByFreehandDrawing(evt:MouseEvent):void {
 			// Clear the selection drawing
-			drawContainer.graphics.clear();
-			// Get the selection geometry
+			_drawContainer.graphics.clear();
+			// Get the selection area
         	var geom:Geometry = null; // TODO
         	// Select the features that intersect the geometry
-			this.selectByGeometry(geom, evt.ctrlKey);
+			this.selectByGeometry(geom, evt.ctrlKey, evt.shiftKey);
 		}*/
 		
 		/**
-		 * Select all the features that intersect the input geometry.
+		 * (Un)select all the features that intersect the input geometry.
 		 * If the array of layers is defined, only the features of these layers
 		 * are treated.
 		 * @param geom the exact geometry to use for the selection (the
 		 * selection buffer is not added)
+		 * @param additiveMode if true the input features are added to the
+		 * current selection ; if false and substractiveMode too they replace it
+		 * @param substractiveMode if true and additiveMode false the input
+		 * features are removed from the current selection
 		 */
-		private function selectByGeometry(geom:Geometry, additiveMode:Boolean=false):void {
+		private function selectByGeometry(geom:Geometry, additiveMode:Boolean=false, substractiveMode:Boolean=false):void {
 			// Look for all the features that intersect the selection geometry
 			var featuresToSelect:Array = new Array();
 			if (geom) {
@@ -438,8 +460,11 @@ package org.openscales.core.handler.mouse
 				}
 			}
 			// Update the selection
-			select(featuresToSelect, additiveMode);
-			//unselect(featuresToSelect);
+			if (substractiveMode && (! additiveMode)) {
+				unselect(featuresToSelect);
+			} else {
+				select(featuresToSelect, additiveMode);
+			}
 		}
 		
 		/**
@@ -517,6 +542,24 @@ package org.openscales.core.handler.mouse
 		}
 		
 		/**
+		 * Remove features from the current selection.
+		 * The features are asserted to be in one of the layers to manage.
+		 * @param featuresToUnselect the array of the features to remove
+		 */
+		private function unselect(featuresToUnselect:Array):void {
+			// TODO
+Trace.debug("SelectFeaturesHandler.unselect: TODO");
+		}
+		
+		/**
+		 * Clear the current selection.
+		 */
+		public function clearSelection():void {
+			// TODO
+Trace.debug("SelectFeaturesHandler.clearSelection: TODO");
+		}
+		
+		/**
 		 * Set the style of a selected feature depending on its type (point,
 		 * multipoint, linestring, multilinestring, polygon, multipolygon).
 		 * The current style is saved for a possible future reset of the style.
@@ -524,7 +567,7 @@ package org.openscales.core.handler.mouse
 		 */
 		private function setSelectedStyle(feature:VectorFeature):void {
 			feature.originalStyle = feature.style;
-			feature.style = defaultSelectedStyle(feature);
+			feature.style = (this.selectedStyle != null) ? this.selectedStyle(feature) : SelectFeaturesHandler.defaultSelectedStyle(feature);
 		}
 		
 		/**
@@ -543,11 +586,11 @@ package org.openscales.core.handler.mouse
 			// Compute the selection box (in pixels)
 			var rect:Rectangle = this.selectionBoxPixels(evt);
 			// Display the selection box
-			drawContainer.graphics.clear();
-			drawContainer.graphics.lineStyle(this.selectionBorderThin, this.selectionBorderColor);
-			drawContainer.graphics.beginFill(this.selectionFillColor, this.selectionFillOpacity);
-			drawContainer.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
-			drawContainer.graphics.endFill();
+			_drawContainer.graphics.clear();
+			_drawContainer.graphics.lineStyle(this.selectionAreaBorderThin, this.selectionAreaBorderColor);
+			_drawContainer.graphics.beginFill(this.selectionAreaFillColor, this.selectionAreaFillOpacity);
+			_drawContainer.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
+			_drawContainer.graphics.endFill();
 		}
 		
 		/**
@@ -558,11 +601,11 @@ package org.openscales.core.handler.mouse
 			// Compute the geometry
 			var ???:??? = ; // TODO
 			// Display the selection box
-			drawContainer.graphics.clear();
-			drawContainer.graphics.lineStyle(this.selectionBoxBorderThin, this.selectionBoxBorderColor);
-			drawContainer.graphics.beginFill(this.selectionBoxFillColor, this.selectionBoxFillOpacity);
-			drawContainer.graphics.drawPath(???); // TODO
-			drawContainer.graphics.endFill();
+			_drawContainer.graphics.clear();
+			_drawContainer.graphics.lineStyle(this.selectionBoxBorderThin, this.selectionBoxBorderColor);
+			_drawContainer.graphics.beginFill(this.selectionBoxFillColor, this.selectionBoxFillOpacity);
+			_drawContainer.graphics.drawPath(???); // TODO
+			_drawContainer.graphics.endFill();
 		}*/
 		
 		/**

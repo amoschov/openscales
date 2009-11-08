@@ -15,7 +15,7 @@ package org.openscales.core.configuration
       import org.openscales.core.handler.mouse.ClickHandler;
       import org.openscales.core.handler.mouse.DragFeature;
       import org.openscales.core.handler.mouse.DragHandler;
-      import org.openscales.core.handler.mouse.SelectFeature;
+      import org.openscales.core.handler.mouse.SelectFeaturesHandler;
       import org.openscales.core.handler.mouse.WheelHandler;
       import org.openscales.core.layer.Layer;
       import org.openscales.core.layer.ogc.WFS;
@@ -321,8 +321,8 @@ package org.openscales.core.configuration
                   	if(String(xmlNode.@active) == "true"){handler.active = true;}
                   	else {handler.active = false};
                   }
-                  else if (xmlNode.name() == "SelectFeature"){
-                  	handler = new SelectFeature();
+                  else if (xmlNode.name() == "SelectFeaturesHandler"){
+                  	handler = new SelectFeaturesHandler();
                   	if(String(xmlNode.@active) == "true"){handler.active = true;}
                   	else {handler.active = false};
                   }

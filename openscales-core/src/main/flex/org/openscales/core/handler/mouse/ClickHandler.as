@@ -83,8 +83,7 @@ package org.openscales.core.handler.mouse
 		private var _mouseEvent:MouseEvent = null;
 		
 		/**
-		 * ClickHandler constructor
-		 *
+		 * Constructor of the handler.
 		 * @param map the map associated to the handler
 		 * @param active boolean defining if the handler is active or not
 		 */
