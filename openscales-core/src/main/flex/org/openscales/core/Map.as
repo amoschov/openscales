@@ -21,6 +21,7 @@ package org.openscales.core
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.handler.IHandler;
+	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Popup;
 
@@ -894,23 +895,31 @@ package org.openscales.core
 			}
 			return scale;
 		}
-
-		public function get layers():Array
-		{
+		
+		public function get layers():Array {
 			var layerArray:Array = new Array();
-			if(this.layerContainer == null)
-			{
+			if (this.layerContainer == null) {
 				return layerArray;
 			}
-			for(var i:int = 0;i<this.layerContainer.numChildren;i++)
-			{
-				if(this.layerContainer.getChildAt(i) is Layer)
-				{
+			for (var i:int=0; i<this.layerContainer.numChildren; i++) {
+				if(this.layerContainer.getChildAt(i) is Layer) {
 					layerArray.push(this.layerContainer.getChildAt(i));
 				}
 			}
 			return layerArray;
-
+		}
+		
+		public function featureLayers():Array {
+			var layerArray:Array = new Array();
+			if (this.layerContainer == null) {
+				return layerArray;
+			}
+			for (var i:int=0; i<this.layerContainer.numChildren; i++) {
+				if (this.layerContainer.getChildAt(i) is FeatureLayer) {
+					layerArray.push(this.layerContainer.getChildAt(i));
+				}
+			}
+			return layerArray;
 		}
 
 		/**
