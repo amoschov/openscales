@@ -301,7 +301,7 @@ package org.openscales.core
 			if(attach)
 				this.addChild( control as Sprite );
 		}
-
+		
 		/**
 		 * Add and activate a new handler to the map.
 		 *
@@ -311,6 +311,24 @@ package org.openscales.core
 			this._handlers.push(handler);
 			handler.map = this;
 			handler.active = true;
+		}
+		
+		/**
+		 * Deactivate and remove a handler of the map.
+		 *
+		 * @param handler the handler to remove.
+		 */
+		public function removeHandler(handler:IHandler):void {
+			var newHandlers:Array = new Array();
+			for each (var mapHandler:IHandler in this.handlers) {
+				if (mapHandler == handler) {
+					handler.active = false;
+					handler.map = null;
+				} else {
+					newHandlers.push(mapHandler);
+				}
+			}
+			this._handlers = newHandlers;
 		}
 
 		/**
