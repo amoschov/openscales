@@ -16,12 +16,9 @@
                 import org.openscales.core.handler.mouse.DragHandler;  
                 import org.openscales.core.cursor.CrosshairCursor;
                 
-                [Bindable]
-                private var _style:Object = "default";
-                [Bindable]
-                private var _icon:Object = null;
-                [Bindable]
-                private var _toolTip:Object = "default";
+                [Bindable] private var _style:Object = "default";
+                [Bindable] private var _icon:Object = null;
+                [Bindable] private var _toolTip:String = "Draw the desired area to zoom in";
                 
                 /**
                 * Handler of ZoomBox
