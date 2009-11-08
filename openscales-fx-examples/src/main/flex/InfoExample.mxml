@@ -55,8 +55,7 @@
 		
 		<os:WMSGetFeatureInfo url="http://openscales.org/geoserver/wms" layers="tiger:poi" />
 		
-		<os:SelectFeature />		
-		<!--os:DragFeature map="{this.map}" /-->
+		<os:SelectFeaturesHandler />
 		
 	</os:Map>
 	

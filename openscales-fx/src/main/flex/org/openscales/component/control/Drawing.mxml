@@ -6,46 +6,28 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import mx.containers.TabNavigator;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			
+			import org.openscales.core.Map;
 			import org.openscales.core.events.DrawingEvent;
 			import org.openscales.core.feature.VectorFeature;
-			import org.openscales.core.feature.Feature;
-			import mx.controls.Alert;
-			import mx.containers.TabNavigator;
-			import org.openscales.core.handler.mouse.DragFeature;
-			import org.openscales.core.handler.mouse.DragHandler;
-			import org.openscales.core.events.FeatureEvent;
-			import mx.events.CloseEvent;		
-			import org.openscales.core.Map;	
-					
-			public var dragHandler:DragHandler;		//to pan the map
-			public var dragfeature:DragFeature;		//to drag features
 			
-			[Bindable]
-			public var mapBiding:Map;
+			[Bindable] public var mapBiding:Map;
 
 			/**
 			 * Initialisation of map and params
 			 */
-			public function initTabDrawing():void{			
-				
-				//Manage switching tab
+			public function initTabDrawing():void {
+				// Manage switching tab
 				this.parent.addEventListener(Event.CHANGE,changingTab);
 				this.featureDrawing.indexTabDrawing = (this.parent as TabNavigator).selectedIndex;
-							
-				this.map.addEventListener(FeatureEvent.FEATURE_DRAGGING, onDragingFeature);
-				this.map.addEventListener(FeatureEvent.FEATURE_SELECTED, showInformations);
-			}
-					
-			override public function set map(value:Map):void {
-				super.map = value;
-				mapBiding=value;
 			}
 			
-			/**
-			 * Show feature's information in the tab
-			 */
-			private function showInformations(event:FeatureEvent):void{
-				this.featureInfo.showInfo(event);
+			override public function set map(value:Map):void {
+				super.map = value;
+				mapBiding = value;
 			}
 			
 			/**
@@ -53,81 +35,70 @@
 			 * To prevent a feature selection. If user isn't on drawing tab, he can't select a feature
 			 */
 			private function changingTab(event:Event):void{
-				var f:Feature;
 				var selectedFeature:Boolean = false;
-				
-				//User is on Drawing Tab, and wants to switch	
-				if((event.target as TabNavigator).selectedIndex != this.featureDrawing.indexTabDrawing){						
-					//Check if some feature are selected
-					for each(f in this.featureDrawing.selectFeatureHandler.selectFeatures){
-						if(f != null){if(f.selected){selectedFeature=true;}}
-					}				
-					//if one (or more) feature is selected, we warn user
-					if(selectedFeature){
+				if ((event.target as TabNavigator).selectedIndex != this.featureDrawing.indexTabDrawing) {						
+					// User is on Drawing Tab and wants to switch
+					// First, check if some features are selected
+					selectedFeature = (this.featureDrawing.selectFeaturesHandler.selectedFeatures.length > 0); 
+					// if one (or more) feature is selected, we warn user
+					if (selectedFeature){
 						Alert.okLabel = "Continue";
-						Alert.buttonWidth=200;
-						Alert.show("One (or more) feature is selected. If you continue, all selection will be lost.", "Warning", Alert.OK | Alert.CANCEL, null, alertContinueHandler);
-					}
-					//no feature is selected
-					else{
-						this.featureDrawing.finishPath(); 
-						this.featureDrawing.finishPolygon(); 
+						Alert.buttonWidth = 200;
+						Alert.show("One (or more) feature(s) is(are) selected. If you continue, the selection will be lost.", "Warning", Alert.OK | Alert.CANCEL, null, alertContinueHandler);
+					} else {
+						// no feature is selected
+						this.featureDrawing.finishPath();
+						this.featureDrawing.finishPolygon();
 						this.featureDrawing.pointHandler.active = false;
 						this.featureDrawing.tgBar.selectedIndex = 0;
 						this.featureDrawing.drawType = "";
 						this.featureDrawing.activeDrag();
-						this.featureDrawing.selectFeatureHandler.active = false;
+						this.featureDrawing.selectFeaturesHandler.active = false;
 					}
-				
 					this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
-				}
-				//user switches to drawing tab
-				else{
-					this.featureDrawing.selectFeatureHandler.active = true;
-										
+				} else {
+					// user switches to drawing tab
+					this.featureDrawing.selectFeaturesHandler.active = true;
 					this.map.dispatchEvent(new DrawingEvent(DrawingEvent.DISABLED));
 				}
-			}		
+			}
 			
-			//check if the user wants to continue
+			/**
+			 * Check if the user wants to continue and quit the drawing tab
+			 */
 			private function alertContinueHandler(event:CloseEvent):void {
             	var i:Number = 0;
             	var f:VectorFeature;
-            	// User click "Continue", he wants to continue
             	if (event.detail==Alert.OK){
-               		if(this.featureDrawing.drawType != ""){
-						this.featureDrawing.finishPath(); 
-						this.featureDrawing.finishPolygon(); 
+	            	// User click "Continue", he wants to continue
+               		if (this.featureDrawing.drawType != "") {
+						this.featureDrawing.finishPath();
+						this.featureDrawing.finishPolygon();
 						this.featureDrawing.pointHandler.active = false;
 						this.featureDrawing.tgBar.selectedIndex = 0;
 						this.featureDrawing.drawType = "";
 						this.featureDrawing.activeDrag();
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.DISABLED));
 					}
-					else if(this.featureDrawing.selectFeatureHandler != null){
-						this.featureDrawing.selectFeatureHandler.active=false;
+					else if (this.featureDrawing.selectFeaturesHandler != null) {
+						this.featureDrawing.selectFeaturesHandler.active = false;
 					}
-					for(i;i<this.featureDrawing.selectFeatureHandler.selectFeatures.length;i++){
-							f=this.featureDrawing.selectFeatureHandler.selectFeatures[i];
-							if(f != null){if(f.selected){f.selected = false;f.style = f.originalStyle;f.layer.redraw();}}
-					}	
-					this.featureDrawing.selectFeatureHandler.selectFeatures = null;
+					/*if (this.featureDrawing.selectFeaturesHandler != null) {
+						this.featureDrawing.selectFeaturesHandler.clearSelection();
+					}*/
+            	} else {
+	            	// User doesn't want to continue
+            		(this.parent as TabNavigator).selectedIndex = this.featureDrawing.indexTabDrawing;
             	}
-            	else{(this.parent as TabNavigator).selectedIndex = this.featureDrawing.indexTabDrawing;}
 			}
-						
-			private function onDragingFeature(evt:FeatureEvent):void{
-				/* isDragging = true; */
-			}
+			
 		]]>
 	</mx:Script>
 	
 	<os:FeatureDrawingComponent id="featureDrawing" map="{mapBiding}" x="31" y="26"/>
-	<os:SelectBoxComponent id="selectbox" map="{mapBiding}" x="117" y="123"/>
 		
 	<mx:Text x="10" y="10" text="To finalize a path or a polygon, just double click on map." width="310" height="22" fontStyle="italic" textAlign="center"/>
 	<!--mx:Text text="For the moment you can't delete WFS points, even if they are selected" width="280" height="31" fontStyle="italic" textAlign="center" x="25" y="219"/-->
-
 
 	<control:FeatureInfo id="featureInfo" map="{mapBiding}" x="20" y="150" width="300" height="165"/>
 	

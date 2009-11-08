@@ -4,6 +4,7 @@
 	creationComplete="initFeatureDrawing();">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.mouse.SelectFeaturesHandler;
 			import org.openscales.core.geometry.Polygon;
 			import org.openscales.core.geometry.LinearRing;
 			import org.openscales.core.feature.PolygonFeature;
@@ -20,7 +21,6 @@
 			import org.openscales.core.handler.mouse.DragHandler;
 			import org.openscales.core.handler.Handler;
 			import mx.controls.Alert;
-			import org.openscales.core.handler.mouse.SelectFeature;
 			import org.openscales.core.handler.sketch.DrawMultiHandler;
 			import org.openscales.core.handler.sketch.DrawPathHandler;
 			import org.openscales.core.handler.sketch.DrawPolygonHandler;
@@ -75,19 +75,18 @@
 			/**
 			 * Mouse handlers
 			 */
-			public var selectFeatureHandler:SelectFeature;  //to select features
+			public var selectFeaturesHandler:SelectFeaturesHandler;  //to select features
 			
 			/**
 			 * Initiate all properties and handlers
 			 * Be careful with handlers : You have to manage all handler, in order to activate or deactivate them when it's necessary.
 			 * Don't let a handler active if it's not necessary. 
 			 */
-			public function initFeatureDrawing():void{	
-				
+			public function initFeatureDrawing():void {
 				//Properties of selectFeatureHandler
-				this.selectFeatureHandler = new SelectFeature(this.map,drawLayer,true);
-				this.selectFeatureHandler.select = onSelectFeature;
-				this.selectFeatureHandler.selectBySelectBox = onSelectBySelectBox; 
+				this.selectFeaturesHandler = new SelectFeaturesHandler(this.map,true);
+				this.selectFeaturesHandler.layers = [ drawLayer ];
+				this.selectFeaturesHandler.onSelectionUpdated = this.onSelectionUpdated;
 				
 				//Properties of MultiHandler
 				this.multiFeaturesHandler.map = this.map;
@@ -96,13 +95,21 @@
 				/* this.dragfeature = new DragFeature(this.map,[drawLayer],true); */				  										
 			}
 			
+			private function onSelectionUpdated(selectedFeatures:Array):void {
+				btnDeleteSelected.enabled = selectedFeatures
+										&& (selectedFeatures.length>0);
+				btnMerge.enabled = selectedFeatures
+								&& (selectedFeatures.length>1)
+								&& VectorFeature.compatibleFeatures(selectedFeatures);
+			}
+			
 			/**
 			 * Allow you to merge different selected feature in one.
 			 * You can't merge a polygon and a point (for example), All features must be the same geometry
 			 */
 			private function onMergeClick(event:MouseEvent):void {
 				/* tab of selected features in params, return a multigeometry of this selected features */					
-				var feature:VectorFeature = multiFeaturesHandler.buttonClicked(selectFeatureHandler.selectFeatures) as VectorFeature;
+				var feature:VectorFeature = multiFeaturesHandler.buttonClicked(selectFeaturesHandler.selectedFeatures) as VectorFeature;
 				if (multiFeaturesHandler.multiPolygonForbidden) {
 					Alert.show("For the moment, you can't merge MultiPolygon", "Information", Alert.OK | Alert.NONMODAL);
 				}
@@ -134,24 +141,9 @@
 			 * User clicks on delete selected feature button
 			 */
 			private function deleteSelectedFeatures():void {
-				var feature:VectorFeature;
-				var i:Number = 0;
-				var featureToDelete:Array = new Array();
-				
-				for(i;i<this.selectFeatureHandler.selectFeatures.length;i++){
-					feature = this.selectFeatureHandler.selectFeatures[i];
-					if(feature != null){
-						feature.selected = false;feature.style = feature.originalStyle;
-						featureToDelete.push(feature);
-						feature.layer.redraw();
-						this.selectFeatureHandler.selectFeatures[i] = null;
-					}
-				}
-				this.drawLayer.removeFeatures(featureToDelete)			
-				btnDeleteSelected.enabled = false;
-				btnMerge.enabled = false;
-				//clear the information tab
-				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
+				var featuresToDelete:Array = this.selectFeaturesHandler.selectedFeatures;
+				this.selectFeaturesHandler.clearSelection();
+				this.drawLayer.removeFeatures(featuresToDelete);
 			}
 
 			/**
@@ -169,26 +161,20 @@
             }
             
             private function deleteAllFeatures():void{
+            	// clear the selected features
+            	deleteSelectedFeatures();
+            	// clear the unselected features
             	drawLayer.clear();
             	// clear the temporary line
             	pathHandler.drawContainer.graphics.clear();
-            	//remove the listener which draw temporary line
+            	// remove the listener which draw temporary line
             	pathHandler.map.removeEventListener(MouseEvent.MOUSE_MOVE,pathHandler.temporaryLine);
-				// clear the last feature
-				selectFeatureHandler.lastfeature = null;
-				// clear the selected feature tab
-				selectFeatureHandler.selectFeatures = null;
-				// there's no more selected feature
-				selectFeatureHandler.selectFeaturesLength = 0;				
+            	// reset feature handler
 				switch(drawType)
 				{
 					case "path":{pathHandler.newFeature = true; break;}
 					case "polygon":{polygonHandler.newFeature = true; break;}
 				}
-				btnDeleteSelected.enabled = false;
-				btnMerge.enabled = false;
-				//clear the information tab
-				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, this.selectFeatureHandler.currentfeature));
             }
 			
 			/**
@@ -251,28 +237,6 @@
 				}	   			
 				drawLayer.redraw();   					
 			}
-						
-			/**
-			 * When a feature is selected
-			 */
-			private function onSelectFeature(event:FeatureEvent):void {											
-				btnDeleteSelected.enabled = true;				
-				selectFeatureHandler.onSelection();
-				//managing of btnDeleteSelected (in case there no more selected features)
-				if(selectFeatureHandler.selectFeaturesLength==0){btnDeleteSelected.enabled = false;}
-				//managing of btnMerge
-				if(selectFeatureHandler.Comparison()){btnMerge.enabled = true;}
-				else{btnMerge.enabled = false;}
-			}
-			
-			private function onSelectBySelectBox(event:FeatureEvent):void{
-				selectFeatureHandler.onSelectionBySelectBox();
-				if(selectFeatureHandler.selectFeaturesLength>0){
-					btnDeleteSelected.enabled = true;
-				}
-				if(selectFeatureHandler.Comparison()){btnMerge.enabled = true;}
-				else{btnMerge.enabled = false;}
-			}
 					
 			/**
 			 * Click on the togglebarbutton. Index button starts from 0.
@@ -282,7 +246,7 @@
 				switch(handler)
 				{
 					case 0:
-						selectFeatureHandler.active = true;
+						selectFeaturesHandler.active = true;
 						pointHandler.active = false;
 						if(pathHandler.active){this.finishPath();}
 						else if(polygonHandler.active){this.finishPolygon();}
@@ -299,7 +263,7 @@
 							drawType = "point";
 						}
 						this.deactiveDrag();
-						selectFeatureHandler.active = false;
+						selectFeaturesHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));				
 						break;
 					
@@ -311,7 +275,7 @@
 							drawType = "path";
 						}
 						this.deactiveDrag();
-						selectFeatureHandler.active = false;
+						selectFeaturesHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 						break;
 						
@@ -323,7 +287,7 @@
 							drawType = "polygon";
 						}
 						this.deactiveDrag();
-						selectFeatureHandler.active = false;
+						selectFeaturesHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 						break;
 				}
@@ -403,7 +367,7 @@
 					pathHandler.map = this.map;
 					polygonHandler.map = this.map;
 					this.map.addLayer(drawLayer);
-					this.map.addHandler(selectFeatureHandler);																			
+					this.map.addHandler(selectFeaturesHandler);																			
 				}
 			}		
 		]]>

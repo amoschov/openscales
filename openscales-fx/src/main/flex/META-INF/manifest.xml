@@ -26,7 +26,6 @@
 	<component id="ClickHandler" class="org.openscales.fx.handler.mouse.FxClickHandler" />
 	<component id="DragHandler" class="org.openscales.fx.handler.mouse.FxDragHandler" />
 	<component id="DragFeature" class="org.openscales.fx.handler.mouse.FxDragFeature" />
-	<component id="SelectFeature" class="org.openscales.fx.handler.mouse.FxSelectFeature" />
 	<component id="SelectFeaturesHandler" class="org.openscales.fx.handler.mouse.FxSelectFeaturesHandler" />
 	<component id="WheelHandler" class="org.openscales.fx.handler.mouse.FxWheelHandler" />
 	<component id="WMSGetFeatureInfo" class="org.openscales.fx.handler.mouse.FxWMSGetFeatureInfo" />
@@ -39,7 +38,6 @@
 	<component id="ZoomBoxComponent" class="org.openscales.component.control.ZoomBox" />
 	
 	<component id="OverviewMapComponent" class="org.openscales.component.control.OverviewMap" />
-	<component id="SelectBoxComponent" class="org.openscales.component.control.SelectBox" />
 	<component id="CapabilitiesComponent" class="org.openscales.component.control.Capabilities" />
 	<component id="DrawingComponent" class="org.openscales.component.control.Drawing" />
 	<component id="FeatureDrawingComponent" class="org.openscales.component.control.FeatureDrawing"/>

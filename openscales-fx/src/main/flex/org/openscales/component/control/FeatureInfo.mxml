@@ -2,16 +2,18 @@
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:control="org.openscales.component.control.*" width="282" height="168">	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.geometry.LinearRing;
+			import flash.utils.getQualifiedClassName;
+			
+			import mx.collections.ArrayCollection;
+			
+			import org.openscales.core.Map;
+			import org.openscales.core.events.FeatureEvent;
+			import org.openscales.core.feature.Feature;
 			import org.openscales.core.feature.VectorFeature;
-			import org.openscales.core.geometry.Polygon;
+			import org.openscales.core.geometry.LinearRing;
 			import org.openscales.core.geometry.LineString;
 			import org.openscales.core.geometry.MultiLineString;
-			import flash.utils.getQualifiedClassName;
-			import mx.collections.ArrayCollection;
-			import org.openscales.core.events.FeatureEvent;
-			import org.openscales.core.Map;
-			import org.openscales.core.feature.Feature;
+			import org.openscales.core.geometry.Polygon;
 			
 			/**
 			 * Attributes of the selected feature
