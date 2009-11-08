@@ -5,10 +5,13 @@ package org.openscales.fx.handler.mouse
 
 	public class FxClickHandler extends FxHandler
 	{
+		/**
+		 * Constructor of the handler component
+		 */
 		public function FxClickHandler()
 		{
-			this.handler = new ClickHandler();
 			super();
+			this.handler = new ClickHandler();
 		}
 		
 	}

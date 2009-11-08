@@ -1,14 +1,16 @@
 package org.openscales.fx.handler.mouse
 {
 	import org.openscales.core.handler.mouse.SelectFeaturesHandler;
-	import org.openscales.fx.handler.FxHandler;
+	import org.openscales.fx.handler.mouse.FxClickHandler;
 
-	public class FxSelectFeaturesHandler extends FxHandler
+	public class FxSelectFeaturesHandler extends FxClickHandler
 	{
-		public function FxSelectFeaturesHandler()
-		{
-			this.handler = new SelectFeaturesHandler();
+		/**
+		 * Constructor of the handler component
+		 */
+		public function FxSelectFeaturesHandler() {
 			super();
+			this.handler = new SelectFeaturesHandler();
 		}
 		
 	}
