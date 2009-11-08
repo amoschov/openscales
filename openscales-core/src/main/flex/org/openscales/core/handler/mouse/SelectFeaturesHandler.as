@@ -54,6 +54,11 @@ package org.openscales.core.handler.mouse
 		private var _selectedFeatures:Array = new Array();
 		
 		/**
+		 * Callback function onSelectionUpdated(features:Array):void
+		 */
+		private var _onSelectionUpdated:Function = null;
+		
+		/**
 		 * Callback function onOverFeature(feature:VectorFeature):void
 		 */
 		private var _onOverFeature:Function = null;
@@ -141,6 +146,16 @@ package org.openscales.core.handler.mouse
 		}
 		public function set selectionBuffer(value:Number):void {
 			this._selectionBuffer = Math.max(0,value);
+		}
+		
+		/**
+		 * On selection updated function getter and setter
+		 */
+		public function get onSelectionUpdated():Function {
+			return this._onSelectionUpdated;
+		}
+		public function set onSelectionUpdated(value:Function):void {
+			this._onSelectionUpdated = value;
 		}
 		
 		/**
@@ -475,6 +490,7 @@ package org.openscales.core.handler.mouse
 		 * current selection ; if false they replace it
 		 */
 		private function select(featuresToSelect:Array, additiveMode:Boolean=false):void {
+			var selectionUpdated:Boolean = false;
 			var removedFeatures:Array = new Array(); // the features to remove of the current selection
 			var feature:VectorFeature;
 			var fevt:FeatureEvent;
@@ -539,6 +555,10 @@ package org.openscales.core.handler.mouse
 			}
 			// Log the selection modification
 			Trace.info("SelectFeaturesHandler: "+featuresToSelect.length+" new features selected with additive mode "+((additiveMode)?"ON":"OFF")+" => "+this.selectedFeatures.length+" features selected");
+			// if the selection has been updated, use the associated callback
+			if (selectionUpdated && (this.onSelectionUpdated != null)) {
+				this.onSelectionUpdated(this.selectedFeatures);
+			}
 		}
 		
 		/**
@@ -547,16 +567,28 @@ package org.openscales.core.handler.mouse
 		 * @param featuresToUnselect the array of the features to remove
 		 */
 		private function unselect(featuresToUnselect:Array):void {
+			var selectionUpdated:Boolean = false;
 			// TODO
-Trace.debug("SelectFeaturesHandler.unselect: TODO");
+			// Log the selection modification
+			Trace.info("SelectFeaturesHandler: "+featuresToUnselect.length+" features removed from the selection => "+this.selectedFeatures.length+" features selected");
+			// if the selection has been updated, use the associated callback
+			if (selectionUpdated && (this.onSelectionUpdated != null)) {
+				this.onSelectionUpdated(this.selectedFeatures);
+			}
 		}
 		
 		/**
 		 * Clear the current selection.
 		 */
 		public function clearSelection():void {
+			var selectionUpdated:Boolean = (this.selectedFeatures.length > 0);
 			// TODO
-Trace.debug("SelectFeaturesHandler.clearSelection: TODO");
+			// Log the selection modification
+			Trace.info("SelectFeaturesHandler: selection cleared of its "+this.selectedFeatures.length+" features");
+			// if the selection has been updated, use the associated callback
+			if (selectionUpdated && (this.onSelectionUpdated != null)) {
+				this.onSelectionUpdated(this.selectedFeatures);
+			}
 		}
 		
 		/**
