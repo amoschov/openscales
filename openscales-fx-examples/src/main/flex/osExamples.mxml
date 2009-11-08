@@ -43,19 +43,19 @@
 				setOSdescription();
 				expandTree();
 				// Define the default example
-				tree.selectedIndex = 4;
+				tree.selectedIndex = 1;
 				updateSelectedExample();
 			}
 			
 			private function setOSdescription():void {
 				var text:String;
-				text = "<b>OpenScales.org 1.1 snapshot - 11/03/2009</b>";
+				text = "<b>OpenScales.org 1.1 Bêta - 11/07/2009</b>";
 				text += "\n\n\n";
-				text += "OpenScales.org is a user-friendly and fast interface designed to manipulate spatial data : geographic raster viewing, data-vector editing, management of smooth transitions between scales and positions, ...";
+				text += "OpenScales.org is a user-friendly and fast interface designed to manipulate spatial data: geographic raster viewing, data-vector editing, management of smooth transitions between scales and positions, ...";
 				text += "\n\n";
 				text += "As a free open source (LGPL license) and extensible tool written in ActionScript, OpenScales is designed to be easily plugged in your Flex or Air application. OpenScales is a small but powerful core of GIS, so try it and let us know.";
 				text += "\n\n";
-				text += "OpenScales.org can be considered as an ActionScript3 port of Openlayers, since it has started from FlexLayers source code that we actively improve to take advantage of new capabilities offered by ActionScript3 and Flex technologies.";
+				text += "OpenScales.org was initially an ActionScript3 port of Openlayers, since it has started from FlexLayers source code that we actively improve to take advantage of new capabilities offered by ActionScript3 and Flex technologies.";
 				text += "\n\n";	
 				text += "Visit our <b><a href=\"http://openscales.org\" target=\"_new\">website</a></b>, join the community and come discuss with us on <b><a href=\"http://groups.google.com/group/openscales-dev\" target=\"_new\">OpenScales Discussion Group</a></b> or the IRC channel (#openscales on irc.freenode.net).";
 				OSdescription.htmlText = text;
@@ -103,7 +103,7 @@
 				<example viewStack="global" label="Global" description="" />
 				
 				<category label="Configure the map">
-					<example viewStack="panZoom" label="Pan &amp; zoom" description="The map displayed is OpenStreetMap Mapnik (EPSG:900913).\nMove the map using drag or N/S/E/W buttons.\nZoom in/out using the mouse wheel, the scale slider, the +/- buttons above and below the slider or the zoom-box button.\nThe coordinates of the mouse cursor are displayed as LongLat." />
+					<example viewStack="panZoom" label="Navigate on a basic map" description="The map displayed is OpenStreetMap Mapnik (EPSG:900913) and the center is defined in geographic coordinates (WGS84=EPSG:4326).\nMove the map using drag&amp;drop or with the N/S/E/W buttons.\nZoom in/out using the mouse wheel, the scale slider, the +/- buttons above and below the slider or the zoom-box button (the coordinates displayed by the cursor are in pixels).\nThe coordinates of the mouse cursor are displayed in geographic coordinates at the bottom-left corner." />
 					<example viewStack="layersManager" label="Manage the layers" description="Choose a base layer using the combo-box.\nChange the order of the overlays using the up/down buttons or draging an overlay.\nSet the opacity of each layer (base layer or overlay) using its slider.\nThe POI layer is only visible when the full name of the states are displayed using Mapnik as the base layer: zoom in one time." />
 					<example viewStack="capabilities" label="Add layers dynamically" description="Specify a WFS a server, then click on the 'Go!' button to display all the WFS layers available.\nSelect a layer name to have its description.\nDouble-click to add the layer to the map ; for instance topp:states draws the United States (be patient, this will take few seconds).\nYou can modify the style of the layer you add.\n Try to add the same layer twice, a modal popup is displayed.\nThe layers manager is automatically updated." />
 					<example viewStack="styleManager" label="Style vector layers" description="Example not efficient : AT WORK" />
@@ -115,8 +115,8 @@
 				</category>
 				
 				<category label="Manage features">
-					<example viewStack="drawings" label="Draw features" description="Drag the map or draw some points, polylines or polygons using the buttons of the first line.\nUse click and CTRL+click to select features.\nUse the buttons of the second line to remove the last drawn vertex, to delete the selected features, to delete all the drawn features or to merge the selected features." />
-					<example viewStack="features" label="Use all the types of features" description="This is an example of each type of geometry: point (red), multipoint (orange), line (green), multiline (red), polygon (blue), multipolygon (violet).The additional black geometries are used to test the 'containsPoint' and 'intersects' functions of each geometry.Select one geometry by a click or several geometries using the selectBox button and drawing a box.Use CTRL+click and CTRL+selectBox to define a complex selection." />
+					<example viewStack="drawings" label="Draw and edit features" description="Drag the map or draw some points, polylines or polygons using the buttons of the first line.\nUse click and CTRL+click to select features.\nUse the buttons of the second line to remove the last drawn vertex, to delete the selected features, to delete all the drawn features or to merge the selected features." />
+					<example viewStack="features" label="Use all the types of features" description="This is an example of each type of geometry: point (red), multipoint (orange), line (green), multiline (red), polygon (blue), multipolygon (violet).\nThe additional black geometries are used to test the 'containsPoint' and 'intersects' functions of each geometry.\nIn 'select mode', select one geometry by a click or several geometries by drawing a selectBox (keep the mouse button down).\nUse CTRL+click and CTRL+selectBox to define a complex selection." />
 					<example viewStack="informations" label="Get information on the features" description="Click on a point to see its attributes in the panel." />
 <example viewStack="reprojectionAndQuery" label="Reproject and query" description="" />
 				</category>
