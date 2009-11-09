@@ -34,7 +34,7 @@
 			 * with path, its name and all coordinates of each point in the path
 			 * with polygon, same as path
 			 */				
-			public function showInfo(evt:FeatureEvent):void {
+			public function showInfo(feature:VectorFeature):void {
 				//Properties
 				var properties:Array = [];
 				var name:Object;
@@ -42,7 +42,7 @@
 				var first:Boolean = true; //indicate if it's the first point
 				
 				//point informations
-				if(getQualifiedClassName((evt.features[0] as VectorFeature).geometry) == "org.openscales.core.geometry::Point"){
+				if(getQualifiedClassName(feature.geometry) == "org.openscales.core.geometry::Point"){
 					name = {};
 					name.Name = "Name";
 					
@@ -50,27 +50,27 @@
 					var coordinateLon:Object = {};
 					var coordinateLat:Object = {};
 									
-					name.Value = "Point_" + evt.features[0].name;
+					name.Value = "Point_" + feature.name;
 									
 					coordinateLon.Name = "Lon";
-					coordinateLon.Value = evt.features[0].lonlat.lon;
+					coordinateLon.Value = feature.lonlat.lon;
 					coordinateLat.Name = "Lat";
-					coordinateLat.Value = evt.features[0].lonlat.lat;
+					coordinateLat.Value = feature.lonlat.lat;
 					
 					//Add properties to array
 					properties.push(name,coordinateLon,coordinateLat);				
 				}
 				
 				//path informations
-				else if(getQualifiedClassName((evt.features[0] as VectorFeature).geometry) == "org.openscales.core.geometry::MultiLineString"){					
+				else if(getQualifiedClassName(feature.geometry) == "org.openscales.core.geometry::MultiLineString"){					
 					//Add the property NAME
 						name = {};
 						name.Name = "Name";					
-						name.Value = evt.features[0].name;
+						name.Value = feature.name;
 						properties.push(name);							
 
 					//MultiLineString = several LineString and LineString = 2 points					
-					var multiLineString:MultiLineString = (evt.features[0] as VectorFeature).geometry as MultiLineString;
+					var multiLineString:MultiLineString = feature.geometry as MultiLineString;
 					for(var i:int=0; i<multiLineString.componentsLength; i++) {
 						var lineString:LineString = multiLineString.componentByIndex(i) as LineString;
 						for(var j:int=0; j<lineString.componentsLength; j++) {
@@ -97,13 +97,13 @@
 					pointNum=1;		
 				}
 				//polygon informations
-				else if(getQualifiedClassName((evt.features[0] as VectorFeature).geometry) == "org.openscales.core.geometry::Polygon"){
+				else if(getQualifiedClassName(feature.geometry) == "org.openscales.core.geometry::Polygon"){
 					name = {};
 					name.Name = "Name";
-					name.Value = evt.features[0].name;
+					name.Value = feature.name;
 					properties.push(name);
 					
-					var polygon:Polygon = (evt.features[0] as VectorFeature).geometry as Polygon;
+					var polygon:Polygon = feature.geometry as Polygon;
 					for(i=0; i<polygon.componentsLength; i++) {
 						var linearRing:LinearRing = polygon.componentByIndex(i) as LinearRing;
 						for(j=0; j<linearRing.componentsLength; j++) {
@@ -119,10 +119,10 @@
 				}
 				else{
 					// Only for WFS features (for the moment)
-					for (var key:String in evt.features[0].attributes) {	
+					for (var key:String in feature.attributes) {	
 						var property:Object = {};
 						property.Name = key;
-						property.Value = evt.features[0].attributes[key];
+						property.Value = feature.attributes[key];
 						properties.push(property);				
 					}
 				}												

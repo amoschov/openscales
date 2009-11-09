@@ -5,6 +5,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.mouse.SelectFeaturesHandler;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 			import org.openscales.core.style.Style;
@@ -34,7 +35,7 @@
 			isBaseLayer="true"
 			proxy="http://openscales.org/proxy.php?url=" />
 		
-		<os:DragHandler />
+		<os:DragHandler active="false" />
 		<os:WheelHandler />
 		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
@@ -55,14 +56,15 @@
 		
 		<os:WMSGetFeatureInfo url="http://openscales.org/geoserver/wms" layers="tiger:poi" />
 		
-		<os:SelectFeaturesHandler />
+		<os:SelectFeaturesHandler id="selectFeaturesHandler" active="true" />
 		
 	</os:Map>
 	
 	<!-- Specific tools of this example -->
 	
 	<mx:Panel title="Informations about the last selected feature" horizontalAlign="center" x="10" y="10">
-		<os:FeatureInfoComponent map="{map}"/>
+		<os:FeatureInfoComponent id="featureInfoComponent" map="{map}"
+			creationComplete="{(selectFeaturesHandler.handler as SelectFeaturesHandler).onSelectedFeature = featureInfoComponent.showInfo;}" />
 	</mx:Panel>
 	
 </Example>

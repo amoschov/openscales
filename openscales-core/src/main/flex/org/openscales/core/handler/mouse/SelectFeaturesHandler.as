@@ -727,7 +727,7 @@ package org.openscales.core.handler.mouse
 			if (feature is PointFeature || feature is MultiPointFeature) {
 				var markType:String = Mark.WKN_SQUARE;
 				var markSize:Number = 12;
-				var currentMarkSymbolizer:Symbolizer = feature.style.rules[0].symbolizers[0];
+				var currentMarkSymbolizer:Symbolizer = null;//feature.style.rules[0].symbolizers[0];
 				if (currentMarkSymbolizer && (currentMarkSymbolizer is PointSymbolizer)) {
 					var currentMark:Mark = (currentMarkSymbolizer as PointSymbolizer).graphic as Mark;
 					markType = currentMark.wellKnownName;
