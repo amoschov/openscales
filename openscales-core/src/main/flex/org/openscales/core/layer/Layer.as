@@ -11,6 +11,8 @@ package org.openscales.core.layer
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.security.ISecurity;
 	import org.openscales.core.security.events.SecurityEvent;
+	
+	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -265,9 +267,7 @@ package org.openscales.core.layer
 			if (this.map && this.resolutions) {
 				var i:int = 0;
 				while ((i < this.map.baseLayer.resolutions.length)
-					&& (this.map.baseLayer.resolutions[i] > this.resolutions[level])) {
-					// FixMe: the 2 resolutions may be in different SRS !
-					// Proj4as.transformResolution(this.projection, this.map.baseLayer.projection, this.resolutions[level]);
+					&& (this.map.baseLayer.resolutions[i] > Proj4as.unit_transform(this.projection,this.map.baseLayer.projection,this.resolutions[level]))) {
 					i++;
 				}
 				level = i;
@@ -319,8 +319,7 @@ package org.openscales.core.layer
 			if (this.map && this.resolutions) {
 				var i:int = this.map.baseLayer.resolutions.length - 1;
 				while ((i >= 0)
-					&& (this.map.baseLayer.resolutions[i] < this.resolutions[level])) {
-					// FixMe: the 2 resolutions may be in different SRS !
+					&& (this.map.baseLayer.resolutions[i] < Proj4as.unit_transform(this.projection,this.map.baseLayer.projection,this.resolutions[level]))) {
 					i--;
 				}
 				level = i;

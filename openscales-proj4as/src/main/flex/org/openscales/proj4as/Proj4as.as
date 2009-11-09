@@ -17,14 +17,13 @@ package org.openscales.proj4as {
 		}
 
 		public static function transform(source:ProjProjection, dest:ProjProjection, point:ProjPoint):ProjPoint {
-
 			if (source == null || dest == null || point == null) {
-				trace("Parametrs not created!");
+				trace("Parameters not created!");
 				return null;
 			}
 
 			if (!source.readyToUse || !dest.readyToUse) {
-				trace("Proj4as initialization for " + source.srsCode + " not yet complete");
+				trace("Proj4as initialization for " + source.srsCode + " or " + dest.srsCode + " not yet complete");
 				return point;
 			}
 
@@ -74,9 +73,7 @@ package org.openscales.proj4as {
 			return point;
 		}
 
-
 		protected static function datum_transform(source:Datum, dest:Datum, point:ProjPoint):ProjPoint {
-
 			// Short cut if the datums are identical.
 			if (source.compare_datums(dest)) {
 				return point; // in this case, zero is sucess,
@@ -142,5 +139,20 @@ package org.openscales.proj4as {
 			return point;
 		}
 
+		public static function unit_transform(source:ProjProjection, dest:ProjProjection, value:Number):Number {
+			if (source == null || dest == null || isNaN(value)) {
+				trace("Parameters not created!");
+				return NaN;
+			}
+			
+			if (!source.readyToUse || !dest.readyToUse) {
+				trace("Proj4as initialization for " + source.srsCode + " or " + dest.srsCode + " not yet complete");
+				return value;
+			}
+			
+			// FixMe
+			return value;
+		}
+		
 	}
 }

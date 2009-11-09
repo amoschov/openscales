@@ -95,7 +95,6 @@ package org.openscales.proj4as {
 
 		public function ProjProjection(srsCode:String) {
 			this.projParams.srsCode=srsCode.toUpperCase();
-
 			if (this.projParams.srsCode.indexOf("EPSG") == 0) {
 				this.projParams.srsAuth='epsg';
 				this.projParams.srsProjNumber=this.projParams.srsCode.substring(5);
@@ -305,7 +304,6 @@ package org.openscales.proj4as {
 				} // switch()
 			} // for paramArray
 			this.deriveConstants();
-
 		}
 
 		private function deriveConstants():void {
