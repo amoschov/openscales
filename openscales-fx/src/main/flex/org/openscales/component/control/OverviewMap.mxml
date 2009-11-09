@@ -194,7 +194,9 @@
 	      		
 	      		// Change the main map associated to the overview map
 	      		super.map = value;
-				this.map.addControl(this, false);
+	      		if (this.map) {
+					//this.map.addControl(this, false);
+	      		}
 				if (overview && overview.map && overview.map.baseLayer) {
 	      			// Zoom out the overview to display the maximum extent of its map
 					overview.map.zoomToMaxExtent();
