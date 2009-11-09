@@ -46,9 +46,8 @@ package {
 			new SelectFeaturesHandler(_map,true);
 
 			// Add handlers
-			_map.addHandler(new WheelHandler());
-			_map.addHandler(new DragHandler());
-			_map.addHandler(new ClickHandler());
+			new WheelHandler(_map);
+			new DragHandler(_map);
 
 			// Set the map center
 			_map.center=new LonLat(538850.47459,5740916.1243);

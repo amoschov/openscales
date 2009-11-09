@@ -179,19 +179,22 @@
 			 * maximum size.
 			 */		
 			override public function set map(value:Map):void {
+				// Is the input map the current map associated to the control ?
+				if (value == map) {
+					return;
+				}
 				// Remove the event listeners defined on the previous main map
 	      		if (map != null) {
 					// Remove the listeners on when the main map is moved or zoomed	
 	     			map.removeEventListener(MapEvent.MOVE_END, updateRectFromMainMap); 
 	     			map.removeEventListener(MapEvent.ZOOM_END, updateRectFromMainMap);
-
 					// Remove the listeners on when the base layer of the main map is changed	
 					map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED, updateRectFromMainMap);
 	      		}
 	      		
 	      		// Change the main map associated to the overview map
 	      		super.map = value;
-				//this.map.addControl(this);
+				this.map.addControl(this, false);
 				if (overview && overview.map && overview.map.baseLayer) {
 	      			// Zoom out the overview to display the maximum extent of its map
 					overview.map.zoomToMaxExtent();
@@ -204,7 +207,6 @@
 					// Update the overview when the main map is moved or zoomed	
 					map.addEventListener(MapEvent.MOVE_END, updateRectFromMainMap);
 					map.addEventListener(MapEvent.ZOOM_END, updateRectFromMainMap);
-					
 					// Change the overview map if the base layer of the main map is changed
 					map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, updateRectFromMainMap);
 	      		}
