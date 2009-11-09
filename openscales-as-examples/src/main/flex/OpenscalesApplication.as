@@ -10,16 +10,12 @@ package {
 	import org.openscales.core.control.PanZoomBar;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.handler.mouse.DragHandler;
-	import org.openscales.core.handler.mouse.SelectFeature;
+	import org.openscales.core.handler.mouse.SelectFeaturesHandler;
 	import org.openscales.core.handler.mouse.WheelHandler;
 	import org.openscales.core.layer.ogc.WFS;
 	import org.openscales.core.layer.osm.CycleMap;
 	import org.openscales.core.layer.osm.Mapnik;
-	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
-	import org.openscales.core.style.symbolizer.Fill;
-	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
-	import org.openscales.core.style.symbolizer.Stroke;
 
 	[SWF(width='600',height='400')]
 	public class OpenscalesApplication extends Sprite {
@@ -47,7 +43,7 @@ package {
 			_map.addControl(new MousePosition());
 			_map.addControl(new LayerSwitcher());
 			_map.addControl(new PanZoomBar());
-			new SelectFeature(_map,regions,true);
+			new SelectFeaturesHandler(_map,true);
 
 			// Add handlers
 			_map.addHandler(new WheelHandler());
