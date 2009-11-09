@@ -8,6 +8,7 @@ package org.openscales.core
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.geom.Rectangle;
+	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.DraggableSprite;
@@ -295,27 +296,87 @@ package org.openscales.core
 		 *  outside the map.
 		 */
 		public function addControl(control:IControl, attach:Boolean=true):void {
-			this._controls.push(control);
-			control.map = this;
-			control.draw();
-			if(attach)
-				this.addChild( control as Sprite );
+			// Is the input control valid ?
+			if (! control) {
+				Trace.warning("Map.addControl: null control not added");
+				return;
+			}
+			/*if (control.map != this) {
+				Trace.error("Map.addControl: control not added because it is associated to an other map");
+				return;
+			}*/
+			// Is the input control already rgistered ?
+			// Or an other control of the same type ?
+			var i:int;
+			for (i=0; i<this.controls.length; i++) {
+				if (control == this.controls[i]) {
+					Trace.warning("Map.addControl: this control is already registered ("+getQualifiedClassName(control)+")");
+					return;
+				}
+				if (getQualifiedClassName(control) == getQualifiedClassName(this.controls[i])) {
+					Trace.warning("Map.addControl: an other control is already registered for "+getQualifiedClassName(control));
+					return;
+				}
+			}
+			// If the control is a new control, register it
+			if (i == this.controls.length) {
+				Trace.info("Map.addControl: add a new control "+getQualifiedClassName(control));
+				this._controls.push(control);
+				control.map = this;
+				control.draw();
+				if (attach) {
+					this.addChild(control as Sprite);
+				}
+			}
 		}
 		
 		/**
-		 * Add and activate a new handler to the map.
-		 *
+		 * Register a handler as one of the handlers of the map.
+		 * The handler must have its map property setted to this before.
+		 * The handler is not automatically activated. If needed, you have to do
+		 * it by using the active setter of the handler.
+		 * This function should only be called by the Handler.map setter !
+		 *  
 		 * @param handler the handler to add.
 		 */
 		public function addHandler(handler:IHandler):void {
-			this._handlers.push(handler);
-			handler.map = this;
-			handler.active = true;
+			// Is the input handler valid ?
+			if (! handler) {
+				Trace.warning("Map.addHandler: null handler not added");
+				return;
+			}
+			if (handler.map != this) {
+				Trace.error("Map.addHandler: handler not added because it is associated to an other map");
+				return;
+			}
+			// Is the input handler already rgistered ?
+			// Or an other handler of the same type ?
+			var i:int;
+			for (i=0; i<this.handlers.length; i++) {
+				if (handler == this.handlers[i]) {
+					Trace.warning("Map.addHandler: this handler is already registered ("+getQualifiedClassName(handler)+")");
+					return;
+				}
+				if (getQualifiedClassName(handler) == getQualifiedClassName(this.handlers[i])) {
+					Trace.warning("Map.addHandler: an other handler is already registered for "+getQualifiedClassName(handler));
+					return;
+				}
+			}
+			// If the handler is a new handler, register it
+			if (i == this.handlers.length) {
+				Trace.info("Map.addHandler: add a new handler "+getQualifiedClassName(handler));
+				this._handlers.push(handler);
+				//handler.map = this; // this is done by the Handler.map setter
+			}
 		}
 		
 		/**
-		 * Deactivate and remove a handler of the map.
-		 *
+		 * Unregister a handler as one of the handlers of the map.
+		 * The handler must have its map property setted null before or after.
+		 * The handler is not automatically deactivated. You have to do it by
+		 * using the active setter of the handler.
+		 * This function should only be called by the Handler.map setter !
+		 * 
 		 * @param handler the handler to remove.
 		 */
 		public function removeHandler(handler:IHandler):void {

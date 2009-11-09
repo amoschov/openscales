@@ -54,7 +54,7 @@ package org.openscales.core.handler.mouse
 		 * @param layer : The layer concerned by the Modification
 		 * @param active: This boolean activates the vector layer
 		 * */
-		public function EditLayer(map:Map=null, layer:VectorLayer=null,active:Boolean=false)
+		public function EditLayer(map:Map=null, layer:VectorLayer=null, active:Boolean=false)
 		{
 			super(map, active);
 			this._layerToEdit=layer;
@@ -118,15 +118,19 @@ package org.openscales.core.handler.mouse
 				return false;			
 		}
 		
-		override protected function registerListeners():void{
-			this.map.addEventListener(FeatureEvent.EDITION_POINT_FEATURE_DRAG_START,editionPointDragStart);
-			this.map.addEventListener(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,editionPointDragStop);
+		override protected function registerListeners():void {
+			if (this.map) {
+				this.map.addEventListener(FeatureEvent.EDITION_POINT_FEATURE_DRAG_START,editionPointDragStart);
+				this.map.addEventListener(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,editionPointDragStop);
+			}
 			EditionModeStart();
 		}
 		
 		override protected function unregisterListeners():void {
-			this.map.removeEventListener(FeatureEvent.EDITION_POINT_FEATURE_DRAG_START,editionPointDragStart);
-			this.map.removeEventListener(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,editionPointDragStop);
+			if (this.map) {
+				this.map.removeEventListener(FeatureEvent.EDITION_POINT_FEATURE_DRAG_START,editionPointDragStart);
+				this.map.removeEventListener(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,editionPointDragStop);
+			}
 			EditionModeStop();
 		}
 		 /**
@@ -160,7 +164,6 @@ package org.openscales.core.handler.mouse
 						var lonlat:LonLat=this.map.getLonLatFromLayerPx(px);	
 						var PointGeomUnderTheMouse:Point=new Point(lonlat.lon,lonlat.lat);
 						//we delete the point under the mouse  from layer and from tmpVertices Array
-						
 					
 						//There is always a component because the mouse is over the component
 						//consequently we use the first

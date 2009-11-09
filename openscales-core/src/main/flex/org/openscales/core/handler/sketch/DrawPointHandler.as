@@ -32,11 +32,15 @@ package org.openscales.core.handler.sketch
 		}
 
 		override protected function registerListeners():void{
-			this.map.addEventListener(MouseEvent.CLICK, this.drawPoint);
+			if (this.map) {
+				this.map.addEventListener(MouseEvent.CLICK, this.drawPoint);
+			}
 		}
 
 		override protected function unregisterListeners():void{
-			this.map.removeEventListener(MouseEvent.CLICK, this.drawPoint);
+			if (this.map) {
+				this.map.removeEventListener(MouseEvent.CLICK, this.drawPoint);
+			}
 		}
 
 		/**

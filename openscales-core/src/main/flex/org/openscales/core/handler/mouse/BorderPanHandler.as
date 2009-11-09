@@ -17,9 +17,9 @@ package org.openscales.core.handler.mouse {
 
 		private var _deltaY:int = 0;
 
-		public function BorderPanHandler(target:Map=null,active:Boolean=false, ratio:int = 20){
+		public function BorderPanHandler(map:Map=null,active:Boolean=true, ratio:int = 20){
+			super(map, active);
 			this.ratio = ratio;
-			super(target, active);			
 		}
 
 		public function get ratio():int {
@@ -31,16 +31,20 @@ package org.openscales.core.handler.mouse {
 		}
 
 		override protected function registerListeners():void {
-			this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.onMouseMove);
-			this.map.addEventListener(MouseEvent.MOUSE_OVER,this.onMouseOver);
-			this.map.addEventListener(MouseEvent.MOUSE_OUT,this.onMouseOut);
+			if (this.map) {
+				this.map.addEventListener(MouseEvent.MOUSE_MOVE,this.onMouseMove);
+				this.map.addEventListener(MouseEvent.MOUSE_OVER,this.onMouseOver);
+				this.map.addEventListener(MouseEvent.MOUSE_OUT,this.onMouseOut);
+			}
 		}
 
 		override protected function unregisterListeners():void {
-			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,this.onMouseMove);
-			this.map.removeEventListener(MouseEvent.MOUSE_OVER,this.onMouseOver);
-			this.map.removeEventListener(MouseEvent.MOUSE_OUT,this.onMouseOut);
-			this.map.removeEventListener(Event.ENTER_FRAME,this.onEnterFrame);
+			if (this.map) {
+				this.map.removeEventListener(MouseEvent.MOUSE_MOVE,this.onMouseMove);
+				this.map.removeEventListener(MouseEvent.MOUSE_OVER,this.onMouseOver);
+				this.map.removeEventListener(MouseEvent.MOUSE_OUT,this.onMouseOut);
+				this.map.removeEventListener(Event.ENTER_FRAME,this.onEnterFrame);
+			}
 		}
 
 		private function onMouseMove(event:MouseEvent):void{

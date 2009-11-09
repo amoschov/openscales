@@ -59,14 +59,17 @@ package org.openscales.core.handler.mouse
 		}
 
 		override protected function registerListeners():void{
-			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
-			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp);	
+			if (this.map) {
+				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
+				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp);	
+			}
 		}
 
 		override protected function unregisterListeners():void{
-			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
-			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp);
-
+			if (this.map) {
+				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN, this.onMouseDown);
+				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP, this.onMouseUp);
+			}
 		}
 		/**
 		 * The MouseDown Listener

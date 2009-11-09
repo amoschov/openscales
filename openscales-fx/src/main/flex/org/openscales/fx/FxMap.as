@@ -167,7 +167,7 @@ package org.openscales.fx
 				} else if ((child is Control) && !(child is TraceInfo)){
 					this.parent.addChild(child);
 				} else if (child is FxHandler) {
-					this._map.addHandler((child as FxHandler).handler);
+					(child as FxHandler).handler.map = this._map;
 				} else if ((child is UIComponent) && !(child is Map) && !(child is FxMaxExtent) && !(child is FxExtent) && !(child is FxAbstractSecurity) ){
 					this.parent.addChild(child);
 				}

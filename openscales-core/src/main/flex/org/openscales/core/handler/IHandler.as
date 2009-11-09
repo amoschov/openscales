@@ -2,13 +2,13 @@ package org.openscales.core.handler {
 	import org.openscales.core.Map;
 
 	/**
-	 * A Handler is used to handle user actions on the map related to mouse
+	 * A Handler is used to handle user actions on the map related to mouse,
 	 * keyboard or sketch
 	 */
 	public interface IHandler{
 
 		/**
-		 * The map that is controlled bu this handler
+		 * The map that is controlled by this handler
 		 */
 		function get map():Map;
 

@@ -361,13 +361,12 @@
 			
 			override public function set map(value:Map):void {
 				super.map = value;
-				
 				if (this.map != null) {
 					pointHandler.map = this.map;
 					pathHandler.map = this.map;
 					polygonHandler.map = this.map;
+					selectFeaturesHandler.map = this.map;
 					this.map.addLayer(drawLayer);
-					this.map.addHandler(selectFeaturesHandler);																			
 				}
 			}		
 		]]>

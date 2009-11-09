@@ -30,14 +30,18 @@ package org.openscales.core.handler.zoom
          }
          
          override protected function registerListeners():void{
-   			this.map.addEventListener(MouseEvent.MOUSE_DOWN,startBox);
-	        this.map.addEventListener(MouseEvent.MOUSE_UP,endBox);     
+         	if (this.map) {
+	   			this.map.addEventListener(MouseEvent.MOUSE_DOWN,startBox);
+		        this.map.addEventListener(MouseEvent.MOUSE_UP,endBox);     
+         	}
          }
          
          override protected function unregisterListeners():void{
-         	this.map.removeEventListener(MouseEvent.MOUSE_DOWN,startBox);
-	        this.map.removeEventListener(MouseEvent.MOUSE_UP,endBox);
-	        this.map.removeEventListener(MouseEvent.MOUSE_MOVE,expandArea);
+         	if (this.map) {
+	         	this.map.removeEventListener(MouseEvent.MOUSE_DOWN,startBox);
+		        this.map.removeEventListener(MouseEvent.MOUSE_UP,endBox);
+		        this.map.removeEventListener(MouseEvent.MOUSE_MOVE,expandArea);
+         	}
          }
         
          override public function set map(value:Map):void{

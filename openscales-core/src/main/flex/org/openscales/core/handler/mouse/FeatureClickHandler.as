@@ -62,17 +62,19 @@ package org.openscales.core.handler.mouse
 		 * Event Management
 		 * */
 		 override protected function registerListeners():void{
-			
-			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
-			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
+			if (this.map) {
+				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
+				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
+			}
 			this._timer.addEventListener(TimerEvent.TIMER, chooseClick);
 		
 		}
 		override protected function unregisterListeners():void{
 			this._timer.stop();
-			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
-			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
-		
+			if (this.map) {
+				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
+				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
+			}
 		}
 		private  function chooseClick(event:TimerEvent):void{
 			if(_clickNum == 1) {

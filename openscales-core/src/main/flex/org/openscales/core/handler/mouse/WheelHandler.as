@@ -13,16 +13,20 @@ package org.openscales.core.handler.mouse {
 	 */
 	public class WheelHandler extends Handler {
 
-		public function WheelHandler(target:Map = null, active:Boolean = false){
+		public function WheelHandler(target:Map = null, active:Boolean = true){
 			super(target,active);
 		}
 
 		override protected function registerListeners():void{
-			this.map.addEventListener(MouseEvent.MOUSE_WHEEL,this.onMouseWheel);
+			if (this.map) {
+				this.map.addEventListener(MouseEvent.MOUSE_WHEEL,this.onMouseWheel);
+			}
 		}
 
 		override protected function unregisterListeners():void{
-			this.map.removeEventListener(MouseEvent.MOUSE_WHEEL,this.onMouseWheel);
+			if (this.map) {
+				this.map.removeEventListener(MouseEvent.MOUSE_WHEEL,this.onMouseWheel);
+			}
 		}
 
 		private function onMouseWheel(event:MouseEvent):void{

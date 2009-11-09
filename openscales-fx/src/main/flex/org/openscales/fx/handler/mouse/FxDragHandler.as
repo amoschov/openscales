@@ -7,8 +7,8 @@ package org.openscales.fx.handler.mouse
 	{
 		public function FxDragHandler()
 		{
-			this.handler = new DragHandler();
 			super();
+			this.handler = new DragHandler();
 		}
 		
 	}

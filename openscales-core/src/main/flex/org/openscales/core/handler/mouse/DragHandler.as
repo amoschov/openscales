@@ -36,21 +36,25 @@ package org.openscales.core.handler.mouse
 		 * DragHandler constructor
 		 *
 		 * @param map the DragHandler map
-		 * @param active to determinates if the handler is active
+		 * @param active to determinates if the handler is active (default=true)
 		 */
-		public function DragHandler(map:Map=null,active:Boolean=false)
+		public function DragHandler(map:Map=null,active:Boolean=true)
 		{
 			super(map,active);
 		}
 		
 		override protected function registerListeners():void{
-			this.map.addEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
-			this.map.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
+			if (this.map) {
+				this.map.addEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
+				this.map.addEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
+			}
 		}
 
 		override protected function unregisterListeners():void{
-			this.map.removeEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
-			this.map.removeEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
+			if (this.map) {
+				this.map.removeEventListener(MouseEvent.MOUSE_DOWN, this.onMouseDown);
+				this.map.removeEventListener(MouseEvent.MOUSE_UP, this.onMouseUp);
+			}
 		}
 		
 		/**

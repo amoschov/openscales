@@ -28,7 +28,7 @@ package org.openscales.core.handler
 		/**
 		 * Constructor of the handler.
 		 * @param map the map associated to the handler
-		 * @param active boolean defining if the handler is active or not
+		 * @param active boolean defining if the handler is active or not (default=false)
 		 */
 		public function Handler(map:Map = null, active:Boolean = false) {
 			this.map = map;
@@ -42,13 +42,22 @@ package org.openscales.core.handler
 			return this._map;
 		}
 		public function set map(value:Map):void {
-			// If control is active, unregister listeners on the current target
+			// Is the input map the current map associated to the handler ?
+			if (value == map) {
+				return;
+			}
+			// If the handler is active, unregister its listeners
 			if (this._active) {
 				this.unregisterListeners();
 			}
+			// Remove the handler of its previous associated map
+			if (this._map) {
+				this._map.removeHandler(this);
+			}
+			// Associate the handler and the input map
 			this._map = value;
-			//this._map.addHandler(this); // FixMe
-			// If control is active, register listeners on the current target
+			this._map.addHandler(this);
+			// If the handler is active, register its listeners
 			if (this._active) {
 				this.registerListeners();
 			}

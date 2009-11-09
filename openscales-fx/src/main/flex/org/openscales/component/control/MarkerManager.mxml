@@ -52,7 +52,7 @@
 		[Bindable]
 		public var defaultPopupText:String = "This is a popup";
 		
-		public function addHandler(event:MouseEvent):void {
+		public function addMarker(event:MouseEvent):void {
 			if(iconChoice.selectedItem != null){
 				var featureData:Object = {popupBackground:0xDDDDDD, popupBorder:5, popupSize:new Size(320,240)};
 				if (popupTypeHtml.selected)
@@ -61,25 +61,18 @@
 					featureData.popupContent = new TitleWindow();
 				
 				//var marker:Marker = new Marker( markerLayer, new LonLat(markerLon.value,markerLat.value),featureData );
-				
 				var marker:Marker = new Marker(new org.openscales.core.geometry.Point(markerLon.value,markerLat.value));
-				
 				marker.addEventListener(MouseEvent.CLICK, function():void {fxmap.addPopup(marker.createPopup());});
-				
 				markerLayer.addFeature(marker);
-				
-				
-				
 			}
 		}
 		
-		public function clearHandler(event:MouseEvent):void {
+		public function clearMarkers(event:MouseEvent):void {
 			markerLayer.clear();
 		}
 		
 		override public function set map(value:Map):void {
 			super.map = value;
-			
 			if (this.map != null) {
 				this.map.addLayer(markerLayer);
 			}
@@ -126,8 +119,8 @@
       </mx:FormItem>
     </mx:Form>
     <mx:HBox width="100%" horizontalAlign="center">
-      <mx:Button click="addHandler(event)" label="Add Marker" />
-      <mx:Button click="clearHandler(event)" label="Clear Markers" />
+      <mx:Button click="addMarker(event)" label="Add Marker" />
+      <mx:Button click="clearMarkers(event)" label="Clear Markers" />
     </mx:HBox>
   </mx:VBox>
 

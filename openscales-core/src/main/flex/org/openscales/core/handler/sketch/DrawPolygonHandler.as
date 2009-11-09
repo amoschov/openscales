@@ -82,12 +82,16 @@ package org.openscales.core.handler.sketch
 		override protected function registerListeners():void{
 			this._dblClickHandler.active = true;
 			this._dblClickHandler.doubleClick = this.mouseDblClick;
-			this.map.addEventListener(MouseEvent.CLICK, this.mouseClick);	
+			if (this.map) {
+				this.map.addEventListener(MouseEvent.CLICK, this.mouseClick);	
+			}
 		}
 
 		override protected function unregisterListeners():void{
 			this._dblClickHandler.active = false;
-			this.map.removeEventListener(MouseEvent.CLICK, this.mouseClick);
+			if (this.map) {
+				this.map.removeEventListener(MouseEvent.CLICK, this.mouseClick);
+			}
 		}
 		
 		protected function mouseClick(event:MouseEvent):void {

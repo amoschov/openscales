@@ -81,15 +81,15 @@ package org.openscales.core.configuration
                   //add controls
                   for each (var xmlControl:XML in controls){
                         var control:Control = this.parseControl(xmlControl);
-                        if(control != null) {
-                              map.addControl(control);
+                        if (control != null) {
+							map.addControl(control);
                         }
                   }
                   //add handlers
                   for each (var xmlHandler:XML in handlers){
                         var handler:Handler = this.parseHandler(xmlHandler);
-                        if(handler != null){
-                              map.addHandler(handler);
+                        if (handler != null){
+                        	handler.map = map;
                         }
                         
                   }
