@@ -150,8 +150,10 @@ package org.openscales.proj4as {
 				return value;
 			}
 			
-			// FixMe
-			return value;
+			// FixMe: how to transform the unit ? how to manage the difference of the two dimensions ?
+			var resProj:ProjPoint = new ProjPoint(value,value);
+			resProj = Proj4as.transform(source, dest, resProj);
+			return (resProj.x==resProj.y) ? resProj.x : (resProj.x+resProj.y)/2;
 		}
 		
 	}
