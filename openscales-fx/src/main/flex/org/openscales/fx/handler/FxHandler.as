@@ -29,7 +29,6 @@ package org.openscales.fx.handler
 			return this._handler.active;
 		}
 		public function set active(value:Boolean):void {
-Trace.debug("FxHandler.active="+value);
 			this._handler.active = value;
 			// Dispatch an event to allow binding for the map of this Control
 			dispatchEvent(new Event("propertyChange"));

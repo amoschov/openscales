@@ -8,6 +8,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.events.FeatureEvent;
+	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPointFeature;
@@ -15,6 +16,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.layer.FeatureLayer;
+	import org.openscales.core.layer.Layer;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Fill;
@@ -131,11 +133,43 @@ package org.openscales.core.handler.mouse
 			return this._layers;
 		}
 		public function set layers(value:Array):void {
-			if (value != null) {
-				this._layers = value;
+			// Assert that the input array is composed of not null FeatureLayers
+			if (value == null) {
+				Trace.error("SelectFeaturesHandler - invalid layers (null)");
+				return;
 			} else {
-				Trace.error("SelectFeaturesHandler - invalid layers");
+				// Restrict the input array to the not null FeatureLayers
+				if (value.length > 0) {
+					var filteredValue:Array = new Array();
+					for each (var l:Layer in value) {
+						if ((l!=null) && (l is FeatureLayer)) {
+							filteredValue.push(l);
+						}
+					}
+					value = filteredValue;
+					if (value.length == 0) {
+						Trace.error("SelectFeaturesHandler - invalid layers (none FeatureLayer)");
+						return;
+					}
+				}
 			}
+			// Unselect the features attached to the removed layers. If value is
+			// a void array, the new layers are all the layers of the map, so
+			// there is nothing to do in this case.
+			if ((value.length>0) && (this.layers.length>0) && (this.selectedFeatures.length>0)) {
+				var layer:FeatureLayer, i:int;
+				for each (layer in this.layers) {
+					// Is the layer in the array of the new layers ?
+					for (i=0; (i<value.length) && (layer!=value[i]); i++)
+						; // nothing else to do than to increment i
+					// No if i equals value.length, so unselect its features
+					if (i == value.length) {
+						unselectFeaturesOfLayer(layer);
+					}
+				}
+			}
+			// Update the array of the layers to treat for the selection
+			this._layers = value;
 		}
 		
 		/**
@@ -256,9 +290,17 @@ package org.openscales.core.handler.mouse
 		}
 		
 		/**
-		 * 
+		 * Set the map associated to the handler.
+		 * The current selection is cleared and the array of the layers to treat
+		 * is reset to a void array.
 		 */
 		override public function set map(value:Map):void {
+			// Reset the selection and the array of the layers to treat
+			if (this.map != value) {
+				clearSelection();
+				this.layers = new Array();
+			}
+			// Update the map associated to the handler
 			if (this.map) {
 				this.map.removeChild(_drawContainer);
 			}
@@ -276,6 +318,7 @@ package org.openscales.core.handler.mouse
 			super.registerListeners();
 			// Listeners of the associated map
 			if (this.map) {
+				this.map.addEventListener(LayerEvent.LAYER_REMOVED, this.onLayerRemoved);
 				this.map.addEventListener(FeatureEvent.FEATURE_OVER, this.onOver);
 				this.map.addEventListener(FeatureEvent.FEATURE_OUT, this.onOut);
 				this.map.addEventListener(FeatureEvent.FEATURE_SELECTED, this.onSelected);
@@ -289,6 +332,7 @@ package org.openscales.core.handler.mouse
 		override protected function unregisterListeners():void {
 			// Listeners of the associated map
 			if (this.map) {
+				this.map.removeEventListener(LayerEvent.LAYER_REMOVED, this.onLayerRemoved);
 				this.map.removeEventListener(FeatureEvent.FEATURE_OVER, this.onOver);
 				this.map.removeEventListener(FeatureEvent.FEATURE_OUT, this.onOut);
 				this.map.removeEventListener(FeatureEvent.FEATURE_SELECTED, this.onSelected);
@@ -296,6 +340,35 @@ package org.openscales.core.handler.mouse
 			}
 			// Listeners of the super class
 			super.unregisterListeners();
+		}
+		
+		/**
+		 * Unselect all the features of the input layer.
+		 * @param layer the FeatureLayer removed from the layers to manage
+		 */
+		private function unselectFeaturesOfLayer(layer:FeatureLayer):void {
+			// Look for all the selected features attached to the removed layers
+			var featuresToUnselect:Array = new Array();
+			for each (var feature:VectorFeature in this.selectedFeatures) {
+				if (feature.layer == layer) {
+					featuresToUnselect.push(feature);
+					break;
+				}
+			}
+			// Remove these features of the selection
+			this.unselect(featuresToUnselect);
+		}
+		
+		/**
+		 * Unselect all the features of the removed layer
+		 * @param evt the LayerEvent that defines the layer removed from the map
+		 */
+		private function onLayerRemoved(evt:LayerEvent):void {
+			if ((! evt) || (evt.type != LayerEvent.LAYER_REMOVED)
+				|| (! evt.layer) || (! (evt.layer is FeatureLayer))) {
+				return;
+			}
+			unselectFeaturesOfLayer(evt.layer as FeatureLayer);
 		}
 		
 		/**
