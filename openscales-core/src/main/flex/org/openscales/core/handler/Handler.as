@@ -18,7 +18,7 @@ package org.openscales.core.handler
 		/**
 		 * Boolean defining if the handler is active or not
 		 */
-		[Bindable] private var _active:Boolean;
+		private var _active:Boolean;
 		
 		/**
 		 * Callback function toggleHandlerActivity(active:Boolean):void
