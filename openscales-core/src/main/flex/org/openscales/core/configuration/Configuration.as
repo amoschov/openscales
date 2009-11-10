@@ -205,7 +205,7 @@ package org.openscales.core.configuration
                   var proxy:String=xmlNode.@proxy;
                   
                   var projection:String=xmlNode.@projection;
-                  var resolution:Array=new Array();
+                  var resolution:Array=null;
                    if(xmlNode.@resolutions!=null && xmlNode.@resolutions=="") 
                    {
                   		resolution=xmlNode.@resolutions.split(",");
@@ -262,7 +262,7 @@ package org.openscales.core.configuration
                                    break;
                              }                                  
                         }
-                        layer.resolutions=resolution;                 
+                       if(resolution!=null) layer.resolutions=resolution;                 
                   }
                   // Case when the layer is WFS 
                   else if(xmlNode.name() == "WFS"){
