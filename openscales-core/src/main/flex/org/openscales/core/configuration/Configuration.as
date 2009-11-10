@@ -1,5 +1,7 @@
 package org.openscales.core.configuration
 {
+      import flash.xml.XMLNode;
+      
       import org.openscales.core.Map;
       import org.openscales.core.Trace;
       import org.openscales.core.basetypes.Bounds;
@@ -23,6 +25,8 @@ package org.openscales.core.configuration
       import org.openscales.core.layer.ogc.WMSC;
       import org.openscales.core.layer.osm.Mapnik;
       import org.openscales.core.layer.params.ogc.WMSParams;
+      import org.openscales.core.security.AbstractSecurity;
+      import org.openscales.core.security.ign.IGNGeoRMSecurity;
       import org.openscales.proj4as.ProjProjection;
 
       /**
@@ -92,6 +96,10 @@ package org.openscales.core.configuration
                         	handler.map = map;
                         }
                         
+                  }
+                  //add security requester egg:IGNGeoRMSecurity
+                  for each(var xmlSecurity:XML in securities){
+                  	var security:AbstractSecurity=this.parseSecurity(xmlSecurity,map);
                   }
             }
             
@@ -170,7 +178,10 @@ package org.openscales.core.configuration
                   var controlsNode:XMLList = config.Controls.*;
                   return controlsNode;
             }
-            
+            public function get securities():XMLList{
+            	var securitiesNode:XMLList=config.Securities.*;
+            	return securitiesNode;
+            }
             public function parseLayer(xmlNode:XML):Layer {
                   // The layer which will return
                   var layer:Layer=null;
@@ -362,6 +373,15 @@ package org.openscales.core.configuration
                         control = mousePosition;
                   }
                   return control;         
-            }                            
+            }
+            protected function parseSecurity(xmlNode:XML,map:Map):AbstractSecurity{
+            	var security:AbstractSecurity=null;
+            	if(xmlNode.name()=="IGNGeoRMSecurity"){
+            		if(map!=null && xmlNode.@key!=null)
+            			security=new IGNGeoRMSecurity(map,xmlNode.@key,xmlNode.@proxy);
+            	}
+            	return security;
+            }
+                                        
       }
 }
