@@ -132,7 +132,7 @@ package org.openscales.core.configuration
                   //the tab which contains layers to add
                   var layers:Array = new Array ();
                   
-                  if (layersNodes.length == 0) {
+                  if (layersNodes.length() == 0) {
                         trace("There's no layer on the map");return [];
                   } 
                   // Manage the different catalog in the file
@@ -205,7 +205,8 @@ package org.openscales.core.configuration
                   var proxy:String=xmlNode.@proxy;
                   
                   var projection:String=xmlNode.@projection;
-                   var resolution:Array=xmlNode.@resolutions.split(",");
+                  var resolution:Array=new Array();
+                   if(xmlNode.@resolutions!=null) resolution=xmlNode.@resolutions.split(",");
                    for(var i:int =0;i<resolution.length;i++){
                    	resolution[i]=int(resolution[i]);
                    }                
