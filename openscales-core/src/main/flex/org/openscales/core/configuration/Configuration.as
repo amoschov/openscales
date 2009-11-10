@@ -1,7 +1,5 @@
 package org.openscales.core.configuration
 {
-      import flash.xml.XMLNode;
-      
       import org.openscales.core.Map;
       import org.openscales.core.Trace;
       import org.openscales.core.basetypes.Bounds;
@@ -97,9 +95,16 @@ package org.openscales.core.configuration
                         }
                         
                   }
-                  //add security requester egg:IGNGeoRMSecurity
+                  //add  securities egg:IGNGeoRMSecurity
                   for each(var xmlSecurity:XML in securities){
                   	var security:AbstractSecurity=this.parseSecurity(xmlSecurity,map);
+                  	if(xmlSecurity.@layers!=null && map!=null){
+                  		var layers:Array = xmlSecurity.@layers.split(",");
+                  		for each (var name:String in layers) {
+                  			var layer:Layer=map.getLayerByName(name);
+                  			if(layer!=null) layer.security=security;
+                  		}
+                  	}
                   }
             }
             
@@ -200,7 +205,10 @@ package org.openscales.core.configuration
                   var proxy:String=xmlNode.@proxy;
                   
                   var projection:String=xmlNode.@projection;
-                                    
+                   var resolution:Array=xmlNode.@resolutions.split(",");
+                   for(var i:int =0;i<resolution.length;i++){
+                   	resolution[i]=int(resolution[i]);
+                   }                
                   // Case where the layer is WMS or WMSC
                   if(xmlNode.name()== "WMSC" || xmlNode.name()== "WMS"){
                         var type:String = xmlNode.name();
@@ -223,8 +231,12 @@ package org.openscales.core.configuration
                         
                         var styles:String=xmlNode.@styles; 
                         var bgcolor:String=xmlNode.@bgcolor;
+                       
+                        
                         
                         paramsWms = new WMSParams(layers,format,transparent,tiled,styles,bgcolor);
+                        paramsWms.exceptions=xmlNode.@exceptions;
+                        
                         switch(type){
                              case "WMSC":{
                                    Trace.info("Configuration - Find WMSC Layer : " + xmlNode.name());                                
@@ -245,7 +257,8 @@ package org.openscales.core.configuration
                                    layer=wmslayer;
                                    break;
                              }                                  
-                        }                 
+                        }
+                        layer.resolutions=resolution;                 
                   }
                   // Case when the layer is WFS 
                   else if(xmlNode.name() == "WFS"){
