@@ -206,10 +206,13 @@ package org.openscales.core.configuration
                   
                   var projection:String=xmlNode.@projection;
                   var resolution:Array=new Array();
-                   if(xmlNode.@resolutions!=null) resolution=xmlNode.@resolutions.split(",");
-                   for(var i:int =0;i<resolution.length;i++){
-                   	resolution[i]=int(resolution[i]);
-                   }                
+                   if(xmlNode.@resolutions!=null && xmlNode.@resolutions=="") 
+                   {
+                  		resolution=xmlNode.@resolutions.split(",");
+                   		for(var i:int =0;i<resolution.length;i++){
+                   			resolution[i]=int(resolution[i]);
+                   		}   
+                   	}             
                   // Case where the layer is WMS or WMSC
                   if(xmlNode.name()== "WMSC" || xmlNode.name()== "WMS"){
                         var type:String = xmlNode.name();
