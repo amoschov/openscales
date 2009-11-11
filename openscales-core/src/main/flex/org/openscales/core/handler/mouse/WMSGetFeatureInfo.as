@@ -74,6 +74,12 @@ package org.openscales.core.handler.mouse
 			_srs = srs;
 		}
 		
+		override public function set active(value:Boolean):void
+		{
+        	super.active = value;
+            _clickHandler.active = value;
+        } 
+		
 		private function getInfoForClick(event:MouseEvent):void {
 			// get layers and styles
 			var layerNames:String = _layers;
