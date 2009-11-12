@@ -2,8 +2,8 @@ package org.openscales.core.handler.mouse
 {
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	import flash.net.URLLoader;
-	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.events.GetFeatureInfoEvent;
@@ -108,8 +108,9 @@ package org.openscales.core.handler.mouse
 			else
 				infoParams.srs = _srs;
             infoParams.maxFeatures = _maxFeatures;
-            infoParams.x = event.stageX;
-            infoParams.y = event.stageY;
+            var point:Point = this.map.globalToLocal(new Point(event.stageX, event.stageY)); 
+            infoParams.x = point.x; 
+            infoParams.y = point.y;
             infoParams.height = this.map.height;
             infoParams.width = this.map.width;
 			
