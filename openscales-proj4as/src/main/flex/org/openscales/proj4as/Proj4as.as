@@ -149,7 +149,10 @@ package org.openscales.proj4as {
 				trace("Proj4as initialization for " + source.srsCode + " or " + dest.srsCode + " not yet complete");
 				return value;
 			}
-			
+			if(source.projParams.units == dest.projParams.units){
+				trace("Proj4s the projection are the same unit");
+				return value;
+			}
 			// FixMe: how to transform the unit ? how to manage the difference of the two dimensions ?
 			var resProj:ProjPoint = new ProjPoint(value,value);
 			resProj = Proj4as.transform(source, dest, resProj);
