@@ -12,7 +12,10 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.VectorLayer;
-	
+	/**
+	 * This Handler is used for point edition 
+	 * its extends CollectionHandler
+	 * */
 	public class EditPointHandler extends AbstractEditHandler
 	{
 		/**
@@ -29,18 +32,24 @@ package org.openscales.core.handler.sketch
 			this.featureClickHandler=featureClickHandler;
 			
 		}	
-		
+		 /**
+		 * @inheritDoc 
+		 * */
 		override public function featureDoubleClick(event:FeatureEvent):void{
 			
 			this._layerToEdit.removeFeature(event.feature);
 			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DELETING,event.feature));
 		}
-		
+		 /**
+		 * @inheritDoc 
+		 * */
 		override public function dragVerticeStart(event:FeatureEvent):void{
 			event.feature.startDrag();
 			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_START,event.feature));
 		}
-		
+		 /**
+		 * @inheritDoc 
+		 * */
 		override public function dragVerticeStop(event:FeatureEvent):VectorFeature{
 			event.feature.stopDrag();
 			//update geometry
@@ -58,7 +67,9 @@ package org.openscales.core.handler.sketch
 			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_STOP,event.feature));
 			return newPointFeature;
 		}
-		
+		 /**
+		 * @inheritDoc 
+		 * */
 		 override public function editionModeStart():Boolean{
 		 if(this._layerToEdit !=null)
 			{

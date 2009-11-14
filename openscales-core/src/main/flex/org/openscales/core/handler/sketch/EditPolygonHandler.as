@@ -18,13 +18,19 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.VectorLayer;
-	
+	/**
+	 * This Handler is used for polygon edition 
+	 * its extends CollectionHandler
+	 * */
 	public class EditPolygonHandler extends EditCollectionHandler
 	{
 		public function EditPolygonHandler(map:Map = null, active:Boolean = false,layerToEdit:VectorLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
 		{
 			super(map,active,layerToEdit,featureClickHandler,drawContainer);			
 		}
+		/**
+		 * @inheritDoc 
+		 * */
 		override public function editionModeStart():Boolean{
 		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
 					if(/*vectorFeature.isEditable && */vectorFeature.geometry is Polygon || vectorFeature.geometry is MultiPolygon){
@@ -42,7 +48,9 @@ package org.openscales.core.handler.sketch
 					if(this._featureClickHandler!=null)this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));				
 		 	return true;
 		 }
-		 
+		 /**
+		 * @inheritDoc 
+		 * */
 		 override public function dragVerticeStart(event:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
 		 	if(vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature){
@@ -50,6 +58,9 @@ package org.openscales.core.handler.sketch
 		 	}
 		 	
 		 }
+		 /**
+		 * @inheritDoc 
+		 * */
 		 override  public function dragVerticeStop(event:FeatureEvent):VectorFeature{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
 		 	if(vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature){
@@ -58,8 +69,7 @@ package org.openscales.core.handler.sketch
 		 	return null;
 		 }
 		/**
-		 * drawing of the temporary line during drag
-		 * 
+		 * @inheritDoc 
 		 * */
 		override protected function drawTemporaryFeature(event:MouseEvent):void{
 		 	var pointUnderTheMouse:Boolean=false;

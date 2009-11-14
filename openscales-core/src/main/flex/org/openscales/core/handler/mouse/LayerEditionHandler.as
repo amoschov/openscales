@@ -177,8 +177,10 @@ package org.openscales.core.handler.mouse
 		 }
 		
 		
-		//Edition Mode Start
-		protected function EditionModeStart():Boolean{
+		/**
+		 * Start the edition Mode
+		 * */
+		protected function editionModeStart():Boolean{
 			if(_layerToEdit !=null)
 			{
 					if(iEditPoint!=null) {
@@ -206,8 +208,10 @@ package org.openscales.core.handler.mouse
 			}
 			return true;
 		}
-		//Edition Mode Stop
-		protected function EditionModeStop():Boolean{
+		/**
+		 * Stop the edition Mode
+		 * */
+		protected function editionModeStop():Boolean{
 			if(_layerToEdit !=null)
 			{
 				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
@@ -260,7 +264,9 @@ package org.openscales.core.handler.mouse
 		 	 	this._layerToEdit=value;
 		 	 }
 		 }
-		 
+		 /**
+		 *@inheritDoc 
+		 * */
 		 override public function set map(value:Map):void{
 		 	if(value!=null){
 		 		super.map=value;
@@ -270,13 +276,15 @@ package org.openscales.core.handler.mouse
 		 	}
 		 }
 
-		 
+		 /**
+		 *@inheritDoc 
+		 * */
 		override public function set active(value:Boolean):void{
 			super.active=value;
 			if(iEditPoint!=null)  (this.iEditPoint as AbstractEditHandler).active=value;
 			this._featureClickHandler.active=active;
-			if(value) EditionModeStart();
-			else EditionModeStop();
+			if(value) editionModeStart();
+			else editionModeStop();
 		}
 	}
 }

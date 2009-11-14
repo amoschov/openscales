@@ -21,7 +21,7 @@
 		<os:Mapnik name="Mapnik" isBaseLayer="true"
 				   proxy="http://openscales.org/proxy.php?url=" />
 		
-		<os:DragHandler />
+		<!--<os:DragHandler />-->
 		<os:WheelHandler />
 		<os:Spinner id="spinner" x="{width / 2}" y="{height / 2}"/>	
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>

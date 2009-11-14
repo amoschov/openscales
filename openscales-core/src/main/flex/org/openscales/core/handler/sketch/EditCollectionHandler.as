@@ -18,6 +18,12 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.style.Style;
 
+
+	/**
+	 * This class is a handler used for Collection(Linestring Polygon MultiPolygon etc..) modification
+	 * don't use it use EditPathHandler if you want to edit a LineString or a MultiLineString
+	 * or EditPolygon 
+	 * */
 	public class EditCollectionHandler extends AbstractEditHandler
 	{
 		/**
@@ -26,14 +32,18 @@ package org.openscales.core.handler.sketch
 		 * */
 		protected var indexOfFeatureCurrentlyDrag:int=-1;
 		
-		
-		//This singleton represents the point under the mouse during the dragging operation
+		/**
+		 * This singleton represents the point under the mouse during the dragging operation
+		 * */
 		public static var _pointUnderTheMouse:PointFeature=null;
 		/**
 		 * This tolerance is to discern Virtual vertices from point under the mouse
 		 * */
 		 private var _tolerance:Number=8;
 		
+		/**
+		 * @inheritDoc 
+		 * */
 		public function EditCollectionHandler(map:Map=null, active:Boolean=false, layerToEdit:VectorLayer=null, featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
 		{
 			super(map, active, layerToEdit, featureClickHandler,drawContainer);
@@ -59,6 +69,9 @@ package org.openscales.core.handler.sketch
 					}			
 		 	return true;
 		 }
+		 /**
+		 * @inheritDoc 
+		 * */
 		  override public function editionModeStop():Boolean{
 		  	if(this._featureClickHandler!=null)
 		 	this.map.removeEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);	
@@ -66,8 +79,7 @@ package org.openscales.core.handler.sketch
 		 } 
 		 
 		 /**
-		 * drag vertice start function
-		 * 
+		 * @inheritDoc 
 		 * */
 		 override public function dragVerticeStart(event:FeatureEvent):void{
 			var vectorfeature:PointFeature=event.feature as PointFeature;
@@ -83,6 +95,9 @@ package org.openscales.core.handler.sketch
 			}
 			
 		 }
+		 /**
+		 * @inheritDoc 
+		 * */
 		override  public function dragVerticeStop(event:FeatureEvent):VectorFeature{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
 		 	if(vectorfeature!=null){
@@ -125,6 +140,7 @@ package org.openscales.core.handler.sketch
 		  /**
 		 * To know if a dragged point is a under the mouse or is a vertice
 		 * if it's a point returns its index else returns -1
+		 * @private
 		 * */
 		 private function IsRealVertice(vectorfeature:PointFeature):Number{
 		 	//new point to add		
@@ -138,7 +154,9 @@ package org.openscales.core.handler.sketch
 					if(index<componentLength) return index;
 					else return -1;
 		 }
-		 
+		 /**
+		 * @inheritDoc 
+		 * */
 		 override public function featureClick(event:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
 		 	//We remove listeners and tempoorary point
@@ -160,7 +178,9 @@ package org.openscales.core.handler.sketch
 		 	this._drawContainer.graphics.clear();
 		 	/*super.featureClick(event);*/
 		 }
-		 //Point deleting
+		 /**
+		 * @inheritDoc 
+		 * */
 		 override public function featureDoubleClick(event:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
 		 	var index:int=IsRealVertice(vectorfeature);
@@ -182,6 +202,10 @@ package org.openscales.core.handler.sketch
 			EditCollectionHandler._pointUnderTheMouse=null;
 		 	this._drawContainer.graphics.clear();
 		 }
+		 
+		 /**
+		 * Create a virtual vertice under the mouse 
+		 * */
 		 public function createPointUndertheMouse(evt:FeatureEvent):void{
 		 	var vectorfeature:VectorFeature=evt.feature as VectorFeature;
 		 	
@@ -208,21 +232,7 @@ package org.openscales.core.handler.sketch
 					}
 					if(drawing){
 						var lonlat:LonLat=this.map.getLonLatFromLayerPx(px);	
-						var PointGeomUnderTheMouse:Point=new Point(lonlat.lon,lonlat.lat);
-						
-						//There is always a component because the mouse is over the component
-						//consequently we use the first
-						//we find the collection which directly have a point as component
-						/* var testCollection:Geometry=vectorfeature.geometry;
-						var parentTmpPoint:Geometry;
-						var parentArray:Array=new Array();
-						while(testCollection is Collection)
-						{
-							parentTmpPoint=testCollection;
-							parentArray=testCollection;
-							testCollection=(testCollection as Collection).componentByIndex(0);
-						} */		
-							//isTmpFeatureUnderTheMouse attributes use to specify type of temporary feature
+						var PointGeomUnderTheMouse:Point=new Point(lonlat.lon,lonlat.lat);		
 							EditCollectionHandler._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse as Point,null,Style.getDefaultCircleStyle(),true/*,parentTmpPoint as Collection*/);	
 							EditCollectionHandler._pointUnderTheMouse.layer=this._layerToEdit;
 							findPointUnderMouseCollection(vectorfeature.geometry,EditCollectionHandler._pointUnderTheMouse);
@@ -237,11 +247,16 @@ package org.openscales.core.handler.sketch
 					}
 		 	}
 		 }
-		 
+		 /**
+		 * To draw the temporaries feature during drag Operation
+		 * */
 		 protected function drawTemporaryFeature(event:MouseEvent):void{
 		 	
 		 }
-		 
+		 /**
+		 * To find at which segments of a collection the point under the mouse belongs to
+		 * @private
+		 * */
 		 private function findPointUnderMouseCollection(vectorfeatureGeometry:Geometry,pointUnderTheMouse:PointFeature):void{
 		 			for (var i:int=0;i<(vectorfeatureGeometry as Collection).componentsLength;i++){
 		 				var geometry:Geometry=(vectorfeatureGeometry as Collection).componentByIndex(i);

@@ -19,6 +19,10 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.VectorLayer;
 	
+	/**
+	 * This Handler is used for Path edition 
+	 * its extends CollectionHandler
+	 * */
 	public class EditPathHandler extends EditCollectionHandler
 	{
 		public function EditPathHandler(map:Map = null, active:Boolean = false,layerToEdit:VectorLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
@@ -26,8 +30,8 @@ package org.openscales.core.handler.sketch
 			super(map,active,layerToEdit,featureClickHandler,drawContainer);			
 		}
 		/**
-		 *Edition mode start 
-		 **/
+		 * @inheritDoc 
+		 * */
 		 override public function editionModeStart():Boolean{
 		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
 					if(/*vectorFeature.isEditable && */vectorFeature.geometry is LineString || vectorFeature.geometry is MultiLineString){
@@ -44,6 +48,9 @@ package org.openscales.core.handler.sketch
 					if(this._featureClickHandler!=null)this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));				
 		 	return true;
 		 }
+		 /**
+		 * @inheritDoc 
+		 * */
 		  override public function dragVerticeStart(event:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
 		 	if(vectorfeature.editionFeatureParent is LineStringFeature || vectorfeature.editionFeatureParent is MultiLineStringFeature){
@@ -51,6 +58,9 @@ package org.openscales.core.handler.sketch
 		 	}
 		 	
 		 }
+		 /**
+		 * @inheritDoc 
+		 * */
 		 override  public function dragVerticeStop(event:FeatureEvent):VectorFeature{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
 		 	if(vectorfeature.editionFeatureParent is LineStringFeature || vectorfeature.editionFeatureParent is MultiLineStringFeature){
@@ -61,8 +71,7 @@ package org.openscales.core.handler.sketch
 		 
 		 
 		 /**
-		 * drawing of the temporary line during drag
-		 * 
+		 * @inheritDoc 
 		 * */
 		 override protected function drawTemporaryFeature(event:MouseEvent):void{
 		 	var pointUnderTheMouse:Boolean=false;
