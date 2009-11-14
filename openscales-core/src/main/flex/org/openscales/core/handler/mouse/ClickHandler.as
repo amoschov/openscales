@@ -49,13 +49,7 @@ package org.openscales.core.handler.mouse
 		 * drag&drop click)
 		 */
 		private var _drop:Function = null;
-		
-		/**
-		 * Tolerance (in pixels) used to detect a click: distance
-		 * between the two positions at mouseDown and MouseUp times.
-		 */
-		private var _tolerance:Number = 5;
-		
+				
 		/**
 		 * Pixel under the cursor when the mouse is down
 		 */
@@ -137,18 +131,7 @@ package org.openscales.core.handler.mouse
 		public function set drop(value:Function):void {
 			this._drop = value;
 		}
-		
-		/**
-		 * Tolerance (in pixels) used to detect a drag or a click.
-		 * The default value is 5 pixels.
-		 */
-		public function get tolerance():Number {
-			return this._tolerance;
-		}
-		public function set tolerance(value:Number):void {
-			this._tolerance = value;
-		}
-		
+				
 		/**
 		 * Map coordinates (in its baselayer's SRS) of the point clicked (at the
 		 * beginning of the drag)
@@ -189,7 +172,7 @@ package org.openscales.core.handler.mouse
 		 * enlarge the selection box (useful to improve the ergonomy)
 		 * */
 		protected function selectionBoxCoordinates(p:Pixel, buffer:Number=0):Bounds {
-			var rect:Rectangle = this.selectionBoxPixels(p);
+			var rect:Rectangle = this.selectionBoxPixels(p, buffer);
 			if ((! rect) || (! this.map)) {
 				return null;
 			}

@@ -19,6 +19,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
+	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.style.Rule;
@@ -506,14 +507,7 @@ package org.openscales.core.handler.mouse
 			_drawContainer.graphics.clear();
 			// Get the selection area
 			var sbox:Bounds = this.selectionBoxCoordinates(p, this.selectionBuffer);
-			var sboxGeom:Geometry = null;
-			
-			if(sbox) {
-				if((sbox.width)==0 && (sbox.height==0))
-					sboxGeom = new Point(sbox.left, sbox.bottom);
-				else
-					sboxGeom = sbox.toGeometry();
-			}
+			var sboxGeom:Geometry = (sbox) ? sbox.toGeometry() : null;
         	
         	// Select the features that intersect the geometry
 			this.selectByGeometry(sboxGeom, this._ctrlKey, this._shiftKey);
