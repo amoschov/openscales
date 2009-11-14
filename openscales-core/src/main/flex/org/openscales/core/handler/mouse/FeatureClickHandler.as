@@ -11,8 +11,8 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.handler.Handler;
 	/**
-	 * This handler has been created in particurlaly for 
-	 * double click event on the vector feature dispatching
+	 * This handler has been created in particurlaly for The edition mode
+	 * It allows the user to differenciate click from double click and drag/drop
 	 * */
 	public class FeatureClickHandler extends Handler
 	{

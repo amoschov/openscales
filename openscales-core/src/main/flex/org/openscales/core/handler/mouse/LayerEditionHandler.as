@@ -20,6 +20,11 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.handler.sketch.IEditVectorFeature;
 	import org.openscales.core.layer.VectorLayer;
 	
+	
+	/**
+	 * This handler is used to have an edition Mode 
+	 * Which allow to modify all geometries
+	 * */
 	public class LayerEditionHandler extends Handler
 	{
 		/**

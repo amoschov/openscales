@@ -4,6 +4,7 @@
 	creationComplete="initFeatureDrawing();">
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.mouse.LayerEditionHandler;
 			import org.openscales.core.handler.mouse.SelectFeaturesHandler;
 			import org.openscales.core.geometry.Polygon;
 			import org.openscales.core.geometry.LinearRing;
@@ -61,6 +62,10 @@
 			 * Handler of PathFeature
 			 */
 			public var pathHandler:DrawPathHandler = new DrawPathHandler(null,false,drawLayer);
+			/**
+			 * Edition Handler
+			 * */
+			public var editionHandler:LayerEditionHandler=new LayerEditionHandler(null,drawLayer,false,true,true,true);
 			
 			/**
 			 * Handler of MultiFeature
@@ -272,6 +277,7 @@
 							if(polygonHandler.active){this.finishPolygon();}						
 							pointHandler.active = false;
 							pathHandler.active = true;
+							editionHandler.active=false;
 							drawType = "path";
 						}
 						this.deactiveDrag();
@@ -284,12 +290,24 @@
 							if(pathHandler.active){this.finishPath();}						
 							pointHandler.active = false;
 							polygonHandler.active = true;
+							editionHandler.active=false;
 							drawType = "polygon";
 						}
 						this.deactiveDrag();
 						selectFeaturesHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 						break;
+				   case 4:
+				   		
+				   		editionHandler.active=true;
+				   		this.deactiveDrag();
+						selectFeaturesHandler.active = false;
+						polygonHandler.active = false;
+				   		pointHandler.active = false;
+						pathHandler.active = false;
+						drawType="";
+						this.deactiveDrag();
+				   break; 
 				}
 			}			
 			
@@ -365,6 +383,7 @@
 					pointHandler.map = this.map;
 					pathHandler.map = this.map;
 					polygonHandler.map = this.map;
+					editionHandler.map=this.map;
 					selectFeaturesHandler.map = this.map;
 					this.map.addLayer(drawLayer);
 				}
@@ -400,6 +419,10 @@
 				<mx:Object id="btnPolygon"
 					toolTip="Draw a polygon"
 					icon="@Embed('/assets/images/featureDrawPolygon-upskin.swf')"
+					/>
+				<mx:Object id="editFeature"
+					toolTip="Edit Feature on draw Layer"
+					icon="@Embed('/assets/images/layerEyeOpen.png')"
 					/>
 			</mx:Array>
 		</mx:ToggleButtonBar>
