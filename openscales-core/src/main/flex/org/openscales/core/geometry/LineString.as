@@ -156,7 +156,7 @@ package org.openscales.core.geometry
 			//   oriented so that x1 <= x2 (but we does not known if y1 <= y2
 			//   or not).
 			var segs1:Array = this.getXsortedSegments();
-			var segs2:Array = (geom is Point) ? [(geom as Point),(geom as Point)] : (geom as LineString).getXsortedSegments();
+			var segs2:Array = (geom is Point) ? [[(geom as Point),(geom as Point)]] : (geom as LineString).getXsortedSegments();
 			
 			var seg1:Array, seg1y0:Number, seg1y1:Number, seg1yMin:Number, seg1yMax:Number;
 			var seg2:Array, seg2y0:Number, seg2y1:Number, seg2yMin:Number, seg2yMax:Number;

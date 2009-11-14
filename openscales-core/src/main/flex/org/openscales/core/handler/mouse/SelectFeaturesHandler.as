@@ -2,11 +2,14 @@ package org.openscales.core.handler.mouse
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	import flash.geom.Rectangle;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.LineStringFeature;
@@ -15,6 +18,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.style.Rule;
@@ -26,6 +30,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
 	import org.openscales.core.style.symbolizer.Stroke;
 	import org.openscales.core.style.symbolizer.Symbolizer;
+	
 	
 	/**
 	 * Select Features by clicking, by drawing a selection box or by drawing a
@@ -483,9 +488,9 @@ package org.openscales.core.handler.mouse
 		 * @param evt the MouseEvent (useful for the position of MouseUp and for
 		 * the status of the CTRL and SHIFT keys)
 		 */
-		private function selectByClick(evt:MouseEvent):void {
+		private function selectByClick(p:Pixel):void {
 			// A point and a selectionBuffer define a selection box...
-			this.selectByBox(evt);
+			this.selectByBox(p);
 		}
 		
 		/**
@@ -496,14 +501,22 @@ package org.openscales.core.handler.mouse
 		 * @param evt the MouseEvent (useful for the position of MouseUp and for
 		 * the status of the CTRL and SHIFT keys)
 		 */
-		private function selectByBox(evt:MouseEvent):void {
+		private function selectByBox(p:Pixel):void {
 			// Clear the selection drawing
 			_drawContainer.graphics.clear();
 			// Get the selection area
-			var sbox:Bounds = this.selectionBoxCoordinates(evt, this.selectionBuffer);
-        	var sboxGeom:Geometry = (sbox) ? sbox.toGeometry() : null;
+			var sbox:Bounds = this.selectionBoxCoordinates(p, this.selectionBuffer);
+			var sboxGeom:Geometry = null;
+			
+			if(sbox) {
+				if((sbox.width)==0 && (sbox.height==0))
+					sboxGeom = new Point(sbox.left, sbox.bottom);
+				else
+					sboxGeom = sbox.toGeometry();
+			}
+        	
         	// Select the features that intersect the geometry
-			this.selectByGeometry(sboxGeom, evt.ctrlKey, evt.shiftKey);
+			this.selectByGeometry(sboxGeom, this._ctrlKey, this._shiftKey);
 		}
 		
 		/**
@@ -689,7 +702,7 @@ package org.openscales.core.handler.mouse
 		 */
 		private function drawSelectionBox(evt:MouseEvent):void {
 			// Compute the selection box (in pixels)
-			var rect:Rectangle = this.selectionBoxPixels(evt);
+			var rect:Rectangle = this.selectionBoxPixels(new Pixel(evt.currentTarget.mouseX, evt.currentTarget.mouseY));
 			// Display the selection box
 			_drawContainer.graphics.clear();
 			_drawContainer.graphics.lineStyle(this.selectionAreaBorderThin, this.selectionAreaBorderColor);

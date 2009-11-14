@@ -70,7 +70,7 @@ package org.openscales.core.geometry
 		 * @return Boolean defining if the input geometry intersects this one.
 		 */
 		override public function intersects(geom:Geometry):Boolean {
-			return ((geom is Point) ? this.equals(geom as Point) : (geom as Collection).intersects(this)); 
+			return ((geom is Point) ? this.equals(geom as Point) : geom.intersects(this)); 
     	}
 	
 		/**

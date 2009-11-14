@@ -375,17 +375,12 @@ package org.openscales.core.geometry
      	* @return The input geometry intersects this one.
      	*/
     	override public function intersects(geom:Geometry):Boolean {
-			if (geom is Point) {
-				return (geom as Point).intersects(this);
-			} else {
-				for(var i:int=0; i<this.componentsLength; ++i) {
-					if ((geom as Collection).intersects(this.componentByIndex(i))) {
-						return true;
-					}
+			for(var i:int=0; i<this.componentsLength; ++i) {
+				if (geom.intersects(this.componentByIndex(i))) {
+					return true;
 				}
-				return false;
 			}
-			// never used
+
 			return false;
     	}
     	
