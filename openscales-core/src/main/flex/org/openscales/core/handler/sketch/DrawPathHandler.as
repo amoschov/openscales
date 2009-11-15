@@ -8,7 +8,6 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.LineStringFeature;
-	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.ClickHandler;
@@ -28,9 +27,14 @@ package org.openscales.core.handler.sketch
 		
 		/**
 		 * The lineString which contains all points
+		 * use for draw MultiLine for example
 		 */
 		private var _lineString:LineString=null;
 		
+		/**
+		 * The LineStringfeature currently drawn
+		 * */
+		private var _currentLineStringFeature:LineStringFeature=null;
 		/**
 		 * The last point of the lineString. 
 		 */
@@ -93,22 +97,17 @@ package org.openscales.core.handler.sketch
 		 * Finish the LineString
 		 */
 		public function drawFinalPath():void{			
-			newFeature = true;
-			
-			//clear the temporary line
-			_drawContainer.graphics.clear();
-			this.map.removeEventListener(MouseEvent.MOUSE_MOVE,temporaryLine);
-			
-			//Change style of finished path
-			var style:Style = Style.getDefaultLineStyle();
-			
-			//We finalize the last feature (of course, it's a lineString)
-			var f:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
-			if(f!=null){
-				//Apply the new style
-				f.style = style;
-				f.name = "path." + id.toString(); id++;
-				drawLayer.redraw();
+			if(!newFeature){
+					newFeature = true;
+					//clear the temporary line
+					_drawContainer.graphics.clear();
+					this.map.removeEventListener(MouseEvent.MOUSE_MOVE,temporaryLine);
+					
+					if(this._currentLineStringFeature!=null){
+						this._currentLineStringFeature.style=Style.getDefaultLineStyle();
+						this._currentLineStringFeature.name="path." + id.toString(); id++;
+						drawLayer.redraw();
+					}
 			}	
 		}
 
@@ -128,16 +127,10 @@ package org.openscales.core.handler.sketch
 			if(newFeature){
 				_lineString = new LineString([point]);
 				lastPoint = point;
-				
-				// Fixme : style should not be hardcoded here but externalised
-				var lineStyle:Style = Style.getDrawLineStyle();
-				
-				var lineStringFeature:LineStringFeature = new LineStringFeature(_lineString, null, lineStyle,true);
-				
-				drawLayer.addFeature(lineStringFeature);
+				this._currentLineStringFeature= new LineStringFeature(_lineString,null, Style.getDrawLineStyle(),true);
+				drawLayer.addFeature(_currentLineStringFeature);
 				
 				newFeature = false;
-				
 				//draw the temporary line, update each time the mouse moves		
 				this.map.addEventListener(MouseEvent.MOUSE_MOVE,temporaryLine);	
 			}

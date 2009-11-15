@@ -124,7 +124,7 @@ package org.openscales.core.handler.sketch
 					this._polygonFeature.style = Style.getDrawSurfaceStyle();
 
 					// We create a point the first time to see were the user clicked
-					this._firstPointFeature=  new PointFeature(point);
+					this._firstPointFeature=  new PointFeature(point,null,Style.getDefaultPointStyle());
 					
 					//add the point feature to the drawLayer, and the polygon (which contains only one point for the moment)
 					drawLayer.addFeature(this._firstPointFeature);
@@ -137,7 +137,10 @@ package org.openscales.core.handler.sketch
 					this.map.addEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryPolygon);
 				}
 				else {
-					drawLayer.removeFeature(this._firstPointFeature);
+					if(this._firstPointFeature!=null){
+						drawLayer.removeFeature(this._firstPointFeature);
+						this._firstPointFeature=null;
+					}
 					//add the point to the linearRing
 					 lring=(this._polygonFeature.geometry as Polygon).componentByIndex(0) as LinearRing;
 					lring.addComponent(point);
@@ -153,10 +156,10 @@ package org.openscales.core.handler.sketch
 		}
 		
 		
-		public function drawTemporaryPolygon(event:MouseEvent):void{
+		public function drawTemporaryPolygon(event:MouseEvent=null):void{
 			//position of the last point drawn
 			
-			if(this._firstPointPixel.x!=this._lastPointPixel.x || this._lastPointPixel.y!=this._firstPointPixel.y ){
+			/* if(this._firstPointPixel.x!=this._lastPointPixel.x || this._lastPointPixel.y!=this._firstPointPixel.y ){ */
 			
 			_drawContainer.graphics.clear();
 			_drawContainer.graphics.beginFill(0x00ff00,0.5);
@@ -166,7 +169,7 @@ package org.openscales.core.handler.sketch
 			_drawContainer.graphics.moveTo(map.mouseX, map.mouseY);
 			_drawContainer.graphics.lineTo(this._lastPointPixel.x, this._lastPointPixel.y);	
 			_drawContainer.graphics.endFill();
-			}
+		/* 	} */
 		}
 		/**
 		 * Finish the polygon
