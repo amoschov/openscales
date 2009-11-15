@@ -65,7 +65,7 @@ package org.openscales.core.handler.sketch
 				}
 					if(this._featureClickHandler!=null){
 						this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));	
-						this.map.addEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
+						this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 					}			
 		 	return true;
 		 }
@@ -74,7 +74,7 @@ package org.openscales.core.handler.sketch
 		 * */
 		  override public function editionModeStop():Boolean{
 		  	if(this._featureClickHandler!=null)
-		 	this.map.removeEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);	
+		 	this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	return true;
 		 } 
 		 
@@ -91,7 +91,7 @@ package org.openscales.core.handler.sketch
 				else this._featureCurrentlyDrag=null;
 				//we add the new mouseEvent move and remove the previous
 				this.map.addEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
-				this.map.removeEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
+				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 			}
 			
 		 }
@@ -121,7 +121,7 @@ package org.openscales.core.handler.sketch
 		 				this._featureClickHandler.addControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
 		 				
 		 				//we add the new mouseEvent move and remove the previous
-		 				this.map.addEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
+		 				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 				this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
 		 				EditCollectionHandler._pointUnderTheMouse=null;
 		 				this._featureCurrentlyDrag=null;
@@ -171,7 +171,7 @@ package org.openscales.core.handler.sketch
 		 				vectorfeature.editionFeatureParent.RefreshEditionVertices();
 		 				this._layerToEdit.addFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
 		 				this._featureClickHandler.addControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 				this.map.removeEventListener(FeatureEvent.FEATURE_OVER,createPointUndertheMouse);
+		 				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		  	}
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 			EditCollectionHandler._pointUnderTheMouse=null;

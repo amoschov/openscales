@@ -120,12 +120,12 @@ package org.openscales.core.feature
 		/**
 		 * To know the segment of the Collection the edition point belongs to
 		 * @param point:geometry point to test 
+		 * @param detectionTolerance:Number
 		 * @return the segment number
 		 * */
-		public function getSegmentsIntersection(collection:Collection):int{	
+		public function getSegmentsIntersection(collection:Collection,detectionTolerance:Number=8):int{	
 			
-			var arrayResult:Array=new Array();
-			var tolerance:Number=1;	
+			var arrayResult:Array=new Array();	
 			var LineString1:LineString=null;
 			var intersect:Boolean=false;
 			var distanceArray:Array=new Array();
@@ -165,12 +165,9 @@ package org.openscales.core.feature
 					
 					}
 			}
-			if(arrayResult.length==1){
-				return arrayResult[0][1];
-			}
-			else if(arrayResult.length>1){
 					distanceArray=new Array();
 					for(var k:int=0;k<arrayResult.length;k++){
+						//Scalar product to find the closest point with tolerance
 						var pointA:Point=(arrayResult[k][0] as LineString).componentByIndex(0) as Point;
 						var pointB:Point=(arrayResult[k][0] as LineString).componentByIndex(1) as Point;
 						
@@ -196,7 +193,7 @@ package org.openscales.core.feature
 						
 						var distance:Number=Math.pow((scalarPointPointAPower-scalarAHAB/scalarPointAPointBPower),1/2);
 						
-						if(distance<tolerance)
+						if(distance<detectionTolerance)
 						{
 							distanceArray.push(new Array(distance,arrayResult[k][1]));
 						} 
@@ -205,9 +202,8 @@ package org.openscales.core.feature
 					{	
 						distanceArray.sort();
 					    return distanceArray[0][1];
-				}
+					}
 				else if(distanceArray.length==1) return distanceArray[0][1];		
-			}
 			return -1;
 		}
 	}
