@@ -85,7 +85,7 @@ package org.openscales.core.handler.sketch
 			}
 		}
 
-		public function mouseDblClick(event:MouseEvent):void {
+		public function mouseDblClick(Lastpx:Pixel):void {
 			this.drawFinalPath();		
 		} 
 		

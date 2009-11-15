@@ -148,7 +148,7 @@ package org.openscales.core.handler.sketch
 			}		
 		}
 
-		public function mouseDblClick(event:MouseEvent):void {
+		public function mouseDblClick(LastPX:Pixel):void {
 			drawFinalPoly();
 		}
 		
