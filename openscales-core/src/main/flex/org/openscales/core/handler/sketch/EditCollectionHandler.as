@@ -39,7 +39,7 @@ package org.openscales.core.handler.sketch
 		/**
 		 * This tolerance is to discern Virtual vertices from point under the mouse
 		 * */
-		 private var _tolerance:Number=8;
+		 private var _detectionTolerance:Number=8;
 		
 		/**
 		 * @inheritDoc 
@@ -209,13 +209,14 @@ package org.openscales.core.handler.sketch
 		 public function createPointUndertheMouse(evt:FeatureEvent):void{
 		 	var vectorfeature:VectorFeature=evt.feature as VectorFeature;
 		 	
-		 	if(vectorfeature.layer==_layerToEdit && vectorfeature!=null && vectorfeature.geometry is Collection){
+		 	if(vectorfeature!=null && vectorfeature.layer==_layerToEdit && vectorfeature.geometry is Collection){
+		 		vectorfeature.buttonMode=false; 
 		 		var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
 				//drawing equals false if the mouse is too close from Virtual vertice
 				var drawing:Boolean=true;
 					for each(var feature:VectorFeature in vectorfeature.editionFeaturesArray){
 						var tmpPx:Pixel=this.map.getLayerPxFromLonLat(new LonLat((feature.geometry as Point).x,(feature.geometry as Point).y));
-						if(Math.abs(tmpPx.x-px.x)<this._tolerance && Math.abs(tmpPx.y-px.y)<this._tolerance)
+						if(Math.abs(tmpPx.x-px.x)<this._detectionTolerance && Math.abs(tmpPx.y-px.y)<this._detectionTolerance)
 						{
 							drawing=false;
 							break;
@@ -238,12 +239,17 @@ package org.openscales.core.handler.sketch
 							findPointUnderMouseCollection(vectorfeature.geometry,EditCollectionHandler._pointUnderTheMouse);
 							
 						if(EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry!=null){
-							vectorfeature.buttonMode=true;
+							 
+							vectorfeature.layer.map.buttonMode=false;
 							EditCollectionHandler._pointUnderTheMouse.editionFeatureParent=vectorfeature;
 							this._layerToEdit.addFeature(EditCollectionHandler._pointUnderTheMouse);	
 							if(this._featureClickHandler!=null)this._featureClickHandler.addControledFeature(EditCollectionHandler._pointUnderTheMouse);
 						}
-						else EditCollectionHandler._pointUnderTheMouse=null;
+						else
+						{
+							EditCollectionHandler._pointUnderTheMouse=null;
+							vectorfeature.layer.map.buttonMode=true;
+						} 
 					}
 		 	}
 		 }
@@ -267,7 +273,7 @@ package org.openscales.core.handler.sketch
 		 						findPointUnderMouseCollection(geometry,pointUnderTheMouse);
 		 					}
 		 					else{
-		 						if(pointUnderTheMouse.getSegmentsIntersection(geometry as Collection)!=-1){
+		 						if(pointUnderTheMouse.getSegmentsIntersection(geometry as Collection,this._detectionTolerance)!=-1){
 		 							pointUnderTheMouse.editionFeatureParentGeometry=geometry as Collection;
 		 							break;
 		 						}
@@ -280,6 +286,16 @@ package org.openscales.core.handler.sketch
 		 			} 
 		 	
 		 	
+		 }
+		 //getters && setters
+		 /**
+		 * Tolerance used for detecting  point
+		 * */
+		 public function get detectionTolerance():Number{
+		 	return this._detectionTolerance;
+		 }
+		 public function set detectionTolerance(value:Number):void{	 	
+		 	 this._detectionTolerance=value;
 		 }
 		 
 	}

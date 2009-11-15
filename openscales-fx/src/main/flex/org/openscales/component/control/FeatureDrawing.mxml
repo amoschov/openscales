@@ -298,7 +298,10 @@
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 						break;
 				   case 4:
-				   		
+				   		if(drawType!=""){
+							if(pathHandler.active)this.finishPath();
+							else if(polygonHandler.active)this.finishPolygon();
+				   		}
 				   		editionHandler.active=true;
 				   		this.deactiveDrag();
 						selectFeaturesHandler.active = false;
