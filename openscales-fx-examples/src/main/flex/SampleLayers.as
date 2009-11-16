@@ -268,6 +268,17 @@ package {
 			style = new Style();
 			style.rules[0] = new Rule();
 			style.rules[0].symbolizers.push(new PolygonSymbolizer(new Fill(0x999999,0.5),new Stroke(0x000000,2)));
+			//
+			arrayComponents = new Array();
+			arrayVertices = new Array();
+			  arrayVertices.push(new org.openscales.core.geometry.Point(4.81399, 45.77610));
+			  arrayVertices.push(new org.openscales.core.geometry.Point(4.81399, 45.76571));
+			  arrayVertices.push(new org.openscales.core.geometry.Point(4.83399, 45.76571));
+			  arrayVertices.push(new org.openscales.core.geometry.Point(4.83399, 45.77610));
+			arrayComponents.push(new LinearRing(arrayVertices));
+			layer.addFeature(new PolygonFeature(new Polygon(arrayComponents),null,style));
+			//(layer.features[layer.features.length-1] as VectorFeature).id = "blackPolygon1";
+			//
 			arrayComponents = new Array();
 			arrayVertices = new Array();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.873535156161644, 45.75889092403663));

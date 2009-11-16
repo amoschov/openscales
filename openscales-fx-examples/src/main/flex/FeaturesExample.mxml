@@ -135,10 +135,18 @@
 				textResult = "Does the blue Polygon intersect the big black rectangle (true) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 				
+				// Polygon intersect a Polygon : true
+				testExpectedResult = true;
+				geom1 = (layer.getChildAt(9) as PolygonFeature).geometry;
+				geom2 = (layer.getChildAt(11) as PolygonFeature).geometry;
+				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.core.geometry.Polygon);
+				textResult = "Does the blue Polygon intersect the inside small black rectangle (true) ? => "+testResult;
+				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
+				
 				// Polygon intersect a Polygon : false
 				testExpectedResult = false;
 				geom1 = (layer.getChildAt(9) as PolygonFeature).geometry;
-				geom2 = (layer.getChildAt(11) as PolygonFeature).geometry;
+				geom2 = (layer.getChildAt(12) as PolygonFeature).geometry;
 				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.core.geometry.Polygon);
 				textResult = "Does the blue Polygon intersect the black lozenge (false) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
