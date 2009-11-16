@@ -16,7 +16,6 @@
 			import org.openscales.core.feature.MultiPolygonFeature;
 			import org.openscales.core.feature.PointFeature;
 			import org.openscales.core.feature.PolygonFeature;
-			import org.openscales.core.style.Style;
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.geometry.Collection;
 			import org.openscales.core.geometry.Geometry;
@@ -28,6 +27,13 @@
 			import org.openscales.core.geometry.Point;
 			import org.openscales.core.geometry.Polygon;
 			import org.openscales.core.layer.VectorLayer;
+			import org.openscales.core.style.Rule;
+			import org.openscales.core.style.Style;
+			import org.openscales.core.style.symbolizer.Fill;
+			//import org.openscales.core.style.symbolizer.LineSymbolizer;
+			//import org.openscales.core.style.symbolizer.PointSymbolizer;
+			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
+			import org.openscales.core.style.symbolizer.Stroke;
 			
 			private function initMap():void {
 				map=fxmap.map;
@@ -56,7 +62,7 @@
 				textResult = "Does the outer LinearRing of the blue Polygon contain the red point (true) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 
-				// LinearRing contains a Point : false
+				// LinearRing contains a Point : false for a point outside of the AABB of the LinearRing
 				testExpectedResult = false;
 				geom1 = ((layer.getChildAt(9) as PolygonFeature).geometry as Collection).componentByIndex(0);
 				geom2 = (layer.getChildAt(0) as PointFeature).geometry;
@@ -64,7 +70,7 @@
 				textResult = "Does the outer LinearRing of the blue Polygon contain the black point below the violet multipolygon (false) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 
-				// LinearRing contains a Point : false
+				// LinearRing contains a Point : false even if the point is inside the AABB of the LinearRing
 				testExpectedResult = false;
 				geom1 = ((layer.getChildAt(9) as PolygonFeature).geometry as Collection).componentByIndex(0);
 				geom2 = (layer.getChildAt(2) as PointFeature).geometry;
@@ -106,7 +112,7 @@
 			}
 			
 			/**
-			 * Test all the intersects functions for the relevant géometries.
+			 * Test all the intersects functions for the relevant geometries.
 			 */
 			public function testIntersects(layer:VectorLayer):void {
 				// Useful variables for the tests
@@ -116,13 +122,26 @@
 				
 				// TODO : check if the referenced geometries are the good ones using their indexes !!!
 				/*var style:Style = new Style();
-				style.fillColor = 0xFFFF00;
-				style.strokeColor = 0xFFFF00;
-				style.strokeWidth = 1;
-				(layer.getChildAt(9) as VectorFeature).style = style;*/
-
-				// XXX intersects a XXX : true/false
-				// TODO
+				style.rules[0] = new Rule();
+				style.rules[0].symbolizers.push(new PolygonSymbolizer(new Fill(0xFFFF00,0.5),new Stroke(0xFFFF00,2)));
+				(layer.getChildAt(4) as VectorFeature).style = style;
+				layer.redraw();*/
+				
+				// Polygon intersect a Polygon : true
+				testExpectedResult = true;
+				geom1 = (layer.getChildAt(9) as PolygonFeature).geometry;
+				geom2 = (layer.getChildAt(4) as PolygonFeature).geometry;
+				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.core.geometry.Polygon);
+				textResult = "Does the blue Polygon intersect the big black rectangle (true) ? => "+testResult;
+				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
+				
+				// Polygon intersect a Polygon : false
+				testExpectedResult = false;
+				geom1 = (layer.getChildAt(9) as PolygonFeature).geometry;
+				geom2 = (layer.getChildAt(11) as PolygonFeature).geometry;
+				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.core.geometry.Polygon);
+				textResult = "Does the blue Polygon intersect the black lozenge (false) ? => "+testResult;
+				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 			}
 		]]>
 	</mx:Script>
