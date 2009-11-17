@@ -75,16 +75,20 @@ package org.openscales.core.handler.sketch
 		 	var pointUnderTheMouse:Boolean=false;
 		 	var parentgeom:Collection=null;
 		 	
+		 	
+		 	//We tests if it's the point under the mouse or not
 		 	if(this._featureCurrentlyDrag!=null) parentgeom=(this._featureCurrentlyDrag as PointFeature).editionFeatureParentGeometry;
 		 	else{
 		 		parentgeom=EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry;
 		 		pointUnderTheMouse=true;
 		 	}
+		 	//The mouse's button  is always down 
 		 	if(event.buttonDown){
 		 	var point1:Point=null;
 		 	var point2:Point=null;
 			var point1Px:Pixel=null;
 			var point2Px:Pixel=null;
+			//First vertice position 0
 			if(indexOfFeatureCurrentlyDrag==0){
 				if(pointUnderTheMouse){
 		 			point1=parentgeom.componentByIndex(0) as Point;
@@ -95,16 +99,25 @@ package org.openscales.core.handler.sketch
 		 		point2=parentgeom.componentByIndex(parentgeom.componentsLength-1) as Point;
 		 		}
 			}
+			//Last vertice treatment
+			else if(indexOfFeatureCurrentlyDrag==parentgeom.componentsLength-1){
+				if(pointUnderTheMouse){
+		 			point1=parentgeom.componentByIndex(indexOfFeatureCurrentlyDrag-1) as Point;
+		 			point2=parentgeom.componentByIndex(indexOfFeatureCurrentlyDrag) as Point;
+		 		}
+		 		else{
+		 			point1=parentgeom.componentByIndex(0) as Point;
+		 			point2=parentgeom.componentByIndex(parentgeom.componentsLength-2) as Point;
+		 		}
+			}
+			//Last vertice +1  treatment only  for point under the mouse
 			else if(indexOfFeatureCurrentlyDrag==parentgeom.componentsLength){
 				if(pointUnderTheMouse){
 		 			point1=parentgeom.componentByIndex(indexOfFeatureCurrentlyDrag-1) as Point;
 		 			point2=parentgeom.componentByIndex(0) as Point;
 		 		}
-		 		else{
-				point1=parentgeom.componentByIndex(0) as Point;
-		 		point2=parentgeom.componentByIndex(parentgeom.componentsLength-2) as Point;
-		 		}
 			}
+			//others treatments
 			else{
 				if(pointUnderTheMouse){
 		 			point1=parentgeom.componentByIndex(indexOfFeatureCurrentlyDrag-1) as Point;
