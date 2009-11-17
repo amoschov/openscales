@@ -24,6 +24,7 @@ package org.openscales.core.security
 		public function AbstractSecurity(map:Map)
 		{
 			this._map = map;
+			this._map.addSecurity(this);
 			this.initialize();
 		}
 

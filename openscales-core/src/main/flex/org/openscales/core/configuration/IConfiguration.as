@@ -53,6 +53,10 @@ package org.openscales.core.configuration
 		 * @return The child items of <Controls> </Controls> elements 
 		 */
 		 function get controls():XMLList;
+		 /**
+		 * @return The child items of <Securities> </Securities> elements 
+		 */
+		 function get securities():XMLList;
 		 
 		 /**
 		 * parse layers

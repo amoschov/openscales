@@ -25,6 +25,7 @@ package org.openscales.core
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Popup;
+	import org.openscales.core.security.ISecurity;
 
 	/**
 	 * Instances of Map are interactive maps that can be embedded in a web pages or in
@@ -66,7 +67,10 @@ package org.openscales.core
 		private var _proxy:String = null;
 		private var _bitmapTransition:DraggableSprite;
 		private var _configuration:IConfiguration;
-
+		/**
+		 *@private
+		 * */
+		private var _securitiesArray:Array=new Array();
 		/**
 		 * Map constructor
 		 *
@@ -78,7 +82,7 @@ package org.openscales.core
 			
 			this._controls = new Array();
 			this._handlers = new Array();
-			
+			this._securitiesArray=new Array();
 			this.size = new Size(width, height);
 			
 			this._layerContainer = new DraggableSprite();
@@ -716,9 +720,70 @@ package org.openscales.core
 			var px:Pixel = this.getMapPxFromLonLat(lonlat);
 			return this.getLayerPxFromMapPx(px);
 		}
-
+		
+		/**
+		 *Remove a Security 
+		 * @param the security to remove
+		 * @return  Boolean true or false depends on the success of reemoving
+		 **/
+		public function removeSecurity(security:ISecurity):Boolean{
+			return Util.removeItem(this._securitiesArray,security);
+		}
+		/**
+		 * find a security requester by its class name
+		 * @return the security 
+		 * */
+		public function findSecurityByClass(securityClass:String):ISecurity{
+			
+			for(var i:int=0;i<this._securitiesArray.length;i++){
+				if(securityClass==getQualifiedClassName(this._securitiesArray[i])){
+					return this._securitiesArray[i] as ISecurity;
+				}
+			}
+			return null;
+		}
+		
+		
+		/**
+		 * To add a securities Array
+		 * @param securities: The securities Array to add
+		 * @return Boolean true or false depends on the adding or not
+		 * */
+		public function addSecurities(securities:Array):Boolean{
+			
+			if(securities==null) return false;
+				for(var i:int=0;i<securities.length;i++){
+					var security:ISecurity=securities[i] as ISecurity;
+					//security is not null 
+					if(security!=null)
+					//The security 
+					if(this.addSecurity(security)==false){
+						return false;
+						break;
+					}
+				}
+			return true;
+		}
+		/**
+		 * To add a security 
+		 * @param security: The security to add
+		 * @return Boolean true or false depends on the adding or not
+		 * */
+		public function addSecurity(security:ISecurity):Boolean{
+			//if security is not null && there is not the same type of security 
+			var addSecurity:Boolean=true;
+			if(security==null) {addSecurity=false;return addSecurity}
+			for(var i:int=0;i<this._securitiesArray.length;i++){
+				if(getQualifiedClassName(security)==getQualifiedClassName(this._securitiesArray[i])){
+					addSecurity=false;
+					break;
+				}
+			}
+			if(addSecurity) this._securitiesArray.push(security);
+			return addSecurity;
+		}
 		// Getters & setters as3
-
+		
 		/**
 		 * Map center coordinates.
 		 */
@@ -1000,7 +1065,7 @@ package org.openscales.core
 			}
 			return layerArray;
 		}
-
+	
 		/**
 		 * Proxy (usually a PHP, Python, or Java script) used to request remote servers like
 		 * WFS servers in order to allow crossdomain requests. Remote servers can be used without
