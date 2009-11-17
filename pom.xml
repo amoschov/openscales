@@ -19,11 +19,11 @@
 	
 	<profiles>
 		<profile>
-            <id>env-local</id>
+            <id>env-local</id> 
 			<activation>
 				<activeByDefault>true</activeByDefault>
 				<property>
-					<name>env</name>
+					<name>env</name> 
 					<value>local</value>
 				</property>
 			</activation>
