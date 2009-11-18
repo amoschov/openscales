@@ -32,7 +32,7 @@
 			proxy="http://openscales.org/proxy.php?url=" />
 
 			
-		<os:KML url="http://www.seeyourhotel.com/city/358.kml" />
+		<os:KML url="http://www.seeyourhotel.com/city/358.kml" proxy="http://openscales.org/proxy.php?url="/>
 		
 		<os:DragHandler />
 		<os:WheelHandler />
