@@ -157,11 +157,16 @@ package org.openscales.core.geometry
 					}
 				}
 				// None of the LinearRings of this Polygon intersects with the
-				//  input geometry. We now have to test if the input geomety is
-				//  whole contained in the first LinearRing but not in one of
-				//  the holes represented by the others LinearRings. Test only
-				//  one vertex is sufficient since there is no intersection.
-				return this.containsPoint((geom as LineString).componentByIndex(0) as Point);
+				//  input geometry. An intersection exists in two cases:
+				//  1) if the input geomety is whole contained in the first
+				//    LinearRing but not in one of the holes represented by the
+				//    others LinearRings.
+				//  2) if the input geometry is a LinearRing (not a LineString)
+				//    and this polygon is whole contained in it.
+				//  Test only one vertex is sufficient in the two cases since
+				//  there is no intersection.
+				return this.containsPoint((geom as LineString).componentByIndex(0) as Point)
+					|| ((geom is LinearRing) && (geom as LinearRing).containsPoint((this.componentByIndex(0) as LinearRing).componentByIndex(0) as Point));
 			}
 			else if (getQualifiedClassName(geom) == "org.openscales.core.geometry::Polygon") {
 				// Two holed polygon intersect if and only one of them intersects
