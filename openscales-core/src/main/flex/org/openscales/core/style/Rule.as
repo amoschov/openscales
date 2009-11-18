@@ -4,6 +4,7 @@ package org.openscales.core.style {
 	import flash.display.JointStyle;
 	import flash.display.Sprite;
 
+	import org.openscales.core.filter.IFilter;
 	import org.openscales.core.style.symbolizer.Fill;
 	import org.openscales.core.style.symbolizer.FillSymbolizer;
 	import org.openscales.core.style.symbolizer.Mark;
@@ -30,7 +31,7 @@ package org.openscales.core.style {
 
 		private var _maxScaleDenominator:Number = NaN;
 
-		private var _filter:Object = null;
+		private var _filter:IFilter = null;
 
 		private var _symbolizers:Array = [];
 
@@ -105,12 +106,12 @@ package org.openscales.core.style {
 		/**
 		 * A filter used to determine if the rule is active for given feature
 		 */
-		public function get filter():Object {
+		public function get filter():IFilter {
 
 			return this._filter;
 		}
 
-		public function set filter(value:Object):void {
+		public function set filter(value:IFilter):void {
 
 			this._filter = value;
 		}

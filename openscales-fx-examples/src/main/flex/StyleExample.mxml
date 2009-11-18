@@ -6,6 +6,13 @@
 
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.filter.ElseFilter;
+			import styleexample.CentroidYFilter;
+			import org.openscales.core.style.symbolizer.Stroke;
+			import org.openscales.core.style.symbolizer.Fill;
+			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
+			import org.openscales.core.style.symbolizer.Symbolizer;
+			import org.openscales.core.handler.mouse.SelectFeaturesHandler;
 			import mx.core.UIComponent;
 			import org.openscales.core.style.Rule;
 			import mx.controls.Label;
@@ -18,10 +25,53 @@
 			// none
 
 			[Bindable]
-			private var styles:Array = [Style.getDefaultPointStyle(), Style.getDefaultLineStyle(), Style.getDefaultSurfaceStyle()];
+			private var styles:Array = [];
+
+			private function createStyle():void {
+
+				var style:Style = new Style();
+				style.name = "Latitude related coloration"
+
+				var northFill:Fill = new Fill(0x176273, .8);
+				var northStroke:Stroke = new Stroke(0x0A2C33, 2);
+
+				var northSymbolizer:Symbolizer = new PolygonSymbolizer(northFill, northStroke);
+
+				var northRule:Rule = new Rule();
+				northRule.name = "Centroid Y coordinate between 70000 and 75000";
+				northRule.filter = new CentroidYFilter(70000, 75000);
+				northRule.symbolizers.push(northSymbolizer);
+
+				var middleFill:Fill = new Fill(0xD8F20F, .8);
+				var middleStroke:Stroke = new Stroke(0x2D3303, 2);
+
+				var middleSymbolizer:Symbolizer = new PolygonSymbolizer(middleFill, middleStroke);
+
+				var middleRule:Rule = new Rule();
+				middleRule.name = "Centroid Y coordinate between 65000 and 70000";
+				middleRule.filter = new CentroidYFilter(65000, 70000);
+				middleRule.symbolizers.push(middleSymbolizer);
+
+				var southFill:Fill = new Fill(0x84BF7A, .8);
+				var southStroke:Stroke = new Stroke(0x233321, 2);
+
+				var southSymbolizer:Symbolizer = new PolygonSymbolizer(southFill, southStroke);
+
+				var southRule:Rule = new Rule();
+				southRule.name = "Centroid Y coordinate between 60000 and 65000";
+				southRule.filter = new ElseFilter();
+				southRule.symbolizers.push(southSymbolizer);
+
+				style.rules.push(northRule, middleRule, southRule);
+				this.styles.push(style);
+				this.ignGeoplaRegion.style = style;
+				this.ignGeoplaRegion.layer.redraw();
+			}
 
 			private function initMap():void {
 				map = fxmap.map;
+
+				this.createStyle();
 
 				// Specific initialize for this example
 
@@ -31,16 +81,19 @@
 
 					var label:Label = new Label();
 					label.text = style.name;
+					label.setStyle("fontWeight", "bold");
 
 					vb.addChild(label);
 
 					var legendType:String;
 					switch (style.name) {
 
+						case "Default circle style":
 						case "Default point style":  {
 							legendType = Rule.LEGEND_POINT;
 							break;
 						}
+						case "Draw linear style":
 						case "Default line style":  {
 
 							legendType = Rule.LEGEND_LINE;
@@ -54,6 +107,7 @@
 					for each (var rule:Rule in style.rules) {
 
 						var hb:HBox = new HBox();
+						hb.setStyle("verticalAlign", "middle");
 
 						var leg:UIComponent = new UIComponent();
 						leg.height = 30;
@@ -69,6 +123,8 @@
 					}
 
 					this.legends.addChild(vb);
+
+
 				}
 			}
 		]]>
@@ -89,7 +145,7 @@
 				   isBaseLayer="true"
 				   proxy="http://openscales.org/proxy.php?url="/>
 
-		<os:DragHandler/>
+		<!--<os:DragHandler/>-->
 		<os:WheelHandler/>
 
 		<os:Spinner id="spinner"
@@ -101,13 +157,17 @@
 
 		<!-- Specific layers and handlers of this example -->
 
-		<os:WFS name="Toto"
+		<os:WFS id="ignGeoplaRegion"
+				name="IGN - Geopla (Region)"
 				url="http://openscales.org/geoserver/wfs"
 				typename="pg:ign_geopla_region"
 				srs="EPSG:2154"
 				version="1.0.0"
 				style="{Style.getDefaultSurfaceStyle()}">
 		</os:WFS>
+
+		<os:SelectFeaturesHandler id="selectFeatureHandler"
+								  active="true"/>
 	</os:Map>
 
 	<!-- Specific tools of this example -->
@@ -123,9 +183,16 @@
 	</mx:Panel>
 
 
-	<mx:Panel title="Legends test"
+	<mx:Panel title="Legend"
 			  id="legends"
 			  layout="vertical"
 			  bottom="0">
+	</mx:Panel>
+
+	<mx:Panel title="featureInfos"
+			  bottom="0"
+			  right="0">
+		<os:FeatureInfoComponent id="featureInfoComponent"
+								 creationComplete="(selectFeatureHandler.handler as SelectFeaturesHandler).onSelectedFeature = featureInfoComponent.showInfo"/>
 	</mx:Panel>
 </Example>

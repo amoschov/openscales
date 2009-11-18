@@ -1,11 +1,10 @@
 package org.openscales.core.feature {
-	import flash.display.CapsStyle;
-	import flash.display.JointStyle;
 	import flash.utils.getQualifiedClassName;
 
 	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.filter.ElseFilter;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
@@ -13,10 +12,6 @@ package org.openscales.core.feature {
 	import org.openscales.core.layer.VectorLayer;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
-	import org.openscales.core.style.symbolizer.Fill;
-	import org.openscales.core.style.symbolizer.FillSymbolizer;
-	import org.openscales.core.style.symbolizer.Stroke;
-	import org.openscales.core.style.symbolizer.StrokeSymbolizer;
 	import org.openscales.core.style.symbolizer.Symbolizer;
 
 	/**
@@ -208,29 +203,48 @@ package org.openscales.core.feature {
 				style = this.style;
 			}
 
-			//Trace.debug("VectorFeature.draw feature "+this.data["nom_region"]+" with style : "+style.name);
-			var rulesCount:uint = style.rules.length;
-			var rule:Rule;
+			// Storage variables to handle the rules to render if no rule applied to the feature
+			var rendered:Boolean = false;
+			var elseRules:Array = [];
+
+			for each (var rule:Rule in style.rules) {
+
+				// If a filter is set and no rule matches the filter skip the rule
+				if (rule.filter != null) {
+
+					if (rule.filter is ElseFilter) {
+
+						elseRules.push(rule);
+						continue;
+					} else if (!rule.filter.matches(this)) {
+						continue;
+					}
+				}
+
+				this.renderRule(rule);
+				rendered = true;
+			}
+
+			if (!rendered) {
+
+				for each (var elseRule:Rule in elseRules) {
+
+					this.renderRule(elseRule);
+				}
+			}
+		}
+
+		protected function renderRule(rule:Rule):void {
+
 			var symbolizer:Symbolizer;
 			var symbolizers:Array;
-			var symbolizersCount:uint;
 			var j:uint;
-
-			for (var i:uint = 0; i < rulesCount; i++) {
-
-				/*if (rule.filter) {
-
-
-				 }*/
-
-				rule = style.rules[i];
-				symbolizersCount = rule.symbolizers.length;
-				for (j = 0; j < symbolizersCount; j++) {
-					symbolizer = rule.symbolizers[j];
-					if (this.acceptSymbolizer(symbolizer)) {
-						Rule.setStyle(symbolizer, this);
-						this.executeDrawing(symbolizer);
-					}
+			var symbolizersCount:uint = rule.symbolizers.length;
+			for (j = 0; j < symbolizersCount; j++) {
+				symbolizer = rule.symbolizers[j];
+				if (this.acceptSymbolizer(symbolizer)) {
+					Rule.setStyle(symbolizer, this);
+					this.executeDrawing(symbolizer);
 				}
 			}
 		}
