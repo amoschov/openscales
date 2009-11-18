@@ -722,12 +722,13 @@ package org.openscales.core
 		}
 		
 		/**
-		 *Remove a Security 
+		 * Remove a Security
 		 * @param the security to remove
-		 * @return  Boolean true or false depends on the success of reemoving
+		 * @return  Boolean true or false depends on the success of removing
 		 **/
-		public function removeSecurity(security:ISecurity):Boolean{
-			return Util.removeItem(this._securitiesArray,security);
+		public function removeSecurity(security:ISecurity):Boolean {
+			var securityLength:uint = this._securitiesArray.length;
+			return (Util.removeItem(this._securitiesArray, security).length < securityLength);
 		}
 		/**
 		 * find a security requester by its class name
