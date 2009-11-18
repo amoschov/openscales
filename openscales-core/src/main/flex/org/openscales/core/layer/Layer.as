@@ -1,6 +1,6 @@
 package org.openscales.core.layer {
 	import flash.display.Sprite;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
@@ -16,8 +16,6 @@ package org.openscales.core.layer {
 	/**
 	 * A Layer display image of vector datas on the map, usually loaded from a remote datasource.
 	 * Unit of the baseLayer is hanging by the projection. To access : this.projection.projParams.units
-	 *
-	 * @author Bouiaw
 	 */
 	public class Layer extends Sprite {
 		public static const DEFAULT_SRS_CODE:String = "EPSG:4326";
@@ -42,73 +40,82 @@ package org.openscales.core.layer {
 		private var _maxExtent:Bounds = null;
 		private var _minZoomLevel:Number = NaN;
 		private var _maxZoomLevel:Number = NaN;
-		protected var _imageSize:Size = null;
 		private var _proxy:String = null;
 		private var _map:Map = null;
 		private var _security:ISecurity = null;
 		private var _loading:Boolean = false;
-		private var _autoresolution = true;
+		private var _autoResolutionsLevels:uint = 0;  // if 0, resolutions are not automatically defined
+		protected var _imageSize:Size = null;
 
 		/**
 		 * Layer constructor
 		 */
-		public function Layer(name:String, isBaseLayer:Boolean=false, visible:Boolean=true, projection:String=null, proxy:String=null, security:ISecurity=null) {
+		public function Layer(name:String, isBaseLayer:Boolean=false,
+							visible:Boolean=true, srsCode:String=null,
+							proxy:String=null, security:ISecurity=null) {
 
 			this.name = name;
 			this.doubleClickEnabled = true;
 			this.isBaseLayer = isBaseLayer;
 			this.visible = visible;
 
-			var nominalResolution:Number;
-			// If the projection is not defined, we init it with the default one
-			if (projection != null && projection != "" && projection != Layer.DEFAULT_SRS_CODE) {
-				this._projection = new ProjProjection(projection);
-			} else {
-				this._projection = new ProjProjection(Layer.DEFAULT_SRS_CODE);
+			// If the srsCode is not defined, we init it with the default one
+			if ((srsCode == null) || (srsCode == "")) {
+				srsCode = Layer.DEFAULT_SRS_CODE;
 			}
-			this._proxy = proxy;
-
+			
+			// Define the projection and the resolutions
+			this._projection = new ProjProjection(srsCode);
 			this.generateResolutions();
+
+			this._proxy = proxy;
+			this._security = security;
 		}
-
-		public function generateResolutions(numZoomLevels:uint=Layer.DEFAULT_NUM_ZOOM_LEVELS, nominalResolution:Number=NaN):void {
-
-			if (isNaN(nominalResolution)) {
-
-				if (this.projection.srsCode == Layer.DEFAULT_SRS_CODE) {
-
-					nominalResolution = Layer.DEFAULT_NOMINAL_RESOLUTION;
-				} else {
-
-					nominalResolution = Proj4as.unit_transform(new ProjProjection(Layer.DEFAULT_SRS_CODE), this.projection, Layer.DEFAULT_NOMINAL_RESOLUTION);
-				}
-			}
-//FixMe: be careful, the nominalResolution specified may be in a different SRS than the projection's one !
-			// numZoomLevels must be strictly greater than zero
-			if (numZoomLevels == 0) {
-				numZoomLevels = 1;
-			}
-			// Generate default resolutions
-			this._resolutions = new Array();
-			this._resolutions.push(nominalResolution);
-			for (var i:int = 1; i < numZoomLevels; i++) {
-				this._resolutions.push(this.resolutions[i - 1] / 2);
-			}
-			this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
-
-			this._autoresolution = true;
-		}
-
+		
 		public function destroy(setNewBaseLayer:Boolean=true):void {
 			if (this.map != null) {
 				this.map.removeLayer(this, setNewBaseLayer);
 			}
 			this.map = null;
+		}
 
+		public function generateResolutions(numZoomLevels:uint=Layer.DEFAULT_NUM_ZOOM_LEVELS,
+											nominalResolution:Number=NaN):void {
+			
+			this._autoResolutionsLevels = numZoomLevels;
+			// this._autoResolutionsLevels must be strictly greater than zero
+			if (this._autoResolutionsLevels == 0) {
+				this._autoResolutionsLevels = 1;
+			}
+			
+			// If undefined, set the nominal resolution depending on the SRS used
+			if (isNaN(nominalResolution)) {
+				if (this.projection.srsCode == Layer.DEFAULT_SRS_CODE) {
+					nominalResolution = Layer.DEFAULT_NOMINAL_RESOLUTION;
+				} else {
+					nominalResolution = Proj4as.unit_transform(new ProjProjection(Layer.DEFAULT_SRS_CODE), this.projection, Layer.DEFAULT_NOMINAL_RESOLUTION);
+				}
+			}
+
+			// Generate default resolutions
+			this._resolutions = new Array();
+			this._resolutions.push(nominalResolution);
+			for (var i:int=1; i<this._autoResolutionsLevels; i++) {
+				this._resolutions.push(this.resolutions[i-1] / 2);
+			}
+			this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
+		}
+
+		public function updateResolutions(oldSrsCode:String):void {
+			if (oldSrsCode != this.projection.srsCode) {
+				var oldProjection:ProjProjection = new ProjProjection(oldSrsCode);
+				for (var i:int=0; i<this._resolutions.length; i++) {
+					this._resolutions[i] = Proj4as.unit_transform(oldProjection, this.projection, this._resolutions[i]);
+				}
+			}
 		}
 
 		public function onMapResize():void {
-
 		}
 
 		/**
@@ -119,7 +126,6 @@ package org.openscales.core.layer {
 		public function redraw():Boolean {
 			var redrawn:Boolean = false;
 			if (this.map) {
-
 				if (this.extent && this.inRange && this.visible) {
 					this.moveTo(this.extent, true, false);
 					redrawn = true;
@@ -134,11 +140,9 @@ package org.openscales.core.layer {
 		 */
 		public function set map(map:Map):void {
 			this._map = map;
-
 			if (map) {
 				map.addEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
-
-				if (!this.maxExtent) {
+				if (! this.maxExtent) {
 					this.maxExtent = this.map.maxExtent;
 				}
 			}
@@ -161,8 +165,7 @@ package org.openscales.core.layer {
 
 		public function getZoomForExtent(extent:Bounds):Number {
 			var viewSize:Size = this.map.size;
-			var idealResolution:Number = Math.max(extent.width / viewSize.w, extent.height / viewSize.h);
-
+			var idealResolution:Number = Math.max(extent.width/viewSize.w, extent.height/viewSize.h);
 			return this.getZoomForResolution(idealResolution);
 		}
 
@@ -192,10 +195,8 @@ package org.openscales.core.layer {
 				var center:LonLat = this.map.center;
 				if (center) {
 					var res:Number = this.map.resolution;
-
 					var delta_x:Number = viewPortPx.x - (size.w / 2);
 					var delta_y:Number = viewPortPx.y - (size.h / 2);
-
 					lonlat = new LonLat(center.lon + delta_x * res, center.lat - delta_y * res);
 				}
 			}
@@ -262,15 +263,7 @@ package org.openscales.core.layer {
 		 * the current base layer of the map.
 		 */
 		public function get minZoomLevel():Number {
-
-
-			if (this.name == "Toto") {
-
-				trace("Toto");
-			}
-
 			var level:Number = this._minZoomLevel;
-			Trace.debug("Min Zoom Level : " + this._minZoomLevel);
 			// If the level is not defined explicitely, use the default one
 			if (isNaN(level)) {
 				// By default the minimum zoom level is the first level
@@ -340,7 +333,6 @@ package org.openscales.core.layer {
 					// larger range of resolutions for the map. 
 			}
 			// Return the zoom level depending on the current configuration of the map
-			Trace.debug("maxZoomLevel(" + this.name + "): " + this._maxZoomLevel + " => " + level);
 			return level;
 		}
 
@@ -426,15 +418,13 @@ package org.openscales.core.layer {
 		}
 
 		public function set resolutions(value:Array):void {
+			this._autoResolutionsLevels = 0;
 			this._resolutions = value;
 			if (this._resolutions == null || this._resolutions.length == 0) {
-
 				this.generateResolutions();
 			} else {
-
-				this._autoresolution = false;
+				this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
 			}
-			this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
 		}
 
 		/**
@@ -446,18 +436,14 @@ package org.openscales.core.layer {
 		}
 
 		public function set projection(value:ProjProjection):void {
+			var oldSRSCode:String = (this._projection) ? this._projection.srsCode : "";
 			this._projection = value;
-
-			if (this._autoresolution) {
-
-				// TODO:
+			if ((this._autoResolutionsLevels>0) || (oldSRSCode=="")) {
 				this.generateResolutions();
 			} else {
-
-				// TODO : this.updateResolutions();
+				this.updateResolutions(oldSRSCode);
 			}
 		}
-
 
 		/**
 		 * Whether or not the layer is a base layer. This should be set
@@ -517,7 +503,7 @@ package org.openscales.core.layer {
 		 * Whether or not the layer is loading data
 		 */
 		public function get loadComplete():Boolean {
-			return !this._loading;
+			return ! this._loading;
 		}
 
 		/**

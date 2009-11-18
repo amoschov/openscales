@@ -149,7 +149,7 @@ package org.openscales.proj4as {
 				trace("Proj4as initialization for " + source.srsCode + " or " + dest.srsCode + " not yet complete");
 				return value;
 			}
-			if(source.projParams.units == dest.projParams.units){
+			if (source.projParams.units == dest.projParams.units){
 				trace("Proj4s the projection are the same unit");
 				return value;
 			}
