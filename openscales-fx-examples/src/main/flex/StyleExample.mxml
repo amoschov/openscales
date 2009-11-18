@@ -1,56 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
-	xmlns:os="http://openscales.org"
-	creationComplete="initMap();">
-	
+<Example xmlns="*"
+		 xmlns:mx="http://www.adobe.com/2006/mxml"
+		 xmlns:os="http://openscales.org"
+		 creationComplete="initMap();">
+
 	<mx:Script>
 		<![CDATA[
+			import mx.core.UIComponent;
+			import org.openscales.core.style.Rule;
+			import mx.controls.Label;
+			import mx.containers.HBox;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 			import org.openscales.core.style.Style;
 
 			// Specific imports for this example			
 			// none
-			
+
+			[Bindable]
+			private var styles:Array = [Style.getDefaultPointStyle(), Style.getDefaultLineStyle(), Style.getDefaultSurfaceStyle()];
+
 			private function initMap():void {
-				map=fxmap.map;
+				map = fxmap.map;
 
 				// Specific initialize for this example
-				// none
+
+				for each (var style:Style in this.styles) {
+
+					var vb:VBox = new VBox();
+
+					var label:Label = new Label();
+					label.text = style.name;
+
+					vb.addChild(label);
+
+					var legendType:String;
+					switch (style.name) {
+
+						case "Default point style":  {
+							legendType = Rule.LEGEND_POINT;
+							break;
+						}
+						case "Default line style":  {
+
+							legendType = Rule.LEGEND_LINE;
+							break;
+						}
+						default:  {
+							legendType = Rule.LEGENT_POLYGON;
+						}
+					}
+
+					for each (var rule:Rule in style.rules) {
+
+						var hb:HBox = new HBox();
+
+						var leg:UIComponent = new UIComponent();
+						leg.height = 30;
+						leg.width = 30;
+						leg.addChild(rule.getLegendGraphic(legendType));
+						hb.addChild(leg);
+
+
+						var ruleLabel:Label = new Label();
+						ruleLabel.text = rule.name;
+						hb.addChild(ruleLabel);
+						vb.addChild(hb);
+					}
+
+					this.legends.addChild(vb);
+				}
 			}
 		]]>
 	</mx:Script>
-	
-	<os:Map id="fxmap" width="100%" height="100%"
-		zoom="5" centerLonLat="4.833,45.767">
-		
-		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
-		
-		<!-- OpenStreetMap EPSG:900913 -->
+
+	<os:Map id="fxmap"
+			width="100%"
+			height="100%"
+			zoom="5"
+			centerLonLat="4.84479575848897,45.7531798723947">
+
+		<os:TraceInfo id="traceInfo"
+					  x="{width-200}"
+					  y="0"
+					  visible="{displayTrace}"/>
+
 		<os:Mapnik name="Mapnik"
-			isBaseLayer="true"
-			proxy="http://openscales.org/proxy.php?url=" />
-		
-		<os:DragHandler />
-		<os:WheelHandler />
-		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
-		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
-		<os:ScaleLine />
-		
+				   isBaseLayer="true"
+				   proxy="http://openscales.org/proxy.php?url="/>
+
+		<os:DragHandler/>
+		<os:WheelHandler/>
+
+		<os:Spinner id="spinner"
+					x="{width / 2}"
+					y="{height / 2}"/>
+		<os:MousePosition x="10"
+						  y="{height-20}"
+						  displayProjection="EPSG:4326"/>
+
 		<!-- Specific layers and handlers of this example -->
-		
-		<os:VectorLayer id="vectorLayer">
-		</os:VectorLayer>
-		
+
+		<os:WFS name="Toto"
+				url="http://openscales.org/geoserver/wfs"
+				typename="pg:ign_geopla_region"
+				srs="EPSG:2154"
+				version="1.0.0"
+				style="{Style.getDefaultSurfaceStyle()}">
+		</os:WFS>
 	</os:Map>
-	
+
 	<!-- Specific tools of this example -->
 
-	<mx:VBox horizontalAlign="center" x="10" y="10">
-		<os:PanComponent map="{map}" />
-		<os:ZoomComponent map="{map}" />
-	</mx:VBox>
-	
-	<os:StyleEditionWindow />
-	
+	<mx:Panel title="Navigation">
+		<mx:VBox horizontalAlign="center"
+				 verticalAlign="middle"
+				 x="10"
+				 y="10">
+			<os:PanComponent map="{map}"/>
+			<os:ZoomComponent map="{map}"/>
+		</mx:VBox>
+	</mx:Panel>
+
+
+	<mx:Panel title="Legends test"
+			  id="legends"
+			  layout="vertical"
+			  bottom="0">
+	</mx:Panel>
 </Example>

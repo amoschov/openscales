@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
-	xmlns:os="*"
-	layout="horizontal"
-	paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5"
-	creationComplete="init();">
-	
+				xmlns:os="*"
+				layout="horizontal"
+				paddingBottom="5"
+				paddingLeft="5"
+				paddingRight="5"
+				paddingTop="5"
+				creationComplete="init();">
+
 	<mx:Style>
 		ToolTip {
 			cornerRadius: 6;
@@ -25,28 +28,30 @@
 			/*text-indent: 24;*/
 		}
 	</mx:Style>
-	
+
 	<mx:Script>
 		<![CDATA[
 			import mx.core.Container;
-			
+
 			/**
 			 * Boolean defining if the Trace component must be displayed or not
 			 */
-			[Bindable] private var displayTrace:Boolean = true;
+			[Bindable]
+			private var displayTrace:Boolean = true;
 
-			[Bindable] private var selectedNode:XML = null;
+			[Bindable]
+			private var selectedNode:XML = null;
 			private var selectedView:Container = null;
 			private var oldSelectedIndex:int = 0;
-            
+
 			private function init():void {
 				setOSdescription();
 				expandTree();
 				// Define the default example
-				tree.selectedIndex = 19;
+				tree.selectedIndex = 6;
 				updateSelectedExample();
 			}
-			
+
 			private function setOSdescription():void {
 				var text:String;
 				text = "<b>OpenScales.org 1.1 Bêta - 11/07/2009</b>";
@@ -56,23 +61,23 @@
 				text += "As a free open source (LGPL license) and extensible tool written in ActionScript, OpenScales is designed to be easily plugged in your Flex or Air application. OpenScales is a small but powerful core of GIS, so try it and let us know.";
 				text += "\n\n";
 				text += "OpenScales.org was initially an ActionScript3 port of Openlayers, since it has started from FlexLayers source code that we actively improve to take advantage of new capabilities offered by ActionScript3 and Flex technologies.";
-				text += "\n\n";	
+				text += "\n\n";
 				text += "Visit our <b><a href=\"http://openscales.org\" target=\"_new\">website</a></b>, join the community and come discuss with us on <b><a href=\"http://groups.google.com/group/openscales-dev\" target=\"_new\">OpenScales Discussion Group</a></b> or the IRC channel (#openscales on irc.freenode.net).";
 				OSdescription.htmlText = text;
 			}
-			
+
 			private function expandTree():void {
-				for(var i:int=0; i<tree.dataProvider.length; i++) {
+				for (var i:int = 0; i < tree.dataProvider.length; i++) {
 					tree.expandChildrenOf(tree.dataProvider[i], true);
 				}
 			}
-			
+
 			private function collapseTree():void {
-				for(var i:int=0; i<tree.dataProvider.length; i++) {
+				for (var i:int = 0; i < tree.dataProvider.length; i++) {
 					tree.expandChildrenOf(tree.dataProvider[i], false);
 				}
 			}
-			
+
 			private function updateSelectedExample():void {
 				selectedNode = tree.selectedItem as XML;
 				selectedView = viewStack.getChildByName(selectedNode.@viewStack) as Container;
@@ -82,98 +87,159 @@
 					oldSelectedIndex = tree.selectedIndex;
 				} else {
 					var open:Boolean = false; // FixMe: get the current state
-					tree.expandChildrenOf(tree.selectedItem, ! open);
+					tree.expandChildrenOf(tree.selectedItem, !open);
 					tree.selectedIndex = oldSelectedIndex;
 				}
 			}
-			
+
 			private function treeChanged(event:Event):void {
 				updateSelectedExample();
 			}
 		]]>
 	</mx:Script>
-	
-	<mx:Tree id="tree" width="250" height="100%" labelField="@label"
-		showRoot="true" useRollOver="false"
-		change="treeChanged(event)">
+
+	<mx:Tree id="tree"
+			 width="250"
+			 height="100%"
+			 labelField="@label"
+			 showRoot="true"
+			 useRollOver="false"
+			 change="treeChanged(event)">
 		<mx:XMLListCollection>
 			<mx:XMLList id="treeData">
-				<example viewStack="home" label="What is OpenScales.org ?" description="A short description of OpenScales.org" />
-				
-				<example viewStack="global" label="Global" description="" />
-				
+				<example viewStack="home"
+						 label="What is OpenScales.org ?"
+						 description="A short description of OpenScales.org"/>
+
+				<example viewStack="global"
+						 label="Global"
+						 description=""/>
+
 				<category label="Configure the map">
-					<example viewStack="panZoom" label="Navigate on a basic map" description="The map displayed is OpenStreetMap Mapnik (EPSG:900913) and the center is defined in geographic coordinates (WGS84=EPSG:4326).\nMove the map using drag&amp;drop or with the N/S/E/W buttons.\nZoom in/out using the mouse wheel, the scale slider, the +/- buttons above and below the slider or the zoom-box button (the coordinates displayed by the cursor are in pixels).\nThe coordinates of the mouse cursor are displayed in geographic coordinates at the bottom-left corner." />
-					<example viewStack="layersManager" label="Manage the layers" description="Choose a base layer using the combo-box.\nChange the order of the overlays using the up/down buttons or draging an overlay.\nSet the opacity of each layer (base layer or overlay) using its slider.\nThe POI layer is only visible when the full name of the states are displayed using Mapnik as the base layer: zoom in one time." />
-					<example viewStack="capabilities" label="Add layers dynamically" description="Specify a WFS a server, then click on the 'Go!' button to display all the WFS layers available.\nSelect a layer name to have its description.\nDouble-click to add the layer to the map ; for instance topp:states draws the United States (be patient, this will take few seconds).\nYou can modify the style of the layer you add.\n Try to add the same layer twice, a modal popup is displayed.\nThe layers manager is automatically updated." />
-					<example viewStack="styleManager" label="Style vector layers" description="Example not efficient : AT WORK" />
+					<example viewStack="panZoom"
+							 label="Navigate on a basic map"
+							 description="The map displayed is OpenStreetMap Mapnik (EPSG:900913) and the center is defined in geographic coordinates (WGS84=EPSG:4326).\nMove the map using drag&amp;drop or with the N/S/E/W buttons.\nZoom in/out using the mouse wheel, the scale slider, the +/- buttons above and below the slider or the zoom-box button (the coordinates displayed by the cursor are in pixels).\nThe coordinates of the mouse cursor are displayed in geographic coordinates at the bottom-left corner."/>
+					<example viewStack="layersManager"
+							 label="Manage the layers"
+							 description="Choose a base layer using the combo-box.\nChange the order of the overlays using the up/down buttons or draging an overlay.\nSet the opacity of each layer (base layer or overlay) using its slider.\nThe POI layer is only visible when the full name of the states are displayed using Mapnik as the base layer: zoom in one time."/>
+					<example viewStack="capabilities"
+							 label="Add layers dynamically"
+							 description="Specify a WFS a server, then click on the 'Go!' button to display all the WFS layers available.\nSelect a layer name to have its description.\nDouble-click to add the layer to the map ; for instance topp:states draws the United States (be patient, this will take few seconds).\nYou can modify the style of the layer you add.\n Try to add the same layer twice, a modal popup is displayed.\nThe layers manager is automatically updated."/>
+					<example viewStack="styleManager"
+							 label="Style vector layers"
+							 description="Example not efficient : AT WORK"/>
 				</category>
-				
+
 				<category label="Localize">
-					<example viewStack="overview" label="Localize with the overview map" description="Move or zoom the map tand see the modification on the overview map.\nClick on the overview to change the center of the main map.\nDraw a rectangle on the overview to define a new extent for the main map.\nShow or Hide the overview map using the appropriate button." />
-					<example viewStack="search" label="Geolocate with Yahoo Search" description="Search a place with Yahoo Search.\nIf only one place is returned, the map is centerd to it automatically.\nOtherwise, double-click on one of the results to center the map." />
+					<example viewStack="overview"
+							 label="Localize with the overview map"
+							 description="Move or zoom the map tand see the modification on the overview map.\nClick on the overview to change the center of the main map.\nDraw a rectangle on the overview to define a new extent for the main map.\nShow or Hide the overview map using the appropriate button."/>
+					<example viewStack="search"
+							 label="Geolocate with Yahoo Search"
+							 description="Search a place with Yahoo Search.\nIf only one place is returned, the map is centerd to it automatically.\nOtherwise, double-click on one of the results to center the map."/>
 				</category>
-				
+
 				<category label="Manage features">
-					<example viewStack="drawings" label="Draw and edit features" description="Drag the map or draw some points, polylines or polygons using the buttons of the first line.\nUse click and CTRL+click to select features.\nUse the buttons of the second line to remove the last drawn vertex, to delete the selected features, to delete all the drawn features or to merge the selected features." />
-					<example viewStack="features" label="Use all the types of features" description="This is an example of each type of geometry: point (red), multipoint (orange), line (green), multiline (red), polygon (blue), multipolygon (violet).\nThe additional black geometries are used to test the 'containsPoint' and 'intersects' functions of each geometry.\nIn 'select mode', select one geometry by a click or several geometries by drawing a selectBox (keep the mouse button down).\nUse CTRL+click and CTRL+selectBox to add features to the selection.\nUse SHIFT+click and SHIFT+selectBox to remove features from the selection." />
-					<example viewStack="informations" label="Get information on the features" description="Click on a point to see its attributes in the panel." />
-<example viewStack="reprojectionAndQuery" label="Reproject and query" description="" />
+					<example viewStack="drawings"
+							 label="Draw and edit features"
+							 description="Drag the map or draw some points, polylines or polygons using the buttons of the first line.\nUse click and CTRL+click to select features.\nUse the buttons of the second line to remove the last drawn vertex, to delete the selected features, to delete all the drawn features or to merge the selected features."/>
+					<example viewStack="features"
+							 label="Use all the types of features"
+							 description="This is an example of each type of geometry: point (red), multipoint (orange), line (green), multiline (red), polygon (blue), multipolygon (violet).\nThe additional black geometries are used to test the 'containsPoint' and 'intersects' functions of each geometry.\nIn 'select mode', select one geometry by a click or several geometries by drawing a selectBox (keep the mouse button down).\nUse CTRL+click and CTRL+selectBox to add features to the selection.\nUse SHIFT+click and SHIFT+selectBox to remove features from the selection."/>
+					<example viewStack="informations"
+							 label="Get information on the features"
+							 description="Click on a point to see its attributes in the panel."/>
+					<example viewStack="reprojectionAndQuery"
+							 label="Reproject and query"
+							 description=""/>
 				</category>
-				
+
 				<category label="Protocols">
-<example viewStack="wmsc" label="NASA WMS-C" description="" />
-<example viewStack="wms" label="Germany WMS" description="" />
-<example viewStack="imageLayer" label="Image Layer" description="" />
-<example viewStack="kml" label="KML Layer" description="" />
+					<example viewStack="wmsc"
+							 label="NASA WMS-C"
+							 description=""/>
+					<example viewStack="wms"
+							 label="Germany WMS"
+							 description=""/>
+					<example viewStack="imageLayer"
+							 label="Image Layer"
+							 description=""/>
+					<example viewStack="kml"
+							 label="KML Layer"
+							 description=""/>
 				</category>
-				
+
 				<category label="Security">
-					<example viewStack="security" label="IGN's GeoRM" description="Access to IGN layers with GeoRM. More information on https://api.ign.fr/geoportail/" />
+					<example viewStack="security"
+							 label="IGN's GeoRM"
+							 description="Access to IGN layers with GeoRM. More information on https://api.ign.fr/geoportail/"/>
 				</category>
 			</mx:XMLList>
 		</mx:XMLListCollection>
 	</mx:Tree>
-	
-	<mx:VBox width="100%" height="100%">
-		<mx:ViewStack id="viewStack" width="100%" height="100%">
-			<mx:Panel id="home" title="OpenScales.org 1.0 bêta - september 14th 2009">
+
+	<mx:VBox width="100%"
+			 height="100%">
+		<mx:ViewStack id="viewStack"
+					  width="100%"
+					  height="100%">
+			<mx:Panel id="home"
+					  title="OpenScales.org 1.0 bêta - september 14th 2009">
 				<!-- also needed because the view of index 0 is always loaded first -->
-				<mx:VBox horizontalAlign="center" width="100%" height="100%">
-					<mx:Image source="@Embed('/assets/images/OpenScales-logo.png')" />
-					<mx:RichTextEditor id="OSdescription" width="100%" height="100%"
-						borderStyle="none" showControlBar="false" />
+				<mx:VBox horizontalAlign="center"
+						 width="100%"
+						 height="100%">
+					<mx:Image source="@Embed('/assets/images/OpenScales-logo.png')"/>
+					<mx:RichTextEditor id="OSdescription"
+									   width="100%"
+									   height="100%"
+									   borderStyle="none"
+									   showControlBar="false"/>
 				</mx:VBox>
 			</mx:Panel>
-			
-			<os:GlobalExample id="global" displayTrace="{displayTrace}" />
-			
+
+			<os:GlobalExample id="global"
+							  displayTrace="{displayTrace}"/>
+
 			<!-- Configure the map -->
-			<os:PanZoomExample id="panZoom" displayTrace="{displayTrace}" />
-			<os:LayersManagerExample id="layersManager" displayTrace="{displayTrace}" />
-			<os:CapabilitiesExample id="capabilities" displayTrace="{displayTrace}" />
-			<os:StyleExample id="styleManager" displayTrace="{displayTrace}" />
-			
+			<os:PanZoomExample id="panZoom"
+							   displayTrace="{displayTrace}"/>
+			<os:LayersManagerExample id="layersManager"
+									 displayTrace="{displayTrace}"/>
+			<os:CapabilitiesExample id="capabilities"
+									displayTrace="{displayTrace}"/>
+			<os:StyleExample id="styleManager"
+							 displayTrace="{displayTrace}"/>
+
 			<!-- Localize -->
-			<os:OverviewExample id="overview" displayTrace="{displayTrace}" />
-			<os:YahooSearchExample id="search" displayTrace="{displayTrace}" />			
-			
+			<os:OverviewExample id="overview"
+								displayTrace="{displayTrace}"/>
+			<os:YahooSearchExample id="search"
+								   displayTrace="{displayTrace}"/>
+
 			<!-- Manage features -->
-			<os:DrawingExample id="drawings" displayTrace="{displayTrace}" />
-			<os:FeaturesExample id="features" displayTrace="{displayTrace}" />
-			<os:InfoExample id="informations" displayTrace="{displayTrace}" />
-<os:OpenStreetMap id="reprojectionAndQuery" />
-			
+			<os:DrawingExample id="drawings"
+							   displayTrace="{displayTrace}"/>
+			<os:FeaturesExample id="features"
+								displayTrace="{displayTrace}"/>
+			<os:InfoExample id="informations"
+							displayTrace="{displayTrace}"/>
+			<os:OpenStreetMap id="reprojectionAndQuery"/>
+
 			<!-- Protocols -->
-			<os:WMSCExample id="wmsc" displayTrace="{displayTrace}" />
-			<os:WMSExample id="wms" />
-			<os:ImageLayerExample id="imageLayer" />
-			<os:KMLExample id="kml" />
-			
+			<os:WMSCExample id="wmsc"
+							displayTrace="{displayTrace}"/>
+			<os:WMSExample id="wms"/>
+			<os:ImageLayerExample id="imageLayer"/>
+			<os:KMLExample id="kml"/>
+
 			<!-- Security -->
-			<os:SecurityMapExample id="security" displayTrace="{displayTrace}" />
+			<os:SecurityMapExample id="security"
+								   displayTrace="{displayTrace}"/>
 		</mx:ViewStack>
-		<mx:TextArea id="description" width="100%" height="100" />
+		<mx:TextArea id="description"
+					 width="100%"
+					 height="100"/>
 	</mx:VBox>
-	
+
 </mx:Application>
