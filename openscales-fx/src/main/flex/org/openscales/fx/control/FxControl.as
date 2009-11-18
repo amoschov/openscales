@@ -23,14 +23,12 @@ package org.openscales.fx.control
 		
 		override public function set x(value:Number):void {
 			super.x = value;
-			
 			if(this.control != null)
 				this.control.x = value;
 		}
 		
 		override public function set y(value:Number):void {
 			super.y = value;
-			
 			if(this.control != null)
 				this.control.y = value;
 		}

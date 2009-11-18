@@ -9,9 +9,9 @@ package org.openscales.fx.control
 		
 		public function FxScaleLine()
 		{
-			this.control=new ScaleLine(new Pixel(0,600));
-				this.control.active=true;
 			super();
+			this.control = new ScaleLine();
+			this.control.active = true;
 		}
 		
 		//getters setters

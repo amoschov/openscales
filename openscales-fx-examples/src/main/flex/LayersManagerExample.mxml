@@ -27,7 +27,7 @@
 		<os:WheelHandler />
 		<os:Spinner id="spinner" x="{width / 2}" y="{height / 2}"/>	
 		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
-		<os:ScaleLine />
+		<os:ScaleLine x="{width-100-10}" y="{height-80}" />
 		
 		<!-- Specific layers and handlers of this example -->
 				 

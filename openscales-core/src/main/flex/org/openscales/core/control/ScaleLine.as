@@ -76,8 +76,7 @@ package org.openscales.core.control
 		 * @param value
 		 */
 		override public function set map(value:Map):void {
-			if(value != null)
-			{
+			if(value != null) {
 				this._map=value;	      	
 				this.map.addEventListener(MapEvent.ZOOM_END,updateScaleLine);
 				this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED,updateScaleLine);
@@ -179,7 +178,7 @@ package org.openscales.core.control
 			this.graphics.clear();
 			this.graphics.beginFill(this._color);
 
-			//Draw the ScaleLine
+			// Draw the ScaleLine
 			 if(Math.round(bottomPx)>Math.round(topPx)){
 				this.graphics.drawRect(10,50,Math.round(bottomPx),2);
 				this.graphics.drawRect(10+Math.round(topPx),+32,1,18);
