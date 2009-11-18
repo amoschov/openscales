@@ -47,11 +47,12 @@ package org.openscales.core.layer
 	     */
 	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 	        super.moveTo(bounds,zoomChanged,dragging,resizing);
-			
-	        if((!this._request)) {
-				this._request = _request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security,onFailure);
-			} else if(this._xml) {
+	        if (! this._request) {
+				this._request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security, onFailure);
+			} else if (this._xml) {
 				this.updateKML();
+			} else {
+				Trace.error("KML - request defined but the xml parameter is not valid");
 			}
 			
 		}
@@ -71,13 +72,13 @@ package org.openscales.core.layer
 		
 		public function onSuccess(event:Event):void
 		{
-			var loader:URLLoader = event.target as URLLoader;
 			this.loading = false;
+			var loader:URLLoader = event.target as URLLoader;
 			
-			// To avoid errors in case of the WFS server is dead
+			// To avoid errors if the server is dead
 			try {
 				//startTime = new Date();
-				this._xml =  new XML(loader.data);
+				this._xml = new XML(loader.data);
 				//endTime = new Date();
 				//Trace.debug("XML object creation : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
 				this.updateKML();

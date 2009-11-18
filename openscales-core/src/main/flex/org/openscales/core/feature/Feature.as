@@ -136,9 +136,7 @@ package org.openscales.core.feature {
 		 */
 		public function createPopup(closeBox:Boolean=true):Popup {
 			if (this.lonlat != null) {
-
-				this.popup=new Anchored(this.lonlat, this.data.popupBackground, this.data.popupBorder, this.data.popupSize, this.data.popupContentHTML, this, closeBox);
-
+				this.popup = new Anchored(this.lonlat, this.data.popupBackground, this.data.popupBorder, this.data.popupSize, this.data.popupContentHTML, this, closeBox);
 				this.popup.feature=this;
 			}
 			return this.popup;
