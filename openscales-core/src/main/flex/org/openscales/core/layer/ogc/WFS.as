@@ -324,7 +324,8 @@ package org.openscales.core.layer.ogc
 		 * @param event
 		 */
 		protected function onFailure(event:Event):void {
-			this.loading = false;			
+			this.loading = false;
+			Trace.error("Error when loading WFS request " + this._url);			
 		}
 		/**
 		 * Construct new feature and add to this.features.

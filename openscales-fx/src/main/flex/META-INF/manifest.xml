@@ -11,6 +11,7 @@
 	<component id="WMS" class="org.openscales.fx.layer.FxWMS" />
 	<component id="WMSC" class="org.openscales.fx.layer.FxWMSC" />
 	<component id="WFS" class="org.openscales.fx.layer.FxWFS" />
+	<component id="KML" class="org.openscales.fx.layer.FxKML" />
 	
 	<component id="Mapnik" class="org.openscales.fx.layer.osm.FxMapnik" />
 	<component id="CycleMap" class="org.openscales.fx.layer.osm.FxCycleMap" />

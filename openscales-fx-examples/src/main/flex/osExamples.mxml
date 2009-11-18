@@ -43,7 +43,7 @@
 				setOSdescription();
 				expandTree();
 				// Define the default example
-				tree.selectedIndex = 12;
+				tree.selectedIndex = 19;
 				updateSelectedExample();
 			}
 			
@@ -115,8 +115,8 @@
 				</category>
 				
 				<category label="Manage features">
-					<example viewStack="drawings" label="Draw and edit features" description="Drag the map or draw some points, polylines or polygons using the buttons of the first line.\nUse click and CTRL+click to select features.\nUse the buttons of the second line to remove the last drawn vertex, to delete the selected features, to delete all the drawn features or to merge the selected features.\nAfter drawing a Feature you can modify it by clicking on the last button of the first row:(You will see virtual vertices for modification)" />
-					<example viewStack="features" label="Use all the types of features" description="This is an example of each type of geometry: point (red), multipoint (orange), line (green), multiline (red), polygon (blue), multipolygon (violet).\nThe additional black geometries are used to test the 'containsPoint' and 'intersects' functions of each geometry.\nIn 'select mode', select one geometry by a click or several geometries by drawing a selectBox (keep the mouse button down).\nUse CTRL+click and CTRL+selectBox to add features to the selection.\nUse SHIFT+click and SHIFT+selectBox to remove features from the selection. => NOT IMPLEMENTED YET" />
+					<example viewStack="drawings" label="Draw and edit features" description="Drag the map or draw some points, polylines or polygons using the buttons of the first line.\nUse click and CTRL+click to select features.\nUse the buttons of the second line to remove the last drawn vertex, to delete the selected features, to delete all the drawn features or to merge the selected features." />
+					<example viewStack="features" label="Use all the types of features" description="This is an example of each type of geometry: point (red), multipoint (orange), line (green), multiline (red), polygon (blue), multipolygon (violet).\nThe additional black geometries are used to test the 'containsPoint' and 'intersects' functions of each geometry.\nIn 'select mode', select one geometry by a click or several geometries by drawing a selectBox (keep the mouse button down).\nUse CTRL+click and CTRL+selectBox to add features to the selection.\nUse SHIFT+click and SHIFT+selectBox to remove features from the selection." />
 					<example viewStack="informations" label="Get information on the features" description="Click on a point to see its attributes in the panel." />
 <example viewStack="reprojectionAndQuery" label="Reproject and query" description="" />
 				</category>
@@ -125,6 +125,7 @@
 <example viewStack="wmsc" label="NASA WMS-C" description="" />
 <example viewStack="wms" label="Germany WMS" description="" />
 <example viewStack="imageLayer" label="Image Layer" description="" />
+<example viewStack="kml" label="KML Layer" description="" />
 				</category>
 				
 				<category label="Security">
@@ -167,6 +168,7 @@
 			<os:WMSCExample id="wmsc" displayTrace="{displayTrace}" />
 			<os:WMSExample id="wms" />
 			<os:ImageLayerExample id="imageLayer" />
+			<os:KMLExample id="kml" />
 			
 			<!-- Security -->
 			<os:SecurityMapExample id="security" displayTrace="{displayTrace}" />

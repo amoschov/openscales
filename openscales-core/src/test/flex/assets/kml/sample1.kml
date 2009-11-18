@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+	<Document>
+		<Folder>
+			<name>My places</name>
+			<Placemark>
+				<name>Bordeaux</name>
+				<description><![CDATA[Where I was born]]></description>
+				<ExtendedData>
+					<Data name="Date">
+						<value><![CDATA[15/06/1981]]></value>					
+					</Data>
+					<Data name="Adresse">
+						<value><![CDATA[Clinique des quais]]></value>					
+					</Data>
+					<Data name="Pays">
+						<value><![CDATA[France]]></value>
+					</Data>
+					<Data name="Dossier">
+						<value><![CDATA[123, 456, 789]]></value>
+					</Data>
+					<Data name="Respo dossier">
+						<value><![CDATA[Dr trema]]></value>
+					</Data>
+					<Data name="Thème">
+						<value><![CDATA[XYZ]]></value>
+					</Data>
+					</ExtendedData>
+					<Point>
+						<coordinates>0.5777064,44.83799619999999,0</coordinates>
+					</Point>
+			</Placemark>
+		</Folder>
+	</Document>			
+</kml>
