@@ -470,7 +470,7 @@
 				<os:Map id="overview" width="100%" height="100%"
 					proxy="{this.map.baseLayer.proxy}"
 					creationComplete="finalizeOverview();"
-					resize="resizeOverview();">
+					resize="resizeOverview();" minHeight="20" minWidth="20">
 					<!-- The children of the component are inserted here -->
 				</os:Map>
 			</mx:AddChild>
