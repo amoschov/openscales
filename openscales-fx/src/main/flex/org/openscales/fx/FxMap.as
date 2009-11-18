@@ -55,6 +55,9 @@ package org.openscales.fx
 			super();
 			// Fix for issue 114: Error at startup when window is too small
 			this.clipContent = false;
+			// Useful for a Map only defined with width="100%" or "height="100%"
+			this.minWidth = 100;
+			this.minHeight = 100;
 			
 			this.addEventListener(FlexEvent.CREATION_COMPLETE, onCreationComplete);
 		}
