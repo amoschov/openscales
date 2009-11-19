@@ -63,7 +63,7 @@ package org.openscales.core.layer
 		 *
 		 * @param feature The feature to add
 		 */
-		override public function addFeature(feature:Feature):void {
+		override public function addFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
 			var vectorfeature:VectorFeature = (feature as VectorFeature);
 			if (this.geometryType &&
 				!(getQualifiedClassName(vectorfeature.geometry) == this.geometryType)) {
@@ -71,8 +71,7 @@ package org.openscales.core.layer
 					getQualifiedClassName(this.geometryType);
 				throw throwStr;
 			}
-
-			super.addFeature(vectorfeature);
+			super.addFeature(vectorfeature, dispatchFeatureEvent);
 		}
 
 		public function get style():Style {
