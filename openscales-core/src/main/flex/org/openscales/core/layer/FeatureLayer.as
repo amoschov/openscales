@@ -88,9 +88,11 @@ package org.openscales.core.layer
 			}
 			this.cacheAsBitmap = true;
 			// Dispatch an event with all the features added
-			var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_INSERT, null);
-			fevt.features = features;
-			this.map.dispatchEvent(fevt);
+			if (this.map) {
+				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_INSERT, null);
+				fevt.features = features;
+				this.map.dispatchEvent(fevt);
+			}
 		}
 
 		/**
@@ -105,7 +107,7 @@ package org.openscales.core.layer
 				feature.draw();
 			}
 			// If needed, dispatch an event with the feature added
-			if (dispatchFeatureEvent) {
+			if (dispatchFeatureEvent && this.map) {
 				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature);
 				this.map.dispatchEvent(fevt);
 			}
@@ -116,9 +118,11 @@ package org.openscales.core.layer
 				this.removeFeature(features[i], false);
 			}
 			// Dispatch an event with all the features removed
-			var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_DELETING, null);
-			fevt.features = features;
-			this.map.dispatchEvent(fevt);
+			if (this.map) {
+				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_DELETING, null);
+				fevt.features = features;
+				this.map.dispatchEvent(fevt);
+			}
 		}
 
 		public function removeFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
@@ -130,7 +134,7 @@ package org.openscales.core.layer
 				Util.removeItem(this.selectedFeatures, feature);
 			}
 			// If needed, dispatch an event with the feature added
-			if (dispatchFeatureEvent) {
+			if (dispatchFeatureEvent && this.map) {
 				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_DELETING, feature);
 				this.map.dispatchEvent(fevt);
 			}
