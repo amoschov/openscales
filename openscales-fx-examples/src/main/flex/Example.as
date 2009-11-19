@@ -14,11 +14,11 @@ package
 			super();
 		}
 		
-		[Bindable]
-		protected var map:Map = null;
+		[Bindable] protected var map:Map = null;
 		
-		[Bindable]
-		private var _displayTrace:Boolean = true;
+		[Bindable] private var _displayTrace:Boolean = true;
+		
+		[Bindable] private var _displayFirebugTrace:Boolean = true;
 		
 		[Bindable]
 		public function get displayTrace():Boolean {
@@ -26,6 +26,14 @@ package
 		}
 		public function set displayTrace(value:Boolean):void {
 			_displayTrace = value;
+		}
+		
+		[Bindable]
+		public function get displayFirebugTrace():Boolean {
+			return _displayFirebugTrace;
+		}
+		public function set displayFirebugTrace(value:Boolean):void {
+			_displayFirebugTrace = value;
 		}
 		
 	}

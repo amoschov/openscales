@@ -243,7 +243,7 @@ package org.openscales.core.configuration
                         
                         switch(type){
                              case "WMSC":{
-                                   Trace.info("Configuration - Find WMSC Layer : " + xmlNode.name());                                
+                                   Trace.log("Configuration - Find WMSC Layer : " + xmlNode.name());                                
                                    // We create the WMSC Layer with all params
                                    var wmscLayer:WMSC = new WMSC(name,urlWMS,layers,isBaseLayer,visible,projection,proxy);                  	   
                                    wmscLayer.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);             
@@ -253,7 +253,7 @@ package org.openscales.core.configuration
                              }
                                    
                              case "WMS":{
-                                   Trace.info("Configuration - Find WMS Layer : " + xmlNode.name());
+                                   Trace.log("Configuration - Find WMS Layer : " + xmlNode.name());
                                    // We create the WMS Layer with all params
                                    var wmslayer:WMS = new WMS(name,urlWMS,layers,isBaseLayer,visible,projection,proxy);                       
                                    wmslayer.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);
@@ -282,7 +282,7 @@ package org.openscales.core.configuration
                   
                         var capabilities:HashMap;
                         
-                        Trace.info("Configuration - Find WFS Layer : " + xmlNode.name());
+                        Trace.log("Configuration - Find WFS Layer : " + xmlNode.name());
                         
                         // We create the WFS Layer with all params
                         var wfsLayer:WFS = new WFS(name,urlWfs,xmlNode.@typename,isBaseLayer, visible,projection,proxy,useCapabilities,capabilities);
@@ -298,7 +298,7 @@ package org.openscales.core.configuration
                   }
                   // Case when the layer is Mapnik
                   else if(xmlNode.name() == "Mapnik"){
-                        Trace.info("Configuration - Find Mapnik Layer : " + xmlNode.name());
+                        Trace.log("Configuration - Find Mapnik Layer : " + xmlNode.name());
                         // We create the Mapnik Layer with all params
                         var mapnik:Mapnik=new Mapnik("Mapnik", isBaseLayer); // a base layer
                         mapnik.maxExtent = Bounds.getBoundsFromString(xmlNode.@maxExtent);

@@ -47,7 +47,7 @@ package org.openscales.core.request {
 					
 					if(!security.initialized) {
 						// A redraw will be called on the layer when a SecurityEvent.SECURITY_INITIALIZED will be dispatched 
-						Trace.info("Security not initialized so cancel request");
+						Trace.log("Security not initialized so cancel request");
 						return;	
 					}
 					if(url.indexOf("?") == -1) {

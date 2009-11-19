@@ -223,7 +223,7 @@
 					Trace.warning("Overview - updateMainMapFromRect : stop, overview map have not a baseLayer");
 					return;
 				}
-				Trace.info("Overview - updateMainMapFromRect");
+				Trace.log("Overview - updateMainMapFromRect");
 				if ((! map) || (! map.baseLayer)) {
 					// Main map is not defined, nothing has to be done	
 					return;
@@ -261,7 +261,7 @@
 					// Main map is not defined, the extent of the overview map is used instead	
 					mapBounds = overview.map.extent;
 				} else {
-					Trace.info("Overview - updateRectFromMainMap("+((event==null)?"null":event.type)+") : resolution=" + map.resolution + " ; " + map.center.toString());
+					Trace.log("Overview - updateRectFromMainMap("+((event==null)?"null":event.type)+") : resolution=" + map.resolution + " ; " + map.center.toString());
 					// Get the current main map's extent	
 					mapBounds = map.extent;
 					// Intersect the map extent with its maxExtent
@@ -389,11 +389,11 @@
 				var size:Size = new Size(Math.abs(click.x-drawingExtentFirstCorner.x), Math.abs(click.y-drawingExtentFirstCorner.y));
 
 				if ((size.w > minRectPxSize) || (size.h > minRectPxSize)) {
-					Trace.info("Overview - stopChangingMapExtent : new extent");
+					Trace.log("Overview - stopChangingMapExtent : new extent");
 					setPxBoundsAndDraw(new Bounds(topLeftPixel.x, topLeftPixel.y+size.h, topLeftPixel.x+size.w, topLeftPixel.y));
 					updateMainMapFromRect();
 				} else {
-					// Trace.info is managed by setCenterFromOverview
+					// Trace.log is managed by setCenterFromOverview
 					var centerPixel:Pixel = new Pixel(topLeftPixel.x+Math.round(size.w/2), topLeftPixel.y+Math.round(size.h/2));
 					setCenterFromOverview(centerPixel);
 				}
@@ -418,7 +418,7 @@
 	    			// Update the display of the visible boundary (needed if the center is changed to a position near a side of the overview map)
 	    			setPxBoundsAndDraw(rectRealPxBounds);
 				} else {
-					Trace.info("Overview - setCenterFromOverview : " + newCenter.toString());
+					Trace.log("Overview - setCenterFromOverview : " + newCenter.toString());
 					// Convert the new pixel center in a location on the overview map in its projection
 			        var newCenterCoord:LonLat = pixelToCoordinate(newCenter);
 					// If necessary, convert the point in the projection of the main map	
@@ -436,7 +436,7 @@
 			 * @param event the event to forward to the map
 			 */
 			private function forwardMouseWheelToMap(event:MouseEvent):void {
-				Trace.info("Overview - forwardMouseWheelToMap");
+				Trace.log("Overview - forwardMouseWheelToMap");
 				map.dispatchEvent(event);
 			}
 			

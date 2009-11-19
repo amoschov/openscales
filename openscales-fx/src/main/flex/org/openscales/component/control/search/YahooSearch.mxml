@@ -49,7 +49,7 @@
 					var longitude:Number = parseFloat(event.result.ResultSet.Result.Longitude);
 					if (! (isNaN(latitude) || isNaN(longitude)) ) {
 						var pos:LonLat = new LonLat(longitude,latitude);
-						Trace.info("YahooSearch center at "+pos.toShortString());
+						Trace.log("YahooSearch center at "+pos.toShortString());
 						if (map.baseLayer.projection.srsCode != "") {
 							pos.transform(new ProjProjection("EPSG:4326"), map.baseLayer.projection);
 						}
@@ -67,7 +67,7 @@
 				var longitude:Number = parseFloat(event.target.data.Longitude);
 				if (! (isNaN(latitude) || isNaN(longitude)) ) {
 					var pos:LonLat = new LonLat(longitude,latitude);
-					Trace.info("YahooSearch center at "+pos.toShortString());
+					Trace.log("YahooSearch center at "+pos.toShortString());
 					if (map.baseLayer.projection.srsCode != "") {
 						pos.transform(new ProjProjection("EPSG:4326"), map.baseLayer.projection);
 					}

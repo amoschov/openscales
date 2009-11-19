@@ -148,7 +148,7 @@ package org.openscales.core.handler.mouse
 			var newPosition:LonLat = new LonLat(this._startCenter.lon + deltaX * this.map.resolution , this._startCenter.lat - deltaY * this.map.resolution);
 			// If the new position equals the old center, stop here
 			if (newPosition.equals(oldCenter)) {
-				Trace.info("DragHandler.panMap INFO: new center = old center, nothing to do");
+				Trace.log("DragHandler.panMap INFO: new center = old center, nothing to do");
 				this.map.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this.map));
 				return;
 			}
@@ -159,7 +159,7 @@ package org.openscales.core.handler.mouse
 			// bitmap that represents the map is centered to the new position.
 			// We have to reset the bitmap position to the right center.
 			if (this.map.center.equals(oldCenter)) {
-				Trace.info("DragHandler.panMap INFO: invalid new center submitted, the bitmap of the map is reset");
+				Trace.log("DragHandler.panMap INFO: invalid new center submitted, the bitmap of the map is reset");
 				this.map.resetCenterLayerContainer();
 				this.map.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this.map));
 			}

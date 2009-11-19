@@ -4,6 +4,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.Trace;
 			import org.openscales.core.layer.ogc.WMS;
 			import org.openscales.core.layer.params.ogc.WMSParams;
 			import org.openscales.core.security.ign.IGNGeoRMSecurity;
@@ -11,6 +12,7 @@
 			private var security:IGNGeoRMSecurity;
 
 			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
 				map=fxmap.map;
 			}
 		]]>

@@ -69,12 +69,13 @@
 			}
 
 			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
 				map = fxmap.map;
 
 				this.createStyle();
-
+				
 				// Specific initialize for this example
-
+				
 				for each (var style:Style in this.styles) {
 
 					var vb:VBox = new VBox();
@@ -167,7 +168,7 @@
 		</os:WFS>
 
 		<os:SelectFeaturesHandler id="selectFeatureHandler"
-								  active="true"/>
+								  active="true" />
 	</os:Map>
 
 	<!-- Specific tools of this example -->

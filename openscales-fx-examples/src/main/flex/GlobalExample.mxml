@@ -10,6 +10,7 @@
 			import org.openscales.core.style.Style;
 			
 			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
 				map=fxmap.map;
 			}		
 		]]>

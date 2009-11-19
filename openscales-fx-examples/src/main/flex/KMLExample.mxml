@@ -12,6 +12,7 @@
 			import org.openscales.core.style.Style;
 			
 			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
 				map=fxmap.map;
 				
 				map.addEventListener(FeatureEvent.FEATURE_CLICK, onFeatureClick); 

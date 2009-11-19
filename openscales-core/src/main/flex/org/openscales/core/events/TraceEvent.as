@@ -11,6 +11,11 @@ package org.openscales.core.events
 		private var _text:String = null;
 		
 		/**
+		 * Event type dispatched for an LOG level trace.
+		 */
+		public static const LOG:String="openscales.log";
+		
+		/**
 		 * Event type dispatched for an INFO level trace.
 		 */
 		public static const INFO:String="openscales.info";

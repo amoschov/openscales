@@ -124,7 +124,7 @@ package org.openscales.core.security.ign
 			var loader:URLLoader = e.target as URLLoader;
 			try {
 				var doc:XML =  new XML(loader.data);
-				Trace.info(doc.toString());
+				Trace.log(doc.toString());
 			} catch (err:Error) {
  				Trace.error("Error during parsing XML response : " + loader.data)
 			}
@@ -193,7 +193,7 @@ package org.openscales.core.security.ign
 		private function authenticationLogoutResponse(e:Event):void {
 			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_LOGOUT, this));
 			this._initialized = false;
-			Trace.info("token " + this._key + " released");
+			Trace.log("token " + this._key + " released");
 		}
 		
 		public function get host():String {

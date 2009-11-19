@@ -324,7 +324,7 @@ package org.openscales.core
 			}
 			// If the control is a new control, register it
 			if (i == this.controls.length) {
-				Trace.info("Map.addControl: add a new control "+getQualifiedClassName(control));
+				Trace.log("Map.addControl: add a new control "+getQualifiedClassName(control));
 				this._controls.push(control);
 				control.map = this;
 				control.draw();
@@ -368,7 +368,7 @@ package org.openscales.core
 			}
 			// If the handler is a new handler, register it
 			if (i == this.handlers.length) {
-				Trace.info("Map.addHandler: add a new handler "+getQualifiedClassName(handler));
+				Trace.log("Map.addHandler: add a new handler "+getQualifiedClassName(handler));
 				this._handlers.push(handler);
 				//handler.map = this; // this is done by the Handler.map setter
 			}
@@ -486,7 +486,7 @@ package org.openscales.core
 			var zoomChanged:Boolean = forceZoomChange || (this.isValidZoomLevel(zoom) && (zoom!=this._zoom));
 						
 			if (lonlat && !this.isValidLonLat(lonlat)) {
-				Trace.info("Not a valid center, so do nothing");
+				Trace.log("Not a valid center, so do nothing");
 				return;
 			}
 			

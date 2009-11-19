@@ -14,13 +14,14 @@
 			import org.openscales.core.events.GetFeatureInfoEvent;
 			
 			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
 				map=fxmap.map;
 				// Specific initialize for this example
 				map.addEventListener(GetFeatureInfoEvent.GET_FEATURE_INFO_DATA, onFeatureInfoData);
 			}
 			
 			private function onFeatureInfoData(event:GetFeatureInfoEvent):void {
-				Trace.info("Data=" + event.data);
+				Trace.log("Data=" + event.data);
 			}
 		]]>
 	</mx:Script>

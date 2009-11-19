@@ -37,7 +37,7 @@ package org.openscales.fx.configuration
                           if(map.parent != null) {
                               map.parent.addChild(control);
                           } else {
-                              Trace.info("map.parent is null so does not add the control");
+                              Trace.log("map.parent is null so does not add the control");
                           } 
                         }
                   }                      

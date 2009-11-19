@@ -630,7 +630,7 @@ package org.openscales.core.handler.mouse
 				this.map.dispatchEvent(fevt);
 			}
 			// Log the selection modification
-			Trace.info("SelectFeaturesHandler: "+featuresToSelect.length+" new features selected with additive mode "+((additiveMode)?"ON":"OFF")+" => "+this.selectedFeatures.length+" features selected");
+			Trace.log("SelectFeaturesHandler: "+featuresToSelect.length+" new features selected with additive mode "+((additiveMode)?"ON":"OFF")+" => "+this.selectedFeatures.length+" features selected");
 			// if the selection has been updated, use the associated callback
 			if (selectionUpdated && (this.onSelectionUpdated != null)) {
 				this.onSelectionUpdated(this.selectedFeatures);
@@ -668,7 +668,7 @@ package org.openscales.core.handler.mouse
 				this.map.dispatchEvent(fevt);
 			}
 			// Log the selection modification
-			Trace.info("SelectFeaturesHandler: "+removedFeatures.length+" features removed from the selection => "+this.selectedFeatures.length+" features selected");
+			Trace.log("SelectFeaturesHandler: "+removedFeatures.length+" features removed from the selection => "+this.selectedFeatures.length+" features selected");
 			// if the selection has been updated, use the associated callback
 			if (selectionUpdated && (this.onSelectionUpdated != null)) {
 				this.onSelectionUpdated(this.selectedFeatures);
@@ -694,7 +694,7 @@ package org.openscales.core.handler.mouse
 				this.map.dispatchEvent(fevt);
 			}
 			// Log the selection modification
-			Trace.info("SelectFeaturesHandler: selection cleared of its "+removedFeatures.length+" features");
+			Trace.log("SelectFeaturesHandler: selection cleared of its "+removedFeatures.length+" features");
 			// if the selection has been updated, use the associated callback
 			if (selectionUpdated && (this.onSelectionUpdated != null)) {
 				this.onSelectionUpdated(this.selectedFeatures);

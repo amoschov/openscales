@@ -138,7 +138,7 @@ package org.openscales.core.tile
 			}
 
 			// retry load
-			Trace.info("Retry " + this._attempt + " tile " + this.url);
+			Trace.log("Retry " + this._attempt + " tile " + this.url);
 			this.url = this.layer.getURL(this.bounds);
 			this.draw();
 		}

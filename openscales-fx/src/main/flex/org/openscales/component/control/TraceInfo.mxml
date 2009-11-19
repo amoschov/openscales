@@ -26,6 +26,7 @@
 			override public function set map(value:Map):void {
 				if(value) {
 					super.map = value;
+					this.map.addEventListener(TraceEvent.LOG, displayLog);
 					this.map.addEventListener(TraceEvent.INFO, displayLog);
 					this.map.addEventListener(TraceEvent.WARNING, displayLog);
 					this.map.addEventListener(TraceEvent.ERROR, displayLog);
@@ -43,12 +44,12 @@
 			}
 				
 			private function displayLog(event:TraceEvent):void {
-				var textColor:String = "#000066"; // used for event.type == Trace.INFO
-				if (event.type == Trace.WARNING) {
+				var textColor:String = "#000066"; // used if event.type is TraceEvent.LOG or TraceEvent.INFO
+				if (event.type == TraceEvent.WARNING) {
 					textColor = "#FFCC00";
-				} else if (event.type == Trace.ERROR) {
+				} else if (event.type == TraceEvent.ERROR) {
 					textColor = "#FF0000";
-				} else if (event.type == Trace.DEBUG) {
+				} else if (event.type == TraceEvent.DEBUG) {
 					textColor = "#0066FF";
 				}
 				temp += "<br/><font color='"+textColor+"' size='9'>"+event.text+"</font><br/>----------";

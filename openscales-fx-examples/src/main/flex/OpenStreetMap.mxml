@@ -12,6 +12,7 @@
 			import org.openscales.core.handler.mouse.DragHandler;
 			import org.openscales.core.handler.mouse.WheelHandler;
 			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
 			import org.openscales.core.popup.Popup;
 			import org.openscales.core.control.MousePosition;
 			import org.openscales.core.feature.Feature;
@@ -23,6 +24,7 @@
 			public var markLyon:Marker;
 
 			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
 				map=fxmap.map;
 
 				//We create a lonlat over Lyon (France) with EPSG:27700 projection

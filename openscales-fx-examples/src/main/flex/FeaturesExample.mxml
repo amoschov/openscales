@@ -36,6 +36,7 @@
 			import org.openscales.core.style.symbolizer.Stroke;
 			
 			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
 				map=fxmap.map;
 
 				// Specific initialize for this example
@@ -60,7 +61,7 @@
 				geom2 = (layer.getChildAt(5) as PointFeature).geometry;
 				testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.core.geometry.Point);
 				textResult = "Does the outer LinearRing of the blue Polygon contain the red point (true) ? => "+testResult;
-				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
+				if (testResult==testExpectedResult) Trace.log(textResult) else Trace.error(textResult);
 
 				// LinearRing contains a Point : false for a point outside of the AABB of the LinearRing
 				testExpectedResult = false;
@@ -68,7 +69,7 @@
 				geom2 = (layer.getChildAt(0) as PointFeature).geometry;
 				testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.core.geometry.Point);
 				textResult = "Does the outer LinearRing of the blue Polygon contain the black point below the violet multipolygon (false) ? => "+testResult;
-				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
+				if (testResult==testExpectedResult) Trace.log(textResult) else Trace.error(textResult);
 
 				// LinearRing contains a Point : false even if the point is inside the AABB of the LinearRing
 				testExpectedResult = false;
@@ -76,7 +77,7 @@
 				geom2 = (layer.getChildAt(2) as PointFeature).geometry;
 				testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.core.geometry.Point);
 				textResult = "Does the outer LinearRing of the blue Polygon contain the nearest black point (false) ? => "+testResult;
-				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
+				if (testResult==testExpectedResult) Trace.log(textResult) else Trace.error(textResult);
 
 				// Polygon contains a Point without management of the holes : true
 				testExpectedResult = true;
@@ -84,7 +85,7 @@
 				geom2 = (layer.getChildAt(5) as PointFeature).geometry;
 				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point, false);
 				textResult = "Does the blue Polygon contain the red point without managing its holes (true) ? => "+testResult;
-				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
+				if (testResult==testExpectedResult) Trace.log(textResult) else Trace.error(textResult);
 
 				// Polygon contains a Point with management of the holes : false
 				testExpectedResult = false;
@@ -92,7 +93,7 @@
 				geom2 = (layer.getChildAt(5) as PointFeature).geometry;
 				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point);
 				textResult = "Does the blue Polygon contain the red point without managing its holes (false) ? => "+testResult;
-				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
+				if (testResult==testExpectedResult) Trace.log(textResult) else Trace.error(textResult);
 				
 				// MultiPolygon contains a Point : true
 				testExpectedResult = true;
@@ -100,7 +101,7 @@
 				geom2 = (layer.getChildAt(0) as PointFeature).geometry;
 				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point);
 				textResult = "Does the violet MultiPolygon contain the upper black point (true) ? => "+testResult;
-				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
+				if (testResult==testExpectedResult) Trace.log(textResult) else Trace.error(textResult);
 				
 				// MultiPolygon contains a Point : false
 				testExpectedResult = false;
@@ -108,7 +109,7 @@
 				geom2 = (layer.getChildAt(1) as PointFeature).geometry;
 				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point);
 				textResult = "Does the violet MultiPolygon contain the lower black point (false) ? => "+testResult;
-				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
+				if (testResult==testExpectedResult) Trace.log(textResult) else Trace.error(textResult);
 			}
 			
 			/**
@@ -133,7 +134,7 @@
 				geom2 = (layer.getChildAt(4) as PolygonFeature).geometry;
 				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.core.geometry.Polygon);
 				textResult = "Does the blue Polygon intersect the big black rectangle (true) ? => "+testResult;
-				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
+				if (testResult==testExpectedResult) Trace.log(textResult) else Trace.error(textResult);
 				
 				// Polygon intersect a Polygon : true
 				testExpectedResult = true;
@@ -141,7 +142,7 @@
 				geom2 = (layer.getChildAt(11) as PolygonFeature).geometry;
 				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.core.geometry.Polygon);
 				textResult = "Does the blue Polygon intersect the inside small black rectangle (true) ? => "+testResult;
-				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
+				if (testResult==testExpectedResult) Trace.log(textResult) else Trace.error(textResult);
 				
 				// Polygon intersect a Polygon : false
 				testExpectedResult = false;
@@ -149,7 +150,7 @@
 				geom2 = (layer.getChildAt(12) as PolygonFeature).geometry;
 				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.core.geometry.Polygon);
 				textResult = "Does the blue Polygon intersect the black lozenge (false) ? => "+testResult;
-				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
+				if (testResult==testExpectedResult) Trace.log(textResult) else Trace.error(textResult);
 			}
 		]]>
 	</mx:Script>
@@ -188,29 +189,29 @@
 				<![CDATA[
 					switch (buttons.selectedIndex) {
 						case 0 :
-							Trace.info("pan mode");
+							Trace.log("pan mode");
 							selectFeaturesHandler.handler.active = false;
 							dragHandler.handler.active = true;
 							break;
 						case 1 :
-							Trace.info("select mode");
+							Trace.log("select mode");
 							dragHandler.handler.active = false;
 							selectFeaturesHandler.handler.active = true;
 							break;
 						case 2 :
-							Trace.info("clear selection");
+							Trace.log("clear selection");
 							(selectFeaturesHandler.handler as SelectFeaturesHandler).clearSelection();
 							// Once the selection is cleared, return in previous mode
 							if (dragHandler.handler.active) {
-								Trace.info("back to pan mode");
+								Trace.log("back to pan mode");
 								buttons.selectedIndex = 0;
 							} else if (selectFeaturesHandler.handler.active) {
-								Trace.info("back to select mode");
+								Trace.log("back to select mode");
 								buttons.selectedIndex = 1;
 							}
 							break;
 						default:
-							Trace.info("unknown mode");
+							Trace.log("unknown mode");
 					}
 				]]>
 			</mx:itemClick>

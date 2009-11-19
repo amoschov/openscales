@@ -34,10 +34,10 @@
 			import mx.core.Container;
 
 			/**
-			 * Boolean defining if the Trace component must be displayed or not
+			 * Boolean defining if the logs must be displayed or not
 			 */
-			[Bindable]
-			private var displayTrace:Boolean = true;
+			[Bindable] private var displayTrace:Boolean = false;
+			[Bindable] private var displayFirebugTrace:Boolean = true;
 
 			[Bindable]
 			private var selectedNode:XML = null;
