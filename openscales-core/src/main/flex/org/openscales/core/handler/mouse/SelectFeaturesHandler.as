@@ -2,8 +2,6 @@ package org.openscales.core.handler.mouse
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	import flash.geom.Rectangle;
 	
 	import org.openscales.core.Map;
@@ -18,8 +16,6 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.style.Rule;
@@ -647,10 +643,32 @@ package org.openscales.core.handler.mouse
 		 * @param featuresToUnselect the array of the features to remove
 		 */
 		private function unselect(featuresToUnselect:Array):void {
+			// Unselect the input features that are registred as selected
 			var selectionUpdated:Boolean = false;
-			// TODO
+			var removedFeatures:Array = new Array(); // the features really removed from the current selection
+			var feature:VectorFeature;
+			var i:int, found:Boolean;
+			for each (feature in featuresToUnselect) {
+				for (i=0, found=false; (!found) && (i<this.selectedFeatures.length); i++) {
+					if (feature == this.selectedFeatures[i]) {
+						found = true;
+						removedFeatures.push(feature);
+						this.selectedFeatures.splice(i,1);
+						selectionUpdated = true;
+					}
+				}
+				if (! found) {
+					Trace.warning("unselect warning: unselected feature, nothing to do");
+				}
+			}
+			// Dispatch a FEATURE_UNSELECTED event for all the unselected features
+			if (this.map && (removedFeatures.length>0)) {
+				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, null);
+				fevt.features = removedFeatures;
+				this.map.dispatchEvent(fevt);
+			}
 			// Log the selection modification
-			Trace.info("SelectFeaturesHandler: "+featuresToUnselect.length+" features removed from the selection => "+this.selectedFeatures.length+" features selected");
+			Trace.info("SelectFeaturesHandler: "+removedFeatures.length+" features removed from the selection => "+this.selectedFeatures.length+" features selected");
 			// if the selection has been updated, use the associated callback
 			if (selectionUpdated && (this.onSelectionUpdated != null)) {
 				this.onSelectionUpdated(this.selectedFeatures);
@@ -662,9 +680,21 @@ package org.openscales.core.handler.mouse
 		 */
 		public function clearSelection():void {
 			var selectionUpdated:Boolean = (this.selectedFeatures.length > 0);
-			// TODO
+			// If the selection is void there is nothing to do
+			if (! selectionUpdated) {
+				return;
+			}
+			// Clear the selection
+			var removedFeatures:Array = this.selectedFeatures;
+			this._selectedFeatures = new Array();
+			// Dispatch a FEATURE_UNSELECTED event for all the unselected features
+			if (this.map && (removedFeatures.length>0)) {
+				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, null);
+				fevt.features = removedFeatures;
+				this.map.dispatchEvent(fevt);
+			}
 			// Log the selection modification
-			Trace.info("SelectFeaturesHandler: selection cleared of its "+this.selectedFeatures.length+" features");
+			Trace.info("SelectFeaturesHandler: selection cleared of its "+removedFeatures.length+" features");
 			// if the selection has been updated, use the associated callback
 			if (selectionUpdated && (this.onSelectionUpdated != null)) {
 				this.onSelectionUpdated(this.selectedFeatures);
