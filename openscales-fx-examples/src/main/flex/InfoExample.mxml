@@ -15,7 +15,6 @@
 			
 			private function initMap():void {
 				map=fxmap.map;
-
 				// Specific initialize for this example
 				map.addEventListener(GetFeatureInfoEvent.GET_FEATURE_INFO_DATA, onFeatureInfoData);
 			}

@@ -6,6 +6,7 @@ package org.openscales.core.handler.mouse
 	import flash.net.URLLoader;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.GetFeatureInfoEvent;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.layer.ogc.WMS;
@@ -80,7 +81,7 @@ package org.openscales.core.handler.mouse
             _clickHandler.active = value;
         } 
 		
-		private function getInfoForClick(event:MouseEvent):void {
+		private function getInfoForClick(p:Pixel):void {
 			// get layers and styles
 			var layerNames:String = _layers;
 			var layerStyles:String = null;
@@ -108,7 +109,7 @@ package org.openscales.core.handler.mouse
 			else
 				infoParams.srs = _srs;
             infoParams.maxFeatures = _maxFeatures;
-            var point:Point = this.map.globalToLocal(new Point(event.stageX, event.stageY)); 
+            var point:Point = this.map.globalToLocal(new Point(p.x,p.y)); 
             infoParams.x = point.x; 
             infoParams.y = point.y;
             infoParams.height = this.map.height;
