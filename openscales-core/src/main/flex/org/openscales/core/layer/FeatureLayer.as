@@ -19,7 +19,6 @@ package org.openscales.core.layer
 			projection:String = null, proxy:String = null)
 		{
 			super(name, isBaseLayer, visible, projection, proxy);
-
 			this.selectedFeatures = new Array();
 			this.featuresBbox = new Bounds();
 
@@ -31,16 +30,14 @@ package org.openscales.core.layer
 
 		override public function destroy(setNewBaseLayer:Boolean = true):void {
 			super.destroy();  
-
 			this.clear();
 			this.selectedFeatures = null;
 		}
 
 		override public function set map(map:Map):void {
 			super.map = map;
-
 			// Ugly trick due to the fact we can't set the size of and empty Sprite
-			if(map) {
+			if (map) {
 				this.graphics.drawRect(0,0,map.width,map.height);
 				this.width = map.width;
 				this.height = map.height;
@@ -54,7 +51,6 @@ package org.openscales.core.layer
 		
 		public function drawFeatures():void {
 			this.graphics.clear();
-			
 			this.cacheAsBitmap = false;
 			for each (var feature:Feature in this.features){
 				feature.draw();
@@ -75,7 +71,7 @@ package org.openscales.core.layer
 		 */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 			super.moveTo(bounds, zoomChanged, dragging,resizing);
-			if(_drawOnMove) {
+			if (_drawOnMove) {
 				this.drawFeatures();
 			}
 		}
@@ -88,7 +84,6 @@ package org.openscales.core.layer
 		public function addFeatures(features:Array):void {
 			this.graphics.clear();
 			this.cacheAsBitmap = false;
-			
 			for (var i:int = 0; i < features.length; i++) {
 				this.addFeature(features[i]);
 			}
@@ -101,23 +96,11 @@ package org.openscales.core.layer
 		 * @param feature The feature to add
 		 */
 		public function addFeature(feature:Feature):void {
-
 			feature.layer = this;
-			
-			/* if(map)
-				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, feature));
-			else
-				Trace.warning("Warning : no FEATURE_PRE_INSERT dispatched because map event dispatcher is not defined"); */
-			
 			this.addChild(feature);
-			if(this.map) {
+			if (this.map) {
 				feature.draw();
 			}
-
-			/* if(map)
-				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature));
-			else
-				Trace.warning("Warning : no FEATURE_INSERT dispatched because map event dispatcher is not defined"); */
 		}
 
 		public function removeFeatures(features:Array):void {
@@ -127,10 +110,8 @@ package org.openscales.core.layer
 		}
 
 		public function removeFeature(feature:Feature):void {
-
-			for(var j:int = 0;j<this.numChildren;j++)
-			{
-				if(this.getChildAt(j) == feature)
+			for(var j:int = 0;j<this.numChildren;j++) {
+				if (this.getChildAt(j) == feature)
 					this.removeChildAt(j);
 			}
 			if (Util.indexOf(this.selectedFeatures, feature) != -1){
@@ -141,11 +122,8 @@ package org.openscales.core.layer
 		//Getters and setters
 		public function get features():Array {
 			var featureArray:Array = new Array();
-
-			for(var i:int = 0;i<this.numChildren;i++)
-			{
-				if(this.getChildAt(i) is Feature)
-				{
+			for(var i:int = 0;i<this.numChildren;i++) {
+				if(this.getChildAt(i) is Feature) {
 					featureArray.push(this.getChildAt(i));
 				}
 			}
@@ -176,4 +154,3 @@ package org.openscales.core.layer
 
 	}
 }
-

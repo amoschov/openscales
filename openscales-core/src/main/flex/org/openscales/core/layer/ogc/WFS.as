@@ -126,10 +126,11 @@ package org.openscales.core.layer.ogc
 			if ((this.map.zoom < this.minZoomLevel) || (this.map.zoom > this.maxZoomLevel)) {
 		 		Trace.info("Zoom "+this.map.zoom+" outside [min,max] zoom levels ["+this.minZoomLevel+","+this.maxZoomLevel+"]: don't draw layer " + this.name);
 		 		this.clear();
+		 		this._firstRendering = true;
 		 		return;
 	    	}
 	    	
-			if ( zoomChanged || !dragging  ) {
+			if (zoomChanged || (! dragging)) {
 				var projectedBounds:Bounds = bounds.clone();
 				
 				if(this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
@@ -139,7 +140,6 @@ package org.openscales.core.layer.ogc
 
 				if (projectedBounds.containsBounds(this.maxExtent)) {
 					projectedBounds = this.maxExtent;
-
 				}
 				var previousFeatureBbox:Bounds = this.featuresBbox.clone(); 
 				this.featuresBbox = projectedBounds;
@@ -150,7 +150,7 @@ package org.openscales.core.layer.ogc
 					this._firstRendering = false;
 				} else {
 					// else reuse the existing one
-					if ( previousFeatureBbox.containsBounds(projectedBounds)) {
+					if (previousFeatureBbox.containsBounds(projectedBounds)) {
 						this.drawFeatures();
 					} else {
 						// Use GetCapabilities to know if all features have already been retreived.
