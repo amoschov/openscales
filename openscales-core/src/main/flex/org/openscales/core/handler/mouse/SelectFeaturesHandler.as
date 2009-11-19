@@ -47,10 +47,10 @@ package org.openscales.core.handler.mouse
 		private var _layers:Array = new Array();
 		
 		/**
-		 * Size in pixels of the selection buffer (default=1 so a point is a
-		 * 3-side square)
+		 * Size in pixels of the selection buffer (default=2 so a point is a
+		 * 5-side square)
 		 */        
-		private var _selectionBuffer:Number = 1;
+		private var _selectionBuffer:Number = 2;
 		
 		/**
 		 * Array of the selected features.
