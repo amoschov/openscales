@@ -254,10 +254,11 @@ package org.openscales.core.layer.ogc
 		 * @param failure
 		 */
 		protected function loadFeatures(url:String):void {		
-			if(map)
+			if (map) {
                 this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_START, this ));
-            else
+			} else {
                 Trace.warning("Warning : no LAYER_LOAD_START dispatched because map event dispatcher is not defined");
+			}
                  
 			if(_request)
 				_request.destroy();

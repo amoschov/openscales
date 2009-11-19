@@ -1,7 +1,6 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.events.FeatureEvent;
@@ -85,9 +84,13 @@ package org.openscales.core.layer
 			this.graphics.clear();
 			this.cacheAsBitmap = false;
 			for (var i:int = 0; i < features.length; i++) {
-				this.addFeature(features[i]);
+				this.addFeature(features[i], false);
 			}
 			this.cacheAsBitmap = true;
+			// Dispatch an event with all the features added
+			var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_INSERT, null);
+			fevt.features = features;
+			this.map.dispatchEvent(fevt);
 		}
 
 		/**
@@ -95,27 +98,41 @@ package org.openscales.core.layer
 		 *
 		 * @param feature The feature to add
 		 */
-		public function addFeature(feature:Feature):void {
+		public function addFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
 			feature.layer = this;
 			this.addChild(feature);
 			if (this.map) {
 				feature.draw();
 			}
+			// If needed, dispatch an event with the feature added
+			if (dispatchFeatureEvent) {
+				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature);
+				this.map.dispatchEvent(fevt);
+			}
 		}
 
 		public function removeFeatures(features:Array):void {
 			for (var i:int = 0; i < features.length; i++) {
-				this.removeFeature(features[i]);
+				this.removeFeature(features[i], false);
 			}
+			// Dispatch an event with all the features removed
+			var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_DELETING, null);
+			fevt.features = features;
+			this.map.dispatchEvent(fevt);
 		}
 
-		public function removeFeature(feature:Feature):void {
+		public function removeFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
 			for(var j:int = 0;j<this.numChildren;j++) {
 				if (this.getChildAt(j) == feature)
 					this.removeChildAt(j);
 			}
 			if (Util.indexOf(this.selectedFeatures, feature) != -1){
 				Util.removeItem(this.selectedFeatures, feature);
+			}
+			// If needed, dispatch an event with the feature added
+			if (dispatchFeatureEvent) {
+				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_DELETING, feature);
+				this.map.dispatchEvent(fevt);
 			}
 		}
 
