@@ -143,6 +143,7 @@ package org.openscales.core.geometry
 				return false;
 			}
 			
+			var i:int;
 			if (geom is Point) {
 				return this.containsPoint(geom as Point);
 			}
@@ -151,7 +152,7 @@ package org.openscales.core.geometry
 				//   action should be made for each case..
 				// Test for the intersection of each LinearRing of tis Polygon
 				//   with the geometry (LineString or LinearRing)
-				for(var i:int=0; i<this.componentsLength; i++) {
+				for(i=0; i<this.componentsLength; i++) {
 					if ((geom as LineString).intersects(this.componentByIndex(i))) {
 						return true;
 					}
@@ -169,9 +170,25 @@ package org.openscales.core.geometry
 					|| ((geom is LinearRing) && (geom as LinearRing).containsPoint((this.componentByIndex(0) as LinearRing).componentByIndex(0) as Point));
 			}
 			else if (getQualifiedClassName(geom) == "org.openscales.core.geometry::Polygon") {
-				// Two holed polygon intersect if and only one of them intersects
-				//  with the outer LinearRing of the other polygon
-				return this.intersects((geom as Polygon).componentByIndex(0));
+				// Two holed polygons intersect if and only if one of them
+				//  intersects with the outer LinearRing of the other polygon
+				//  without being fully included in one of its holes.
+				if (! this.intersects((geom as Polygon).componentByIndex(0))) {
+					return false;
+				} else {
+					// An intersection seems to exist but we have to check if
+					// the outer LinearRing of this polygon is not fully
+					// included in one of the holes of the input polygon.
+					var outerLR:LinearRing = this.componentByIndex(0) as LinearRing;
+					var geomHole:LinearRing;
+					for(i=1; i<(geom as Polygon).componentsLength; i++) {
+						geomHole = (geom as Polygon).componentByIndex(i) as LinearRing;
+						if (geomHole.containsMultiPoint(outerLR as MultiPoint)) {
+							return false;
+						}
+					}
+					return true;
+				}
 			}
 			else {  // geom is a multi-geometry
 				return (geom as Collection).intersects(this);

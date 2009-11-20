@@ -73,6 +73,19 @@ package org.openscales.core.geometry
 		}
 		
 		/**
+		 * Test if a MultiPoint (and so a LineString or a LinearRing) is inside
+		 * a linear ring or not.
+		 */
+		public function containsMultiPoint(mp:MultiPoint):Boolean {
+			for(var i:int=0; i<mp.componentsLength; i++) {
+				if (! this.containsPoint(mp.componentByIndex(i) as Point)) {
+					return false;
+				}
+			}
+			return true;
+		}
+			
+		/**
      	 * Test for instersection between this LinearRing and a geometry.
      	 * 
      	 * @param geom the geometry (of any type) to intersect with
