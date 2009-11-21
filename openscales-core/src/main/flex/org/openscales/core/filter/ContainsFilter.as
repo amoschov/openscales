@@ -12,11 +12,11 @@ package org.openscales.core.filter {
 		
 		override public function matches(feature:VectorFeature):Boolean {
 			if (super.matches(feature)) {
-Trace.debug("ContainsFilter.matches: intersect=true...");
 				// the two geometries intersect, so we have to test the inclusion
+Trace.debug("ContainsFilter.matches: => "+true);//this.geometry.containsFeature(feature));
 				return true;//this.geometry.containsFeature(feature);
 			} else {
-Trace.debug("ContainsFilter.matches: intersect=false !");
+Trace.debug("ContainsFilter.matches: false from IntersectsFilter");
 				return false;
 			}
 		}

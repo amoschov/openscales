@@ -26,48 +26,45 @@
 			// Specific imports for this example			
 			// none
 
-			[Bindable]
-			private var styles:Array = [];
+			[Bindable] private var styles:Array = [];
 
 			private function createStyle():void {
 
+				var fill:Fill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;
 				var style:Style = new Style();
 				style.name = "Latitude related coloration"
 
-				var northFill:Fill = new Fill(0x176273, .8);
-				var northStroke:Stroke = new Stroke(0x0A2C33, 2);
+				rule = new Rule();
+				rule.name = "Centroid Y-coordinate in [70000;75000]";
+				fill = new Fill(0x176273, .8);
+				stroke = new Stroke(0x0A2C33, 2);
+				symbolizer = new PolygonSymbolizer(fill, stroke);
+				rule.symbolizers.push(symbolizer);
+				rule.filter = new CentroidYFilter(70000, 75000);
+				style.rules.push(rule);
 
-				var northSymbolizer:Symbolizer = new PolygonSymbolizer(northFill, northStroke);
+				rule = new Rule();
+				rule.name = "Centroid Y-coordinate in [65000;70000]";
+				fill = new Fill(0xD8F20F, .8);
+				stroke = new Stroke(0x2D3303, 2);
+				symbolizer = new PolygonSymbolizer(fill, stroke);
+				rule.symbolizers.push(symbolizer);
+				rule.filter = new CentroidYFilter(65000, 70000);
+				style.rules.push(rule);
 
-				var northRule:Rule = new Rule();
-				northRule.name = "Centroid Y coordinate between 70000 and 75000";
-				northRule.filter = new CentroidYFilter(70000, 75000);
-				northRule.symbolizers.push(northSymbolizer);
+				rule = new Rule();
+				rule.name = "Centroid Y-coordinate out of previous ranges";
+				fill = new Fill(0x84BF7A, .8);
+				stroke = new Stroke(0x233321, 2);
+				symbolizer = new PolygonSymbolizer(fill, stroke);
+				rule.symbolizers.push(symbolizer);
+				rule.filter = new ElseFilter();
+				style.rules.push(rule);
 
-				var middleFill:Fill = new Fill(0xD8F20F, .8);
-				var middleStroke:Stroke = new Stroke(0x2D3303, 2);
-
-				var middleSymbolizer:Symbolizer = new PolygonSymbolizer(middleFill, middleStroke);
-
-				var middleRule:Rule = new Rule();
-				middleRule.name = "Centroid Y coordinate between 65000 and 70000";
-				middleRule.filter = new CentroidYFilter(65000, 70000);
-				middleRule.symbolizers.push(middleSymbolizer);
-
-				var southFill:Fill = new Fill(0x84BF7A, .8);
-				var southStroke:Stroke = new Stroke(0x233321, 2);
-
-				var southSymbolizer:Symbolizer = new PolygonSymbolizer(southFill, southStroke);
-
-				var southRule:Rule = new Rule();
-				southRule.name = "Centroid Y coordinate between 60000 and 65000";
-				southRule.filter = new ElseFilter();
-				southRule.symbolizers.push(southSymbolizer);
-
-				style.rules.push(northRule, middleRule, southRule);
-				this.styles.push(style);
 				this.ignGeoplaRegion.style = style;
 				this.ignGeoplaRegion.layer.redraw();
+
+				this.styles.push(style);
 			}
 
 			private function initMap():void {
@@ -178,7 +175,6 @@
 			<os:ZoomComponent map="{map}"/>
 		</mx:VBox>
 	</mx:Panel>
-
 
 	<mx:Panel title="Legend"
 			  id="legends"
