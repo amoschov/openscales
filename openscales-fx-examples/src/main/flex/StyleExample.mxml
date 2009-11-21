@@ -6,8 +6,9 @@
 
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.filter.ContainsFilter;
 			import org.openscales.core.filter.ElseFilter;
-			import org.openscales.core.filter.IntersectFilter;
+			import org.openscales.core.filter.IntersectsFilter;
 			import styleexample.CentroidYFilter;
 			import org.openscales.core.style.symbolizer.Stroke;
 			import org.openscales.core.style.symbolizer.Fill;
