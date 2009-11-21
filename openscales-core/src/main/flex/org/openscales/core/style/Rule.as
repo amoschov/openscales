@@ -3,7 +3,8 @@ package org.openscales.core.style {
 	import flash.display.DisplayObject;
 	import flash.display.JointStyle;
 	import flash.display.Sprite;
-
+	
+	import org.openscales.core.Trace;
 	import org.openscales.core.filter.IFilter;
 	import org.openscales.core.style.symbolizer.Fill;
 	import org.openscales.core.style.symbolizer.FillSymbolizer;
@@ -177,6 +178,7 @@ package org.openscales.core.style {
 
 		public static function configureGraphicsFill(fill:Fill, canvas:Sprite):void {
 			if (fill) {
+Trace.debug("Rule.configureGraphicsFill color="+fill.color);
 				canvas.graphics.beginFill(fill.color, fill.opacity);
 			} else {
 				canvas.graphics.endFill();
@@ -209,6 +211,7 @@ package org.openscales.core.style {
 						linejoin = JointStyle.MITER;
 				}
 
+Trace.debug("Rule.configureGraphicsStroke color="+stroke.color);
 				canvas.graphics.lineStyle(stroke.width, stroke.color, stroke.opacity, false, "normal", linecap, linejoin);
 			} else {
 				canvas.graphics.lineStyle();

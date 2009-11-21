@@ -20,6 +20,7 @@ package org.openscales.core.filter {
 			}
 			var fgeom:Geometry = feature.geometry;
 			fgeom.transform(feature.layer.map.baseLayer.projection, this.projection);
+Trace.debug("IntersectsFilter.matches: "+this.geometry.toShortString()+" ; "+fgeom.bounds.toString()+" => "+this.geometry.intersects(fgeom));
 			return this.geometry.intersects(fgeom);
 		}
 		
