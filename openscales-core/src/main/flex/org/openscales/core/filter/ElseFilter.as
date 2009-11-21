@@ -1,12 +1,12 @@
 package org.openscales.core.filter {
-	import org.openscales.core.feature.Feature;
+	import org.openscales.core.feature.VectorFeature;
 
-	public class ElseFilter implements IFilter {
+	public class ElseFilter implements IFilter
+	{
 		public function ElseFilter() {
 		}
 
-		public function matches(feature:Feature):Boolean {
-
+		public function matches(feature:VectorFeature):Boolean {
 			return true;
 		}
 	}

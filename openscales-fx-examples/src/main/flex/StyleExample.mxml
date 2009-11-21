@@ -7,6 +7,7 @@
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.filter.ElseFilter;
+			import org.openscales.core.filter.IntersectFilter;
 			import styleexample.CentroidYFilter;
 			import org.openscales.core.style.symbolizer.Stroke;
 			import org.openscales.core.style.symbolizer.Fill;
@@ -77,7 +78,6 @@
 				// Specific initialize for this example
 				
 				for each (var style:Style in this.styles) {
-
 					var vb:VBox = new VBox();
 
 					var label:Label = new Label();
@@ -88,7 +88,6 @@
 
 					var legendType:String;
 					switch (style.name) {
-
 						case "Default circle style":
 						case "Default point style":  {
 							legendType = Rule.LEGEND_POINT;
@@ -106,7 +105,6 @@
 					}
 
 					for each (var rule:Rule in style.rules) {
-
 						var hb:HBox = new HBox();
 						hb.setStyle("verticalAlign", "middle");
 
@@ -116,7 +114,6 @@
 						leg.addChild(rule.getLegendGraphic(legendType));
 						hb.addChild(leg);
 
-
 						var ruleLabel:Label = new Label();
 						ruleLabel.text = rule.name;
 						hb.addChild(ruleLabel);
@@ -124,8 +121,6 @@
 					}
 
 					this.legends.addChild(vb);
-
-
 				}
 			}
 		]]>
@@ -151,10 +146,10 @@
 
 		<os:Spinner id="spinner"
 					x="{width / 2}"
-					y="{height / 2}"/>
+					y="{height / 2}" />
 		<os:MousePosition x="10"
 						  y="{height-20}"
-						  displayProjection="EPSG:4326"/>
+						  displayProjection="EPSG:4326" />
 
 		<!-- Specific layers and handlers of this example -->
 
@@ -164,8 +159,8 @@
 				typename="pg:ign_geopla_region"
 				srs="EPSG:2154"
 				version="1.0.0"
-				style="{Style.getDefaultSurfaceStyle()}">
-		</os:WFS>
+				style="{Style.getDefaultSurfaceStyle()}"
+				/>
 
 		<os:SelectFeaturesHandler id="selectFeatureHandler"
 								  active="true" />

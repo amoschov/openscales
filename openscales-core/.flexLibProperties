@@ -16,6 +16,7 @@
 <classEntry path="org.openscales.core.control.ui.Arrow"/>
 <classEntry path="org.openscales.core.style.symbolizer.Graphic"/>
 <classEntry path="org.openscales.core.filter.ElseFilter"/>
+<classEntry path="org.openscales.core.filter.IntersectFilter"/>
 <classEntry path="org.openscales.core.style.symbolizer.PointSymbolizer"/>
 <classEntry path="org.openscales.core.control.LayerSwitcher"/>
 <classEntry path="org.openscales.core.handler.sketch.DrawPointHandler"/>
