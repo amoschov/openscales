@@ -3,6 +3,7 @@ package org.openscales.core.handler.sketch
 	import flash.events.MouseEvent;
 
 	import org.openscales.core.Map;
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.feature.PointFeature;
@@ -48,7 +49,7 @@ package org.openscales.core.handler.sketch
 		 */		
 		protected function drawPoint(event:MouseEvent):void {
 			if (drawLayer != null)
-				trace("Drawing point"); {
+				Trace.log("Drawing point"); {
 				var style:Style = Style.getDefaultPointStyle();
 			
 				var pixel:Pixel = new Pixel(drawLayer.mouseX ,drawLayer.mouseY);

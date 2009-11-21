@@ -133,7 +133,7 @@ package org.openscales.core.configuration
                   var layers:Array = new Array ();
                   
                   if (layersNodes.length() == 0) {
-                        trace("There's no layer on the map");return [];
+                        Trace.log("There's no layer on the map");return [];
                   } 
                   // Manage the different catalog in the file
                   for each(var node:XML in layersNodes){
@@ -146,7 +146,7 @@ package org.openscales.core.configuration
             
             public function get layersFromCatalog():Array {                  
                   if (this.catalog.length == 0) {
-                        trace("There's no layer on the catalog");return [];
+                        Trace.log("There's no layer on the catalog");return [];
                   }
                   
                   var layersNodes:XMLList = config.Catalog..Category.*;

@@ -1,6 +1,7 @@
 package org.openscales.core.feature {
 	import flash.display.Bitmap;
 	
+	import org.openscales.core.Trace;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
@@ -36,7 +37,7 @@ package org.openscales.core.feature {
 		 * Draw the marker
 		 */
 		override protected function executeDrawing(symbolizer:Symbolizer):void {
-			
+			Trace.log("Marker.executeDrawing");
 			if (!this._drawn) {
 				// Eventually remove old stuff
 				while (this.numChildren>0) {
@@ -59,7 +60,7 @@ package org.openscales.core.feature {
 				this.x = x - marker.width / 2;
 				this.y = y - marker.height / 2;
 			} else {
-				trace("No marker found !");
+				Trace.log("No marker found !");
 			}
 				
 		}

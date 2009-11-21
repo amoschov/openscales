@@ -186,9 +186,7 @@
       {
         var bounds:Bounds = (data as Layer).maxExtent;
         if (bounds != null) {
-          trace(bounds);
           (data as Layer).map.zoomToExtent(bounds);
-
         }
       }
 

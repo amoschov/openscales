@@ -1,5 +1,6 @@
 package org.openscales.core.feature
 {
+	import org.openscales.core.Trace;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
@@ -22,7 +23,7 @@ package org.openscales.core.feature
 		}
 
 		override protected function executeDrawing(symbolizer:Symbolizer):void {
-			
+			Trace.log("LineStringFeature.executeDrawing");
 			// Regardless to the style, a LineString is never filled
 			this.graphics.endFill();
 			

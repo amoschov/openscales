@@ -408,7 +408,7 @@ package org.openscales.core
 					child = this._layerContainer.getChildAt(i);
 					if(child is Popup){
 						if(child != popup) {
-							trace("Popup already displayed so escape");
+							Trace.warning("Map.addPopup: popup already displayed so escape");
 							return;
 						}
 						this.removePopup(child as Popup);

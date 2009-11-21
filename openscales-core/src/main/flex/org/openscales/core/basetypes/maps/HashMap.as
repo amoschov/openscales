@@ -52,9 +52,9 @@ package org.openscales.core.basetypes.maps
 	 *     map.put("y", "value Y");
 	 *     map.put("z", "value Z");
 	 *
-	 *     trace( map.getKeys() );
-	 *     trace( map.getValues() );
-	 *     trace( map.size() );
+	 *     Trace.log( map.getKeys() );
+	 *     Trace.log( map.getValues() );
+	 *     Trace.log( map.size() );
 	 *
 	 *     // outputs the following:
 	 *     // b,x,z,a,c,y
@@ -148,7 +148,7 @@ package org.openscales.core.basetypes.maps
 		 * var map:IMap = new HashMap();
 		 * map.putAll( table );
 		 *
-		 * trace( map.getValues() );
+		 * Trace.log( map.getValues() );
 		 * // foo, bar
 		 *
 		 * </listing>
@@ -216,7 +216,7 @@ package org.openscales.core.basetypes.maps
 		 * var map:IMap = new HashMap();
 		 * map.put( "admin", adminVO );
 		 *
-		 * trace( map.containsKey( "admin" ) ); //true
+		 * Trace.log( map.containsKey( "admin" ) ); //true
 		 *
 		 * </listing>
 		 *
@@ -249,7 +249,7 @@ package org.openscales.core.basetypes.maps
 		 * var map:IMap = new HashMap();
 		 * map.put( "admin", adminVO );
 		 *
-		 * trace( map.containsValue( adminVO ) ); //true
+		 * Trace.log( map.containsValue( adminVO ) ); //true
 		 *
 		 * </listing>
 		 *
@@ -292,7 +292,7 @@ package org.openscales.core.basetypes.maps
 		 * var map:IMap = new HashMap();
 		 * map.put( "admin", adminVO );
 		 *
-		 * trace( map.getKey( adminVO ) ); //admin
+		 * Trace.log( map.getKey( adminVO ) ); //admin
 		 *
 		 * </listing>
 		 *
@@ -330,7 +330,7 @@ package org.openscales.core.basetypes.maps
 		 * map.put( "admin", adminVO );
 		 * map.put( "editor", editorVO );
 		 *
-		 * trace( map.getKeys() ); //admin, editor
+		 * Trace.log( map.getKeys() ); //admin, editor
 		 *
 		 * </listing>
 		 *
@@ -362,7 +362,7 @@ package org.openscales.core.basetypes.maps
 		 * map.put( "admin", adminVO );
 		 * map.put( "editor", editorVO );
 		 *
-		 * trace( map.getValue( "editor" ) ); //[object, editorVO]
+		 * Trace.log( map.getValue( "editor" ) ); //[object, editorVO]
 		 *
 		 * </listing>
 		 *
@@ -389,7 +389,7 @@ package org.openscales.core.basetypes.maps
 		 * map.put( "admin", adminVO );
 		 * map.put( "editor", editorVO );
 		 *
-		 * trace( map.getValues() ); //[object, adminVO],[object, editorVO]
+		 * Trace.log( map.getValues() ); //[object, adminVO],[object, editorVO]
 		 *
 		 * </listing>
 		 *
@@ -421,7 +421,7 @@ package org.openscales.core.basetypes.maps
 		 * map.put( "admin", adminVO );
 		 * map.put( "editor", editorVO );
 		 *
-		 * trace( map.size() ); //2
+		 * Trace.log( map.size() ); //2
 		 *
 		 * </listing>
 		 *
@@ -450,10 +450,10 @@ package org.openscales.core.basetypes.maps
 		 * import com.ericfeminella.collections.IMap;
 		 *
 		 * var map:IMap = new HashMap();
-		 * trace( map.isEmpty() ); //true
+		 * Trace.log( map.isEmpty() ); //true
 		 *
 		 * map.put( "admin", adminVO );
-		 * trace( map.isEmpty() ); //false
+		 * Trace.log( map.isEmpty() ); //false
 		 *
 		 * </listing>
 		 *
@@ -480,7 +480,7 @@ package org.openscales.core.basetypes.maps
 		 * map.put( "editor", editorVO );
 		 * map.reset();
 		 *
-		 * trace( map.getValues() ); //null, null
+		 * Trace.log( map.getValues() ); //null, null
 		 *
 		 * </listing>
 		 *
@@ -508,10 +508,10 @@ package org.openscales.core.basetypes.maps
 		 * map.put( "admin", adminVO );
 		 * map.put( "editor", editorVO );
 		 *
-		 * trace( map.getValues() ); //[object, adminVO],[object, editorVO]
+		 * Trace.log( map.getValues() ); //[object, adminVO],[object, editorVO]
 		 *
 		 * map.resetAllExcept( "editor", editorVO );
-		 * trace( map.getValues() ); //null,[object, editorVO]
+		 * Trace.log( map.getValues() ); //null,[object, editorVO]
 		 *
 		 * </listing>
 		 *
@@ -542,10 +542,10 @@ package org.openscales.core.basetypes.maps
 		 * var map:IMap = new HashMap();
 		 * map.put( "admin", adminVO );
 		 * map.put( "editor", editorVO );
-		 * trace( map.size() ); //2
+		 * Trace.log( map.size() ); //2
 		 *
 		 * map.clear();
-		 * trace( map.size() ); //0
+		 * Trace.log( map.size() ); //0
 		 *
 		 * </listing>
 		 *
@@ -572,11 +572,11 @@ package org.openscales.core.basetypes.maps
 		 * var map:IMap = new HashMap();
 		 * map.put( "admin", adminVO );
 		 * map.put( "editor", editorVO );
-		 * trace( map.size() ); //2
+		 * Trace.log( map.size() ); //2
 		 *
 		 * map.clearAllExcept( "editor", editorVO );
-		 * trace( map.getValues() ); //[object, editorVO]
-		 * trace( map.size() ); //1
+		 * Trace.log( map.getValues() ); //[object, editorVO]
+		 * Trace.log( map.size() ); //1
 		 *
 		 * </listing>
 		 *

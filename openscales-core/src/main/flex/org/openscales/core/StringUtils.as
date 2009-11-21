@@ -83,7 +83,7 @@ package org.openscales.core {
 		 *
 		 * @example
 		 * <listing version="3.0">
-		 * trace("["+StringUtils.trim(String("\t \tx y z \t "))+"]");
+		 * Trace.log("["+StringUtils.trim(String("\t \tx y z \t "))+"]");
 		 * // renders:[x y z]
 		 * </listing>
 		 *
@@ -103,7 +103,7 @@ package org.openscales.core {
 		 *
 		 * @example
 		 * <listing version="3.0">
-		 * trace("["+StringUtils.format(String("${{token}}=${token}"),{token:"item"})+"]");
+		 * Trace.log("["+StringUtils.format(String("${{token}}=${token}"),{token:"item"})+"]");
 		 * // renders:[${token}=item]
 		 * </listing>
 		 *

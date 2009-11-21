@@ -1,4 +1,5 @@
 package org.openscales.core.feature {
+	import org.openscales.core.Trace;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.MultiPoint;
@@ -22,13 +23,11 @@ package org.openscales.core.feature {
 		}
 
 		override protected function executeDrawing(symbolizer:Symbolizer):void {
-
+			Trace.log("MultiPointFeature.executeDrawing");
 			if (symbolizer is PointSymbolizer) {
-
 				var pointSymbolizer:PointSymbolizer = (symbolizer as PointSymbolizer);
 				if (pointSymbolizer.graphic) {
 					if (pointSymbolizer.graphic is Mark) {
-
 						this.drawMark(pointSymbolizer.graphic as Mark);
 					}
 				}
@@ -37,7 +36,7 @@ package org.openscales.core.feature {
 		}
 
 		protected function drawMark(mark:Mark):void {
-			trace("Drawing marks");
+			Trace.log("Drawing marks");
 			Rule.configureGraphicsFill(mark.fill, this);
 			Rule.configureGraphicsStroke(mark.stroke, this);
 			// Variable declaration before for loop to improve performances

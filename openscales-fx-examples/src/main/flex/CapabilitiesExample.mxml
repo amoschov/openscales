@@ -36,10 +36,10 @@
 			
 			private function onLayerAdded(event:LayerEvent):void
 			{
-				trace('Layer added + '+event.layer);
+				Trace.info('Layer added + '+event.layer);
 				if(event.layer is WFS) {
 					
-					trace('Layer is a WFS layer');
+					Trace.info('Layer is a WFS layer');
 					var s:Style = Style.getDefaultSurfaceStyle();
 					s.rules[0].symbolizers.push(new PointSymbolizer(new Mark(Mark.WKN_CIRCLE,new Fill(0xFFFF00,0.5),new Stroke(0xFFFF00))));
 					

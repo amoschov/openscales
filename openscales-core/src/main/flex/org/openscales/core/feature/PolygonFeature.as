@@ -1,5 +1,6 @@
 package org.openscales.core.feature
 {
+	import org.openscales.core.Trace;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LinearRing;
@@ -22,9 +23,7 @@ package org.openscales.core.feature
 		}
 
 		override protected function executeDrawing(symbolizer:Symbolizer):void {
-
-			trace("Drawing polygon");
-			// Variable declaration before for loop to improve performances
+			Trace.log("PolygonFeature.executeDrawing");
 			// Variable declaration before for loop to improve performances
 			var p:Point = null;
 			var x:Number; 
@@ -58,8 +57,6 @@ package org.openscales.core.feature
 					this.graphics.lineTo(x,y);
 				}
 			}
-			
-			trace("End of polygon drawing");
 		}
 		/**
 		 * To obtain feature clone 

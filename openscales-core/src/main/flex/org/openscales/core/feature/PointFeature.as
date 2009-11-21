@@ -47,13 +47,11 @@ package org.openscales.core.feature {
 		}
 
 		override protected function executeDrawing(symbolizer:Symbolizer):void {
-
+			Trace.log("PointFeature.executeDrawing");
 			if (symbolizer is PointSymbolizer) {
-
 				var pointSymbolizer:PointSymbolizer = (symbolizer as PointSymbolizer);
 				if (pointSymbolizer.graphic) {
 					if (pointSymbolizer.graphic is Mark) {
-
 						this.drawMark(pointSymbolizer.graphic as Mark);
 					}
 				}
@@ -62,8 +60,7 @@ package org.openscales.core.feature {
 		}
 
 		protected function drawMark(mark:Mark):void {
-
-			trace("Drawing mark");
+			Trace.log("Drawing mark");
 			Rule.configureGraphicsFill(mark.fill, this);
 			Rule.configureGraphicsStroke(mark.stroke, this);
 
