@@ -18,8 +18,6 @@ package org.openscales.fx.layer
 
     private var _style:Style;
 
-    private var _minZoomLevel:Number;
-
     private var _isBaseLayer:Boolean;
 
     private var _projection:String;
