@@ -74,7 +74,7 @@ package org.openscales.core.security.ign
 			if(!this._requestPending) {
 				
 				if(!this._initialized) {
-					Trace.debug("Token has expired, so get a new one");
+					Trace.log("Token has expired, so get a new one");
 					this.initialize();
 				} else if((new Date().valueOf() - this._lastTokenUpdate.valueOf()) > (ttl/2)) {
 					this.update();
@@ -86,7 +86,7 @@ package org.openscales.core.security.ign
 		 * Authenticate and retreive config to print it in logs
 		 */
 		override public function initialize():void {
-			Trace.debug("Request a new token");
+			Trace.log("Request a new token");
 			this._requestPending = true;
 			new XMLRequest(this.authUrl, authenticationResponse, this.proxy);
 		}
@@ -152,12 +152,12 @@ package org.openscales.core.security.ign
 		
 		/** Will use the same mechanism than at layer startup to update datas when the token will be retreived **/ 		
 		private function tokenExpiredHandler(e:TimerEvent):void {
-			Trace.debug("Token expired");
+			Trace.log("Token expired");
 			this._initialized = false;
 		}
 
 		override public function update():void {
-			Trace.debug("Update token");
+			Trace.log("Update token");
 			this._requestPending = true;
 			new XMLRequest(this.updateUrl, authenticationUpdateResponse, this.proxy);
 		}
