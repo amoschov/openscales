@@ -84,7 +84,7 @@
 				testExpectedResult = true;
 				geom1 = (layer.getChildAt(9) as PolygonFeature).geometry;
 				geom2 = (layer.getChildAt(5) as PointFeature).geometry;
-				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point, false);
+				testResult = (geom1 as Polygon).isPointInPolygon(geom2 as org.openscales.core.geometry.Point, false);
 				textResult = "Does the blue Polygon contain the red point without managing its holes (true) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 
