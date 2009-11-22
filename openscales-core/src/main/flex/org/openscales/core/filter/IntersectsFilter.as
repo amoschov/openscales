@@ -18,10 +18,11 @@ package org.openscales.core.filter {
 			if ((this.geometry==null) || (this.projection==null) || (feature==null)) {
 				return false;
 			}
-			var fgeom:Geometry = feature.geometry;
-			fgeom.transform(feature.layer.map.baseLayer.projection, this.projection);
-Trace.debug("IntersectsFilter.matches: "+this.geometry.toShortString()+" ; "+fgeom.bounds.toString()+" => "+this.geometry.intersects(fgeom));
-			return this.geometry.intersects(fgeom);
+			if (this.projection.srsCode != feature.layer.map.baseLayer.projection.srsCode) {
+				this._geom.transform(this.projection, feature.layer.map.baseLayer.projection);
+				this.projection = feature.layer.map.baseLayer.projection.clone();
+			}
+			return this.geometry.intersects(feature.geometry);
 		}
 		
 		/**

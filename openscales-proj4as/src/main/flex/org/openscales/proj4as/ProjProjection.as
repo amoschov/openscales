@@ -113,6 +113,10 @@ package org.openscales.proj4as {
 			this.loadProjDefinition();
 		}
 
+		public function clone():ProjProjection {
+			return new ProjProjection(this.srsCode);
+		}
+		
 		private function loadProjDefinition():void {
 			if (this.srsCode != null && ProjProjection.defs[this.srsCode] != null) {
 				this.parseDef(ProjProjection.defs[this.projParams.srsCode]);

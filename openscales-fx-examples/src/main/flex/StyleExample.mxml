@@ -22,56 +22,18 @@
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 			import org.openscales.core.style.Style;
+			import org.openscales.core.basetypes.Bounds;
 
 			// Specific imports for this example			
 			// none
 
 			[Bindable] private var styles:Array = [];
 
-			private function createStyle():void {
-
-				var fill:Fill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;
-				var style:Style = new Style();
-				style.name = "Latitude related coloration"
-
-				rule = new Rule();
-				rule.name = "Centroid Y-coordinate in [70000;75000]";
-				fill = new Fill(0x176273, .8);
-				stroke = new Stroke(0x0A2C33, 2);
-				symbolizer = new PolygonSymbolizer(fill, stroke);
-				rule.symbolizers.push(symbolizer);
-				rule.filter = new CentroidYFilter(70000, 75000);
-				style.rules.push(rule);
-
-				rule = new Rule();
-				rule.name = "Centroid Y-coordinate in [65000;70000]";
-				fill = new Fill(0xD8F20F, .8);
-				stroke = new Stroke(0x2D3303, 2);
-				symbolizer = new PolygonSymbolizer(fill, stroke);
-				rule.symbolizers.push(symbolizer);
-				rule.filter = new CentroidYFilter(65000, 70000);
-				style.rules.push(rule);
-
-				rule = new Rule();
-				rule.name = "Centroid Y-coordinate out of previous ranges";
-				fill = new Fill(0x84BF7A, .8);
-				stroke = new Stroke(0x233321, 2);
-				symbolizer = new PolygonSymbolizer(fill, stroke);
-				rule.symbolizers.push(symbolizer);
-				rule.filter = new ElseFilter();
-				style.rules.push(rule);
-
-				this.ignGeoplaRegion.style = style;
-				this.ignGeoplaRegion.layer.redraw();
-
-				this.styles.push(style);
-			}
-
 			private function initMap():void {
 				Trace.useFireBugConsole = displayFirebugTrace;
 				map = fxmap.map;
 
-				this.createStyle();
+				this.createStyle_Latitude();
 				
 				// Specific initialize for this example
 				
@@ -121,6 +83,92 @@
 					this.legends.addChild(vb);
 				}
 			}
+			
+			private function createStyle_Latitude():void {
+				var style:Style = new Style();
+				style.name = "Latitude related coloration";
+				var fill:Fill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;
+
+				rule = new Rule();
+				rule.name = "Centroid Y-coordinate in [70000;75000]";
+				fill = new Fill(0x176273, .8);
+				stroke = new Stroke(0x0A2C33, 2);
+				symbolizer = new PolygonSymbolizer(fill, stroke);
+				rule.symbolizers.push(symbolizer);
+				rule.filter = new CentroidYFilter(70000, 75000);
+				style.rules.push(rule);
+
+				rule = new Rule();
+				rule.name = "Centroid Y-coordinate in [65000;70000]";
+				fill = new Fill(0xD8F20F, .8);
+				stroke = new Stroke(0x2D3303, 2);
+				symbolizer = new PolygonSymbolizer(fill, stroke);
+				rule.symbolizers.push(symbolizer);
+				rule.filter = new CentroidYFilter(65000, 70000);
+				style.rules.push(rule);
+
+				rule = new Rule();
+				rule.name = "Centroid Y-coordinate out of previous ranges";
+				fill = new Fill(0x84BF7A, .8);
+				stroke = new Stroke(0x233321, 2);
+				symbolizer = new PolygonSymbolizer(fill, stroke);
+				rule.symbolizers.push(symbolizer);
+				rule.filter = new ElseFilter();
+				style.rules.push(rule);
+
+				this.styles.push(style);
+				this.ignGeoplaRegion.style = style;
+				this.ignGeoplaRegion.layer.redraw();
+			}
+			
+			private function createStyle_Geographical():void {
+				var style:Style = new Style();
+				style.name = "Geographical coloration";
+				var fill:Fill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;
+				var bounds:Bounds;
+
+				rule = new Rule();
+				rule.name = "Departements of Bourgogne";
+				fill = new Fill(0x176273, .8);
+				stroke = new Stroke(0x0A2C33, 2);
+				symbolizer = new PolygonSymbolizer(fill, stroke);
+				rule.symbolizers.push(symbolizer);
+				bounds = new Bounds(682105,6558859,892780,6816381);
+				rule.filter = new ContainsFilter(bounds.toGeometry(), "EPSG:2154");
+				style.rules.push(rule);
+				
+				rule = new Rule();
+				rule.name = "Other departements of France";
+				fill = new Fill(0x84BF7A, .8);
+				stroke = new Stroke(0x233321, 2);
+				symbolizer = new PolygonSymbolizer(fill, stroke);
+				rule.symbolizers.push(symbolizer);
+				rule.filter = new ElseFilter();
+				style.rules.push(rule);
+				
+				this.styles.push(style);
+				this.ignGeoplaRegion.style = style;
+				this.ignGeoplaRegion.layer.redraw();
+			}
+			
+			private function switchStyle():void {
+				var currentStyleName:String = (this.styles[0] as Style).name;
+				this.styles.splice(0, this.styles.length);
+				switch (currentStyleName) {
+					case "Latitude related coloration":
+						Trace.info("Use the 'Geographical coloration' style");
+						this.createStyle_Geographical();
+						break;
+					case "Geographical coloration":
+						Trace.info("Use the 'Latitude related coloration' style");
+						this.createStyle_Latitude();
+						break;
+					default:
+						Trace.warning("Error in the style's names used => use the 'Latitude related coloration' style");
+						this.createStyle_Latitude();
+				}
+			}
+			
 		]]>
 	</mx:Script>
 
@@ -188,4 +236,10 @@
 		<os:FeatureInfoComponent id="featureInfoComponent"
 								 creationComplete="(selectFeatureHandler.handler as SelectFeaturesHandler).onSelectedFeature = featureInfoComponent.showInfo"/>
 	</mx:Panel>
+	
+	<mx:Button id="switchStyleButton"
+			label="Switch style"
+			x="{width-switchStyleButton.width-10}" y="10"
+			click="switchStyle();" />
+	
 </Example>
