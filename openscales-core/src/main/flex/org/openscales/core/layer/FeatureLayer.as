@@ -54,6 +54,8 @@ package org.openscales.core.layer
 			}
 		}
 		
+		// FixMe: why is it necessary to do that ?
+		// It should be managed at the Layer.as level for all the types of sublayer
 		override public function get inRange():Boolean {
 			return true;
 		}
