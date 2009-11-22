@@ -3,13 +3,16 @@ package org.openscales.fx.layer
 	import org.openscales.core.layer.KML;
 	import org.openscales.proj4as.ProjProjection;
 
-	public class FxKML extends FxLayer
+	public class FxKML extends FxFeatureLayer
 	{
 		public function FxKML()
 		{
-			this._layer = new KML("", "", null);
 			super();
 		}
+
+	    override public function init():void {
+			this._layer = new KML("", "", null);
+	    }
 		
 		public function set url(value:String):void {
 			if(this.layer != null)

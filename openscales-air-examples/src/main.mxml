@@ -9,7 +9,7 @@
 			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.layer.ogc.WFS;
 			import org.openscales.proj4as.ProjProjection;
-			import org.openscales.core.layer.VectorLayer;
+			import org.openscales.core.layer.FeatureLayer;
 			import org.openscales.core.handler.IHandler;
 			import org.openscales.core.handler.mouse.DragHandler;
 			import org.openscales.core.handler.mouse.WheelHandler;
@@ -39,7 +39,7 @@
 
 				/* We create a vector layer with a point near to Lyon (France)
 				 with EPSG:4326 projection.*/
-				var vect:VectorLayer=new VectorLayer("vector");
+				var vect:FeatureLayer=new FeatureLayer("vector");
 				var p:org.openscales.core.geometry.Point=new org.openscales.core.geometry.Point(4.8, 45.7);
 				vect.addFeature(new PointFeature(p));
 				vect.projection=new ProjProjection("EPSG:4326");

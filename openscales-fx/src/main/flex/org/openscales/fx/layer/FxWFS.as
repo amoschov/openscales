@@ -4,19 +4,16 @@ package org.openscales.fx.layer
   
   import org.openscales.core.layer.Layer;
   import org.openscales.core.layer.ogc.WFS;
-  import org.openscales.core.style.Style;
   import org.openscales.fx.feature.FxStyle;
   import org.openscales.proj4as.ProjProjection;
 
-  public class FxWFS extends FxLayer
+  public class FxWFS extends FxFeatureLayer
   {
     private var _url:String;
     
     private var _typename:String;
     
     private var _version:String;
-
-    private var _style:Style;
 
     private var _isBaseLayer:Boolean;
 
@@ -27,31 +24,29 @@ package org.openscales.fx.layer
     private var _capabilitiesVersion:String = "1.1.0";
 
 
-    public function FxWFS()
-    {
-      this._isBaseLayer = false;
-            super();
+    public function FxWFS() {
+		super();
     }
 
     override public function init():void {
-            this._layer = new WFS("", "", "", this._isBaseLayer, true, this._projection,null,_useCapabilities);
+		this._isBaseLayer = false;
+        this._layer = new WFS("", "", "", this._isBaseLayer, true, this._projection,null,_useCapabilities);
     }
-
-    override protected function createChildren():void
-    {
-      super.createChildren();
-
-      for(var i:int=0; i < this.rawChildren.numChildren ; i++) {
-        var child:DisplayObject = this.rawChildren.getChildAt(i);
-        if(child is FxStyle) {
-          this._style = (child as FxStyle).style;
-        }
-      }
-    }
+	
+    override protected function createChildren():void {
+		super.createChildren();
+		for(var i:int=0; i < this.rawChildren.numChildren ; i++) {
+			var child:DisplayObject = this.rawChildren.getChildAt(i);
+			if(child is FxStyle) {
+				this.style = (child as FxStyle).style;
+			}
+		}
+	}
 
     override public function get layer():Layer {
-      if (this._style != null)
-          (this._layer as WFS).style = this._style;
+		if (this.style != null) {
+			(this._layer as WFS).style = this.style;
+		}
 
       if (this._projection != null)
           (this._layer as WFS).projection = new ProjProjection(this._projection);
@@ -90,13 +85,6 @@ package org.openscales.fx.layer
       
       public function get capabilitiesVersion():String {
         return this.capabilitiesVersion;
-      }
-      
-      public function set style(value:Style):void{
-      	
-      	if(this._layer){
-      		(this._layer as WFS).style = value;
-      	}
       }
 
   }

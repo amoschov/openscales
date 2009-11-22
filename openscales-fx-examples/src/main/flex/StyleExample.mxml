@@ -59,7 +59,6 @@
 						}
 						case "Draw linear style":
 						case "Default line style":  {
-
 							legendType = Rule.LEGEND_LINE;
 							break;
 						}
@@ -89,8 +88,11 @@
 			}
 			
 			private function switchStyle():void {
-				var currentStyleName:String = (this.styles[0] as Style).name;
-				this.styles.splice(0, this.styles.length);
+				var currentStyleName:String = "";
+				if (this.styles.length > 0) {
+					currentStyleName = (this.styles[0] as Style).name;
+					this.styles.splice(0, this.styles.length);
+				}
 				switch (currentStyleName) {
 					case "Latitude related coloration":
 						Trace.info("Use the 'Geographical coloration' style");
@@ -174,6 +176,10 @@
 				this.ignGeoplaRegion.layer.redraw();
 			}
 			
+			private function mouseOverDepartement(evt:MouseEvent):void {
+				this.ignGeoplaRegion.toolTip = "coucou" + evt.localX;
+			}
+			
 		]]>
 	</mx:Script>
 
@@ -207,9 +213,10 @@
 		<os:WFS id="ignGeoplaRegion"
 				name="IGN - Geopla (Region)"
 				url="http://openscales.org/geoserver/wfs"
-				typename="pg:ign_geopla_region"
+				typename="pg:ign_geopla_dep"
 				srs="EPSG:2154"
 				version="1.0.0"
+				mouseOver="mouseOverDepartement(event);"
 				style="{Style.getDefaultSurfaceStyle()}"
 				/>
 

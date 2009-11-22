@@ -18,7 +18,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.handler.sketch.EditPointHandler;
 	import org.openscales.core.handler.sketch.EditPolygonHandler;
 	import org.openscales.core.handler.sketch.IEditVectorFeature;
-	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.layer.FeatureLayer;
 	
 	
 	/**
@@ -31,7 +31,7 @@ package org.openscales.core.handler.mouse
 		 *Layer to edit
 		 * @private 
 		 **/
-		protected var _layerToEdit:VectorLayer=null;
+		protected var _layerToEdit:FeatureLayer=null;
 		
 		private var iEditPoint:IEditVectorFeature=null; 
 		private var iEditPath:IEditVectorFeature=null;
@@ -47,7 +47,7 @@ package org.openscales.core.handler.mouse
 		 * @param editPath to know if the edition of path is allowed
 		 * @param editPolygon to know if the edition of polygon is allowed
 		 * */
-		public function LayerEditionHandler(map:Map = null,layer:VectorLayer=null,active:Boolean = false,editPoint:Boolean=true,editPath:Boolean=true,editPolygon:Boolean=true)
+		public function LayerEditionHandler(map:Map = null,layer:FeatureLayer=null,active:Boolean = false,editPoint:Boolean=true,editPath:Boolean=true,editPolygon:Boolean=true)
 		{
 			//Handler click Management
 			
@@ -258,13 +258,13 @@ package org.openscales.core.handler.mouse
 		/**
 		 * The layer concerned by the Modification
 		 * */
-		 public function get layerToEdit():VectorLayer{
+		 public function get layerToEdit():FeatureLayer{
 		 	return this._layerToEdit;
 		 }
 		 /**
 		 * @private
 		 * */
-		 public function set layerToEdit(value:VectorLayer):void{
+		 public function set layerToEdit(value:FeatureLayer):void{
 		 	 if(value!=null){
 		 	 	this._layerToEdit=value;
 		 	 }

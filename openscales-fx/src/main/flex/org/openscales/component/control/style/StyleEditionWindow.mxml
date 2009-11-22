@@ -5,7 +5,7 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.layer.VectorLayer;
+			import org.openscales.core.layer.FeatureLayer;
 			import org.openscales.core.style.Style;
 			
 			public static const OK_BUTTON_CLICKED:String="okClicked";
@@ -25,21 +25,17 @@
 				this._editedStyle = value;
 			}
 			
-			private var _editedLayer:VectorLayer;
+			private var _editedLayer:FeatureLayer;
 			
-			public function get editedLayer():VectorLayer{
-				
+			public function get editedLayer():FeatureLayer{
 				return this._editedLayer;
 			}
 			
-			public function set editedLayer(value:VectorLayer):void{
-			
+			public function set editedLayer(value:FeatureLayer):void{
 				this._editedLayer = value;	
 			}
 			
 			private function onOkButtonClicked(event:MouseEvent):void{
-				
-				
 				this.dispatchEvent(new Event(OK_BUTTON_CLICKED));
 			}
 			

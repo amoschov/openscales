@@ -15,7 +15,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
-	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Style;
 
 
@@ -44,7 +44,7 @@ package org.openscales.core.handler.sketch
 		/**
 		 * @inheritDoc 
 		 * */
-		public function EditCollectionHandler(map:Map=null, active:Boolean=false, layerToEdit:VectorLayer=null, featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
+		public function EditCollectionHandler(map:Map=null, active:Boolean=false, layerToEdit:FeatureLayer=null, featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
 		{
 			super(map, active, layerToEdit, featureClickHandler,drawContainer);
 			this.featureClickHandler=featureClickHandler;

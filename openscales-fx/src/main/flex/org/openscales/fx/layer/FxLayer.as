@@ -17,15 +17,13 @@ package org.openscales.fx.layer
 
     protected var _fxmap:FxMap;
 
-    public function FxLayer()
-    {
-      this.init();
-      super();
-    }
+    public function FxLayer() {
+		super();
+		this.init();
+	}
 
-    public function init():void {
-
-    }
+	public function init():void {
+	}
 
     public function get layer():Layer {
       return this._layer;

@@ -9,7 +9,7 @@ package org.openscales.core.feature {
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.Layer;
-	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
@@ -197,9 +197,8 @@ package org.openscales.core.feature {
 			var style:Style;
 			if (this.style == null) {
 				// FIXME : Ugly thing done here
-				style = (this.layer as VectorLayer).style;
+				style = (this.layer as FeatureLayer).style;
 			} else {
-
 				style = this.style;
 			}
 
@@ -294,11 +293,9 @@ package org.openscales.core.feature {
 		 * delete edition vertice(Virtual) only for edition feature
 		 * */
 		public function deleteEditionVertices():void {
-
-			(this.layer as VectorLayer).removeFeatures(this._editionFeaturesArray);
+			(this.layer as FeatureLayer).removeFeatures(this._editionFeaturesArray);
 			this._editionFeaturesArray = null;
 			this._editionFeaturesArray = new Array();
-
 		}
 
 		/**

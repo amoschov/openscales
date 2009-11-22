@@ -12,7 +12,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
-	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Fill;
@@ -38,7 +38,7 @@ package org.openscales.core.handler.sketch
 		 */
 		private var _multiPolygonForbidden:Boolean = false;
 
-		public function DrawMultiHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
+		public function DrawMultiHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.FeatureLayer=null)
 		{
 			super(map, active, drawLayer);
 		}

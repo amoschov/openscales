@@ -26,7 +26,7 @@
 			import org.openscales.core.handler.sketch.DrawPathHandler;
 			import org.openscales.core.handler.sketch.DrawPolygonHandler;
 			import org.openscales.core.handler.sketch.DrawPointHandler;
-			import org.openscales.core.layer.VectorLayer;
+			import org.openscales.core.layer.FeatureLayer;
 			import org.openscales.core.Map;
 			import org.openscales.core.style.Style;
 			import org.openscales.core.events.FeatureEvent;
@@ -46,7 +46,7 @@
 			/**
 			 * Layer of drawing, which contains all drawing features
 			 */
-			public var drawLayer:VectorLayer = new VectorLayer("Drawings");
+			public var drawLayer:FeatureLayer = new FeatureLayer("Drawings");
 			
 			/**
 			 * Handler of PointFeature

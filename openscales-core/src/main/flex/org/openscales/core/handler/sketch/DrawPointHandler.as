@@ -9,7 +9,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.geometry.Point;
-	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.layer.FeatureLayer;
 
 	/**
 	 * Handler to draw points.
@@ -20,14 +20,14 @@ package org.openscales.core.handler.sketch
 		/**
 		 * The layer in which we'll draw
 		 */
-		private var _drawLayer:VectorLayer = null;
+		private var _drawLayer:FeatureLayer = null;
 
 		/**
 		 * Single ID for point
 		 */		
 		private var id:Number = 0;
 
-		public function DrawPointHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
+		public function DrawPointHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.FeatureLayer=null)
 		{
 			super(map, active, drawLayer);
 		}

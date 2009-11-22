@@ -12,7 +12,7 @@ package {
 	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
-	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.osm.Mapnik;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
@@ -43,9 +43,9 @@ package {
 		/**
 		 * Returns a sample layer of drawn features
 		 */
-		static public function features():VectorLayer {
+		static public function features():FeatureLayer {
 			// Create the drawings layer and some useful variables
-			var layer:VectorLayer = new VectorLayer("Drawing samples",false,true,"EPSG:4326");
+			var layer:FeatureLayer = new FeatureLayer("Drawing samples",false,true,"EPSG:4326");
 			var style:Style;
 			var rule:Rule;
 			var arrayComponents:Array;

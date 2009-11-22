@@ -10,7 +10,7 @@ package org.openscales.core.layer
 	import flash.net.URLRequestMethod;
 	
 
-	public class KML extends VectorLayer
+	public class KML extends FeatureLayer
 	{
     
 	    private var _url:String = "";

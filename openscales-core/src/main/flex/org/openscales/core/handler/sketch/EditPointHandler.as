@@ -11,7 +11,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
-	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.layer.FeatureLayer;
 	/**
 	 * This Handler is used for point edition 
 	 * its extends CollectionHandler
@@ -23,10 +23,10 @@ package org.openscales.core.handler.sketch
 		 * This handler is used for edition on point such operation as dragging or deleting
 		 * @param map:Map object
 		 * @param active:Boolean for handler activation
-		 * @param layerToEdit:VectorLayer 
+		 * @param layerToEdit:FeatureLayer 
 		 * @param featureClickHandler:FeatureClickHandler handler only use it when you want to use this handler alone
 		 * */
-		public function EditPointHandler(map:Map = null, active:Boolean = false,layerToEdit:VectorLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
+		public function EditPointHandler(map:Map = null, active:Boolean = false,layerToEdit:FeatureLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
 		{
 			super(map,active,layerToEdit,featureClickHandler,drawContainer);			
 			this.featureClickHandler=featureClickHandler;

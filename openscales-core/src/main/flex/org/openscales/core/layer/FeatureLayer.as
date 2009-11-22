@@ -1,47 +1,87 @@
 package org.openscales.core.layer
 {
+	import flash.utils.getQualifiedClassName;
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.events.FeatureEvent;
+	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Feature;
-
+	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.style.Style;
+	import org.openscales.proj4as.ProjProjection;
+	
 	public class FeatureLayer extends Layer
 	{
+		private var _currentProjection:ProjProjection = null;
+
 		private var _featuresBbox:Bounds = null;
 
+		private var _style:Style = null;
+		
+		private var _geometryType:String = null;
+		
 		private var _selectedFeatures:Array = null;
+		
+		private var _isInEditionMode:Boolean=false;
 		
 		protected var _drawOnMove:Boolean = true;
 
 		public function FeatureLayer(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
-			projection:String = null, proxy:String = null)
+									projection:String = null, proxy:String = null)
 		{
 			super(name, isBaseLayer, visible, projection, proxy);
-			this.selectedFeatures = new Array();
+			this._currentProjection = this.projection;
 			this.featuresBbox = new Bounds();
-
-		}
-		
-		override public function get inRange():Boolean {
-			return true;
+			this.style = new Style();
+			//this.geometryType = ;
+			this.selectedFeatures = new Array();
 		}
 
 		override public function destroy(setNewBaseLayer:Boolean = true):void {
 			super.destroy();  
 			this.clear();
+			this._currentProjection = null;
+			this.style = null;
+			this.geometryType = null;
 			this.selectedFeatures = null;
+		}
+		
+		public function clear():void {
+			while (this.numChildren > 0) {
+				this.removeChildAt(this.numChildren-1);
+			}
+		}
+		
+		override public function get inRange():Boolean {
+			return true;
+		}
+		
+		private function updateCurrentProjection(evt:LayerEvent = null):void {
+			if ((this.features.length > 0) && (this.map)
+				&& (this._currentProjection.srsCode != this.map.baseLayer.projection.srsCode)) {
+				for each (var f:VectorFeature in this.features) {
+					f.geometry.transform(this._currentProjection, this.map.baseLayer.projection);
+				}
+				this._currentProjection = this.map.baseLayer.projection;
+				this.redraw();
+			}
 		}
 
 		override public function set map(map:Map):void {
+			if (this.map != null) {
+				this.map.removeEventListener(LayerEvent.BASE_LAYER_CHANGED, this.updateCurrentProjection);
+			}
 			super.map = map;
-			// Ugly trick due to the fact we can't set the size of and empty Sprite
-			if (map) {
+			if (this.map != null) {
+				updateCurrentProjection();
+				this.map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.updateCurrentProjection);
+				// Ugly trick due to the fact we can't set the size of and empty Sprite
 				this.graphics.drawRect(0,0,map.width,map.height);
 				this.width = map.width;
 				this.height = map.height;
 			}
-
 		}
 
 		override public function onMapResize():void {
@@ -58,7 +98,6 @@ package org.openscales.core.layer
 			}
 			this.cacheAsBitmap = true;
 		}
-		
 
 		/**
 		 *  Reset the vector so that it once again is lined up with
@@ -108,6 +147,15 @@ package org.openscales.core.layer
 		 * @param feature The feature to add
 		 */
 		public function addFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
+			// Check if the feature may be added to this layer
+			var vectorfeature:VectorFeature = (feature as VectorFeature);
+			if (this.geometryType &&
+				(getQualifiedClassName(vectorfeature.geometry) != this.geometryType)) {
+				var throwStr:String = "addFeatures : component should be an " + 
+					getQualifiedClassName(this.geometryType);
+				throw throwStr;
+			}
+			// Add the feature to the layer
 			feature.layer = this;
 			this.addChild(feature);
 			if (this.map) {
@@ -119,7 +167,7 @@ package org.openscales.core.layer
 				this.map.dispatchEvent(fevt);
 			}
 		}
-
+		
 		public function removeFeatures(features:Array):void {
 			for (var i:int = 0; i < features.length; i++) {
 				this.removeFeature(features[i], false);
@@ -173,11 +221,29 @@ package org.openscales.core.layer
 		public function set selectedFeatures(value:Array):void {
 			this._selectedFeatures = value;
 		}
-
-		public function clear():void {
-			while (this.numChildren > 0) {
-				this.removeChildAt(this.numChildren-1);
-			}
+		
+		public function get style():Style {
+			return this._style;
+		}
+		
+		public function set style(value:Style):void {
+			this._style = value;
+		}
+		
+		public function get geometryType():String {
+			return this._geometryType;
+		}
+		
+		public function set geometryType(value:String):void {
+			this._geometryType = value;
+		}
+		
+		public function get inEditionMode():Boolean {
+			return this._isInEditionMode;
+		}
+		
+		public function set inEditionMode(value:Boolean):void {
+			this._isInEditionMode = value;
 		}
 
 	}

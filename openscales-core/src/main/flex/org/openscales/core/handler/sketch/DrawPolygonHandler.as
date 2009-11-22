@@ -12,7 +12,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.mouse.ClickHandler;
-	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Style;
 
 	/**
@@ -74,7 +74,7 @@ package org.openscales.core.handler.sketch
 		 * @param active determine if the handler is active or not
 		 * @param drawLayer The layer on which we'll draw
 		 */
-		public function DrawPolygonHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.VectorLayer=null)
+		public function DrawPolygonHandler(map:Map=null, active:Boolean=false, drawLayer:org.openscales.core.layer.FeatureLayer=null)
 		{
 			super(map, active, drawLayer);
 		}
@@ -184,7 +184,7 @@ package org.openscales.core.handler.sketch
 			if(this._polygonFeature!=null){
 				//the user just drew one point, it's not a real polygon so we delete it 
 				
-				(drawLayer as VectorLayer).removeFeature(this._firstPointFeature);
+				(drawLayer as FeatureLayer).removeFeature(this._firstPointFeature);
 				//Check if the polygon (in fact, the linearRing) contains at least 3 points (if not, it's not a polygon)
 				if((this._polygonFeature.polygon.componentByIndex(0) as LinearRing).componentsLength>2){
 					//Apply the "finished" style

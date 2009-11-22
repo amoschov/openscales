@@ -8,7 +8,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
-	import org.openscales.core.layer.VectorLayer;
+	import org.openscales.core.layer.FeatureLayer;
 	/**
 	* Abstract edit handler never instanciate this class
 	**/
@@ -18,7 +18,7 @@ package org.openscales.core.handler.sketch
 		 * the layer concerned by the edition
 		 * @protected
 		 * */
-		protected var _layerToEdit:VectorLayer=null;
+		protected var _layerToEdit:FeatureLayer=null;
 		/**
 		 *This handler is used for differenciation of mouse actions(drag drop clikc double click) 
 		 * during the edition .
@@ -47,7 +47,7 @@ package org.openscales.core.handler.sketch
 		 * @param drawContainer This sprite is used to draw temporaries features during dragging
 		 * @protected
 		 * */
-		public function AbstractEditHandler(map:Map = null, active:Boolean = false,layerToEdit:VectorLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
+		public function AbstractEditHandler(map:Map = null, active:Boolean = false,layerToEdit:FeatureLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
 		{
 			if(_featureClickHandler!=null){
 				this._featureClickHandler=featureClickHandler;
@@ -148,10 +148,10 @@ package org.openscales.core.handler.sketch
 		 }
 		 
 		 //getters & setters
-		 public function set layerToEdit(value:VectorLayer):void{
+		 public function set layerToEdit(value:FeatureLayer):void{
 		 	this._layerToEdit=value;
 		 }
-		 public function get layerToEdit():VectorLayer{
+		 public function get layerToEdit():FeatureLayer{
 		 	return this._layerToEdit;
 		 }
 		 

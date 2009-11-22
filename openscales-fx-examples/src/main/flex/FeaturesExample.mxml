@@ -26,7 +26,7 @@
 			import org.openscales.core.geometry.MultiPolygon;
 			import org.openscales.core.geometry.Point;
 			import org.openscales.core.geometry.Polygon;
-			import org.openscales.core.layer.VectorLayer;
+			import org.openscales.core.layer.FeatureLayer;
 			import org.openscales.core.style.Rule;
 			import org.openscales.core.style.Style;
 			import org.openscales.core.style.symbolizer.Fill;
@@ -40,7 +40,7 @@
 				map=fxmap.map;
 
 				// Specific initialize for this example
-				var layer:VectorLayer = SampleLayers.features();
+				var layer:FeatureLayer = SampleLayers.features();
 				(selectFeaturesHandler.handler as SelectFeaturesHandler).unselectableFeatures = [ layer.getChildAt(4) as PolygonFeature ];
 				map.addLayer(layer);
 				testContainsPoint(layer);
@@ -50,7 +50,7 @@
 			/**
 			 * Test all the containsPoint functions for the relevant géometries.
 			 */
-			public function testContainsPoint(layer:VectorLayer):void {
+			public function testContainsPoint(layer:FeatureLayer):void {
 				// Useful variables for the tests
 				var geom1:Geometry, geom2:Geometry;
 				var testResult:Boolean, testExpectedResult:Boolean;
@@ -116,7 +116,7 @@
 			/**
 			 * Test all the intersects functions for the relevant geometries.
 			 */
-			public function testIntersects(layer:VectorLayer):void {
+			public function testIntersects(layer:FeatureLayer):void {
 				// Useful variables for the tests
 				var geom1:Geometry, geom2:Geometry;
 				var testResult:Boolean, testExpectedResult:Boolean;

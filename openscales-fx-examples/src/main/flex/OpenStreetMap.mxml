@@ -8,7 +8,7 @@
 			import org.openscales.core.feature.Marker;
 			import org.openscales.core.feature.PointFeature;
 			import org.openscales.proj4as.ProjProjection;
-			import org.openscales.core.layer.VectorLayer;
+			import org.openscales.core.layer.FeatureLayer;
 			import org.openscales.core.handler.mouse.DragHandler;
 			import org.openscales.core.handler.mouse.WheelHandler;
 			import org.openscales.core.Map;
@@ -30,7 +30,7 @@
 				//We create a lonlat over Lyon (France) with EPSG:27700 projection
 				var lonlat:LonLat=new LonLat(932115.8764378761,-437484.6802551435);
 				
-				var markers:VectorLayer=new VectorLayer("Markers",false,true,"EPSG:27700");
+				var markers:FeatureLayer=new FeatureLayer("Markers",false,true,"EPSG:27700");
 				markers.style = Style.getDefaultPointStyle();
 				markLyon=new Marker(new org.openscales.core.geometry.Point(lonlat.lon,lonlat.lat),{popupContentHTML: "This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
 				markLyon.addEventListener(MouseEvent.CLICK, showPopup);
@@ -39,7 +39,7 @@
 				map.addLayer(markers);
 
 				
-				var vect:VectorLayer=new VectorLayer("Reprojected vector",false,true,"EPSG:27700");
+				var vect:FeatureLayer=new FeatureLayer("Reprojected vector",false,true,"EPSG:27700");
 				vect.style = Style.getDefaultPointStyle();
 				var p:org.openscales.core.geometry.Point=new org.openscales.core.geometry.Point(lonlat.lon,lonlat.lat);
 				
