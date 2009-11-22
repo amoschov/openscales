@@ -56,9 +56,12 @@ package org.openscales.core.layer
 	     * dragging - {Boolean}
 	     */
 	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
-	        super.moveTo(bounds,zoomChanged,dragging,resizing);
+	        super.moveTo(bounds, zoomChanged, dragging, resizing);
+			if (! this.visible) {
+				return;
+			}
 			
-	        if((!this._request)) {
+	        if (! this._request) {
 				this._request = new DataRequest(this._url, onTileLoadEnd, this.proxy, this.security, onTileLoadError);
 			} else {
 				this.updateImage();

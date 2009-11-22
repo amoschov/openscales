@@ -46,7 +46,12 @@ package org.openscales.core.layer
 	     * dragging - {Boolean}
 	     */
 	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
-	        super.moveTo(bounds,zoomChanged,dragging,resizing);
+	        super.moveTo(bounds, zoomChanged, dragging, resizing);
+			if (! this.visible) {
+				this.clear();
+				return;
+			}
+			
 	        if (! this._request) {
 				this._request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security, onFailure);
 			} else if (this._xml) {
@@ -59,7 +64,6 @@ package org.openscales.core.layer
 		
 		private function updateKML():void  {
 			this.clear();
-			
 			if (this.map.baseLayer.projection != null && this.projection != null && this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
 				this._kmlFormat.externalProj = this.projection;
 				this._kmlFormat.internalProj = this.map.baseLayer.projection;
@@ -77,10 +81,7 @@ package org.openscales.core.layer
 			
 			// To avoid errors if the server is dead
 			try {
-				//startTime = new Date();
 				this._xml = new XML(loader.data);
-				//endTime = new Date();
-				//Trace.debug("XML object creation : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
 				this.updateKML();
 			}
 			catch(error:Error) {

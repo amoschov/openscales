@@ -104,9 +104,7 @@ package org.openscales.core.layer
 		 * */
 		public function set inEditionMode(value:Boolean):void{
 			this._isInEditionMode=value;
-		}
-		
+		}		
 		
 	}
 }
-

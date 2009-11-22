@@ -8,7 +8,6 @@ package org.openscales.core.layer
 	 */
 	public class HTTPRequest extends Layer
 	{
-
 		public var URL_HASH_FACTOR:Number = (Math.sqrt(5) - 1) / 2;
 
 		private var _url:String = null;
