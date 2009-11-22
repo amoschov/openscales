@@ -523,7 +523,7 @@ package org.openscales.core
 				
 				for (var i:int = 0; i < this.layers.length; i++) {
 					if (this.layers[i].visible && this.layers[i].inRange) {
-						this.layers[i].moveTo(this.extent, zoomChanged, dragging,resizing);
+						this.layers[i].moveTo(this.extent, zoomChanged, dragging, resizing);
 					}
 				}
 				

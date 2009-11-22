@@ -214,17 +214,14 @@ package org.openscales.core.feature {
 						elseRules.push(rule);
 						continue;
 					} else if (!rule.filter.matches(this)) {
-Trace.debug("VectorFeature.draw: rule '"+rule.name+"' doesn't match for feature "+this.name);
 						continue;
 					}
 				}
-Trace.debug("VectorFeature.draw: rule '"+rule.name+"' match and will be rendered for feature "+this.name);
 				this.renderRule(rule);
 				rendered = true;
 			}
 
 			if (!rendered) {
-Trace.debug("VectorFeature.draw: no rule apply, try elseRules "+elseRules.length+" for feature "+this.name);
 				for each (var elseRule:Rule in elseRules) {
 					this.renderRule(elseRule);
 				}
@@ -236,16 +233,13 @@ Trace.debug("VectorFeature.draw: no rule apply, try elseRules "+elseRules.length
 			var symbolizers:Array;
 			var j:uint;
 			var symbolizersCount:uint = rule.symbolizers.length;
-Trace.fbConsole_startGroup("VectorFeature.renderRule '"+rule.name+"' ; "+symbolizersCount+" symbolizers");
 			for (j = 0; j < symbolizersCount; j++) {
 				symbolizer = rule.symbolizers[j];
-Trace.debug("j="+j+" => acceptSymbolizer="+this.acceptSymbolizer(symbolizer));
 				if (this.acceptSymbolizer(symbolizer)) {
 					Rule.setStyle(symbolizer, this);
 					this.executeDrawing(symbolizer);
 				}
 			}
-Trace.fbConsole_endGroup();
 		}
 
 		protected function acceptSymbolizer(symbolizer:Symbolizer):Boolean {

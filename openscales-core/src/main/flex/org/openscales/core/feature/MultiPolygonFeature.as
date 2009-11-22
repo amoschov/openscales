@@ -39,14 +39,11 @@ package org.openscales.core.feature
             var dY:int = -int(this.layer.map.layerContainer.y) + this.top; 
             var x:Number; 
             var y:Number; 
-Trace.fbConsole_startGroup("MultiPolygonFeature.executeDrawing polygons="+this.polygons.componentsLength);
             for (var k:int = 0; k < this.polygons.componentsLength; k++) { 
 				polygon = (this.polygons.componentByIndex(k) as Polygon); 
-Trace.debug("polygon's components: "+polygon.componentsLength);
                 for (i=0; i<polygon.componentsLength; i++) { 
                 	linearRing = (polygon.componentByIndex(i) as LinearRing); 
                     // Draws the n-1 polygon lines 
-Trace.debug("linearring's components: "+linearRing.componentsLength);
                     for (j=0; j<linearRing.componentsLength; j++) { 
                     	p = (linearRing.componentByIndex(j) as Point); 
                         //optimizing 
@@ -63,12 +60,10 @@ Trace.debug("linearring's components: "+linearRing.componentsLength);
                       	p = linearRing.componentByIndex(0) as Point;
                       	x = dX + p.x / resolution; 
                       	y = dY - p.y / resolution;
-Trace.debug("last line of the outer linearRing");
                         this.graphics.lineTo(x,y); 
                     }
                 } 
             } 
-Trace.fbConsole_endGroup(); 
 		}
 			
 		/**
