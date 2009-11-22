@@ -26,9 +26,16 @@ package org.openscales.core.geometry
 		 * To get this geometry clone
 		 * */
 		override public function clone():Geometry{
-			var point:Point=new Point(this.x,this.y);
-			return point;
+			return new Point(this.x,this.y);
 		}
+		
+		/**
+		 * Return an array of all the vertices (Point) of this geometry
+		 */
+		override public function toVertices():Array {
+			return [ this.clone() ];
+		}
+		
 		override public function calculateBounds():void {
 			this.bounds = new Bounds(this.x, this.y, this.x, this.y);
 		}

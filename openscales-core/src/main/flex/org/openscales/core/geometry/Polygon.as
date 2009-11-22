@@ -88,6 +88,16 @@ package org.openscales.core.geometry
     	}
 		
 		/**
+     	 * Test if a point is inside this geometry.
+     	 * 
+     	 * @param p the point to test
+		 * @return a boolean defining if the point is inside or outside this geometry
+     	 */
+		override public function containsPoint(p:Point):Boolean {
+			return this.isPointInPolygon(p);
+		}
+		
+		/**
 		 * Test if a point is inside a polygon.
 		 * A point on a polygon edge is considered inside.
 		 * A point on at least one of the holes is considered outside except if
@@ -96,12 +106,12 @@ package org.openscales.core.geometry
 		 * @param point the point to test
 		 * @param manageHoles a boolean defining if the test must manage the
 		 * holes (default) or not.
-		 * @return a boolean defining if the point is inside or outside the polygon
+		 * @return a boolean defining if the point is inside or outside this geometry
 		 */
-		public function containsPoint(point:Point, manageHoles:Boolean=true):Boolean {
+		public function isPointInPolygon(point:Point, manageHoles:Boolean=true):Boolean {
 			// Stop if the polygon is void
 			if (this.componentsLength < 1) {
-				Trace.warning("Polygon.containsPoint called for a void Polygon");
+				Trace.warning("Polygon.isPointInPolygon called for a void Polygon");
 				return false;
 			}
 			

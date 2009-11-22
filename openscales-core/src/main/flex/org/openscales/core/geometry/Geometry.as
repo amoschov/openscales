@@ -42,6 +42,13 @@ package org.openscales.core.geometry
 
 			this._bounds = null;
 		}
+		
+		/**
+		 * To get this geometry clone
+		 * */
+		public function clone():Geometry{
+			return null;
+		}
 
 		public function toShortString():String {
 			return "";
@@ -105,6 +112,13 @@ package org.openscales.core.geometry
 		}
 
 		/**
+		 * Return an array of all the vertices (Point) of this geometry
+		 */
+		public function toVertices():Array {
+			return new Array();
+		}
+
+		/**
 		 * Determines if the feature is placed at the given point with a certain tolerance (or not).
 		 *
 		 * @param lonlat The given point
@@ -158,11 +172,43 @@ package org.openscales.core.geometry
 		public function intersects(geom:Geometry):Boolean {
 			return false;
 		}
+		
 		/**
-		 * To get this geometry clone
-		 * */
-		public function clone():Geometry{
-			return null;
+		 * Determine if the input geometry is fully contained in this one.
+		 * 
+		 * @param geometry Any type of geometry.
+		 * @param assertIntersection if the intersection has already been tested
+		 * it is better to not retest it by setting this parameter to "true"
+		 * @return Boolean defining if the input geometry is contained or not.
+		 */
+		public function contains(geom:Geometry, assertIntersection:Boolean=false):Boolean {
+			// If the two geometries doesn't intersect themselves, the input
+			// geometry cannot be contained in this one.
+			if ((! assertIntersection) && (! this.intersects(geom))) {
+				return false;
+			}
+			// The two geometries intersect, so the inclusion may be tested by
+			// using the containsPoint for each vertex of the input geometry.
+			var vertices:Array = geom.toVertices();
+			if (vertices.length == 0) {
+				return false;
+			}
+			for each(var vertex:Point in vertices) {
+				if (! this.containsPoint(vertex)) {
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		/**
+     	 * Test if a point is inside this geometry.
+     	 * 
+     	 * @param p the point to test
+		 * @return a boolean defining if the point is inside or outside this geometry
+     	 */
+		public function containsPoint(p:Point):Boolean {
+			return false;
 		}
 		
 		/**

@@ -36,9 +36,9 @@ package org.openscales.core.geometry
      	 * that uses the Geometry.isLeftOrRigh function.
      	 * 
      	 * @param p the point to test
-     	 * @return
+		 * @return a boolean defining if the point is inside or outside this geometry
      	 */
-		public function containsPoint(p:Point):Boolean {
+		override public function containsPoint(p:Point):Boolean {
 			// If the point is not inside the bounding box of the LinearRing, it
 			// can not be in the LinearRing.
 			if (! this.bounds.containsLonLat(new LonLat(p.x, p.y))) {

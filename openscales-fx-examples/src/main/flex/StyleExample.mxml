@@ -33,9 +33,13 @@
 				Trace.useFireBugConsole = displayFirebugTrace;
 				map = fxmap.map;
 
-				this.createStyle_Latitude();
-				
 				// Specific initialize for this example
+				this.createStyle_Latitude();
+				this.generateLegend();
+			}
+			
+			private function generateLegend():void {
+				this.legends.removeAllChildren();
 				
 				for each (var style:Style in this.styles) {
 					var vb:VBox = new VBox();
@@ -82,6 +86,25 @@
 
 					this.legends.addChild(vb);
 				}
+			}
+			
+			private function switchStyle():void {
+				var currentStyleName:String = (this.styles[0] as Style).name;
+				this.styles.splice(0, this.styles.length);
+				switch (currentStyleName) {
+					case "Latitude related coloration":
+						Trace.info("Use the 'Geographical coloration' style");
+						this.createStyle_Geographical();
+						break;
+					case "Geographical coloration":
+						Trace.info("Use the 'Latitude related coloration' style");
+						this.createStyle_Latitude();
+						break;
+					default:
+						Trace.warning("Error in the style's names used => use the 'Latitude related coloration' style");
+						this.createStyle_Latitude();
+				}
+				this.generateLegend();
 			}
 			
 			private function createStyle_Latitude():void {
@@ -149,24 +172,6 @@
 				this.styles.push(style);
 				this.ignGeoplaRegion.style = style;
 				this.ignGeoplaRegion.layer.redraw();
-			}
-			
-			private function switchStyle():void {
-				var currentStyleName:String = (this.styles[0] as Style).name;
-				this.styles.splice(0, this.styles.length);
-				switch (currentStyleName) {
-					case "Latitude related coloration":
-						Trace.info("Use the 'Geographical coloration' style");
-						this.createStyle_Geographical();
-						break;
-					case "Geographical coloration":
-						Trace.info("Use the 'Latitude related coloration' style");
-						this.createStyle_Latitude();
-						break;
-					default:
-						Trace.warning("Error in the style's names used => use the 'Latitude related coloration' style");
-						this.createStyle_Latitude();
-				}
 			}
 			
 		]]>

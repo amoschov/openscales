@@ -100,7 +100,8 @@ package org.openscales.core.geometry
 				componentsClone.push((this._components[i] as Geometry).clone());
 			}
 			return componentsClone;
-	}
+		}
+		
 		/**
 		 * To get this geometry clone
 		 * */
@@ -131,7 +132,20 @@ package org.openscales.core.geometry
 		override public function toShortString():String {
 			return componentsString;
 		}
-
+		
+		/**
+		 * Return an array of all the vertices (Point) of this geometry
+		 */
+		override public function toVertices():Array {
+			var vertices:Array = new Array();
+			var componentVertices:Array;
+			for(var i:int=0; i<this.componentsLength; ++i) {
+				componentVertices = this.componentByIndex(i).toVertices();
+				vertices = vertices.concat(componentVertices);
+			}
+			return vertices;
+		}
+		
 		/**
      	 * Recalculate the bounds by iterating through the components and 
      	 * calling extendBounds() on each item.
@@ -380,7 +394,21 @@ package org.openscales.core.geometry
 					return true;
 				}
 			}
-
+			return false;
+    	}
+		
+		/**
+     	 * Test if a point is inside this geometry.
+     	 * 
+     	 * @param p the point to test
+		 * @return a boolean defining if the point is inside or outside this geometry
+     	 */
+		override public function containsPoint(p:Point):Boolean {
+			for(var i:int=0; i<this.componentsLength; ++i) {
+				if (this.componentByIndex(i).contains(p)) {
+					return true;
+				}
+			}
 			return false;
     	}
     	
