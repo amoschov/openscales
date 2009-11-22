@@ -103,16 +103,6 @@ package org.openscales.core.layer.ogc
 					capabilitiesVersion, this.proxy);
 			}
 		}
-		
-		/**
-		 * Override FeatureLayer function to add time logs
-		 */
-		/*override public function drawFeatures():void {
-			var startTime:Date = new Date();
-			super.drawFeatures();
-			var endTime:Date = new Date();
-			Trace.debug("Draw features : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
-		}*/
 
 		/**
 		 * Method called when we pan, drag or change zoom to move the layer.
@@ -122,13 +112,13 @@ package org.openscales.core.layer.ogc
 		 * @param dragging Drag action or not
 		 */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
-			super.moveTo(bounds, zoomChanged, dragging,resizing);
+			super.moveTo(bounds, zoomChanged, dragging, resizing);
 			if ((this.map.zoom < this.minZoomLevel) || (this.map.zoom > this.maxZoomLevel)) {
 		 		Trace.log("Zoom "+this.map.zoom+" outside [min,max] zoom levels ["+this.minZoomLevel+","+this.maxZoomLevel+"]: don't draw layer " + this.name);
 		 		this.clear();
 		 		this._firstRendering = true;
-		 		return;
-	    	}
+				return;
+			}
 	    	
 			if (zoomChanged || (! dragging)) {
 				var projectedBounds:Bounds = bounds.clone();
@@ -282,10 +272,7 @@ package org.openscales.core.layer.ogc
 			
 			// To avoid errors in case of the WFS server is dead
 			try {
-				//startTime = new Date();
 				var doc:XML =  new XML(loader.data);
-				//endTime = new Date();
-				//Trace.debug("XML object creation : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
 			}
 			catch(error:Error) {
 				Trace.error(error.message);
@@ -297,20 +284,11 @@ package org.openscales.core.layer.ogc
 				gml.externalProj = this.projection;
 				gml.internalProj = this.map.baseLayer.projection;
 			}
-			/*else { 
-				Trace.debug("WFSTile.requestSuccess: no reprojection needed");
-			}*/
 			
-			//startTime = new Date();
 			// TODO : Issue 217: Optimize WFS by drawing feature as soon as they are parsed
 			var features:Array = gml.read(doc) as Array;
-			//endTime = new Date();
-			//Trace.debug("XML parsing : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
 			
-			//startTime = new Date();
 			this.addFeatures(features);
-			//endTime = new Date();
-			//Trace.debug("Add features : " + (endTime.getTime() - startTime.getTime()).toString() + " milliseconds");
 			
 			if (map) {
                 this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_END, this ));
