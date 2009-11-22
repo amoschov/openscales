@@ -50,9 +50,11 @@ package org.openscales.core.layer
 		
 		public function drawFeatures():void {
 			this.graphics.clear();
-			this.cacheAsBitmap = false;
-			for each (var feature:Feature in this.features){
-				feature.draw();
+			if (this.visible) {
+				this.cacheAsBitmap = false;
+				for each (var feature:Feature in this.features){
+					feature.draw();
+				}
 			}
 			this.cacheAsBitmap = true;
 		}
@@ -70,6 +72,11 @@ package org.openscales.core.layer
 		 */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 			super.moveTo(bounds, zoomChanged, dragging,resizing);
+			if (! this.visible) {
+				this.drawFeatures();
+				return;
+			}
+			
 			if (_drawOnMove) {
 				this.drawFeatures();
 			}

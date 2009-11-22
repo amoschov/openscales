@@ -20,7 +20,6 @@ package org.openscales.core.layer
 	 */
 	public class Grid extends HTTPRequest
 	{
-		
 		private const DEFAULT_TILE_WIDTH:Number = 256;
 		
 		private const DEFAULT_TILE_HEIGHT:Number = 256;
@@ -139,13 +138,11 @@ package org.openscales.core.layer
 		 * @param dragging
 		 */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
-
-			if ((this.map.zoom < this.minZoomLevel) || (this.map.zoom > this.maxZoomLevel)) {
+			super.moveTo(bounds, zoomChanged, dragging, resizing);
+			if (! this.visible) {
 		 		this.clearGrid();
-		 		return;
-		 	}
-			 
-			super.moveTo(bounds, zoomChanged, dragging,resizing);
+				return;
+			}
 
 			if (bounds == null) {
 				bounds = this.map.extent;

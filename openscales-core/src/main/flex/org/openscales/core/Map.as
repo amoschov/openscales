@@ -521,14 +521,11 @@ package org.openscales.core
 					this._zoom = zoom;
 				}
 				
-				for (var i:int = 0; i < this.layers.length; i++) {
-					if (this.layers[i].visible && this.layers[i].inRange) {
-						this.layers[i].moveTo(this.extent, zoomChanged, dragging, resizing);
-					}
+				for each(var layer:Layer in this.layers) {
+					layer.moveTo(this.extent, zoomChanged, dragging, resizing);
 				}
 				
 				this.dispatchEvent(new MapEvent(MapEvent.MOVE, this));
-				
 				if (zoomChanged) {
 					this.dispatchEvent(new MapEvent(MapEvent.ZOOM_END, this));
 				}

@@ -124,13 +124,13 @@ package org.openscales.core.layer {
 		 *
 		 */
 		public function redraw():Boolean {
+			Trace.fbConsole_startGroup("Layer.redraw: "+name);
 			var redrawn:Boolean = false;
-			if (this.map) {
-				if (this.extent && this.inRange && this.visible) {
-					this.moveTo(this.extent, true, false);
-					redrawn = true;
-				}
+			if (this.extent) {
+				this.moveTo(this.extent, true);
+				redrawn = true;
 			}
+			Trace.fbConsole_endGroup();
 			return redrawn;
 		}
 
@@ -217,19 +217,38 @@ package org.openscales.core.layer {
 		}
 
 		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean=false, resizing:Boolean=false):void {
-			var display:Boolean = this.visible;
-			if (!this.isBaseLayer) {
-				display = display && this.inRange;
+			if (! this.isBaseLayer) {
+				var display:Boolean = true;
+				if (this.inRange) {
+					if (! this.inZoomRange) {
+				 		Trace.log("Layer.moveTo: resolution outside [min,max] resolutions, don't draw layer " + this.name);
+				 		display = false;
+					}
+				} else {
+			 		Trace.log("Layer.moveTo: zoom outside [min,max] zoom levels, don't draw layer " + this.name);
+			 		display = false;
+				}
+				this.visible = display;
+				Trace.log("Layer.moveTo: visible="+this.visible+" for "+this.name);
 			}
-			this.visible = display;
 		}
 
 		public function get inRange():Boolean {
-			var inRange:Boolean = false;
-			if (this.map) {
-				inRange = ((this.map.resolution >= this.minResolution) && (this.map.resolution <= this.maxResolution));
-			}
-			return inRange;
+			return (this.map) && (this.map.resolution >= this.minResolution) && (this.map.resolution <= this.maxResolution);
+		}
+
+		public function get inZoomRange():Boolean {
+			return (this.map) && this.isVisibleAtZoomLevel(this.map.zoom);
+		}
+
+		/**
+		 * Check if the layer is visible at a specified zoom level.
+		 *
+		 * @param zoomLevel the zoom level to test
+		 * @return Whether or not the layer is visible at the specified zoom level
+		 */
+		public function isVisibleAtZoomLevel(zoomLevel:Number):Boolean {
+			return (! isNaN(zoomLevel)) && (zoomLevel >= this.minZoomLevel) && (zoomLevel <= this.maxZoomLevel);
 		}
 
 		public function getURL(bounds:Bounds):String {
@@ -348,16 +367,6 @@ package org.openscales.core.layer {
 			} else {
 				Trace.error("Layer: invalid maxZoomLevel for the layer " + this.name + ": " + value + " is not in [0;" + (this.resolutions.length - 1) + "]");
 			}
-		}
-
-		/**
-		 * Check if the layer is visible at a specified zoom level.
-		 *
-		 * @param zoomLevel the zoom level to test
-		 * @return Whether or not the layer is visible at the specified zoom level
-		 */
-		public function isVisibleAtZoomLevel(zoomLevel:Number):Boolean {
-			return ((!isNaN(zoomLevel)) && (zoomLevel >= this.minZoomLevel) && (zoomLevel <= this.maxZoomLevel));
 		}
 
 		/**
