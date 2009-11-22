@@ -64,7 +64,6 @@ package org.openscales.core.request {
 				}
 				var loaderContext:LoaderContext = new LoaderContext();
 				loaderContext.checkPolicyFile = true;
-				//Trace.debug(finalUrl);
 				this._loader.load(new URLRequest(finalUrl),loaderContext);
 				
 			} catch (e:Error) {
