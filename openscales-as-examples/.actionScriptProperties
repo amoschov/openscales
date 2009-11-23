@@ -22,7 +22,9 @@
 </libraryPath>
 <sourceAttachmentPath/>
 </compiler>
-<applications/>
+<applications>
+<application path="OpenscalesApplication.as"/>
+</applications>
 <modules/>
 <buildCSSFiles/>
 </actionScriptProperties>
