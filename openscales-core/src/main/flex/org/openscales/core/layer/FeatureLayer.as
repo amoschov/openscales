@@ -32,7 +32,7 @@ package org.openscales.core.layer
 									projection:String = null, proxy:String = null)
 		{
 			super(name, isBaseLayer, visible, projection, proxy);
-			this._currentProjection = this.projection;
+			this._currentProjection = this.projection.clone();
 			this.featuresBbox = new Bounds();
 			this.style = new Style();
 			//this.geometryType = ;
@@ -66,7 +66,7 @@ package org.openscales.core.layer
 				for each (var f:VectorFeature in this.features) {
 					f.geometry.transform(this._currentProjection, this.map.baseLayer.projection);
 				}
-				this._currentProjection = this.map.baseLayer.projection;
+				this._currentProjection = this.map.baseLayer.projection.clone();
 				this.redraw();
 			}
 		}
