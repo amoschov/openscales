@@ -216,10 +216,10 @@
 				typename="pg:ign_geopla_dep"
 				srs="EPSG:2154"
 				version="1.0.0"
-				mouseOver="mouseOverDepartement(event);"
 				style="{Style.getDefaultSurfaceStyle()}"
 				/>
-
+<!--				mouseOver="mouseOverDepartement(event);"
+-->
 		<os:SelectFeaturesHandler id="selectFeatureHandler"
 								  active="true" />
 	</os:Map>
