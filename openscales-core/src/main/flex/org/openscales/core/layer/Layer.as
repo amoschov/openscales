@@ -175,7 +175,7 @@ package org.openscales.core.layer {
 		 * value and the 'closest' specification.
 		 */
 		public function getZoomForResolution(resolution:Number):Number {
-			for (var i:int = 1; i < this.resolutions.length; i++) {
+			for (var i:int = this.minZoomLevel + 1; i <= this.maxZoomLevel+1; i++) {
 				if (this.resolutions[i] < resolution && Math.abs(this.resolutions[i] - resolution) > RESOLUTION_TOLERANCE) {
 					break;
 				}
