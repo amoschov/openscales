@@ -11,7 +11,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
@@ -34,7 +34,7 @@ package org.openscales.core.handler.sketch
 		 * 
 		 * */
 		override public function editionModeStart():Boolean{
-		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
+		 	for each(var vectorFeature:Feature in this._layerToEdit.features){	
 					if(vectorFeature.isEditable && vectorFeature.geometry is LineString){			
 						//Clone or not
 						displayVisibleVirtualVertice(vectorFeature);
@@ -72,7 +72,7 @@ package org.openscales.core.handler.sketch
 		 override protected function drawTemporaryFeature(event:MouseEvent):void{
 		 	var pointUnderTheMouse:Boolean=false;
 		 	var parentgeom:Collection=null;
-		 	var vectorfeatureparent:VectorFeature=null;
+		 	var vectorfeatureparent:Feature=null;
 		 
 		 	if(this._featureCurrentlyDrag!=null)parentgeom=(this._featureCurrentlyDrag as PointFeature).editionFeatureParentGeometry;
 		 		

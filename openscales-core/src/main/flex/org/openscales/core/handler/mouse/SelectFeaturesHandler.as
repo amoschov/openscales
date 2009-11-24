@@ -14,7 +14,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPointFeature;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
@@ -69,27 +69,27 @@ package org.openscales.core.handler.mouse
 		private var _onSelectionUpdated:Function = null;
 		
 		/**
-		 * Callback function onOverFeature(feature:VectorFeature):void
+		 * Callback function onOverFeature(feature:Feature):void
 		 */
 		private var _onOverFeature:Function = null;
 		
 		/**
-		 * Callback function onOutFeature(feature:VectorFeature):void
+		 * Callback function onOutFeature(feature:Feature):void
 		 */
 		private var _onOutFeature:Function = null;
 		
 		/**
-		 * Callback function onSelectedFeature(feature:VectorFeature):void
+		 * Callback function onSelectedFeature(feature:Feature):void
 		 */
 		private var _onSelectedFeature:Function = null;
 		
 		/**
-		 * Callback function onUnselectedFeature(feature:VectorFeature):void
+		 * Callback function onUnselectedFeature(feature:Feature):void
 		 */
 		private var _onUnselectedFeature:Function = null;
 		
 		/**
-		 * Callback function selectedStyle(feature:VectorFeature):Style
+		 * Callback function selectedStyle(feature:Feature):Style
 		 * The default style function used is SelectFeaturesHandler.defaultSelectedStyle
 		 */
 		private var _selectedStyle:Function = SelectFeaturesHandler.defaultSelectedStyle;
@@ -381,7 +381,7 @@ package org.openscales.core.handler.mouse
 		private function unselectFeaturesOfLayer(layer:FeatureLayer):void {
 			// Look for all the selected features attached to the removed layers
 			var featuresToUnselect:Array = new Array();
-			for each (var feature:VectorFeature in this.selectedFeatures) {
+			for each (var feature:Feature in this.selectedFeatures) {
 				if (feature.layer == layer) {
 					featuresToUnselect.push(feature);
 					break;
@@ -465,7 +465,7 @@ package org.openscales.core.handler.mouse
 			var layersToRedraw:Array = new Array();
 			var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers;
 			var i:int, layer:FeatureLayer;
-			for each (var feature:VectorFeature in evt.features) {
+			for each (var feature:Feature in evt.features) {
 				for each (layer in layersToTest) {
 					// if the layer of the feature is one of the layersToTest,
 					// then manage the feature
@@ -574,7 +574,7 @@ package org.openscales.core.handler.mouse
 			if (geom) {
 				var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers; 
 				for each (var layer:FeatureLayer in layersToTest) {
-					for each (var feature:VectorFeature in layer.features) {
+					for each (var feature:Feature in layer.features) {
 						if (geom.intersects(feature.geometry)) {
 							featuresToSelect.push(feature);
 						}
@@ -599,7 +599,7 @@ package org.openscales.core.handler.mouse
 		private function select(featuresToSelect:Array, additiveMode:Boolean=false):void {
 			var selectionUpdated:Boolean = false;
 			var removedFeatures:Array = new Array(); // the features to remove of the current selection
-			var feature:VectorFeature;
+			var feature:Feature;
 			var fevt:FeatureEvent;
 			// If the current selection is not void, first we restrict the
 			// features of the input array to the really new selected features
@@ -681,7 +681,7 @@ package org.openscales.core.handler.mouse
 			// Unselect the input features that are registred as selected
 			var selectionUpdated:Boolean = false;
 			var removedFeatures:Array = new Array(); // the features really removed from the current selection
-			var feature:VectorFeature;
+			var feature:Feature;
 			var i:int, found:Boolean;
 			for each (feature in featuresToUnselect) {
 				for (i=0, found=false; (!found) && (i<this.selectedFeatures.length); i++) {
@@ -747,7 +747,7 @@ package org.openscales.core.handler.mouse
 			var acceptedFeatures:Array = new Array();
 			var rejectedFeatures:Array = new Array();
 			var i:int, found:Boolean;
-			for each(var feature:VectorFeature in featuresToFilter) {
+			for each(var feature:Feature in featuresToFilter) {
 				for(i=0, found=false; (!found) && (i<this.unselectableFeatures.length); i++) {
 					if (feature == this.unselectableFeatures[i]) {
 						found = true;
@@ -767,7 +767,7 @@ package org.openscales.core.handler.mouse
 		 * The current style is saved for a possible future reset of the style.
 		 * @param feature the feature to update its style
 		 */
-		private function setSelectedStyle(feature:VectorFeature):void {
+		private function setSelectedStyle(feature:Feature):void {
 			feature.originalStyle = feature.style;
 			feature.style = (this.selectedStyle != null) ? this.selectedStyle(feature) : SelectFeaturesHandler.defaultSelectedStyle(feature);
 		}
@@ -776,7 +776,7 @@ package org.openscales.core.handler.mouse
 		 * Reset the style of a unselected feature
 		 * @param feature the feature to update its style
 		 */
-		private function resetStyle(feature:VectorFeature):void {
+		private function resetStyle(feature:Feature):void {
 			feature.style = feature.originalStyle;
 		}
 		
@@ -815,7 +815,7 @@ package org.openscales.core.handler.mouse
 		 * The style depends on the type of the input feature (point, multipoint,
 		 * linestring, multilinestring, polygon, multipolygon).
 		 */
-		static public function defaultSelectedStyle(feature:VectorFeature):Style {
+		static public function defaultSelectedStyle(feature:Feature):Style {
 			var selectedStyle:Style;
 			var symbolizer:Symbolizer;
 			var color:uint = 0xFFFF00;

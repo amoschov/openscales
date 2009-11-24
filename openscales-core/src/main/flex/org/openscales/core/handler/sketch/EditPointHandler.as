@@ -8,7 +8,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
@@ -69,7 +69,7 @@ package org.openscales.core.handler.sketch
 		 if(this._layerToEdit !=null)
 			{
 				//We create an editable clone for all existant vector feature
-				for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
+				for each(var vectorFeature:Feature in this._layerToEdit.features){	
 					if(vectorFeature.isEditable && vectorFeature is PointFeature){				
 				if(this._featureClickHandler!=null){
 					this._featureClickHandler.addControledFeature(vectorFeature);

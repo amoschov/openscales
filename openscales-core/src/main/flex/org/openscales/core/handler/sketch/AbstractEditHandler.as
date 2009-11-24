@@ -6,7 +6,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
@@ -14,7 +14,7 @@ package org.openscales.core.handler.sketch
 	/**
 	* Abstract edit handler never instanciate this class
 	**/
-	public class AbstractEditHandler extends Handler implements IEditVectorFeature
+	public class AbstractEditHandler extends Handler implements IEditFeature
 	{
 		/**
 		 * the layer concerned by the edition
@@ -32,7 +32,7 @@ package org.openscales.core.handler.sketch
 		 * The feature currently dragged
 		 * @protected
 		 * */
-		protected var _featureCurrentlyDrag:VectorFeature=null;
+		protected var _featureCurrentlyDrag:Feature=null;
 		
 		/**
 		 * This sprite is used to draw temporaries features during dragging
@@ -78,9 +78,9 @@ package org.openscales.core.handler.sketch
 		 	}
 		 }
 		 
-		 public function startEditionForAllVectorFeature():void{
+		 public function startEditionForAllFeature():void{
 		 	if(_layerToEdit!=null && !_isUsedAlone){
-		 		for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
+		 		for each(var vectorFeature:Feature in this._layerToEdit.features){	
 					if(vectorFeature.isEditable && vectorFeature.geometry is Collection){			
 						//Clone or not
 						displayVisibleVirtualVertice(vectorFeature);
@@ -107,7 +107,7 @@ package org.openscales.core.handler.sketch
 					this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,this._layerToEdit));
 					this._featureClickHandler.removeControledFeatures();
 					
-				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
+				for each(var vectorfeature:Feature in _layerToEdit.features){
 					if(vectorfeature.isEditionFeature){
 						this._layerToEdit.removeFeature(vectorfeature);
 					}
@@ -177,7 +177,7 @@ package org.openscales.core.handler.sketch
 		 * @private
 		 * @param featureEdited: the feature edited
 		 * */
-		protected function displayVisibleVirtualVertice(featureEdited:VectorFeature):void{
+		protected function displayVisibleVirtualVertice(featureEdited:Feature):void{
 					if(featureEdited!=null) {
 					//Vertices update
 		 				this._layerToEdit.removeFeatures(featureEdited.editionFeaturesArray);
@@ -185,7 +185,7 @@ package org.openscales.core.handler.sketch
 		 				featureEdited.RefreshEditionVertices();		
 		 				//We only draw the points included in the map extent
 		 				var tmpfeature:Array=new Array();
-		 				for each(var feature:VectorFeature in featureEdited.editionFeaturesArray){
+		 				for each(var feature:Feature in featureEdited.editionFeaturesArray){
 		 					if(this.map.extent.containsBounds(feature.geometry.bounds)){
 		 						this._layerToEdit.addFeature(feature);
 		 						this._featureClickHandler.addControledFeature(feature);

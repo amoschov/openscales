@@ -1,6 +1,6 @@
 package org.openscales.core.filter {
 	import org.openscales.core.Trace;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.proj4as.ProjProjection;
 
@@ -14,7 +14,7 @@ package org.openscales.core.filter {
 			this._projection = new ProjProjection(srsCode);
 		}
 		
-		public function matches(feature:VectorFeature):Boolean {
+		public function matches(feature:Feature):Boolean {
 			if ((this.geometry==null) || (this.projection==null) || (feature==null)) {
 				return false;
 			}

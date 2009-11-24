@@ -8,7 +8,7 @@ package org.openscales.core.handler.sketch
 	 * This  is the interface for all modification handler
 	 * 
 	 * */
-	public interface IEditVectorFeature
+	public interface IEditFeature
 	{
 		
 		/**

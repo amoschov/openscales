@@ -8,7 +8,7 @@ package org.openscales.core.layer
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Feature;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.style.Style;
 	import org.openscales.proj4as.ProjProjection;
 	
@@ -64,7 +64,7 @@ package org.openscales.core.layer
 		private function updateCurrentProjection(evt:LayerEvent = null):void {
 			if ((this.features.length > 0) && (this.map)
 				&& (this._currentProjection.srsCode != this.map.baseLayer.projection.srsCode)) {
-				for each (var f:VectorFeature in this.features) {
+				for each (var f:Feature in this.features) {
 					f.geometry.transform(this._currentProjection, this.map.baseLayer.projection);
 				}
 				this._currentProjection = this.map.baseLayer.projection.clone();
@@ -151,7 +151,7 @@ package org.openscales.core.layer
 		 */
 		public function addFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
 			// Check if the feature may be added to this layer
-			var vectorfeature:VectorFeature = (feature as VectorFeature);
+			var vectorfeature:Feature = (feature as Feature);
 			if (this.geometryType &&
 				(getQualifiedClassName(vectorfeature.geometry) != this.geometryType)) {
 				var throwStr:String = "addFeatures : component should be an " + 

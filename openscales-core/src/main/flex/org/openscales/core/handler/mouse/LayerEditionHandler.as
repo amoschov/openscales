@@ -10,14 +10,14 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.sketch.AbstractEditHandler;
 	import org.openscales.core.handler.sketch.EditCollectionHandler;
 	import org.openscales.core.handler.sketch.EditPathHandler;
 	import org.openscales.core.handler.sketch.EditPointHandler;
 	import org.openscales.core.handler.sketch.EditPolygonHandler;
-	import org.openscales.core.handler.sketch.IEditVectorFeature;
+	import org.openscales.core.handler.sketch.IEditFeature;
 	import org.openscales.core.layer.FeatureLayer;
 	
 	
@@ -33,9 +33,9 @@ package org.openscales.core.handler.mouse
 		 **/
 		protected var _layerToEdit:FeatureLayer=null;
 		
-		private var iEditPoint:IEditVectorFeature=null; 
-		private var iEditPath:IEditVectorFeature=null;
-		private var iEditPolygon:IEditVectorFeature=null;
+		private var iEditPoint:IEditFeature=null; 
+		private var iEditPath:IEditFeature=null;
+		private var iEditPolygon:IEditFeature=null;
 		
 		private var _featureClickHandler:FeatureClickHandler=null;
 		
@@ -122,7 +122,7 @@ package org.openscales.core.handler.mouse
 		 private function featureDoubleClick(event:FeatureEvent):void{
 		 var vectorfeature:PointFeature=(event.feature) as PointFeature;
 			if(vectorfeature!=null){
-				var featureParent:VectorFeature=vectorfeature.editionFeatureParent;
+				var featureParent:Feature=vectorfeature.editionFeatureParent;
 				///real point feature
 				if(vectorfeature.editionFeatureParentGeometry==null && iEditPoint!=null) iEditPoint.featureDoubleClick(event);
 				//The Vertice belongs to a polygon
@@ -144,7 +144,7 @@ package org.openscales.core.handler.mouse
 				var alreadystarted:Boolean=false;
 					if(iEditPoint!=null) {
 						(this.iEditPoint as AbstractEditHandler).map=this.map;
-						(this.iEditPoint as AbstractEditHandler).startEditionForAllVectorFeature();
+						(this.iEditPoint as AbstractEditHandler).startEditionForAllFeature();
 						alreadystarted=true;
 					}
 					if(iEditPath!=null){
@@ -197,7 +197,7 @@ package org.openscales.core.handler.mouse
 		 * This function create the point under the mouse
 		 * */	
 		 private function createPointUndertheMouse(evt:FeatureEvent):void{
-		  	 var vectorfeature:VectorFeature=(evt.feature) as VectorFeature;
+		  	 var vectorfeature:Feature=(evt.feature) as Feature;
 		  //The Vertice belongs to a polygon
 					 if	((vectorfeature is PolygonFeature ||  vectorfeature is MultiPolygonFeature) && iEditPolygon!=null) (iEditPolygon as EditCollectionHandler).createPointUndertheMouse(evt);
 				//The vertice belongs to a line

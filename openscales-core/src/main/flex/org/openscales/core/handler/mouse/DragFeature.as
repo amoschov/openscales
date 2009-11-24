@@ -11,7 +11,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 
 	/**
 	 *
@@ -28,7 +28,7 @@ package org.openscales.core.handler.mouse
 		/**
 		 * The Feature which is drag
 		 */
-		private var _feature:VectorFeature = null;	
+		private var _feature:Feature = null;	
 
 		/**
 		 * The Group  of layers with draggable features
@@ -90,7 +90,7 @@ package org.openscales.core.handler.mouse
 							handler.active=false;
 						}
 					}		
-					this.feature=(event as FeatureEvent).features[0] as VectorFeature;
+					this.feature=(event as FeatureEvent).features[0] as Feature;
 					if(this.onstart!=null){this.onstart((event as FeatureEvent));}
 					this.FeatureMove();
 					this.dragging=true;	
@@ -170,11 +170,11 @@ package org.openscales.core.handler.mouse
 		 * The Feature which is drag
 		 */
 
-		public function set feature(feature:VectorFeature):void
+		public function set feature(feature:Feature):void
 		{
 			this._feature=feature;
 		}
-		public function get feature():VectorFeature
+		public function get feature():Feature
 		{
 			return this._feature;
 		}

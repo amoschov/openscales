@@ -1,5 +1,5 @@
 package styleexample {
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.filter.IFilter;
 	
 	public class CentroidYFilter implements IFilter
@@ -12,7 +12,7 @@ package styleexample {
 			this.max = max;
 		}
 		
-		public function matches(feature:VectorFeature):Boolean {
+		public function matches(feature:Feature):Boolean {
 			var centroidY:Number = parseFloat(feature.attributes["y_centroid"]);
 			return (centroidY > min && centroidY <= max);
 		}

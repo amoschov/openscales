@@ -8,7 +8,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.handler.Handler;
 	/**
 	 * This handler has been created in particurlaly for The edition mode
@@ -100,7 +100,7 @@ package org.openscales.core.handler.mouse
 		 */
 		 protected function mouseDown(evt:FeatureEvent):void
 		{
-			var vectorFeature:VectorFeature=evt.feature as VectorFeature;
+			var vectorFeature:Feature=evt.feature as Feature;
 			if(vectorFeature!=null)this._StartPixel=new Pixel(evt.feature.layer.mouseX ,evt.feature.layer.mouseY);
 			this._featureEvent=evt;
 			//This function is used in  the case mouse is not on the feature
@@ -127,7 +127,7 @@ package org.openscales.core.handler.mouse
 			{
 			if(this._StartPixel!=null){
 				//dx and dy variables are use to know if there was a drag or a click
-				var vectorFeature:VectorFeature=evt.feature as VectorFeature;
+				var vectorFeature:Feature=evt.feature as Feature;
 				var dx :Number = Math.abs(this._StartPixel.x-evt.feature.layer.mouseX);
 				var dy :Number = Math.abs(this._StartPixel.y-evt.feature.layer.mouseY);
 				if(dx<=this._tolerance && dy<=this._tolerance)
@@ -144,31 +144,31 @@ package org.openscales.core.handler.mouse
 			_clickNum++;
 			_timer.start() 
 		}
-		public function removeControledFeature(feature:VectorFeature):void{
+		public function removeControledFeature(feature:Feature):void{
 			Util.removeItem(this._featureArray,feature);
 			feature.removeEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
 			feature.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
 		}
 		public function removeControledFeatures(features:Array=null):void{
 			if(features!=null){
-				for each(var feature:VectorFeature in features){
+				for each(var feature:Feature in features){
 					removeControledFeature(feature);
 				}
 			}
 		}
 		public function addControledFeatures(features:Array):void{
-			for each(var feature:VectorFeature in features){
+			for each(var feature:Feature in features){
 				this.addControledFeature(feature);
 			}
 		}
-		public function addControledFeature(feature:VectorFeature):void{
+		public function addControledFeature(feature:Feature):void{
 			this._featureArray.push(feature);
 			feature.addEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
 			feature.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
 		}
 		
 		public function dragfeatureStart(event:FeatureEvent):void{
-			var vectorfeature:VectorFeature=event.feature as VectorFeature;
+			var vectorfeature:Feature=event.feature as Feature;
 			if(Util.indexOf(_featureArray,vectorfeature)!=-1){
 				//vectorfeature.buttonMode=true;
 				
@@ -183,7 +183,7 @@ package org.openscales.core.handler.mouse
 			}
 		}
 		public function dragfeatureStop(event:FeatureEvent):void{
-			var vectorfeature:VectorFeature=event.feature as VectorFeature;
+			var vectorfeature:Feature=event.feature as Feature;
 			if(Util.indexOf(_featureArray,_featureEvent.feature)!=-1){
 				//vectorfeature.buttonMode=false;
 				//vectorfeature.stopDrag();

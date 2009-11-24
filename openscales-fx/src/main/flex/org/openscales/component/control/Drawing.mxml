@@ -12,7 +12,7 @@
 			
 			import org.openscales.core.Map;
 			import org.openscales.core.events.DrawingEvent;
-			import org.openscales.core.feature.VectorFeature;
+			import org.openscales.core.feature.Feature;
 			
 			[Bindable] public var mapBiding:Map;
 
@@ -68,7 +68,7 @@
 			 */
 			private function alertContinueHandler(event:CloseEvent):void {
             	var i:Number = 0;
-            	var f:VectorFeature;
+            	var f:Feature;
             	if (event.detail==Alert.OK){
 	            	// User click "Continue", he wants to continue
                		if (this.featureDrawing.drawType != "") {

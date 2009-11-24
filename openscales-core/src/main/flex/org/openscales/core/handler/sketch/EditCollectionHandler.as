@@ -8,7 +8,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
@@ -153,14 +153,14 @@ package org.openscales.core.handler.sketch
 		 * Create a virtual vertice under the mouse 
 		 * */
 		 public function createPointUndertheMouse(evt:FeatureEvent):void{
-		 	var vectorfeature:VectorFeature=evt.feature as VectorFeature;
+		 	var vectorfeature:Feature=evt.feature as Feature;
 		 	
 		 	if(vectorfeature!=null && vectorfeature.layer==_layerToEdit && vectorfeature.geometry is Collection){
 		 		vectorfeature.buttonMode=false; 
 		 		var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
 				//drawing equals false if the mouse is too close from Virtual vertice
 				var drawing:Boolean=true;
-					for each(var feature:VectorFeature in vectorfeature.editionFeaturesArray){
+					for each(var feature:Feature in vectorfeature.editionFeaturesArray){
 						var tmpPx:Pixel=this.map.getLayerPxFromLonLat(new LonLat((feature.geometry as Point).x,(feature.geometry as Point).y));
 						if(Math.abs(tmpPx.x-px.x)<this._detectionTolerance && Math.abs(tmpPx.y-px.y)<this._detectionTolerance)
 						{

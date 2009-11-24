@@ -60,16 +60,16 @@ package {
 			// A point inside of the MultiPolygon (its first polygon).
 			point = new org.openscales.core.geometry.Point(4.649002075147177, 45.78235984585472);
 			layer.addFeature(new PointFeature(point,null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "blackPoint1";
+			//(layer.features[layer.features.length-1] as Feature).id = "blackPoint1";
 			// A point outside of the MultiPolygon but inside an excessive hole
 			// of its third polygon.
 			point = new org.openscales.core.geometry.Point(4.63114929194725, 45.692262077956364);
 			layer.addFeature(new PointFeature(point,null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "blackPoint2";
+			//(layer.features[layer.features.length-1] as Feature).id = "blackPoint2";
 			// A point outside of the blue Polygon but inside its BBOX.
 			point = new org.openscales.core.geometry.Point(4.910228209414947, 45.73119410607873);
 			layer.addFeature(new PointFeature(point,null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "blackPoint2";
+			//(layer.features[layer.features.length-1] as Feature).id = "blackPoint2";
 			// A LineString intersecting all the other objects.
 			style = new Style();
 			style.rules[0] = new Rule();
@@ -78,7 +78,7 @@ package {
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.5714111327782625, 45.76368130194846));
 			  arrayComponents.push(new org.openscales.core.geometry.Point(5.117294311391419, 45.69513978441103));
 			layer.addFeature(new LineStringFeature(new LineString(arrayComponents),null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "blackLineString";
+			//(layer.features[layer.features.length-1] as Feature).id = "blackLineString";
 			// A Polygon intersecting all the other objects.
 			arrayComponents = new Array();
 			arrayVertices = new Array();
@@ -88,7 +88,7 @@ package {
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.5727844237936415, 45.659157810588724));
 			arrayComponents.push(new LinearRing(arrayVertices));
 			layer.addFeature(new PolygonFeature(new Polygon(arrayComponents),null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "blackPolygon";
+			//(layer.features[layer.features.length-1] as Feature).id = "blackPolygon";
 			
 			// Add a Point.
 			// This point is inside a hole of  the sample polygon: it must
@@ -98,7 +98,7 @@ package {
 			(style.rules[0] as Rule).symbolizers.push(new PointSymbolizer(new Mark(Mark.WKN_CIRCLE,new Fill(0xFF0000,0.5),new Stroke(0xFF0000,2),10)));
 			point = new org.openscales.core.geometry.Point(4.830228209414947, 45.73119410607873);
 			layer.addFeature(new PointFeature(point,null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "Point";
+			//(layer.features[layer.features.length-1] as Feature).id = "Point";
 			
 			// Add a MultiPoint.
 			style = new Style();
@@ -117,7 +117,7 @@ package {
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.899627685453846, 45.78235984585472));
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.863922119053991, 45.776613267874524));
 			layer.addFeature(new MultiPointFeature(new MultiPoint(arrayComponents),null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "MultiPoint";
+			//(layer.features[layer.features.length-1] as Feature).id = "MultiPoint";
 			
 			// Add a LineString.
 			style = new Style();
@@ -135,7 +135,7 @@ package {
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.999877929576513, 45.77182400046717));
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.9483795164998, 45.790499817491956));
 			layer.addFeature(new LineStringFeature(new LineString(arrayComponents),null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "LineString";
+			//(layer.features[layer.features.length-1] as Feature).id = "LineString";
 			
 			// Add a MultiLineString.
 			style = new Style();
@@ -162,7 +162,7 @@ package {
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.915420532130705, 45.645718608921435));
 			arrayComponents.push(new LineString(arrayVertices));
 			layer.addFeature(new MultiLineStringFeature(new MultiLineString(arrayComponents),null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "MultiLineString";
+			//(layer.features[layer.features.length-1] as Feature).id = "MultiLineString";
 			
 			// Add a Polygon.
 			style = new Style();
@@ -197,7 +197,7 @@ package {
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.844696044838685, 45.74403813868174));
 			arrayComponents.push(new LinearRing(arrayVertices));
 			layer.addFeature(new PolygonFeature(new Polygon(arrayComponents),null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "Polygon";
+			//(layer.features[layer.features.length-1] as Feature).id = "Polygon";
 			
 			// Add a MultiPolygon.
 			var polygonArray:Array = new Array();
@@ -262,7 +262,7 @@ package {
 			polygonArray.push(new Polygon(arrayComponents));
 			// feature
 			layer.addFeature(new MultiPolygonFeature(new MultiPolygon(polygonArray),null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "MultiPolygon";
+			//(layer.features[layer.features.length-1] as Feature).id = "MultiPolygon";
 			
 			// Add some (black) objects for more tests of intersection.
 			style = new Style();
@@ -277,7 +277,7 @@ package {
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.83399, 45.77610));
 			arrayComponents.push(new LinearRing(arrayVertices));
 			layer.addFeature(new PolygonFeature(new Polygon(arrayComponents),null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "blackPolygon1";
+			//(layer.features[layer.features.length-1] as Feature).id = "blackPolygon1";
 			//
 			arrayComponents = new Array();
 			arrayVertices = new Array();
@@ -287,7 +287,7 @@ package {
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.886581420807746, 45.75218370397337));
 			arrayComponents.push(new LinearRing(arrayVertices));
 			layer.addFeature(new PolygonFeature(new Polygon(arrayComponents),null,style));
-			//(layer.features[layer.features.length-1] as VectorFeature).id = "blackPolygon1";
+			//(layer.features[layer.features.length-1] as Feature).id = "blackPolygon1";
 			
 			// return the vector layer
 			return layer;

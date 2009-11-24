@@ -15,7 +15,7 @@ package org.openscales.core.feature {
 	/**
 	 * Feature used to draw a Point geometry on FeatureLayer
 	 */
-	public class PointFeature extends VectorFeature {
+	public class PointFeature extends Feature {
 		//This attributes is use in features edition mode
 		private var _IsEditionFeature:Boolean = false;
 

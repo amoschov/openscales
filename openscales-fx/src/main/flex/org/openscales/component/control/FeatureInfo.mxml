@@ -9,7 +9,6 @@
 			import org.openscales.core.Map;
 			import org.openscales.core.events.FeatureEvent;
 			import org.openscales.core.feature.Feature;
-			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.geometry.LinearRing;
 			import org.openscales.core.geometry.LineString;
 			import org.openscales.core.geometry.MultiLineString;
@@ -34,7 +33,7 @@
 			 * with path, its name and all coordinates of each point in the path
 			 * with polygon, same as path
 			 */				
-			public function showInfo(feature:VectorFeature):void {
+			public function showInfo(feature:Feature):void {
 				//Properties
 				var properties:Array = [];
 				var name:Object;

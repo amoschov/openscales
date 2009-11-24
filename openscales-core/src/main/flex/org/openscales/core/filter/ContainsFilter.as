@@ -1,6 +1,6 @@
 package org.openscales.core.filter {
 	import org.openscales.core.Trace;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.proj4as.ProjProjection;
 
@@ -10,7 +10,7 @@ package org.openscales.core.filter {
 			super(geom, srsCode);
 		}
 		
-		override public function matches(feature:VectorFeature):Boolean {
+		override public function matches(feature:Feature):Boolean {
 			if (super.matches(feature)) {
 				// the two geometries intersect, so we have to test the inclusion
 				return this.geometry.contains(feature.geometry, true);

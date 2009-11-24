@@ -11,7 +11,7 @@ package org.openscales.core.feature
 	/**
 	 * Feature used to draw a MultiLineString geometry on FeatureLayer
 	 */
-	public class MultiLineStringFeature extends VectorFeature
+	public class MultiLineStringFeature extends Feature
 	{
 		public function MultiLineStringFeature(geom:MultiLineString=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null) 
 		{

@@ -11,7 +11,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
@@ -32,7 +32,7 @@ package org.openscales.core.handler.sketch
 		 * 
 		 * */
 		override public function editionModeStart():Boolean{
-		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
+		 	for each(var vectorFeature:Feature in this._layerToEdit.features){	
 					if(vectorFeature.isEditable && vectorFeature.geometry is Polygon){			
 						//Clone or not
 						displayVisibleVirtualVertice(vectorFeature);

@@ -1,11 +1,11 @@
 package org.openscales.core.filter {
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 
 	/**
 	 * An interface for feature filters
 	 */
 	public interface IFilter {
 
-		function matches(feature:VectorFeature):Boolean;
+		function matches(feature:Feature):Boolean;
 	}
 }

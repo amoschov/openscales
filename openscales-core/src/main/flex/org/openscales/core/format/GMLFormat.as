@@ -16,7 +16,7 @@ package org.openscales.core.format
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.MultiPointFeature;
 	import org.openscales.core.feature.LineStringFeature;
@@ -95,7 +95,7 @@ package org.openscales.core.format
 			var features:Array = [];
 
 			for (var i:int = 0; i < featureNodes.length(); i++) {
-				var feature:VectorFeature = this.parseFeature(featureNodes[i]);
+				var feature:Feature = this.parseFeature(featureNodes[i]);
 
 				if (feature) {
 					features.push(feature);
@@ -116,11 +116,11 @@ package org.openscales.core.format
 		 *
 		 * @return A vetor of feature
 		 */
-		public function parseFeature(xmlNode:XML):VectorFeature {
+		public function parseFeature(xmlNode:XML):Feature {
 			var geom:Collection = null;
 			var p:Array = new Array();
 
-			var feature:VectorFeature = null;
+			var feature:Feature = null;
 
 			if (xmlNode..*::MultiPolygon.length() > 0) {
 				var multipolygon:XML = xmlNode..*::MultiPolygon[0];
@@ -317,7 +317,7 @@ package org.openscales.core.format
 		 *
 		 * @return A node reprensting the feature in GML.
 		 */
-		public function createFeatureXML(feature:VectorFeature):XML {
+		public function createFeatureXML(feature:Feature):XML {
 			var geometryNode:XML = this.buildGeometryNode(feature.geometry);
 			var geomContainer:XML = new XML("<" + this._gmlprefix + ":" + this._geometryName + " xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":" + this._geometryName + ">");
 			geomContainer.appendChild(geometryNode);

@@ -302,27 +302,6 @@ package org.openscales.core.layer.ogc
 			this.loading = false;
 			Trace.error("Error when loading WFS request " + this._url);			
 		}
-		/**
-		 * Construct new feature and add to this.features.
-		 *
-		 * @param results
-		 */
-		protected function addResults(results:Object):void {
-			for (var i:int=0; i < results.length; i++) {
-				var data:Object = this.processXMLNode(results[i]);
-				var feature:Feature = new Feature( this, data.lonlat, data);
-				this.features.push(feature);
-			}
-		}
-		
-		protected function processXMLNode(xmlNode:XML):Object {
-			var point:XMLList = xmlNode.elements("gml::Point");
-			var text:String = point[0].elements("gml::coordinates")[0].nodeValue;
-			var floats:Array = text.split(",");
-			return {lonlat: new LonLat(Number(floats[0]),
-						Number(floats[1])),
-					id: null};
-		}
 
 		public function get params():WFSParams {
 			return this._params;

@@ -6,7 +6,7 @@ package org.openscales.core.format
 	import org.openscales.core.feature.State;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.layer.ogc.WFS;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 
 	/**
 	 * WFS writer extending GML format.
@@ -65,7 +65,7 @@ package org.openscales.core.format
 		 *
 		 * @param feature A vectorfeature
 		 */
-		override public function createFeatureXML(feature:VectorFeature):XML {
+		override public function createFeatureXML(feature:Feature):XML {
 			var geometryNode:XML = this.buildGeometryNode(feature.geometry);
 			var geomContainer:XML = new XML("<" + this._featurePrefix + ":" + this._geometryName + " xmlns:" + this._featurePrefix + "=\"" + this._featureNS + "\"></" + this._featurePrefix + ":" + this._geometryName + ">");
 			geomContainer.appendChild(geometryNode);
@@ -89,7 +89,7 @@ package org.openscales.core.format
 		 *
 		 * @param feature
 		 */
-		public function insert(feature:VectorFeature):XML {
+		public function insert(feature:Feature):XML {
 			var insertNode:XML = new XML("<" + this._wfsprefix + ":Insert xmlns:" + this._wfsprefix + "=\"" + this._wfsns + "\"></" + this._wfsprefix + ":Insert>");
 			insertNode.appendChild(this.createFeatureXML(feature));
 			return insertNode;
@@ -100,7 +100,7 @@ package org.openscales.core.format
 		 *
 		 * @param feature
 		 */
-		public function update(feature:VectorFeature):XMLNode {
+		public function update(feature:Feature):XMLNode {
 			if (!feature.name) { Trace.error("Can't update a feature for which there is no FID."); }
 			var updateNode:XMLNode = new XMLNode(1, "wfs:Update");
 			updateNode.attributes.typeName = this._layerName;

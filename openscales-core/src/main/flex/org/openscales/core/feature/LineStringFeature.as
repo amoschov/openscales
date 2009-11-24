@@ -11,7 +11,7 @@ package org.openscales.core.feature
 	/**
 	 * Feature used to draw a LineString geometry on FeatureLayer
 	 */
-	public class LineStringFeature extends VectorFeature
+	public class LineStringFeature extends Feature
 	{
 		public function LineStringFeature(geom:LineString=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null) 
 		{

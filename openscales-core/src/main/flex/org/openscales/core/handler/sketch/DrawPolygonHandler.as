@@ -176,7 +176,7 @@ package org.openscales.core.handler.sketch
 			var style:Style = Style.getDefaultSurfaceStyle();
 			_drawContainer.graphics.clear();
 			//We finalize the last feature (of course, it's a polygon)
-			//var feature:VectorFeature = drawLayer.features[drawLayer.features.length - 1];
+			//var feature:Feature = drawLayer.features[drawLayer.features.length - 1];
 			
 			if(this._polygonFeature!=null){
 				//the user just drew one point, it's not a real polygon so we delete it 

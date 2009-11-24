@@ -17,7 +17,6 @@
 			import mx.effects.easing.Linear;
 			import org.openscales.core.Trace;
 			import org.openscales.core.events.DrawingEvent;
-			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.feature.Feature;
 			import org.openscales.core.handler.mouse.DragHandler;
 			import org.openscales.core.handler.Handler;
@@ -105,7 +104,7 @@
 										&& (selectedFeatures.length>0);
 				btnMerge.enabled = selectedFeatures
 								&& (selectedFeatures.length>1)
-								&& VectorFeature.compatibleFeatures(selectedFeatures);
+								&& Feature.compatibleFeatures(selectedFeatures);
 			}
 			
 			/**
@@ -114,7 +113,7 @@
 			 */
 			private function onMergeClick(event:MouseEvent):void {
 				/* tab of selected features in params, return a multigeometry of this selected features */					
-				var feature:VectorFeature = multiFeaturesHandler.buttonClicked(selectFeaturesHandler.selectedFeatures) as VectorFeature;
+				var feature:Feature = multiFeaturesHandler.buttonClicked(selectFeaturesHandler.selectedFeatures) as Feature;
 				if (multiFeaturesHandler.multiPolygonForbidden) {
 					Alert.show("For the moment, you can't merge MultiPolygon", "Information", Alert.OK | Alert.NONMODAL);
 				}

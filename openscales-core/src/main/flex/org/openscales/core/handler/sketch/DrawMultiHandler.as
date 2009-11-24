@@ -5,7 +5,7 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPointFeature;
 	import org.openscales.core.feature.MultiPolygonFeature;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.MultiPoint;
@@ -58,7 +58,7 @@ package org.openscales.core.handler.sketch
 		 * @return The feature create
 		 */
 		private function draw(selectedFeatures:Array):Feature {
-			var f:VectorFeature;
+			var f:Feature;
 			var array:Array = new Array();
 			var multiPoint:MultiPoint = new MultiPoint();
 			var multiLineString:MultiLineString = new MultiLineString();
@@ -67,7 +67,7 @@ package org.openscales.core.handler.sketch
 			var multiPointFeature:MultiPointFeature;
 			var multiLineStringFeature:MultiLineStringFeature;
 			var multiPolygonFeature:MultiPolygonFeature;
-			var feature:VectorFeature;
+			var feature:Feature;
 			
 			
 			// FixMe: the style should not be hard coded bust should be dependant
