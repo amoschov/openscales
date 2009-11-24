@@ -67,10 +67,8 @@ package org.openscales.core
 		private var _proxy:String = null;
 		private var _bitmapTransition:DraggableSprite;
 		private var _configuration:IConfiguration;
-		/**
-		 *@private
-		 * */
-		private var _securitiesArray:Array=new Array();
+		
+		private var _securities:Array=new Array();
 		/**
 		 * Map constructor
 		 *
@@ -82,7 +80,7 @@ package org.openscales.core
 			
 			this._controls = new Array();
 			this._handlers = new Array();
-			this._securitiesArray=new Array();
+			this._securities=new Array();
 			this.size = new Size(width, height);
 			
 			this._layerContainer = new DraggableSprite();
@@ -724,8 +722,8 @@ package org.openscales.core
 		 * @return  Boolean true or false depends on the success of removing
 		 **/
 		public function removeSecurity(security:ISecurity):Boolean {
-			var securityLength:uint = this._securitiesArray.length;
-			return (Util.removeItem(this._securitiesArray, security).length < securityLength);
+			var securityLength:uint = this._securities.length;
+			return (Util.removeItem(this._securities, security).length < securityLength);
 		}
 		/**
 		 * find a security requester by its class name
@@ -733,9 +731,9 @@ package org.openscales.core
 		 * */
 		public function findSecurityByClass(securityClass:String):ISecurity{
 			
-			for(var i:int=0;i<this._securitiesArray.length;i++){
-				if(securityClass==getQualifiedClassName(this._securitiesArray[i])){
-					return this._securitiesArray[i] as ISecurity;
+			for(var i:int=0;i<this._securities.length;i++){
+				if(securityClass==getQualifiedClassName(this._securities[i])){
+					return this._securities[i] as ISecurity;
 				}
 			}
 			return null;
@@ -771,13 +769,13 @@ package org.openscales.core
 			//if security is not null && there is not the same type of security 
 			var addSecurity:Boolean=true;
 			if(security==null) {addSecurity=false;return addSecurity}
-			for(var i:int=0;i<this._securitiesArray.length;i++){
-				if(getQualifiedClassName(security)==getQualifiedClassName(this._securitiesArray[i])){
+			for(var i:int=0;i<this._securities.length;i++){
+				if(getQualifiedClassName(security)==getQualifiedClassName(this._securities[i])){
 					addSecurity=false;
 					break;
 				}
 			}
-			if(addSecurity) this._securitiesArray.push(security);
+			if(addSecurity) this._securities.push(security);
 			return addSecurity;
 		}
 		// Getters & setters as3
@@ -1051,7 +1049,7 @@ package org.openscales.core
 			return layerArray;
 		}
 		
-		public function featureLayers():Array {
+		public function get featureLayers():Array {
 			var layerArray:Array = new Array();
 			if (this.layerContainer == null) {
 				return layerArray;

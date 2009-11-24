@@ -463,7 +463,7 @@ package org.openscales.core.handler.mouse
 									updateStyleFeature:Function,
 									onSomethingFeature:Function):void {
 			var layersToRedraw:Array = new Array();
-			var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers();
+			var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers;
 			var i:int, layer:FeatureLayer;
 			for each (var feature:VectorFeature in evt.features) {
 				for each (layer in layersToTest) {
@@ -572,7 +572,7 @@ package org.openscales.core.handler.mouse
 			// Look for all the features that intersect the selection geometry
 			var featuresToSelect:Array = new Array();
 			if (geom) {
-				var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers(); 
+				var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers; 
 				for each (var layer:FeatureLayer in layersToTest) {
 					for each (var feature:VectorFeature in layer.features) {
 						if (geom.intersects(feature.geometry)) {
