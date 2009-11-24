@@ -1,5 +1,6 @@
 package org.openscales.core.layer
 {
+	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
@@ -7,7 +8,6 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
-	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.style.Style;
 	import org.openscales.proj4as.ProjProjection;
@@ -48,10 +48,15 @@ package org.openscales.core.layer
 			this.selectedFeatures = null;
 		}
 		
+		// Clear layer and children graphics
 		public function clear():void {
-			//todo graphick clear 
-			while (this.numChildren > 0) {
-				this.removeChildAt(this.numChildren-1);
+			this.graphics.clear();
+			var child:Sprite = null;
+			for(var i:int=0; i<this.numChildren;i++) {
+				child = this.getChildAt(i) as Sprite;
+				if(child) {
+					child.graphics.clear();
+				}
 			}
 		}
 		
@@ -88,18 +93,7 @@ package org.openscales.core.layer
 		}
 
 		override public function onMapResize():void {
-			this.drawFeatures();
-		}
-		
-		public function drawFeatures():void {
-			this.graphics.clear();
-			if (this.visible) {
-				this.cacheAsBitmap = false;
-				for each (var feature:Feature in this.features){
-					feature.draw();
-				}
-			}
-			this.cacheAsBitmap = true;
+			this.redraw();
 		}
 
 		/**
@@ -115,12 +109,12 @@ package org.openscales.core.layer
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 			super.moveTo(bounds, zoomChanged, dragging,resizing);
 			if (! this.visible) {
-				this.drawFeatures();
+				this.clear();
 				return;
 			}
 			
 			if (_drawOnMove) {
-				this.drawFeatures();
+				this.redraw();
 			}
 		}
 
@@ -247,6 +241,18 @@ package org.openscales.core.layer
 		
 		public function set inEditionMode(value:Boolean):void {
 			this._isInEditionMode = value;
+		}
+		
+		override public function redraw():Boolean {
+			this.cacheAsBitmap = false;
+			this.clear();
+			if (this.visible) {
+				for each (var feature:Feature in this.features){
+					feature.draw();
+				}
+			}
+			this.cacheAsBitmap = true;
+			return true;
 		}
 
 	}

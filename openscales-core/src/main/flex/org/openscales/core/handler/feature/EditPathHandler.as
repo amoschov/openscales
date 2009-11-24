@@ -1,4 +1,4 @@
-package org.openscales.core.handler.sketch
+package org.openscales.core.handler.feature
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -15,8 +15,9 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
-	import org.openscales.core.handler.mouse.FeatureClickHandler;
+	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
+	import org.openscales.core.handler.feature.EditCollectionHandler;
 	
 	/**
 	 * This Handler is used for Path edition 

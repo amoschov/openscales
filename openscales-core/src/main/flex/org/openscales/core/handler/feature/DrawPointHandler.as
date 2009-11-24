@@ -1,4 +1,4 @@
-package org.openscales.core.handler.sketch
+package org.openscales.core.handler.feature
 {
 	import flash.events.MouseEvent;
 

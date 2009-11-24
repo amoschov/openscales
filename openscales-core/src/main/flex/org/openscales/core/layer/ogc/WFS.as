@@ -137,14 +137,14 @@ package org.openscales.core.layer.ogc
 				} else {
 					// else reuse the existing one
 					if (previousFeatureBbox.containsBounds(projectedBounds)) {
-						this.drawFeatures();
+						this.redraw();
 					} else {
 						// Use GetCapabilities to know if all features have already been retreived.
 						// If they are, we don't request data again
 						if ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent")))) {
 							this.loadFeatures(this.getFullRequestString());
 						} else {
-							this.drawFeatures();
+							this.redraw();
 						}
 					}
 				}
@@ -249,7 +249,7 @@ package org.openscales.core.layer.ogc
 			if(_request)
 				_request.destroy();
 			this.loading = true;
-			this.drawFeatures();
+			this.redraw();
 			_request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security,onFailure);
 		}
 		

@@ -1,4 +1,4 @@
-package org.openscales.core.handler.mouse
+package org.openscales.core.handler.feature
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -27,6 +27,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
 	import org.openscales.core.style.symbolizer.Stroke;
 	import org.openscales.core.style.symbolizer.Symbolizer;
+	import org.openscales.core.handler.mouse.ClickHandler;
 	
 	
 	/**

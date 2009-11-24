@@ -1,4 +1,4 @@
-package org.openscales.core.handler.sketch
+package org.openscales.core.handler.feature
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -7,13 +7,12 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
-	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.Feature;
+	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
-	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Style;
 
@@ -43,7 +42,7 @@ package org.openscales.core.handler.sketch
 		/**
 		 * @inheritDoc 
 		 * */
-		public function EditCollectionHandler(map:Map=null, active:Boolean=false, layerToEdit:FeatureLayer=null, featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null,isUsedAlone:Boolean=true)
+		public function EditCollectionHandler(map:Map=null, active:Boolean=false, layerToEdit:FeatureLayer=null, featureClickHandler:org.openscales.core.handler.feature.FeatureClickHandler=null,drawContainer:Sprite=null,isUsedAlone:Boolean=true)
 		{
 			super(map, active, layerToEdit, featureClickHandler,drawContainer,isUsedAlone);
 			this.featureClickHandler=featureClickHandler;

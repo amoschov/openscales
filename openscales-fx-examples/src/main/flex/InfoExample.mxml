@@ -5,7 +5,7 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.handler.mouse.SelectFeaturesHandler;
+			import org.openscales.core.handler.feature.SelectFeaturesHandler;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 			import org.openscales.core.style.Style;

@@ -1,4 +1,4 @@
-package org.openscales.core.handler.sketch
+package org.openscales.core.handler.feature
 {
 	import flash.display.Sprite;
 	
@@ -7,11 +7,11 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
-	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.Feature;
+	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.geometry.Point;
-	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
+
 	/**
 	 * This Handler is used for point edition 
 	 * its extends CollectionHandler

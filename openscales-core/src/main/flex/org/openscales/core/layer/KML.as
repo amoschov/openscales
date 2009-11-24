@@ -54,10 +54,8 @@ package org.openscales.core.layer
 			
 	        if (! this._request) {
 				this._request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security, onFailure);
-			} else if (this._xml) {
-				this.updateKML();
 			} else {
-				Trace.error("KML - request defined but the xml parameter is not valid");
+				this.redraw();
 			}
 			
 		}
@@ -108,10 +106,5 @@ package org.openscales.core.layer
 			return this._url;
 		}
 		
-		override public function clear():void {
-			while (this.numChildren > 0) {
-				this.removeChildAt(this.numChildren-1);
-			}
-		}
 	}
 }

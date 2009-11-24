@@ -1,4 +1,4 @@
-package org.openscales.core.handler.mouse
+package org.openscales.core.handler.feature
 {
 	import flash.display.Sprite;
 	
@@ -13,12 +13,12 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.feature.PolygonFeature;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.handler.Handler;
-	import org.openscales.core.handler.sketch.AbstractEditHandler;
-	import org.openscales.core.handler.sketch.EditCollectionHandler;
-	import org.openscales.core.handler.sketch.EditPathHandler;
-	import org.openscales.core.handler.sketch.EditPointHandler;
-	import org.openscales.core.handler.sketch.EditPolygonHandler;
-	import org.openscales.core.handler.sketch.IEditFeature;
+	import org.openscales.core.handler.feature.AbstractEditHandler;
+	import org.openscales.core.handler.feature.EditCollectionHandler;
+	import org.openscales.core.handler.feature.EditPathHandler;
+	import org.openscales.core.handler.feature.EditPointHandler;
+	import org.openscales.core.handler.feature.EditPolygonHandler;
+	import org.openscales.core.handler.feature.IEditFeature;
 	import org.openscales.core.layer.FeatureLayer;
 	
 	
@@ -26,7 +26,7 @@ package org.openscales.core.handler.mouse
 	 * This handler is used to have an edition Mode 
 	 * Which allow to modify all geometries
 	 * */
-	public class LayerEditionHandler extends Handler
+	public class FeatureLayerEditionHandler extends Handler
 	{
 		/**
 		 *Layer to edit
@@ -48,7 +48,7 @@ package org.openscales.core.handler.mouse
 		 * @param editPath to know if the edition of path is allowed
 		 * @param editPolygon to know if the edition of polygon is allowed
 		 * */
-		public function LayerEditionHandler(map:Map = null,layer:FeatureLayer=null,active:Boolean = false,editPoint:Boolean=true,editPath:Boolean=true,editPolygon:Boolean=true)
+		public function FeatureLayerEditionHandler(map:Map = null,layer:FeatureLayer=null,active:Boolean = false,editPoint:Boolean=true,editPath:Boolean=true,editPolygon:Boolean=true)
 		{
 			//Handler click Management
 			

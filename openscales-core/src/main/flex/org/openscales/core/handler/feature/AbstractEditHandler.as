@@ -1,4 +1,4 @@
-package org.openscales.core.handler.sketch
+package org.openscales.core.handler.feature
 {
 	import flash.display.Sprite;
 	
@@ -13,8 +13,9 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.handler.Handler;
-	import org.openscales.core.handler.mouse.FeatureClickHandler;
+	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
+
 	/**
 	* Abstract edit handler never instanciate this class
 	**/

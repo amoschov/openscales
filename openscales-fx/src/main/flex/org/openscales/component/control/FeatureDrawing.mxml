@@ -4,8 +4,8 @@
 	creationComplete="initFeatureDrawing();">
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.handler.mouse.LayerEditionHandler;
-			import org.openscales.core.handler.mouse.SelectFeaturesHandler;
+			import org.openscales.core.handler.feature.FeatureLayerEditionHandler;
+			import org.openscales.core.handler.feature.SelectFeaturesHandler;
 			import org.openscales.core.geometry.Polygon;
 			import org.openscales.core.geometry.LinearRing;
 			import org.openscales.core.feature.PolygonFeature;
@@ -21,10 +21,10 @@
 			import org.openscales.core.handler.mouse.DragHandler;
 			import org.openscales.core.handler.Handler;
 			import mx.controls.Alert;
-			import org.openscales.core.handler.sketch.DrawMultiHandler;
-			import org.openscales.core.handler.sketch.DrawPathHandler;
-			import org.openscales.core.handler.sketch.DrawPolygonHandler;
-			import org.openscales.core.handler.sketch.DrawPointHandler;
+			import org.openscales.core.handler.feature.DrawMultiHandler;
+			import org.openscales.core.handler.feature.DrawPathHandler;
+			import org.openscales.core.handler.feature.DrawPolygonHandler;
+			import org.openscales.core.handler.feature.DrawPointHandler;
 			import org.openscales.core.layer.FeatureLayer;
 			import org.openscales.core.Map;
 			import org.openscales.core.style.Style;
@@ -64,7 +64,7 @@
 			/**
 			 * Edition Handler
 			 * */
-			public var editionHandler:LayerEditionHandler=new LayerEditionHandler(null,drawLayer,false,true,true,true);
+			public var editionHandler:FeatureLayerEditionHandler=new FeatureLayerEditionHandler(null,drawLayer,false,true,true,true);
 			
 			/**
 			 * Handler of MultiFeature

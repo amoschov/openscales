@@ -1,4 +1,4 @@
-package org.openscales.core.handler.mouse
+package org.openscales.core.handler.feature
 {
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
@@ -10,7 +10,10 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.handler.Handler;
+	
 	/**
+	 * Depracated, should be removed in favor of SelectFeaturesHandler
+	 * 
 	 * This handler has been created in particurlaly for The edition mode
 	 * It allows the user to differenciate click from double click and drag/drop
 	 * */

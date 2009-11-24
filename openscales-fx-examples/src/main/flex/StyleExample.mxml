@@ -14,7 +14,7 @@
 			import org.openscales.core.style.symbolizer.Fill;
 			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
 			import org.openscales.core.style.symbolizer.Symbolizer;
-			import org.openscales.core.handler.mouse.SelectFeaturesHandler;
+			import org.openscales.core.handler.feature.SelectFeaturesHandler;
 			import mx.core.UIComponent;
 			import org.openscales.core.style.Rule;
 			import mx.controls.Label;
@@ -34,7 +34,7 @@
 				map = fxmap.map;
 
 				// Specific initialize for this example
-				this.createStyle_Latitude();
+				this.createStyleLatitude();
 				this.generateLegend();
 			}
 			
@@ -96,20 +96,20 @@
 				switch (currentStyleName) {
 					case "Latitude related coloration":
 						Trace.info("Use the 'Geographical coloration' style");
-						this.createStyle_Geographical();
+						this.createStyleGeographical();
 						break;
 					case "Geographical coloration":
 						Trace.info("Use the 'Latitude related coloration' style");
-						this.createStyle_Latitude();
+						this.createStyleLatitude();
 						break;
 					default:
 						Trace.warning("Error in the style's names used => use the 'Latitude related coloration' style");
-						this.createStyle_Latitude();
+						this.createStyleLatitude();
 				}
 				this.generateLegend();
 			}
 			
-			private function createStyle_Latitude():void {
+			private function createStyleLatitude():void {
 				var style:Style = new Style();
 				style.name = "Latitude related coloration";
 				var fill:Fill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;
@@ -146,7 +146,7 @@
 				this.ignGeoplaRegion.layer.redraw();
 			}
 			
-			private function createStyle_Geographical():void {
+			private function createStyleGeographical():void {
 				var style:Style = new Style();
 				style.name = "Geographical coloration";
 				var fill:Fill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;

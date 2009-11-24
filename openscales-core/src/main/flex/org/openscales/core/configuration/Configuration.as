@@ -15,7 +15,7 @@ package org.openscales.core.configuration
       import org.openscales.core.handler.mouse.ClickHandler;
       import org.openscales.core.handler.mouse.DragFeature;
       import org.openscales.core.handler.mouse.DragHandler;
-      import org.openscales.core.handler.mouse.SelectFeaturesHandler;
+      import org.openscales.core.handler.feature.SelectFeaturesHandler;
       import org.openscales.core.handler.mouse.WheelHandler;
       import org.openscales.core.layer.Layer;
       import org.openscales.core.layer.ogc.WFS;

@@ -17,7 +17,7 @@ package org.openscales.core.feature {
 	 */
 	public class PointFeature extends Feature {
 		//This attributes is use in features edition mode
-		private var _IsEditionFeature:Boolean = false;
+		private var _isEditionFeature:Boolean = false;
 
 		/**
 		 * the geometry of the parent when the feature is an edition feature
@@ -33,11 +33,10 @@ package org.openscales.core.feature {
 			if (geom != null) {
 				this.lonlat = new LonLat(this.point.x, this.point.y);
 			}
-			this._IsEditionFeature = isEditionFeature;
+			this._isEditionFeature = isEditionFeature;
 			if (editionFeatureParentGeometry != null && isEditionFeature)
 				this._editionFeatureParentGeometry = editionFeatureParentGeometry;
 			else {
-				Trace.error("editionFeatureParentGeometry is reserved for Temporary point");
 				this._editionFeatureParentGeometry = null;
 			}
 		}
