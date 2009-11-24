@@ -39,6 +39,12 @@ package org.openscales.core.handler.sketch
 		protected var _drawContainer:Sprite=null;
 		
 		/**
+		 * To specify that the edition Handler is used alone(PathHandler || PointHandler etc)
+		 * or associated with other handlers in LayerEditionHandler
+		 * */
+		protected var _isUsedAlone:Boolean=true;
+		
+		/**
 		 * Constructor
 		 * @param map Map object
 		 * @param active for handler activation
@@ -47,12 +53,13 @@ package org.openscales.core.handler.sketch
 		 * @param drawContainer This sprite is used to draw temporaries features during dragging
 		 * @protected
 		 * */
-		public function AbstractEditHandler(map:Map = null, active:Boolean = false,layerToEdit:FeatureLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
+		public function AbstractEditHandler(map:Map = null, active:Boolean = false,layerToEdit:FeatureLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null,isUsedAlone:Boolean=true)
 		{
 			if(_featureClickHandler!=null){
 				this._featureClickHandler=featureClickHandler;
 				this._featureClickHandler.map=map;
 			}
+			this._isUsedAlone=isUsedAlone;
 			this._layerToEdit=layerToEdit;
 			super(map,active);
 			this._drawContainer=drawContainer; 
@@ -96,13 +103,13 @@ package org.openscales.core.handler.sketch
 		 * if you want to modify at the same time different type of geometries use the LayerEditionHandler
 		 * */
 		 public function set featureClickHandler(handler:FeatureClickHandler):void{
-		 	/* if(handler!=null){
+		 	 if(handler!=null && _isUsedAlone){
 		 		this._featureClickHandler=handler;
 		 		this._featureClickHandler.click=featureClick;
 				this._featureClickHandler.doubleclick=featureDoubleClick;
 				this._featureClickHandler.startDrag=dragVerticeStart;
 				this._featureClickHandler.stopDrag=dragVerticeStop;
-		 	} */
+		 	} 
 		 	this._featureClickHandler=handler;
 		 }
 		 /**

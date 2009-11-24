@@ -25,30 +25,10 @@ package org.openscales.core.handler.sketch
 	 * */
 	public class EditPathHandler extends EditCollectionHandler
 	{
-		public function EditPathHandler(map:Map = null, active:Boolean = false,layerToEdit:FeatureLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
+		public function EditPathHandler(map:Map = null, active:Boolean = false,layerToEdit:FeatureLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null,isUsedAlone:Boolean=true)
 		{
-			super(map,active,layerToEdit,featureClickHandler,drawContainer);			
+			super(map,active,layerToEdit,featureClickHandler,drawContainer,isUsedAlone);			
 		}
-		/**
-		 * @inheritDoc 
-		 * */
-		 /*
-		 override public function editionModeStart():Boolean{
-		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
-					if(/*vectorFeature.isEditable && vectorFeature.geometry is LineString || vectorFeature.geometry is MultiLineString){
-						
-						//Clone or not
-						
-						vectorFeature.createEditionVertices();
-						this._layerToEdit.addFeatures(vectorFeature.editionFeaturesArray);
-						if(this._featureClickHandler!=null){
-						this._featureClickHandler.addControledFeatures(vectorFeature.editionFeaturesArray);						
-						}
-					}
-				}
-					if(this._featureClickHandler!=null)this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));				
-		 	return true;
-		 }*/
 		 /**
 		 * @inheritDoc 
 		 * */

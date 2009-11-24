@@ -60,11 +60,11 @@ package org.openscales.core.handler.mouse
 			
 			
 			this._layerToEdit=layer;
-			if(editPoint)iEditPoint=new EditPointHandler(map,active,layer,_featureClickHandler,_drawContainer);
+			if(editPoint)iEditPoint=new EditPointHandler(map,active,layer,_featureClickHandler,_drawContainer,false);
 			if(editPath){
-				iEditPath=new EditPathHandler(map,active,layer,_featureClickHandler,_drawContainer);
+				iEditPath=new EditPathHandler(map,active,layer,_featureClickHandler,_drawContainer,false);
 			}
-			if(editPolygon)iEditPolygon=new EditPolygonHandler(map,active,layer,_featureClickHandler,_drawContainer);
+			if(editPolygon)iEditPolygon=new EditPolygonHandler(map,active,layer,_featureClickHandler,_drawContainer,false);
 			super(map,active);
 		}
 		/**
@@ -206,12 +206,12 @@ package org.openscales.core.handler.mouse
 						iEditPolygon.editionModeStart();
 					}
 					//We had point and virtual vertice
-				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
+				/* for each(var vectorfeature:VectorFeature in _layerToEdit.features){
 					if(vectorfeature is PointFeature && vectorfeature.isEditionFeature){
 						this._featureClickHandler.addControledFeature(vectorfeature);
 					}
-				}
-			}
+				}*/
+			} 
 			if(map!=null){
 			this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,_layerToEdit));
 			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
@@ -224,17 +224,13 @@ package org.openscales.core.handler.mouse
 		protected function editionModeStop():Boolean{
 			if(_layerToEdit !=null)
 			{
-				/* for each(var vectorfeature:VectorFeature in _layerToEdit.features){
-					if(vectorfeature.isEditionFeature){
-						this._featureClickHandler.removeControledFeature(vectorfeature);
-						this._layerToEdit.removeFeature(vectorfeature);
-					}
-				} */
-				if(iEditPoint!=null) (this.iEditPoint as AbstractEditHandler).editionModeStop();
+				
 					
 				if(iEditPath!=null)(this.iEditPath as AbstractEditHandler).editionModeStop();
 					
-				if(iEditPolygon!=null)(this.iEditPolygon as AbstractEditHandler).editionModeStop();
+				else if(iEditPolygon!=null)(this.iEditPolygon as AbstractEditHandler).editionModeStop();
+				
+				else if(iEditPoint!=null) (this.iEditPoint as AbstractEditHandler).editionModeStop();
 
 			}
 			if(map!=null)

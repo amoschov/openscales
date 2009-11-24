@@ -44,26 +44,19 @@ package org.openscales.core.handler.sketch
 		/**
 		 * @inheritDoc 
 		 * */
-		public function EditCollectionHandler(map:Map=null, active:Boolean=false, layerToEdit:FeatureLayer=null, featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
+		public function EditCollectionHandler(map:Map=null, active:Boolean=false, layerToEdit:FeatureLayer=null, featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null,isUsedAlone:Boolean=true)
 		{
-			super(map, active, layerToEdit, featureClickHandler,drawContainer);
+			super(map, active, layerToEdit, featureClickHandler,drawContainer,isUsedAlone);
 			this.featureClickHandler=featureClickHandler;
 		}
 		override public function editionModeStart():Boolean{
 		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
-					if(vectorFeature.isEditable && vectorFeature.geometry is Collection){
-						
+					if(vectorFeature.isEditable && vectorFeature.geometry is Collection){			
 						//Clone or not
 						displayVisibleVirtualVertice(vectorFeature);
-						/* vectorFeature.RefreshEditionVertices();
-						this._layerToEdit.addFeatures(vectorFeature.editionFeaturesArray);
-						if(this._featureClickHandler!=null){
-						this._featureClickHandler.addControledFeatures(vectorFeature.editionFeaturesArray); 
-						
-						}*/
 					}
 				}
-					if(this._featureClickHandler!=null){
+					if(_isUsedAlone){
 						this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));	
 						this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 					}			
@@ -73,9 +66,10 @@ package org.openscales.core.handler.sketch
 		 * @inheritDoc 
 		 * */
 		  override public function editionModeStop():Boolean{
-		  	if(this._featureClickHandler!=null)
+		  	if(_isUsedAlone)
 		 	this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	return true;
+		 	super.editionModeStop();
 		 } 
 		 
 		 /**

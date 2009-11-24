@@ -26,9 +26,9 @@ package org.openscales.core.handler.sketch
 		 * @param layerToEdit:FeatureLayer 
 		 * @param featureClickHandler:FeatureClickHandler handler only use it when you want to use this handler alone
 		 * */
-		public function EditPointHandler(map:Map = null, active:Boolean = false,layerToEdit:FeatureLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null)
+		public function EditPointHandler(map:Map = null, active:Boolean = false,layerToEdit:FeatureLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null,isUsedAlone:Boolean=true)
 		{
-			super(map,active,layerToEdit,featureClickHandler,drawContainer);			
+			super(map,active,layerToEdit,featureClickHandler,drawContainer,isUsedAlone);			
 			this.featureClickHandler=featureClickHandler;
 			
 		}	
