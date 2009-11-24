@@ -91,7 +91,7 @@ package org.openscales.core.handler.sketch
 		 			
 		 			if(index!=-1) parentGeometry.replaceComponent(index,newVertice);
 		 			else parentGeometry.addComponent(newVertice,indexOfFeatureCurrentlyDrag);
-		 			if(this._featureClickHandler!=null) displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);	 				
+		 			displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);	 				
 		 		}
 		 	}
 		 	//we add the new mouseEvent move and remove the previous
@@ -128,9 +128,9 @@ package org.openscales.core.handler.sketch
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
 		 	//We remove listeners and tempoorary point
 		 	//This is a bug we redraw the layer with new vertices for the impacted feature	 	
-		 	if(this._featureClickHandler!=null) displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
+		 	 displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
 		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+			if(_isUsedAlone) this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 		 }
 		 /**
@@ -141,10 +141,10 @@ package org.openscales.core.handler.sketch
 		 	var index:int=IsRealVertice(vectorfeature);
 		 	if(index!=-1){	 		
 		 		vectorfeature.editionFeatureParentGeometry.removeComponent(vectorfeature.editionFeatureParentGeometry.componentByIndex(index));
-		 		if(this._featureClickHandler!=null) displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
+		 		 displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
 		 	}
 		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-		 	this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+		 	if(_isUsedAlone) this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 		 	this._layerToEdit.redraw();
 		 }
@@ -171,7 +171,7 @@ package org.openscales.core.handler.sketch
 					//we delete the previous point
 					if(EditCollectionHandler._pointUnderTheMouse!=null){
 						this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-						if(this._featureClickHandler!=null) this._featureClickHandler.removeControledFeature(EditCollectionHandler._pointUnderTheMouse);
+						 this._featureClickHandler.removeControledFeature(EditCollectionHandler._pointUnderTheMouse);
 						this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
 						EditCollectionHandler._pointUnderTheMouse=null;
 						this._layerToEdit.redraw();
@@ -189,7 +189,7 @@ package org.openscales.core.handler.sketch
 							vectorfeature.layer.map.buttonMode=false;
 							EditCollectionHandler._pointUnderTheMouse.editionFeatureParent=vectorfeature;
 							this._layerToEdit.addFeature(EditCollectionHandler._pointUnderTheMouse);	
-							if(this._featureClickHandler!=null)this._featureClickHandler.addControledFeature(EditCollectionHandler._pointUnderTheMouse);
+							this._featureClickHandler.addControledFeature(EditCollectionHandler._pointUnderTheMouse);
 						}
 						else
 						{

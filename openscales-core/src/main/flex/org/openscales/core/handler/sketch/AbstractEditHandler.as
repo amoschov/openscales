@@ -5,7 +5,11 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
+
+	import org.openscales.core.events.MapEvent;
+
 	import org.openscales.core.feature.Feature;
+
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.handler.Handler;
@@ -62,6 +66,9 @@ package org.openscales.core.handler.sketch
 				this._featureClickHandler.map=map;
 			}
 			this._isUsedAlone=isUsedAlone;
+			if(isUsedAlone){
+				 
+			}
 			this._layerToEdit=layerToEdit;
 			super(map,active);
 			this._drawContainer=drawContainer; 
@@ -70,26 +77,47 @@ package org.openscales.core.handler.sketch
 		 *@inheritDoc 
 		 * */
 		override public function set active(value:Boolean):void{
-		 	super.active=value;
+		 	
 		 	if(_isUsedAlone){
-		 		if(value && map!=null) this.editionModeStart();
-		 		if(!value && map!=null ) this.editionModeStop();
-		 		if(this._featureClickHandler!=null)this._featureClickHandler.active=value;
+		 		if(value  && map!=null && !active){
+		 			this.map.addEventListener(MapEvent.MOVE_END,refreshEditedfeatures);
+				 	this.map.addEventListener(MapEvent.ZOOM_END,refreshEditedfeatures);
+		 			this.editionModeStart();
+		 		} 
+		 		if(!value && map!=null && active ){
+		 			this.map.removeEventListener(MapEvent.MOVE_END,refreshEditedfeatures);
+					this.map.removeEventListener(MapEvent.ZOOM_END,refreshEditedfeatures);
+		 			this.editionModeStop();
+		 		} 
+		 		this._featureClickHandler.active=value; 		
 		 	}
+		 	super.active=value;
 		 }
-		 
-		 public function startEditionForAllFeature():void{
+
+		 /**
+		 * This function is used to start the edition of all vector features 
+		 * in a layer
+		 * only use by LayerEditionHandler
+		 * */
+		 public function refreshEditedfeatures(event:MapEvent=null):void{
+
 		 	if(_layerToEdit!=null && !_isUsedAlone){
 		 		for each(var vectorFeature:Feature in this._layerToEdit.features){	
 					if(vectorFeature.isEditable && vectorFeature.geometry is Collection){			
 						//Clone or not
 						displayVisibleVirtualVertice(vectorFeature);
 					}
+					else if(vectorFeature.isEditionFeature)
+					{
+						_layerToEdit.removeFeature(vectorFeature);
+						this._featureClickHandler.removeControledFeature(vectorFeature);
+					} 
 					else this._featureClickHandler.addControledFeature(vectorFeature);
 				}
 		 	}
 		 	
 		 }
+ 
 		 
 		 /**
 		 * Start the edition Mode
@@ -103,7 +131,7 @@ package org.openscales.core.handler.sketch
 		  public function editionModeStop():Boolean{
 		 	if(_layerToEdit !=null)
 			{
-				if(this._featureClickHandler!=null){
+				{
 					this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,this._layerToEdit));
 					this._featureClickHandler.removeControledFeatures();
 					
@@ -136,7 +164,7 @@ package org.openscales.core.handler.sketch
 		 override public function set map(value:Map):void{
 		 	if(value!=null){
 		 		super.map=value;
-		 		if(this._featureClickHandler!=null) this._featureClickHandler.map=value;
+		 		 this._featureClickHandler.map=value;
 		 		if( this._drawContainer==null){
 					this._drawContainer=new Sprite();
 					this.map.addChild(_drawContainer);

@@ -105,9 +105,7 @@
 <classEntry path="org.openscales.core.geometry.Point"/>
 <classEntry path="org.openscales.core.events.GetFeatureInfoEvent"/>
 <classEntry path="org.openscales.core.style.symbolizer.FillSymbolizer"/>
-<classEntry path="org.openscales.core.handler.sketch.IEditVectorFeature"/>
 <classEntry path="org.openscales.core.layer.osm.CycleMap"/>
-<classEntry path="org.openscales.core.feature.VectorFeature"/>
 <classEntry path="org.openscales.core.security.ISecurity"/>
 <classEntry path="org.openscales.core.control.MousePosition"/>
 <classEntry path="org.openscales.core.handler.mouse.DragFeature"/>

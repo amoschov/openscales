@@ -59,7 +59,7 @@ package org.openscales.core.handler.sketch
 			var newPointFeature:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat));
 			newPointFeature.style=vectorfeature.style;
 			this._layerToEdit.addFeature(newPointFeature);
-			if(this._featureClickHandler!=null)this._featureClickHandler.addControledFeature(newPointFeature);
+			this._featureClickHandler.addControledFeature(newPointFeature);
 			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_STOP,vectorfeature));
 		}
 	    /**
@@ -71,13 +71,13 @@ package org.openscales.core.handler.sketch
 				//We create an editable clone for all existant vector feature
 				for each(var vectorFeature:Feature in this._layerToEdit.features){	
 					if(vectorFeature.isEditable && vectorFeature is PointFeature){				
-				if(this._featureClickHandler!=null){
+				{
 					this._featureClickHandler.addControledFeature(vectorFeature);
 					this._featureClickHandler.active=true;
 					}	
 					}
 				}
-				if(this._featureClickHandler!=null)this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));				
+				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));				
 			}
 		 	return true;
 		 } 

@@ -5,6 +5,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.Map;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPolygonFeature;
@@ -144,27 +145,26 @@ package org.openscales.core.handler.mouse
 				var alreadystarted:Boolean=false;
 					if(iEditPoint!=null) {
 						(this.iEditPoint as AbstractEditHandler).map=this.map;
-						(this.iEditPoint as AbstractEditHandler).startEditionForAllFeature();
+						iEditPoint.refreshEditedfeatures();
 						alreadystarted=true;
 					}
 					if(iEditPath!=null){
 						(this.iEditPath as AbstractEditHandler).map=this.map;
 						if(!alreadystarted){
-							iEditPath.editionModeStart();
+							iEditPath.refreshEditedfeatures();				
 							alreadystarted=true;
 						}
 					}
 					if(iEditPolygon!=null){
 						(this.iEditPolygon as AbstractEditHandler).map=this.map;
 						if(!alreadystarted){
-							iEditPolygon.editionModeStart();
+							iEditPolygon.refreshEditedfeatures();
 							alreadystarted=true;
 						}
 					}
 			} 
 			if(map!=null){
 			this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,_layerToEdit));
-			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 			}
 			return true;
 		}
@@ -186,7 +186,7 @@ package org.openscales.core.handler.mouse
 			if(map!=null)
 			{
 				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,_layerToEdit));
-				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+				
 			}
 			this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
 			EditCollectionHandler._pointUnderTheMouse=null;
@@ -202,11 +202,36 @@ package org.openscales.core.handler.mouse
 					 if	((vectorfeature is PolygonFeature ||  vectorfeature is MultiPolygonFeature) && iEditPolygon!=null) (iEditPolygon as EditCollectionHandler).createPointUndertheMouse(evt);
 				//The vertice belongs to a line
 					else if((vectorfeature is LineStringFeature ||  vectorfeature is MultiLineStringFeature) && iEditPath!=null) (iEditPath as EditCollectionHandler).createPointUndertheMouse(evt);
-					if(EditCollectionHandler._pointUnderTheMouse!=null)this._featureClickHandler.addControledFeature(EditCollectionHandler._pointUnderTheMouse);
 		 }
 		 
+		private  function refreshEditedfeatures(event:MapEvent=null):void{
+			if(_layerToEdit !=null)
+			{		
+				if(iEditPath!=null)iEditPath.refreshEditedfeatures(event);
+					
+				else if(iEditPolygon!=null)iEditPolygon.refreshEditedfeatures(event);
+				
+				else if(iEditPoint!=null) iEditPoint.refreshEditedfeatures(event);
+
+			}
+		}
 		
-		
+		 /**
+		 * @inherited
+		 **/
+		override protected function registerListeners():void {
+			this.map.addEventListener(MapEvent.MOVE_END,refreshEditedfeatures);
+			this.map.addEventListener(MapEvent.ZOOM_END,refreshEditedfeatures);
+			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+		}
+		 /**
+		 * @inherited
+		 * */
+		override protected function unregisterListeners():void {
+			this.map.removeEventListener(MapEvent.MOVE_END,refreshEditedfeatures);
+			this.map.removeEventListener(MapEvent.ZOOM_END,refreshEditedfeatures);
+			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+		}
 		//getters && setters
 		/**
 		 * The layer concerned by the Modification
@@ -246,6 +271,7 @@ package org.openscales.core.handler.mouse
 				if(iEditPolygon!=null)(this.iEditPolygon as AbstractEditHandler).active=value;
 				this._featureClickHandler.active=value;
 				editionModeStart();
+				
 			}
 			else if(this.active && !value && map!=null){
 				if(iEditPoint!=null)  (this.iEditPoint as AbstractEditHandler).active=value;

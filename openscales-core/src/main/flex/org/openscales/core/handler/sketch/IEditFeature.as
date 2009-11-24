@@ -1,6 +1,7 @@
 package org.openscales.core.handler.sketch
 {
 	import org.openscales.core.events.FeatureEvent;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.PointFeature;
 	
 	
@@ -40,5 +41,10 @@ package org.openscales.core.handler.sketch
 		 * For the moment the vertice is deleted
 		 * */
 		 function featureDoubleClick(event:FeatureEvent):void;
+		  /**
+		 * This function is used for refreshing all edited features
+		 * after event like Mapevent.zoomend or moveend
+		 * */
+		 function refreshEditedfeatures(event:MapEvent=null):void;
 	}
 }
