@@ -1,7 +1,7 @@
 package org.openscales.core.handler.sketch
 {
 	import org.openscales.core.events.FeatureEvent;
-	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.feature.PointFeature;
 	
 	
 	/**
@@ -24,12 +24,12 @@ package org.openscales.core.handler.sketch
 		 * This function is launched when you are dragging a vertice(Virtual or not)
 		 * 
 		 * */	
-		 function dragVerticeStart(event:FeatureEvent):void;
+		 function dragVerticeStart(vectorfeature:PointFeature):void;
 		 /**
 		 * This function is launched when you stop  dragging a vertice(Virtual or not)
 		 * 
 		 * */
-		 function dragVerticeStop(event:FeatureEvent):VectorFeature;
+		 function dragVerticeStop(vectorfeature:PointFeature):void;
 		 /**
 		 * This function is launched when you click  on a vertice(Virtual or not)
 		 * for the moment nothing is done

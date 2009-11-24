@@ -13,7 +13,6 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.feature.PolygonFeature;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
@@ -28,26 +27,41 @@ package org.openscales.core.handler.sketch
 		{
 			super(map,active,layerToEdit,featureClickHandler,drawContainer,isUsedAlone);			
 		}
-
+		/**
+		 * This function is used for Polygons edition mode starting
+		 * 
+		 * */
+		override public function editionModeStart():Boolean{
+		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
+					if(vectorFeature.isEditable && vectorFeature.geometry is Polygon){			
+						//Clone or not
+						displayVisibleVirtualVertice(vectorFeature);
+					}
+				}
+					if(_isUsedAlone){
+						this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));	
+						this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+					}			
+		 	return true;
+		 }
+		
+		
 		 /**
 		 * @inheritDoc 
 		 * */
-		 override public function dragVerticeStart(event:FeatureEvent):void{
-		 	var vectorfeature:PointFeature=event.feature as PointFeature;
+		 override public function dragVerticeStart(vectorfeature:PointFeature):void{
 		 	if(vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature){
-		 		super.dragVerticeStart(event);
+		 		super.dragVerticeStart(vectorfeature);
 		 	}
 		 	
 		 }
 		 /**
 		 * @inheritDoc 
 		 * */
-		 override  public function dragVerticeStop(event:FeatureEvent):VectorFeature{
-		 	var vectorfeature:PointFeature=event.feature as PointFeature;
+		 override  public function dragVerticeStop(vectorfeature:PointFeature):void{
 		 	if(vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature){
-		 		return super.dragVerticeStop(event);
+		 		return super.dragVerticeStop(vectorfeature);
 		 	}
-		 	return null;
 		 }
 		/**
 		 * @inheritDoc 

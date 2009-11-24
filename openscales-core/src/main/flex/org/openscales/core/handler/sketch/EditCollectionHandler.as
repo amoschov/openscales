@@ -7,7 +7,6 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
-	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
@@ -49,34 +48,21 @@ package org.openscales.core.handler.sketch
 			super(map, active, layerToEdit, featureClickHandler,drawContainer,isUsedAlone);
 			this.featureClickHandler=featureClickHandler;
 		}
-		override public function editionModeStart():Boolean{
-		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
-					if(vectorFeature.isEditable && vectorFeature.geometry is Collection){			
-						//Clone or not
-						displayVisibleVirtualVertice(vectorFeature);
-					}
-				}
-					if(_isUsedAlone){
-						this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));	
-						this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
-					}			
-		 	return true;
-		 }
+		
 		 /**
 		 * @inheritDoc 
 		 * */
 		  override public function editionModeStop():Boolean{
 		  	if(_isUsedAlone)
-		 	this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
-		 	return true;
+		 	this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);		 	
 		 	super.editionModeStop();
+		 	return true;
 		 } 
 		 
 		 /**
 		 * @inheritDoc 
 		 * */
-		 override public function dragVerticeStart(event:FeatureEvent):void{
-			var vectorfeature:PointFeature=event.feature as PointFeature;
+		 override public function dragVerticeStart(vectorfeature:PointFeature):void{
 			if(vectorfeature!=null){
 				vectorfeature.startDrag();
 				indexOfFeatureCurrentlyDrag=IsRealVertice(vectorfeature);
@@ -92,8 +78,7 @@ package org.openscales.core.handler.sketch
 		 /**
 		 * @inheritDoc 
 		 * */
-		override  public function dragVerticeStop(event:FeatureEvent):VectorFeature{
-		 	var vectorfeature:PointFeature=event.feature as PointFeature;
+		override  public function dragVerticeStop(vectorfeature:PointFeature):void{
 		 	if(vectorfeature!=null){
 		 		vectorfeature.stopDrag();
 		 		var parentGeometry:Collection=vectorfeature.editionFeatureParentGeometry as Collection;
@@ -106,31 +91,17 @@ package org.openscales.core.handler.sketch
 		 			
 		 			if(index!=-1) parentGeometry.replaceComponent(index,newVertice);
 		 			else parentGeometry.addComponent(newVertice,indexOfFeatureCurrentlyDrag);
-		 			
-		 			displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
-		 			if(this._featureClickHandler!=null){
-		 				//Vertices update
-		 				this._layerToEdit.removeFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 				this._featureClickHandler.removeControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 				vectorfeature.editionFeatureParent.RefreshEditionVertices();
-		 				this._layerToEdit.addFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 				this._featureClickHandler.addControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 				
-		 				//we add the new mouseEvent move and remove the previous
-		 				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
-		 				this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-		 				EditCollectionHandler._pointUnderTheMouse=null;
-		 				this._featureCurrentlyDrag=null;
-		 				this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-						EditCollectionHandler._pointUnderTheMouse=null;
-		 				this._layerToEdit.redraw();
-		 			}
+		 			if(this._featureClickHandler!=null) displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);	 				
 		 		}
 		 	}
+		 	//we add the new mouseEvent move and remove the previous
+		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);	
+		 	this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 		 	this._featureCurrentlyDrag=null;
+		 	EditCollectionHandler._pointUnderTheMouse=null;
 		 	this._drawContainer.graphics.clear();
-		 	return null;
+		 	this._layerToEdit.redraw();
 		 }
 		 
 		  /**
@@ -156,23 +127,11 @@ package org.openscales.core.handler.sketch
 		 override public function featureClick(event:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
 		 	//We remove listeners and tempoorary point
-		 	//This is a bug we redraw the layer with new vertices for the impacted feature
-		 	
+		 	//This is a bug we redraw the layer with new vertices for the impacted feature	 	
+		 	if(this._featureClickHandler!=null) displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
 		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-		 	
-		 	if(this._featureClickHandler!=null){
-		 		//This is a bug we redraw the layer
-						this._featureClickHandler.removeControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 				this._layerToEdit.removeFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);	
-		 				vectorfeature.editionFeatureParent.RefreshEditionVertices();
-		 				this._layerToEdit.addFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 				this._featureClickHandler.addControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
-		  	}
+			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
-			EditCollectionHandler._pointUnderTheMouse=null;
-		 	this._drawContainer.graphics.clear();
-		 	/*super.featureClick(event);*/
 		 }
 		 /**
 		 * @inheritDoc 
@@ -180,23 +139,14 @@ package org.openscales.core.handler.sketch
 		 override public function featureDoubleClick(event:FeatureEvent):void{
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
 		 	var index:int=IsRealVertice(vectorfeature);
-		 	if(index!=-1){
-		 		
+		 	if(index!=-1){	 		
 		 		vectorfeature.editionFeatureParentGeometry.removeComponent(vectorfeature.editionFeatureParentGeometry.componentByIndex(index));
-		 		if(this._featureClickHandler!=null){
-		 		//Vertices update
-		 			this._layerToEdit.removeFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 			this._featureClickHandler.removeControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 			vectorfeature.editionFeatureParent.RefreshEditionVertices();
-		 			this._layerToEdit.addFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 			this._featureClickHandler.addControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 			this._layerToEdit.redraw();
-		 		}
+		 		if(this._featureClickHandler!=null) displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
 		 	}
-		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-			EditCollectionHandler._pointUnderTheMouse=null;
-		 	this._drawContainer.graphics.clear();
+		 	this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
+		 	this._layerToEdit.redraw();
 		 }
 		 
 		 /**
@@ -284,34 +234,6 @@ package org.openscales.core.handler.sketch
 		 	
 		 }
 		 
-		 /**
-		 * This function is used for displaying only visible virtual vertices
-		 * in the extent
-		 * @private
-		 * @param featureEdited: the feature edited
-		 * */
-		private function displayVisibleVirtualVertice(featureEdited:VectorFeature):void{
-					if(featureEdited!=null) {
-					//Vertices update
-		 				this._layerToEdit.removeFeatures(featureEdited.editionFeaturesArray);
-		 				this._featureClickHandler.removeControledFeatures(featureEdited.editionFeaturesArray);
-		 				featureEdited.RefreshEditionVertices();		
-		 				//We only draw the points included in the map extent
-		 				var tmpfeature:Array=new Array();
-		 				for each(var feature:VectorFeature in featureEdited.editionFeaturesArray){
-		 					if(this.map.extent.containsBounds(feature.geometry.bounds)){
-		 						this._layerToEdit.addFeature(feature);
-		 						this._featureClickHandler.addControledFeature(feature);
-		 						tmpfeature.push(feature);
-		 					//We remove it
-		 					//Util.removeItem(featureParent.editionFeaturesArray,feature);
-		 					}
-		 			
-		 				}
-		 			//We update the editionFeaturesArray 
-		 			featureEdited.editionFeaturesArray=tmpfeature;
-		 		}
-		}
 		 //getters && setters
 		 /**
 		 * Tolerance used for detecting  point

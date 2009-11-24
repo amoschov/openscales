@@ -14,7 +14,6 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.feature.VectorFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
@@ -29,25 +28,41 @@ package org.openscales.core.handler.sketch
 		{
 			super(map,active,layerToEdit,featureClickHandler,drawContainer,isUsedAlone);			
 		}
+		
+		/**
+		 * This function is used for paths edition mode starting
+		 * 
+		 * */
+		override public function editionModeStart():Boolean{
+		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
+					if(vectorFeature.isEditable && vectorFeature.geometry is LineString){			
+						//Clone or not
+						displayVisibleVirtualVertice(vectorFeature);
+					}
+				}
+					if(_isUsedAlone){
+						this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));	
+						this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+					}			
+		 	return true;
+		 }
+		 
 		 /**
 		 * @inheritDoc 
 		 * */
-		  override public function dragVerticeStart(event:FeatureEvent):void{
-		 	var vectorfeature:PointFeature=event.feature as PointFeature;
+		  override public function dragVerticeStart(vectorfeature:PointFeature):void{
 		 	if(vectorfeature.editionFeatureParent is LineStringFeature || vectorfeature.editionFeatureParent is MultiLineStringFeature){
-		 		super.dragVerticeStart(event);
+		 		super.dragVerticeStart(vectorfeature);
 		 	}
 		 	
 		 }
 		 /**
 		 * @inheritDoc 
 		 * */
-		 override  public function dragVerticeStop(event:FeatureEvent):VectorFeature{
-		 	var vectorfeature:PointFeature=event.feature as PointFeature;
+		 override  public function dragVerticeStop(vectorfeature:PointFeature):void{
 		 	if(vectorfeature.editionFeatureParent is LineStringFeature || vectorfeature.editionFeatureParent is MultiLineStringFeature){
-		 		return super.dragVerticeStop(event);
+		 		return super.dragVerticeStop(vectorfeature);
 		 	}
-		 	return null;
 		 }
 		 
 		 

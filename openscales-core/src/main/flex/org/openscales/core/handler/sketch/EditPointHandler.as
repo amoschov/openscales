@@ -43,31 +43,26 @@ package org.openscales.core.handler.sketch
 		 /**
 		 * @inheritDoc 
 		 * */
-		override public function dragVerticeStart(event:FeatureEvent):void{
-			event.feature.startDrag();
-			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_START,event.feature));
+		override public function dragVerticeStart(vectorfeature:PointFeature):void{
+			vectorfeature.startDrag();
+			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_START,vectorfeature));
 		}
 		 /**
 		 * @inheritDoc 
 		 * */
-		override public function dragVerticeStop(event:FeatureEvent):VectorFeature{
-			event.feature.stopDrag();
+		override public function dragVerticeStop(vectorfeature:PointFeature):void{
+			vectorfeature.stopDrag();
 			//update geometry
 			var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
 			var lonlat:LonLat=this.map.getLonLatFromLayerPx(px);
-			this._layerToEdit.removeFeature(event.feature);
-			//if(this._featureClickHandler!=null)this._featureClickHandler.removeControledFeature(event.feature as VectorFeature);
-		//	 bug this is why we have created a new point
-			//(event.feature as PointFeature).geometry= new Point(lonlat.lon,lonlat.lat);
-			//this._layerToEdit.redraw();
+			this._layerToEdit.removeFeature(vectorfeature);
 			var newPointFeature:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat));
-			newPointFeature.style=(event.feature as VectorFeature).style;
+			newPointFeature.style=vectorfeature.style;
 			this._layerToEdit.addFeature(newPointFeature);
 			if(this._featureClickHandler!=null)this._featureClickHandler.addControledFeature(newPointFeature);
-			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_STOP,event.feature));
-			return newPointFeature;
+			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_STOP,vectorfeature));
 		}
-		 /**
+	    /**
 		 * @inheritDoc 
 		 * */
 		 override public function editionModeStart():Boolean{
@@ -75,7 +70,7 @@ package org.openscales.core.handler.sketch
 			{
 				//We create an editable clone for all existant vector feature
 				for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
-					if(/*vectorFeature.isEditable && */vectorFeature is PointFeature){				
+					if(vectorFeature.isEditable && vectorFeature is PointFeature){				
 				if(this._featureClickHandler!=null){
 					this._featureClickHandler.addControledFeature(vectorFeature);
 					this._featureClickHandler.active=true;
@@ -85,6 +80,6 @@ package org.openscales.core.handler.sketch
 				if(this._featureClickHandler!=null)this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));				
 			}
 		 	return true;
-		 }
+		 } 
 	}
 }

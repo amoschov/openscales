@@ -5,7 +5,9 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.VectorFeature;
+	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
@@ -69,10 +71,26 @@ package org.openscales.core.handler.sketch
 		 * */
 		override public function set active(value:Boolean):void{
 		 	super.active=value;
-		 	if(value && map!=null) this.editionModeStart();
-		 	if(!value && map!=null ) this.editionModeStop();
-		 	if(this._featureClickHandler!=null)this._featureClickHandler.active=value;
+		 	if(_isUsedAlone){
+		 		if(value && map!=null) this.editionModeStart();
+		 		if(!value && map!=null ) this.editionModeStop();
+		 		if(this._featureClickHandler!=null)this._featureClickHandler.active=value;
+		 	}
 		 }
+		 
+		 public function startEditionForAllVectorFeature():void{
+		 	if(_layerToEdit!=null && !_isUsedAlone){
+		 		for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
+					if(vectorFeature.isEditable && vectorFeature.geometry is Collection){			
+						//Clone or not
+						displayVisibleVirtualVertice(vectorFeature);
+					}
+					else this._featureClickHandler.addControledFeature(vectorFeature);
+				}
+		 	}
+		 	
+		 }
+		 
 		 /**
 		 * Start the edition Mode
 		 * */
@@ -129,15 +147,14 @@ package org.openscales.core.handler.sketch
 		 * This function is launched when you are dragging a vertice(Virtual or not)
 		 * 
 		 * */	
-		 public function dragVerticeStart(event:FeatureEvent):void{
+		 public function dragVerticeStart(vectorfeature:PointFeature):void{
 		
 		 }
 		 /**
 		 * This function is launched when you stop  dragging a vertice(Virtual or not)
 		 * 
 		 * */
-		 public function dragVerticeStop(event:FeatureEvent):VectorFeature{
-		 	return null;
+		 public function dragVerticeStop(vectorfeature:PointFeature):void{
 		 }
 		 /**
 		 * This function is launched when you click  on a vertice(Virtual or not)
@@ -154,7 +171,31 @@ package org.openscales.core.handler.sketch
 		 public function featureDoubleClick(event:FeatureEvent):void{
 		 
 		 }
-		 
+		 /**
+		 * This function is used for displaying only visible virtual vertices
+		 * in the extent
+		 * @private
+		 * @param featureEdited: the feature edited
+		 * */
+		protected function displayVisibleVirtualVertice(featureEdited:VectorFeature):void{
+					if(featureEdited!=null) {
+					//Vertices update
+		 				this._layerToEdit.removeFeatures(featureEdited.editionFeaturesArray);
+		 				this._featureClickHandler.removeControledFeatures(featureEdited.editionFeaturesArray);
+		 				featureEdited.RefreshEditionVertices();		
+		 				//We only draw the points included in the map extent
+		 				var tmpfeature:Array=new Array();
+		 				for each(var feature:VectorFeature in featureEdited.editionFeaturesArray){
+		 					if(this.map.extent.containsBounds(feature.geometry.bounds)){
+		 						this._layerToEdit.addFeature(feature);
+		 						this._featureClickHandler.addControledFeature(feature);
+		 						tmpfeature.push(feature);
+		 					}
+		 				}
+		 			//We update the editionFeaturesArray 
+		 			featureEdited.editionFeaturesArray=tmpfeature;
+		 		}
+		}
 		 //getters & setters
 		 public function set layerToEdit(value:FeatureLayer):void{
 		 	this._layerToEdit=value;
