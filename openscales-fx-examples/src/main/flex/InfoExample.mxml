@@ -50,7 +50,10 @@
 			version="1.0.0"
 			useCapabilities="true"
 			capabilitiesVersion="1.0.0"
-			style="{Style.getDefaultPointStyle()}">
+			style="{Style.getDefaultPointStyle()}"
+			numZoomLevels="18"
+
+			>
 		</os:WFS>
 		
 		<os:WMSGetFeatureInfo url="http://openscales.org/geoserver/wms" layers="tiger:poi" />

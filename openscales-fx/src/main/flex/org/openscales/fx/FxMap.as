@@ -183,8 +183,9 @@ package org.openscales.fx
 				if (child is FxLayer) {
 					var l:FxLayer = child as FxLayer;
 					// Generate resolution if needed
-					if((l.numZoomLevels) && (l.maxResolution)) {
-						l.layer.generateResolutions(Number(l.numZoomLevels), Number(l.maxResolution));
+					if((l.numZoomLevels)) {
+						var maxResolution:Number = l.maxResolution ? parseFloat(l.maxResolution) : NaN;
+						l.layer.generateResolutions(Number(l.numZoomLevels), maxResolution);
 					}
 					// BaseLayers have been added at the begining
 					if (! l.layer.isBaseLayer) {

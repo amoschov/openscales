@@ -49,6 +49,7 @@ package org.openscales.core.layer
 		}
 		
 		public function clear():void {
+			//todo graphick clear 
 			while (this.numChildren > 0) {
 				this.removeChildAt(this.numChildren-1);
 			}

@@ -104,10 +104,7 @@ package org.openscales.core.handler.sketch
 				var pixel:Pixel = new Pixel(map.mouseX ,map.mouseY);
 				this._lastPointPixel= new Pixel(map.mouseX ,map.mouseY);
 				var lonlat:LonLat = this.map.getLonLatFromMapPx(pixel);
-				//manage the case where the layer projection is different from the map projection
-				if(this.drawLayer.projection.srsCode!=this.map.baseLayer.projection.srsCode)
-				lonlat.transform(this.map.baseLayer.projection,this.drawLayer.projection);
-				var point:Point = new Point(lonlat.lon,lonlat.lat);
+                var point:Point = new Point(lonlat.lon,lonlat.lat);
 				var lring:LinearRing=null;
 				var polygon:Polygon=null;
 				//2 cases, and very different. If the user starts the polygon or if the user is drawing the polygon
