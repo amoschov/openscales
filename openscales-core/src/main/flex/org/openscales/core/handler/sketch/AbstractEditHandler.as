@@ -5,8 +5,8 @@ package org.openscales.core.handler.sketch
 	import org.openscales.core.Map;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
-	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.Feature;
+	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.mouse.FeatureClickHandler;
