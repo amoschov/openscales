@@ -150,12 +150,7 @@ package org.openscales.core.handler.mouse
 			feature.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
 		}
 		public function removeControledFeatures(features:Array=null):void{
-			if(features==null){
-				for(var i:int=0;i<features.length;i++){
-					features.pop();
-				}
-			}
-			else{
+			if(features!=null){
 				for each(var feature:VectorFeature in features){
 					removeControledFeature(feature);
 				}

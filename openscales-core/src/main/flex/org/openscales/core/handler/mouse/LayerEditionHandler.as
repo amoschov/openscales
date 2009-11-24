@@ -60,11 +60,11 @@ package org.openscales.core.handler.mouse
 			
 			
 			this._layerToEdit=layer;
-			if(editPoint)iEditPoint=new EditPointHandler(map,active,layer,null,_drawContainer);
+			if(editPoint)iEditPoint=new EditPointHandler(map,active,layer,_featureClickHandler,_drawContainer);
 			if(editPath){
-				iEditPath=new EditPathHandler(map,active,layer,null,_drawContainer);
+				iEditPath=new EditPathHandler(map,active,layer,_featureClickHandler,_drawContainer);
 			}
-			if(editPolygon)iEditPolygon=new EditPolygonHandler(map,active,layer,null,_drawContainer);
+			if(editPolygon)iEditPolygon=new EditPolygonHandler(map,active,layer,_featureClickHandler,_drawContainer);
 			super(map,active);
 		}
 		/**
@@ -109,13 +109,12 @@ package org.openscales.core.handler.mouse
 					
 					
 					if(featureParent!=null){			
-		 			//Vertices update
-		 			this._layerToEdit.removeFeatures(featureParent.editionFeaturesArray);
-		 			this._featureClickHandler.removeControledFeatures(featureParent.editionFeaturesArray);
-		 			featureParent.RefreshEditionVertices();
-		 			this._layerToEdit.addFeatures(featureParent.editionFeaturesArray);
-		 			this._featureClickHandler.addControledFeatures(featureParent.editionFeaturesArray);
-		 			
+		 			 this._featureClickHandler.removeControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
+		 				this._layerToEdit.removeFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);	
+		 				vectorfeature.editionFeatureParent.RefreshEditionVertices();
+		 				
+		 				this._layerToEdit.addFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
+		 				this._featureClickHandler.addControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
 					}
 				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 				this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
@@ -140,12 +139,15 @@ package org.openscales.core.handler.mouse
 					
 					
 						//This is a bug we redraw the layer
-						this._featureClickHandler.removeControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
+						//displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
+						
+						 this._featureClickHandler.removeControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
 		 				this._layerToEdit.removeFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);	
 		 				vectorfeature.editionFeatureParent.RefreshEditionVertices();
+		 				
 		 				this._layerToEdit.addFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
 		 				this._featureClickHandler.addControledFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
-		 				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+		 				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse); 
 
 					EditCollectionHandler._pointUnderTheMouse=null;
 				}	 
@@ -167,11 +169,14 @@ package org.openscales.core.handler.mouse
 					
 					if(featureParent!=null){			
 		 			//Vertices update
-		 			this._layerToEdit.removeFeatures(featureParent.editionFeaturesArray);
+		 			
+		 			//displayVisibleVirtualVertice(featureParent);
+		 			
+		 			 this._layerToEdit.removeFeatures(featureParent.editionFeaturesArray);
 		 			this._featureClickHandler.removeControledFeatures(featureParent.editionFeaturesArray);
 		 			featureParent.RefreshEditionVertices();
 		 			this._layerToEdit.addFeatures(featureParent.editionFeaturesArray);
-		 			this._featureClickHandler.addControledFeatures(featureParent.editionFeaturesArray);
+		 			this._featureClickHandler.addControledFeatures(featureParent.editionFeaturesArray); 
 					}
 					this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 					this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
@@ -202,7 +207,7 @@ package org.openscales.core.handler.mouse
 					}
 					//We had point and virtual vertice
 				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
-					if(vectorfeature is PointFeature /*&& vectorfeature.isEditionFeature*/){
+					if(vectorfeature is PointFeature && vectorfeature.isEditionFeature){
 						this._featureClickHandler.addControledFeature(vectorfeature);
 					}
 				}
@@ -219,12 +224,12 @@ package org.openscales.core.handler.mouse
 		protected function editionModeStop():Boolean{
 			if(_layerToEdit !=null)
 			{
-				for each(var vectorfeature:VectorFeature in _layerToEdit.features){
+				/* for each(var vectorfeature:VectorFeature in _layerToEdit.features){
 					if(vectorfeature.isEditionFeature){
 						this._featureClickHandler.removeControledFeature(vectorfeature);
 						this._layerToEdit.removeFeature(vectorfeature);
 					}
-				}
+				} */
 				if(iEditPoint!=null) (this.iEditPoint as AbstractEditHandler).editionModeStop();
 					
 				if(iEditPath!=null)(this.iEditPath as AbstractEditHandler).editionModeStop();
@@ -253,6 +258,8 @@ package org.openscales.core.handler.mouse
 					else if((vectorfeature is LineStringFeature ||  vectorfeature is MultiLineStringFeature) && iEditPath!=null) (iEditPath as EditCollectionHandler).createPointUndertheMouse(evt);
 					if(EditCollectionHandler._pointUnderTheMouse!=null)this._featureClickHandler.addControledFeature(EditCollectionHandler._pointUnderTheMouse);
 		 }
+		 
+		
 		
 		//getters && setters
 		/**
@@ -285,11 +292,23 @@ package org.openscales.core.handler.mouse
 		 *@inheritDoc 
 		 * */
 		override public function set active(value:Boolean):void{
+			
+			if(!this.active && value && map!=null)
+			{
+				if(iEditPoint!=null)  (this.iEditPoint as AbstractEditHandler).active=value;
+				if(iEditPath!=null)(this.iEditPath as AbstractEditHandler).active=value;	
+				if(iEditPolygon!=null)(this.iEditPolygon as AbstractEditHandler).active=value;
+				this._featureClickHandler.active=value;
+				editionModeStart();
+			}
+			else if(this.active && !value && map!=null){
+				if(iEditPoint!=null)  (this.iEditPoint as AbstractEditHandler).active=value;
+				if(iEditPath!=null)(this.iEditPath as AbstractEditHandler).active=value;	
+				if(iEditPolygon!=null)(this.iEditPolygon as AbstractEditHandler).active=value;
+				this._featureClickHandler.active=value;
+				editionModeStop();
+			}
 			super.active=value;
-			if(iEditPoint!=null)  (this.iEditPoint as AbstractEditHandler).active=value;
-			this._featureClickHandler.active=active;
-			if(value) editionModeStart();
-			else editionModeStop();
 		}
 	}
 }

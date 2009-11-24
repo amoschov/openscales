@@ -32,9 +32,10 @@ package org.openscales.core.handler.sketch
 		/**
 		 * @inheritDoc 
 		 * */
+		 /*
 		 override public function editionModeStart():Boolean{
 		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
-					if(/*vectorFeature.isEditable && */vectorFeature.geometry is LineString || vectorFeature.geometry is MultiLineString){
+					if(/*vectorFeature.isEditable && vectorFeature.geometry is LineString || vectorFeature.geometry is MultiLineString){
 						
 						//Clone or not
 						
@@ -47,7 +48,7 @@ package org.openscales.core.handler.sketch
 				}
 					if(this._featureClickHandler!=null)this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));				
 		 	return true;
-		 }
+		 }*/
 		 /**
 		 * @inheritDoc 
 		 * */

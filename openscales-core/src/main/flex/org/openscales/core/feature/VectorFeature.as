@@ -1,6 +1,6 @@
 package org.openscales.core.feature {
 	import flash.utils.getQualifiedClassName;
-
+	
 	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
@@ -8,8 +8,8 @@ package org.openscales.core.feature {
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
-	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.FeatureLayer;
+	import org.openscales.core.layer.Layer;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
@@ -350,7 +350,14 @@ package org.openscales.core.feature {
 		public function get editionFeaturesArray():Array {
 			return this._editionFeaturesArray;
 		}
-
+		
+		/**
+		 * @private
+		 * */
+		public function set editionFeaturesArray(value:Array):void {
+			this._editionFeaturesArray=value;
+		}
+		
 		public function get editionFeatureParent():VectorFeature {
 			if (!this.isEditionFeature)
 				return null;

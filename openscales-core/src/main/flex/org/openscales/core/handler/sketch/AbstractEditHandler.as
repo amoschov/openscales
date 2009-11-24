@@ -96,13 +96,14 @@ package org.openscales.core.handler.sketch
 		 * if you want to modify at the same time different type of geometries use the LayerEditionHandler
 		 * */
 		 public function set featureClickHandler(handler:FeatureClickHandler):void{
-		 	if(handler!=null){
+		 	/* if(handler!=null){
 		 		this._featureClickHandler=handler;
 		 		this._featureClickHandler.click=featureClick;
 				this._featureClickHandler.doubleclick=featureDoubleClick;
 				this._featureClickHandler.startDrag=dragVerticeStart;
 				this._featureClickHandler.stopDrag=dragVerticeStop;
-		 	}
+		 	} */
+		 	this._featureClickHandler=handler;
 		 }
 		 /**
 		 * Map Settings

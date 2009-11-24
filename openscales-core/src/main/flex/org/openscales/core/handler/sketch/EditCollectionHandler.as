@@ -51,16 +51,16 @@ package org.openscales.core.handler.sketch
 		}
 		override public function editionModeStart():Boolean{
 		 	for each(var vectorFeature:VectorFeature in this._layerToEdit.features){	
-					if(/*vectorFeature.isEditable && */vectorFeature.geometry is Collection){
+					if(vectorFeature.isEditable && vectorFeature.geometry is Collection){
 						
 						//Clone or not
-						
-						vectorFeature.createEditionVertices();
+						displayVisibleVirtualVertice(vectorFeature);
+						/* vectorFeature.RefreshEditionVertices();
 						this._layerToEdit.addFeatures(vectorFeature.editionFeaturesArray);
 						if(this._featureClickHandler!=null){
-						this._featureClickHandler.addControledFeatures(vectorFeature.editionFeaturesArray);
+						this._featureClickHandler.addControledFeatures(vectorFeature.editionFeaturesArray); 
 						
-						}
+						}*/
 					}
 				}
 					if(this._featureClickHandler!=null){
@@ -112,6 +112,8 @@ package org.openscales.core.handler.sketch
 		 			
 		 			if(index!=-1) parentGeometry.replaceComponent(index,newVertice);
 		 			else parentGeometry.addComponent(newVertice,indexOfFeatureCurrentlyDrag);
+		 			
+		 			displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
 		 			if(this._featureClickHandler!=null){
 		 				//Vertices update
 		 				this._layerToEdit.removeFeatures(vectorfeature.editionFeatureParent.editionFeaturesArray);
@@ -287,6 +289,35 @@ package org.openscales.core.handler.sketch
 		 	
 		 	
 		 }
+		 
+		 /**
+		 * This function is used for displaying only visible virtual vertices
+		 * in the extent
+		 * @private
+		 * @param featureEdited: the feature edited
+		 * */
+		private function displayVisibleVirtualVertice(featureEdited:VectorFeature):void{
+					if(featureEdited!=null) {
+					//Vertices update
+		 				this._layerToEdit.removeFeatures(featureEdited.editionFeaturesArray);
+		 				this._featureClickHandler.removeControledFeatures(featureEdited.editionFeaturesArray);
+		 				featureEdited.RefreshEditionVertices();		
+		 				//We only draw the points included in the map extent
+		 				var tmpfeature:Array=new Array();
+		 				for each(var feature:VectorFeature in featureEdited.editionFeaturesArray){
+		 					if(this.map.extent.containsBounds(feature.geometry.bounds)){
+		 						this._layerToEdit.addFeature(feature);
+		 						this._featureClickHandler.addControledFeature(feature);
+		 						tmpfeature.push(feature);
+		 					//We remove it
+		 					//Util.removeItem(featureParent.editionFeaturesArray,feature);
+		 					}
+		 			
+		 				}
+		 			//We update the editionFeaturesArray 
+		 			featureEdited.editionFeaturesArray=tmpfeature;
+		 		}
+		}
 		 //getters && setters
 		 /**
 		 * Tolerance used for detecting  point
