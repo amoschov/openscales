@@ -16,7 +16,6 @@
 			import org.openscales.core.feature.MultiPolygonFeature;
 			import org.openscales.core.feature.PointFeature;
 			import org.openscales.core.feature.PolygonFeature;
-			import org.openscales.core.feature.VectorFeature;
 			import org.openscales.core.geometry.Collection;
 			import org.openscales.core.geometry.Geometry;
 			import org.openscales.core.geometry.LineString;
