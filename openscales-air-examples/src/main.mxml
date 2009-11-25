@@ -6,7 +6,7 @@
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.feature.PointFeature;
-			import org.openscales.core.feature.VectorFeature;
+			import org.openscales.core.feature.Feature;
 			import org.openscales.core.layer.ogc.WFS;
 			import org.openscales.proj4as.ProjProjection;
 			import org.openscales.core.layer.FeatureLayer;
