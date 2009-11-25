@@ -165,6 +165,19 @@ package org.openscales.core.layer
 			}
 		}
 		
+		public function removeAllFeatures():void {
+			var features:Array = this.features;
+			for (var i:int = 0; i < features.length; i++) {
+				this.removeFeature(features[i], false);
+			}
+			// Dispatch an event with all the features removed
+			if (this.map) {
+				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_DELETING, null);
+				fevt.features = features;
+				this.map.dispatchEvent(fevt);
+			}
+		}
+		
 		public function removeFeatures(features:Array):void {
 			for (var i:int = 0; i < features.length; i++) {
 				this.removeFeature(features[i], false);
