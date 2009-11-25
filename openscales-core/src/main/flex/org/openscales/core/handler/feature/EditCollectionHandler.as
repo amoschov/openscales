@@ -70,7 +70,7 @@ package org.openscales.core.handler.feature
 				else this._featureCurrentlyDrag=null;
 				//we add the new mouseEvent move and remove the previous
 				this.map.addEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
-				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+				 if(_isUsedAlone)this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 			}
 			
 		 }
@@ -95,7 +95,7 @@ package org.openscales.core.handler.feature
 		 	}
 		 	//we add the new mouseEvent move and remove the previous
 		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);	
-		 	this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+		 	if(_isUsedAlone)this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 		 	this._featureCurrentlyDrag=null;
 		 	EditCollectionHandler._pointUnderTheMouse=null;
