@@ -221,28 +221,11 @@ package org.openscales.core.layer {
 		}
 
 		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean=false, resizing:Boolean=false):void {
-			if (! this.isBaseLayer) {
-				var display:Boolean = true;
-				if (this.inRange) {
-					if (! this.inZoomRange) {
-				 		Trace.log("Layer.moveTo: resolution outside [min,max] resolutions, don't draw layer " + this.name);
-				 		display = false;
-					}
-				} else {
-			 		Trace.log("Layer.moveTo: zoom outside [min,max] zoom levels, don't draw layer " + this.name);
-			 		display = false;
-				}
-				this.visible = display;
-				Trace.log("Layer.moveTo: visible="+this.visible+" for "+this.name);
-			}
+				this.visible = this.inRange;
 		}
 
 		public function get inRange():Boolean {
 			return (this.map) && (this.map.resolution >= this.minResolution) && (this.map.resolution <= this.maxResolution);
-		}
-
-		public function get inZoomRange():Boolean {
-			return (this.map) && this.isVisibleAtZoomLevel(this.map.zoom);
 		}
 
 		/**
