@@ -41,6 +41,11 @@ package org.openscales.core.feature {
 			}
 		}
 
+		override public function destroy():void{
+			this._editionFeatureParentGeometry=null;
+			this._startdrag=null;
+			super.destroy();
+		}
 		public function get point():Point {
 			return this.geometry as Point;
 		}

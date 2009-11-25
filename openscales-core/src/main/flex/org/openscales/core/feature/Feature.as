@@ -56,16 +56,6 @@ package org.openscales.core.feature {
 		 * */
 		private var _editionFeatureParent:Feature = null;
 		
-		/**
-		 * Point under the mouse
-		 * */
-		protected var _pointFeatureUnderTheMouse:PointFeature = null;
-		
-		/**
-		 * To know if the vector feature is selected
-		 * */
-		
-		private var _isselected:Boolean = true;
 
 		/**
 		 * Attributes usually generated from data parsing or user input
@@ -222,10 +212,14 @@ package org.openscales.core.feature {
 		 * Method to destroy a the feature instance.
 		 */
 		public function destroy():void {
-
+			this._attributes=null;
+			this._data=null;
+			this._editionFeatureParent=null;
+			this._editionFeaturesArray=null;
+			this._layer=null;
+			this._lonlat=null;
 			this.geometry = null;
 			this.layer=null;
-			this.name=null;
 			this.lonlat=null;
 			this.data=null;
 
@@ -233,6 +227,7 @@ package org.openscales.core.feature {
 				this.destroyPopup();
 				this.popup=null;
 			}
+			this.unregisterListeners();
 		}
 
 		/**
@@ -506,7 +501,6 @@ package org.openscales.core.feature {
 		 * delete edition vertice(Virtual) only for edition feature
 		 * */
 		public function deleteEditionVertices():void {
-			(this.layer as FeatureLayer).removeFeatures(this._editionFeaturesArray);
 			this._editionFeaturesArray = null;
 			this._editionFeaturesArray = new Array();
 		}
@@ -582,13 +576,6 @@ package org.openscales.core.feature {
 				this._editionFeatureParent = value;
 		}
 		
-		public function set isSelected(value:Boolean):void {
-			this._isselected = value;
-		}
-		
-		public function get isSelected():Boolean {
-			return this._isselected;
-		}
 		
 		static public function compatibleFeatures(features:Array):Boolean {
 			if ((!features) || (features.length == 0) || (!features[0]) || (!(features[0] is Feature))) {

@@ -112,6 +112,8 @@ package org.openscales.core.handler.feature
 					{
 						_layerToEdit.removeFeature(vectorFeature);
 						this._featureClickHandler.removeControledFeature(vectorFeature);
+						vectorFeature.destroy();
+						vectorFeature=null;
 					} 
 					else this._featureClickHandler.addControledFeature(vectorFeature);
 				}
@@ -134,12 +136,17 @@ package org.openscales.core.handler.feature
 			{
 				{
 					this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,this._layerToEdit));
-					this._featureClickHandler.removeControledFeatures();
+					/* this._featureClickHandler.removeControledFeatures(); */
 					
 				for each(var vectorfeature:Feature in _layerToEdit.features){
-					if(vectorfeature.isEditionFeature){
+					if(vectorfeature.isEditionFeature){				
+						vectorfeature.destroy();
 						this._layerToEdit.removeFeature(vectorfeature);
+						vectorfeature.editionFeaturesArray=null;
+						this._featureClickHandler.removeControledFeature(vectorfeature);
+						vectorfeature=null;
 					}
+					else vectorfeature.editionFeaturesArray=null;
 					}
 				}
 			}
@@ -223,6 +230,7 @@ package org.openscales.core.handler.feature
 		 				}
 		 			//We update the editionFeaturesArray 
 		 			featureEdited.editionFeaturesArray=tmpfeature;
+		 			tmpfeature=null;
 		 		}
 		}
 		 //getters & setters
