@@ -37,7 +37,7 @@ package org.openscales.core.handler.feature
 		/**
 		 * This tolerance is to discern Virtual vertices from point under the mouse
 		 * */
-		 private var _detectionTolerance:Number=8;
+		 private var _detectionTolerance:Number=15;
 		
 		/**
 		 * @inheritDoc 
@@ -167,35 +167,27 @@ package org.openscales.core.handler.feature
 							break;
 						}
 					}
-					//we delete the previous point
-					if(EditCollectionHandler._pointUnderTheMouse!=null){
-						this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-						 this._featureClickHandler.removeControledFeature(EditCollectionHandler._pointUnderTheMouse);
-						this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-						EditCollectionHandler._pointUnderTheMouse=null;
-						this._layerToEdit.redraw();
-						vectorfeature.buttonMode=false;
-					}
+					//Test Start
 					if(drawing){
-						var lonlat:LonLat=this.map.getLonLatFromLayerPx(px);	
-						var PointGeomUnderTheMouse:Point=new Point(lonlat.lon,lonlat.lat);		
-							EditCollectionHandler._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse as Point,null,Style.getDefaultCircleStyle(),true/*,parentTmpPoint as Collection*/);	
-							EditCollectionHandler._pointUnderTheMouse.layer=this._layerToEdit;
-							findPointUnderMouseCollection(vectorfeature.geometry,EditCollectionHandler._pointUnderTheMouse);
-							
-						if(EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry!=null){
-							 
-							vectorfeature.layer.map.buttonMode=false;
-							EditCollectionHandler._pointUnderTheMouse.editionFeatureParent=vectorfeature;
-							this._layerToEdit.addFeature(EditCollectionHandler._pointUnderTheMouse);	
-							this._featureClickHandler.addControledFeature(EditCollectionHandler._pointUnderTheMouse);
+						layerToEdit.map.buttonMode=true;
+						var lonlat:LonLat=this.map.getLonLatFromLayerPx(px);
+						var PointGeomUnderTheMouse:Point=new Point(lonlat.lon,lonlat.lat);	
+						if(EditCollectionHandler._pointUnderTheMouse!=null)
+						EditCollectionHandler._pointUnderTheMouse.geometry=PointGeomUnderTheMouse;
+						else {
+						EditCollectionHandler._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse,null,Style.getDefaultCircleStyle(),true);
+						this._featureClickHandler.addControledFeature(EditCollectionHandler._pointUnderTheMouse);
 						}
-						else
-						{
-							EditCollectionHandler._pointUnderTheMouse=null;
-							vectorfeature.layer.map.buttonMode=true;
-						} 
+						if(EditCollectionHandler._pointUnderTheMouse.layer==null) layerToEdit.addFeature(EditCollectionHandler._pointUnderTheMouse);
+						findPointUnderMouseCollection(vectorfeature.geometry,EditCollectionHandler._pointUnderTheMouse);
+						if(EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry!=null){
+								EditCollectionHandler._pointUnderTheMouse.editionFeatureParent=vectorfeature;
+								EditCollectionHandler._pointUnderTheMouse.visible=true;
+						}
+						else EditCollectionHandler._pointUnderTheMouse.visible=false;
+						layerToEdit.redraw();	
 					}
+					else layerToEdit.map.buttonMode=false;
 		 	}
 		 }
 		 /**
