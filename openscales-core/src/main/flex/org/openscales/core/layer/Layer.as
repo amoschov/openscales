@@ -77,6 +77,7 @@ package org.openscales.core.layer {
 				this.map.removeLayer(this, setNewBaseLayer);
 			}
 			this.map = null;
+			this.loading = false;
 		}
 
 		public function generateResolutions(numZoomLevels:uint=Layer.DEFAULT_NUM_ZOOM_LEVELS,

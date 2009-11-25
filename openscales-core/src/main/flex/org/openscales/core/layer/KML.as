@@ -33,6 +33,7 @@ package org.openscales.core.layer
 	            this._request.destroy();
 	            this._request = null;
 	        }
+	        this.loading = false;
 	        super.destroy(setNewBaseLayer);
 	    } 
 	   
@@ -53,6 +54,7 @@ package org.openscales.core.layer
 			}
 			
 	        if (! this._request) {
+	        	this.loading = true;
 				this._request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security, onFailure);
 			} else {
 				this.redraw();

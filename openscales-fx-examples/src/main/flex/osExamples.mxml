@@ -36,7 +36,7 @@
 			/**
 			 * Boolean defining if the logs must be displayed or not
 			 */
-			[Bindable] private var displayTrace:Boolean = true;
+			[Bindable] private var displayTrace:Boolean = false;
 			[Bindable] private var displayFirebugTrace:Boolean = true;
 
 			[Bindable]
