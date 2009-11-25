@@ -216,8 +216,11 @@ package org.openscales.core.handler.feature
 		protected function displayVisibleVirtualVertice(featureEdited:Feature):void{
 					if(featureEdited!=null) {
 					//Vertices update
-		 				this._layerToEdit.removeFeatures(featureEdited.editionFeaturesArray);
-		 				this._featureClickHandler.removeControledFeatures(featureEdited.editionFeaturesArray);
+		 				if(featureEdited.editionFeaturesArray!=null)
+		 					{
+		 						this._layerToEdit.removeFeatures(featureEdited.editionFeaturesArray);
+		 						this._featureClickHandler.removeControledFeatures(featureEdited.editionFeaturesArray);
+		 					}
 		 				featureEdited.RefreshEditionVertices();		
 		 				//We only draw the points included in the map extent
 		 				var tmpfeature:Array=new Array();
