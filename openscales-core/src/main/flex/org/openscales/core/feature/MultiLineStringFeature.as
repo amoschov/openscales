@@ -23,7 +23,6 @@ package org.openscales.core.feature
 		}
 
 		override protected function executeDrawing(symbolizer:Symbolizer):void {
-			Trace.log("MultiLineStringFeature.executeDrawing");
 			// Regardless to the style, a MultiLineString is never filled
 			this.graphics.endFill();
 			

@@ -23,7 +23,6 @@ package org.openscales.core.feature
 		}
 
 		override protected function executeDrawing(symbolizer:Symbolizer):void {
-			Trace.log("PolygonFeature.executeDrawing");
 			// Variable declaration before for loop to improve performances
 			var p:Point = null;
 			var x:Number; 

@@ -1,6 +1,6 @@
 package org.openscales.core.layer {
 	import flash.display.Sprite;
-	
+
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
@@ -16,6 +16,8 @@ package org.openscales.core.layer {
 	/**
 	 * A Layer display image of vector datas on the map, usually loaded from a remote datasource.
 	 * Unit of the baseLayer is hanging by the projection. To access : this.projection.projParams.units
+	 *
+	 * @author Bouiaw
 	 */
 	public class Layer extends Sprite {
 		public static const DEFAULT_SRS_CODE:String = "EPSG:4326";
@@ -44,7 +46,7 @@ package org.openscales.core.layer {
 		private var _map:Map = null;
 		private var _security:ISecurity = null;
 		private var _loading:Boolean = false;
-		private var _autoResolutionsLevels:uint = 0;  // if 0, resolutions are not automatically defined
+		private var _autoResolution = true;
 		protected var _imageSize:Size = null;
 
 		/**
@@ -71,52 +73,45 @@ package org.openscales.core.layer {
 			this._proxy = proxy;
 			this._security = security;
 		}
-		
+
+		public function generateResolutions(numZoomLevels:uint=Layer.DEFAULT_NUM_ZOOM_LEVELS, nominalResolution:Number=NaN):void {
+
+			if (isNaN(nominalResolution)) {
+
+				if (this.projection.srsCode == Layer.DEFAULT_SRS_CODE) {
+
+					nominalResolution = Layer.DEFAULT_NOMINAL_RESOLUTION;
+				} else {
+
+					nominalResolution = Proj4as.unit_transform(new ProjProjection(Layer.DEFAULT_SRS_CODE), this.projection, Layer.DEFAULT_NOMINAL_RESOLUTION);
+				}
+			}
+//FixMe: be careful, the nominalResolution specified may be in a different SRS than the projection's one !
+			// numZoomLevels must be strictly greater than zero
+			if (numZoomLevels == 0) {
+				numZoomLevels = 1;
+			}
+			// Generate default resolutions
+			this._resolutions = new Array();
+			this._resolutions.push(nominalResolution);
+			for (var i:int = 1; i < numZoomLevels; i++) {
+				this._resolutions.push(this.resolutions[i - 1] / 2);
+			}
+			this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
+
+			this._autoResolution = true;
+		}
+
 		public function destroy(setNewBaseLayer:Boolean=true):void {
 			if (this.map != null) {
 				this.map.removeLayer(this, setNewBaseLayer);
 			}
 			this.map = null;
-			this.loading = false;
-		}
 
-		public function generateResolutions(numZoomLevels:uint=Layer.DEFAULT_NUM_ZOOM_LEVELS,
-											nominalResolution:Number=NaN):void {
-			
-			this._autoResolutionsLevels = numZoomLevels;
-			// this._autoResolutionsLevels must be strictly greater than zero
-			if (this._autoResolutionsLevels == 0) {
-				this._autoResolutionsLevels = 1;
-			}
-			
-			// If undefined, set the nominal resolution depending on the SRS used
-			if (isNaN(nominalResolution)) {
-				if (this.projection.srsCode == Layer.DEFAULT_SRS_CODE) {
-					nominalResolution = Layer.DEFAULT_NOMINAL_RESOLUTION;
-				} else {
-					nominalResolution = Proj4as.unit_transform(new ProjProjection(Layer.DEFAULT_SRS_CODE), this.projection, Layer.DEFAULT_NOMINAL_RESOLUTION);
-				}
-			}
-
-			// Generate default resolutions
-			this._resolutions = new Array();
-			this._resolutions.push(nominalResolution);
-			for (var i:int=1; i<this._autoResolutionsLevels; i++) {
-				this._resolutions.push(this.resolutions[i-1] / 2);
-			}
-			this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
-		}
-
-		public function updateResolutions(oldSrsCode:String):void {
-			if (oldSrsCode != this.projection.srsCode) {
-				var oldProjection:ProjProjection = new ProjProjection(oldSrsCode);
-				for (var i:int=0; i<this._resolutions.length; i++) {
-					this._resolutions[i] = Proj4as.unit_transform(oldProjection, this.projection, this._resolutions[i]);
-				}
-			}
 		}
 
 		public function onMapResize():void {
+
 		}
 
 		/**
@@ -127,9 +122,12 @@ package org.openscales.core.layer {
 		public function redraw():Boolean {
 			Trace.fbConsole_startGroup("Layer.redraw: "+name);
 			var redrawn:Boolean = false;
-			if (this.extent) {
-				this.moveTo(this.extent, true);
-				redrawn = true;
+			if (this.map) {
+
+				if (this.extent && this.inRange && this.visible) {
+					this.moveTo(this.extent, true, false);
+					redrawn = true;
+				}
 			}
 			Trace.fbConsole_endGroup();
 			return redrawn;
@@ -141,9 +139,11 @@ package org.openscales.core.layer {
 		 */
 		public function set map(map:Map):void {
 			this._map = map;
+
 			if (map) {
 				map.addEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
-				if (! this.maxExtent) {
+
+				if (!this.maxExtent) {
 					this.maxExtent = this.map.maxExtent;
 				}
 			}
@@ -166,7 +166,8 @@ package org.openscales.core.layer {
 
 		public function getZoomForExtent(extent:Bounds):Number {
 			var viewSize:Size = this.map.size;
-			var idealResolution:Number = Math.max(extent.width/viewSize.w, extent.height/viewSize.h);
+			var idealResolution:Number = Math.max(extent.width / viewSize.w, extent.height / viewSize.h);
+
 			return this.getZoomForResolution(idealResolution);
 		}
 
@@ -199,8 +200,10 @@ package org.openscales.core.layer {
 				var center:LonLat = this.map.center;
 				if (center) {
 					var res:Number = this.map.resolution;
+
 					var delta_x:Number = viewPortPx.x - (size.w / 2);
 					var delta_y:Number = viewPortPx.y - (size.h / 2);
+
 					lonlat = new LonLat(center.lon + delta_x * res, center.lat - delta_y * res);
 				}
 			}
@@ -221,21 +224,19 @@ package org.openscales.core.layer {
 		}
 
 		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean=false, resizing:Boolean=false):void {
-				this.visible = this.inRange;
+			var display:Boolean = this.visible;
+			if (!this.isBaseLayer) {
+				display = display && this.inRange;
+			}
+			this.visible = display;
 		}
 
 		public function get inRange():Boolean {
-			return (this.map) && (this.map.resolution >= this.minResolution) && (this.map.resolution <= this.maxResolution);
-		}
-
-		/**
-		 * Check if the layer is visible at a specified zoom level.
-		 *
-		 * @param zoomLevel the zoom level to test
-		 * @return Whether or not the layer is visible at the specified zoom level
-		 */
-		public function isVisibleAtZoomLevel(zoomLevel:Number):Boolean {
-			return (! isNaN(zoomLevel)) && (zoomLevel >= this.minZoomLevel) && (zoomLevel <= this.maxZoomLevel);
+			var inRange:Boolean = false;
+			if (this.map) {
+				inRange = ((this.map.resolution >= this.minResolution) && (this.map.resolution <= this.maxResolution));
+			}
+			return inRange;
 		}
 
 		public function getURL(bounds:Bounds):String {
@@ -357,6 +358,16 @@ package org.openscales.core.layer {
 		}
 
 		/**
+		 * Check if the layer is visible at a specified zoom level.
+		 *
+		 * @param zoomLevel the zoom level to test
+		 * @return Whether or not the layer is visible at the specified zoom level
+		 */
+		public function isVisibleAtZoomLevel(zoomLevel:Number):Boolean {
+			return ((!isNaN(zoomLevel)) && (zoomLevel >= this.minZoomLevel) && (zoomLevel <= this.maxZoomLevel));
+		}
+
+		/**
 		 * Number of zoom levels
 		 */
 		public function get numZoomLevels():Number {
@@ -414,13 +425,15 @@ package org.openscales.core.layer {
 		}
 
 		public function set resolutions(value:Array):void {
-			this._autoResolutionsLevels = 0;
 			this._resolutions = value;
 			if (this._resolutions == null || this._resolutions.length == 0) {
+
 				this.generateResolutions();
 			} else {
-				this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
+
+				this._autoResolution = false;
 			}
+			this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
 		}
 
 		/**
@@ -432,14 +445,13 @@ package org.openscales.core.layer {
 		}
 
 		public function set projection(value:ProjProjection):void {
-			var oldSRSCode:String = (this._projection) ? this._projection.srsCode : "";
 			this._projection = value;
-			if ((this._autoResolutionsLevels>0) || (oldSRSCode=="")) {
+
+			if (this._autoResolution) {
 				this.generateResolutions();
-			} else {
-				this.updateResolutions(oldSRSCode);
 			}
 		}
+
 
 		/**
 		 * Whether or not the layer is a base layer. This should be set
@@ -499,7 +511,7 @@ package org.openscales.core.layer {
 		 * Whether or not the layer is loading data
 		 */
 		public function get loadComplete():Boolean {
-			return ! this._loading;
+			return !this._loading;
 		}
 
 		/**

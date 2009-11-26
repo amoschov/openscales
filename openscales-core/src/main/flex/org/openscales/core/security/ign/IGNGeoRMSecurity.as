@@ -100,6 +100,7 @@ package org.openscales.core.security.ign
 				var doc:XML =  new XML(loader.data);
 				this.token = doc.toString();
 				this._initialized = true;
+				Trace.log("Valid token received : " + this.token);
 				map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_INITIALIZED, this));
 				this.reset();
 			} catch (err:Error) {
@@ -171,6 +172,7 @@ package org.openscales.core.security.ign
 			try {
 				var doc:XML =  new XML(loader.data);
 				this.token = doc.toString();
+				Trace.log("Valid token received : " + this.token);
 				map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_UPDATED, this));
 				this.reset();
 			} catch (err:Error) {

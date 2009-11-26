@@ -24,7 +24,6 @@ package org.openscales.core.feature
 		}
 
 		override protected function executeDrawing(symbolizer:Symbolizer):void  { 
-			Trace.log("MultiPolygonFeature.executeDrawing");
             // Variable declaration before for loop to improve performances 
             var polygon:Polygon = null; 
             var linearRing:LinearRing = null; 

@@ -23,7 +23,6 @@ package org.openscales.core.feature {
 		}
 
 		override protected function executeDrawing(symbolizer:Symbolizer):void {
-			Trace.log("MultiPointFeature.executeDrawing");
 			if (symbolizer is PointSymbolizer) {
 				var pointSymbolizer:PointSymbolizer = (symbolizer as PointSymbolizer);
 				if (pointSymbolizer.graphic) {
