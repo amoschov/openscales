@@ -591,9 +591,9 @@ package org.openscales.core.handler.feature
 			}
 			// Update the selection
 			if (substractiveMode && (! additiveMode)) {
-				unselect(featuresToSelect);
+				this.unselect(featuresToSelect);
 			} else {
-				select(featuresToSelect, additiveMode);
+				this.select(featuresToSelect, additiveMode);
 			}
 		}
 		
