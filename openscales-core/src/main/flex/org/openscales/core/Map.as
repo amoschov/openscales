@@ -587,7 +587,7 @@ package org.openscales.core
 		 * range of zoom levels.
 		 */
 		private function isValidZoomLevel(zoomLevel:Number):Boolean {
-			return (this.baseLayer && this.baseLayer.isVisibleAtZoomLevel(zoomLevel));
+			return (this.baseLayer && !isNaN(zoomLevel) && (zoomLevel >= this.baseLayer.minZoomLevel) && (zoomLevel <= this.baseLayer.maxZoomLevel));
 		}
 
 		/**

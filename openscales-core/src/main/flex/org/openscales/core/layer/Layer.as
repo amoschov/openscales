@@ -79,10 +79,8 @@ package org.openscales.core.layer {
 			if (isNaN(nominalResolution)) {
 
 				if (this.projection.srsCode == Layer.DEFAULT_SRS_CODE) {
-
 					nominalResolution = Layer.DEFAULT_NOMINAL_RESOLUTION;
 				} else {
-
 					nominalResolution = Proj4as.unit_transform(new ProjProjection(Layer.DEFAULT_SRS_CODE), this.projection, Layer.DEFAULT_NOMINAL_RESOLUTION);
 				}
 			}
@@ -224,20 +222,35 @@ package org.openscales.core.layer {
 		}
 
 		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean=false, resizing:Boolean=false):void {
-			var display:Boolean = this.visible;
-			if (!this.isBaseLayer) {
-				display = display && this.inRange;
+			if (!displayed) {
+				this.clear();
 			}
-			this.visible = display;
+		}
+		
+		/**
+		 * true if the layer is displayed depending on visible (user controlled) and inRange (computed by OpenScales) values 
+		 */
+		public function get displayed():Boolean {
+			return this.visible &&  this.inRange;
+		}
+		
+		public function clear():void {
+			
 		}
 
-		public function get inRange():Boolean {
-			var inRange:Boolean = false;
-			if (this.map) {
-				inRange = ((this.map.resolution >= this.minResolution) && (this.map.resolution <= this.maxResolution));
+		public  function get inRange():Boolean {
+            var inRange:Boolean = false;
+            var resolutionProjected:Number = this.map.resolution;
+            if(this.isBaseLayer != true && this.projection.srsCode != this.map.baseLayer.projection.srsCode)
+            {
+            	resolutionProjected = Proj4as.unit_transform(this.map.baseLayer.projection,this.projection,this.map.resolution);
 			}
-			return inRange;
-		}
+            if (this.map) {
+            	inRange = ((resolutionProjected >= this.minResolution) && (resolutionProjected <= this.maxResolution));
+			}
+            return inRange;
+        }
+
 
 		public function getURL(bounds:Bounds):String {
 			return null;
@@ -355,16 +368,6 @@ package org.openscales.core.layer {
 			} else {
 				Trace.error("Layer: invalid maxZoomLevel for the layer " + this.name + ": " + value + " is not in [0;" + (this.resolutions.length - 1) + "]");
 			}
-		}
-
-		/**
-		 * Check if the layer is visible at a specified zoom level.
-		 *
-		 * @param zoomLevel the zoom level to test
-		 * @return Whether or not the layer is visible at the specified zoom level
-		 */
-		public function isVisibleAtZoomLevel(zoomLevel:Number):Boolean {
-			return ((!isNaN(zoomLevel)) && (zoomLevel >= this.minZoomLevel) && (zoomLevel <= this.maxZoomLevel));
 		}
 
 		/**

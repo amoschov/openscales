@@ -49,7 +49,7 @@ package org.openscales.core.layer
 		}
 		
 		// Clear layer and children graphics
-		public function clear():void {
+		override public function clear():void {
 			this.graphics.clear();
 			var child:Sprite = null;
 			for(var i:int=0; i<this.numChildren;i++) {
@@ -58,12 +58,6 @@ package org.openscales.core.layer
 					child.graphics.clear();
 				}
 			}
-		}
-		
-		// FixMe: why is it necessary to do that ?
-		// It should be managed at the Layer.as level for all the types of sublayer
-		override public function get inRange():Boolean {
-			return true;
 		}
 		
 		private function updateCurrentProjection(evt:LayerEvent = null):void {
@@ -108,8 +102,8 @@ package org.openscales.core.layer
 		 */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 			super.moveTo(bounds, zoomChanged, dragging,resizing);
-			if (! this.visible) {
-				this.clear();
+			
+			if (!displayed) {
 				return;
 			}
 			

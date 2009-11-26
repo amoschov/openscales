@@ -74,7 +74,7 @@ package org.openscales.core.layer
 		}
 
 		override public function destroy(newBaseLayer:Boolean = true):void {
-			this.clearGrid();
+			this.clear();
 			this.grid = null;
 			super.destroy(); 
 		}
@@ -83,7 +83,7 @@ package org.openscales.core.layer
 		 * Go through and remove all tiles from the grid, calling
 		 *    destroy() on each of them to kill circular references
 		 */
-		public function clearGrid():void {
+		override public function clear():void {
 			if (this.grid) {
 				for(var iRow:int=0; iRow < this.grid.length; iRow++) {
 					var row:Array = this.grid[iRow];
@@ -139,11 +139,10 @@ package org.openscales.core.layer
 		 */
 		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 			super.moveTo(bounds, zoomChanged, dragging, resizing);
-			if (! this.visible) {
-		 		this.clearGrid();
+			
+			if (!displayed) {
 				return;
 			}
-
 			if (bounds == null) {
 				bounds = this.map.extent;
 			}
@@ -155,7 +154,7 @@ package org.openscales.core.layer
 			if (this.singleTile) {
 				
 				if(zoomChanged)
-					this.clearGrid();
+					this.clear();
 
 				if ( forceReTile || 
 					(!dragging && !tilesBounds.containsBounds(bounds))) {

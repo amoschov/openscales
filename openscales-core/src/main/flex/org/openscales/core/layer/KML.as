@@ -48,8 +48,8 @@ package org.openscales.core.layer
 	     */
 	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
 	        super.moveTo(bounds, zoomChanged, dragging, resizing);
-			if (! this.visible) {
-				this.clear();
+			
+			if (!displayed) {
 				return;
 			}
 			

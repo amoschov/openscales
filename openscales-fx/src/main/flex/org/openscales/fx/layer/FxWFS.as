@@ -46,9 +46,6 @@ package org.openscales.fx.layer
 			(this._layer as WFS).style = this.style;
 		}
 
-      if (this._projection != null)
-          (this._layer as WFS).projection = new ProjProjection(this._projection);
-
       (this._layer as WFS).url = this._url;
       (this._layer as WFS).typename = this._typename;
       (this._layer as WFS).useCapabilities = this._useCapabilities;
