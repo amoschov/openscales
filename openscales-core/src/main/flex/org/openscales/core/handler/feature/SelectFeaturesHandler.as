@@ -412,7 +412,9 @@ package org.openscales.core.handler.feature
 		 * @param evt the FeatureEvent
 		 */
 		private function onOver(evt:FeatureEvent):void {
-			//this.onSomething(evt, null, this.onOverFeature);
+			if (this.onOverFeature != null) {
+				this.onSomething(evt, null, this.onOverFeature);
+			}
 		}
 		
 		/**
@@ -423,7 +425,9 @@ package org.openscales.core.handler.feature
 		 * @param evt the FeatureEvent
 		 */
 		private function onOut(evt:FeatureEvent):void {
-			//this.onSomething(evt, null, this.onOutFeature);
+			if (this.onOutFeature != null) {
+				this.onSomething(evt, null, this.onOutFeature);
+			}
 		}
 		
 		/**
@@ -434,7 +438,9 @@ package org.openscales.core.handler.feature
 		 * @param evt the FeatureEvent
 		 */
 		private function onSelected(evt:FeatureEvent):void {
-			this.onSomething(evt, this.setSelectedStyle, this.onSelectedFeature);
+			if ((this.setSelectedStyle != null) || (this.onSelectedFeature != null)) {
+				this.onSomething(evt, this.setSelectedStyle, this.onSelectedFeature);
+			}
 		}
 		
 		/**
@@ -445,7 +451,9 @@ package org.openscales.core.handler.feature
 		 * @param evt the FeatureEvent
 		 */
 		private function onUnselected(evt:FeatureEvent):void {
-			this.onSomething(evt, this.resetStyle, this.onUnselectedFeature);
+			if ((this.setSelectedStyle != null) || (this.onUnselectedFeature != null)) {
+				this.onSomething(evt, this.resetStyle, this.onUnselectedFeature);
+			}
 		}
 		
 		/**
@@ -474,21 +482,21 @@ package org.openscales.core.handler.feature
 						// Update the style of the feature if needed
 						if (updateStyleFeature != null) {
 							updateStyleFeature(feature);
-						}
-						// Add the layer of this feature to the array of the
-						// layers already known to need a redraw
-						if (this.map) {
-							// Look for the layer of this feature in the array
-							// of the layers to redraw
-							for(i=0; i<layersToRedraw.length; i++) {
-								if (layersToRedraw[i] == layer) {
-									break;
+							// Add the layer of this feature to the array of the
+							// layers already known to need a redraw
+							if (this.map) {
+								// Look for the layer of this feature in the array
+								// of the layers to redraw
+								for(i=0; i<layersToRedraw.length; i++) {
+									if (layersToRedraw[i] == layer) {
+										break;
+									}
 								}
-							}
-							// If the layer of the feature is not in the array
-							// of the layers to redraw, add it
-							if (i == layersToRedraw.length) {
-								layersToRedraw.push(layer);
+								// If the layer of the feature is not in the array
+								// of the layers to redraw, add it
+								if (i == layersToRedraw.length) {
+									layersToRedraw.push(layer);
+								}
 							}
 						}
 						// Use the callback function for this feature if needed
@@ -504,8 +512,7 @@ package org.openscales.core.handler.feature
 			// treated, now it is time to redraw the layers that contains these
 			// features
 			for each (layer in layersToRedraw) {
-				if(layer.map != null)
-					layer.redraw();
+				layer.redraw();
 			}
 		}
 				
