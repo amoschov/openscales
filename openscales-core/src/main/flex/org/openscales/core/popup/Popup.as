@@ -1,19 +1,18 @@
 package org.openscales.core.popup
 {
 	import com.gskinner.motion.GTweeny;
-
+	
 	import flash.display.Bitmap;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.text.TextField;
-	import flash.utils.getQualifiedClassName;
-
+	
 	import org.openscales.core.Map;
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.control.ui.Button;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.Feature;
 
 	/**
@@ -41,12 +40,12 @@ package org.openscales.core.popup
 		[Embed(source="/assets/images/close.gif")]
 		private var _closeImg:Class;
 
-		public function Popup(lonlat:LonLat, background:uint = 0, border:Number = NaN, size:Size = null, htmlText:String = "", closeBox:Boolean = true) {
+		public function Popup(lonlat:LonLat = null, background:uint = 0, border:Number = NaN, size:Size = null, htmlText:String = "", closeBox:Boolean = true) {
 
 			this.lonlat = lonlat;
 			this.htmlText = htmlText;
 			this.closeBox = closeBox;
-
+			
 			if (background > 0){
 				this._background = background;
 			}
@@ -68,18 +67,6 @@ package org.openscales.core.popup
 				this.size = new Size(Popup.WIDTH,Popup.HEIGHT);
 			}
 		}
-		
-		protected function createPopupContent():void{
-			
-			this.textfield = new TextField();
-			this.textfield.multiline = true;
-			this.textfield.htmlText = htmlText;
-			this.textfield.x = 5;
-			this.textfield.y = 5;
-			this.textfield.width = this.size.w-10;
-			this.textfield.height = this.size.h-10;
-			this.addChild(textfield);
-		}
 
 		public function closePopup(evt:MouseEvent):void {
 			var target:Sprite = (evt.target as Sprite);
@@ -93,17 +80,13 @@ package org.openscales.core.popup
 			while (this.numChildren>0) {
 				this.removeChildAt(0);
 			}
-			
-			if(this.textfield){
-				this.textfield = null;
-			}
-			
-			if (this.feature != null) {
-				this.feature = null;
-			}
+			this.textfield = null;
+			this.feature = null;
+
 			if (this.map != null) {
+				this.map.removeEventListener(MapEvent.ZOOM_START, onZoomStart);
+				this.map.removeEventListener(MapEvent.ZOOM_END, onZoomEnd);
 				this.map.removePopup(this);
-				this.map = null;
 			}
 		}
 
@@ -117,34 +100,41 @@ package org.openscales.core.popup
 			this.position = px;
 
 			this.graphics.clear();
+			while (this.numChildren>0) {
+				this.removeChildAt(0);
+			}
 			this.graphics.beginFill(this.background);
-			this.graphics.drawRect(0,0,this.size.w, this.size.h);
+			this.graphics.lineStyle(this.border, 0x707070, 1, true);
+			this.graphics.drawRoundRect(0,0,this.size.w, this.size.h, 20, 20);
 			this.width = this.size.w;
 			this.height = this.size.h;
-
-			
 			this.graphics.endFill();
-			this.graphics.lineStyle(this.border, 0x000000);
-			this.graphics.moveTo(0, 0);
-			this.graphics.lineTo(0, this.size.h);
-			this.graphics.lineTo(this.size.w, this.size.h);
-			this.graphics.lineTo(this.size.w, 0);
-			this.graphics.lineTo(0, 0);
-
 			this.createPopupContent();
 
 			if (this.closeBox == true) {
 
 				var img:Bitmap = new this._closeImg();
-
-				var closeImg:Button = new Button("close", img, new Pixel(this.size.w- 17 - (this.border/2), (this.border/2)));
-
+				
+				var closeImg:Button = new Button("close", img, new Pixel(this.size.w - 22 - this.border, this.border + 2));
+				
 				this.addChild(closeImg);
 
 				closeImg.addEventListener(MouseEvent.CLICK, closePopup);
 			}
 
+			
 		}
+		
+		 protected function createPopupContent():void{
+            this.textfield = new TextField();
+            this.textfield.multiline = true;
+            this.textfield.htmlText = htmlText;
+            this.textfield.x = 5;
+            this.textfield.y = 5;
+            this.textfield.width = this.size.w-10;
+            this.textfield.height = this.size.h-10;
+            this.addChild(textfield);
+        }
 
 		//Getters and Setters
 		public function set position(px:Pixel):void {
@@ -200,6 +190,20 @@ package org.openscales.core.popup
 		}
 		public function set map(value:Map):void {
 			this._map = value;
+			
+			if(this.map) {
+				this.map.addEventListener(MapEvent.ZOOM_START, onZoomStart);
+				this.map.addEventListener(MapEvent.ZOOM_END, onZoomEnd);
+			}
+		}
+		
+		public function onZoomStart(e:MapEvent):void {
+			this.visible = false;
+		}
+		
+		public function onZoomEnd(e:MapEvent):void {
+			this.visible = true;
+			this.draw();
 		}
 
 		public function get lonlat():LonLat {
@@ -214,6 +218,23 @@ package org.openscales.core.popup
 		}
 		public function set feature(value:Feature):void {
 			this._feature = value;
+			
+			if(!this.feature)
+				return;
+			
+			this.lonlat = this.feature.lonlat;
+			if(this.feature.data.popupBackground)
+				this.background = this.feature.data.popupBackground;
+			if(this.feature.data.popupBorder)
+				this.border = this.feature.data.popupBorder;
+			if(this.feature.data.popupSize)
+				this.size = this.feature.data.popupSize;
+			if(this.feature.data.popupContentHTML)	
+				this.htmlText = this.feature.data.popupContentHTML;
+
+			if(this.feature && this.feature.layer && this.feature.layer.map) {
+				this.map = this.feature.layer.map;
+			} 
 		}
 
 		public function get htmlText():String{

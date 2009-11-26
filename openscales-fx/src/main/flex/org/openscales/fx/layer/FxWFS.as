@@ -17,8 +17,6 @@ package org.openscales.fx.layer
 
     private var _isBaseLayer:Boolean;
 
-    private var _projection:String;
-
     private var _useCapabilities:Boolean = false;
     
     private var _capabilitiesVersion:String = "1.1.0";
@@ -65,10 +63,6 @@ package org.openscales.fx.layer
 
     public function set typename(value:String):void {
         this._typename = value;
-      }
-
-      public function set srs(value:String):void {
-          this._projection = value;
       }
 
       public function set version(value:String):void {

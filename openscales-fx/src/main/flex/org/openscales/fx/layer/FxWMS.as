@@ -30,10 +30,10 @@ package org.openscales.fx.layer
           ((this.layer as WMS).params as WMSParams).format = value;
       }
 
-      public function set srs(value:String):void {
+      override public function set projection(value:String):void {
+        super.projection = value;
         if(this.layer != null) {
           ((this.layer as WMS).params as WMSParams).srs = value;
-		  this.layer.projection = new ProjProjection(value);
 		}
       }
 

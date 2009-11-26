@@ -38,7 +38,7 @@
 		<os:WFS name="Topp States (WFS)"
 			url="http://openscales.org/geoserver/wfs"
 			typename="topp:states"
-			srs="EPSG:4326"
+			projection="EPSG:4326"
 			version="1.0.0"
 			style="{Style.getDefaultSurfaceStyle()}">
 		</os:WFS>
@@ -46,7 +46,7 @@
 		<os:WFS name="Tiger poi (WFS)"
 			url="http://openscales.org/geoserver/wfs"
 			typename="tiger:poi"
-			srs="EPSG:4326"
+			projection="EPSG:4326"
 			version="1.0.0"
 			useCapabilities="true"
 			capabilitiesVersion="1.0.0"

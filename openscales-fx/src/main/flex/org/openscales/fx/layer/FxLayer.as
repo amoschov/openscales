@@ -6,14 +6,25 @@ package org.openscales.fx.layer
   import org.openscales.core.basetypes.Bounds;
   import org.openscales.core.layer.Layer;
   import org.openscales.fx.FxMap;
+  import org.openscales.proj4as.ProjProjection;
 
   public class FxLayer extends Container
   {
     protected var _layer:Layer;
+       
+    protected var _minZoomLevel:Number = NaN;
     
-    protected var _maxResolution:String = null;
+    protected var _maxZoomLevel:Number = NaN;
     
-    protected var _numZoomLevels:String = null;
+    protected var _maxResolution:Number = NaN;
+    
+    protected var _numZoomLevels:Number = NaN;
+    
+	protected var _maxExtent:Bounds = null;
+	
+	protected var _resolutions:Array = null;
+	
+	protected var _projection:String = null;
 
     protected var _fxmap:FxMap;
 
@@ -23,10 +34,30 @@ package org.openscales.fx.layer
 	}
 
 	public function init():void {
+	
+	}
+	
+	public function configureLayer():Layer {
+		
+		if(this._projection)
+			this.layer.projection = new ProjProjection(this._projection);
+		if(!isNaN(this.numZoomLevels)) {
+			this.layer.generateResolutions(this.numZoomLevels, this.maxResolution);
+		}
+		if(this._resolutions)
+			this.layer.resolutions = this._resolutions;
+		if(!isNaN(this.minZoomLevel))
+			this.layer.minZoomLevel = this.minZoomLevel;
+		if(!isNaN(this.maxZoomLevel))
+			this.layer.maxZoomLevel = this.maxZoomLevel;
+		if(this._maxExtent)
+			this.layer.maxExtent = this._maxExtent;
+		
+		return this.layer;
 	}
 
     public function get layer():Layer {
-      return this._layer;
+      	return this._layer;
     }
 
     public function getInstance():Layer {
@@ -62,20 +93,9 @@ package org.openscales.fx.layer
         if(this.layer != null)
           this.layer.isFixed = value;
       }
-      
-      public function set minZoomLevel(value:Number):void {
-        if(this.layer != null)
-          this.layer.minZoomLevel = value;
-      }
-      
-      public function set maxZoomLevel(value:Number):void {
-        if(this.layer != null)
-          this.layer.maxZoomLevel = value;
-      }
 
       public function set maxExtent(value:String):void {
-        if(this.layer != null)
-          this.layer.maxExtent = Bounds.getBoundsFromString(value);
+          this._maxExtent = Bounds.getBoundsFromString(value);; 
       }
       
       public function set proxy(value:String):void {
@@ -88,19 +108,35 @@ package org.openscales.fx.layer
           this.layer.visible = value;
       }
       
-      public function set maxResolution(value:String):void {
+      public function set maxResolution(value:Number):void {
           this._maxResolution = value;
       }
       
-      public function get maxResolution():String {
+      public function get maxResolution():Number {
           return this._maxResolution;
       }
       
-      public function set numZoomLevels(value:String):void {
+      public function set minZoomLevel(value:Number):void {
+          this._minZoomLevel = value;
+      }
+      
+      public function get minZoomLevel():Number {
+          return this._minZoomLevel;
+      }
+      
+      public function set maxZoomLevel(value:Number):void {
+          this._maxZoomLevel = value;
+      }
+      
+      public function get maxZoomLevel():Number {
+          return this._maxZoomLevel;
+      }
+      
+      public function set numZoomLevels(value:Number):void {
           this._numZoomLevels = value;
       }
       
-      public function get numZoomLevels():String {
+      public function get numZoomLevels():Number {
           return this._numZoomLevels;
       }
 	  
@@ -110,8 +146,12 @@ package org.openscales.fx.layer
 		 for each (resString in value.split(",")) {
 		 	resNumberArray.push(Number(resString));
 		 }
-		 this.layer.resolutions = resNumberArray;
+		 this._resolutions = resNumberArray;
 	  }
+	  
+	  public function set projection(value:String):void {
+          this._projection = value;
+      }
 
   }
 }

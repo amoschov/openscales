@@ -93,7 +93,7 @@ package org.openscales.core
 			this._layerContainer.height = this.size.h;
 			// The sprite is now fully defined.
 			this.addChild(this._layerContainer);
-						
+			
 			this.addEventListener(LayerEvent.LAYER_LOAD_START,layerLoadHandler);
 			this.addEventListener(LayerEvent.LAYER_LOAD_END,layerLoadHandler);						
 			
@@ -479,10 +479,10 @@ package org.openscales.core
 		 *
 		 */
 		public function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false, resizing:Boolean = false):void {
-			var zoomChanged:Boolean = forceZoomChange || (this.isValidZoomLevel(zoom) && (zoom!=this.zoom));
+			var zoomChanged:Boolean = forceZoomChange || (this.isValidZoomLevel(zoom) && (zoom!=this._zoom));
 						
 			if (lonlat && !this.isValidLonLat(lonlat)) {
-				Trace.log("Map.setCenter: Not a valid center, so do nothing");
+				Trace.log("Not a valid center, so do nothing");
 				return;
 			}
 			

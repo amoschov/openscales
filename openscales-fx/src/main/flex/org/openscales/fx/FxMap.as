@@ -92,12 +92,9 @@ package org.openscales.fx
 		 * Add a layer to the map
 		 */
 		private function addFxLayer(l:FxLayer):void {
-			// Generate resolution if needed
-			if((l.numZoomLevels) && (l.maxResolution)) {
-				l.layer.generateResolutions(Number(l.numZoomLevels), Number(l.maxResolution));
-			}
 			// Add the layer to the map
 			l.fxmap = this;
+			l.configureLayer();
 			this._map.addLayer(l.layer);
 		}
 		
@@ -151,8 +148,7 @@ package org.openscales.fx
 				if (child is FxLayer) {
 					// Overlays must be added after all the baseLayers
 					if ((child as FxLayer).layer.isBaseLayer) {
-						(child as FxLayer).fxmap = this;
-						this._map.addLayer((child as FxLayer).layer);
+						this.addFxLayer(child as FxLayer);
 					}
 				} else if (child is FxControl) {
 					this._map.addControl((child as FxControl).control);
@@ -174,15 +170,10 @@ package org.openscales.fx
 				child = this.rawChildren.getChildAt(i);
 				if (child is FxLayer) {
 					var l:FxLayer = child as FxLayer;
-					// Generate resolution if needed
-					if((l.numZoomLevels)) {
-						var maxResolution:Number = l.maxResolution ? parseFloat(l.maxResolution) : NaN;
-						l.layer.generateResolutions(Number(l.numZoomLevels), maxResolution);
-					}
+					
 					// BaseLayers have been added at the begining
 					if (! l.layer.isBaseLayer) {
-						l.fxmap = this;
-						this._map.addLayer(l.layer);
+						this.addFxLayer(child as FxLayer);
 					}
 				}
 			}

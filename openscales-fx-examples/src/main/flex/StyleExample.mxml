@@ -214,7 +214,7 @@
 				name="IGN - Geopla (Region)"
 				url="http://openscales.org/geoserver/wfs"
 				typename="pg:ign_geopla_dep"
-				srs="EPSG:2154"
+				projection="EPSG:2154"
 				version="1.0.0"
 				style="{Style.getDefaultSurfaceStyle()}"
 				/>

@@ -1,6 +1,6 @@
 package org.openscales.core.layer {
 	import flash.display.Sprite;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
@@ -46,7 +46,7 @@ package org.openscales.core.layer {
 		private var _map:Map = null;
 		private var _security:ISecurity = null;
 		private var _loading:Boolean = false;
-		private var _autoResolution = true;
+		private var _autoResolution:Boolean = true;
 		protected var _imageSize:Size = null;
 
 		/**
@@ -277,7 +277,7 @@ package org.openscales.core.layer {
 				level = 0;
 			}
 			// Find the zoom level of the map corresponding to the resolution of the layer
-			if (this.map && this.resolutions) {
+			/* if (this.map && this.resolutions) {
 				var i:int = 0;
 				while ((i < this.map.baseLayer.resolutions.length) && (this.map.baseLayer.resolutions[i] > Proj4as.unit_transform(this.projection, this.map.baseLayer.projection, this.resolutions[level]))) {
 					i++;
@@ -288,7 +288,7 @@ package org.openscales.core.layer {
 					// In this case the layer must not be displayed.
 					// The layer would be displayed when a base layer will define a
 					// larger range of resolutions for the map. 
-			}
+			} */
 			// Return the zoom level depending on the current configuration of the map
 			return level;
 		}
@@ -327,7 +327,7 @@ package org.openscales.core.layer {
 				}
 			}
 			// Find the zoom level of the map corresponding to the resolution of the layer
-			if (this.map && this.resolutions) {
+			/* if (this.map && this.resolutions) {
 				var i:int = this.map.baseLayer.resolutions.length - 1;
 				while ((i >= 0) && (this.map.baseLayer.resolutions[i] < Proj4as.unit_transform(this.projection, this.map.baseLayer.projection, this.resolutions[level]))) {
 					i--;
@@ -339,7 +339,7 @@ package org.openscales.core.layer {
 					// The layer would be displayed when a base layer will define a
 					// larger range of resolutions for the map. 
 			}
-			// Return the zoom level depending on the current configuration of the map
+			// Return the zoom level depending on the current configuration of the map */
 			return level;
 		}
 
