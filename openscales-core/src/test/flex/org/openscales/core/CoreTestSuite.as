@@ -1,11 +1,12 @@
 package org.openscales.core
 {
 	import org.openscales.core.configuration.ConfigurationTest;
+	import org.openscales.core.format.KMLFormatTest;
 	import org.openscales.core.geometry.ContainsPointTest;
+	import org.openscales.core.layer.LayerTest;
 	import org.openscales.core.layer.capabilities.ParsingTest;
 	import org.openscales.core.utils.SexagecimalTest;
 	import org.openscales.core.utils.StringUtilsTest;
-	import org.openscales.core.format.KMLFormatTest;
 	
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
@@ -18,5 +19,6 @@ package org.openscales.core
 		public var t5:ContainsPointTest;
 		public var t6:ConfigurationTest;
 		public var t7:KMLFormatTest;
+		public var t8:LayerTest;
 	}
 }

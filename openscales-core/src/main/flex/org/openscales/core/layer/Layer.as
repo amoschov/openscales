@@ -22,12 +22,11 @@ package org.openscales.core.layer {
 	public class Layer extends Sprite {
 		public static const DEFAULT_SRS_CODE:String = "EPSG:4326";
 
-		//public static const DEFAULT_UNITS:String = Unit.DEGREE;
-		public static function DEFAULT_PROJECTION():ProjProjection {
+		public static function get DEFAULT_PROJECTION():ProjProjection {
 			return new ProjProjection(DEFAULT_SRS_CODE);
 		}
 
-		public static function DEFAULT_MAXEXTENT():Bounds {
+		public static function get DEFAULT_MAXEXTENT():Bounds {
 			return new Bounds(-180, -90, 180, 90);
 		}
 		public static const DEFAULT_NOMINAL_RESOLUTION:Number = 1.40625;

@@ -992,9 +992,9 @@ package org.openscales.core
 			
 			// If no maxExtent is defined, generate a worldwide maxExtent in the right projection
 			if(maxExtent == null) {
-				maxExtent = Layer.DEFAULT_MAXEXTENT();
+				maxExtent = Layer.DEFAULT_MAXEXTENT;
 				if (this.baseLayer && (this.baseLayer.projection.srsCode != Layer.DEFAULT_SRS_CODE)) {
-					maxExtent.transform(Layer.DEFAULT_PROJECTION(), this.baseLayer.projection)
+					maxExtent.transform(Layer.DEFAULT_PROJECTION, this.baseLayer.projection)
 				}
 			}
 			return maxExtent;
@@ -1016,10 +1016,6 @@ package org.openscales.core
 
 			return extent;
 		}
-
-		/*public function get projection():ProjProjection {
-			return (this._baseLayer) ? this._baseLayer.projection : null;
-		}*/
 
 		public function get resolution():Number {
 			return (this.baseLayer) ? this.baseLayer.resolutions[this.zoom] : NaN;
