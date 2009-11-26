@@ -14,6 +14,8 @@ package org.openscales.core.feature {
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
+	import org.openscales.core.popup.Anchored;
+	import org.openscales.core.popup.Popup;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
@@ -54,6 +56,16 @@ package org.openscales.core.feature {
 		 * */
 		private var _editionFeatureParent:Feature = null;
 		
+		/**
+		 * Point under the mouse
+		 * */
+		protected var _pointFeatureUnderTheMouse:PointFeature = null;
+		
+		/**
+		 * To know if the vector feature is selected
+		 * */
+		
+		private var _isselected:Boolean = true;
 
 		/**
 		 * Attributes usually generated from data parsing or user input
@@ -81,6 +93,11 @@ package org.openscales.core.feature {
 		 * the position (for exemple the geometry)
 		 */
 		private var _lonlat:LonLat=null;
+
+		/**
+		 * The popup that will be displayed after a click on this feature
+		 */
+		private var _popup:Popup=null;
 
 		/**
 		 * Is this feature selected ?
@@ -179,6 +196,20 @@ package org.openscales.core.feature {
 			this._attributes=value;
 		}
 
+		/**
+		 * Creates a popup for the feature
+		 *
+		 * @param closeBox
+		 * @return The created popup
+		 */
+		public function createPopup(closeBox:Boolean=true):Popup {
+			if (this.lonlat != null) {
+				this.popup = new Anchored(this.lonlat, this.data.popupBackground, this.data.popupBorder, this.data.popupSize, this.data.popupContentHTML, this, closeBox);
+				this.popup.feature=this;
+			}
+			return this.popup;
+		}
+
 		public function get data():Object {
 			return this._data;
 		}
@@ -191,18 +222,12 @@ package org.openscales.core.feature {
 		 * Method to destroy a the feature instance.
 		 */
 		public function destroy():void {
-			this._attributes=null;
-			this._data=null;
-			this._editionFeatureParent=null;
-			this._editionFeaturesArray=null;
-			this._layer=null;
-			this._lonlat=null;
+
 			this.geometry = null;
 			this.layer=null;
+			this.name=null;
 			this.lonlat=null;
 			this.data=null;
-
-			this.unregisterListeners();
 		}
 
 		/**
@@ -299,6 +324,14 @@ package org.openscales.core.feature {
 				onScreen=screenBounds.containsLonLat(this.lonlat);
 			}
 			return onScreen;
+		}
+
+		public function get popup():Popup {
+			return this._popup;
+		}
+
+		public function set popup(value:Popup):void {
+			this._popup=value;
 		}
 
 		public function get selected():Boolean {
@@ -460,6 +493,7 @@ package org.openscales.core.feature {
 		 * delete edition vertice(Virtual) only for edition feature
 		 * */
 		public function deleteEditionVertices():void {
+			(this.layer as FeatureLayer).removeFeatures(this._editionFeaturesArray);
 			this._editionFeaturesArray = null;
 			this._editionFeaturesArray = new Array();
 		}
@@ -535,6 +569,13 @@ package org.openscales.core.feature {
 				this._editionFeatureParent = value;
 		}
 		
+		public function set isSelected(value:Boolean):void {
+			this._isselected = value;
+		}
+		
+		public function get isSelected():Boolean {
+			return this._isselected;
+		}
 		
 		static public function compatibleFeatures(features:Array):Boolean {
 			if ((!features) || (features.length == 0) || (!features[0]) || (!(features[0] is Feature))) {
