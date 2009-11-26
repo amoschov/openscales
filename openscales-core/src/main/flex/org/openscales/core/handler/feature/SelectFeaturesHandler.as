@@ -412,7 +412,7 @@ package org.openscales.core.handler.feature
 		 * @param evt the FeatureEvent
 		 */
 		private function onOver(evt:FeatureEvent):void {
-			this.onSomething(evt, null, this.onOverFeature);
+			//this.onSomething(evt, null, this.onOverFeature);
 		}
 		
 		/**
@@ -423,7 +423,7 @@ package org.openscales.core.handler.feature
 		 * @param evt the FeatureEvent
 		 */
 		private function onOut(evt:FeatureEvent):void {
-			this.onSomething(evt, null, this.onOutFeature);
+			//this.onSomething(evt, null, this.onOutFeature);
 		}
 		
 		/**
@@ -504,7 +504,8 @@ package org.openscales.core.handler.feature
 			// treated, now it is time to redraw the layers that contains these
 			// features
 			for each (layer in layersToRedraw) {
-				layer.redraw();
+				if(layer.map != null)
+					layer.redraw();
 			}
 		}
 				
