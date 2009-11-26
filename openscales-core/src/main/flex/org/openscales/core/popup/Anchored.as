@@ -1,11 +1,12 @@
 package org.openscales.core.popup
 {
 	import flash.display.Sprite;
-
+	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
+	import org.openscales.core.feature.Feature;
 
 	/**
 	 * Anchored popup, usually the anchor is a Feature
@@ -25,7 +26,7 @@ package org.openscales.core.popup
 
 		private var _anchor:Sprite = null;
 
-		public function Anchored(lonlat:LonLat, background:uint, border:Number, size:Size, contentHTML:String, anchor:Sprite, closeBox:Boolean) {
+		public function Anchored(lonlat:LonLat = null, background:uint = 0, border:Number = NaN, size:Size = null, contentHTML:String = "", anchor:Sprite = null, closeBox:Boolean = true) {
 			super(lonlat, background, border, size, contentHTML, closeBox);
 
 			this._anchor = anchor;
@@ -35,11 +36,10 @@ package org.openscales.core.popup
 			if (px == null) {
 				if ((this.lonlat != null) && (this.map != null)) {
 					px = this.map.getLayerPxFromLonLat(this.lonlat);
+					this.relativePosition = this.calculateRelativePosition(px);
 				}
 			}
-
-			this.relativePosition = this.calculateRelativePosition(px);
-
+			
 			super.draw(px);
 		}
 
@@ -96,6 +96,11 @@ package org.openscales.core.popup
 
 		public function set relativePosition(value:String):void {
 			this._relativePosition = value;
+		}
+		
+		override public function set feature(value:Feature):void {
+			super.feature = value;
+			this._anchor = value;
 		}
 	}
 }

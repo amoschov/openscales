@@ -19,6 +19,9 @@ package org.openscales.core.control.ui
 			super();
 
 			this._image = image;
+			
+			this.buttonMode = true;
+			this.useHandCursor = true;
 
 			this.addChild(this._image);
 

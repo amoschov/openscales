@@ -3,6 +3,7 @@
 		 xmlns:os="http://openscales.org" creationComplete="initMap();" >
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.popup.Anchored;
 			import org.openscales.core.style.Style;
 			import org.openscales.core.layer.FeatureLayer;
 			import org.openscales.core.feature.Marker;
@@ -49,8 +50,9 @@
 			}
 
 			private function showPopup(e:MouseEvent):void {
-				var pop:Popup=markLyon.createPopup();
-				map.addPopup(pop, true);
+				var popup:Anchored=new Anchored();
+				popup.feature = markLyon;
+				map.addPopup(popup, true);
 			}			
 		]]>
 	</mx:Script>

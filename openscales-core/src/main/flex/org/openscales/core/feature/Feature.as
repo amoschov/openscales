@@ -14,8 +14,6 @@ package org.openscales.core.feature {
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
-	import org.openscales.core.popup.Anchored;
-	import org.openscales.core.popup.Popup;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
@@ -83,11 +81,6 @@ package org.openscales.core.feature {
 		 * the position (for exemple the geometry)
 		 */
 		private var _lonlat:LonLat=null;
-
-		/**
-		 * The popup that will be displayed after a click on this feature
-		 */
-		private var _popup:Popup=null;
 
 		/**
 		 * Is this feature selected ?
@@ -186,20 +179,6 @@ package org.openscales.core.feature {
 			this._attributes=value;
 		}
 
-		/**
-		 * Creates a popup for the feature
-		 *
-		 * @param closeBox
-		 * @return The created popup
-		 */
-		public function createPopup(closeBox:Boolean=true):Popup {
-			if (this.lonlat != null) {
-				this.popup = new Anchored(this.lonlat, this.data.popupBackground, this.data.popupBorder, this.data.popupSize, this.data.popupContentHTML, this, closeBox);
-				this.popup.feature=this;
-			}
-			return this.popup;
-		}
-
 		public function get data():Object {
 			return this._data;
 		}
@@ -223,21 +202,9 @@ package org.openscales.core.feature {
 			this.lonlat=null;
 			this.data=null;
 
-			if (this.popup != null) {
-				this.destroyPopup();
-				this.popup=null;
-			}
 			this.unregisterListeners();
 		}
 
-		/**
-		 * Destroys the popup
-		 */
-		public function destroyPopup():void {
-			this.popup.feature=null;
-			this.popup.destroy();
-			this.popup=null;
-		}
 		/**
 		 * To obtain feature clone 
 		 * */
@@ -332,14 +299,6 @@ package org.openscales.core.feature {
 				onScreen=screenBounds.containsLonLat(this.lonlat);
 			}
 			return onScreen;
-		}
-
-		public function get popup():Popup {
-			return this._popup;
-		}
-
-		public function set popup(value:Popup):void {
-			this._popup=value;
 		}
 
 		public function get selected():Boolean {

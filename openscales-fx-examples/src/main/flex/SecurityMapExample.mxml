@@ -25,7 +25,7 @@
 		proxy="http://openscales.org/proxy.php?url=">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
-		<os:IGNGeoRMSecurity key="1202474798937064747" layers="ORTHOPHOTOS" />
+		<os:IGNGeoRMSecurity key="1202474798937064747" layers="ORTHOPHOTOS" proxy="http://openscales.org/proxy.php?url=" />
 			
 		<os:WMSC id="ortho" 
 				 name="ORTHOPHOTOS"

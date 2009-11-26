@@ -25,7 +25,6 @@ package org.openscales.fx
 	import org.openscales.fx.control.FxControl;
 	import org.openscales.fx.handler.FxHandler;
 	import org.openscales.fx.layer.FxLayer;
-	import org.openscales.fx.popup.FxPopup;
 	import org.openscales.fx.security.FxAbstractSecurity;
 	import org.openscales.proj4as.ProjProjection;
 	
@@ -40,7 +39,6 @@ package org.openscales.fx
 	public class FxMap extends Container
 	{
 		private var _map:Map;
-		private var _popupContainer:Container;
 		private var _zoom:Number = NaN;
 		private var _centerLonLat:LonLat = null;
 		private var _creationHeight:Number = NaN;
@@ -126,13 +124,7 @@ package org.openscales.fx
 			this._map.configuration = new FxConfiguration();
 			
 			this.rawChildren.addChild(this._map);
-			
-			this._popupContainer = new Container();
-			this._popupContainer.width = this.width;
-			this._popupContainer.height = this.height;
-			
-			this.rawChildren.addChild(this._popupContainer);
-			
+						
 			if (this._proxy != "")
 				this._map.proxy = this._proxy;
 				
@@ -229,66 +221,12 @@ package org.openscales.fx
 				}
 			}
 			
-			this._map.addEventListener(MapEvent.DRAG_START, this.hidePopups);
-			this._map.addEventListener(MapEvent.MOVE_START, this.hidePopups);
-			this._map.addEventListener(MapEvent.MOVE_END, this.showPopups);
 			this.addEventListener(ResizeEvent.RESIZE, this.onResize);
-		}
-		
-		private function hidePopups(event:Event):void {
-			var element:Container = this._popupContainer;
-			element.visible = false;
-		}
-		
-		private function showPopups(event:Event):void {
-			var element:Container = this._popupContainer;
-			var i:Number;
-			var child:DisplayObject;
-			for(i=element.numChildren-1; i>=0; i--) {
-				child = element.getChildAt(i);
-				if (child is FxPopup) {
-					FxPopup(child).draw();;
-				}
-			}
-			element.visible = true; 
 		}
 		
 		private function onResize(event:ResizeEvent):void {
 			var o:DisplayObject = event.target as DisplayObject;
 			this._map.size = new Size(o.width, o.height);
-		}
-		
-		/**
-		 * @param {OpenLayers.Popup} popup
-		 * @param {Boolean} exclusive If true, closes all other popups first
-		 */
-		public function addPopup(popup:Sprite, exclusive:Boolean = true):void {
-			this.map.addPopup(popup as Popup, exclusive);
-			if (exclusive) {
-				var i:Number;
-				var child:DisplayObject;
-				for(i=this._popupContainer.numChildren-1; i>=0; i--) {
-					child = this.parent.getChildAt(i);
-					if (child is Popup || child is FxPopup) {
-						this.removePopup(child as Sprite);
-					}
-				}
-			}
-			if (popup is FxPopup) {
-				FxPopup(popup).fxmap = this;
-				FxPopup(popup).draw();
-				this._popupContainer.addChild(popup);
-			}
-		}
-		
-		public function removePopup(popup:Sprite):void {
-			if (popup is Popup){
-				this.map.removePopup(popup as Popup);
-			} else if (popup is FxPopup){
-				FxPopup(popup).fxmap = null;
-				FxPopup(popup).destroy();
-				this._popupContainer.removeChild(popup);
-			}
 		}
 		
 		private function loadEventHandler(event:MapEvent):void

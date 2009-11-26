@@ -4,6 +4,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.popup.Anchored;
 			import org.openscales.core.popup.Popup;
 			import org.openscales.core.events.FeatureEvent;
 			import org.openscales.core.events.MapEvent;
@@ -19,8 +20,9 @@
 			}
 
 			private function onFeatureClick(event:FeatureEvent):void {
-				var pop:Popup=event.feature.createPopup();
-				map.addPopup(pop, true);
+				var popup:Anchored=new Anchored();
+				popup.feature = event.feature;
+				map.addPopup(popup, true);
 			}
 		]]>
 	</mx:Script>
