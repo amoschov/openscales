@@ -124,13 +124,13 @@ package org.openscales.core.layer.ogc
 				var center:LonLat = projectedBounds.centerLonLat;
 
 				if (projectedBounds.containsBounds(this.maxExtent)) {
-					projectedBounds = this.maxExtent;
+					projectedBounds = this.maxExtent.clone();
 				}
 				var previousFeatureBbox:Bounds = this.featuresBbox.clone(); 
-				this.featuresBbox = projectedBounds;
 				this.params.bbox = projectedBounds.boundsToString();
 				
 				if (this._firstRendering) {
+					this.featuresBbox = projectedBounds;
 					this.loadFeatures(this.getFullRequestString());
 					this._firstRendering = false;
 				} else {
@@ -141,6 +141,7 @@ package org.openscales.core.layer.ogc
 						// Use GetCapabilities to know if all features have already been retreived.
 						// If they are, we don't request data again
 						if ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent")))) {
+							this.featuresBbox = projectedBounds;
 							this.loadFeatures(this.getFullRequestString());
 						} else {
 							this.redraw();

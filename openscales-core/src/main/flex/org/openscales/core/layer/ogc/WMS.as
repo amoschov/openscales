@@ -32,17 +32,36 @@ package org.openscales.core.layer.ogc
 			CACHE_SIZE = 2;
 
 		}
-
+	    override public function get maxExtent():Bounds {
+			
+			var maxExtent:Bounds =  super.maxExtent.clone();
+			if(this.isBaseLayer != true && this.reproject == true && this.projection.srsCode != this.map.baseLayer.projection.srsCode)
+			{
+				 maxExtent.transform(this.projection,this.map.baseLayer.projection);
+			}
+			
+			return maxExtent;
+		}
+		
 		override public function getURL(bounds:Bounds):String {
 			var projection:ProjProjection = this.projection;
+			var projectedBounds:Bounds = bounds.clone();
+			
+			if( this.isBaseLayer != true  && this._reproject == true && projection.srsCode != this.map.baseLayer.projection.srsCode)
+			{
+			  	projectedBounds.transform(this.map.baseLayer.projection.clone(),projection.clone());
+			}
 
-			this.params.bbox = bounds.boundsToString();
+			this.params.bbox = projectedBounds.boundsToString();
 			(this.params as WMSParams).width = this.imageSize.w;
 			(this.params as WMSParams).height = this.imageSize.h;
-
-			if (projection != null || this.map.baseLayer.projection != null)
-				(this.params as WMSParams).srs = (projection == null) ? this.map.baseLayer.projection.srsCode : projection.srsCode;
-
+            if( this._reproject == false){
+			  if (projection != null || this.map.baseLayer.projection != null)
+				  (this.params as WMSParams).srs = (projection == null) ? this.map.baseLayer.projection.srsCode : projection.srsCode;
+            }
+            else{
+            	(this.params as WMSParams).srs = projection.srsCode;
+            }
 			var requestString:String;
 			if(this.url.indexOf("?")==-1) requestString = this.url+"?"+this.params.toGETString();
 			else requestString=this.url+"&"+this.params.toGETString();
