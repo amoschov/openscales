@@ -382,9 +382,9 @@ package org.openscales.core.layer {
 			if (this.resolutions && (this.resolutions.length > 0)) {
 				// By default, the max resolution is used
 				maxRes = this.resolutions[0];
-				// If a maxZoomLevel is defined and is valid, we use it
-				if (!isNaN(this._maxZoomLevel)) {
-					maxRes = this.resolutions[(this.resolutions.length - 1) - this._maxZoomLevel];
+				
+				if (!isNaN(this._minZoomLevel)) {
+					maxRes = this.resolutions[this._minZoomLevel];
 				}
 			}
 			return maxRes;
@@ -396,9 +396,9 @@ package org.openscales.core.layer {
 			if (this.resolutions && (this.resolutions.length > 0)) {
 				// By default, the min resolution is used
 				minRes = this.resolutions[this.resolutions.length - 1];
-				// If a minZoomLevel is defined and is valid, we use it
-				if (!isNaN(this._minZoomLevel)) {
-					minRes = this.resolutions[(this.resolutions.length - 1) - this._minZoomLevel];
+				
+				if (!isNaN(this._maxZoomLevel)) {
+					minRes = this.resolutions[this._maxZoomLevel];
 				}
 			}
 			return minRes;
