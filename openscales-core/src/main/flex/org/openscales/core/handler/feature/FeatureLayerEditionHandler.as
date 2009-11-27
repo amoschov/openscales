@@ -190,8 +190,10 @@ package org.openscales.core.handler.feature
 				
 			}
 			this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-			EditCollectionHandler._pointUnderTheMouse.destroy();
-			EditCollectionHandler._pointUnderTheMouse=null;
+			if(EditCollectionHandler._pointUnderTheMouse!=null){
+				EditCollectionHandler._pointUnderTheMouse.destroy();
+				EditCollectionHandler._pointUnderTheMouse=null;
+			}
 			return true;
 		}
 		
