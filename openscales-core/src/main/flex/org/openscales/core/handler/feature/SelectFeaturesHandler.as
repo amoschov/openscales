@@ -512,7 +512,7 @@ package org.openscales.core.handler.feature
 			// treated, now it is time to redraw the layers that contains these
 			// features
 			for each (layer in layersToRedraw) {
-				layer.redraw();
+				if(layer.map!=null)layer.redraw();
 			}
 		}
 				

@@ -26,7 +26,7 @@ package org.openscales.core
 	public class Trace
 	{
 		public static var map:Map = null; // FixMe: it's strange to use a global variable in a static class
-		public static var useFireBugConsole:Boolean = true;
+		public static var useFireBugConsole:Boolean = false;
 		
 		/**
 		 * Constructor
