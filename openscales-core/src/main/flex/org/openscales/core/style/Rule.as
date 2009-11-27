@@ -1,17 +1,14 @@
 package org.openscales.core.style {
-	import flash.display.CapsStyle;
 	import flash.display.DisplayObject;
-	import flash.display.JointStyle;
 	import flash.display.Sprite;
 	
-	import org.openscales.core.Trace;
 	import org.openscales.core.filter.IFilter;
-	import org.openscales.core.style.symbolizer.Fill;
-	import org.openscales.core.style.symbolizer.FillSymbolizer;
-	import org.openscales.core.style.symbolizer.Mark;
+	import org.openscales.core.style.fill.Fill;
+	import org.openscales.core.style.marker.WellKnownMarker;
+	import org.openscales.core.style.stroke.Stroke;
+	import org.openscales.core.style.symbolizer.IFillSymbolizer;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
-	import org.openscales.core.style.symbolizer.Stroke;
-	import org.openscales.core.style.symbolizer.StrokeSymbolizer;
+	import org.openscales.core.style.symbolizer.IStrokeSymbolizer;
 	import org.openscales.core.style.symbolizer.Symbolizer;
 
 	public class Rule {
@@ -160,7 +157,7 @@ package org.openscales.core.style {
 
 			for each (var symbolizer:Symbolizer in this.symbolizers) {
 
-				Rule.setStyle(symbolizer, result);
+				symbolizer.configureGraphics(result.graphics);
 				drawMethod.apply(this, [symbolizer, result]);
 			}
 
@@ -168,23 +165,36 @@ package org.openscales.core.style {
 		}
 
 		public static function setStyle(symbolizer:Symbolizer, canvas:Sprite):void {
-			if (symbolizer is FillSymbolizer) {
-				configureGraphicsFill((symbolizer as FillSymbolizer).fill, canvas);
+			if (symbolizer is IFillSymbolizer) {
+				var fill:Fill = (symbolizer as IFillSymbolizer).fill;
+				if(fill){
+					fill.configureGraphics(canvas.graphics);
+				}
+				else{
+					canvas.graphics.endFill();
+				}
 			}
-			if (symbolizer is StrokeSymbolizer) {
-				configureGraphicsStroke((symbolizer as StrokeSymbolizer).stroke, canvas);
+			
+			if (symbolizer is IStrokeSymbolizer) {
+				var stroke:Stroke = (symbolizer as IStrokeSymbolizer).stroke;
+				if(stroke){
+					stroke.configureGraphics(canvas.graphics);
+				}
+				else{
+					canvas.graphics.lineStyle();
+				}
 			}
 		}
 
-		public static function configureGraphicsFill(fill:Fill, canvas:Sprite):void {
+		/*public static function configureGraphicsFill(fill:SolidFill, canvas:Sprite):void {
 			if (fill) {
 				canvas.graphics.beginFill(fill.color, fill.opacity);
 			} else {
 				canvas.graphics.endFill();
 			}
-		}
+		}*/
 
-		public static function configureGraphicsStroke(stroke:Stroke, canvas:Sprite):void {
+		/*public static function configureGraphicsStroke(stroke:Stroke, canvas:Sprite):void {
 			if (stroke) {
 				var linecap:String;
 				var linejoin:String;
@@ -214,7 +224,7 @@ package org.openscales.core.style {
 			} else {
 				canvas.graphics.lineStyle();
 			}
-		}
+		}*/
 
 		private function drawLine(symbolizer:Symbolizer, canvas:Sprite):void {
 
@@ -229,30 +239,30 @@ package org.openscales.core.style {
 
 				var pointSymbolizer:PointSymbolizer = (symbolizer as PointSymbolizer);
 				if (pointSymbolizer.graphic) {
-					if (pointSymbolizer.graphic is Mark) {
+					if (pointSymbolizer.graphic is WellKnownMarker) {
 
-						this.drawMark(pointSymbolizer.graphic as Mark, canvas);
+						this.drawMark(pointSymbolizer.graphic as WellKnownMarker, canvas);
 					}
 				}
 			}
 		}
 
-		protected function drawMark(mark:Mark, canvas:Sprite):void {
+		protected function drawMark(mark:WellKnownMarker, canvas:Sprite):void {
 
-			Rule.configureGraphicsFill(mark.fill, canvas);
-			Rule.configureGraphicsStroke(mark.stroke, canvas);
+			mark.fill.configureGraphics(canvas.graphics);
+			mark.stroke.configureGraphics(canvas.graphics);
 
 			switch (mark.wellKnownName) {
 
-				case Mark.WKN_SQUARE:  {
+				case WellKnownMarker.WKN_SQUARE:  {
 					canvas.graphics.drawRect(15 - mark.size / 2, 15 - mark.size / 2, mark.size, mark.size);
 					break;
 				}
-				case Mark.WKN_CIRCLE:  {
+				case WellKnownMarker.WKN_CIRCLE:  {
 					canvas.graphics.drawCircle(15, 15, mark.size / 2);
 					break;
 				}
-				case Mark.WKN_TRIANGLE:  {
+				case WellKnownMarker.WKN_TRIANGLE:  {
 					// TODO : Check for the drawing of the triangles
 					canvas.graphics.moveTo(0, (mark.size / 2));
 					canvas.graphics.lineTo(mark.size, mark.size);

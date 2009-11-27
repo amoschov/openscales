@@ -1,14 +1,15 @@
 package org.openscales.core.feature {
-	import org.openscales.core.Trace;
+	import flash.display.DisplayObject;
+	
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
-	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
-	import org.openscales.core.style.symbolizer.Mark;
+	import org.openscales.core.style.marker.DisplayObjectMarker;
+	import org.openscales.core.style.marker.WellKnownMarker;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
 	import org.openscales.core.style.symbolizer.Symbolizer;
 
@@ -49,24 +50,18 @@ package org.openscales.core.feature {
 		public function get point():Point {
 			return this.geometry as Point;
 		}
-
-		override protected function executeDrawing(symbolizer:Symbolizer):void {
-			if (symbolizer is PointSymbolizer) {
-				var pointSymbolizer:PointSymbolizer = (symbolizer as PointSymbolizer);
-				if (pointSymbolizer.graphic) {
-					if (pointSymbolizer.graphic is Mark) {
-						this.drawMark(pointSymbolizer.graphic as Mark);
-					}
-				}
-			}
-
+		
+		override public function draw():void{
+			var numChildren:Number = this.numChildren;
+			for(var i:Number = 0;i<numChildren;i++){
+				
+				this.removeChildAt(i);
+			} 
+			super.draw();
 		}
 
-		protected function drawMark(mark:Mark):void {
-			Rule.configureGraphicsFill(mark.fill, this);
-			Rule.configureGraphicsStroke(mark.stroke, this);
-
-
+		override protected function executeDrawing(symbolizer:Symbolizer):void {
+			
 			var x:Number;
 			var y:Number;
 			var resolution:Number = this.layer.map.resolution
@@ -74,18 +69,54 @@ package org.openscales.core.feature {
 			var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
 			x = dX + point.x / resolution;
 			y = dY - point.y / resolution;
+						
+			if (symbolizer is PointSymbolizer) {
+				var pointSymbolizer:PointSymbolizer = (symbolizer as PointSymbolizer);
+				if (pointSymbolizer.graphic) {
+					if (pointSymbolizer.graphic is WellKnownMarker) {
+						this.drawMark(pointSymbolizer.graphic as WellKnownMarker, x, y);
+					}
+					else if(pointSymbolizer.graphic is DisplayObjectMarker){
+						
+						this.drawFlashGraphic(pointSymbolizer.graphic as DisplayObjectMarker, x, y);
+					}
+				}
+			}
+		}
+		 
+		protected function drawFlashGraphic(marker:DisplayObjectMarker, x:Number, y:Number):void{
+						
+			var instance:DisplayObject = marker.instance;
+			instance.x = x;
+			instance.y = y;
+			
+			this.addChild(instance);
+		}
+
+		protected function drawMark(mark:WellKnownMarker, x:Number, y:Number):void {
+			
+			var x:Number;
+			var y:Number;
+			var resolution:Number = this.layer.map.resolution
+			var dX:int = -int(this.layer.map.layerContainer.x) + this.left;
+			var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
+			x = dX + point.x / resolution;
+			y = dY - point.y / resolution;
+			
+			mark.fill.configureGraphics(this.graphics);
+			mark.stroke.configureGraphics(this.graphics);
 
 			switch (mark.wellKnownName) {
 
-				case Mark.WKN_SQUARE:  {
+				case WellKnownMarker.WKN_SQUARE:  {
 					this.graphics.drawRect(x - (mark.size / 2), y - (mark.size / 2), mark.size, mark.size);
 					break;
 				}
-				case Mark.WKN_CIRCLE:  {
+				case WellKnownMarker.WKN_CIRCLE:  {
 					this.graphics.drawCircle(x, y, mark.size / 2);
 					break;
 				}
-				case Mark.WKN_TRIANGLE:  {
+				case WellKnownMarker.WKN_TRIANGLE:  {
 					this.graphics.moveTo(x, y - (mark.size / 2));
 					this.graphics.lineTo(x + mark.size / 2, y + mark.size / 2);
 					this.graphics.lineTo(x - mark.size / 2, y + mark.size / 2);

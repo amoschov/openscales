@@ -4,6 +4,12 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.style.marker.WellKnownMarker;
+			import org.openscales.core.style.fill.SolidFill;
+			import org.openscales.core.style.symbolizer.PointSymbolizer;
+			import org.openscales.core.style.stroke.Stroke;
+			import org.openscales.core.style.fill.SolidFill;
+			import org.openscales.core.style.Style;
 			import org.openscales.core.layer.params.ogc.WFSParams;
 			import org.openscales.core.events.LayerEvent;
 			import org.openscales.core.layer.ogc.WFS;
@@ -86,7 +92,11 @@
 					var newLayer:WFS = new WFS(typename,this.url,typename,false,true,srs,null,true,capabilities.getValue(this.list.selectedItem as String));
 					newLayer.isBaseLayer = false;
 					
+					var s:Style = Style.getDefaultSurfaceStyle();
+					s.rules[0].symbolizers.push(new PointSymbolizer(new WellKnownMarker(WellKnownMarker.WKN_CIRCLE,new SolidFill(0xFFFF00,0.5),new Stroke(0xFFFF00))));
+					newLayer.style = s;
 					this.map.addLayer(newLayer);
+					//newLayer.moveTo(this.map.extent,false);
 					addedLayers.put(this.list.selectedItem,null);
 				}
 				else {

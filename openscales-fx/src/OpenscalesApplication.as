@@ -18,7 +18,7 @@ package {
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Fill;
 	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
-	import org.openscales.core.style.symbolizer.Stroke;
+	import org.openscales.core.style.stroke.Stroke;
 
 	[SWF(width='600',height='400')]
 	public class OpenscalesApplication extends Sprite {

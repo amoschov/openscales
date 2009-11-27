@@ -1,7 +1,12 @@
-package org.openscales.core.style.symbolizer
+package org.openscales.core.style.stroke
 {
+	import flash.display.CapsStyle;
+	import flash.display.Graphics;
 	import flash.display.JointStyle;
 	
+	/**
+	 * Class defining how a stroke is rendered
+	 */
 	public class Stroke
 	{
 		/**
@@ -94,6 +99,36 @@ package org.openscales.core.style.symbolizer
 		public function set linejoin(value:String):void{
 			
 			this._linejoin = value;
+		}
+		
+		public function configureGraphics(graphics:Graphics):void{
+			
+				var linecap:String;
+				var linejoin:String;
+				switch (this.linecap) {
+					case Stroke.LINECAP_ROUND:
+						linecap = CapsStyle.ROUND;
+						break;
+					case Stroke.LINECAP_SQUARE:
+						linecap = CapsStyle.SQUARE;
+						break;
+					default:
+						linecap = CapsStyle.NONE;
+				}
+
+				switch (this.linejoin) {
+					case Stroke.LINEJOIN_ROUND:
+						linejoin = JointStyle.ROUND;
+						break;
+					case Stroke.LINEJOIN_BEVEL:
+						linejoin = JointStyle.BEVEL;
+						break;
+					default:
+						linejoin = JointStyle.MITER;
+				}
+
+				graphics.lineStyle(this.width, this.color, this.opacity, false, "normal", linecap, linejoin);
+			
 		}
 	}
 }

@@ -4,10 +4,12 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.style.symbolizer.Fill;
-			import org.openscales.core.style.symbolizer.Stroke;
-			import org.openscales.core.style.symbolizer.Stroke;
-			import org.openscales.core.style.symbolizer.Mark;
+			import org.openscales.core.style.marker.WellKnownMarker;
+			import org.openscales.core.style.fill.SolidFill;
+			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
+			import org.openscales.core.style.symbolizer.LineSymbolizer;
+			import org.openscales.core.style.stroke.Stroke;
+			import org.openscales.core.style.stroke.Stroke;
 			import org.openscales.core.style.symbolizer.PointSymbolizer;
 			import org.openscales.core.style.Style;
 			import mx.managers.PopUpManager;
@@ -41,8 +43,7 @@
 					
 					Trace.info('Layer is a WFS layer');
 					var s:Style = Style.getDefaultSurfaceStyle();
-					s.rules[0].symbolizers.push(new PointSymbolizer(new Mark(Mark.WKN_CIRCLE,new Fill(0xFFFF00,0.5),new Stroke(0xFFFF00))));
-					
+					s.rules[0].symbolizers.push(new PointSymbolizer(new WellKnownMarker(WellKnownMarker.WKN_CIRCLE,new SolidFill(0xFFFF00,0.5),new Stroke(0xFFFF00))));
 					
 					(event.layer as WFS).style=s;
 					

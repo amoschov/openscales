@@ -65,7 +65,7 @@
 		<os:WFS name="States"
 				url="http://sigma.openplans.org/geoserver/wfs"
 				typename="topp:states"
-				srs="EPSG:4326"
+				projection="EPSG:4326"
 				version="1.0.0"
 				isBaseLayer="false"
 				minZoomLevel="21"

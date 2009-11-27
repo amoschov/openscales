@@ -37,7 +37,8 @@
 			
 		<os:KML url="http://www.seeyourhotel.com/city/358.kml"
 				proxy="http://openscales.org/proxy.php?url="
-				numZoomLevels="20" />
+				numZoomLevels="20"
+				style="{Style.getDefaultCircleStyle()}" />
 		
 		<os:DragHandler />
 		<os:WheelHandler />

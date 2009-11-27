@@ -4,9 +4,8 @@ package org.openscales.core.feature {
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.MultiPoint;
 	import org.openscales.core.geometry.Point;
-	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
-	import org.openscales.core.style.symbolizer.Mark;
+	import org.openscales.core.style.marker.WellKnownMarker;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
 	import org.openscales.core.style.symbolizer.Symbolizer;
 
@@ -26,18 +25,18 @@ package org.openscales.core.feature {
 			if (symbolizer is PointSymbolizer) {
 				var pointSymbolizer:PointSymbolizer = (symbolizer as PointSymbolizer);
 				if (pointSymbolizer.graphic) {
-					if (pointSymbolizer.graphic is Mark) {
-						this.drawMark(pointSymbolizer.graphic as Mark);
+					if (pointSymbolizer.graphic is WellKnownMarker) {
+						this.drawMark(pointSymbolizer.graphic as WellKnownMarker);
 					}
 				}
 			}
 
 		}
 
-		protected function drawMark(mark:Mark):void {
+		protected function drawMark(mark:WellKnownMarker):void {
 			Trace.log("Drawing marks");
-			Rule.configureGraphicsFill(mark.fill, this);
-			Rule.configureGraphicsStroke(mark.stroke, this);
+			mark.fill.configureGraphics(this.graphics);
+			mark.stroke.configureGraphics(this.graphics);
 			// Variable declaration before for loop to improve performances
 			var p:Point = null;
 			var x:Number;
@@ -53,15 +52,15 @@ package org.openscales.core.feature {
 
 				switch (mark.wellKnownName) {
 
-					case Mark.WKN_SQUARE:  {
+					case WellKnownMarker.WKN_SQUARE:  {
 						this.graphics.drawRect(x - (mark.size / 2), y - (mark.size / 2), mark.size, mark.size);
 						break;
 					}
-					case Mark.WKN_CIRCLE:  {
+					case WellKnownMarker.WKN_CIRCLE:  {
 						this.graphics.drawCircle(x, y, mark.size);
 						break;
 					}
-					case Mark.WKN_TRIANGLE:  {
+					case WellKnownMarker.WKN_TRIANGLE:  {
 						this.graphics.moveTo(x, y - (mark.size / 2));
 						this.graphics.lineTo(x + mark.size / 2, y + mark.size / 2);
 						this.graphics.lineTo(x - mark.size / 2, y + mark.size / 2);

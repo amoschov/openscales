@@ -10,8 +10,8 @@
 			import org.openscales.core.filter.ElseFilter;
 			import org.openscales.core.filter.IntersectsFilter;
 			import styleexample.CentroidYFilter;
-			import org.openscales.core.style.symbolizer.Stroke;
-			import org.openscales.core.style.symbolizer.Fill;
+			import org.openscales.core.style.stroke.Stroke;
+			import org.openscales.core.style.fill.SolidFill;
 			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
 			import org.openscales.core.style.symbolizer.Symbolizer;
 			import org.openscales.core.handler.feature.SelectFeaturesHandler;
@@ -112,11 +112,11 @@
 			private function createStyleLatitude():void {
 				var style:Style = new Style();
 				style.name = "Latitude related coloration";
-				var fill:Fill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;
+				var fill:SolidFill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;
 
 				rule = new Rule();
 				rule.name = "Centroid Y-coordinate in [70000;75000]";
-				fill = new Fill(0x176273, .8);
+				fill = new SolidFill(0x176273, .8);
 				stroke = new Stroke(0x0A2C33, 2);
 				symbolizer = new PolygonSymbolizer(fill, stroke);
 				rule.symbolizers.push(symbolizer);
@@ -125,7 +125,7 @@
 
 				rule = new Rule();
 				rule.name = "Centroid Y-coordinate in [65000;70000]";
-				fill = new Fill(0xD8F20F, .8);
+				fill = new SolidFill(0xD8F20F, .8);
 				stroke = new Stroke(0x2D3303, 2);
 				symbolizer = new PolygonSymbolizer(fill, stroke);
 				rule.symbolizers.push(symbolizer);
@@ -134,7 +134,7 @@
 
 				rule = new Rule();
 				rule.name = "Centroid Y-coordinate out of previous ranges";
-				fill = new Fill(0x84BF7A, .8);
+				fill = new SolidFill(0x84BF7A, .8);
 				stroke = new Stroke(0x233321, 2);
 				symbolizer = new PolygonSymbolizer(fill, stroke);
 				rule.symbolizers.push(symbolizer);
@@ -149,12 +149,12 @@
 			private function createStyleGeographical():void {
 				var style:Style = new Style();
 				style.name = "Geographical coloration";
-				var fill:Fill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;
+				var fill:SolidFill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;
 				var bounds:Bounds;
 
 				rule = new Rule();
 				rule.name = "Departements of Bourgogne";
-				fill = new Fill(0x176273, .8);
+				fill = new SolidFill(0x176273, .8);
 				stroke = new Stroke(0x0A2C33, 2);
 				symbolizer = new PolygonSymbolizer(fill, stroke);
 				rule.symbolizers.push(symbolizer);
@@ -164,7 +164,7 @@
 				
 				rule = new Rule();
 				rule.name = "Other departements of France";
-				fill = new Fill(0x84BF7A, .8);
+				fill = new SolidFill(0x84BF7A, .8);
 				stroke = new Stroke(0x233321, 2);
 				symbolizer = new PolygonSymbolizer(fill, stroke);
 				rule.symbolizers.push(symbolizer);

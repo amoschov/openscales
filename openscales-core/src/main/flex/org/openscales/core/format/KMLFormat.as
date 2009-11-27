@@ -62,12 +62,10 @@ package org.openscales.core.format
 				}		
 				
 				attributes["popupContentHTML"] = htmlContent;
-				var feature:PointFeature = new PointFeature(point, attributes, Style.getDefaultPointStyle());
+				var feature:PointFeature = new PointFeature(point, attributes, null);
 				
-				features.push(feature);
-				
+				features.push(feature);				
 			} 
-			
 			
 			return features;
 		}

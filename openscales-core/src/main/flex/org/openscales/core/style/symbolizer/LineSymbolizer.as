@@ -1,6 +1,10 @@
 package org.openscales.core.style.symbolizer
 {
-	public class LineSymbolizer extends Symbolizer implements StrokeSymbolizer
+	import flash.display.Graphics;
+	
+	import org.openscales.core.style.stroke.Stroke;
+	
+	public class LineSymbolizer extends Symbolizer implements IStrokeSymbolizer
 	{
 		private var _stroke:Stroke;
 		
@@ -17,6 +21,16 @@ package org.openscales.core.style.symbolizer
 		public function set stroke(value:Stroke):void{
 			
 			this._stroke = value;
+		}
+		
+		override public function configureGraphics(graphics:Graphics):void{
+			
+			if(this._stroke){
+				this._stroke.configureGraphics(graphics);
+			}
+			else{
+				graphics.lineStyle();
+			}
 		}
 	}
 }

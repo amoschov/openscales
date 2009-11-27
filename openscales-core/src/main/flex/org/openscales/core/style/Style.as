@@ -1,11 +1,11 @@
 package org.openscales.core.style {
 
-	import org.openscales.core.style.symbolizer.Fill;
+	import org.openscales.core.style.fill.SolidFill;
+	import org.openscales.core.style.marker.WellKnownMarker;
+	import org.openscales.core.style.stroke.Stroke;
 	import org.openscales.core.style.symbolizer.LineSymbolizer;
-	import org.openscales.core.style.symbolizer.Mark;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
 	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
-	import org.openscales.core.style.symbolizer.Stroke;
 
 	/**
 	 * Style describe graphical attributes used to render vectors.
@@ -38,10 +38,10 @@ package org.openscales.core.style {
 
 		public static function getDefaultPointStyle():Style {
 
-			var fill:Fill = new Fill(0xF2620F, 0.7);
+			var fill:SolidFill = new SolidFill(0xF2620F, 0.7);
 			var stroke:Stroke = new Stroke(0xA6430A, 1);
 
-			var mark:Mark = new Mark(Mark.WKN_SQUARE, fill, stroke);
+			var mark:WellKnownMarker = new WellKnownMarker(WellKnownMarker.WKN_SQUARE, fill, stroke);
 
 			var symbolizer:PointSymbolizer = new PointSymbolizer();
 			symbolizer.graphic = mark;
@@ -58,10 +58,10 @@ package org.openscales.core.style {
 
 		public static function getDefaultCircleStyle():Style {
 
-			var fill:Fill = new Fill(0xF2620F, 0.7);
+			var fill:SolidFill = new SolidFill(0xF2620F, 0.7);
 			var stroke:Stroke = new Stroke(0xA6430A, 1);
 
-			var mark:Mark = new Mark(Mark.WKN_CIRCLE, fill, stroke);
+			var mark:WellKnownMarker = new WellKnownMarker(WellKnownMarker.WKN_CIRCLE, fill, stroke);
 
 			var symbolizer:PointSymbolizer = new PointSymbolizer();
 			symbolizer.graphic = mark;
@@ -107,7 +107,7 @@ package org.openscales.core.style {
 
 		public static function getDrawSurfaceStyle():Style {
 
-			var fill:Fill = new Fill(0xE4EDF2, 0.4);
+			var fill:SolidFill = new SolidFill(0xE4EDF2, 0.4);
 			var stroke:Stroke = new Stroke(0xE7FF33, 3);
 
 			var rule:Rule = new Rule();
@@ -122,7 +122,7 @@ package org.openscales.core.style {
 
 		public static function getDefaultSurfaceStyle():Style {
 
-			var fill1:Fill = new Fill();
+			var fill1:SolidFill = new SolidFill();
 			fill1.color = 0x99D0F2;
 			fill1.opacity = 0.4;
 

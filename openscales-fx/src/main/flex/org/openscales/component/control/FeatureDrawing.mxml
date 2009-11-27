@@ -160,7 +160,7 @@
 			private function alertDeleteHandler(event:CloseEvent):void {
                 // User click on "YES", he wants to delete all
                 if (event.detail==Alert.YES){
-                	deleteAllFeatures(); 
+                	drawLayer.removeAllFeatures(); 
                 }                  
             }
             

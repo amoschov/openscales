@@ -1,12 +1,10 @@
 package org.openscales.core.feature {
-	import flash.display.Bitmap;
-	
-	import org.openscales.core.Trace;
-	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.Point;
+	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
-	import org.openscales.core.style.symbolizer.Symbolizer;
+	import org.openscales.core.style.marker.DisplayObjectMarker;
+	import org.openscales.core.style.symbolizer.PointSymbolizer;
 
 	/**
 	 * A Marker is an graphical element localized by a LonLat
@@ -14,11 +12,21 @@ package org.openscales.core.feature {
 	 * As Marker extends Feature, markers are generally added to FeatureLayer
 	 */
 	public class Marker extends PointFeature {
+		
+		private var _graphic:DisplayObjectMarker;
+		
 		/**
 		 * Marker constructor
 		 */
 		public function Marker(geom:Point=null, data:Object=null, style:Style=null) {
 			super(geom, data, style,false);
+			
+			this._graphic = new DisplayObjectMarker(this._image,15);
+			var rule:Rule = new Rule();
+			var symbolizer:PointSymbolizer = new PointSymbolizer(this._graphic);
+			rule.symbolizers.push(symbolizer);
+			this.style = new Style();
+			this.style.rules.push(rule);
 		}
 
 		/**
@@ -31,40 +39,7 @@ package org.openscales.core.feature {
 		 * The image that will be drawn at the feature localization
 		 */
 		[Embed(source="/assets/images/marker-blue.png")]
-		private var _image:Class;
-
-		/**
-		 * Draw the marker
-		 */
-		override protected function executeDrawing(symbolizer:Symbolizer):void {
-			Trace.log("Marker.executeDrawing");
-			if (!this._drawn) {
-				// Eventually remove old stuff
-				while (this.numChildren>0) {
-					this.removeChildAt(0);
-				}
-				this.addChild(new this._image());
-				this._drawn=true;
-			}
-			var marker:Bitmap = this.getChildAt(0) as Bitmap;
-			if(marker != null) {
-				
-				var x:Number; 
-	            var y:Number;
-	            var resolution:Number = this.layer.map.resolution 
-	            var dX:int = -int(this.layer.map.layerContainer.x) + this.left; 
-	            var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
-	            x = dX + point.x / resolution; 
-                y = dY - point.y / resolution;
-                
-				this.x = x - marker.width / 2;
-				this.y = y - marker.height / 2;
-			} else {
-				Trace.log("No marker found !");
-			}
-				
-		}
-		
+		private var _image:Class;	
 		
 		public function get image():Class {
 			return this._image;

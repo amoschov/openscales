@@ -1,5 +1,7 @@
 package org.openscales.core.style.symbolizer
 {
+	import flash.display.Graphics;
+	
 	public class Symbolizer
 	{
 		private var _geometry:String;
@@ -19,6 +21,13 @@ package org.openscales.core.style.symbolizer
 		public function set geometry(value:String):void{
 			
 			this._geometry = value;
+		}
+		
+		/**
+		 * Configure the <em>graphics</em> properties of a display object 
+		 * accordind to the symbolizer's definition
+		 */
+		public function configureGraphics(graphics:Graphics):void{			
 		}
 
 	}

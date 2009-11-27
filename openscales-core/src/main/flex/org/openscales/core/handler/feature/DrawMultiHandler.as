@@ -15,9 +15,9 @@ package org.openscales.core.handler.feature
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
-	import org.openscales.core.style.symbolizer.Fill;
+	import org.openscales.core.style.fill.SolidFill;
 	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
-	import org.openscales.core.style.symbolizer.Stroke;
+	import org.openscales.core.style.stroke.Stroke;
 
 
 	/**
@@ -74,7 +74,7 @@ package org.openscales.core.handler.feature
 			// on the current style of the objects
 			var style:Style = new Style();
 			style.rules[0] = new Rule();
-			(style.rules[0] as Rule).symbolizers.push(new PolygonSymbolizer(new Fill(0x60FFE9,0.5),new Stroke(0x60FFE9)));
+			(style.rules[0] as Rule).symbolizers.push(new PolygonSymbolizer(new SolidFill(0x60FFE9,0.5),new Stroke(0x60FFE9)));
 			
 			// FixMe: if the selected features have differents typesn only the
 			// features of the type of the last one in selectedFeatures are

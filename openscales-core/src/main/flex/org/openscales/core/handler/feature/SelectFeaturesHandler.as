@@ -10,24 +10,24 @@ package org.openscales.core.handler.feature
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPointFeature;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
-	import org.openscales.core.style.symbolizer.Fill;
+	import org.openscales.core.style.fill.SolidFill;
+	import org.openscales.core.style.marker.WellKnownMarker;
+	import org.openscales.core.style.stroke.Stroke;
 	import org.openscales.core.style.symbolizer.LineSymbolizer;
-	import org.openscales.core.style.symbolizer.Mark;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
 	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
-	import org.openscales.core.style.symbolizer.Stroke;
 	import org.openscales.core.style.symbolizer.Symbolizer;
-	import org.openscales.core.handler.mouse.ClickHandler;
 	
 	
 	/**
@@ -830,16 +830,16 @@ package org.openscales.core.handler.feature
 			var opacity:Number = 0.5;
 			var borderThin:int = 2;
 			if (feature is PointFeature || feature is MultiPointFeature) {
-				var markType:String = Mark.WKN_SQUARE;
+				var markType:String = WellKnownMarker.WKN_SQUARE;
 				var markSize:Number = 12;
 				var currentMarkSymbolizer:Symbolizer = null;//feature.style.rules[0].symbolizers[0];
 				if (currentMarkSymbolizer && (currentMarkSymbolizer is PointSymbolizer)) {
-					var currentMark:Mark = (currentMarkSymbolizer as PointSymbolizer).graphic as Mark;
+					var currentMark:WellKnownMarker = (currentMarkSymbolizer as PointSymbolizer).graphic as WellKnownMarker;
 					markType = currentMark.wellKnownName;
 					markSize = currentMark.size;
 				}
 				selectedStyle = Style.getDefaultPointStyle();
-				symbolizer = new PointSymbolizer(new Mark(markType, new Fill(color,opacity), new Stroke(color,borderThin), markSize));
+				symbolizer = new PointSymbolizer(new WellKnownMarker(markType, new SolidFill(color,opacity), new Stroke(color,borderThin), markSize));
 			}
 			else if (feature is LineStringFeature || feature is MultiLineStringFeature) {
 				selectedStyle = Style.getDefaultSurfaceStyle();
@@ -847,7 +847,7 @@ package org.openscales.core.handler.feature
 			}
 			else { //if (feature is PolygonFeature || feature is MultiPolygonFeature) {
 				selectedStyle = Style.getDefaultSurfaceStyle();
-				symbolizer = new PolygonSymbolizer(new Fill(color,opacity), new Stroke(color,borderThin));
+				symbolizer = new PolygonSymbolizer(new SolidFill(color,opacity), new Stroke(color,borderThin));
 			}
 			selectedStyle.rules[0] = new Rule();
 			selectedStyle.rules[0].symbolizers.push(symbolizer);

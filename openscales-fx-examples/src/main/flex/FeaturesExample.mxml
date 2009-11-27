@@ -28,11 +28,11 @@
 			import org.openscales.core.layer.FeatureLayer;
 			import org.openscales.core.style.Rule;
 			import org.openscales.core.style.Style;
-			import org.openscales.core.style.symbolizer.Fill;
+			import org.openscales.core.style.fill.SolidFill;
 			//import org.openscales.core.style.symbolizer.LineSymbolizer;
 			//import org.openscales.core.style.symbolizer.PointSymbolizer;
 			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
-			import org.openscales.core.style.symbolizer.Stroke;
+			import org.openscales.core.style.stroke.Stroke;
 			
 			private function initMap():void {
 				Trace.useFireBugConsole = displayFirebugTrace;

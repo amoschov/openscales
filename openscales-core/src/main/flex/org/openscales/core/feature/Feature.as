@@ -409,7 +409,7 @@ package org.openscales.core.feature {
 			for (j = 0; j < symbolizersCount; j++) {
 				symbolizer = rule.symbolizers[j];
 				if (this.acceptSymbolizer(symbolizer)) {
-					Rule.setStyle(symbolizer, this);
+					symbolizer.configureGraphics(this.graphics);
 					this.executeDrawing(symbolizer);
 				}
 			}
