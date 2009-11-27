@@ -103,7 +103,8 @@ package org.openscales.core.layer {
 		public function destroy(setNewBaseLayer:Boolean=true):void {
 			if (this.map != null) {
 				map.removeEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
-				map.removeEventListener(MapEvent.MOVE, onMapMoved);
+				map.removeEventListener(MapEvent.MOVE_END, onMapMove);
+				map.removeEventListener(MapEvent.ZOOM_END, onMapZoom);
 				this.map.removeLayer(this, setNewBaseLayer);
 			}
 			this.map = null;
@@ -123,7 +124,8 @@ package org.openscales.core.layer {
 
 			if (map) {
 				map.addEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
-				map.addEventListener(MapEvent.MOVE, onMapMoved);
+				map.addEventListener(MapEvent.MOVE_END, onMapMove);
+				map.addEventListener(MapEvent.ZOOM_END, onMapZoom);
 
 				if (!this.maxExtent) {
 					this.maxExtent = this.map.maxExtent;
@@ -135,7 +137,11 @@ package org.openscales.core.layer {
 			this.redraw();
 		}
 		
-		public function onMapMoved(e:MapEvent):void {
+		public function onMapMove(e:MapEvent):void {
+			this.redraw(false);
+		}
+		
+		public function onMapZoom(e:MapEvent):void {
 			this.redraw();
 		}
 
@@ -240,7 +246,7 @@ package org.openscales.core.layer {
 		 * 
 		 * @return true if the layer was redrawn, false if not
 		 */
-		public function redraw():void {
+		public function redraw(fullRedraw:Boolean = true):void {
 			if (this.map) {
 				this.clear();
 				this.draw();

@@ -127,16 +127,7 @@ package org.openscales.core.layer
 			return loader;
 		}
 
-		/**
-		 * This function is called whenever the map is moved. All the moving
-		 * of actual 'tiles' is done by the map, but moveTo's role is to accept
-		 * a bounds and make sure the data that bounds requires is pre-loaded.
-		 *
-		 * @param bounds
-		 * @param zoomChanged
-		 * @param dragging
-		 */
-		override public function redraw():void {
+		override public function redraw(fullRedraw:Boolean = true):void {
 						
 			if (!displayed) {
 				return;
@@ -144,10 +135,8 @@ package org.openscales.core.layer
 			
 			var bounds:Bounds = this.map.extent.clone();
 			
-			//var forceReTile:Boolean = !this.grid.length;
-			//now redraw everytime all the tile
-			//the main probleme with this refactor that we don't know if we are in zoom or pan case
-			var forceReTile:Boolean = true;
+			var forceReTile:Boolean = !this.grid.length || fullRedraw;
+
 			var tilesBounds:Bounds = this.getTilesBounds();            
 
 			if (this.singleTile) {

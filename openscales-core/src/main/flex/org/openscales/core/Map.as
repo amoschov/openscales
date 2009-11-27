@@ -516,8 +516,6 @@ package org.openscales.core
 				if (zoomChanged) {
 					this._zoom = zoom;
 				}
-								
-				this.dispatchEvent(new MapEvent(MapEvent.MOVE, this));
 				
 				if (zoomChanged) {
 					this.dispatchEvent(new MapEvent(MapEvent.ZOOM_END, this));

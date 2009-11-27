@@ -99,7 +99,7 @@ package org.openscales.core.layer.ogc
 			}
 		}
 
-		override public function redraw():void {
+		override public function redraw(fullRedraw:Boolean = true):void {
 			if (!displayed) {
 				this.clear();
 				return;

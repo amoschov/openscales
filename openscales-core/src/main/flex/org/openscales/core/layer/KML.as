@@ -37,7 +37,7 @@ package org.openscales.core.layer
 	        super.destroy(setNewBaseLayer);
 	    } 
 	   
-	    override public function redraw():void {
+	    override public function redraw(fullRedraw:Boolean = true):void {
 			
 			if (!displayed) {
 				this.clear();
