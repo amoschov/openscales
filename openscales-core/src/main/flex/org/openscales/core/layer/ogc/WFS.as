@@ -87,8 +87,6 @@ package org.openscales.core.layer.ogc
 				
 			this.url = url;
 			
-			// Will draw features asynchronously when data have been received 
-			this._drawOnMove = false;    
 		}
 
 		override public function set map(map:Map):void {
@@ -101,54 +99,46 @@ package org.openscales.core.layer.ogc
 			}
 		}
 
-		/**
-		 * Method called when we pan, drag or change zoom to move the layer.
-		 *
-		 * @param bounds The new bounds delimiting the layer view
-		 * @param zoomChanged Zoom changed or not
-		 * @param dragging Drag action or not
-		 */
-		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
-			super.moveTo(bounds, zoomChanged, dragging, resizing);
-			
+		override public function redraw():void {
 			if (!displayed) {
+				this.clear();
 				return;
 			}
 	    	
-			if (zoomChanged || (! dragging)) {
-				var projectedBounds:Bounds = bounds.clone();
-				
-				if(this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
-						projectedBounds.transform(this.map.baseLayer.projection, this.projection);
-				}
-				var center:LonLat = projectedBounds.centerLonLat;
+			var projectedBounds:Bounds = this.map.extent.clone();
+			
+			if(this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
+					projectedBounds.transform(this.map.baseLayer.projection, this.projection);
+			}
+			var center:LonLat = projectedBounds.centerLonLat;
 
-				if (projectedBounds.containsBounds(this.maxExtent)) {
-					projectedBounds = this.maxExtent.clone();
-				}
-				var previousFeatureBbox:Bounds = this.featuresBbox.clone(); 
-				this.params.bbox = projectedBounds.boundsToString();
-				
-				if (this._firstRendering) {
-					this.featuresBbox = projectedBounds;
-					this.loadFeatures(this.getFullRequestString());
-					this._firstRendering = false;
+			if (projectedBounds.containsBounds(this.maxExtent)) {
+				projectedBounds = this.maxExtent.clone();
+			}
+			var previousFeatureBbox:Bounds = this.featuresBbox.clone(); 
+			this.params.bbox = projectedBounds.boundsToString();
+			
+			if (this._firstRendering) {
+				this.featuresBbox = projectedBounds;
+				this.loadFeatures(this.getFullRequestString());
+				this._firstRendering = false;
+			} else {
+				// else reuse the existing one
+				if (previousFeatureBbox.containsBounds(projectedBounds)) {
+					super.redraw();
 				} else {
-					// else reuse the existing one
-					if (previousFeatureBbox.containsBounds(projectedBounds)) {
-						this.redraw();
+					// Use GetCapabilities to know if all features have already been retreived.
+					// If they are, we don't request data again
+					if ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent")))) {
+						this.featuresBbox = projectedBounds;
+						this.loadFeatures(this.getFullRequestString());
 					} else {
-						// Use GetCapabilities to know if all features have already been retreived.
-						// If they are, we don't request data again
-						if ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent")))) {
-							this.featuresBbox = projectedBounds;
-							this.loadFeatures(this.getFullRequestString());
-						} else {
-							this.redraw();
-						}
+						super.redraw();
 					}
 				}
-			}	
+				
+			}				
+			
 		}
 		 
 		/**
@@ -241,7 +231,7 @@ package org.openscales.core.layer.ogc
 			if(_request)
 				_request.destroy();
 			this.loading = true;
-			this.redraw();
+
 			_request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security,onFailure);
 		}
 		
@@ -283,6 +273,8 @@ package org.openscales.core.layer.ogc
 			} else {
                 Trace.warning("Warning : no LAYER_LOAD_END dispatched because map event dispatcher is not defined"); 	
 			}
+			
+			this.draw();
 		}
 		
 		/**

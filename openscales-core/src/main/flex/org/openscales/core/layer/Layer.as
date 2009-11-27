@@ -8,6 +8,7 @@ package org.openscales.core.layer {
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.security.ISecurity;
 	import org.openscales.core.security.events.SecurityEvent;
 	import org.openscales.proj4as.Proj4as;
@@ -101,6 +102,8 @@ package org.openscales.core.layer {
 
 		public function destroy(setNewBaseLayer:Boolean=true):void {
 			if (this.map != null) {
+				map.removeEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
+				map.removeEventListener(MapEvent.MOVE, onMapMoved);
 				this.map.removeLayer(this, setNewBaseLayer);
 			}
 			this.map = null;
@@ -112,25 +115,6 @@ package org.openscales.core.layer {
 		}
 
 		/**
-		 * Redraws the layer.
-		 * @return true if the layer was redrawn, false if not
-		 *
-		 */
-		public function redraw():Boolean {
-			Trace.fbConsole_startGroup("Layer.redraw: "+name);
-			var redrawn:Boolean = false;
-			if (this.map) {
-
-				if (this.extent && this.inRange && this.visible) {
-					this.moveTo(this.extent, true, false);
-					redrawn = true;
-				}
-			}
-			Trace.fbConsole_endGroup();
-			return redrawn;
-		}
-
-		/**
 		 * Set the map where this layer is attached.
 		 * Here we take care to bring over any of the necessary default properties from the map.
 		 */
@@ -139,6 +123,7 @@ package org.openscales.core.layer {
 
 			if (map) {
 				map.addEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
+				map.addEventListener(MapEvent.MOVE, onMapMoved);
 
 				if (!this.maxExtent) {
 					this.maxExtent = this.map.maxExtent;
@@ -147,6 +132,10 @@ package org.openscales.core.layer {
 		}
 
 		public function onSecurityInitialized(e:SecurityEvent):void {
+			this.redraw();
+		}
+		
+		public function onMapMoved(e:MapEvent):void {
 			this.redraw();
 		}
 
@@ -219,23 +208,46 @@ package org.openscales.core.layer {
 			}
 			return px;
 		}
-
-		public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean=false, resizing:Boolean=false):void {
-			if (!displayed) {
-				this.clear();
-			}
-		}
+		
 		
 		/**
-		 * true if the layer is displayed depending on visible (user controlled) and inRange (computed by OpenScales) values 
+		 * Clear the layer graphics
 		 */
-		public function get displayed():Boolean {
-			return this.visible &&  this.inRange;
-		}
-		
 		public function clear():void {
 			
 		}
+		
+		/**
+		 * Reset layer data
+		 */
+		public function reset():void {
+			
+		}
+		
+		/**
+		 * Reset layer data
+		 */
+		protected function draw():void {
+			Trace.debug("Draw layer");
+		}
+		
+		public function get displayed():Boolean {
+			return this.visible && this.inRange && this.extent;
+		}	
+		
+		/**
+		 * Clear and draw, if needed, layer based on current data eventually retreived previously by moveTo function.
+		 * 
+		 * @return true if the layer was redrawn, false if not
+		 */
+		public function redraw():void {
+			if (this.map) {
+				this.clear();
+				this.draw();
+			}
+		}
+		
+		
 
 		public  function get inRange():Boolean {
             var inRange:Boolean = false;

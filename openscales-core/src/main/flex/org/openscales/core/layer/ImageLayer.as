@@ -46,31 +46,23 @@ package org.openscales.core.layer
 	         }
 	    } 
 	
-	    /** 
-	     * Method: moveTo
-	     * Create the tile for the image or resize it for the new resolution
-	     * 
-	     * Parameters:
-	     * bounds - {<OpenLayers.Bounds>}
-	     * zoomChanged - {Boolean}
-	     * dragging - {Boolean}
-	     */
-	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
-	        super.moveTo(bounds, zoomChanged, dragging, resizing);
+	    override public function redraw():void {
 			
 			if (!displayed) {
+				this.clear();
 				return;
 			}
 			
 	        if (! this._request) {
 				this._request = new DataRequest(this._url, onTileLoadEnd, this.proxy, this.security, onTileLoadError);
 			} else {
-				this.updateImage();
+				this.clear();
+				this.draw();
 			}
 			
 		}
 		
-		private function updateImage():void  {
+		override protected function draw():void  {
 			if(numChildren != 0) {
 				var image:DisplayObject = this.getChildAt(0);
 				image.width = this.maxExtent.width/this.map.resolution;
@@ -90,7 +82,7 @@ package org.openscales.core.layer
 			// Store image size
 			this._size = new Size(loader.width, loader.height);
 			this.addChild(loader);
-			updateImage();
+			this.draw();
 		} 
 		
 		public function onTileLoadError(event:IOErrorEvent):void

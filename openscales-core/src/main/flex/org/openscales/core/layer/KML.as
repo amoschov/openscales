@@ -37,19 +37,10 @@ package org.openscales.core.layer
 	        super.destroy(setNewBaseLayer);
 	    } 
 	   
-	    /** 
-	     * Method: moveTo
-	     * Create the tile for the image or resize it for the new resolution
-	     * 
-	     * Parameters:
-	     * bounds - {<OpenLayers.Bounds>}
-	     * zoomChanged - {Boolean}
-	     * dragging - {Boolean}
-	     */
-	    override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
-	        super.moveTo(bounds, zoomChanged, dragging, resizing);
+	    override public function redraw():void {
 			
 			if (!displayed) {
+				this.clear();
 				return;
 			}
 			
@@ -57,20 +48,9 @@ package org.openscales.core.layer
 	        	this.loading = true;
 				this._request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security, onFailure);
 			} else {
-				this.redraw();
+				this.clear();
+				this.draw();
 			}
-			
-		}
-		
-		private function updateKML():void  {
-			this.clear();
-			if (this.map.baseLayer.projection != null && this.projection != null && this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
-				this._kmlFormat.externalProj = this.projection;
-				this._kmlFormat.internalProj = this.map.baseLayer.projection;
-			}
-			
-			var features:Array = this._kmlFormat.read(this._xml) as Array;
-			this.addFeatures(features);
 			
 		}
 		
@@ -82,7 +62,16 @@ package org.openscales.core.layer
 			// To avoid errors if the server is dead
 			try {
 				this._xml = new XML(loader.data);
-				this.updateKML();
+				if (this.map.baseLayer.projection != null && this.projection != null && this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
+					this._kmlFormat.externalProj = this.projection;
+					this._kmlFormat.internalProj = this.map.baseLayer.projection;
+				}
+			
+				var features:Array = this._kmlFormat.read(this._xml) as Array;
+				this.addFeatures(features);
+				
+				this.clear();
+				this.draw();
 			}
 			catch(error:Error) {
 				Trace.error(error.message);

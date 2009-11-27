@@ -12,6 +12,9 @@ package org.openscales.core.layer
 	import org.openscales.core.style.Style;
 	import org.openscales.proj4as.ProjProjection;
 	
+	/**
+	 * Layer that display features stored as child element
+	 */
 	public class FeatureLayer extends Layer
 	{
 		private var _currentProjection:ProjProjection = null;
@@ -25,9 +28,7 @@ package org.openscales.core.layer
 		private var _selectedFeatures:Array = null;
 		
 		private var _isInEditionMode:Boolean=false;
-		
-		protected var _drawOnMove:Boolean = true;
-
+	
 		public function FeatureLayer(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
 									projection:String = null, proxy:String = null)
 		{
@@ -91,39 +92,13 @@ package org.openscales.core.layer
 		}
 
 		/**
-		 *  Reset the vector so that it once again is lined up with
-		 *   the map. Notify the renderer of the change of extent, and in the
-		 *   case of a change of zoom level (resolution), have the
-		 *   renderer redraw features.
-		 *
-		 * @param bounds
-		 * @param zoomChanged
-		 * @param dragging
-		 */
-		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
-			super.moveTo(bounds, zoomChanged, dragging,resizing);
-			
-			if (!displayed) {
-				return;
-			}
-			
-			if (_drawOnMove) {
-				this.redraw();
-			}
-		}
-
-		/**
 		 * Add Features to the layer.
 		 *
 		 * @param features array
 		 */
 		public function addFeatures(features:Array):void {
-			this.graphics.clear();
-			this.cacheAsBitmap = false;
-			
 			// Dispatch an event before the features are added
 			if(this.map){
-				
 				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, null);
 				fevt.features = features;
 				this.map.dispatchEvent(fevt);
@@ -132,7 +107,7 @@ package org.openscales.core.layer
 			for (var i:int = 0; i < features.length; i++) {
 				this.addFeature(features[i], false);
 			}
-			this.cacheAsBitmap = true;
+
 			// Dispatch an event with all the features added
 			if (this.map) {
 				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_INSERT, null);
@@ -165,9 +140,6 @@ package org.openscales.core.layer
 			// Add the feature to the layer
 			feature.layer = this;
 			this.addChild(feature);
-			if (this.map) {
-				feature.draw();
-			}
 			// If needed, dispatch an event with the feature added
 			if (dispatchFeatureEvent && this.map) {
 				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature);
@@ -175,7 +147,7 @@ package org.openscales.core.layer
 			}
 		}
 		
-		public function removeAllFeatures():void {
+		override public function reset():void {
 			var features:Array = this.features;
 			for (var i:int = 0; i < features.length; i++) {
 				this.removeFeature(features[i], false);
@@ -186,6 +158,14 @@ package org.openscales.core.layer
 				fevt.features = features;
 				this.map.dispatchEvent(fevt);
 			}
+		}
+		
+		override protected function draw():void {
+			this.cacheAsBitmap = false;
+			for each (var feature:Feature in this.features){
+				feature.draw();
+			}
+			this.cacheAsBitmap = true;
 		}
 		
 		public function removeFeatures(features:Array):void {
@@ -264,18 +244,6 @@ package org.openscales.core.layer
 		
 		public function set inEditionMode(value:Boolean):void {
 			this._isInEditionMode = value;
-		}
-		
-		override public function redraw():Boolean {
-			this.cacheAsBitmap = false;
-			this.clear();
-			if (this.visible) {
-				for each (var feature:Feature in this.features){
-					feature.draw();
-				}
-			}
-			this.cacheAsBitmap = true;
-			return true;
 		}
 
 	}

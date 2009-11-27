@@ -516,12 +516,9 @@ package org.openscales.core
 				if (zoomChanged) {
 					this._zoom = zoom;
 				}
-				
-				for each(var layer:Layer in this.layers) {
-					layer.moveTo(this.extent, zoomChanged, dragging, resizing);
-				}
-				
+								
 				this.dispatchEvent(new MapEvent(MapEvent.MOVE, this));
+				
 				if (zoomChanged) {
 					this.dispatchEvent(new MapEvent(MapEvent.ZOOM_END, this));
 				}

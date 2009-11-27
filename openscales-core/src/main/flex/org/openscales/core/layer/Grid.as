@@ -7,7 +7,6 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.maps.HashMap;
-	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.TileEvent;
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.tile.ImageTile;
@@ -137,27 +136,20 @@ package org.openscales.core.layer
 		 * @param zoomChanged
 		 * @param dragging
 		 */
-		override public function moveTo(bounds:Bounds, zoomChanged:Boolean, dragging:Boolean = false,resizing:Boolean=false):void {
-			super.moveTo(bounds, zoomChanged, dragging, resizing);
-			
+		override public function redraw():void {
+						
 			if (!displayed) {
 				return;
 			}
-			if (bounds == null) {
-				bounds = this.map.extent;
-			}
-
-			var forceReTile:Boolean = !this.grid.length || zoomChanged;
+			
+			var bounds:Bounds = this.map.extent.clone();
+			
+			var forceReTile:Boolean = !this.grid.length;
 
 			var tilesBounds:Bounds = this.getTilesBounds();            
 
 			if (this.singleTile) {
-				
-				if(zoomChanged)
-					this.clear();
-
-				if ( forceReTile || 
-					(!dragging && !tilesBounds.containsBounds(bounds))) {
+				if ( forceReTile || !tilesBounds.containsBounds(bounds)) {
 					this.initSingleTile(bounds);
 				}
 			} else {
