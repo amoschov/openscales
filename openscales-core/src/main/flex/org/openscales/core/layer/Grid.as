@@ -144,8 +144,10 @@ package org.openscales.core.layer
 			
 			var bounds:Bounds = this.map.extent.clone();
 			
-			var forceReTile:Boolean = !this.grid.length;
-
+			//var forceReTile:Boolean = !this.grid.length;
+			//now redraw everytime all the tile
+			//the main probleme with this refactor that we don't know if we are in zoom or pan case
+			var forceReTile:Boolean = true;
 			var tilesBounds:Bounds = this.getTilesBounds();            
 
 			if (this.singleTile) {
