@@ -34,6 +34,9 @@ package org.openscales.core.layer.ogc
 		}
 	    override public function get maxExtent():Bounds {
 			
+			if(!super.maxExtent)
+				return null;
+			
 			var maxExtent:Bounds =  super.maxExtent.clone();
 			if(this.isBaseLayer != true && this.reproject == true && this.projection.srsCode != this.map.baseLayer.projection.srsCode)
 			{

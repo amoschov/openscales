@@ -97,9 +97,11 @@ package org.openscales.core.layer
 		 * @param features array
 		 */
 		public function addFeatures(features:Array):void {
+			var fevt:FeatureEvent = null;
+			
 			// Dispatch an event before the features are added
 			if(this.map){
-				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, null);
+				fevt = new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, null);
 				fevt.features = features;
 				this.map.dispatchEvent(fevt);
 			}
@@ -110,7 +112,7 @@ package org.openscales.core.layer
 
 			// Dispatch an event with all the features added
 			if (this.map) {
-				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_INSERT, null);
+				fevt = new FeatureEvent(FeatureEvent.FEATURE_INSERT, null);
 				fevt.features = features;
 				this.map.dispatchEvent(fevt);
 			}
@@ -122,6 +124,7 @@ package org.openscales.core.layer
 		 * @param feature The feature to add
 		 */
 		public function addFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
+			var fevt:FeatureEvent = null;
 			// Check if the feature may be added to this layer
 			var vectorfeature:Feature = (feature as Feature);
 			if (this.geometryType &&
@@ -133,7 +136,7 @@ package org.openscales.core.layer
 			
 			// If needed dispatch a PRE_INSERT event before the feature is added
 			if (dispatchFeatureEvent && this.map) {
-				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, feature);
+				fevt = new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, feature);
 				this.map.dispatchEvent(fevt);
 			}
 			
@@ -142,7 +145,7 @@ package org.openscales.core.layer
 			this.addChild(feature);
 			// If needed, dispatch an event with the feature added
 			if (dispatchFeatureEvent && this.map) {
-				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature);
+				fevt = new FeatureEvent(FeatureEvent.FEATURE_INSERT, feature);
 				this.map.dispatchEvent(fevt);
 			}
 		}
