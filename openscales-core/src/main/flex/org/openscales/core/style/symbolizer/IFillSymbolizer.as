@@ -1,11 +1,11 @@
 package org.openscales.core.style.symbolizer
 {
-	import org.openscales.core.style.fill.SolidFill;
+	import org.openscales.core.style.fill.Fill;
 	
 	public interface IFillSymbolizer
 	{
-		function get fill():SolidFill;
+		function get fill():Fill;
 		
-		function set fill(value:SolidFill):void;	
+		function set fill(value:Fill):void;	
 	}
 }

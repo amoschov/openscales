@@ -12,6 +12,7 @@
 			import styleexample.CentroidYFilter;
 			import org.openscales.core.style.stroke.Stroke;
 			import org.openscales.core.style.fill.SolidFill;
+			import org.openscales.core.style.fill.BitmapFill;
 			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
 			import org.openscales.core.style.symbolizer.Symbolizer;
 			import org.openscales.core.handler.feature.SelectFeaturesHandler;
@@ -28,12 +29,17 @@
 			// none
 
 			[Bindable] private var styles:Array = [];
+			
+			[Bindable]
+			[Embed(source='/assets/images/pattern.png')]
+			private var Pattern:Class;
 
 			private function initMap():void {
 				Trace.useFireBugConsole = displayFirebugTrace;
 				map = fxmap.map;
 
 				// Specific initialize for this example
+				//this.createBitmapStyle();
 				this.createStyleLatitude();
 				this.generateLegend();
 			}
@@ -89,9 +95,9 @@
 			
 			private function switchStyle():void {
 				var currentStyleName:String = "";
-				if (this.styles.length > 0) {
-					currentStyleName = (this.styles[0] as Style).name;
-					this.styles.splice(0, this.styles.length);
+				if (this.styles.length > 1) {
+					currentStyleName = (this.styles[1] as Style).name;
+					this.styles.splice(1, this.styles.length);
 				}
 				switch (currentStyleName) {
 					case "Latitude related coloration":
@@ -176,6 +182,25 @@
 				this.ignGeoplaRegion.layer.redraw();
 			}
 			
+			private function createBitmapStyle():Style{
+				
+				var style:Style = new Style();
+				style.name = "France";
+				var fill:BitmapFill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;
+				var bounds:Bounds;
+
+				rule = new Rule();
+				rule.name = "France";
+				fill = new BitmapFill((new Pattern().bitmapData as BitmapData));
+				stroke = new Stroke(0xECF2BA, 6);
+				symbolizer = new PolygonSymbolizer(fill, stroke);
+				rule.symbolizers.push(symbolizer);
+				style.rules.push(rule);
+				
+				this.styles[0] = style;
+				return style;
+			}
+			
 			private function mouseOverDepartement(evt:MouseEvent):void {
 				this.ignGeoplaRegion.toolTip = "coucou" + evt.localX;
 			}
@@ -208,16 +233,25 @@
 						  y="{height-20}"
 						  displayProjection="EPSG:4326" />
 
-		<!-- Specific layers and handlers of this example -->
+		<os:WFS id="ignGeoplaFrance"
+				name="IGN - Geopla (France)"
+				url="http://openscales.org/geoserver/wfs"
+				typename="pg:ign_geopla_france"
+				projection="EPSG:2154"
+				version="1.0.0"
+				style="{this.createBitmapStyle()}"/>
 
+		<!-- Specific layers and handlers of this example -->
 		<os:WFS id="ignGeoplaRegion"
 				name="IGN - Geopla (Region)"
 				url="http://openscales.org/geoserver/wfs"
 				typename="pg:ign_geopla_dep"
 				projection="EPSG:2154"
 				version="1.0.0"
-				style="{Style.getDefaultSurfaceStyle()}"
+				style="{this.createBitmapStyle()}"
 				/>
+				
+		
 <!--				mouseOver="mouseOverDepartement(event);"
 -->
 		<os:SelectFeaturesHandler id="selectFeatureHandler"
