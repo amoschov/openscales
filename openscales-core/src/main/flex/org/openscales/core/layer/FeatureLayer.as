@@ -120,6 +120,15 @@ package org.openscales.core.layer
 		public function addFeatures(features:Array):void {
 			this.graphics.clear();
 			this.cacheAsBitmap = false;
+			
+			// Dispatch an event before the features are added
+			if(this.map){
+				
+				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, null);
+				fevt.features = features;
+				this.map.dispatchEvent(fevt);
+			}
+			
 			for (var i:int = 0; i < features.length; i++) {
 				this.addFeature(features[i], false);
 			}
@@ -146,6 +155,13 @@ package org.openscales.core.layer
 					getQualifiedClassName(this.geometryType);
 				throw throwStr;
 			}
+			
+			// If needed dispatch a PRE_INSERT event before the feature is added
+			if (dispatchFeatureEvent && this.map) {
+				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, feature);
+				this.map.dispatchEvent(fevt);
+			}
+			
 			// Add the feature to the layer
 			feature.layer = this;
 			this.addChild(feature);
