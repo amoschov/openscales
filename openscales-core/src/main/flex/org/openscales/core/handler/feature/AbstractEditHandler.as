@@ -18,6 +18,7 @@ package org.openscales.core.handler.feature
 
 	/**
 	* Abstract edit handler never instanciate this class
+	 * This class is the based class for the edition handlers
 	**/
 	public class AbstractEditHandler extends Handler implements IEditFeature
 	{
@@ -62,14 +63,12 @@ package org.openscales.core.handler.feature
 		 * */
 		public function AbstractEditHandler(map:Map = null, active:Boolean = false,layerToEdit:FeatureLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null,isUsedAlone:Boolean=true)
 		{
+			
 			if(_featureClickHandler!=null){
 				this._featureClickHandler=featureClickHandler;
 				this._featureClickHandler.map=map;
 			}
 			this._isUsedAlone=isUsedAlone;
-			if(isUsedAlone){
-				 
-			}
 			this._layerToEdit=layerToEdit;
 			super(map,active);
 			this._drawContainer=drawContainer; 
@@ -78,7 +77,7 @@ package org.openscales.core.handler.feature
 		 *@inheritDoc 
 		 * */
 		override public function set active(value:Boolean):void{
-		 	
+		 	//If the handler is used alone it activate or deactivate itself
 		 	if(_isUsedAlone){
 		 		if(value  && map!=null && !active){
 		 			this.map.addEventListener(MapEvent.MOVE_END,refreshEditedfeatures);
@@ -105,11 +104,13 @@ package org.openscales.core.handler.feature
 		 	if(_layerToEdit!=null && !_isUsedAlone){
 		 		for each(var vectorFeature:Feature in this._layerToEdit.features){	
 					if(vectorFeature.isEditable && vectorFeature.geometry is Collection){			
-						//Clone or not
+						//We display on the layer concerned by the operation the virtual vertices used for edition
 						displayVisibleVirtualVertice(vectorFeature);
 					}
 					else if(vectorFeature.isEditionFeature)
 					{
+						//We remove the edition feature to create another 						
+						//TODO Damien nda only delete the feature concerned by the operation
 						_layerToEdit.removeFeature(vectorFeature);
 						this._featureClickHandler.removeControledFeature(vectorFeature);
 						vectorFeature.destroy();
@@ -135,10 +136,9 @@ package org.openscales.core.handler.feature
 		 	if(_layerToEdit !=null)
 			{
 				{
-					this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,this._layerToEdit));
-					/* this._featureClickHandler.removeControledFeatures(); */
-					
+				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,this._layerToEdit));			
 				for each(var vectorfeature:Feature in _layerToEdit.features){
+					//The edition feature are destroyed  in order to be elective for the Garbage Collector
 					if(vectorfeature.isEditionFeature){				
 						vectorfeature.destroy();
 						this._layerToEdit.removeFeature(vectorfeature);
@@ -157,6 +157,7 @@ package org.openscales.core.handler.feature
 		 * if you want to modify at the same time different type of geometries use the LayerEditionHandler
 		 * */
 		 public function set featureClickHandler(handler:FeatureClickHandler):void{
+		 	//if the handler is used alone we associate it with a featureClickHandler
 		 	 if(handler!=null && _isUsedAlone){
 		 		this._featureClickHandler=handler;
 		 		this._featureClickHandler.click=featureClick;

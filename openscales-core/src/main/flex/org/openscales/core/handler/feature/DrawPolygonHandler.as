@@ -28,19 +28,18 @@ package org.openscales.core.handler.feature
 		 private var _polygonFeature:PolygonFeature=null;
 		
 		/**
-		 *this attribute is used to see a point the first time 
-		 * a user clicks 
+		 * @private
 		 **/
 		
 		private var _firstPointFeature:PointFeature=null;
 		
 		/**
-		 * To know if we create a new feature, or if some points are already added
-		 */
+		 *  @private 
+		 * */
 		private var _newFeature:Boolean = true;
 		
 		/**
-		 * Handler which manage the doubleClick, to finalize the polygon
+		 *@private
 		 */
 		private var _dblClickHandler:ClickHandler = new ClickHandler();
 		
@@ -55,7 +54,7 @@ package org.openscales.core.handler.feature
 		private var id:Number = 0;
 		
 		/**
-		 * The container of the temporary line
+		 * The Sprite used for drawing the temporary line
 		 */
 		private var _drawContainer:Sprite = new Sprite();
 		/**
@@ -112,7 +111,7 @@ package org.openscales.core.handler.feature
 					 lring = new LinearRing([point]);
 					 polygon = new Polygon([lring]);
 					this._firstPointPixel= new Pixel(map.mouseX ,map.mouseY);
-				//	var polygonFeature:PolygonFeature = new PolygonFeature(polygon);
+				
 					
 					this._polygonFeature=new PolygonFeature(polygon,null,null,true);
 					
@@ -156,8 +155,6 @@ package org.openscales.core.handler.feature
 		public function drawTemporaryPolygon(event:MouseEvent=null):void{
 			//position of the last point drawn
 			
-			/* if(this._firstPointPixel.x!=this._lastPointPixel.x || this._lastPointPixel.y!=this._firstPointPixel.y ){ */
-			
 			_drawContainer.graphics.clear();
 			_drawContainer.graphics.beginFill(0x00ff00,0.5);
 			_drawContainer.graphics.lineStyle(2, 0x00ff00);		
@@ -166,7 +163,6 @@ package org.openscales.core.handler.feature
 			_drawContainer.graphics.moveTo(map.mouseX, map.mouseY);
 			_drawContainer.graphics.lineTo(this._lastPointPixel.x, this._lastPointPixel.y);	
 			_drawContainer.graphics.endFill();
-		/* 	} */
 		}
 		/**
 		 * Finish the polygon
@@ -207,19 +203,29 @@ package org.openscales.core.handler.feature
 
 		//Getters and Setters
 
-
-		public function get newFeature():Boolean {
-			return _newFeature;
-		}
-
-		public function get firstPointRemoved():Boolean {
-			return _firstPointRemoved;
-		}
-
+		/**
+		 * @private
+		 * */
 		public function set newFeature(value:Boolean):void {
 			_newFeature = value;
 		}
-
+		/**
+		 * To know if we create a new feature, or if some points are already added
+		 */
+		public function get newFeature():Boolean {
+			return _newFeature;
+		}
+		
+		/**
+		 *this attribute is used to see a point the first time 
+		 * the user clicks 
+		 **/
+		public function get firstPointRemoved():Boolean {
+			return _firstPointRemoved;
+		}
+		/**
+		 * Handler which manage the doubleClick, to finalize the polygon
+		 */
 		public function get clickHandler():ClickHandler {
 			return _dblClickHandler;
 		}

@@ -24,7 +24,7 @@ package org.openscales.core.handler.feature
 	
 	/**
 	 * This handler is used to have an edition Mode 
-	 * Which allow to modify all geometries
+	 * Which allow to modify all types of geometries
 	 * */
 	public class FeatureLayerEditionHandler extends Handler
 	{
@@ -143,7 +143,9 @@ package org.openscales.core.handler.feature
 		protected function editionModeStart():Boolean{
 			if(_layerToEdit !=null)
 			{
+				//We refresh the edited feature just one time
 				var alreadystarted:Boolean=false;
+				
 					if(iEditPoint!=null) {
 						(this.iEditPoint as AbstractEditHandler).map=this.map;
 						iEditPoint.refreshEditedfeatures();

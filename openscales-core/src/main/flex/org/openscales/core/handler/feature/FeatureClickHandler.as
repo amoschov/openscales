@@ -55,15 +55,17 @@ package org.openscales.core.handler.feature
 		
 		private var _stopDrag:Function=null;
 		
-		
+		/**
+		 * Constructor
+		 * @param map:Map Map object
+		 * @param active:Boolean to activate or deactivate the handler
+		 * */
 		public function FeatureClickHandler(map:Map=null, active:Boolean=false)
 		{
 			super(map, active);
 			this._featureArray=new Array();		
 		}
-		/**
-		 * Event Management
-		 * */
+		
 		 override protected function registerListeners():void{
 			if (this.map) {
 				this.map.addEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
@@ -79,18 +81,24 @@ package org.openscales.core.handler.feature
 				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
 			}
 		}
+		//This function is used to detect a click
+		//This function provided from the old ClickHandler
 		private  function chooseClick(event:TimerEvent):void{
 			if(_clickNum == 1) {
 				if(_click != null)
 				{
+				//If the handler could treat operation on this feature
 				if(Util.indexOf(_featureArray,_featureEvent.feature)!=-1){
 				_click(_featureEvent);
 				}
 				_timer.stop();
 				_clickNum=0;
 				}
-			}    
+			} 
+			//double click   
 			else {
+				
+				//If the handler could treat operation on this feature
 				if(Util.indexOf(_featureArray,_featureEvent.feature)!=-1)
 				_doubleClick(_featureEvent);
 				_timer.stop();
@@ -121,6 +129,7 @@ package org.openscales.core.handler.feature
 		{
 			if(_isdragging){
 				var tmppx:Pixel=new Pixel(evt.feature.layer.mouseX ,evt.feature.layer.mouseY);
+				//if the mousedown point is close from the mouseUp point it's a click or a double click
 				if(Math.abs(tmppx.x-this._StartPixel.x)<this._draggingTolerance && Math.abs(tmppx.y-this._StartPixel.y)<this._draggingTolerance)
 				{
 					_isdragging=false;
@@ -139,19 +148,32 @@ package org.openscales.core.handler.feature
 				}
 			}
 			}
+			//it's a drag
 			else dragfeatureStop(this._featureEvent);		
 		}
+		//In this function we count the click to different the double click from the click
+		//This function provided from the old ClickHandler
 		private function featureClick(evt:FeatureEvent):void
 		{
 			_featureEvent = evt;
 			_clickNum++;
 			_timer.start() 
 		}
+		/**
+		 * This function is used for removing a  feature 
+		 * from the the feature click handler controled features
+		 * @param feature:Feature feature to remove
+		 * */
 		public function removeControledFeature(feature:Feature):void{
 			Util.removeItem(this._featureArray,feature);
 			feature.removeEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
 			feature.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
 		}
+		/**
+		 * This function is used for removing an array of  features 
+		 * from the the feature click handler controled features
+		 * @param features:Array array of features to remove
+		 * */
 		public function removeControledFeatures(features:Array=null):void{
 			if(features!=null){
 				for each(var feature:Feature in features){
@@ -159,25 +181,30 @@ package org.openscales.core.handler.feature
 				}
 			}
 		}
+		/**
+		 * Add a feature in the feature click handler controled features
+		 * @param feature:Feature feature to add
+		 * */
 		public function addControledFeatures(features:Array):void{
 			for each(var feature:Feature in features){
 				this.addControledFeature(feature);
 			}
 		}
+		/**
+		 * Add an array of features in the feature click handler controled features
+		 * @param features:Array array of features to add
+		 * */
 		public function addControledFeature(feature:Feature):void{
 			this._featureArray.push(feature);
 			feature.addEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
 			feature.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
 		}
-		
-		public function dragfeatureStart(event:FeatureEvent):void{
+		/**
+		 * This function is laun
+		 * */
+		private function dragfeatureStart(event:FeatureEvent):void{
 			var vectorfeature:Feature=event.feature as Feature;
 			if(Util.indexOf(_featureArray,vectorfeature)!=-1){
-				//vectorfeature.buttonMode=true;
-				
-		//		vectorfeature.startDrag();
-				//we dispatch an event for the edition point feature
-		//		if(vectorfeature.isEditionFeature)this.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_START,vectorfeature));
 			if(this._startDrag!=null) 
 				{
 				this._startDrag(event);
@@ -185,13 +212,9 @@ package org.openscales.core.handler.feature
 				}
 			}
 		}
-		public function dragfeatureStop(event:FeatureEvent):void{
+		private function dragfeatureStop(event:FeatureEvent):void{
 			var vectorfeature:Feature=event.feature as Feature;
 			if(Util.indexOf(_featureArray,_featureEvent.feature)!=-1){
-				//vectorfeature.buttonMode=false;
-				//vectorfeature.stopDrag();
-				
-		//	if(vectorfeature.isEditionFeature)this.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,vectorfeature));
 			if(this._stopDrag!=null){
 				this._stopDrag(event);
 				
@@ -208,32 +231,55 @@ package org.openscales.core.handler.feature
 				}
 			}
 		}
+		
+		//getters && setters
+		/**
+		 * double click callback function
+		 * */
 		public function get doubleclick():Function{
 			return this._doubleClick;
 		}
+		/**
+		 * @private
+		 * */
 		public function set doubleclick(value:Function):void{
 			this._doubleClick=value;
 		}
+		/**
+		 *  click callback function
+		 * */
 		public function get click():Function{
 			return this._click;
 		}
 		public function set click(value:Function):void{
 			this._click=value;
 		}
-		public function set startDrag(value:Function):void{
-			this._startDrag=value;
-		}
-		
+		/**
+		 * drag callback function
+		 * */
 		public function get startDrag():Function{
 			return this._startDrag;
 		}
-		
-		public function set stopDrag(value:Function):void{
-			this._stopDrag=value;
+		/**
+		 * @private
+		 * */
+		public function set startDrag(value:Function):void{
+			this._startDrag=value;
 		}
+		/**
+		 * drop callback function
+		 * */
+		 
 		public function get stopDrag():Function{
 			return this._stopDrag;
 		}
+		/**
+		 * @private
+		 * */
+		public function set stopDrag(value:Function):void{
+			this._stopDrag=value;
+		}
+		
 		
 	}
 }

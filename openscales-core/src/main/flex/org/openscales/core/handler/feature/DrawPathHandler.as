@@ -71,7 +71,7 @@ package org.openscales.core.handler.feature
 		{
 			super(map, active, drawLayer);
 		}
-
+		
 		override protected function registerListeners():void{
 			this._dblClickHandler.active = true;
 			this._dblClickHandler.doubleClick = this.mouseDblClick;
@@ -88,7 +88,11 @@ package org.openscales.core.handler.feature
 				this.map.removeEventListener(MapEvent.ZOOM_END, this.updateZoom);
 			}
 		}
-
+		/**
+		 * This function occured when a double click occured
+		 * during the drawing operation
+		 * @param Lastpx: The position of the double click pixel
+		 * */
 		public function mouseDblClick(Lastpx:Pixel):void {
 			this.drawFinalPath();		
 		} 
@@ -110,7 +114,7 @@ package org.openscales.core.handler.feature
 					}
 			}	
 		}
-
+		
 		protected function drawLine(event:MouseEvent=null):void{
 			
 			//we determine the point where the user clicked
@@ -125,6 +129,7 @@ package org.openscales.core.handler.feature
 			if(newFeature){
 				_lineString = new LineString([point]);
 				lastPoint = point;
+				//the current drawn linestringfeature
 				this._currentLineStringFeature= new LineStringFeature(_lineString,null, Style.getDrawLineStyle(),true);
 				drawLayer.addFeature(_currentLineStringFeature);
 				
@@ -150,7 +155,9 @@ package org.openscales.core.handler.feature
 			_drawContainer.graphics.lineTo(map.mouseX, map.mouseY);	
 			_drawContainer.graphics.endFill();	
 		}
-
+		/**
+		 * @inherited 
+		 * */
 		override public function set map(value:Map):void {
 			super.map = value;
 			this._dblClickHandler.map = value;

@@ -48,6 +48,7 @@ package org.openscales.core.handler.feature
 		 * Create a point and draw it
 		 */		
 		protected function drawPoint(event:MouseEvent):void {
+			//We draw the point
 			if (drawLayer != null)
 				Trace.log("Drawing point"); {
 				var style:Style = Style.getDefaultPointStyle();

@@ -74,19 +74,20 @@ package org.openscales.core.handler.feature
 		 	var pointUnderTheMouse:Boolean=false;
 		 	var parentgeom:Collection=null;
 		 	var vectorfeatureparent:Feature=null;
-		 
+		 	//the feature currently dragged is a real vertice
 		 	if(this._featureCurrentlyDrag!=null)parentgeom=(this._featureCurrentlyDrag as PointFeature).editionFeatureParentGeometry;
-		 		
+		 	//the feature currently dragged is a point under the mouse 	
 		 	else{
 		 		 parentgeom=EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry;
 		 		pointUnderTheMouse=true;
 		 	}
+		 	//The  Mouse button is down
 		 	if(event.buttonDown){
 		 	var point1:Point=null;
 		 	var point2:Point=null;
 			var point1Px:Pixel=null;
 			var point2Px:Pixel=null;
-			
+			//We take 2 points in the collection depends on the index of the feature currently dragged
 		 	if(indexOfFeatureCurrentlyDrag==0){
 		 		if(pointUnderTheMouse){
 		 			point1=parentgeom.componentByIndex(0) as Point;
