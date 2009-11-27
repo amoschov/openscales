@@ -37,7 +37,7 @@ package org.openscales.core.handler.feature
 		/**
 		 * This tolerance is to discern Virtual vertices from point under the mouse
 		 * */
-		 private var _detectionTolerance:Number=15;
+		 private var _detectionTolerance:Number=8;
 		
 		/**
 		 * @inheritDoc 
@@ -98,7 +98,10 @@ package org.openscales.core.handler.feature
 		 	if(_isUsedAlone)this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 		 	this._featureCurrentlyDrag=null;
-		 	EditCollectionHandler._pointUnderTheMouse=null;
+		 	if(EditCollectionHandler._pointUnderTheMouse!=null){
+		 		this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+		 		EditCollectionHandler._pointUnderTheMouse=null;
+		 	}
 		 	this._drawContainer.graphics.clear();
 		 	this._layerToEdit.redraw();
 		 }
@@ -131,6 +134,13 @@ package org.openscales.core.handler.feature
 		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
 			if(_isUsedAlone) this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
+		 	this._featureCurrentlyDrag=null;
+		 	if(EditCollectionHandler._pointUnderTheMouse!=null){
+		 		this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+		 		EditCollectionHandler._pointUnderTheMouse=null;
+		 	}
+		 	this._drawContainer.graphics.clear();
+		 	this._layerToEdit.redraw();
 		 }
 		 /**
 		 * @inheritDoc 
@@ -145,6 +155,12 @@ package org.openscales.core.handler.feature
 		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
 		 	if(_isUsedAlone) this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
+		 	this._featureCurrentlyDrag=null;
+		 	if(EditCollectionHandler._pointUnderTheMouse!=null){
+		 		this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+		 		EditCollectionHandler._pointUnderTheMouse=null;
+		 	}
+		 	this._drawContainer.graphics.clear();
 		 	this._layerToEdit.redraw();
 		 }
 		 
@@ -179,6 +195,7 @@ package org.openscales.core.handler.feature
 						this._featureClickHandler.addControledFeature(EditCollectionHandler._pointUnderTheMouse);
 						}
 						if(EditCollectionHandler._pointUnderTheMouse.layer==null) layerToEdit.addFeature(EditCollectionHandler._pointUnderTheMouse);
+						EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry=null;
 						findPointUnderMouseCollection(vectorfeature.geometry,EditCollectionHandler._pointUnderTheMouse);
 						if(EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry!=null){
 								EditCollectionHandler._pointUnderTheMouse.editionFeatureParent=vectorfeature;
