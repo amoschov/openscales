@@ -48,13 +48,13 @@
 				setOSdescription();
 				expandTree();
 				// Define the default example
-				tree.selectedIndex = 6;
+				tree.selectedIndex = 1;
 				updateSelectedExample();
 			}
 
 			private function setOSdescription():void {
 				var text:String;
-				text = "<b>OpenScales.org 1.1 Bêta - 11/07/2009</b>";
+				text = "\n<b>OpenScales.org 1.1</b>";
 				text += "\n\n\n";
 				text += "OpenScales.org is a user-friendly and fast interface designed to manipulate spatial data: geographic raster viewing, data-vector editing, management of smooth transitions between scales and positions, ...";
 				text += "\n\n";

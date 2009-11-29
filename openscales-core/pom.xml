@@ -47,7 +47,7 @@
 						<org.openscales.core.geometry>Geometries are descriptions of a geographic object</org.openscales.core.geometry>
 						<org.openscales.core.handler>Handlers react to user event to modify the map state (zoom, position). Handlers can dispatch high level events that will be used to interact with controls</org.openscales.core.handler>
 						<org.openscales.core.handler.mouse>Mouse related handlers</org.openscales.core.handler.mouse>
-						<org.openscales.core.handler.sketch>Drawing related handlers</org.openscales.core.handler.sketch>
+						<org.openscales.core.handler.feature>Feature drawing related handlers</org.openscales.core.handler.feature>
 						<org.openscales.core.handler.zoom>Zoom related handlers</org.openscales.core.handler.zoom>
 						<org.openscales.core.layer>Layers display image of vector datas on the map, usually loaded from a remote datasource. There is a lot of different kind of layers (WMS, OpenStreetMap, KML ...)</org.openscales.core.layer>
 						<org.openscales.core.layer.capabilities>Get capabilities related classes</org.openscales.core.layer.capabilities>
