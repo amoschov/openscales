@@ -17,13 +17,13 @@ package org.openscales.core.handler.feature
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
-	import org.openscales.core.handler.feature.EditCollectionHandler;
+	import org.openscales.core.handler.feature.AbstractEditCollectionHandler;
 	
 	/**
 	 * This Handler is used for Path edition 
 	 * its extends CollectionHandler
 	 * */
-	public class EditPathHandler extends EditCollectionHandler
+	public class EditPathHandler extends AbstractEditCollectionHandler
 	{
 		public function EditPathHandler(map:Map = null, active:Boolean = false,layerToEdit:FeatureLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null,isUsedAlone:Boolean=true)
 		{
@@ -78,7 +78,7 @@ package org.openscales.core.handler.feature
 		 	if(this._featureCurrentlyDrag!=null)parentgeom=(this._featureCurrentlyDrag as PointFeature).editionFeatureParentGeometry;
 		 	//the feature currently dragged is a point under the mouse 	
 		 	else{
-		 		 parentgeom=EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry;
+		 		 parentgeom=AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry;
 		 		pointUnderTheMouse=true;
 		 	}
 		 	//The  Mouse button is down

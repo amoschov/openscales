@@ -22,7 +22,7 @@ package org.openscales.core.handler.feature
 	 * don't use it use EditPathHandler if you want to edit a LineString or a MultiLineString
 	 * or EditPolygon 
 	 * */
-	public class EditCollectionHandler extends AbstractEditHandler
+	public class AbstractEditCollectionHandler extends AbstractEditHandler
 	{
 		/**
 		 * index of the feature currently drag in the geometry collection
@@ -44,7 +44,7 @@ package org.openscales.core.handler.feature
 	 	* don't use it use EditPathHandler if you want to edit a LineString or a MultiLineString
 	 	* or EditPolygon 
 	 	* */
-		public function EditCollectionHandler(map:Map=null, active:Boolean=false, layerToEdit:FeatureLayer=null, featureClickHandler:org.openscales.core.handler.feature.FeatureClickHandler=null,drawContainer:Sprite=null,isUsedAlone:Boolean=true)
+		public function AbstractEditCollectionHandler(map:Map=null, active:Boolean=false, layerToEdit:FeatureLayer=null, featureClickHandler:org.openscales.core.handler.feature.FeatureClickHandler=null,drawContainer:Sprite=null,isUsedAlone:Boolean=true)
 		{
 			super(map, active, layerToEdit, featureClickHandler,drawContainer,isUsedAlone);
 			this.featureClickHandler=featureClickHandler;
@@ -72,7 +72,7 @@ package org.openscales.core.handler.feature
 				indexOfFeatureCurrentlyDrag=IsRealVertice(vectorfeature);
 				//else it's a point under the mouse so we find the segement it belongs to
 				if(indexOfFeatureCurrentlyDrag==-1) indexOfFeatureCurrentlyDrag=vectorfeature.getSegmentsIntersection(vectorfeature.editionFeatureParentGeometry as Collection);
-				if(vectorfeature!=EditCollectionHandler._pointUnderTheMouse)this._featureCurrentlyDrag=vectorfeature;
+				if(vectorfeature!=AbstractEditCollectionHandler._pointUnderTheMouse)this._featureCurrentlyDrag=vectorfeature;
 				else this._featureCurrentlyDrag=null;
 				//we add the new mouseEvent move and remove the previous
 				this.map.addEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
@@ -102,15 +102,15 @@ package org.openscales.core.handler.feature
 		 		}
 		 	}
 		 	//we add the new mouseEvent move and remove the MouseEvent on the draw Temporary feature
-		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);	
+		 	this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);	
 		 	if(_isUsedAlone)this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 		 	this._featureCurrentlyDrag=null;
 		 	//We remove the point under the mouse if it was dragged
-		 	if(EditCollectionHandler._pointUnderTheMouse!=null){
-		 		this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-		 		this._featureClickHandler.removeControledFeature(EditCollectionHandler._pointUnderTheMouse);
-		 		EditCollectionHandler._pointUnderTheMouse=null;
+		 	if(AbstractEditCollectionHandler._pointUnderTheMouse!=null){
+		 		this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
+		 		this._featureClickHandler.removeControledFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
+		 		AbstractEditCollectionHandler._pointUnderTheMouse=null;
 		 	}
 		 	this._drawContainer.graphics.clear();
 		 	this._layerToEdit.redraw();
@@ -143,14 +143,14 @@ package org.openscales.core.handler.feature
 		 	//This is a bug we redraw the layer with new vertices for the impacted feature
 		 	//The click is considered as a bug for the moment	 	
 		 	 displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
-		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+		 	this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
 			if(_isUsedAlone) this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 		 	this._featureCurrentlyDrag=null;
 		 	//we remove it
-		 	if(EditCollectionHandler._pointUnderTheMouse!=null){
-		 		this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-		 		EditCollectionHandler._pointUnderTheMouse=null;
+		 	if(AbstractEditCollectionHandler._pointUnderTheMouse!=null){
+		 		this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
+		 		AbstractEditCollectionHandler._pointUnderTheMouse=null;
 		 	}
 		 	this._drawContainer.graphics.clear();
 		 	this._layerToEdit.redraw();
@@ -168,13 +168,13 @@ package org.openscales.core.handler.feature
 		 		 displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
 		 	}
 		 	//we delete the point under the mouse 
-		 	this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
+		 	this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
 		 	if(_isUsedAlone) this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 		 	this._featureCurrentlyDrag=null;
-		 	if(EditCollectionHandler._pointUnderTheMouse!=null){
-		 		this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-		 		EditCollectionHandler._pointUnderTheMouse=null;
+		 	if(AbstractEditCollectionHandler._pointUnderTheMouse!=null){
+		 		this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
+		 		AbstractEditCollectionHandler._pointUnderTheMouse=null;
 		 	}
 		 	this._drawContainer.graphics.clear();
 		 	this._layerToEdit.redraw();
@@ -203,21 +203,21 @@ package org.openscales.core.handler.feature
 						layerToEdit.map.buttonMode=true;
 						var lonlat:LonLat=this.map.getLonLatFromLayerPx(px);
 						var PointGeomUnderTheMouse:Point=new Point(lonlat.lon,lonlat.lat);	
-						if(EditCollectionHandler._pointUnderTheMouse!=null)
-						EditCollectionHandler._pointUnderTheMouse.geometry=PointGeomUnderTheMouse;
+						if(AbstractEditCollectionHandler._pointUnderTheMouse!=null)
+						AbstractEditCollectionHandler._pointUnderTheMouse.geometry=PointGeomUnderTheMouse;
 						else {
-						EditCollectionHandler._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse,null,Style.getDefaultCircleStyle(),true);
-						this._featureClickHandler.addControledFeature(EditCollectionHandler._pointUnderTheMouse);
+						AbstractEditCollectionHandler._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse,null,Style.getDefaultCircleStyle(),true);
+						this._featureClickHandler.addControledFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
 						}
-						if(EditCollectionHandler._pointUnderTheMouse.layer==null) layerToEdit.addFeature(EditCollectionHandler._pointUnderTheMouse);
-						EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry=null;
+						if(AbstractEditCollectionHandler._pointUnderTheMouse.layer==null) layerToEdit.addFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
+						AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry=null;
 						//We find the segment the point under the mouse belongs to
-							findPointUnderMouseCollection(vectorfeature.geometry,EditCollectionHandler._pointUnderTheMouse);
-						if(EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry!=null){
-								EditCollectionHandler._pointUnderTheMouse.editionFeatureParent=vectorfeature;
-								EditCollectionHandler._pointUnderTheMouse.visible=true;
+							findPointUnderMouseCollection(vectorfeature.geometry,AbstractEditCollectionHandler._pointUnderTheMouse);
+						if(AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry!=null){
+								AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParent=vectorfeature;
+								AbstractEditCollectionHandler._pointUnderTheMouse.visible=true;
 						}
-						else EditCollectionHandler._pointUnderTheMouse.visible=false;
+						else AbstractEditCollectionHandler._pointUnderTheMouse.visible=false;
 						layerToEdit.redraw();	
 					}
 					else layerToEdit.map.buttonMode=false;

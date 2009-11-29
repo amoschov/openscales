@@ -2,33 +2,37 @@
 <control:Control xmlns:control="org.openscales.component.control.*"
 	xmlns:mx="http://www.adobe.com/2006/mxml"
 	creationComplete="initFeatureDrawing();">
+	
+	<!-- TODO : drawing handlers are too much tighly coupled with controls, this should be refactor to make drawing
+	     integration much simpler -->	
+	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.handler.feature.FeatureLayerEditionHandler;
-			import org.openscales.core.handler.feature.SelectFeaturesHandler;
-			import org.openscales.core.geometry.Polygon;
-			import org.openscales.core.geometry.LinearRing;
-			import org.openscales.core.feature.PolygonFeature;
-			import org.openscales.core.feature.PointFeature;
+			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
 			import org.openscales.core.basetypes.LonLat;
 			import org.openscales.core.basetypes.Pixel;
-			import org.openscales.core.feature.LineStringFeature;
-			import org.openscales.core.geometry.LineString;
-			import mx.effects.easing.Linear;
-			import org.openscales.core.Trace;
-			import org.openscales.core.events.DrawingEvent;
-			import org.openscales.core.feature.Feature;
-			import org.openscales.core.handler.mouse.DragHandler;
 			import org.openscales.core.handler.Handler;
-			import mx.controls.Alert;
+			import org.openscales.core.handler.mouse.DragHandler;
+			import org.openscales.core.handler.feature.FeatureLayerEditionHandler;
+			import org.openscales.core.handler.feature.SelectFeaturesHandler;
 			import org.openscales.core.handler.feature.DrawMultiHandler;
 			import org.openscales.core.handler.feature.DrawPathHandler;
 			import org.openscales.core.handler.feature.DrawPolygonHandler;
 			import org.openscales.core.handler.feature.DrawPointHandler;
+			import org.openscales.core.geometry.LineString;
+			import org.openscales.core.geometry.Polygon;
+			import org.openscales.core.geometry.LinearRing;
+			import org.openscales.core.feature.Feature;
+			import org.openscales.core.feature.PolygonFeature;
+			import org.openscales.core.feature.PointFeature;
+			import org.openscales.core.feature.LineStringFeature;
+			import org.openscales.core.events.DrawingEvent;
 			import org.openscales.core.layer.FeatureLayer;
-			import org.openscales.core.Map;
 			import org.openscales.core.style.Style;
 			import org.openscales.core.events.FeatureEvent;
+			
+			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.ItemClickEvent;
 			
@@ -392,12 +396,6 @@
 			}		
 		]]>
 	</mx:Script>
-	
-	<!--mx:Glow id="glowImage" duration="1000"
-		alphaFrom="1" alphaTo="1"
-		blurXFrom="0.0" blurXTo="15.0"
-		blurYFrom="0.0" blurYTo="15.0"
-		color="0xC0FF0C" /-->
 	
 	<mx:VBox horizontalAlign="center">
 		

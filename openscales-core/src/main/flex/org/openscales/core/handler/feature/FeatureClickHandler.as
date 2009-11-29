@@ -31,7 +31,7 @@ package org.openscales.core.handler.feature
 		 */
 		private var _timer:Timer = new Timer(250,1);
 		
-		private var _StartPixel:Pixel=null;
+		private var _startPixel:Pixel=null;
 		/**
 		 * callback function oneclick(evt:FeatureEvent):void
 		 */
@@ -112,7 +112,7 @@ package org.openscales.core.handler.feature
 		 protected function mouseDown(evt:FeatureEvent):void
 		{
 			var vectorFeature:Feature=evt.feature as Feature;
-			if(vectorFeature!=null)this._StartPixel=new Pixel(evt.feature.layer.mouseX ,evt.feature.layer.mouseY);
+			if(vectorFeature!=null)this._startPixel=new Pixel(evt.feature.layer.mouseX ,evt.feature.layer.mouseY);
 			this._featureEvent=evt;
 			//This function is used in  the case mouse is not on the feature
 			//and the drop function is not launched
@@ -130,18 +130,18 @@ package org.openscales.core.handler.feature
 			if(_isdragging){
 				var tmppx:Pixel=new Pixel(evt.feature.layer.mouseX ,evt.feature.layer.mouseY);
 				//if the mousedown point is close from the mouseUp point it's a click or a double click
-				if(Math.abs(tmppx.x-this._StartPixel.x)<this._draggingTolerance && Math.abs(tmppx.y-this._StartPixel.y)<this._draggingTolerance)
+				if(Math.abs(tmppx.x-this._startPixel.x)<this._draggingTolerance && Math.abs(tmppx.y-this._startPixel.y)<this._draggingTolerance)
 				{
 					_isdragging=false;
 				}
 			}
 			if(!_isdragging)
 			{
-			if(this._StartPixel!=null){
+			if(this._startPixel!=null){
 				//dx and dy variables are use to know if there was a drag or a click
 				var vectorFeature:Feature=evt.feature as Feature;
-				var dx :Number = Math.abs(this._StartPixel.x-evt.feature.layer.mouseX);
-				var dy :Number = Math.abs(this._StartPixel.y-evt.feature.layer.mouseY);
+				var dx :Number = Math.abs(this._startPixel.x-evt.feature.layer.mouseX);
+				var dy :Number = Math.abs(this._startPixel.y-evt.feature.layer.mouseY);
 				if(dx<=this._tolerance && dy<=this._tolerance)
 				{
 					this.featureClick(evt);

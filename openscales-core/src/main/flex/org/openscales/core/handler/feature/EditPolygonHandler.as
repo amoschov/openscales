@@ -17,13 +17,13 @@ package org.openscales.core.handler.feature
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
-	import org.openscales.core.handler.feature.EditCollectionHandler;
+	import org.openscales.core.handler.feature.AbstractEditCollectionHandler;
 
 	/**
 	 * This Handler is used for polygon edition 
 	 * its extends CollectionHandler
 	 * */
-	public class EditPolygonHandler extends EditCollectionHandler
+	public class EditPolygonHandler extends AbstractEditCollectionHandler
 	{
 		public function EditPolygonHandler(map:Map = null, active:Boolean = false,layerToEdit:FeatureLayer=null,featureClickHandler:FeatureClickHandler=null,drawContainer:Sprite=null,isUsedAlone:Boolean=true)
 		{
@@ -76,7 +76,7 @@ package org.openscales.core.handler.feature
 		 	//We tests if it's the point under the mouse or not
 		 	if(this._featureCurrentlyDrag!=null) parentgeom=(this._featureCurrentlyDrag as PointFeature).editionFeatureParentGeometry;
 		 	else{
-		 		parentgeom=EditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry;
+		 		parentgeom=AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry;
 		 		pointUnderTheMouse=true;
 		 	}
 		 	//The mouse's button  is always down 

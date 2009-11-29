@@ -14,7 +14,7 @@ package org.openscales.core.handler.feature
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.feature.AbstractEditHandler;
-	import org.openscales.core.handler.feature.EditCollectionHandler;
+	import org.openscales.core.handler.feature.AbstractEditCollectionHandler;
 	import org.openscales.core.handler.feature.EditPathHandler;
 	import org.openscales.core.handler.feature.EditPointHandler;
 	import org.openscales.core.handler.feature.EditPolygonHandler;
@@ -191,10 +191,10 @@ package org.openscales.core.handler.feature
 				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,_layerToEdit));
 				
 			}
-			this._layerToEdit.removeFeature(EditCollectionHandler._pointUnderTheMouse);
-			if(EditCollectionHandler._pointUnderTheMouse!=null){
-				EditCollectionHandler._pointUnderTheMouse.destroy();
-				EditCollectionHandler._pointUnderTheMouse=null;
+			this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
+			if(AbstractEditCollectionHandler._pointUnderTheMouse!=null){
+				AbstractEditCollectionHandler._pointUnderTheMouse.destroy();
+				AbstractEditCollectionHandler._pointUnderTheMouse=null;
 			}
 			return true;
 		}
@@ -205,9 +205,9 @@ package org.openscales.core.handler.feature
 		 private function createPointUndertheMouse(evt:FeatureEvent):void{
 		  	 var vectorfeature:Feature=(evt.feature) as Feature;
 		  //The Vertice belongs to a polygon
-					 if	((vectorfeature is PolygonFeature ||  vectorfeature is MultiPolygonFeature) && iEditPolygon!=null) (iEditPolygon as EditCollectionHandler).createPointUndertheMouse(evt);
+					 if	((vectorfeature is PolygonFeature ||  vectorfeature is MultiPolygonFeature) && iEditPolygon!=null) (iEditPolygon as AbstractEditCollectionHandler).createPointUndertheMouse(evt);
 				//The vertice belongs to a line
-					else if((vectorfeature is LineStringFeature ||  vectorfeature is MultiLineStringFeature) && iEditPath!=null) (iEditPath as EditCollectionHandler).createPointUndertheMouse(evt);
+					else if((vectorfeature is LineStringFeature ||  vectorfeature is MultiLineStringFeature) && iEditPath!=null) (iEditPath as AbstractEditCollectionHandler).createPointUndertheMouse(evt);
 		 }
 		 
 		private  function refreshEditedfeatures(event:MapEvent=null):void{

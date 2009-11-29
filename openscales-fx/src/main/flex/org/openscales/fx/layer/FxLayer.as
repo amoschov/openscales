@@ -159,7 +159,7 @@ package org.openscales.fx.layer
 	  }
 	  
 	  override public function get alpha():Number {
-		  var value:Number = null;
+		  var value:Number = NaN;
 		  if(layer)
 			  value = this.layer.alpha;
 		  return value;
