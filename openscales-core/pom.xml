@@ -36,9 +36,12 @@
 						<org.openscales.core>Root package for OpenScales core module</org.openscales.core>
 						<org.openscales.core.basetypes>Base types widely used in OpenScales like Bounds or LonLat</org.openscales.core.basetypes>
 						<org.openscales.core.basetypes.maps>Hashmap implementation since none is provided in ActionScript3</org.openscales.core.basetypes.maps>
+						<org.openscales.core.configuration>Ability to configure an OpenScales map from a XML configuration file passed as parameter. This is especially useful because OpenScales is by nature compiled to a statical SWF file. This xml configuration file make it possible to fully customize the map at runtime.</org.openscales.core.configuration>
 						<org.openscales.core.control>Controls are graphical component added on the map.</org.openscales.core.control>
 						<org.openscales.core.control.ui>Reusable control sub components</org.openscales.core.control.ui>
+						<org.openscales.core.cursor>OpenScales custom cursors</org.openscales.core.cursor>
 						<org.openscales.core.events>OpenScales events are strongly typed, dispatched using the map as an event bus. They have a name, and usually carry the context of the event.</org.openscales.core.events>
+						<org.openscales.core.filter>Feature filter used to define feature styles</org.openscales.core.filter>
 						<org.openscales.core.feature>Features are a geolocalized graphical element</org.openscales.core.feature>
 						<org.openscales.core.format>Protocol or file format implentations</org.openscales.core.format>
 						<org.openscales.core.geometry>Geometries are descriptions of a geographic object</org.openscales.core.geometry>
@@ -57,6 +60,11 @@
 						<org.openscales.core.security>Security management for intended to access to protected GIS layers. Maybe used with WSS, IGN GeoDRM or basic authentication</org.openscales.core.security>
 						<org.openscales.core.security.events>Security events</org.openscales.core.security.events>
 						<org.openscales.core.security.ign>IGN GeoRM Security implementation</org.openscales.core.security.ign>
+						<org.openscales.core.style>Style describe graphical attributes used to render vectors</org.openscales.core.style>
+						<org.openscales.core.style.fill>Different ways to fill a feature (color, texture ...)</org.openscales.core.style.fill>
+						<org.openscales.core.style.marker>Markers define point feature rendering</org.openscales.core.style.marker>
+						<org.openscales.core.style.stroke>Different way to draw feature strokes</org.openscales.core.style.stroke>
+						<org.openscales.core.style.symbolizer>For a specific rule, how to render this feature</org.openscales.core.style.symbolizer>
 						<org.openscales.core.tile>Tile (raster or vector) management</org.openscales.core.tile>
 					</packageDescriptions>
 				</configuration>
