@@ -84,7 +84,6 @@ package org.openscales.core.layer {
 					nominalResolution = Proj4as.unit_transform(new ProjProjection(Layer.DEFAULT_SRS_CODE), this.projection, Layer.DEFAULT_NOMINAL_RESOLUTION);
 				}
 			}
-//FixMe: be careful, the nominalResolution specified may be in a different SRS than the projection's one !
 			// numZoomLevels must be strictly greater than zero
 			if (numZoomLevels == 0) {
 				numZoomLevels = 1;
@@ -105,14 +104,17 @@ package org.openscales.core.layer {
 				map.removeEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
 				map.removeEventListener(MapEvent.MOVE_END, onMapMove);
 				map.removeEventListener(MapEvent.ZOOM_END, onMapZoom);
+				map.removeEventListener(MapEvent.RESIZE, onMapResize);
 				this.map.removeLayer(this, setNewBaseLayer);
 			}
 			this.map = null;
 
 		}
 
-		public function onMapResize():void {
-
+		public function onMapResize(e:MapEvent):void {
+			if(this.visible) {
+				this.redraw();
+			}
 		}
 
 		/**
@@ -126,6 +128,7 @@ package org.openscales.core.layer {
 				map.addEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
 				map.addEventListener(MapEvent.MOVE_END, onMapMove);
 				map.addEventListener(MapEvent.ZOOM_END, onMapZoom);
+				map.addEventListener(MapEvent.RESIZE, onMapResize);
 
 				if (!this.maxExtent) {
 					this.maxExtent = this.map.maxExtent;
@@ -295,9 +298,8 @@ package org.openscales.core.layer {
 
 		/**
 		 * @return Return the minimum zoom level allowed to display the layer.
-		 * If the layer is attached to a map, the level returned is the level
-		 * of the corresponding resolution in the array of the resolutions of
-		 * the current base layer of the map.
+		 * The level returned does not take in account map or baselayer
+		 * information, see inRange for that. 
 		 */
 		public function get minZoomLevel():Number {
 			var level:Number = this._minZoomLevel;
@@ -305,21 +307,7 @@ package org.openscales.core.layer {
 			if (isNaN(level)) {
 				// By default the minimum zoom level is the first level
 				level = 0;
-			}
-			// Find the zoom level of the map corresponding to the resolution of the layer
-			/* if (this.map && this.resolutions) {
-				var i:int = 0;
-				while ((i < this.map.baseLayer.resolutions.length) && (this.map.baseLayer.resolutions[i] > Proj4as.unit_transform(this.projection, this.map.baseLayer.projection, this.resolutions[level]))) {
-					i++;
-				}
-				level = i;
-					// "level" may be out of the range of the valid zoom levels of
-					// the current map defined by the current base layer.
-					// In this case the layer must not be displayed.
-					// The layer would be displayed when a base layer will define a
-					// larger range of resolutions for the map. 
-			} */
-			// Return the zoom level depending on the current configuration of the map
+			}			
 			return level;
 		}
 
@@ -339,9 +327,8 @@ package org.openscales.core.layer {
 
 		/**
 		 * @return Return the maximum zoom level allowed to display the layer.
-		 * If the layer is attached to a map, the level returned is the level
-		 * of the corresponding resolution in the array of the resolutions of
-		 * the current base layer of the map.
+		 * The level returned does not take in account map or baselayer
+		 * information, see inRange for that. 
 		 */
 		public function get maxZoomLevel():Number {
 			var level:Number = this._maxZoomLevel;
@@ -350,26 +337,10 @@ package org.openscales.core.layer {
 				// By default the maximum zoom level is the last level
 				if (this.resolutions) {
 					level = this.resolutions.length - 1;
-				} else if (this.map) {
-					level = this.map.baseLayer.resolutions.length - 1;
 				} else {
 					level = 0;
 				}
 			}
-			// Find the zoom level of the map corresponding to the resolution of the layer
-			/* if (this.map && this.resolutions) {
-				var i:int = this.map.baseLayer.resolutions.length - 1;
-				while ((i >= 0) && (this.map.baseLayer.resolutions[i] < Proj4as.unit_transform(this.projection, this.map.baseLayer.projection, this.resolutions[level]))) {
-					i--;
-				}
-				level = i;
-					// "level" may be out of the range of the valid zoom levels of
-					// the current map defined by the current base layer.
-					// In this case the layer must not be displayed.
-					// The layer would be displayed when a base layer will define a
-					// larger range of resolutions for the map. 
-			}
-			// Return the zoom level depending on the current configuration of the map */
 			return level;
 		}
 

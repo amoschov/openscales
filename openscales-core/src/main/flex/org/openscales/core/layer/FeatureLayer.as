@@ -8,6 +8,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.style.Style;
 	import org.openscales.proj4as.ProjProjection;
@@ -85,10 +86,6 @@ package org.openscales.core.layer
 				this.width = map.width;
 				this.height = map.height;
 			}
-		}
-
-		override public function onMapResize():void {
-			this.redraw();
 		}
 
 		/**

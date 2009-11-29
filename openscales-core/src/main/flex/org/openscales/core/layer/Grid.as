@@ -8,6 +8,7 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.events.TileEvent;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
@@ -433,6 +434,8 @@ package org.openscales.core.layer
 							tile.draw();
 						}
 					}
+import org.openscales.core.events.MapEvent;
+
 				}
 			}
 		}
@@ -528,17 +531,6 @@ package org.openscales.core.layer
 					tile.destroy();
 				}
 			}
-		}
-
-		/**
-		 * For singleTile layers, this will set a new tile size according to the
-		 * dimensions of the map pane.
-		 */
-		override public function onMapResize():void {
-			if (this.singleTile) {
-				//this.clearGrid();
-				this.initSingleTile(this.map.extent);
-			}			
 		}
 
 		/**
