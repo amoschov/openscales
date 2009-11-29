@@ -152,6 +152,18 @@ package org.openscales.fx.layer
 	  public function set projection(value:String):void {
           this._projection = value;
       }
+	  
+	  override public function set alpha(value:Number):void {
+		  if(layer)
+		  	this.layer.alpha = value;
+	  }
+	  
+	  override public function get alpha():Number {
+		  var value:Number = null;
+		  if(layer)
+			  value = this.layer.alpha;
+		  return value;
+	  }
 
   }
 }

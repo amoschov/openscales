@@ -96,7 +96,6 @@
 					s.rules[0].symbolizers.push(new PointSymbolizer(new WellKnownMarker(WellKnownMarker.WKN_CIRCLE,new SolidFill(0xFFFF00,0.5),new Stroke(0xFFFF00))));
 					newLayer.style = s;
 					this.map.addLayer(newLayer);
-					//newLayer.moveTo(this.map.extent,false);
 					addedLayers.put(this.list.selectedItem,null);
 				}
 				else {

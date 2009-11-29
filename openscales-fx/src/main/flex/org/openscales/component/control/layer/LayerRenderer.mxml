@@ -106,7 +106,7 @@
        * @param value
        */
        override public function set data(value:Object):void {
-                super.data = value;
+			super.data = value;
 				
         if((this.layer != null) && (displayControl != null))
         {
@@ -133,14 +133,6 @@
           }
           else
           {
-            /* var checkBox:CheckBox = new CheckBox();
-            checkBox.id = this.layer.name;
-            checkBox.percentHeight = 100;
-            checkBox.percentWidth = 100;
-            checkBox.label = this.layer.name;
-             checkBox.selected = this.layer.visible;
-             checkBox.addEventListener(MouseEvent.CLICK,layerVisible); 
-            displayControl.addChild(checkBox); */
             labelLayer = new Label();
             labelLayer.text = this.layer.name;
             labelLayer.percentWidth = 100;
@@ -167,12 +159,6 @@
 
           }
 
-          // TODO Refactor this, layer added should already have its extent property set
-           /*if (getQualifiedClassName(data) == "org.openscales.core.layer.ogc::WFS" &&	(data as WFS).capabilities != null) {
-             zoomButton.visible = true;
-             deleteButton.visible = true;
-
-          }*/
          }
 
       }
