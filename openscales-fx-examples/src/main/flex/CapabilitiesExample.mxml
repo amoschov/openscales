@@ -69,7 +69,7 @@
 		]]>
 	</mx:Script>
 		
-	<os:Map id="fxmap" width="100%" height="100%" zoom="2" centerLonLat="4.833,45.767">
+	<os:Map id="fxmap" width="100%" height="100%" zoom="5" centerLonLat="4.833,45.767">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
 		
