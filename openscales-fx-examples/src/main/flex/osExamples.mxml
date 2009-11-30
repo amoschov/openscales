@@ -37,7 +37,7 @@
 			 * Boolean defining if the logs must be displayed or not
 			 */
 			[Bindable] private var displayTrace:Boolean = false;
-			[Bindable] private var displayFirebugTrace:Boolean = true;
+			[Bindable] private var displayFirebugTrace:Boolean = false;
 
 			[Bindable]
 			private var selectedNode:XML = null;
@@ -165,7 +165,7 @@
 							 label="Image Layer"
 							 description=""/>
 					<example viewStack="kml"
-							 label="KML Layer"
+							 label="KML Layer and popups"
 							 description=""/>
 				</category>
 
@@ -184,7 +184,7 @@
 					  width="100%"
 					  height="100%">
 			<mx:Panel id="home"
-					  title="OpenScales.org 1.0 bêta - september 14th 2009">
+					  title="OpenScales.org 1.1">
 				<!-- also needed because the view of index 0 is always loaded first -->
 				<mx:VBox horizontalAlign="center"
 						 width="100%"
@@ -224,14 +224,14 @@
 								displayTrace="{displayTrace}"/>
 			<os:InfoExample id="informations"
 							displayTrace="{displayTrace}"/>
-			<os:OpenStreetMap id="reprojectionAndQuery"/>
+			<os:OpenStreetMap id="reprojectionAndQuery" displayTrace="{displayTrace}"/>
 
 			<!-- Protocols -->
 			<os:WMSCExample id="wmsc"
 							displayTrace="{displayTrace}"/>
-			<os:WMSExample id="wms"/>
-			<os:ImageLayerExample id="imageLayer"/>
-			<os:KMLExample id="kml"/>
+			<os:WMSExample id="wms" displayTrace="{displayTrace}" />
+			<os:ImageLayerExample id="imageLayer" displayTrace="{displayTrace}" />
+			<os:KMLExample id="kml" displayTrace="{displayTrace}"/>
 
 			<!-- Security -->
 			<os:SecurityMapExample id="security"
