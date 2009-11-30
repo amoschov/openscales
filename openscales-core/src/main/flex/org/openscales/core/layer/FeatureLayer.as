@@ -18,7 +18,11 @@ package org.openscales.core.layer
 	 */
 	public class FeatureLayer extends Layer
 	{
-		private var _currentProjection:ProjProjection = null;
+		/**
+		 * displayProjection is the projection of feature on the map
+		 * for performance reason ,the feature of layer are reprojected 
+		 */
+		private var _displayProjection:ProjProjection = null;
 
 		private var _featuresBbox:Bounds = null;
 
@@ -34,7 +38,7 @@ package org.openscales.core.layer
 									projection:String = null, proxy:String = null)
 		{
 			super(name, isBaseLayer, visible, projection, proxy);
-			this._currentProjection = this.projection.clone();
+			this._displayProjection = this.projection.clone();
 			this.featuresBbox = new Bounds();
 			this.style = new Style();
 			//this.geometryType = ;
@@ -44,7 +48,7 @@ package org.openscales.core.layer
 		override public function destroy(setNewBaseLayer:Boolean = true):void {
 			super.destroy();  
 			this.clear();
-			this._currentProjection = null;
+			this._displayProjection = null;
 			this.style = null;
 			this.geometryType = null;
 			this.selectedFeatures = null;
@@ -63,14 +67,18 @@ package org.openscales.core.layer
 		}
 		
 		private function updateCurrentProjection(evt:LayerEvent = null):void {
-			if ((this.features.length > 0) && (this.map)
-				&& (this._currentProjection.srsCode != this.map.baseLayer.projection.srsCode)) {
-				for each (var f:Feature in this.features) {
-					f.geometry.transform(this._currentProjection, this.map.baseLayer.projection);
+			if ((this.map) && (this._displayProjection.srsCode != this.map.baseLayer.projection.srsCode)) {
+				if(this.features.length > 0){	
+				  for each (var f:Feature in this.features) {
+					f.geometry.transform(this._displayProjection, this.map.baseLayer.projection);
+				  }
+				  this._displayProjection = this.map.baseLayer.projection.clone();
+				  this.redraw();
 				}
-				this._currentProjection = this.map.baseLayer.projection.clone();
-				this.redraw();
-			}
+				else{
+					this._displayProjection = this.map.baseLayer.projection.clone();
+				}
+           }
 		}
 
 		override public function set map(map:Map):void {

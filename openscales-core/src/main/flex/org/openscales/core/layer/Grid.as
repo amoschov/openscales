@@ -434,8 +434,6 @@ package org.openscales.core.layer
 							tile.draw();
 						}
 					}
-import org.openscales.core.events.MapEvent;
-
 				}
 			}
 		}
