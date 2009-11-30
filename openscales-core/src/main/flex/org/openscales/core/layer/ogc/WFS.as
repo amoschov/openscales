@@ -131,6 +131,8 @@ package org.openscales.core.layer.ogc
 					// If they are, we don't request data again
 					if ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent")))) {
 						this.featuresBbox = projectedBounds;
+						this.clear();
+						this.draw();
 						this.loadFeatures(this.getFullRequestString());
 					} else {
 						super.redraw();
@@ -255,8 +257,6 @@ package org.openscales.core.layer.ogc
 			catch(error:Error) {
 				Trace.error(error.message);
 			}
-			
-			this.clear();
 			var gml:GMLFormat = new GMLFormat(this.extractAttributes);
 			if (this.map.baseLayer.projection != null && this.projection != null && this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
 				gml.externalProj = this.projection;
@@ -265,7 +265,7 @@ package org.openscales.core.layer.ogc
 			
 			// TODO : Issue 217: Optimize WFS by drawing feature as soon as they are parsed
 			var features:Array = gml.read(doc) as Array;
-			
+			this.reset();
 			this.addFeatures(features);
 			
 			if (map) {
