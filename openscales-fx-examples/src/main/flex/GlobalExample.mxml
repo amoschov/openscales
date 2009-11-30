@@ -72,7 +72,7 @@
 
 	<os:WidgetWindow x="10"
 					 y="10"
-					 width="140"
+					 width="160"
 					 widgetTitle="Navigation"
 					 toolTipIconEnd="the map bar"
 					 duration="1000">
@@ -87,9 +87,7 @@
 									 height="32"/>
 			</mx:VBox>
 		</mx:HBox>
-		<os:OverviewMapComponent map="{map}"
-								 width="75"
-								 height="75">
+		<os:OverviewMapComponent map="{map}" width="100%">
 			<os:Mapnik name="Mapnik"
 					   isBaseLayer="true"/>
 		</os:OverviewMapComponent>
