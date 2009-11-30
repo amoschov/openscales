@@ -28,8 +28,9 @@
 			// Specific imports for this example			
 			// none
 
-			[Bindable] private var styles:Array = [];
-			
+			[Bindable]
+			private var styles:Array = [];
+
 			[Bindable]
 			[Embed(source='/assets/images/pattern.png')]
 			private var Pattern:Class;
@@ -43,10 +44,10 @@
 				this.createStyleLatitude();
 				this.generateLegend();
 			}
-			
+
 			private function generateLegend():void {
 				this.legends.removeAllChildren();
-				
+
 				for each (var style:Style in this.styles) {
 					var vb:VBox = new VBox();
 
@@ -92,7 +93,7 @@
 					this.legends.addChild(vb);
 				}
 			}
-			
+
 			private function switchStyle():void {
 				var currentStyleName:String = "";
 				if (this.styles.length > 1) {
@@ -114,7 +115,7 @@
 				}
 				this.generateLegend();
 			}
-			
+
 			private function createStyleLatitude():void {
 				var style:Style = new Style();
 				style.name = "Latitude related coloration";
@@ -151,7 +152,7 @@
 				this.ignGeoplaRegion.style = style;
 				this.ignGeoplaRegion.layer.redraw();
 			}
-			
+
 			private function createStyleGeographical():void {
 				var style:Style = new Style();
 				style.name = "Geographical coloration";
@@ -164,10 +165,10 @@
 				stroke = new Stroke(0x0A2C33, 2);
 				symbolizer = new PolygonSymbolizer(fill, stroke);
 				rule.symbolizers.push(symbolizer);
-				bounds = new Bounds(682105,6558859,892780,6816381);
+				bounds = new Bounds(682105, 6558859, 892780, 6816381);
 				rule.filter = new ContainsFilter(bounds.toGeometry(), "EPSG:2154");
 				style.rules.push(rule);
-				
+
 				rule = new Rule();
 				rule.name = "Other departements of France";
 				fill = new SolidFill(0x84BF7A, .8);
@@ -176,14 +177,14 @@
 				rule.symbolizers.push(symbolizer);
 				rule.filter = new ElseFilter();
 				style.rules.push(rule);
-				
+
 				this.styles.push(style);
 				this.ignGeoplaRegion.style = style;
 				this.ignGeoplaRegion.layer.redraw();
 			}
-			
-			private function createBitmapStyle():Style{
-				
+
+			private function createBitmapStyle():Style {
+
 				var style:Style = new Style();
 				style.name = "France";
 				var fill:BitmapFill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;
@@ -196,15 +197,14 @@
 				symbolizer = new PolygonSymbolizer(fill, stroke);
 				rule.symbolizers.push(symbolizer);
 				style.rules.push(rule);
-				
+
 				this.styles[0] = style;
 				return style;
 			}
-			
+
 			private function mouseOverDepartement(evt:MouseEvent):void {
 				this.ignGeoplaRegion.toolTip = "coucou" + evt.localX;
 			}
-			
 		]]>
 	</mx:Script>
 
@@ -228,10 +228,10 @@
 
 		<os:Spinner id="spinner"
 					x="{width / 2}"
-					y="{height / 2}" />
+					y="{height / 2}"/>
 		<os:MousePosition x="10"
 						  y="{height-20}"
-						  displayProjection="EPSG:4326" />
+						  displayProjection="EPSG:4326"/>
 
 		<os:WFS id="ignGeoplaFrance"
 				name="IGN - Geopla (France)"
@@ -248,27 +248,35 @@
 				typename="pg:ign_geopla_dep"
 				projection="EPSG:2154"
 				version="1.0.0"
-				style="{this.createBitmapStyle()}"
-				/>
-				
-		
-<!--				mouseOver="mouseOverDepartement(event);"
--->
+				style="{this.createBitmapStyle()}"/>
+
+
+		<!--				mouseOver="mouseOverDepartement(event);"
+		-->
 		<os:SelectFeaturesHandler id="selectFeatureHandler"
-								  active="true" />
+								  active="true"/>
 	</os:Map>
 
 	<!-- Specific tools of this example -->
 
-	<mx:Panel title="Navigation">
-		<mx:VBox horizontalAlign="center"
-				 verticalAlign="middle"
-				 x="10"
-				 y="10">
-			<os:PanComponent map="{map}"/>
+	<os:WidgetWindow x="10"
+					 y="10"
+					 width="140"
+					 widgetTitle="Navigation"
+					 toolTipIconEnd="the map bar"
+					 duration="1000">
+		<os:PanComponent map="{map}"/>
+		<mx:HBox width="100%">
 			<os:ZoomComponent map="{map}"/>
-		</mx:VBox>
-	</mx:Panel>
+			<mx:VBox width="100%"
+					 horizontalAlign="right"
+					 verticalAlign="top">
+				<os:ZoomBoxComponent map="{map}"
+									 width="32"
+									 height="32"/>
+			</mx:VBox>
+		</mx:HBox>
+	</os:WidgetWindow>
 
 	<mx:Panel title="Legend"
 			  id="legends"
@@ -282,10 +290,11 @@
 		<os:FeatureInfoComponent id="featureInfoComponent"
 								 creationComplete="(selectFeatureHandler.handler as SelectFeaturesHandler).onSelectedFeature = featureInfoComponent.showInfo"/>
 	</mx:Panel>
-	
+
 	<mx:Button id="switchStyleButton"
-			label="Switch style"
-			x="{width-switchStyleButton.width-10}" y="10"
-			click="switchStyle();" />
-	
+			   label="Switch style"
+			   x="{width-switchStyleButton.width-10}"
+			   y="10"
+			   click="switchStyle();"/>
+
 </Example>

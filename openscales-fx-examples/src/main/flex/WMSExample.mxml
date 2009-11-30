@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
-		 xmlns:os="http://openscales.org" creationComplete="initMap();">
+<Example xmlns="*"
+		 xmlns:mx="http://www.adobe.com/2006/mxml"
+		 xmlns:os="http://openscales.org"
+		 creationComplete="initMap();">
 
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.Map;
-			import org.openscales.core.Trace;	
-			
+			import org.openscales.core.Trace;
+
 			private function initMap():void {
 				Trace.useFireBugConsole = displayFirebugTrace;
-				map=fxmap.map;
+				map = fxmap.map;
 			}
 		]]>
 	</mx:Script>
- 
-	<os:Map id="fxmap" height="100%" width="100%" proxy="http://openscales.org/proxy.php?url=">
-			
+
+	<os:Map id="fxmap"
+			height="100%"
+			width="100%"
+			proxy="http://openscales.org/proxy.php?url=">
+
 
 		<os:MaxExtent left="5.60075"
 					  bottom="47.2441"
@@ -28,9 +33,13 @@
 				format="image/jpeg"
 				isBaseLayer="true"/>
 
-		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
-		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
-		
+		<os:Spinner id="spinner"
+					x="{width / 2}"
+					y="{height / 2}"/>
+		<os:MousePosition x="10"
+						  y="{height-20}"
+						  displayProjection="EPSG:4326"/>
+
 
 		<os:DragHandler/>
 		<os:WheelHandler/>
@@ -39,8 +48,25 @@
 				   bottom="47.2441"
 				   right="15.425"
 				   top="55.0317"/>
-			   	
+
 
 	</os:Map>
-	<os:PanComponent map="{map}"/>
+	<os:WidgetWindow x="10"
+					 y="10"
+					 width="140"
+					 widgetTitle="Navigation"
+					 toolTipIconEnd="the map bar"
+					 duration="1000">
+		<os:PanComponent map="{map}"/>
+		<mx:HBox width="100%">
+			<os:ZoomComponent map="{map}"/>
+			<mx:VBox width="100%"
+					 horizontalAlign="right"
+					 verticalAlign="top">
+				<os:ZoomBoxComponent map="{map}"
+									 width="32"
+									 height="32"/>
+			</mx:VBox>
+		</mx:HBox>
+	</os:WidgetWindow>
 </Example>

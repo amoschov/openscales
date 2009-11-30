@@ -1,6 +1,6 @@
 package org.openscales.core.feature {
 	import flash.display.DisplayObject;
-	
+
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Collection;
@@ -42,26 +42,27 @@ package org.openscales.core.feature {
 			}
 		}
 
-		override public function destroy():void{
-			this._editionFeatureParentGeometry=null;
-			this._startdrag=null;
+		override public function destroy():void {
+			this._editionFeatureParentGeometry = null;
+			this._startdrag = null;
 			super.destroy();
 		}
+
 		public function get point():Point {
 			return this.geometry as Point;
 		}
-		
-		override public function draw():void{
+
+		override public function draw():void {
 			var numChildren:Number = this.numChildren;
-			for(var i:Number = 0;i<numChildren;i++){
-				
+			for (var i:Number = 0; i < numChildren; i++) {
+
 				this.removeChildAt(i);
-			} 
+			}
 			super.draw();
 		}
 
 		override protected function executeDrawing(symbolizer:Symbolizer):void {
-			
+
 			var x:Number;
 			var y:Number;
 			var resolution:Number = this.layer.map.resolution
@@ -69,32 +70,31 @@ package org.openscales.core.feature {
 			var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
 			x = dX + point.x / resolution;
 			y = dY - point.y / resolution;
-						
+
 			if (symbolizer is PointSymbolizer) {
 				var pointSymbolizer:PointSymbolizer = (symbolizer as PointSymbolizer);
 				if (pointSymbolizer.graphic) {
 					if (pointSymbolizer.graphic is WellKnownMarker) {
 						this.drawMark(pointSymbolizer.graphic as WellKnownMarker, x, y);
-					}
-					else if(pointSymbolizer.graphic is DisplayObjectMarker){
-						
+					} else if (pointSymbolizer.graphic is DisplayObjectMarker) {
+
 						this.drawFlashGraphic(pointSymbolizer.graphic as DisplayObjectMarker, x, y);
 					}
 				}
 			}
 		}
-		 
-		protected function drawFlashGraphic(marker:DisplayObjectMarker, x:Number, y:Number):void{
-						
+
+		protected function drawFlashGraphic(marker:DisplayObjectMarker, x:Number, y:Number):void {
+
 			var instance:DisplayObject = marker.instance;
-			instance.x = x;
-			instance.y = y;
-			
+			instance.x += x;
+			instance.y += y;
+
 			this.addChild(instance);
 		}
 
 		protected function drawMark(mark:WellKnownMarker, x:Number, y:Number):void {
-			
+
 			var x:Number;
 			var y:Number;
 			var resolution:Number = this.layer.map.resolution
@@ -102,7 +102,7 @@ package org.openscales.core.feature {
 			var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
 			x = dX + point.x / resolution;
 			y = dY - point.y / resolution;
-			
+
 			mark.fill.configureGraphics(this.graphics);
 			mark.stroke.configureGraphics(this.graphics);
 

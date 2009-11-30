@@ -1,46 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
-		 xmlns:os="http://openscales.org" creationComplete="initMap();">
-	
+<Example xmlns="*"
+		 xmlns:mx="http://www.adobe.com/2006/mxml"
+		 xmlns:os="http://openscales.org"
+		 creationComplete="initMap();">
+
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.events.MapEvent;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
-			
+
 			private function initMap():void {
 				Trace.useFireBugConsole = displayFirebugTrace;
-				map=fxmap.map;
+				map = fxmap.map;
 			}
 		]]>
 	</mx:Script>
-	
-	<os:Map id="fxmap" width="100%" height="100%" zoom="12" centerLonLat="4.833,45.767">
-		
-		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
-		
+
+	<os:Map id="fxmap"
+			width="100%"
+			height="100%"
+			zoom="12"
+			centerLonLat="4.833,45.767">
+
+		<os:TraceInfo x="{width-200}"
+					  y="0"
+					  visible="{displayTrace}"/>
+
 		<!-- OpenStreetMap EPSG:900913 -->
-		<os:Mapnik name="Mapnik" isBaseLayer="true"
-			proxy="http://openscales.org/proxy.php?url=" />
-		
-		<os:DragHandler />
-		<os:WheelHandler />
-		
-		<os:Spinner id="spinner" x="{width / 2}" y="{height / 2}"/>	
-		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
-		<os:ScaleLine x="{width-100-10}" y="{height-80}" />
+		<os:Mapnik name="Mapnik"
+				   isBaseLayer="true"
+				   proxy="http://openscales.org/proxy.php?url="/>
+
+		<os:DragHandler/>
+		<os:WheelHandler/>
+
+		<os:Spinner id="spinner"
+					x="{width / 2}"
+					y="{height / 2}"/>
+		<os:MousePosition x="10"
+						  y="{height-20}"
+						  displayProjection="EPSG:4326"/>
+		<os:ScaleLine x="{width-100-10}"
+					  y="{height-80}"/>
 
 		<!-- Specific layers and handlers of this example -->
 		<!-- none -->
-		
+
 	</os:Map>
-	
+
 	<!-- Specific tools of this example -->
-	
-	<mx:VBox horizontalAlign="center" x="10" y="10">
-		<os:PanComponent map="{map}" />
-		<os:ZoomComponent map="{map}" />
-		<os:ZoomBoxComponent map="{map}" width="32" height="32"/>
-	</mx:VBox>
-	
+
+	<os:WidgetWindow x="10"
+					 y="10"
+					 width="140"
+					 widgetTitle="Navigation"
+					 toolTipIconEnd="the map bar"
+					 duration="1000">
+		<os:PanComponent map="{map}"/>
+		<mx:HBox width="100%">
+			<os:ZoomComponent map="{map}"/>
+			<mx:VBox width="100%"
+					 horizontalAlign="right"
+					 verticalAlign="top">
+				<os:ZoomBoxComponent map="{map}"
+									 width="32"
+									 height="32"/>
+			</mx:VBox>
+		</mx:HBox>
+	</os:WidgetWindow>
+
 </Example>
