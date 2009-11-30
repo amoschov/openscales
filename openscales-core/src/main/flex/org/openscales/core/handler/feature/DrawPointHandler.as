@@ -62,6 +62,7 @@ package org.openscales.core.handler.feature
 				pointFeature.name = id.toString(); id++;
 				pointFeature.lonlat = lonlat; 			
 				drawLayer.addFeature(pointFeature);
+				pointFeature.draw();
 			}
 		}
 	}
