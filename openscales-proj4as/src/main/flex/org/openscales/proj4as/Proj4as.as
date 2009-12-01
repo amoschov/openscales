@@ -156,7 +156,7 @@ package org.openscales.proj4as {
 			// FixMe: how to transform the unit ? how to manage the difference of the two dimensions ?
 		    var resProj:ProjPoint = new ProjPoint(value,value);
 			resProj = Proj4as.transform(source, dest, resProj);
-			return (resProj.x==resProj.y) ? resProj.x : (resProj.x+resProj.y)/2;
+			return (Math.abs(resProj.x)==Math.abs(resProj.y)) ? Math.abs(resProj.x) : (Math.abs(resProj.x)+Math.abs(resProj.y))/2;
 		
 		}
 		
