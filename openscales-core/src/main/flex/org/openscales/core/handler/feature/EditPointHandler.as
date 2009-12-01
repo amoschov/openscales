@@ -62,6 +62,7 @@ package org.openscales.core.handler.feature
 			this._layerToEdit.addFeature(newPointFeature);
 			this._featureClickHandler.addControledFeature(newPointFeature);
 			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_STOP,vectorfeature));
+			this._layerToEdit.redraw();
 		}
 	    /**
 		 * @inheritDoc 
