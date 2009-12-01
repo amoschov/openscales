@@ -266,7 +266,7 @@ package org.openscales.core
 		 */
 		public function removeLayer(layer:Layer, setNewBaseLayer:Boolean = true):void {
 			this._layerContainer.removeChild(layer);
-			layer.map = null;
+			layer.destroy(setNewBaseLayer);
 			Util.removeItem(this.layers, layer);
 
 			if (setNewBaseLayer && (this.baseLayer == layer)) {

@@ -105,7 +105,6 @@ package org.openscales.core.layer {
 				map.removeEventListener(MapEvent.MOVE_END, onMapMove);
 				map.removeEventListener(MapEvent.ZOOM_END, onMapZoom);
 				map.removeEventListener(MapEvent.RESIZE, onMapResize);
-				this.map.removeLayer(this, setNewBaseLayer);
 			}
 			this.map = null;
 
