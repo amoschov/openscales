@@ -103,6 +103,8 @@ package org.openscales.core.handler.feature
 		 		var parentGeometry:Collection=vectorfeature.editionFeatureParentGeometry as Collection;
 		 		var index:Number=-1;		
 				var componentLength:Number=parentGeometry.componentsLength;
+				this._layerToEdit.removeFeature(vectorfeature);
+				this._featureClickHandler.removeControledFeature(vectorfeature);
 		 		if(parentGeometry!=null){
 		 			var lonlat:LonLat=this.map.getLonLatFromLayerPx(new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY));			
 		 			var newVertice:Point=new Point(lonlat.lon,lonlat.lat);
@@ -126,6 +128,7 @@ package org.openscales.core.handler.feature
 		 		AbstractEditCollectionHandler._pointUnderTheMouse=null;
 		 	}
 		 	this._drawContainer.graphics.clear();
+		 	vectorfeature=null;
 		   _timer.stop();
 		 	this._layerToEdit.redraw();
 		 }
@@ -158,6 +161,9 @@ package org.openscales.core.handler.feature
 		 	//The click is considered as a bug for the moment	 	
 		 	 displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
 		 	this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
+		 	this._layerToEdit.removeFeature(vectorfeature);
+		 	this._featureClickHandler.removeControledFeature(vectorfeature);
+		 	vectorfeature=null;
 			if(_isUsedAlone) this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 		 	this.map.removeEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 		 	this._featureCurrentlyDrag=null;

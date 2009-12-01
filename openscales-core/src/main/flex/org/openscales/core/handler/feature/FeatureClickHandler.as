@@ -45,7 +45,7 @@ package org.openscales.core.handler.feature
 		
 		private var _isdragging:Boolean=false;
 		
-		private var _draggingTolerance:Number=10;
+		private var _draggingTolerance:Number=2;
 		/**
 		 * We use a tolerance to detect a drag or a click
 		 */
