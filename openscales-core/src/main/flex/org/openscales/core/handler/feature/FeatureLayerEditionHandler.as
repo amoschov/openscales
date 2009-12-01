@@ -169,6 +169,7 @@ package org.openscales.core.handler.feature
 			if(map!=null){
 			this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,_layerToEdit));
 			}
+			_layerToEdit.redraw();
 			return true;
 		}
 		/**
@@ -196,6 +197,7 @@ package org.openscales.core.handler.feature
 				AbstractEditCollectionHandler._pointUnderTheMouse.destroy();
 				AbstractEditCollectionHandler._pointUnderTheMouse=null;
 			}
+			_layerToEdit.redraw();
 			return true;
 		}
 		

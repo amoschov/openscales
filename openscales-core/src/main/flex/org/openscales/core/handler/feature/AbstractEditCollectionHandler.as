@@ -37,7 +37,7 @@ package org.openscales.core.handler.feature
 		/**
 		 * This tolerance is to discern Virtual vertices from point under the mouse
 		 * */
-		 private var _detectionTolerance:Number=8;
+		 private var _detectionTolerance:Number=2;
 		
 		/**
 		 * This class is a handler used for Collection(Linestring Polygon MultiPolygon etc..) modification
@@ -193,7 +193,7 @@ package org.openscales.core.handler.feature
 				var drawing:Boolean=true;
 					for each(var feature:Feature in vectorfeature.editionFeaturesArray){
 						var tmpPx:Pixel=this.map.getLayerPxFromLonLat(new LonLat((feature.geometry as Point).x,(feature.geometry as Point).y));
-						if(Math.abs(tmpPx.x-px.x)<this._detectionTolerance && Math.abs(tmpPx.y-px.y)<this._detectionTolerance)
+						if(Math.abs(tmpPx.x-px.x)<10 && Math.abs(tmpPx.y-px.y)<10)
 						{
 							drawing=false;
 							break;
@@ -220,7 +220,11 @@ package org.openscales.core.handler.feature
 						else AbstractEditCollectionHandler._pointUnderTheMouse.visible=false;
 						layerToEdit.redraw();	
 					}
-					else layerToEdit.map.buttonMode=false;
+					else {
+						AbstractEditCollectionHandler._pointUnderTheMouse.visible=false;
+						layerToEdit.redraw();
+						layerToEdit.map.buttonMode=false;				
+					}
 		 	}
 		 }
 		 /**
