@@ -6,19 +6,13 @@ package org.openscales.core.handler.feature
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.feature.Feature;
 	import org.openscales.core.handler.Handler;
-	import org.openscales.core.handler.feature.AbstractEditHandler;
-	import org.openscales.core.handler.feature.AbstractEditCollectionHandler;
-	import org.openscales.core.handler.feature.EditPathHandler;
-	import org.openscales.core.handler.feature.EditPointHandler;
-	import org.openscales.core.handler.feature.EditPolygonHandler;
-	import org.openscales.core.handler.feature.IEditFeature;
 	import org.openscales.core.layer.FeatureLayer;
 	
 	
@@ -83,6 +77,7 @@ package org.openscales.core.handler.feature
 		
 				else if(iEditPoint!=null) iEditPoint.dragVerticeStart(vectorfeature);	
 				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+				this.map.removeEventListener(FeatureEvent.FEATURE_OUT,onFeatureOut);
 			}
 		 }
 		 /**
@@ -101,6 +96,7 @@ package org.openscales.core.handler.feature
 					//The vertice belongs to a line
 					else if((vectorfeature.editionFeatureParent is LineStringFeature ||  vectorfeature.editionFeatureParent is MultiLineStringFeature) && iEditPath!=null) iEditPath.dragVerticeStop(vectorfeature);
 					this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+					this.map.addEventListener(FeatureEvent.FEATURE_OUT,onFeatureOut);
 				}
 			}
 			/**
@@ -116,6 +112,7 @@ package org.openscales.core.handler.feature
 					//The vertice belongs to a line
 					else if((vectorfeature.editionFeatureParent is LineStringFeature ||  vectorfeature.editionFeatureParent is MultiLineStringFeature) && iEditPath!=null) iEditPath.featureClick(event);
 					this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+					this.map.addEventListener(FeatureEvent.FEATURE_OUT,onFeatureOut);
 				}	 
 		 }
 		 /**
@@ -132,6 +129,7 @@ package org.openscales.core.handler.feature
 				//The vertice belongs to a line
 					else if((vectorfeature.editionFeatureParent is LineStringFeature ||  vectorfeature.editionFeatureParent is MultiLineStringFeature) && iEditPath!=null) iEditPath.featureDoubleClick(event);
 		 			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+		 			this.map.addEventListener(FeatureEvent.FEATURE_OUT,onFeatureOut);
 		 }
 		 
 		 }
@@ -200,7 +198,17 @@ package org.openscales.core.handler.feature
 			_layerToEdit.redraw();
 			return true;
 		}
+		/**
+		 * This function is used to manage the mouse when the mouse is out of the feature
+		 * */
 		
+		private function onFeatureOut(evt:FeatureEvent):void{
+			var vectorfeature:Feature=(evt.feature) as Feature;
+		  //The Vertice belongs to a polygon
+					 if	((vectorfeature is PolygonFeature ||  vectorfeature is MultiPolygonFeature) && iEditPolygon!=null) (iEditPolygon as AbstractEditCollectionHandler).onFeatureOut(evt);
+				//The vertice belongs to a line
+					else if((vectorfeature is LineStringFeature ||  vectorfeature is MultiLineStringFeature) && iEditPath!=null) (iEditPath as AbstractEditCollectionHandler).onFeatureOut(evt);		
+		}
 		/**
 		 * This function create the point under the mouse
 		 * */	
@@ -231,6 +239,7 @@ package org.openscales.core.handler.feature
 			this.map.addEventListener(MapEvent.MOVE_END,refreshEditedfeatures);
 			this.map.addEventListener(MapEvent.ZOOM_END,refreshEditedfeatures);
 			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+			this.map.addEventListener(FeatureEvent.FEATURE_OUT,onFeatureOut);
 		}
 		 /**
 		 * @inherited
@@ -239,6 +248,7 @@ package org.openscales.core.handler.feature
 			this.map.removeEventListener(MapEvent.MOVE_END,refreshEditedfeatures);
 			this.map.removeEventListener(MapEvent.ZOOM_END,refreshEditedfeatures);
 			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+			this.map.addEventListener(FeatureEvent.FEATURE_OUT,onFeatureOut);
 		}
 		//getters && setters
 		/**

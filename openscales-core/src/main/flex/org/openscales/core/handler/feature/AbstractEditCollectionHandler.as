@@ -2,6 +2,8 @@ package org.openscales.core.handler.feature
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.LonLat;
@@ -35,10 +37,17 @@ package org.openscales.core.handler.feature
 		 * */
 		public static var _pointUnderTheMouse:PointFeature=null;
 		/**
-		 * This tolerance is to discern Virtual vertices from point under the mouse
+		 * This tolerance is used to manage the point on the segments
 		 * */
 		 private var _detectionTolerance:Number=2;
-		
+		 /**
+		 * This tolerance is used to discern Virtual vertices from point under the mouse
+		 * */
+		 private var _ToleranceVirtualReal:Number=10;
+		/**
+		 * We use a timer to manage the mouse out of a feature
+		 */
+		private var _timer:Timer = new Timer(1000,1);
 		/**
 		 * This class is a handler used for Collection(Linestring Polygon MultiPolygon etc..) modification
 	 	* don't use it use EditPathHandler if you want to edit a LineString or a MultiLineString
@@ -48,6 +57,7 @@ package org.openscales.core.handler.feature
 		{
 			super(map, active, layerToEdit, featureClickHandler,drawContainer,isUsedAlone);
 			this.featureClickHandler=featureClickHandler;
+			this._timer.addEventListener(TimerEvent.TIMER, deletepointUnderTheMouse);
 		}
 		
 		 /**
@@ -56,7 +66,8 @@ package org.openscales.core.handler.feature
 		  override public function editionModeStop():Boolean{
 		  	//if the handler is used alone we remove the listener
 		  	if(_isUsedAlone)
-		 	this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);		 	
+		 	this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+		 	this._timer.removeEventListener(TimerEvent.TIMER, deletepointUnderTheMouse);		 	
 		 	super.editionModeStop();
 		 	return true;
 		 } 
@@ -75,8 +86,10 @@ package org.openscales.core.handler.feature
 				if(vectorfeature!=AbstractEditCollectionHandler._pointUnderTheMouse)this._featureCurrentlyDrag=vectorfeature;
 				else this._featureCurrentlyDrag=null;
 				//we add the new mouseEvent move and remove the previous
+				_timer.stop();
 				this.map.addEventListener(MouseEvent.MOUSE_MOVE,drawTemporaryFeature);
 				 if(_isUsedAlone)this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+				 
 			}
 			
 		 }
@@ -113,6 +126,7 @@ package org.openscales.core.handler.feature
 		 		AbstractEditCollectionHandler._pointUnderTheMouse=null;
 		 	}
 		 	this._drawContainer.graphics.clear();
+		   _timer.stop();
 		 	this._layerToEdit.redraw();
 		 }
 		 
@@ -153,6 +167,7 @@ package org.openscales.core.handler.feature
 		 		AbstractEditCollectionHandler._pointUnderTheMouse=null;
 		 	}
 		 	this._drawContainer.graphics.clear();
+		 	_timer.stop();
 		 	this._layerToEdit.redraw();
 		 }
 		 /**
@@ -177,23 +192,35 @@ package org.openscales.core.handler.feature
 		 		AbstractEditCollectionHandler._pointUnderTheMouse=null;
 		 	}
 		 	this._drawContainer.graphics.clear();
+		 	_timer.stop();
 		 	this._layerToEdit.redraw();
 		 }
 		 
 		 /**
+		 * This function is used to manage the mouse when the mouse is out of the feature
+		 * */
+		 public function onFeatureOut(evt:FeatureEvent):void{	 	
+		 	_timer.start();
+		 }
+		 private function deletepointUnderTheMouse(evt:TimerEvent):void{
+		 	//we hide the point under the mouse
+		 	AbstractEditCollectionHandler._pointUnderTheMouse.visible=false;
+		 	_timer.stop();
+		 }
+		 /**
 		 * Create a virtual vertice under the mouse 
 		 * */
 		 public function createPointUndertheMouse(evt:FeatureEvent):void{
-		 	var vectorfeature:Feature=evt.feature as Feature;
-		 	
+		 	var vectorfeature:Feature=evt.feature as Feature;		 	
 		 	if(vectorfeature!=null && vectorfeature.layer==_layerToEdit && vectorfeature.geometry is Collection){
+		 		_timer.stop();
 		 		vectorfeature.buttonMode=false; 
 		 		var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
 				//drawing equals false if the mouse is too close from Virtual vertice
 				var drawing:Boolean=true;
 					for each(var feature:Feature in vectorfeature.editionFeaturesArray){
 						var tmpPx:Pixel=this.map.getLayerPxFromLonLat(new LonLat((feature.geometry as Point).x,(feature.geometry as Point).y));
-						if(Math.abs(tmpPx.x-px.x)<10 && Math.abs(tmpPx.y-px.y)<10)
+						if(Math.abs(tmpPx.x-px.x)<this._ToleranceVirtualReal && Math.abs(tmpPx.y-px.y)<this._ToleranceVirtualReal)
 						{
 							drawing=false;
 							break;
@@ -221,9 +248,12 @@ package org.openscales.core.handler.feature
 						layerToEdit.redraw();	
 					}
 					else {
-						AbstractEditCollectionHandler._pointUnderTheMouse.visible=false;
-						layerToEdit.redraw();
-						layerToEdit.map.buttonMode=false;				
+						if(AbstractEditCollectionHandler._pointUnderTheMouse!=null)
+						{
+							AbstractEditCollectionHandler._pointUnderTheMouse.visible=false;
+							layerToEdit.redraw();
+							layerToEdit.map.buttonMode=false;		
+						}		
 					}
 		 	}
 		 }
