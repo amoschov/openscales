@@ -254,6 +254,7 @@
 						}
 						drawType = "";
 						this.activeDrag();
+						editionHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.DISABLED));
 						break;
 
@@ -269,6 +270,7 @@
 						}
 						this.deactiveDrag();
 						selectFeaturesHandler.active = false;
+						editionHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 						break;
 
@@ -284,6 +286,7 @@
 						}
 						this.deactiveDrag();
 						selectFeaturesHandler.active = false;
+						editionHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 						break;
 
