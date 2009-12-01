@@ -204,7 +204,8 @@ package org.openscales.core.handler.feature
 		 }
 		 private function deletepointUnderTheMouse(evt:TimerEvent):void{
 		 	//we hide the point under the mouse
-		 	AbstractEditCollectionHandler._pointUnderTheMouse.visible=false;
+		 
+		   if(AbstractEditCollectionHandler._pointUnderTheMouse!=null)	AbstractEditCollectionHandler._pointUnderTheMouse.visible=false;
 		 	_timer.stop();
 		 }
 		 /**
