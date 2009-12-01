@@ -473,7 +473,15 @@ package org.openscales.core.handler.feature
 									onSomethingFeature:Function):void {
 			var layersToRedraw:Array = new Array();
 			var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers;
-			var i:int, layer:FeatureLayer;
+			var i:int, layer:FeatureLayer, layersTmp:Array = new Array();
+			// Remove invisible layers from the list of selectable layers
+			for each (layer in layersToTest) {
+				if (layer.visible) {
+					layersTmp.push(layer);
+				}
+			}
+			layersToTest = layersTmp;
+			// 
 			for each (var feature:Feature in evt.features) {
 				for each (layer in layersToTest) {
 					// if the layer of the feature is one of the layersToTest,
@@ -581,12 +589,21 @@ package org.openscales.core.handler.feature
 			var featuresToSelect:Array = new Array();
 			if (geom) {
 				var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers; 
-				for each (var layer:FeatureLayer in layersToTest) {
+				var layer:FeatureLayer, layersTmp:Array = new Array();
+				// Remove invisible layers from the list of selectable layers
+				for each (layer in layersToTest) {
+					if (layer.visible) {
+						layersTmp.push(layer);
+					}
+				}
+				layersToTest = layersTmp;
+				// 
+				for each (layer in layersToTest) {
 					for each (var feature:Feature in layer.features) {
 						if (geom.intersects(feature.geometry)) {
 							featuresToSelect.push(feature);
 						}
-					} 
+					}
 				}
 			}
 			// Update the selection
