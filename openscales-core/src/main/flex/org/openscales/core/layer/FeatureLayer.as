@@ -155,14 +155,6 @@ package org.openscales.core.layer
 			}
 		}
 		
-		override public function redraw(fullRedraw:Boolean = true):void {
-			if (this.map) {
-				// No clear because Feature drawing method already clear the feature graphics
-				// before drawing it
-				this.draw();
-			}
-		}
-		
 		override public function reset():void {
 			var features:Array = this.features;
 			for (var i:int = 0; i < features.length; i++) {

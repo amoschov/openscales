@@ -40,6 +40,9 @@
 
 				// Specific initialize for this example
 				var layer:FeatureLayer = SampleLayers.features();
+				// Usefull to test selection when a layer is not displayed
+				layer.minZoomLevel = 10;
+				
 				(selectFeaturesHandler.handler as SelectFeaturesHandler).unselectableFeatures = [ layer.getChildAt(4) as PolygonFeature ];
 				map.addLayer(layer);
 				testContainsPoint(layer);

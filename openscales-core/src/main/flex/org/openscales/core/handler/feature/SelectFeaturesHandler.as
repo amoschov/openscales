@@ -476,12 +476,12 @@ package org.openscales.core.handler.feature
 			var i:int, layer:FeatureLayer, layersTmp:Array = new Array();
 			// Remove invisible layers from the list of selectable layers
 			for each (layer in layersToTest) {
-				if (layer.visible) {
+				if (layer.displayed) {
 					layersTmp.push(layer);
 				}
 			}
 			layersToTest = layersTmp;
-			// 
+			
 			for each (var feature:Feature in evt.features) {
 				for each (layer in layersToTest) {
 					// if the layer of the feature is one of the layersToTest,
@@ -592,7 +592,7 @@ package org.openscales.core.handler.feature
 				var layer:FeatureLayer, layersTmp:Array = new Array();
 				// Remove invisible layers from the list of selectable layers
 				for each (layer in layersToTest) {
-					if (layer.visible) {
+					if (layer.displayed) {
 						layersTmp.push(layer);
 					}
 				}

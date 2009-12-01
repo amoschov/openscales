@@ -249,8 +249,8 @@ package org.openscales.core.layer {
 		 * @return true if the layer was redrawn, false if not
 		 */
 		public function redraw(fullRedraw:Boolean = true):void {
-			if (this.map) {
-				this.clear();
+			this.clear();
+			if (this.displayed) {
 				this.draw();
 			}
 		}
