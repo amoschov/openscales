@@ -9,8 +9,8 @@ package org.openscales.proj4as {
 
 	public class Proj4as {
 
-		static public const defaultDatum:String='WGS84';
-		static public const WGS84:ProjProjection=new ProjProjection('WGS84');
+		static public const defaultDatum:String = 'WGS84';
+		static public const WGS84:ProjProjection = new ProjProjection('WGS84');
 
 
 		public function Proj4as() {
@@ -29,45 +29,45 @@ package org.openscales.proj4as {
 
 			// Workaround for Spherical Mercator
 			if ((source.srsProjNumber == "900913" && dest.datumCode != "WGS84") || (dest.srsProjNumber == "900913" && source.datumCode != "WGS84")) {
-				var wgs84:ProjProjection=WGS84;
+				var wgs84:ProjProjection = WGS84;
 				transform(source, wgs84, point);
-				source=wgs84;
+				source = wgs84;
 			}
 
 			// Transform source points to long/lat, if they aren't already.
 			if (source.projName == "longlat") {
-				point.x*=ProjConstants.D2R; // convert degrees to radians
-				point.y*=ProjConstants.D2R;
+				point.x *= ProjConstants.D2R; // convert degrees to radians
+				point.y *= ProjConstants.D2R;
 			} else {
 				if (source.to_meter) {
-					point.x*=source.to_meter;
-					point.y*=source.to_meter;
+					point.x *= source.to_meter;
+					point.y *= source.to_meter;
 				}
 				source.inverse(point); // Convert Cartesian to longlat
 			}
 
 			// Adjust for the prime meridian if necessary
 			if (source.from_greenwich) {
-				point.x+=source.from_greenwich;
+				point.x += source.from_greenwich;
 			}
 
 			// Convert datums if needed, and if possible.
-			point=datum_transform(source.datum, dest.datum, point);
+			point = datum_transform(source.datum, dest.datum, point);
 
 			// Adjust for the prime meridian if necessary
 			if (dest.from_greenwich) {
-				point.x-=dest.from_greenwich;
+				point.x -= dest.from_greenwich;
 			}
 
 			if (dest.projName == "longlat") {
 				// convert radians to decimal degrees
-				point.x*=ProjConstants.R2D;
-				point.y*=ProjConstants.R2D;
+				point.x *= ProjConstants.R2D;
+				point.y *= ProjConstants.R2D;
 			} else { // else project
 				dest.forward(point);
 				if (dest.to_meter) {
-					point.x/=dest.to_meter;
-					point.y/=dest.to_meter;
+					point.x /= dest.to_meter;
+					point.y /= dest.to_meter;
 				}
 			}
 			return point;
@@ -144,21 +144,25 @@ package org.openscales.proj4as {
 				trace("Parameters not created!");
 				return NaN;
 			}
-			
+
 			if (!source.readyToUse || !dest.readyToUse) {
 				trace("Proj4as initialization for " + source.srsCode + " or " + dest.srsCode + " not yet complete");
 				return value;
 			}
-			if (source.projParams.units == dest.projParams.units){
+			if (source.projParams.units == dest.projParams.units) {
 				trace("Proj4s the projection are the same unit");
 				return value;
 			}
 			// FixMe: how to transform the unit ? how to manage the difference of the two dimensions ?
-		    var resProj:ProjPoint = new ProjPoint(value,value);
+			var resProj:ProjPoint = new ProjPoint(value, value);
+			var origProj:ProjPoint = new ProjPoint(0, 0);
 			resProj = Proj4as.transform(source, dest, resProj);
-			return (Math.abs(resProj.x)==Math.abs(resProj.y)) ? Math.abs(resProj.x) : (Math.abs(resProj.x)+Math.abs(resProj.y))/2;
-		
+			origProj = Proj4as.transform(source, dest, origProj);
+			var x2:Number = Math.pow(resProj.x - origProj.x, 2);
+			var y2:Number = Math.pow(resProj.y - origProj.y, 2);
+			var temp:Number = Math.sqrt((x2 + y2) / 2);
+			return temp;
 		}
-		
+
 	}
 }
