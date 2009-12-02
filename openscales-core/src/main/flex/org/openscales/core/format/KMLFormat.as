@@ -13,7 +13,8 @@ package org.openscales.core.format
 	 */
 	public class KMLFormat extends Format
 	{
-		private namespace xmlns="http://www.opengis.net/kml/2.2";
+		private namespace opengis="http://www.opengis.net/kml/2.2";
+		private namespace google="http://earth.google.com/kml/2.0";
 		
 		public function KMLFormat() {
 			
@@ -29,7 +30,9 @@ package org.openscales.core.format
 		override public function read(data:Object):Object {
 			var features:Array = new Array();
 			var dataXML:XML = data as XML;
-			use namespace xmlns;
+			
+			use namespace google;
+			use namespace opengis;
 			
 			var placemarks:XMLList = dataXML..Placemark;
 			

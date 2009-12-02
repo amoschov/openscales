@@ -33,7 +33,7 @@
 			width="100%"
 			height="100%"
 			zoom="12"
-			centerLonLat="4.84479575848897,45.7531798723947">
+			centerLonLat="2.338345,48.871692">
 
 		<os:TraceInfo id="traceInfo"
 					  x="{width-200}"
@@ -45,7 +45,7 @@
 				   proxy="http://openscales.org/proxy.php?url="/>
 
 
-		<os:KML url="http://www.seeyourhotel.com/city/358.kml"
+		<os:KML url="http://www.parisavelo.net/velib.kml"
 				proxy="http://openscales.org/proxy.php?url="
 				numZoomLevels="20"
 				style="{Style.getDefaultCircleStyle()}"/>
