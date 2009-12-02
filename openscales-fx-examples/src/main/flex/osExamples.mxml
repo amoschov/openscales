@@ -36,8 +36,10 @@
 			/**
 			 * Boolean defining if the logs must be displayed or not
 			 */
-			[Bindable] private var displayTrace:Boolean = false;
-			[Bindable] private var displayFirebugTrace:Boolean = false;
+			[Bindable]
+			private var displayTrace:Boolean = false;
+			[Bindable]
+			private var displayFirebugTrace:Boolean = false;
 
 			[Bindable]
 			private var selectedNode:XML = null;
@@ -224,14 +226,18 @@
 								displayTrace="{displayTrace}"/>
 			<os:InfoExample id="informations"
 							displayTrace="{displayTrace}"/>
-			<os:OpenStreetMap id="reprojectionAndQuery" displayTrace="{displayTrace}"/>
+			<os:OpenStreetMap id="reprojectionAndQuery"
+							  displayTrace="{displayTrace}"/>
 
 			<!-- Protocols -->
 			<os:WMSCExample id="wmsc"
 							displayTrace="{displayTrace}"/>
-			<os:WMSExample id="wms" displayTrace="{displayTrace}" />
-			<os:ImageLayerExample id="imageLayer" displayTrace="{displayTrace}" />
-			<os:KMLExample id="kml" displayTrace="{displayTrace}"/>
+			<os:WMSExample id="wms"
+						   displayTrace="{displayTrace}"/>
+			<os:ImageLayerExample id="imageLayer"
+								  displayTrace="{displayTrace}"/>
+			<os:KMLExample id="kml"
+						   displayTrace="{displayTrace}"/>
 
 			<!-- Security -->
 			<os:SecurityMapExample id="security"

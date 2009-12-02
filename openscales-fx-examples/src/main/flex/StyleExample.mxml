@@ -43,6 +43,10 @@
 				//this.createBitmapStyle();
 				this.createStyleLatitude();
 				this.generateLegend();
+
+
+				// Ignore France Layer for the select feature Handler
+				(this.selectFeatureHandler.handler as SelectFeaturesHandler).layers = [this.ignGeoplaRegion.layer];
 			}
 
 			private function generateLegend():void {
@@ -203,7 +207,7 @@
 			}
 
 			private function mouseOverDepartement(evt:MouseEvent):void {
-				this.ignGeoplaRegion.toolTip = "coucou" + evt.localX;
+				//this.ignGeoplaRegion.toolTip = "coucou" + evt.localX;
 			}
 		]]>
 	</mx:Script>
@@ -236,7 +240,7 @@
 		<os:WFS id="ignGeoplaFrance"
 				name="IGN - Geopla (France)"
 				url="http://openscales.org/geoserver/wfs"
-				typename="pg:ign_geopla_france"
+				typename="pg:simplif_france"
 				projection="EPSG:2154"
 				version="1.0.0"
 				style="{this.createBitmapStyle()}"/>
@@ -245,7 +249,7 @@
 		<os:WFS id="ignGeoplaRegion"
 				name="IGN - Geopla (Region)"
 				url="http://openscales.org/geoserver/wfs"
-				typename="pg:ign_geopla_dep"
+				typename="pg:simplif_dept"
 				projection="EPSG:2154"
 				version="1.0.0"
 				style="{this.createBitmapStyle()}"/>
