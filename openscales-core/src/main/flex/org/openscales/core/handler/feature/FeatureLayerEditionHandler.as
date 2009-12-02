@@ -167,7 +167,7 @@ package org.openscales.core.handler.feature
 			if(map!=null){
 			this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,_layerToEdit));
 			}
-			_layerToEdit.redraw();
+			 _layerToEdit.redraw(); 
 			return true;
 		}
 		/**
@@ -228,7 +228,7 @@ package org.openscales.core.handler.feature
 				else if(iEditPolygon!=null)iEditPolygon.refreshEditedfeatures(event);
 				
 				else if(iEditPoint!=null) iEditPoint.refreshEditedfeatures(event);
-
+				_layerToEdit.redraw();
 			}
 		}
 		

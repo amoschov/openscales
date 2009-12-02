@@ -30,9 +30,10 @@ package org.openscales.core.handler.feature
 		override public function set map(value:Map):void{
 			if(value!=null){
 				super.map=value;
-				if(map.baseLayer!=null){
+				 if(map.baseLayer!=null && this.drawLayer.projection!=null){
 					this.drawLayer.projection=new ProjProjection(this.map.baseLayer.projection.srsCode);
-				}
+					this.drawLayer.resolutions=this.map.baseLayer.resolutions;
+				} 
 			}
 		}
 		//Getters and setters
