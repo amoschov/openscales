@@ -475,7 +475,8 @@ package org.openscales.core.handler.feature
 			var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers;
 			var i:int, layer:FeatureLayer, layersTmp:Array = new Array();
 			// Remove invisible layers from the list of selectable layers
-			for each (layer in layersToTest) {
+			for each (layer in layersToTest) {		
+				if(layer.map!=null)
 				if (layer.displayed) {
 					layersTmp.push(layer);
 				}
