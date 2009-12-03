@@ -4,6 +4,7 @@ package org.openscales.core.handler.mouse
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
+	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.layer.FeatureLayer;
 	
@@ -19,7 +20,7 @@ package org.openscales.core.handler.mouse
 		/**
 		* The feature currently dragged
 		* */
-		private var _featureDragged:Feature=null;
+		private var _featurecurrentlyDragged:Feature=null;
 		/**
 		 * Array of features which are undraggabled and belongs to a
 		 * draggable layers 
@@ -30,28 +31,39 @@ package org.openscales.core.handler.mouse
 		 * */
 		 private var _draggablelayers:Array=null;
 	 	/**
-	 	 * Constructor
+	 	 * Constructor class
+	 	 * 
 	 	 * @param map:Map Object 
 	 	 * @param active:Boolean to active or deactivate the handler
 	 	 * */
 		public function DragFeature(map:Map=null, active:Boolean=false)
 		{
 			super(map, active);
+			_undraggableFeatures=new Array();
+			_draggablelayers=new Array();
 		}
 		/**
 		 * This function is launched when the Mouse is down
 		 */
 		override  protected function onMouseDown(event:Event):void{
-			if(event.target is Feature){
-				
+			var feature:Feature=event.target as Feature;
+			//The target is a feature , its' layer is draggable and it doesn't belongs to the undraggableFeatures Array
+			if(feature!=null && Util.indexOf(_draggablelayers,feature.layer)!=-1 && Util.indexOf(_undraggableFeatures,feature)==-1){
+				feature.startDrag();
+				_featurecurrentlyDragged=feature;
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_START,feature));
 			}
 		}
 		/**
 		 * This function is launched when the Mouse is up
 		 */
 		 override protected function onMouseUp(event:Event):void{
-		 	if(event.target is Feature){
-				
+		 	var feature:Feature=event.target as Feature;
+		 	//The target is a feature and is the feature currently dragged
+		 	if(feature!=null && _featurecurrentlyDragged==feature){
+				feature.stopDrag();
+				_featurecurrentlyDragged=null;
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_STOP,feature));
 			}
 		 }
 		 /**
@@ -102,16 +114,5 @@ package org.openscales.core.handler.mouse
 				_draggablelayers.push(layer);
 			}
 		}
-		
-		//getters && setters 
-		public function get UndraggableFeature():Array{
-			return this._undraggableFeatures;
-		}
-		public function get draggableLayers():Array{
-			return this._draggablelayers;
-		}
-		
-		
-		
 	}
 }
