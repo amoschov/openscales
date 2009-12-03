@@ -24,13 +24,13 @@ package org.openscales.fx.handler.mouse
 			return (this.handler as DragFeature).map;
 		}
 		
-		public function get target():Array{
+		/* public function get target():Array{
 			return (this.handler as DragFeature).layer;
 		}
 		public function set target(target:Array):void
 		{
 			if(target!=null)  (this.handler as DragFeature).layer=target;	
-		}
+		} */
 		
 		public function set oncomplete(oncomplete:Function):void
 		{
