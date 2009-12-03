@@ -67,7 +67,7 @@ package org.openscales.core.layer
 		}
 		
 		private function updateCurrentProjection(evt:LayerEvent = null):void {
-			if ((this.map) && (this._displayProjection.srsCode != this.map.baseLayer.projection.srsCode)) {
+			if ((this.map) && (this.map.baseLayer) && (this._displayProjection.srsCode != this.map.baseLayer.projection.srsCode)) {
 				if(this.features.length > 0){	
 				  for each (var f:Feature in this.features) {
 					f.geometry.transform(this._displayProjection, this.map.baseLayer.projection);

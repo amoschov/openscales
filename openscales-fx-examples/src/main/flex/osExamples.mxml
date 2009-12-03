@@ -157,6 +157,9 @@
 				</category>
 
 				<category label="Protocols">
+					<example viewStack="wfsBase"
+							 label="WFS base layer"
+							 description=""/>
 					<example viewStack="wmsc"
 							 label="NASA WMS-C"
 							 description=""/>
@@ -230,6 +233,8 @@
 							  displayTrace="{displayTrace}"/>
 
 			<!-- Protocols -->
+			<os:WFSBaseLayerExample id="wfsBase"
+							displayTrace="{displayTrace}"/>
 			<os:WMSCExample id="wmsc"
 							displayTrace="{displayTrace}"/>
 			<os:WMSExample id="wms"

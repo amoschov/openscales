@@ -24,6 +24,8 @@
   </compiler>
   <applications>
     <application path="osExamples.mxml"/>
+    <application path="KMLExample.mxml"/>
+    <application path="SecurityMapExample.mxml"/>
   </applications>
   <modules/>
   <buildCSSFiles/>

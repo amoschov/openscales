@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Example xmlns="*"
+		 xmlns:mx="http://www.adobe.com/2006/mxml"
+		 xmlns:os="http://openscales.org"
+		 creationComplete="initMap();">
+
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.events.MapEvent;
+			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
+			import org.openscales.core.style.Style;
+
+			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
+				map = fxmap.map;
+			}
+		]]>
+	</mx:Script>
+
+	<os:Map id="fxmap"
+			width="100%"
+			height="100%"
+			zoom="5"
+			centerLonLat="-74.011,40.710">
+
+		<os:TraceInfo id="traceInfo"
+					  x="{width-200}"
+					  y="0"
+					  visible="{displayTrace}"/>
+
+		
+
+		<os:DragHandler/>
+		<os:WheelHandler/>
+
+		<os:Spinner id="spinner"
+					x="{width / 2}"
+					y="{height / 2}"/>
+		<os:MousePosition x="10"
+						  y="{height-20}"
+						  displayProjection="EPSG:4326"/>
+
+		<!-- Specific layers and handlers of this example -->
+
+		<os:WFS name="Topp States (WFS)"
+				url="http://openscales.org/geoserver/wfs"
+				typename="topp:states"
+				projection="EPSG:4326"
+				version="1.0.0"
+				isBaseLayer="true"
+				style="{Style.getDefaultSurfaceStyle()}">
+		</os:WFS>
+
+	</os:Map>
+
+	
+</Example>
