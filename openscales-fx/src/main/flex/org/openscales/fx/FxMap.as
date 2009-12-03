@@ -2,7 +2,6 @@ package org.openscales.fx
 {
 	
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	
 	import mx.core.Container;
@@ -20,7 +19,6 @@ package org.openscales.fx
 	import org.openscales.core.control.IControl;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;
-	import org.openscales.core.popup.Popup;
 	import org.openscales.fx.configuration.FxConfiguration;
 	import org.openscales.fx.control.FxControl;
 	import org.openscales.fx.handler.FxHandler;
@@ -143,6 +141,10 @@ package org.openscales.fx
 			if (!isNaN(this._creationWidth) && !isNaN(this._creationHeight))
 				this._map.size = new Size(this._creationWidth, this._creationHeight);
 			
+			// We use an interlediate Array in order to avoid adding new component it the loop
+			// because it will modify numChildren
+			var componentToAdd:Array = new Array();
+			
 			for(i=0; i<this.rawChildren.numChildren; i++) {
 				child = this.rawChildren.getChildAt(i);
 				if (child is FxLayer) {
@@ -157,10 +159,16 @@ package org.openscales.fx
 				// Add Control, wih exception of TraceInfo that has been added at the beginning
 				} else if ((child is Control) && !(child is TraceInfo)){
 					this.parent.addChild(child);
+					// Tweak in order to compense the addChild that remove the child from this to addd it to the parent
+					// Quote from DisplayerObectContainer asDoc : if you add a child object that already has a different display object container as a parent, the object is removed from the child list of the other display object container.
+					i--;
 				} else if (child is FxHandler) {
 					(child as FxHandler).handler.map = this._map;
 				} else if ((child is UIComponent) && !(child is Map) && !(child is FxMaxExtent) && !(child is FxExtent) && !(child is FxAbstractSecurity) ){
 					this.parent.addChild(child);
+					// Tweak in order to compense the addChild that remove the child from this to addd it to the parent
+					// Quote from DisplayerObectContainer asDoc : if you add a child object that already has a different display object container as a parent, the object is removed from the child list of the other display object container.
+					i--;
 				}
 			}
 			
