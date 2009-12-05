@@ -1,4 +1,4 @@
-package org.openscales.core.handler.feature
+package org.openscales.core.handler.feature.select
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;

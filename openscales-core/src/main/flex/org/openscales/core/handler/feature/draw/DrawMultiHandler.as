@@ -1,4 +1,4 @@
-package org.openscales.core.handler.feature
+package org.openscales.core.handler.feature.draw
 {
 	import org.openscales.core.Map;
 	import org.openscales.core.feature.Feature;

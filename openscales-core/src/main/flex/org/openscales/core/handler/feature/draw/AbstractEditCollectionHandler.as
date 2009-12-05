@@ -1,4 +1,4 @@
-package org.openscales.core.handler.feature
+package org.openscales.core.handler.feature.draw
 {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
@@ -17,6 +17,8 @@ package org.openscales.core.handler.feature
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Style;
+	
+	import org.openscales.core.handler.feature.FeatureClickHandler;
 
 
 	/**

@@ -11,11 +11,11 @@ package org.openscales.core.configuration
       import org.openscales.core.control.PanZoom;
       import org.openscales.core.control.ScaleLine;
       import org.openscales.core.handler.Handler;
+      import org.openscales.core.handler.feature.select.SelectFeaturesHandler;
       import org.openscales.core.handler.mouse.BorderPanHandler;
       import org.openscales.core.handler.mouse.ClickHandler;
       import org.openscales.core.handler.mouse.DragFeature;
       import org.openscales.core.handler.mouse.DragHandler;
-      import org.openscales.core.handler.feature.SelectFeaturesHandler;
       import org.openscales.core.handler.mouse.WheelHandler;
       import org.openscales.core.layer.Layer;
       import org.openscales.core.layer.ogc.WFS;

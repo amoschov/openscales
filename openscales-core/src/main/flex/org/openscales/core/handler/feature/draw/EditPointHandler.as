@@ -1,4 +1,4 @@
-package org.openscales.core.handler.feature
+package org.openscales.core.handler.feature.draw
 {
 	import flash.display.Sprite;
 	
@@ -11,6 +11,8 @@ package org.openscales.core.handler.feature
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.FeatureLayer;
+	
+	import org.openscales.core.handler.feature.FeatureClickHandler;
 
 	/**
 	 * This Handler is used for point edition 
