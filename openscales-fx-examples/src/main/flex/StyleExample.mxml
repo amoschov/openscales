@@ -15,7 +15,7 @@
 			import org.openscales.core.style.fill.BitmapFill;
 			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
 			import org.openscales.core.style.symbolizer.Symbolizer;
-			import org.openscales.core.handler.feature.SelectFeaturesHandler;
+			import org.openscales.core.handler.feature.select.SelectFeaturesHandler;
 			import mx.core.UIComponent;
 			import org.openscales.core.style.Rule;
 			import mx.controls.Label;
