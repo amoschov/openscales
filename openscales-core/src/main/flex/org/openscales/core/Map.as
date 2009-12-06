@@ -819,9 +819,13 @@ package org.openscales.core
 				var resMult:Number = this.resolution / this.baseLayer.resolutions[newZoom];
 				// We intsanciate a bitmapdata with map's size
 				var bitmapData:BitmapData = new BitmapData(this.width,this.height);
+				
+
 				// We draw the old transition before drawing the better-fitting tiles on top and removing the old transition. 
 				if(this.bitmapTransition != null) {
-					bitmapData.draw(this.bitmapTransition, bitmapTransition.transform.matrix);
+					if(this._loading) {
+						bitmapData.draw(this.bitmapTransition, bitmapTransition.transform.matrix);
+					}
 					this.removeChild(this.bitmapTransition);
 					var bmp:Bitmap = bitmapTransition.removeChildAt(0) as Bitmap;
 					bmp.bitmapData.dispose();
@@ -842,10 +846,11 @@ package org.openscales.core
 				this.bitmapTransition.addChild(new Bitmap(bitmapData));		
 				this.bitmapTransition.alpha=this._baseLayer.alpha;
 				
-				this.addChildAt(bitmapTransition, 0);				
+				this.addChildAt(bitmapTransition, 0);
+				
 
 				// We hide the layerContainer (to avoid zooming out issues)
-				this.layerContainer.alpha = 0;
+				this.layerContainer.visible = false;
 
 				//We calculate the bitmapTransition position
 				var x:Number = this.bitmapTransition.x-((resMult-1)*this.bitmapTransition.width)/2;
@@ -866,7 +871,7 @@ package org.openscales.core
 			function clbZoomTween(tween:GTween):void {
 				_zooming = false;
 				setCenter(null, newZoom);
-				layerContainer.alpha = 1;
+				layerContainer.visible = true;
 
 			} 
 		}
@@ -884,10 +889,11 @@ package org.openscales.core
 				case LayerEvent.LAYER_LOAD_END: {
 					// check all layers 
 					for (var i:Number = 0;i<this.layers.length;i++)	{
-							var layer:Layer = this.layers[i];
-							if (layer != null && !layer.loadComplete)
-							  return;	
-						}						
+						var layer:Layer = this.layers[i];
+						if (layer != null && !layer.loadComplete)
+						  return;	
+					}
+											
 					// all layers are done loading.					
 					this.loading = false;					
 					break;
