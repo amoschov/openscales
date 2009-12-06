@@ -222,7 +222,7 @@ package org.openscales.core.handler.feature.draw
 		 						this._layerToEdit.removeFeatures(featureEdited.editionFeaturesArray);
 		 						this._featureClickHandler.removeControledFeatures(featureEdited.editionFeaturesArray);
 		 					}
-		 				featureEdited.RefreshEditionVertices();		
+		 				featureEdited.refreshEditionVertices();		
 		 				//We only draw the points included in the map extent
 		 				var tmpfeature:Array=new Array();
 		 				for each(var feature:Feature in featureEdited.editionFeaturesArray){

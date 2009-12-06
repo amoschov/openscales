@@ -468,7 +468,7 @@ package org.openscales.core.feature {
 		 * Refresh edition vertice(Virtual) only for edition feature
 		 * @param geometry
 		 * */
-		public function RefreshEditionVertices():void {
+		public function refreshEditionVertices():void {
 			deleteEditionVertices();
 			createEditionVertices();
 		}
