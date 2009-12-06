@@ -26,11 +26,10 @@
 	<component id="BorderPanHandler" class="org.openscales.fx.handler.mouse.FxBorderPanHandler" />
 	<component id="ClickHandler" class="org.openscales.fx.handler.mouse.FxClickHandler" />
 	<component id="DragHandler" class="org.openscales.fx.handler.mouse.FxDragHandler" />
-	<component id="DragFeature" class="org.openscales.fx.handler.mouse.FxDragFeature" />
+	<component id="DragFeatureHandler" class="org.openscales.fx.handler.feature.FxDragFeatureHandler" />
 	<component id="SelectFeaturesHandler" class="org.openscales.fx.handler.mouse.FxSelectFeaturesHandler" />
 	<component id="WheelHandler" class="org.openscales.fx.handler.mouse.FxWheelHandler" />
 	<component id="WMSGetFeatureInfo" class="org.openscales.fx.handler.mouse.FxWMSGetFeatureInfo" />
-	<component id="DrawPointHandler" class="org.openscales.fx.handler.sketch.FxDrawPointHandler" />
 	
 	<component id="LayerSwitcherComponent" class="org.openscales.component.control.layer.LayerSwitcher" />
   	<component id="MousePositionComponent" class="org.openscales.component.control.MousePosition" />

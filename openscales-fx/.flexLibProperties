@@ -8,7 +8,6 @@
     <classEntry path="org.openscales.component.control.search.YahooSearch"/>
     <classEntry path="org.openscales.fx.handler.mouse.FxDragHandler"/>
     <classEntry path="org.openscales.fx.basetypes.FxBounds"/>
-    <classEntry path="org.openscales.fx.handler.mouse.FxDragFeature"/>
     <classEntry path="org.openscales.component.control.TraceInfo"/>
     <classEntry path="org.openscales.fx.layer.FxWFS"/>
     <classEntry path="org.openscales.fx.layer.FxImageLayer"/>
@@ -31,7 +30,6 @@
     <classEntry path="org.openscales.fx.layer.FxFeatureLayer"/>
     <classEntry path="org.openscales.component.control.OverviewMap"/>
     <classEntry path="org.openscales.fx.control.FxSpinner"/>
-    <classEntry path="org.openscales.fx.handler.sketch.FxDrawPointHandler"/>
     <classEntry path="org.openscales.fx.layer.osm.FxMaplint"/>
     <classEntry path="org.openscales.component.control.style.StyleEditionWindow"/>
     <classEntry path="org.openscales.component.control.layer.LayerSwitcher"/>
@@ -43,6 +41,7 @@
     <classEntry path="org.openscales.component.control.style.StyleEditor"/>
     <classEntry path="org.openscales.fx.control.FxScaleLine"/>
     <classEntry path="org.openscales.fx.feature.FxStyle"/>
+    <classEntry path="org.openscales.fx.layer.FxKML"/>
     <classEntry path="org.openscales.fx.handler.FxHandler"/>
     <classEntry path="org.openscales.fx.layer.FxWMS"/>
     <classEntry path="org.openscales.fx.FxMaxExtent"/>

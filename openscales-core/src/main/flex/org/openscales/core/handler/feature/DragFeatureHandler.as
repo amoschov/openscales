@@ -1,4 +1,4 @@
-package org.openscales.core.handler.mouse
+package org.openscales.core.handler.feature
 {
 	import flash.events.Event;
 	
@@ -6,6 +6,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.Util;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.Feature;
+	import org.openscales.core.handler.mouse.DragHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	
 	/**
@@ -14,7 +15,7 @@ package org.openscales.core.handler.mouse
 	 * DragFeature is a pure ActionScript class. Flex wrapper and components can be found in the
 	 * openscales-fx module FxDragFeature.
 	 */
-	public class DragFeature extends DragHandler
+	public class DragFeatureHandler extends DragHandler
 	{
 	
 		/**
@@ -36,7 +37,7 @@ package org.openscales.core.handler.mouse
 	 	 * @param map:Map Object 
 	 	 * @param active:Boolean to active or deactivate the handler
 	 	 * */
-		public function DragFeature(map:Map=null, active:Boolean=false)
+		public function DragFeatureHandler(map:Map=null, active:Boolean=false)
 		{
 			super(map, active);
 			_undraggableFeatures=new Array();

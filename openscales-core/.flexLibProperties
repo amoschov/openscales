@@ -70,6 +70,7 @@
     <classEntry path="org.openscales.core.geometry.Polygon"/>
     <classEntry path="org.openscales.core.handler.Handler"/>
     <classEntry path="org.openscales.core.handler.IHandler"/>
+    <classEntry path="org.openscales.core.handler.feature.DragFeatureHandler"/>
     <classEntry path="org.openscales.core.handler.feature.FeatureClickHandler"/>
     <classEntry path="org.openscales.core.handler.feature.draw.AbstractDrawHandler"/>
     <classEntry path="org.openscales.core.handler.feature.draw.AbstractEditCollectionHandler"/>
@@ -91,7 +92,6 @@
     <classEntry path="org.openscales.core.handler.feature.select.SelectFeaturesHandler"/>
     <classEntry path="org.openscales.core.handler.mouse.BorderPanHandler"/>
     <classEntry path="org.openscales.core.handler.mouse.ClickHandler"/>
-    <classEntry path="org.openscales.core.handler.mouse.DragFeature"/>
     <classEntry path="org.openscales.core.handler.mouse.DragHandler"/>
     <classEntry path="org.openscales.core.handler.mouse.WMSGetFeatureInfo"/>
     <classEntry path="org.openscales.core.handler.mouse.WheelHandler"/>
