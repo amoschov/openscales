@@ -39,7 +39,6 @@
 	
 	<component id="OverviewMapComponent" class="org.openscales.component.control.OverviewMap" />
 	<component id="CapabilitiesComponent" class="org.openscales.component.control.Capabilities" />
-	<component id="DrawingComponent" class="org.openscales.component.control.Drawing" />
 	<component id="FeatureDrawingComponent" class="org.openscales.component.control.FeatureDrawing"/>
 	<component id="FeatureInfoComponent" class="org.openscales.component.control.FeatureInfo" />
 	<component id="YahooSearchComponent" class="org.openscales.component.control.search.YahooSearch" />

@@ -57,6 +57,8 @@
 			 * Layer of drawing, which contains all drawing features
 			 */
 			public var drawLayer:FeatureLayer = new FeatureLayer("Drawings");
+			
+			public var dragHandler:DragHandler = new DragHandler();
 
 			/**
 			 * Handler of PointFeature
@@ -99,7 +101,7 @@
 			 */
 			public function initFeatureDrawing():void {
 				//Properties of selectFeatureHandler
-				this.selectFeaturesHandler = new SelectFeaturesHandler(this.map, true);
+				this.selectFeaturesHandler = new SelectFeaturesHandler(this.map, false);
 				this.selectFeaturesHandler.layers = [drawLayer];
 				this.selectFeaturesHandler.onSelectionUpdated = this.onSelectionUpdated;
 
@@ -252,6 +254,19 @@
 				var handler:Number = event.index; // handler is a number because of toggleButtonBar
 				switch (handler) {
 					case 0:
+						selectFeaturesHandler.active = false;
+						pointHandler.active = false;
+						dragHandler.active = true;
+						if (pathHandler.active) {
+							this.finishPath();
+						} else if (polygonHandler.active) {
+							this.finishPolygon();
+						}
+						drawType = "";
+						editionHandler.active = false;
+						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.DISABLED));
+						break;
+					case 1:
 						selectFeaturesHandler.active = true;
 						pointHandler.active = false;
 						if (pathHandler.active) {
@@ -260,12 +275,12 @@
 							this.finishPolygon();
 						}
 						drawType = "";
-						this.activeDrag();
+						dragHandler.active = false;
 						editionHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.DISABLED));
 						break;
 
-					case 1: //click on button point
+					case 2: //click on button point
 						if (drawType != "point") {
 							if (pathHandler.active) {
 								this.finishPath();
@@ -275,13 +290,13 @@
 							pointHandler.active = true;
 							drawType = "point";
 						}
-						this.deactiveDrag();
+						dragHandler.active = false;
 						selectFeaturesHandler.active = false;
 						editionHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 						break;
 
-					case 2: //click on button path
+					case 3: //click on button path
 						if (drawType != "path") {
 							if (polygonHandler.active) {
 								this.finishPolygon();
@@ -291,13 +306,13 @@
 							editionHandler.active = false;
 							drawType = "path";
 						}
-						this.deactiveDrag();
+						dragHandler.active = false;
 						selectFeaturesHandler.active = false;
 						editionHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 						break;
 
-					case 3: //click on button polygon
+					case 4: //click on button polygon
 						if (drawType != "polygon") {
 							if (pathHandler.active) {
 								this.finishPath();
@@ -307,11 +322,11 @@
 							editionHandler.active = false;
 							drawType = "polygon";
 						}
-						this.deactiveDrag();
+						dragHandler.active = false;
 						selectFeaturesHandler.active = false;
 						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
 						break;
-					case 4:
+					case 5:
 						if (drawType != "") {
 							if (pathHandler.active)
 								this.finishPath();
@@ -319,13 +334,13 @@
 								this.finishPolygon();
 						}
 						editionHandler.active = true;
-						this.deactiveDrag();
+						dragHandler.active = false;
 						selectFeaturesHandler.active = false;
 						polygonHandler.active = false;
 						pointHandler.active = false;
 						pathHandler.active = false;
 						drawType = "";
-						this.deactiveDrag();
+						dragHandler.active = false;
 						break;
 				}
 			}
@@ -346,32 +361,6 @@
 			public function finishPath():void {
 				pathHandler.drawFinalPath();
 				pathHandler.active = false;
-			}
-
-			/**
-			 * Active paning
-			 * User can pan the map
-			 */
-			public function activeDrag():void {
-				var handler:Handler;
-				for each (handler in this.map.handlers) {
-					if (handler is DragHandler) {
-						handler.active = true;
-					}
-				}
-			}
-
-			/**
-			 * Deactive paning
-			 * User can't pan map anymore
-			 */
-			public function deactiveDrag():void {
-				var handler:Handler;
-				for each (handler in this.map.handlers) {
-					if (handler is DragHandler) {
-						handler.active = false;
-					}
-				}
 			}
 
 			//Getters and setters
@@ -408,6 +397,7 @@
 					polygonHandler.map = this.map;
 					editionHandler.map = this.map;
 					selectFeaturesHandler.map = this.map;
+					dragHandler.map = this.map;
 					this.map.addLayer(drawLayer);
 				}
 			}
@@ -424,6 +414,11 @@
 							selectedIndex="0"
 							itemClick="clickHandler(event);">
 			<mx:Array>
+			
+			<mx:Object id="btnPan"
+						   toolTip="Pan Map"
+						   icon="@Embed('/assets/images/icons/Icons-10.png')"
+						   width="32"/>
 				<mx:Object id="btnMouvement"
 						   toolTip="Select Features"
 						   icon="@Embed('/assets/images/icons/Icons-06.png')"
@@ -454,22 +449,12 @@
 					   toolTip="Delete the last drawing vertex"
 					   icon="@Embed('/assets/images/icons/Icons-07.png')"
 					   click="this.onDeleteLastClick(event)"/>
-			<!--<mx:Button id="btnDeleteSelected" width="38" height="38"
-				 toolTip="Delete all the selected features"
-				 icon="@Embed('/assets/images/featureDeleteLastSelected-upskin.png')"
-				 enabled="false"
-				 click="this.onDeleteSelectedClick(event)" />-->
 			<mx:Button id="btnDeleteAll"
 					   width="38"
 					   height="38"
 					   toolTip="Delete all the drawn features"
 					   icon="@Embed('/assets/images/icons/Icons-09.png')"
 					   click="this.onDeleteAllClick(event)"/>
-			<!--<mx:Button id="btnMerge" width="38" height="38"
-				 toolTip="Merge the selected features (same type only)"
-				 icon="@Embed('/assets/images/featureMerge-upskin.png')"
-				 enabled="false"
-				 click="this.onMergeClick(event)" />-->
 		</mx:HBox>
 
 	</mx:VBox>
