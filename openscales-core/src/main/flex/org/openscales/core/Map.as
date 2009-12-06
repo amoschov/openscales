@@ -1,6 +1,6 @@
 package org.openscales.core
 {
-	import com.gskinner.motion.GTweeny;
+	import com.gskinner.motion.GTween;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -552,11 +552,11 @@ package org.openscales.core
 			}
 
 			if(tween) {
-				new GTweeny(this._layerContainer, 0.5, {x: lx});
-				new GTweeny(this._layerContainer, 0.5, {y: ly});    
+				new GTween(this._layerContainer, 0.5, {x: lx});
+				new GTween(this._layerContainer, 0.5, {y: ly});    
 				if(bitmapTransition != null) {
-					new GTweeny(bitmapTransition, 0.5, {x: bx });
-					new GTweeny(bitmapTransition, 0.5, {y: by });
+					new GTween(bitmapTransition, 0.5, {x: bx });
+					new GTween(bitmapTransition, 0.5, {y: by });
 				} 
 			} else {
 				this._layerContainer.x = lx;
@@ -852,18 +852,18 @@ package org.openscales.core
 				var y:Number = this.bitmapTransition.y-((resMult-1)*this.bitmapTransition.height)/2;
 
 				//The tween effect to scale and re-position the bitmapTransition
-				var tween:GTweeny = new GTweeny(this.bitmapTransition,0.3,
+				var tween:GTween = new GTween(this.bitmapTransition,0.3,
 					{
 						scaleX: resMult,
 						scaleY: resMult,
 						x: x,
 						y: y
 					});
-				tween.addEventListener(Event.COMPLETE,clbZoomTween);
+				tween.onComplete = clbZoomTween;
 			}
 
 			// The zoom tween callback method defined here to avoid a class attribute for newZoom
-			function clbZoomTween(evt:Event):void {
+			function clbZoomTween(tween:GTween):void {
 				_zooming = false;
 				setCenter(null, newZoom);
 				layerContainer.alpha = 1;

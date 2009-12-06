@@ -1,6 +1,6 @@
 package org.openscales.core.control
 {
-	import com.gskinner.motion.GTweeny;
+	import com.gskinner.motion.GTween;
 	
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
@@ -345,7 +345,7 @@ package org.openscales.core.control
 				if(this._layerSwitcherState == "Close")//add a tween effect
 				{
 					this.alpha = 0;
-					var tween:GTweeny = new GTweeny(this,0.5,{alpha:0.7});
+					var tween:GTween = new GTween(this,0.5,{alpha:0.7});
 					this._layerSwitcherState = "Open";
 				}
 
@@ -442,7 +442,7 @@ package org.openscales.core.control
 			var l:int = k+(_slideHorizontalTemp.width)-1;
 
 			//change the position of the vertical Slide to the click do by the user
-			var tween:GTweeny = new GTweeny(_slideVerticalTemp,0.5,{x:mouseX});
+			var tween:GTween = new GTween(_slideVerticalTemp,0.5,{x:mouseX});
 
 			//calulate the layer opacity
 			var resultAlpha:Number = (mouseX/(l-k)) - (k/(l-k))

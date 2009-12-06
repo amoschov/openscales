@@ -8,7 +8,6 @@
 			import org.openscales.core.events.LayerEvent;
 			import org.openscales.core.basetypes.Pixel;
 			import org.openscales.core.Map;
-			import com.gskinner.motion.GTweeny;
 			import mx.events.SliderEvent;
 			
 			[Bindable] private var _toolTipZoomIn:String = "Zoom In";

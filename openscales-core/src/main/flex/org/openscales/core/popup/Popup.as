@@ -1,6 +1,6 @@
 package org.openscales.core.popup
 {
-	import com.gskinner.motion.GTweeny;
+	import com.gskinner.motion.GTween;
 	
 	import flash.display.Bitmap;
 	import flash.display.Sprite;

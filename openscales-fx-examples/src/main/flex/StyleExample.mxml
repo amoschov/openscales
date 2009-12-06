@@ -46,7 +46,7 @@
 
 
 				// Ignore France Layer for the select feature Handler
-				(this.selectFeatureHandler.handler as SelectFeaturesHandler).layers = [this.ignGeoplaRegion.layer];
+				//(this.selectFeatureHandler.handler as SelectFeaturesHandler).layers = [this.ignGeoplaRegion.layer];
 			}
 
 			private function generateLegend():void {

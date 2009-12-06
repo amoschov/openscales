@@ -1,6 +1,6 @@
 package org.openscales.core.tile
 {
-	import com.gskinner.motion.GTweeny;
+	import com.gskinner.motion.GTween;
 	
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
@@ -119,7 +119,7 @@ package org.openscales.core.tile
 					this.layer.addChild(this);
 				
 				// TODO : add parameter to control tween effect
-				var tw:GTweeny = new GTweeny(this, 0.3, {alpha:1});
+				var tw:GTween = new GTween(this, 0.3, {alpha:1});
 				this.drawn = true;
 
 				//We put the loader into the cache if it's a recently loaded
