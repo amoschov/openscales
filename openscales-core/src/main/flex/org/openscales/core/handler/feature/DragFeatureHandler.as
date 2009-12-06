@@ -12,8 +12,7 @@ package org.openscales.core.handler.feature
 	/**
 	 * DragFeature is use to drag a feature
 	 * To use this handler, it's  necessary to add it to the map
-	 * DragFeature is a pure ActionScript class. Flex wrapper and components can be found in the
-	 * openscales-fx module FxDragFeature.
+	 * It dispatch FeatureEvent.FEATURE_DRAG_START and FeatureEvent.FEATURE_DRAG_STOP events
 	 */
 	public class DragFeatureHandler extends DragHandler
 	{

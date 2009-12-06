@@ -8,12 +8,13 @@
 
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.handler.feature.SelectFeaturesHandler;
 			import org.openscales.core.handler.feature.draw.DrawPointHandler;
 			import org.openscales.core.handler.feature.draw.DrawPolygonHandler;
 			import org.openscales.core.handler.feature.draw.DrawPathHandler;
 			import org.openscales.core.handler.feature.draw.FeatureLayerEditionHandler;
 			import org.openscales.core.handler.feature.draw.DrawMultiHandler;
-			import org.openscales.core.handler.feature.select.SelectFeaturesHandler;
+			import org.openscales.core.handler.feature.SelectFeaturesHandler;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 			import org.openscales.core.basetypes.LonLat;
@@ -21,7 +22,7 @@
 			import org.openscales.core.handler.Handler;
 			import org.openscales.core.handler.mouse.DragHandler;
 			import org.openscales.core.handler.feature.draw.FeatureLayerEditionHandler;
-			import org.openscales.core.handler.feature.select.SelectFeaturesHandler;
+			import org.openscales.core.handler.feature.SelectFeaturesHandler;
 			import org.openscales.core.handler.feature.draw.DrawMultiHandler;
 			import org.openscales.core.handler.feature.draw.DrawPathHandler;
 			import org.openscales.core.handler.feature.draw.DrawPolygonHandler;
