@@ -36,6 +36,10 @@ package org.openscales.core.handler.feature.draw
 		
 		private var _drawContainer:Sprite=new Sprite();
 		
+		private var _editPoint:Boolean;
+		private var _editPath:Boolean;
+		private var _editPolygon:Boolean;
+		
 		/**
 		 * Handler of edition mode 
 		 * @param editPoint to know if the edition of point is allowed
@@ -52,14 +56,12 @@ package org.openscales.core.handler.feature.draw
 			this._featureClickHandler.startDrag=dragVerticeStart;
 			this._featureClickHandler.stopDrag=dragVerticeStop;
 			
+			this._editPoint = editPoint;
+			this._editPath = editPath;
+			this._editPolygon = editPolygon;
 			
+			this.layerToEdit=layer;
 			
-			this._layerToEdit=layer;
-			if(editPoint)iEditPoint=new EditPointHandler(map,active,layer,_featureClickHandler,_drawContainer,false);
-			if(editPath){
-				iEditPath=new EditPathHandler(map,active,layer,_featureClickHandler,_drawContainer,false);
-			}
-			if(editPolygon)iEditPolygon=new EditPolygonHandler(map,active,layer,_featureClickHandler,_drawContainer,false);
 			super(map,active);
 		}
 		/**
@@ -263,6 +265,12 @@ package org.openscales.core.handler.feature.draw
 		 public function set layerToEdit(value:FeatureLayer):void{
 		 	 if(value!=null){
 		 	 	this._layerToEdit=value;
+		 	 	if(this._editPoint)
+		 	 		iEditPoint = new EditPointHandler(map,active,value,_featureClickHandler,_drawContainer,false);
+				if(this._editPath)
+					iEditPath = new EditPathHandler(map,active,value,_featureClickHandler,_drawContainer,false);
+				if(this._editPolygon)
+					iEditPolygon = new EditPolygonHandler(map,active,value,_featureClickHandler,_drawContainer,false);
 		 	 }
 		 }
 		 /**

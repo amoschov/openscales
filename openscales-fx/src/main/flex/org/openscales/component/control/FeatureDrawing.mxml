@@ -1,133 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:control="org.openscales.component.control.*"
-				 xmlns:mx="http://www.adobe.com/2006/mxml"
-				 creationComplete="initFeatureDrawing();">
+				 xmlns:mx="http://www.adobe.com/2006/mxml">
 
 	<!-- TODO : drawing handlers are too much tighly coupled with controls, this should be refactor to make drawing
 		 integration much simpler -->
 
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.handler.feature.SelectFeaturesHandler;
-			import org.openscales.core.handler.feature.draw.DrawPointHandler;
-			import org.openscales.core.handler.feature.draw.DrawPolygonHandler;
-			import org.openscales.core.handler.feature.draw.DrawPathHandler;
-			import org.openscales.core.handler.feature.draw.FeatureLayerEditionHandler;
-			import org.openscales.core.handler.feature.draw.DrawMultiHandler;
-			import org.openscales.core.handler.feature.SelectFeaturesHandler;
 			import org.openscales.core.Map;
-			import org.openscales.core.Trace;
-			import org.openscales.core.basetypes.LonLat;
-			import org.openscales.core.basetypes.Pixel;
-			import org.openscales.core.handler.Handler;
-			import org.openscales.core.handler.mouse.DragHandler;
-			import org.openscales.core.handler.feature.draw.FeatureLayerEditionHandler;
-			import org.openscales.core.handler.feature.SelectFeaturesHandler;
-			import org.openscales.core.handler.feature.draw.DrawMultiHandler;
-			import org.openscales.core.handler.feature.draw.DrawPathHandler;
-			import org.openscales.core.handler.feature.draw.DrawPolygonHandler;
-			import org.openscales.core.handler.feature.draw.DrawPointHandler;
-			import org.openscales.core.geometry.LineString;
-			import org.openscales.core.geometry.Polygon;
-			import org.openscales.core.geometry.LinearRing;
-			import org.openscales.core.feature.Feature;
-			import org.openscales.core.feature.PolygonFeature;
-			import org.openscales.core.feature.PointFeature;
-			import org.openscales.core.feature.LineStringFeature;
-			import org.openscales.core.events.DrawingEvent;
+			import org.openscales.core.handler.feature.draw.DrawHandler;
 			import org.openscales.core.layer.FeatureLayer;
-			import org.openscales.core.style.Style;
-			import org.openscales.core.events.FeatureEvent;
+			
 
 			import mx.controls.Alert;
 			import mx.events.CloseEvent;
 			import mx.events.ItemClickEvent;
-
-			/**
-			 * Type of drawing (point, path or polygon)
-			 */
-			private var _drawType:String = "";
-
+			
 			/**
 			 * Index of the tab Drawing, default : -1
 			 */
 			private var _indexTabDrawing:Number = -1;
-
-			/**
-			 * Layer of drawing, which contains all drawing features
-			 */
+			
 			public var drawLayer:FeatureLayer = new FeatureLayer("Drawings");
 			
-			public var dragHandler:DragHandler = new DragHandler();
-
-			/**
-			 * Handler of PointFeature
-			 */
-			public var pointHandler:DrawPointHandler = new DrawPointHandler(null, false, drawLayer);
-
-			/**
-			 * Handler of PolygonFeature
-			 */
-			public var polygonHandler:DrawPolygonHandler = new DrawPolygonHandler(null, false, drawLayer);
-
-			/**
-			 * Handler of PathFeature
-			 */
-			public var pathHandler:DrawPathHandler = new DrawPathHandler(null, false, drawLayer);
-			/**
-			 * Edition Handler
-			 * */
-			public var editionHandler:FeatureLayerEditionHandler = new FeatureLayerEditionHandler(null, drawLayer, false, true, true, true);
-
-			/**
-			 * Handler of MultiFeature
-			 */
-			public var multiFeaturesHandler:DrawMultiHandler = new DrawMultiHandler(null, false, drawLayer);
-
-			/**
-			 * Dragging state
-			 */
-			private var _isDragging:Boolean = false; //To know if the feature is dragging
-
-			/**
-			 * Mouse handlers
-			 */
-			public var selectFeaturesHandler:SelectFeaturesHandler; //to select features
-
-			/**
-			 * Initiate all properties and handlers
-			 * Be careful with handlers : You have to manage all handler, in order to activate or deactivate them when it's necessary.
-			 * Don't let a handler active if it's not necessary.
-			 */
-			public function initFeatureDrawing():void {
-				//Properties of selectFeatureHandler
-				this.selectFeaturesHandler = new SelectFeaturesHandler(this.map, false);
-				this.selectFeaturesHandler.layers = [drawLayer];
-				this.selectFeaturesHandler.onSelectionUpdated = this.onSelectionUpdated;
-
-				//Properties of MultiHandler
-				this.multiFeaturesHandler.map = this.map;
-
-				//Active drag feature
-			/* this.dragfeature = new DragFeature(this.map,[drawLayer],true); */
-			}
-
-			private function onSelectionUpdated(selectedFeatures:Array):void {
-			/* btnDeleteSelected.enabled = selectedFeatures && (selectedFeatures.length > 0);
-			 btnMerge.enabled = selectedFeatures && (selectedFeatures.length > 1) && Feature.compatibleFeatures(selectedFeatures); */
-			}
-
+			private var _drawHandler:DrawHandler = new DrawHandler(null, true, drawLayer);;
+			
 			/**
 			 * Allow you to merge different selected feature in one.
 			 * You can't merge a polygon and a point (for example), All features must be the same geometry
 			 */
 			private function onMergeClick(event:MouseEvent):void {
-				/* tab of selected features in params, return a multigeometry of this selected features */
-				var feature:Feature = multiFeaturesHandler.buttonClicked(selectFeaturesHandler.selectedFeatures) as Feature;
-				if (multiFeaturesHandler.multiPolygonForbidden) {
+				if (this._drawHandler.multiFeaturesHandler.multiPolygonForbidden) {
 					Alert.show("For the moment, you can't merge MultiPolygon", "Information", Alert.OK | Alert.NONMODAL);
 				}
-			/* selectFeatureHandler.currentfeature = feature; */ /* selectFeatureHandler.OnSelection(); */ /* selectFeatureHandler.selectFeauturesLength++; */ /* btnMerge.enabled = false; */
 			}
 
 			/**
@@ -144,18 +49,11 @@
 			private function alertClickHandler(event:CloseEvent):void {
 				// User click on "YES", he wants to apply changes
 				if (event.detail == Alert.YES) {
-					deleteSelectedFeatures();
+					this._drawHandler.deleteSelectedFeatures();
 				}
 			}
 
-			/**
-			 * User clicks on delete selected feature button
-			 */
-			private function deleteSelectedFeatures():void {
-				var featuresToDelete:Array = this.selectFeaturesHandler.selectedFeatures;
-				this.selectFeaturesHandler.clearSelection();
-				this.drawLayer.removeFeatures(featuresToDelete);
-			}
+			
 
 			/**
 			 * User clicks on delete all button
@@ -170,82 +68,14 @@
 					drawLayer.reset();
 				}
 			}
-
-			private function deleteAllFeatures():void {
-				// clear the selected features
-				deleteSelectedFeatures();
-				// clear the unselected features
-				drawLayer.clear();
-				// clear the temporary line
-				pathHandler.drawContainer.graphics.clear();
-				// remove the listener which draw temporary line
-				pathHandler.map.removeEventListener(MouseEvent.MOUSE_MOVE, pathHandler.temporaryLine);
-				// reset feature handler
-				switch (drawType) {
-					case "path":  {
-						pathHandler.newFeature = true;
-						break;
-					}
-					case "polygon":  {
-						polygonHandler.newFeature = true;
-						break;
-					}
+			
+			override public function set map(value:Map):void {
+				super.map = value;
+				if (this.map != null) {
+					this._drawHandler.map = this.map;
 				}
 			}
 
-			/**
-			 * User clicks on delete last feature button
-			 */
-			public function onDeleteLastClick(event:Event):void {
-				var last:Number = drawLayer.features.length - 1;
-				var lastFeature:Feature = null;
-
-				var pointToDelete:org.openscales.core.geometry.Point;
-
-				if (drawType == "") {
-					drawLayer.removeFeature(drawLayer.features[last]);
-				} else if (drawType == "point") {
-					drawLayer.removeFeature(drawLayer.features[last]);
-				} else if (drawType == "path") {
-					//case the last feature is a LineString			
-					if (last >= 0 && drawLayer.features[last] is LineStringFeature) {
-						// we check if the lineString contain more than 2 points. If not, we delete the feature
-						if ((drawLayer.features[last] as LineStringFeature).lineString.componentsLength > 2) {
-							pointToDelete = (drawLayer.features[last] as LineStringFeature).lineString.getLastPoint();
-							(drawLayer.features[last] as LineStringFeature).lineString.removePoint(pointToDelete);
-							pathHandler.lastPoint = (drawLayer.features[last] as LineStringFeature).lineString.getLastPoint();
-
-							//update the starting point of the temporary line
-							var pix:Pixel = pathHandler.map.getMapPxFromLonLat(new LonLat(pathHandler.lastPoint.x, pathHandler.lastPoint.y));
-							pathHandler.startPoint = pix;
-						} else {
-							drawLayer.removeFeature(drawLayer.features[last]);
-							pathHandler.newFeature = true;
-							//remove the listener which draw temporary line
-							pathHandler.map.removeEventListener(MouseEvent.MOUSE_MOVE, pathHandler.temporaryLine);
-						}
-						// clear the temporary line
-						pathHandler.drawContainer.graphics.clear();
-					} else {
-						drawLayer.removeFeature(drawLayer.features[last]);
-					}
-				} else if (drawType == "polygon") {
-					if (last >= 0 && drawLayer.features[last] is PolygonFeature) {
-						// we check if the polygon contain more than 2 points. If not, we delete the feature									
-						if (((drawLayer.features[last] as PolygonFeature).polygon.componentByIndex(0) as LinearRing).componentsLength > 2) {
-							var lineRing:LinearRing = ((drawLayer.features[last] as PolygonFeature).polygon.componentByIndex(0) as LinearRing);
-							pointToDelete = lineRing.getLastPoint();
-							lineRing.removeComponent(pointToDelete);
-						} else {
-							drawLayer.removeFeature(drawLayer.features[last]);
-							polygonHandler.newFeature = true;
-						}
-					} else {
-						drawLayer.removeFeature(drawLayer.features[last]);
-					}
-				}
-				drawLayer.redraw();
-			}
 
 			/**
 			 * Click on the togglebarbutton. Index button starts from 0.
@@ -254,153 +84,26 @@
 				var handler:Number = event.index; // handler is a number because of toggleButtonBar
 				switch (handler) {
 					case 0:
-						selectFeaturesHandler.active = false;
-						pointHandler.active = false;
-						dragHandler.active = true;
-						if (pathHandler.active) {
-							this.finishPath();
-						} else if (polygonHandler.active) {
-							this.finishPolygon();
-						}
-						drawType = "";
-						editionHandler.active = false;
-						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.DISABLED));
+						this._drawHandler.mode = DrawHandler.DRAG_MODE;
 						break;
 					case 1:
-						selectFeaturesHandler.active = true;
-						pointHandler.active = false;
-						if (pathHandler.active) {
-							this.finishPath();
-						} else if (polygonHandler.active) {
-							this.finishPolygon();
-						}
-						drawType = "";
-						dragHandler.active = false;
-						editionHandler.active = false;
-						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.DISABLED));
+						this._drawHandler.mode = DrawHandler.SELECT_MODE;
 						break;
-
-					case 2: //click on button point
-						if (drawType != "point") {
-							if (pathHandler.active) {
-								this.finishPath();
-							} else if (polygonHandler.active) {
-								this.finishPolygon();
-							}
-							pointHandler.active = true;
-							drawType = "point";
-						}
-						dragHandler.active = false;
-						selectFeaturesHandler.active = false;
-						editionHandler.active = false;
-						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
+					case 2:
+						this._drawHandler.mode = DrawHandler.DRAW_POINT_MODE;
 						break;
-
-					case 3: //click on button path
-						if (drawType != "path") {
-							if (polygonHandler.active) {
-								this.finishPolygon();
-							}
-							pointHandler.active = false;
-							pathHandler.active = true;
-							editionHandler.active = false;
-							drawType = "path";
-						}
-						dragHandler.active = false;
-						selectFeaturesHandler.active = false;
-						editionHandler.active = false;
-						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
+					case 3:
+						this._drawHandler.mode = DrawHandler.DRAW_PATH_MODE;
 						break;
-
-					case 4: //click on button polygon
-						if (drawType != "polygon") {
-							if (pathHandler.active) {
-								this.finishPath();
-							}
-							pointHandler.active = false;
-							polygonHandler.active = true;
-							editionHandler.active = false;
-							drawType = "polygon";
-						}
-						dragHandler.active = false;
-						selectFeaturesHandler.active = false;
-						this.map.dispatchEvent(new DrawingEvent(DrawingEvent.ENABLED));
+					case 4:
+						this._drawHandler.mode = DrawHandler.DRAW_POLYGON_MODE;
 						break;
 					case 5:
-						if (drawType != "") {
-							if (pathHandler.active)
-								this.finishPath();
-							else if (polygonHandler.active)
-								this.finishPolygon();
-						}
-						editionHandler.active = true;
-						dragHandler.active = false;
-						selectFeaturesHandler.active = false;
-						polygonHandler.active = false;
-						pointHandler.active = false;
-						pathHandler.active = false;
-						drawType = "";
-						dragHandler.active = false;
+						this._drawHandler.mode = DrawHandler.EDIT_MODE;
 						break;
 				}
 			}
-
-			/**
-			 * Finish a polygon
-			 * Force to finalyse a polygon (even it's not finished)
-			 */
-			public function finishPolygon():void {
-				polygonHandler.drawFinalPoly();
-				polygonHandler.active = false;
-			}
-
-			/**
-			 * Finish a path
-			 * Force to finalyse a path (event it's not finished)
-			 */
-			public function finishPath():void {
-				pathHandler.drawFinalPath();
-				pathHandler.active = false;
-			}
-
-			//Getters and setters
-			public function get drawType():String {
-				return _drawType;
-			}
-
-			public function set drawType(value:String):void {
-				_drawType = value;
-			}
-
-			public function get indexTabDrawing():Number {
-				return _indexTabDrawing;
-			}
-
-			public function set indexTabDrawing(value:Number):void {
-				_indexTabDrawing = value;
-			}
-
-			public function get isDragging():Boolean {
-				return _isDragging;
-			}
-
-			public function set isDragging(value:Boolean):void {
-				_isDragging = value;
-			}
-
-
-			override public function set map(value:Map):void {
-				super.map = value;
-				if (this.map != null) {
-					pointHandler.map = this.map;
-					pathHandler.map = this.map;
-					polygonHandler.map = this.map;
-					editionHandler.map = this.map;
-					selectFeaturesHandler.map = this.map;
-					dragHandler.map = this.map;
-					this.map.addLayer(drawLayer);
-				}
-			}
+			
 		]]>
 	</mx:Script>
 
@@ -448,13 +151,13 @@
 					   height="38"
 					   toolTip="Delete the last drawing vertex"
 					   icon="@Embed('/assets/images/icons/Icons-07.png')"
-					   click="this.onDeleteLastClick(event)"/>
+					   click="this._drawHandler.onDeleteLastClick(event)"/>
 			<mx:Button id="btnDeleteAll"
 					   width="38"
 					   height="38"
 					   toolTip="Delete all the drawn features"
 					   icon="@Embed('/assets/images/icons/Icons-09.png')"
-					   click="this.onDeleteAllClick(event)"/>
+					   click="onDeleteAllClick(event)"/>
 		</mx:HBox>
 
 	</mx:VBox>
