@@ -100,7 +100,7 @@ package org.openscales.core.handler.feature
 		 * This function add an array of  layers as draggabble layer
 		 * @param layers: Array of  layer to add
 		 * */
-		public function addDraggablelayers(layers:Array){
+		public function addDraggablelayers(layers:Array):void {
 				for(var i:int=0;i<layers.length;i++){
 					addDraggablelayer(layers[i] as FeatureLayer);
 				}
