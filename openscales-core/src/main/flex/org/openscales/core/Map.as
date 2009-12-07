@@ -421,7 +421,8 @@ package org.openscales.core
 		}
 
 		public function removePopup(popup:Popup):void {
-			this._layerContainer.removeChild(popup);
+			if(this._layerContainer.contains(popup))
+				this._layerContainer.removeChild(popup);
 		}
 
 		/**

@@ -219,8 +219,7 @@
 				]]>
 			</mx:itemClick>
 		</mx:ToggleButtonBar>
-		<!--os:SelectBoxComponent map="{map}" /-->
-		<!--os:UnselectBoxComponent map="{map}" /--> <!-- TODO -->
+		
 	</mx:VBox>
 	
 </Example>

@@ -88,23 +88,18 @@
 		<os:WheelHandler/>
 	</os:Map>
 
-	<os:WidgetWindow x="10"
+	<os:ControlPanel x="10"
 					 y="10"
 					 width="140"
-					 widgetTitle="Navigation"
-					 toolTipIconEnd="the map bar"
-					 duration="1000">
+					 title="Navigation">
 		<os:PanComponent map="{map}"/>
-		<mx:HBox width="100%">
+		<mx:HBox width="100%" paddingLeft="5" paddingRight="5">
 			<os:ZoomComponent map="{map}"/>
-			<mx:VBox width="100%"
-					 horizontalAlign="right"
-					 verticalAlign="top">
-				<os:ZoomBoxComponent map="{map}"
+			<mx:Spacer width="100%" />
+			<os:ZoomBoxComponent map="{map}"
 									 width="32"
 									 height="32"/>
-			</mx:VBox>
 		</mx:HBox>
-	</os:WidgetWindow>
+	</os:ControlPanel>
 
 </Example>

@@ -47,7 +47,7 @@
 	<component id="ScaleLine" class="org.openscales.fx.control.FxScaleLine" />
 	<component id="Spinner" class="org.openscales.fx.control.FxSpinner" />
 	
-	<component id="WidgetWindow" class="org.openscales.component.WidgetWindow"/>
+	<component id="ControlPanel" class="org.openscales.component.ControlPanel"/>
 	
 	<component id="IGNGeoRMSecurity" class="org.openscales.fx.security.ign.FxIGNGeoRMSecurity"/>
 	

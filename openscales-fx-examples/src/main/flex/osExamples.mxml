@@ -149,29 +149,29 @@
 							 label="Select and test features"
 							 description="This is an example of each type of geometry: point (red), multipoint (orange), line (green), multiline (red), polygon (blue), multipolygon (violet).\nThe additional black geometries are used to test the 'containsPoint' and 'intersects' functions of each geometry.\nIn 'select mode', select one geometry by a click or several geometries by drawing a selectBox (keep the mouse button down).\nUse CTRL+click and CTRL+selectBox to add features to the selection.\nUse SHIFT+click and SHIFT+selectBox to remove features from the selection.\nThe big black rectangle is registered as an unselectable feature."/>
 					<example viewStack="informations"
-							 label="Get information on the features"
+							 label="Get information on the features using GetFeatureInfo request"
 							 description="Click on a point to see its attributes in the panel."/>
 					<example viewStack="reprojectionAndQuery"
 							 label="Reproject and query"
-							 description=""/>
+							 description="The 2 point features should be located at the same place : Lyon in France."/>
 				</category>
 
 				<category label="Protocols">
 					<example viewStack="wfsBase"
 							 label="WFS base layer"
-							 description=""/>
+							 description="A single WFS layer intended to test vector feature as base layer."/>
 					<example viewStack="wmsc"
 							 label="NASA WMS-C"
-							 description=""/>
+							 description="The example use the BorderPanHandler that pan the map based on distance between the cursor and the center of the map."/>
 					<example viewStack="wms"
 							 label="Germany WMS"
-							 description=""/>
+							 description="Single tile WMS layer"/>
 					<example viewStack="imageLayer"
 							 label="Image Layer"
-							 description=""/>
+							 description="Image layer allow to display a layer with the single geolocalized picture."/>
 					<example viewStack="kml"
 							 label="KML Layer and popups"
-							 description=""/>
+							 description="KML that contains placemarks"/>
 				</category>
 
 				<category label="Security">

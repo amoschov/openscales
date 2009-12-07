@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties version="1">
   <includeClasses>
-    <classEntry path="org.openscales.component.WidgetWindow"/>
+    <classEntry path="org.openscales.component.ControlPanel"/>
     <classEntry path="org.openscales.component.control.Capabilities"/>
     <classEntry path="org.openscales.component.control.Control"/>
     <classEntry path="org.openscales.component.control.FeatureDrawing"/>

@@ -63,15 +63,20 @@
 					Trace.warning("YahooSearch WARNING: selection of a void item");
 					return;
 				}
-				var latitude:Number = parseFloat(event.target.data.Latitude);
-				var longitude:Number = parseFloat(event.target.data.Longitude);
-				if (! (isNaN(latitude) || isNaN(longitude)) ) {
-					var pos:LonLat = new LonLat(longitude,latitude);
-					Trace.log("YahooSearch center at "+pos.toShortString());
-					if (map.baseLayer.projection.srsCode != "") {
-						pos.transform(new ProjProjection("EPSG:4326"), map.baseLayer.projection);
+				
+				try {
+					var latitude:Number = parseFloat(event.target.data.Latitude);
+					var longitude:Number = parseFloat(event.target.data.Longitude);
+					if (! (isNaN(latitude) || isNaN(longitude)) ) {
+						var pos:LonLat = new LonLat(longitude,latitude);
+						Trace.log("YahooSearch center at "+pos.toShortString());
+						if (map.baseLayer.projection.srsCode != "") {
+							pos.transform(new ProjProjection("EPSG:4326"), map.baseLayer.projection);
+						}
+						this.map.center = pos;
 					}
-					this.map.center = pos;
+				} catch(e:Error) {
+					Trace.info("No result to use to change position of the map");
 				}
 			}			
 		]]>

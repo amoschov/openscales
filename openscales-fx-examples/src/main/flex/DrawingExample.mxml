@@ -35,9 +35,8 @@
 	
 	<!-- Specific tools of this example -->
 	
-	<mx:Panel title="Drawing Tools" horizontalAlign="center" x="10" y="10"
-		paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+	<os:ControlPanel title="Drawing Tools" x="10" y="10">
 		<os:FeatureDrawingComponent map="{map}" />
-	</mx:Panel>
+	</os:ControlPanel>
 	
 </Example>

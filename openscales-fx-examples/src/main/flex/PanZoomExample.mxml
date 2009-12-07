@@ -51,12 +51,10 @@
 
 	<!-- Specific tools of this example -->
 
-	<os:WidgetWindow x="10"
+	<os:ControlPanel x="10"
 					 y="10"
 					 width="140"
-					 widgetTitle="Navigation"
-					 toolTipIconEnd="the map bar"
-					 duration="1000">
+					 title="Navigation">
 		<os:PanComponent map="{map}"/>
 		<mx:HBox width="100%">
 			<os:ZoomComponent map="{map}"/>
@@ -68,6 +66,6 @@
 									 height="32"/>
 			</mx:VBox>
 		</mx:HBox>
-	</os:WidgetWindow>
+	</os:ControlPanel>
 
 </Example>
