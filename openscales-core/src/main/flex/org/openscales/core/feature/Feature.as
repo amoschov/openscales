@@ -109,8 +109,9 @@ package org.openscales.core.feature {
 				this.attributes=Util.extend(this.attributes, data);
 			}
 			
-			this.lonlat = null;
 			this.geometry = geom;
+			if(this.geometry)
+				this.lonlat = geom.bounds.centerLonLat;
 			if (this.geometry && this.geometry.id)
 				this.name = this.geometry.id;
 			this.state = null;

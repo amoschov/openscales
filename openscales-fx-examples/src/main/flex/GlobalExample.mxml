@@ -6,14 +6,43 @@
 
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.core.popup.Anchored;
+			import org.openscales.core.events.FeatureEvent;
 			import org.openscales.core.events.MapEvent;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 			import org.openscales.core.style.Style;
+			
+			private var popup:Anchored
 
 			private function initMap():void {
 				Trace.useFireBugConsole = displayFirebugTrace;
 				map = fxmap.map;
+				
+				map.addEventListener(FeatureEvent.FEATURE_OVER, onFeatureOver);
+				map.addEventListener(FeatureEvent.FEATURE_OUT, onFeatureOut);
+
+			}
+			
+			private function onFeatureOver(event:FeatureEvent):void {
+					if(!popup) {
+						popup = new Anchored();
+						popup.closeBox = false;
+						popup.feature = event.feature;
+						var content:String = "";
+						for(var attribute:String in event.feature.attributes) {
+							content = content + "<b>" + attribute + "</b> : " + event.feature.attributes[attribute] + "<br />";
+						}
+						popup.htmlText = content;
+						map.addPopup(popup, true);
+					}
+			}
+			
+			private function onFeatureOut(event:FeatureEvent):void {
+				if(popup) {
+					popup.destroy();
+					popup = null;
+				}
 			}
 		]]>
 	</mx:Script>
@@ -38,6 +67,7 @@
 
 		<os:DragHandler/>
 		<os:WheelHandler/>
+		<os:SelectFeaturesHandler active="true" enableClickSelection="false" enableBoxSelection="false" enableOverSelection="true" />
 
 		<os:Spinner id="spinner"
 					x="{width / 2}"

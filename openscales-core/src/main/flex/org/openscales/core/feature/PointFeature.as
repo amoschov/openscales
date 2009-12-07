@@ -29,11 +29,9 @@ package org.openscales.core.feature {
 		private var _startdrag:Pixel = null;
 
 		public function PointFeature(geom:Point=null, data:Object=null, style:Style=null, isEditionFeature:Boolean=false, editionFeatureParentGeometry:Collection=null) {
-			//The point is none editable
+
 			super(geom, data, style, false, isEditionFeature);
-			if (geom != null) {
-				this.lonlat = new LonLat(this.point.x, this.point.y);
-			}
+
 			this._isEditionFeature = isEditionFeature;
 			if (editionFeatureParentGeometry != null && isEditionFeature)
 				this._editionFeatureParentGeometry = editionFeatureParentGeometry;

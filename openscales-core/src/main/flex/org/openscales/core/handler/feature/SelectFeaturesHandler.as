@@ -119,20 +119,50 @@ package org.openscales.core.handler.feature
 		 * Style of the selection area: opacity (default=0.33)
 		 */        
 		private var _selectionAreaFillOpacity:Number = 0.33;
+		
+		private var _enableClickSelection:Boolean;
+		private var _enableBoxSelection:Boolean;
+		private var _enableSelection:Boolean;
 
 		/**
 		 * Constructor of the handler.
 		 * @param map the map associated to the handler
 		 * @param active boolean defining if the handler is active or not
 		 */
-		public function SelectFeaturesHandler(map:Map=null, active:Boolean=false) {
+		public function SelectFeaturesHandler(map:Map=null, active:Boolean=false, enableClickSelection:Boolean = true, enableBoxSelection:Boolean = true, enableOverSelection:Boolean = false) {
 			super(map, active);
 			if (this.map) {
 				this.map.addChild(_drawContainer);
 			}
-			this.click = this.selectByClick;
-			this.drag = this.drawSelectionBox;
-			this.drop = this.selectByBox;
+			
+			this.enableClickSelection = enableClickSelection;
+			this.enableBoxSelection= enableBoxSelection;
+			this.enableOverSelection= enableOverSelection;
+			
+		}
+		
+		public function set enableClickSelection(value:Boolean):void {
+			if(value)
+				this.click = this.selectByClick;
+			else
+				this.click = null;
+		}
+		
+		public function set enableBoxSelection(value:Boolean):void {
+			if(value) {
+				this.drag = this.drawSelectionBox;
+				this.drop = this.selectByBox;
+			} else {
+				this.drag = null;
+				this.drop = null;
+			}
+		}
+		
+		public function set enableOverSelection(value:Boolean):void {
+			if(value)
+				this.onOverFeature = this.selectByOver;
+			else
+				this.onOverFeature = null;
 		}
 		
 		/**
@@ -538,6 +568,11 @@ package org.openscales.core.handler.feature
 			this.selectByBox(p);
 		}
 		
+		private function selectByOver(feature:Feature):void {
+			this.unselect(this.selectedFeatures);
+			this.select([feature]);
+		}		
+		
 		/**
 		 * (Un)select all the features that intersect the box drawn (the
 		 * selectionBuffer is used to enlarge the selection area).
@@ -556,23 +591,6 @@ package org.openscales.core.handler.feature
         	// Select the features that intersect the geometry
 			this.selectByGeometry(sboxGeom, this._ctrlKey, this._shiftKey);
 		}
-		
-		/**
-		 * (Un)select all the features that intersect the freehand selection
-		 * area (the selection buffer is not added).
-		 * If the array of layers is defined, only the features of these layers
-		 * are treated.
-		 * @param evt the MouseEvent (useful for the position of MouseUp and for
-		 * the status of the CTRL and SHIFT keys)
-		 */
-		/*private function selectByFreehandDrawing(evt:MouseEvent):void {
-			// Clear the selection drawing
-			_drawContainer.graphics.clear();
-			// Get the selection area
-        	var geom:Geometry = null; // TODO
-        	// Select the features that intersect the geometry
-			this.selectByGeometry(geom, evt.ctrlKey, evt.shiftKey);
-		}*/
 		
 		/**
 		 * (Un)select all the features that intersect the input geometry.
@@ -820,21 +838,6 @@ package org.openscales.core.handler.feature
 			_drawContainer.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
 			_drawContainer.graphics.endFill();
 		}
-		
-		/**
-		 * Display the selection freehand geometry that the user is drawing.
-		 * @param evt the MouseEvent
-		 */
-		/*private function drawSelectionFreehand(evt:MouseEvent):void {
-			// Compute the geometry
-			var ???:??? = ; // TODO
-			// Display the selection box
-			_drawContainer.graphics.clear();
-			_drawContainer.graphics.lineStyle(this.selectionBoxBorderThin, this.selectionBoxBorderColor);
-			_drawContainer.graphics.beginFill(this.selectionBoxFillColor, this.selectionBoxFillOpacity);
-			_drawContainer.graphics.drawPath(???); // TODO
-			_drawContainer.graphics.endFill();
-		}*/
 		
 		/**
 		 * Default style used for a selected feature.
