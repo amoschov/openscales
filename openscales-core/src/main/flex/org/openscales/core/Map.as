@@ -6,7 +6,6 @@ package org.openscales.core
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	import flash.events.Event;
 	import flash.geom.Rectangle;
 	import flash.utils.getQualifiedClassName;
 	
@@ -351,7 +350,7 @@ package org.openscales.core
 				Trace.error("Map.addHandler: handler not added because it is associated to an other map");
 				return;
 			}
-			// Is the input handler already rgistered ?
+			// Is the input handler already registered ?
 			// Or an other handler of the same type ?
 			var i:int;
 			for (i=0; i<this.handlers.length; i++) {
@@ -517,7 +516,7 @@ package org.openscales.core
 				}
 			}
 			
-			if (centerChanged && !dragging) {
+			if (centerChanged && !dragging && !dragTween) {
 				this.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this));
 			}
 		}
@@ -553,11 +552,10 @@ package org.openscales.core
 			}
 
 			if(tween) {
-				new GTween(this._layerContainer, 0.5, {x: lx});
-				new GTween(this._layerContainer, 0.5, {y: ly});    
+				var layerContainerTween:GTween = new GTween(this._layerContainer, 0.5, {x: lx, y: ly});
+				layerContainerTween.onComplete = onDragTweenComplete;
 				if(bitmapTransition != null) {
-					new GTween(bitmapTransition, 0.5, {x: bx });
-					new GTween(bitmapTransition, 0.5, {y: by });
+					new GTween(bitmapTransition, 0.5, {x: bx, y: by});
 				} 
 			} else {
 				this._layerContainer.x = lx;
@@ -567,6 +565,10 @@ package org.openscales.core
 					bitmapTransition.y = by;
 				} 
 			}
+		}
+		
+		private function onDragTweenComplete(tween:GTween):void {
+			this.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this));
 		}
 
 		/**

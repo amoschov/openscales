@@ -21,28 +21,18 @@
 			var deltaY:Number = 0;
 
 				if(event.currentTarget==this.upButton) {
-					//this.map.pan(0, -this.DELTA_PX, true);
-			 		deltaY = -DELTA_PX;
+					this.map.pan(0, -this.DELTA_PX, true);
 			
 				}
 				else if(event.currentTarget==this.rightButton) {
-					//this.map.pan(this.DELTA_PX, 0, true);
-					deltaX = DELTA_PX;
-					
+					this.map.pan(this.DELTA_PX, 0, true);
 				}
 				else if(event.currentTarget==this.downButton) {
-					//this.map.pan(0, this.DELTA_PX, true);
-					deltaY = DELTA_PX;
-					
+					this.map.pan(0, this.DELTA_PX, true);				
 				}
 				else if(event.currentTarget==this.leftButton) {
-					//this.map.pan(-this.DELTA_PX, 0, true);
-					deltaX = -DELTA_PX;
-					
+					this.map.pan(-this.DELTA_PX, 0, true);	
 				}
-				// update position
-				var newPosition:LonLat = new LonLat(oldCenter.lon + deltaX * this.map.resolution , oldCenter.lat - deltaY * this.map.resolution);
-				this.map.center = newPosition;
 			}
 			
 			public function set toolTipNorth(value:String):void{
