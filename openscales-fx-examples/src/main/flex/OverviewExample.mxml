@@ -86,7 +86,8 @@
 
 	<os:ControlPanel x="10"
 					 y="10"
-					 width="140"
+					 width="150"
+					 height="240"
 					 title="Navigation">
 					 
 		<os:PanComponent map="{map}"/>
