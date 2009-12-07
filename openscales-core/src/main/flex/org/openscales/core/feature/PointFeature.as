@@ -1,6 +1,6 @@
 package org.openscales.core.feature {
 	import flash.display.DisplayObject;
-
+	
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Collection;
@@ -29,15 +29,23 @@ package org.openscales.core.feature {
 		private var _startdrag:Pixel = null;
 
 		public function PointFeature(geom:Point=null, data:Object=null, style:Style=null, isEditionFeature:Boolean=false, editionFeatureParentGeometry:Collection=null) {
-
+			//The point is none editable
 			super(geom, data, style, false, isEditionFeature);
-
+			
 			this._isEditionFeature = isEditionFeature;
 			if (editionFeatureParentGeometry != null && isEditionFeature)
 				this._editionFeatureParentGeometry = editionFeatureParentGeometry;
 			else {
 				this._editionFeatureParentGeometry = null;
 			}
+		}
+		
+		override public function get lonlat():LonLat {
+			var value:LonLat = null;
+			if (this.point != null) {
+				value=  new LonLat(this.point.x, this.point.y);
+			}
+			return value;
 		}
 
 		override public function destroy():void {

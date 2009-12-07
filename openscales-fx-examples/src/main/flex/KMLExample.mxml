@@ -13,6 +13,8 @@
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 			import org.openscales.core.style.Style;
+			
+			private var popup:Anchored;
 
 			private function initMap():void {
 				Trace.useFireBugConsole = displayFirebugTrace;
@@ -22,7 +24,10 @@
 			}
 
 			private function onFeatureClick(event:FeatureEvent):void {
-				var popup:Anchored = new Anchored();
+				if(popup) {
+					popup.destroy();
+				}
+				popup = new Anchored();
 				popup.feature = event.feature;
 				map.addPopup(popup, true);
 			}

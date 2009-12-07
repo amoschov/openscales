@@ -1,15 +1,15 @@
 package org.openscales.core.handler.feature.draw
 {
 	import flash.events.MouseEvent;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.style.Style;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.FeatureLayer;
+	import org.openscales.core.style.Style;
 
 	/**
 	 * Handler to draw points.
@@ -60,7 +60,7 @@ package org.openscales.core.handler.feature.draw
 
 				var pointFeature:PointFeature = new PointFeature(point, null, style);
 				pointFeature.name = id.toString(); id++;
-				pointFeature.lonlat = lonlat; 			
+				pointFeature.geometry = new Point(lonlat.lon, lonlat.lat); 			
 				drawLayer.addFeature(pointFeature);
 				pointFeature.draw();
 			}

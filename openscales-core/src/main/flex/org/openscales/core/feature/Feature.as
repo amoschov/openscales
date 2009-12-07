@@ -74,13 +74,6 @@ package org.openscales.core.feature {
 		 */
 		private var _layer:Layer=null;
 
-		/**
-		 * The geolocalized position of this feature, will be used to know where
-		 * this feature should be drawn. Please not that lonlat getter and setter
-		 * may be override in inherited classes to use other attributes to determine
-		 * the position (for exemple the geometry)
-		 */
-		private var _lonlat:LonLat=null;
 
 		/**
 		 * Is this feature selected ?
@@ -97,7 +90,7 @@ package org.openscales.core.feature {
 		 */
 		public function Feature(geom:Geometry=null, data:Object=null, style:Style=null, isEditable:Boolean=false, isEditionFeature:Boolean=false) {
 			this.layer=layer;
-			this.lonlat=lonlat;
+
 			if (data != null) {
 				this.data=data;
 			} else {
@@ -110,15 +103,11 @@ package org.openscales.core.feature {
 			}
 			
 			this.geometry = geom;
-			if(this.geometry)
-				this.lonlat = geom.bounds.centerLonLat;
+
 			if (this.geometry && this.geometry.id)
 				this.name = this.geometry.id;
 			this.state = null;
-			this.attributes = new Object();
-			if (data) {
-				this.attributes = Util.extend(this.attributes, data);
-			}
+			
 			this.style = style ? style : null;
 			
 			this._isEditable = isEditable;
@@ -197,10 +186,9 @@ package org.openscales.core.feature {
 			this._editionFeatureParent=null;
 			this._editionFeaturesArray=null;
 			this._layer=null;
-			this._lonlat=null;
+
 			this.geometry = null;
 			this.layer=null;
-			this.lonlat=null;
 			this.data=null;
 
 			this.unregisterListeners();
@@ -265,11 +253,11 @@ package org.openscales.core.feature {
 		}
 		
 		public function get lonlat():LonLat {
-			return this._lonlat;
-		}
-
-		public function set lonlat(value:LonLat):void {
-			this._lonlat=value;
+			var value:LonLat = null;
+			if (this.geometry != null) {
+				value = this.geometry.bounds.centerLonLat;   
+			}
+			return value;
 		}
 
 		public function onMouseClick(pevt:MouseEvent):void {

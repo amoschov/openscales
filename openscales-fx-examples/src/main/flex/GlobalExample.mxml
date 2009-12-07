@@ -29,9 +29,10 @@
 						popup = new Anchored();
 						popup.closeBox = false;
 						popup.feature = event.feature;
-						var content:String = "";
+						var content:String= "<b><font size='20'>" + event.feature.attributes["STATE_NAME"] + " (" + event.feature.attributes["STATE_ABBR"] + ")</font></b><br />";
 						for(var attribute:String in event.feature.attributes) {
-							content = content + "<b>" + attribute + "</b> : " + event.feature.attributes[attribute] + "<br />";
+							if((attribute != "STATE_NAME") && (attribute != "STATE_ABBR") && (attribute != "coordinates")) 
+								content = content + "<b>" + attribute + "</b> : " + event.feature.attributes[attribute] + "<br />";
 						}
 						popup.htmlText = content;
 						map.addPopup(popup, true);

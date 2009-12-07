@@ -501,58 +501,21 @@ package org.openscales.core.handler.feature
 		private function onSomething(evt:FeatureEvent,
 									updateStyleFeature:Function,
 									onSomethingFeature:Function):void {
-			var layersToRedraw:Array = new Array();
-			var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers;
 			var i:int, layer:FeatureLayer, layersTmp:Array = new Array();
-			// Remove invisible layers from the list of selectable layers
-			for each (layer in layersToTest) {		
-				if(layer.map!=null)
-				if (layer.displayed) {
-					layersTmp.push(layer);
-				}
-			}
-			layersToTest = layersTmp;
+
 			
 			for each (var feature:Feature in evt.features) {
-				for each (layer in layersToTest) {
-					// if the layer of the feature is one of the layersToTest,
-					// then manage the feature
-					if (feature.layer == layer) {
-						// Update the style of the feature if needed
-						if (updateStyleFeature != null) {
-							updateStyleFeature(feature);
-							// Add the layer of this feature to the array of the
-							// layers already known to need a redraw
-							if (this.map) {
-								// Look for the layer of this feature in the array
-								// of the layers to redraw
-								for(i=0; i<layersToRedraw.length; i++) {
-									if (layersToRedraw[i] == layer) {
-										break;
-									}
-								}
-								// If the layer of the feature is not in the array
-								// of the layers to redraw, add it
-								if (i == layersToRedraw.length) {
-									layersToRedraw.push(layer);
-								}
-							}
-						}
-						// Use the callback function for this feature if needed
-						if (onSomethingFeature != null) {
-							onSomethingFeature(feature);
-						}
-						// Go to the next feature of the array of the input event
-						break;
-					}
+				if (updateStyleFeature != null) {
+					updateStyleFeature(feature);
 				}
+				
+				if (onSomethingFeature != null) {
+					onSomethingFeature(feature);
+				}
+				
+				feature.draw();
 			}
-			// All the features that are in one of the managed layers are
-			// treated, now it is time to redraw the layers that contains these
-			// features
-			for each (layer in layersToRedraw) {
-				if(layer.map!=null)layer.redraw();
-			}
+				
 		}
 				
 		/**
