@@ -47,7 +47,7 @@ package org.openscales.core.layer
 
 		override public function destroy(setNewBaseLayer:Boolean = true):void {
 			super.destroy();  
-			this.clear();
+			this.reset();
 			this._displayProjection = null;
 			this.style = null;
 			this.geometryType = null;
