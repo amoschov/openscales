@@ -39,7 +39,6 @@
 				<extensions>true</extensions>
 				<configuration>
 					<packageDescriptions>
-						<com.gskinner.motion>Optimized tweener lib, avoid to depend on Flex</com.gskinner.motion>
 						<org.openscales.core>Root package for OpenScales core module</org.openscales.core>
 						<org.openscales.core.basetypes>Base types widely used in OpenScales like Bounds or LonLat</org.openscales.core.basetypes>
 						<org.openscales.core.basetypes.maps>Hashmap implementation since none is provided in ActionScript3</org.openscales.core.basetypes.maps>
