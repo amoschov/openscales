@@ -249,7 +249,7 @@
 			    <artifactId>maven-site-plugin</artifactId>
 			    <version>2.0.1</version>
 			    <configuration>
-					<inputEncoding>UTF-8<inputEncoding>
+					<inputEncoding>UTF-8</inputEncoding>
 					<outputEncoding>UTF-8</outputEncoding>
 			    </configuration>
 			</plugin>
