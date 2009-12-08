@@ -159,10 +159,13 @@ package org.openscales.core.handler.feature
 		}
 		
 		public function set enableOverSelection(value:Boolean):void {
-			if(value)
+			if(value) {
 				this.onOverFeature = this.selectByOver;
-			else
+				this.onOutFeature = this.unselectByOut;
+			} else {
 				this.onOverFeature = null;
+				this.onOutFeature = null;
+			}
 		}
 		
 		/**
@@ -503,6 +506,8 @@ package org.openscales.core.handler.feature
 									onSomethingFeature:Function):void {
 			var i:int, layer:FeatureLayer, layersTmp:Array = new Array();
 
+			if(this._dragging)
+				return;			
 			
 			for each (var feature:Feature in evt.features) {
 				if (updateStyleFeature != null) {
@@ -534,7 +539,11 @@ package org.openscales.core.handler.feature
 		private function selectByOver(feature:Feature):void {
 			this.unselect(this.selectedFeatures);
 			this.select([feature]);
-		}		
+		}
+		
+		private function unselectByOut(feature:Feature):void {
+			this.unselect(this.selectedFeatures);
+		}
 		
 		/**
 		 * (Un)select all the features that intersect the box drawn (the
