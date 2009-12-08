@@ -7,8 +7,8 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.basetypes.maps.HashMap;
-	import org.openscales.core.events.TileEvent;
 	import org.openscales.core.events.MapEvent;
+	import org.openscales.core.events.TileEvent;
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
@@ -24,6 +24,7 @@ package org.openscales.core.layer
 		
 		private const DEFAULT_TILE_HEIGHT:Number = 256;
 
+		/** The grid array contains tiles **/		
 		private var _grid:Array = null;
 
 		private var _singleTile:Boolean = false;
@@ -71,6 +72,21 @@ package org.openscales.core.layer
 			
 			this.addEventListener(TileEvent.TILE_LOAD_END,tileLoadHandler);
 			this.addEventListener(TileEvent.TILE_LOAD_START,tileLoadHandler);
+		}
+		
+		override public function onMapZoom(e:MapEvent):void {
+			// Clear pending requests after zooming in order to avoid to add
+			// too many tile requests  when the user is zooming step by step
+			for each(var array:Array in grid)	{
+				for (var i:Number = 0;i<array.length;i++)	{
+					var tile:Tile = array[i];
+					if (tile != null && !tile.loadComplete) {
+						tile.clear();
+					}
+				}
+			}
+			
+			super.onMapZoom(e);
 		}
 
 		override public function destroy(newBaseLayer:Boolean = true):void {
