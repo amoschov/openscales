@@ -1,18 +1,18 @@
 OpenScales
 
-	OpenScales is a RIA mapping framework natively designed to allow you to build mapping RIA (Rich Internet Applications) easily. This documentation have been created for developers that are buildling OpenScales based applications.
+	OpenScales is a RIA mapping framework designed to allow you to build mapping RIA (Rich Internet Applications) easily. This documentation have been created for developers that are building OpenScales based applications.
 
-	OpenScales has been initially started from {{{http://code.google.com/p/flexlayers/}FlexLayers}} source code, donated by Scott Pezanowski. FlexLayers was a Flex port of {{{http://openlayers.org/}OpenLayers}}. Since the beginning, the codebase base has been extensively modified and improved. Nevertheless, even if OpenScales API is not strictely equivalent to OpenLayers one, if you have ever developed on OpenLayers, you will find OpenScales API quite easy to understand.
+	OpenScales has been initially started from {{{http://code.google.com/p/flexlayers/}FlexLayers}} source code, donated by Scott Pezanowski. FlexLayers was a Flex port of {{{http://openlayers.org/}OpenLayers}}. Since the beginning, the codebase base has been extensively modified and improved. Nevertheless, even if OpenScales API is not strictly equivalent to OpenLayers one, if you have ever developed on OpenLayers, you will find OpenScales API quite easy to understand.
 
 Key classes
 
-	OpenScales is  composed by the folowing key concepts :
+	OpenScales is  composed by the following key concepts :
 
 	* Map : the map is the main class in OpenScales. A map allows to display one or more layers on a specified extent. Extent and zoom level can change based on user input like mouse or keyboard.
 
 	* Layer : a layer is a mapping data sources, usually available on a specific extent and zoom level ranges. There is 2 main kings of layer :
 
-		* Feature layers : data are geometries like points or polygons with some attributes and style informations
+		* Feature layers : data are geometries like points or polygons with some attributes and style information
 
 		* Raster layers : data are geolocalized pictures
 
@@ -28,9 +28,9 @@ Modules
 
 	* {{{openscales-proj4as/asdoc/index.html}openscales-proj4as}} (ActionScript 3 library) : projection support used to display layers with different projections (EPSG:4326, EPSG:90013) on the same map
 
-	* {{{openscales-fx/asdoc/index.html}openscales-fx}} (Flex library) : since openscales-core is developped in pure ActionScript 3 for size and performance reasons, openscales-fx provide some Flex components and wrappers useful to build easily OpenScales based applications using the power of Flex components
+	* {{{openscales-fx/asdoc/index.html}openscales-fx}} (Flex library) : since openscales-core is developed in pure ActionScript 3 for size and performance reasons, openscales-fx provide some Flex components and wrappers useful to build easily OpenScales based applications using the power of Flex components
 
-	* openscales-testing (Flex aplication) : unit test runner for OpenScales developpers
+	* openscales-testing (Flex aplication) : unit test runner for OpenScales developers
 
 	* {{{http://openscales.org/index.php/p/openscales/source/tree/HEAD/tags/openscales-1.1/openscales-as-examples/src/main/flex}openscales-as-example}} (ActionScript 3 application) : pure ActionScript 3 demo application
 
@@ -42,21 +42,21 @@ Modules
 
 Software design
 
-	OpenScales use the Map as a bus event usefull for communication between modules in a loosely coupled way. For example, if you want to display a popup when a user click on a KML point feature, add a SelectFeatureHandler on your map and do a map.addEventListener(FeatureEvent.FEATURE_SELECTED, onFeatureSelected) in your application. You will be able to display a popup that will show feature attributes in the popup content.
+	OpenScales use the Map as a bus event useful for communication between modules in a loosely coupled way. For example, if you want to display a popup when a user click on a KML point feature, add a SelectFeatureHandler on your map and do a map.addEventListener(FeatureEvent.FEATURE_SELECTED, onFeatureSelected) in your application. You will be able to display a popup that will show feature attributes in the popup content.
 
-	When building your OpenScales based application, you will usualy do this : listen to OpenScales events (MapEvent, LayerEvent, FeatureEvent) and build your own functionnalities within a custom Flex user interface. Check {{{http://openscales.org/index.php/p/openscales/source/tree/HEAD/tags/openscales-1.1/openscales-fx-examples/src/main/flex}openscales-fx-examples}} for more code samples.
+	When building your OpenScales based application, you will usually do this : listen to OpenScales events (MapEvent, LayerEvent, FeatureEvent) and build your own functionalities within a custom Flex user interface. Check {{{http://openscales.org/index.php/p/openscales/source/tree/HEAD/tags/openscales-1.1/openscales-fx-examples/src/main/flex}openscales-fx-examples}} for more code samples.
 
-	If you need to support a new kind of Layer, for example, you will usually extends existing class like Layer, Grid of FeatureLayer to implements what you need. Feel free to send a patch on openscales.org site if you think this functionnality may be integrated in our code base.
+	If you need to support a new kind of Layer, for example, you will usually extends existing class like Layer, Grid of FeatureLayer to implements what you need. Feel free to send a patch on openscales.org site if you think this functionality may be integrated in our code base.
 
 Platforms
 
 	OpenScales have been designed to to run on all kind of devices :
 
-	* Mobile (ActionScript 3) : tested on a Flash 10.1 player preversion running on Palm Pre. First OpenScales ready devices are expected for 2010 Q1.
+	* Mobile (ActionScript 3) : tested on a Flash 10.1 player unreleased version running on Palm Pre. First OpenScales ready devices are expected for 2010 Q1.
 
-	* Web (Flex) : OpenScales 1.1 run on Flash 9 and Flash 10 players, targetting 98% of current web browsers unsed Windows, Mac and Linux
+	* Web (Flex) : OpenScales 1.1 run on Flash 9 and Flash 10 players, targeting 98% of current web browsers under Windows, Mac and Linux
 
-	* Desktop (AIR) : desktop mapping application based on OpenScales and AIR could be usefull to manage offline mode, open local files like shapefiles, etc.
+	* Desktop (AIR) : desktop mapping application based on OpenScales and AIR could be useful to manage offline mode, open local files like shapefiles, etc.
 
 
 	
