@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<index>
+	<title>Source of openscales-fx-examples</title>
+	<nodes>
+		<node label="src">
+			<node label="main">
+				<node icon="classpathIcon" label="flex" expanded="true">
+					<node label="assets">
+						<node label="images">
+							<node icon="imageIcon" label="OpenScales-logo.png" url="source/assets/images/OpenScales-logo.png.html"/>
+							<node icon="imageIcon" label="pattern.png" url="source/assets/images/pattern.png.html"/>
+						</node>
+						<node label="kml">
+						</node>
+					</node>
+					<node label="capabilitiesexample">
+					</node>
+					<node icon="packageIcon" label="styleexample" expanded="true">
+						<node icon="actionScriptIcon" label="CentroidYFilter.as" url="source/styleexample/CentroidYFilter.as.html"/>
+					</node>
+					<node icon="mxmlIcon" label="CapabilitiesExample.mxml" url="source/CapabilitiesExample.mxml.html"/>
+					<node icon="mxmlIcon" label="DrawingExample.mxml" url="source/DrawingExample.mxml.html"/>
+					<node icon="mxmlIcon" label="FeaturesExample.mxml" url="source/FeaturesExample.mxml.html"/>
+					<node icon="mxmlIcon" label="GlobalExample.mxml" url="source/GlobalExample.mxml.html"/>
+					<node icon="mxmlIcon" label="ImageLayerExample.mxml" url="source/ImageLayerExample.mxml.html"/>
+					<node icon="mxmlIcon" label="InfoExample.mxml" url="source/InfoExample.mxml.html"/>
+					<node icon="mxmlIcon" label="KMLExample.mxml" url="source/KMLExample.mxml.html"/>
+					<node icon="mxmlIcon" label="LayersManagerExample.mxml" url="source/LayersManagerExample.mxml.html"/>
+					<node icon="mxmlIcon" label="OpenStreetMap.mxml" url="source/OpenStreetMap.mxml.html"/>
+					<node icon="mxmlAppIcon" selected="true" label="osExamples.mxml" url="source/osExamples.mxml.html"/>
+					<node icon="mxmlIcon" label="OverviewExample.mxml" url="source/OverviewExample.mxml.html"/>
+					<node icon="mxmlIcon" label="PanZoomExample.mxml" url="source/PanZoomExample.mxml.html"/>
+					<node icon="actionScriptIcon" label="SampleLayers.as" url="source/SampleLayers.as.html"/>
+					<node icon="mxmlIcon" label="SecurityMapExample.mxml" url="source/SecurityMapExample.mxml.html"/>
+					<node icon="mxmlIcon" label="StyleExample.mxml" url="source/StyleExample.mxml.html"/>
+					<node icon="mxmlIcon" label="WFSBaseLayerExample.mxml" url="source/WFSBaseLayerExample.mxml.html"/>
+					<node icon="mxmlIcon" label="WMSCExample.mxml" url="source/WMSCExample.mxml.html"/>
+					<node icon="mxmlIcon" label="WMSExample.mxml" url="source/WMSExample.mxml.html"/>
+					<node icon="mxmlIcon" label="YahooSearchExample.mxml" url="source/YahooSearchExample.mxml.html"/>
+				</node>
+			</node>
+		</node>
+	</nodes>
+</index>

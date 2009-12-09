@@ -1,0 +1,33 @@
+Developement environnement
+
+	Developing an application based on OpenScales is possible with :
+	
+	* <<Reference development environement : {{{http://www.adobe.com/cfusion/entitlement/index.cfm?e=flexbuilder3}Flex Builder 3}}>>
+	
+	* {{{http://labs.adobe.com/technologies/flashbuilder4/}Flash Builder 4}}
+	
+	* {{{http://www.flashdevelop.org}Flash Develop}} or any editor of your choice, with following requirements :
+	
+		* {{{Sun Java 5 or Java 6 JDK}http://java.sun.com/javase/downloads/index.jsp}}
+
+		* {{{http://opensource.adobe.com/wiki/display/flexsdk/Download+Flex+3}FlexSDK}}
+
+Quick start with Flex Builder 3
+		
+		* Run Flex Builder 3
+		
+		* File -> New -> Flex Project, set project name and click on finish
+		
+		* Create a libs directory where you put following libraries that are distributed in OpenScales 1.1 package :
+		
+			* gtween2.swc
+			
+			* openscales-core-1.1.swc
+			
+			* openscales-fx-1.1.swc
+			
+			* openscales-proj4as-1.1.swc
+			
+		* Right click on your project -> Properties -> Flex build path -> Library path -> Add SWC folder -> libs -> OK -> OK
+		
+		* Start to develop your application ! You can copy and past code from samples available on openscales-flex-examples.

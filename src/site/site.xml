@@ -1,4 +1,5 @@
 <project>
+
   <skin>
     <groupId>org.apache.tapestry</groupId>
     <artifactId>maven-skin</artifactId>
@@ -12,8 +13,11 @@
  	</bannerLeft>
   
 	<body>
-		<menu name="Overview">
+		<menu name="Quick links">
 			<item name="Introduction" href="/index.html"/>
+			<item name="Quick Start" href="/dev.html"/>
+			<item name="Demo" href="/examples/osExamples.html"/>
+			<item name="Demo source code" href="/examples/srcview/index.html" />
 		</menu>
 
 		<menu name="AsDocs">
@@ -21,9 +25,7 @@
 			<item name="openscales-fx" href="openscales-fx/asdoc/index.html"/>
 			<item name="openscales-proj4as" href="openscales-proj4as/asdoc/index.html"/>
 		</menu>
-		
-		<menu ref="modules" />
-		
+				
 		<menu ref="reports" />
 	</body>
 </project>

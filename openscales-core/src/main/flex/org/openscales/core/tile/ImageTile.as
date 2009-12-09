@@ -153,6 +153,7 @@ package org.openscales.core.tile
 			if(this._request)
 			{
 				this.loading = false;
+				
 				_request.destroy();
 			}
 
