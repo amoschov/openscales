@@ -13,19 +13,25 @@
  	</bannerLeft>
   
 	<body>
-		<menu name="Quick links">
+		<menu name="Documentation">
 			<item name="Introduction" href="/index.html"/>
-			<item name="Quick Start" href="/dev.html"/>
-			<item name="Demo" href="/examples/osExamples.html"/>
-			<item name="Demo source code" href="/examples/srcview/index.html" />
+			<item name="How to develop ?" href="/dev.html"/>
+			<item name="Dynamic XML configuration" href="/configuration.html"/>
 		</menu>
 
-		<menu name="AsDocs">
-			<item name="openscales-core" href="openscales-core/asdoc/index.html"/>
-			<item name="openscales-fx" href="openscales-fx/asdoc/index.html"/>
-			<item name="openscales-proj4as" href="openscales-proj4as/asdoc/index.html"/>
+		<menu name="Demo">
+			<item name="Examples" href="/examples/osExamples.html"/>
+			<item name="Examples source code" href="/examples/srcview/index.html" />
+		</menu>
+
+		<menu name="API documentation">
+			<item name="Flex components" href="/flex.html"/>
+			<item name="Core AsDocs" href="openscales-core/asdoc/index.html"/>
+			<item name="Flex AsDocs" href="openscales-fx/asdoc/index.html"/>
+			<item name="Proj4as AsDocs" href="openscales-proj4as/asdoc/index.html"/>
 		</menu>
 				
 		<menu ref="reports" />
 	</body>
 </project>
+

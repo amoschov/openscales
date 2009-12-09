@@ -1,0 +1,87 @@
+	This page list all Flex components available to create a Flex MXML application based on OpenScales. See demo source code for more details.
+
+Map
+	* Map : Flex map wrapper
+
+	* Extent : allows to define an extent by MXML
+
+	* MaxExtent : allows to define an extent by MXML
+
+Layer
+	* FeatureLayer
+
+	* ImageLayer
+
+	* WMS
+
+	* WMSC
+
+	* WFS
+
+	* KML
+
+	* Mapnik
+
+	* CycleMap
+
+	* Maplint
+
+	* Osmarender
+
+Control
+	* ControlPanel : extends Panel to define some common parameter values
+
+	* LayerSwitcher : pure ActionScript 3 layer switcher
+
+	* MousePosition : display mouse coordinates
+
+	* PanZoom : pure ActionScript 3 pan and zoom
+
+	* PanZoomBar : pure ActionScript 3 pan and zoom bar
+
+	* LayerSwitcherComponent : Flex layer switcher
+
+  	* MousePositionComponent : display coordinates of the map cursor
+
+	* PanComponent : 4 directions buttons to pan the map 
+
+	* ZoomComponent : zoom control
+
+	* ZoomBoxComponent : zoom box control
+
+	* OverviewMapComponent : map overview to localize current extend on the earth
+
+	* CapabilitiesComponent : request a get capabilities URL to retreive layers available on an OGC server, and allow to add these layers
+
+	* FeatureDrawingComponent : drawing toolbox
+
+	* FeatureInfoComponent : display feature attributes
+
+	* YahooSearchComponent : sample yahoo based search functionality
+
+	* TraceInfo : display logs
+
+	* Spinner : display a spinner while loading data
+
+	* ScaleLine : display a scaleline based on map configuration
+
+Handler
+	* BorderPanHandler : move the map based on the distance between the center of the map and the cursor
+
+	* DragHandler : allow to pan the map with a mouse drag and drop
+
+	* WheelHandler : zoom with the mouse wheel
+
+	* DragFeatureHandler : Drag features
+
+	* SelectFeaturesHandler : select features by click, box or over
+
+	* WMSGetFeatureInfo : request WMS feature info when the user click on the map
+
+Security
+	
+	* IGNGeoRMSecurity : support for IGN GeoRM
+
+
+
+
