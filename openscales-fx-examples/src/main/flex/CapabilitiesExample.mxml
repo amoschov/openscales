@@ -91,7 +91,7 @@
 	
 	<!-- Specific tools of this example -->
 	
-	<os:ControlPanel title="Layers Manager" horizontalAlign="center" x="10" y="10">
+	<os:ControlPanel title="Layers Manager" horizontalAlign="center" x="10" y="10" width="230">
 		<os:LayerSwitcherComponent map="{map}" />
 	</os:ControlPanel>
 	
