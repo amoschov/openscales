@@ -16,7 +16,7 @@
 		<menu name="Documentation">
 			<item name="Introduction" href="/index.html"/>
 			<item name="How to develop ?" href="/dev.html"/>
-			<item name="Dynamic XML configuration" href="/configuration.html"/>
+			<item name="XML configuration" href="/configuration.html"/>
 		</menu>
 
 		<menu name="Demo">

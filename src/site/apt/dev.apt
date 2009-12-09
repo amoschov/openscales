@@ -33,5 +33,5 @@ Quick start with Flex Builder 3
 			
 		* Right click on your project -> Properties -> Flex build path -> Library path -> Add SWC folder -> libs -> OK -> OK
 		
-		* Start to develop your application ! You can copy and past code from samples available on openscales-flex-examples ({{{/examples/osExamples.html}demo}}, {{/examples/srcview/index.html}source}}). Expand src to see all source code examples.
+		* Start to develop your application ! You can copy and past code from samples available on openscales-flex-examples ({{{examples/osExamples.html}demo}}, {{{examples/srcview/index.html}source}}). Expand src to see all source code examples.
 

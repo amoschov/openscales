@@ -1,6 +1,6 @@
 OpenScales
 
-	OpenScales is a RIA mapping framework designed to allow you to build mapping RIA (Rich Internet Applications) easily. This documentation have been created for developers that are building OpenScales based applications.
+	OpenScales is a Open Source (LGPL) RIA mapping framework designed to allow you to build mapping RIA (Rich Internet Applications) easily. This documentation have been created for developers that are building OpenScales based applications.
 	
 [images/map-example.jpg]
 
@@ -34,11 +34,11 @@ Modules
 
 	* openscales-testing (Flex aplication) : unit test runner for OpenScales developers
 
-	* {{{http://openscales.org/index.php/p/openscales/source/tree/HEAD/tags/openscales-1.1/openscales-as-examples/src/main/flex}openscales-as-example}} (ActionScript 3 application) : pure ActionScript 3 demo application
+	* openscales-as-example (ActionScript 3 application) : pure ActionScript 3 demo application
 
-	* {{{http://openscales.org/index.php/p/openscales/source/tree/HEAD/tags/openscales-1.1/openscales-fx-examples/src/main/flex}openscales-fx-examples}} (Flex aplication) : sample Flex demo intended to show code samples and functionalities to application developers (you)
+	* {{{examples/osExamples.html}openscales-fx-examples}} (Flex aplication) : sample Flex demo intended to show code samples and functionalities to application developers (you)
 
-	* {{{http://openscales.org/index.php/p/openscales/source/tree/HEAD/tags/openscales-1.1/openscales-air-examples/src/main/flex}openscales-air-example}} (AIR application) : desktop application demo build with AIR
+	* openscales-air-example (AIR application) : desktop application demo build with AIR
 	Click on the module name to access to API reference documentation for the related module.
 
 Software design
