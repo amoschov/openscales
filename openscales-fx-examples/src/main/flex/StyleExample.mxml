@@ -1,9 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Example xmlns="*"
+<mx:Canvas xmlns="*"
 		 xmlns:mx="http://www.adobe.com/2006/mxml"
 		 xmlns:os="http://openscales.org"
 		 creationComplete="initMap();">
 
+	<os:Map id="fxmap"
+			width="100%"
+			height="100%"
+			zoom="5"
+			centerLonLat="4.84479575848897,45.7531798723947">
+
+		<os:TraceInfo id="traceInfo"
+					  x="{width-200}"
+					  y="0"
+					  visible="{displayTrace}"/>
+
+		<os:Mapnik name="Mapnik"
+				   isBaseLayer="true"
+				   proxy="http://openscales.org/proxy.php?url="/>
+
+		<!--<os:DragHandler/>-->
+		<os:WheelHandler/>
+
+		<os:Spinner id="spinner"
+					x="{width / 2}"
+					y="{height / 2}"/>
+		<os:MousePosition x="10"
+						  y="{height-20}"
+						  displayProjection="EPSG:4326"/>
+
+		<os:WFS id="ignGeoplaFrance"
+				name="IGN - Geopla (France)"
+				url="http://openscales.org/geoserver/wfs"
+				typename="pg:simplif_france"
+				projection="EPSG:2154"
+				version="1.0.0"
+				style="{this.createBitmapStyle()}"/>
+
+		<!-- Specific layers and handlers of this example -->
+		<os:WFS id="ignGeoplaRegion"
+				name="IGN - Geopla (Region)"
+				url="http://openscales.org/geoserver/wfs"
+				typename="pg:simplif_dept"
+				projection="EPSG:2154"
+				version="1.0.0"
+				style="{this.createBitmapStyle()}"/>
+
+
+		<!--				mouseOver="mouseOverDepartement(event);"
+		-->
+		<os:SelectFeaturesHandler id="selectFeatureHandler"
+								  active="true"/>
+	</os:Map>
+
+	<!-- Specific tools of this example -->
+
+	<os:ControlPanel x="10"
+					 y="10"
+					 width="140"
+					 title="Navigation">
+
+		<os:PanComponent map="{map}"/>
+		<mx:HBox width="100%" paddingLeft="5" paddingRight="5">
+			<os:ZoomComponent map="{map}"/>
+			<mx:Spacer width="100%" />
+			<os:ZoomBoxComponent map="{map}"
+									 width="32"
+									 height="32"/>
+		</mx:HBox>
+	</os:ControlPanel>
+
+	<mx:Panel title="Legend"
+			  id="legends"
+			  layout="vertical"
+			  bottom="0">
+	</mx:Panel>
+
+	<mx:Panel title="featureInfos"
+			  bottom="0"
+			  right="0">
+		<os:FeatureInfoComponent id="featureInfoComponent"
+								 creationComplete="(selectFeatureHandler.handler as SelectFeaturesHandler).onSelectedFeature = featureInfoComponent.showInfo"/>
+	</mx:Panel>
+
+	<mx:Button id="switchStyleButton"
+			   label="Switch style"
+			   x="{width-switchStyleButton.width-10}"
+			   y="10"
+			   click="switchStyle();"/>
+			   
 	<mx:Script>
 		<![CDATA[
 			import mx.containers.VBox;
@@ -26,8 +111,9 @@
 			import org.openscales.core.style.Style;
 			import org.openscales.core.basetypes.Bounds;
 
-			// Specific imports for this example			
-			// none
+			[Bindable] private var map:Map = null;
+			[Bindable] public var displayTrace:Boolean = true;	
+			[Bindable] public var displayFirebugTrace:Boolean = true;
 
 			[Bindable]
 			private var styles:Array = [];
@@ -41,13 +127,9 @@
 				map = fxmap.map;
 
 				// Specific initialize for this example
-				//this.createBitmapStyle();
 				this.createStyleLatitude();
 				this.generateLegend();
 
-
-				// Ignore France Layer for the select feature Handler
-				//(this.selectFeatureHandler.handler as SelectFeaturesHandler).layers = [this.ignGeoplaRegion.layer];
 			}
 
 			private function generateLegend():void {
@@ -213,89 +295,4 @@
 		]]>
 	</mx:Script>
 
-	<os:Map id="fxmap"
-			width="100%"
-			height="100%"
-			zoom="5"
-			centerLonLat="4.84479575848897,45.7531798723947">
-
-		<os:TraceInfo id="traceInfo"
-					  x="{width-200}"
-					  y="0"
-					  visible="{displayTrace}"/>
-
-		<os:Mapnik name="Mapnik"
-				   isBaseLayer="true"
-				   proxy="http://openscales.org/proxy.php?url="/>
-
-		<!--<os:DragHandler/>-->
-		<os:WheelHandler/>
-
-		<os:Spinner id="spinner"
-					x="{width / 2}"
-					y="{height / 2}"/>
-		<os:MousePosition x="10"
-						  y="{height-20}"
-						  displayProjection="EPSG:4326"/>
-
-		<os:WFS id="ignGeoplaFrance"
-				name="IGN - Geopla (France)"
-				url="http://openscales.org/geoserver/wfs"
-				typename="pg:simplif_france"
-				projection="EPSG:2154"
-				version="1.0.0"
-				style="{this.createBitmapStyle()}"/>
-
-		<!-- Specific layers and handlers of this example -->
-		<os:WFS id="ignGeoplaRegion"
-				name="IGN - Geopla (Region)"
-				url="http://openscales.org/geoserver/wfs"
-				typename="pg:simplif_dept"
-				projection="EPSG:2154"
-				version="1.0.0"
-				style="{this.createBitmapStyle()}"/>
-
-
-		<!--				mouseOver="mouseOverDepartement(event);"
-		-->
-		<os:SelectFeaturesHandler id="selectFeatureHandler"
-								  active="true"/>
-	</os:Map>
-
-	<!-- Specific tools of this example -->
-
-	<os:ControlPanel x="10"
-					 y="10"
-					 width="140"
-					 title="Navigation">
-
-		<os:PanComponent map="{map}"/>
-		<mx:HBox width="100%" paddingLeft="5" paddingRight="5">
-			<os:ZoomComponent map="{map}"/>
-			<mx:Spacer width="100%" />
-			<os:ZoomBoxComponent map="{map}"
-									 width="32"
-									 height="32"/>
-		</mx:HBox>
-	</os:ControlPanel>
-
-	<mx:Panel title="Legend"
-			  id="legends"
-			  layout="vertical"
-			  bottom="0">
-	</mx:Panel>
-
-	<mx:Panel title="featureInfos"
-			  bottom="0"
-			  right="0">
-		<os:FeatureInfoComponent id="featureInfoComponent"
-								 creationComplete="(selectFeatureHandler.handler as SelectFeaturesHandler).onSelectedFeature = featureInfoComponent.showInfo"/>
-	</mx:Panel>
-
-	<mx:Button id="switchStyleButton"
-			   label="Switch style"
-			   x="{width-switchStyleButton.width-10}"
-			   y="10"
-			   click="switchStyle();"/>
-
-</Example>
+</mx:Canvas>

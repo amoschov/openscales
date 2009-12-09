@@ -1,74 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
+<mx:Canvas xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
 		 xmlns:os="http://openscales.org" creationComplete="initMap();">
 	
-	<mx:Script>
-		<![CDATA[
-			import org.openscales.core.style.marker.WellKnownMarker;
-			import org.openscales.core.style.fill.SolidFill;
-			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
-			import org.openscales.core.style.symbolizer.LineSymbolizer;
-			import org.openscales.core.style.stroke.Stroke;
-			import org.openscales.core.style.stroke.Stroke;
-			import org.openscales.core.style.symbolizer.PointSymbolizer;
-			import org.openscales.core.style.Style;
-			import mx.managers.PopUpManager;
-			import org.openscales.component.control.style.StyleEditionWindow;
-			import org.openscales.core.style.Style;
-			import org.openscales.core.layer.ogc.WFS;
-			import org.openscales.core.layer.FeatureLayer;
-			import org.openscales.core.events.LayerEvent;
-			import org.openscales.core.layer.Layer;
-			import org.openscales.core.Map;
-			import org.openscales.core.Trace;
-		
-			private var _styleEditorPanel:StyleEditionWindow;
-			
-			private function initMap():void {
-				Trace.useFireBugConsole = displayFirebugTrace;
-				map=fxmap.map;
-				
-				// Specific initialize for this example
-				map.addEventListener(LayerEvent.LAYER_ADDED, this.onLayerAdded);
-				
-				this._styleEditorPanel = new StyleEditionWindow();
-				this._styleEditorPanel.addEventListener(StyleEditionWindow.OK_BUTTON_CLICKED, this.onOkButtonClick);
-				this._styleEditorPanel.addEventListener(StyleEditionWindow.CANCEL_BUTTON_CLICKED, this.onCancelButtonClick);
-			}
-			
-			private function onLayerAdded(event:LayerEvent):void
-			{
-				Trace.info('Layer added + '+event.layer);
-				if(event.layer is WFS) {
-					
-					Trace.info('Layer is a WFS layer');
-					var s:Style = Style.getDefaultSurfaceStyle();
-					s.rules[0].symbolizers.push(new PointSymbolizer(new WellKnownMarker(WellKnownMarker.WKN_CIRCLE,new SolidFill(0xFFFF00,0.5),new Stroke(0xFFFF00))));
-					
-					(event.layer as WFS).style=s;
-					
-					event.layer.redraw();
-					/*this._styleEditorPanel.editedStyle = s;
-					this._styleEditorPanel.editedLayer = (event.layer as FeatureLayer);
-					
-					PopUpManager.addPopUp(this._styleEditorPanel,this);
-					PopUpManager.centerPopUp(this._styleEditorPanel);*/
-				}
-			}
-			
-			private function onOkButtonClick(event:Event):void{
-				PopUpManager.removePopUp(this._styleEditorPanel);
-				this._styleEditorPanel.editedLayer.style = this._styleEditorPanel.editedStyle;
-				this._styleEditorPanel.editedLayer.redraw();
-			}
-			
-			private function onCancelButtonClick(event:Event):void{
-				
-				PopUpManager.removePopUp(this._styleEditorPanel);
-			}
-		]]>
-	</mx:Script>
-		
 	<os:Map id="fxmap" width="100%" height="100%" zoom="5" centerLonLat="4.833,45.767">
 		
 		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
@@ -99,4 +32,71 @@
 		<os:CapabilitiesComponent width="320" map="{map}"/>
 	</os:ControlPanel>
 	
-</Example>
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.style.marker.WellKnownMarker;
+			import org.openscales.core.style.fill.SolidFill;
+			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
+			import org.openscales.core.style.symbolizer.LineSymbolizer;
+			import org.openscales.core.style.stroke.Stroke;
+			import org.openscales.core.style.stroke.Stroke;
+			import org.openscales.core.style.symbolizer.PointSymbolizer;
+			import org.openscales.core.style.Style;
+			import mx.managers.PopUpManager;
+			import org.openscales.component.control.style.StyleEditionWindow;
+			import org.openscales.core.style.Style;
+			import org.openscales.core.layer.ogc.WFS;
+			import org.openscales.core.layer.FeatureLayer;
+			import org.openscales.core.events.LayerEvent;
+			import org.openscales.core.layer.Layer;
+			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
+		
+			private var _styleEditorPanel:StyleEditionWindow;
+			
+			[Bindable] private var map:Map = null;
+			[Bindable] public var displayTrace:Boolean = true;	
+			[Bindable] public var displayFirebugTrace:Boolean = true;
+			
+			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
+				map=fxmap.map;
+				
+				// Specific initialize for this example
+				map.addEventListener(LayerEvent.LAYER_ADDED, this.onLayerAdded);
+				
+				this._styleEditorPanel = new StyleEditionWindow();
+				this._styleEditorPanel.addEventListener(StyleEditionWindow.OK_BUTTON_CLICKED, this.onOkButtonClick);
+				this._styleEditorPanel.addEventListener(StyleEditionWindow.CANCEL_BUTTON_CLICKED, this.onCancelButtonClick);
+			}
+			
+			private function onLayerAdded(event:LayerEvent):void
+			{
+				Trace.info('Layer added + '+event.layer);
+				if(event.layer is WFS) {
+					
+					Trace.info('Layer is a WFS layer');
+					var s:Style = Style.getDefaultSurfaceStyle();
+					s.rules[0].symbolizers.push(new PointSymbolizer(new WellKnownMarker(WellKnownMarker.WKN_CIRCLE,new SolidFill(0xFFFF00,0.5),new Stroke(0xFFFF00))));
+					
+					(event.layer as WFS).style=s;
+					
+					event.layer.redraw();
+
+				}
+			}
+			
+			private function onOkButtonClick(event:Event):void{
+				PopUpManager.removePopUp(this._styleEditorPanel);
+				this._styleEditorPanel.editedLayer.style = this._styleEditorPanel.editedStyle;
+				this._styleEditorPanel.editedLayer.redraw();
+			}
+			
+			private function onCancelButtonClick(event:Event):void{
+				
+				PopUpManager.removePopUp(this._styleEditorPanel);
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>

@@ -1,64 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Example xmlns="*"
+<mx:Canvas xmlns="*"
 		 xmlns:mx="http://www.adobe.com/2006/mxml"
 		 xmlns:os="http://openscales.org"
 		 creationComplete="initMap();">
-	<mx:Script>
-		<![CDATA[
-			import org.openscales.core.popup.Anchored;
-			import org.openscales.core.style.Style;
-			import org.openscales.core.layer.FeatureLayer;
-			import org.openscales.core.feature.Marker;
-			import org.openscales.core.feature.PointFeature;
-			import org.openscales.proj4as.ProjProjection;
-			import org.openscales.core.layer.FeatureLayer;
-			import org.openscales.core.handler.mouse.DragHandler;
-			import org.openscales.core.handler.mouse.WheelHandler;
-			import org.openscales.core.Map;
-			import org.openscales.core.Trace;
-			import org.openscales.core.popup.Popup;
-			import org.openscales.core.control.MousePosition;
-			import org.openscales.core.feature.Feature;
-			import org.openscales.core.basetypes.LonLat;
-			import org.openscales.core.layer.osm.Mapnik;
-			import org.openscales.core.geometry.Point;
-			import org.openscales.core.events.MapEvent;
-
-			public var markLyon:Marker;
-
-			private function initMap():void {
-				Trace.useFireBugConsole = displayFirebugTrace;
-				map = fxmap.map;
-
-				//We create a lonlat over Lyon (France) with EPSG:27700 projection
-				var lonlat:LonLat = new LonLat(932115.8764378761, -437484.6802551435);
-
-				var markers:FeatureLayer = new FeatureLayer("Markers", false, true, "EPSG:27700");
-				markers.generateResolutions(18);
-				markers.style = Style.getDefaultPointStyle();
-				markLyon = new Marker(new org.openscales.core.geometry.Point(lonlat.lon, lonlat.lat), {popupContentHTML: "This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
-				markLyon.addEventListener(MouseEvent.CLICK, showPopup);
-				markers.addFeature(markLyon);
-				markLyon.addEventListener(MouseEvent.CLICK, showPopup);
-				map.addLayer(markers);
-
-
-				var vect:FeatureLayer = new FeatureLayer("Reprojected vector", false, true, "EPSG:27700");
-				vect.style = Style.getDefaultPointStyle();
-				var p:org.openscales.core.geometry.Point = new org.openscales.core.geometry.Point(lonlat.lon, lonlat.lat);
-				vect.generateResolutions(18);
-				vect.addFeature(new PointFeature(p));
-				map.addLayer(vect);
-			}
-
-			private function showPopup(e:MouseEvent):void {
-				var popup:Anchored = new Anchored();
-				popup.feature = markLyon;
-				map.addPopup(popup, true);
-			}
-		]]>
-	</mx:Script>
-
+		 
 	<os:Map id="fxmap"
 			width="100%"
 			height="100%"
@@ -101,5 +46,65 @@
 									 height="32"/>
 		</mx:HBox>
 	</os:ControlPanel>
+	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.popup.Anchored;
+			import org.openscales.core.style.Style;
+			import org.openscales.core.layer.FeatureLayer;
+			import org.openscales.core.feature.Marker;
+			import org.openscales.core.feature.PointFeature;
+			import org.openscales.proj4as.ProjProjection;
+			import org.openscales.core.layer.FeatureLayer;
+			import org.openscales.core.handler.mouse.DragHandler;
+			import org.openscales.core.handler.mouse.WheelHandler;
+			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
+			import org.openscales.core.popup.Popup;
+			import org.openscales.core.control.MousePosition;
+			import org.openscales.core.feature.Feature;
+			import org.openscales.core.basetypes.LonLat;
+			import org.openscales.core.layer.osm.Mapnik;
+			import org.openscales.core.geometry.Point;
+			import org.openscales.core.events.MapEvent;
 
-</Example>
+			public var markLyon:Marker;
+			
+			[Bindable] private var map:Map = null;
+			[Bindable] public var displayTrace:Boolean = true;	
+			[Bindable] public var displayFirebugTrace:Boolean = true;
+			
+			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
+				map = fxmap.map;
+
+				//We create a lonlat over Lyon (France) with EPSG:27700 projection
+				var lonlat:LonLat = new LonLat(932115.8764378761, -437484.6802551435);
+
+				var markers:FeatureLayer = new FeatureLayer("Markers", false, true, "EPSG:27700");
+				markers.generateResolutions(18);
+				markers.style = Style.getDefaultPointStyle();
+				markLyon = new Marker(new org.openscales.core.geometry.Point(lonlat.lon, lonlat.lat), {popupContentHTML: "This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
+				markLyon.addEventListener(MouseEvent.CLICK, showPopup);
+				markers.addFeature(markLyon);
+				markLyon.addEventListener(MouseEvent.CLICK, showPopup);
+				map.addLayer(markers);
+
+
+				var vect:FeatureLayer = new FeatureLayer("Reprojected vector", false, true, "EPSG:27700");
+				vect.style = Style.getDefaultPointStyle();
+				var p:org.openscales.core.geometry.Point = new org.openscales.core.geometry.Point(lonlat.lon, lonlat.lat);
+				vect.generateResolutions(18);
+				vect.addFeature(new PointFeature(p));
+				map.addLayer(vect);
+			}
+
+			private function showPopup(e:MouseEvent):void {
+				var popup:Anchored = new Anchored();
+				popup.feature = markLyon;
+				map.addPopup(popup, true);
+			}
+		]]>
+	</mx:Script>
+
+</mx:Canvas>

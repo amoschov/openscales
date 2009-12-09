@@ -1,24 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Example xmlns="*"
+<mx:Canvas xmlns="*"
 		 xmlns:mx="http://www.adobe.com/2006/mxml"
 		 xmlns:os="http://openscales.org"
 		 creationComplete="initMap();">
-
-	<mx:Script>
-		<![CDATA[
-			import org.openscales.core.Trace;
-			import org.openscales.core.layer.ogc.WMS;
-			import org.openscales.core.layer.params.ogc.WMSParams;
-			import org.openscales.core.security.ign.IGNGeoRMSecurity;
-
-			private var security:IGNGeoRMSecurity;
-
-			private function initMap():void {
-				Trace.useFireBugConsole = displayFirebugTrace;
-				map = fxmap.map;
-			}
-		]]>
-	</mx:Script>
 
 	<!-- Keep proxy since there is a blocking bug in Firefox at referer level
 		 https://bugzilla.mozilla.org/show_bug.cgi?id=410904 -->
@@ -74,5 +58,26 @@
 		</os:ControlPanel>
 
 	</os:Map>
+	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
+			import org.openscales.core.layer.ogc.WMS;
+			import org.openscales.core.layer.params.ogc.WMSParams;
+			import org.openscales.core.security.ign.IGNGeoRMSecurity;
 
-</Example>
+			private var security:IGNGeoRMSecurity;
+			
+			[Bindable] private var map:Map = null;
+			[Bindable] public var displayTrace:Boolean = true;	
+			[Bindable] public var displayFirebugTrace:Boolean = true;
+
+			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
+				map = fxmap.map;
+			}
+		]]>
+	</mx:Script>
+
+</mx:Canvas>

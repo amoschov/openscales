@@ -1,6 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Example xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
+<mx:Canvas xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
 		 xmlns:os="http://openscales.org" creationComplete="initMap();">
+	
+	<os:Map id="fxmap" width="100%" height="100%" zoom="11" centerLonLat="4.833,45.767">
+		
+		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
+		
+		<!-- OpenStreetMap EPSG:900913 -->
+		<os:Mapnik name="Mapnik" isBaseLayer="true"
+				   proxy="http://openscales.org/proxy.php?url=" />
+		
+		<os:DragHandler id="dragHandler" />
+		<os:WheelHandler />
+		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
+		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
+		
+		<!-- Specific layers and handlers of this example -->
+
+		<os:SelectFeaturesHandler id="selectFeaturesHandler" creationComplete="{selectFeaturesHandler.handler.active=false;}"/>
+		
+	</os:Map>
+	
+	<!-- Specific tools of this example -->
+	
+	<mx:VBox horizontalAlign="center" x="10" y="10">
+		<mx:ToggleButtonBar id="buttons" selectedIndex="0">
+			<mx:dataProvider>
+				<mx:Array>
+					<mx:String>Pan</mx:String>
+					<mx:String>Select</mx:String>
+					<mx:String>Clear</mx:String>
+				</mx:Array>
+			</mx:dataProvider>
+			<mx:itemClick>
+				<![CDATA[
+					switch (buttons.selectedIndex) {
+						case 0 :
+							Trace.info("pan mode");
+							selectFeaturesHandler.handler.active = false;
+							dragHandler.handler.active = true;
+							break;
+						case 1 :
+							Trace.info("select mode");
+							dragHandler.handler.active = false;
+							selectFeaturesHandler.handler.active = true;
+							break;
+						case 2 :
+							Trace.info("clear selection");
+							(selectFeaturesHandler.handler as SelectFeaturesHandler).clearSelection();
+							// Once the selection is cleared, return in previous mode
+							if (dragHandler.handler.active) {
+								Trace.info("back to pan mode");
+								buttons.selectedIndex = 0;
+							} else if (selectFeaturesHandler.handler.active) {
+								Trace.info("back to select mode");
+								buttons.selectedIndex = 1;
+							}
+							break;
+						default:
+							Trace.info("unknown mode");
+					}
+				]]>
+			</mx:itemClick>
+		</mx:ToggleButtonBar>
+		
+	</mx:VBox>
 	
 	<mx:Script>
 		<![CDATA[
@@ -29,10 +93,12 @@
 			import org.openscales.core.style.Rule;
 			import org.openscales.core.style.Style;
 			import org.openscales.core.style.fill.SolidFill;
-			//import org.openscales.core.style.symbolizer.LineSymbolizer;
-			//import org.openscales.core.style.symbolizer.PointSymbolizer;
 			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
 			import org.openscales.core.style.stroke.Stroke;
+			
+			[Bindable] private var map:Map = null;
+			[Bindable] public var displayTrace:Boolean = true;	
+			[Bindable] public var displayFirebugTrace:Boolean = true;
 			
 			private function initMap():void {
 				Trace.useFireBugConsole = displayFirebugTrace;
@@ -124,13 +190,6 @@
 				var testResult:Boolean, testExpectedResult:Boolean;
 				var textResult:String;
 				
-				// TODO : check if the referenced geometries are the good ones using their indexes !!!
-				/*var style:Style = new Style();
-				style.rules[0] = new Rule();
-				style.rules[0].symbolizers.push(new PolygonSymbolizer(new Fill(0xFFFF00,0.5),new Stroke(0xFFFF00,2)));
-				(layer.getChildAt(4) as VectorFeature).style = style;
-				layer.redraw();*/
-				
 				// Polygon intersect a Polygon : true
 				testExpectedResult = true;
 				geom1 = (layer.getChildAt(9) as PolygonFeature).geometry;
@@ -158,68 +217,4 @@
 		]]>
 	</mx:Script>
 	
-	<os:Map id="fxmap" width="100%" height="100%" zoom="11" centerLonLat="4.833,45.767">
-		
-		<os:TraceInfo x="{width-200}" y="0" visible="{displayTrace}" />
-		
-		<!-- OpenStreetMap EPSG:900913 -->
-		<os:Mapnik name="Mapnik" isBaseLayer="true"
-				   proxy="http://openscales.org/proxy.php?url=" />
-		
-		<os:DragHandler id="dragHandler" />
-		<os:WheelHandler />
-		<os:Spinner id="spinner" x = "{width / 2}" y = "{height / 2}"/>	
-		<os:MousePosition x="10" y="{height-20}" displayProjection="EPSG:4326"/>
-		
-		<!-- Specific layers and handlers of this example -->
-
-		<os:SelectFeaturesHandler id="selectFeaturesHandler" creationComplete="{selectFeaturesHandler.handler.active=false;}"/>
-		
-	</os:Map>
-	
-	<!-- Specific tools of this example -->
-	
-	<mx:VBox horizontalAlign="center" x="10" y="10">
-		<mx:ToggleButtonBar id="buttons" selectedIndex="0">
-			<mx:dataProvider>
-				<mx:Array>
-					<mx:String>Pan</mx:String>
-					<mx:String>Select</mx:String>
-					<mx:String>Clear</mx:String>
-				</mx:Array>
-			</mx:dataProvider>
-			<mx:itemClick>
-				<![CDATA[
-					switch (buttons.selectedIndex) {
-						case 0 :
-							Trace.info("pan mode");
-							selectFeaturesHandler.handler.active = false;
-							dragHandler.handler.active = true;
-							break;
-						case 1 :
-							Trace.info("select mode");
-							dragHandler.handler.active = false;
-							selectFeaturesHandler.handler.active = true;
-							break;
-						case 2 :
-							Trace.info("clear selection");
-							(selectFeaturesHandler.handler as SelectFeaturesHandler).clearSelection();
-							// Once the selection is cleared, return in previous mode
-							if (dragHandler.handler.active) {
-								Trace.info("back to pan mode");
-								buttons.selectedIndex = 0;
-							} else if (selectFeaturesHandler.handler.active) {
-								Trace.info("back to select mode");
-								buttons.selectedIndex = 1;
-							}
-							break;
-						default:
-							Trace.info("unknown mode");
-					}
-				]]>
-			</mx:itemClick>
-		</mx:ToggleButtonBar>
-		
-	</mx:VBox>
-	
-</Example>
+</mx:Canvas>

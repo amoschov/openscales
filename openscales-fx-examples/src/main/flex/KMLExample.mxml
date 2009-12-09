@@ -1,39 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Example xmlns="*"
+<mx:Canvas xmlns="*"
 		 xmlns:mx="http://www.adobe.com/2006/mxml"
 		 xmlns:os="http://openscales.org"
 		 creationComplete="initMap();">
-
-	<mx:Script>
-		<![CDATA[
-			import org.openscales.core.popup.Anchored;
-			import org.openscales.core.popup.Popup;
-			import org.openscales.core.events.FeatureEvent;
-			import org.openscales.core.events.MapEvent;
-			import org.openscales.core.Map;
-			import org.openscales.core.Trace;
-			import org.openscales.core.style.Style;
-			
-			private var popup:Anchored;
-
-			private function initMap():void {
-				Trace.useFireBugConsole = displayFirebugTrace;
-				map = fxmap.map;
-
-				map.addEventListener(FeatureEvent.FEATURE_CLICK, onFeatureClick);
-			}
-
-			private function onFeatureClick(event:FeatureEvent):void {
-				if(popup) {
-					popup.destroy();
-				}
-				popup = null;
-				popup = new Anchored();
-				popup.feature = event.feature;
-				map.addPopup(popup, true);
-			}
-		]]>
-	</mx:Script>
 
 	<os:Map id="fxmap"
 			width="100%"
@@ -84,4 +53,40 @@
 			</mx:VBox>
 		</mx:HBox>
 	</os:ControlPanel>
-</Example>
+	
+	<mx:Script>
+		<![CDATA[
+			import org.openscales.core.popup.Anchored;
+			import org.openscales.core.popup.Popup;
+			import org.openscales.core.events.FeatureEvent;
+			import org.openscales.core.events.MapEvent;
+			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
+			import org.openscales.core.style.Style;
+			
+			private var popup:Anchored;
+			
+			[Bindable] private var map:Map = null;
+			[Bindable] public var displayTrace:Boolean = true;	
+			[Bindable] public var displayFirebugTrace:Boolean = true;
+
+			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
+				map = fxmap.map;
+
+				map.addEventListener(FeatureEvent.FEATURE_CLICK, onFeatureClick);
+			}
+
+			private function onFeatureClick(event:FeatureEvent):void {
+				if(popup) {
+					popup.destroy();
+				}
+				popup = null;
+				popup = new Anchored();
+				popup.feature = event.feature;
+				map.addPopup(popup, true);
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>
