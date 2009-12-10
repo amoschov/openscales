@@ -9,6 +9,8 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
+	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.geometry.Collection;
@@ -60,6 +62,23 @@ package org.openscales.core.handler.feature.draw
 			this.featureClickHandler=featureClickHandler;
 			this._timer.addEventListener(TimerEvent.TIMER, deletepointUnderTheMouse);
 		}
+		/**
+		 * This function is used for Polygons edition mode starting
+		 * 
+		 * */
+		override public function editionModeStart():Boolean{
+		 	for each(var vectorFeature:Feature in this._layerToEdit.features){	
+					if(vectorFeature.isEditable && vectorFeature.geometry is Collection){			
+						//Clone or not
+						displayVisibleVirtualVertice(vectorFeature);
+					}
+				}
+					if(_isUsedAlone){
+						this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));	
+						this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+					}			
+		 	return true;
+		 }
 		
 		 /**
 		 * @inheritDoc 
@@ -114,7 +133,7 @@ package org.openscales.core.handler.feature.draw
 		 			
 		 			if(index!=-1) parentGeometry.replaceComponent(index,newVertice);
 		 			else parentGeometry.addComponent(newVertice,indexOfFeatureCurrentlyDrag);
-		 			displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);	 				
+		 			displayVisibleVirtualVertice(findVirtualVerticeParent(vectorfeature as PointFeature));	 				
 		 		}
 		 	}
 		 	//we add the new mouseEvent move and remove the MouseEvent on the draw Temporary feature
@@ -131,6 +150,7 @@ package org.openscales.core.handler.feature.draw
 		 	this._drawContainer.graphics.clear();
 		 	vectorfeature=null;
 		   _timer.stop();
+		   //vectorfeature.editionFeatureParent.draw();
 		 	this._layerToEdit.redraw();
 		 }
 		 
@@ -160,7 +180,7 @@ package org.openscales.core.handler.feature.draw
 		 	//We remove listeners and tempoorary point
 		 	//This is a bug we redraw the layer with new vertices for the impacted feature
 		 	//The click is considered as a bug for the moment	 	
-		 	 displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
+		 	 displayVisibleVirtualVertice(findVirtualVerticeParent(vectorfeature as PointFeature));
 		 	this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
 		 	this._layerToEdit.removeFeature(vectorfeature);
 		 	this._featureClickHandler.removeControledFeature(vectorfeature);
@@ -187,7 +207,7 @@ package org.openscales.core.handler.feature.draw
 		 	
 		 	if(index!=-1){	 		
 		 		vectorfeature.editionFeatureParentGeometry.removeComponent(vectorfeature.editionFeatureParentGeometry.componentByIndex(index));
-		 		 displayVisibleVirtualVertice(vectorfeature.editionFeatureParent);
+		 		 displayVisibleVirtualVertice(findVirtualVerticeParent(vectorfeature as PointFeature));
 		 	}
 		 	//we delete the point under the mouse 
 		 	this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
@@ -226,7 +246,10 @@ package org.openscales.core.handler.feature.draw
 		 		var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
 				//drawing equals false if the mouse is too close from Virtual vertice
 				var drawing:Boolean=true;
-					for each(var feature:Feature in vectorfeature.editionFeaturesArray){
+					//for each(var feature:Feature in _editionFeatureArray){
+					for(var i:int=0;i<_editionFeatureArray.length;i++){
+						var feature:Feature=_editionFeatureArray[i][0] as Feature;
+						if(feature!=null){
 						var tmpPx:Pixel=this.map.getLayerPxFromLonLat(new LonLat((feature.geometry as Point).x,(feature.geometry as Point).y));
 						if(Math.abs(tmpPx.x-px.x)<this._ToleranceVirtualReal && Math.abs(tmpPx.y-px.y)<this._ToleranceVirtualReal)
 						{
@@ -234,6 +257,7 @@ package org.openscales.core.handler.feature.draw
 							break;
 						}
 					}
+				}
 					if(drawing){
 						layerToEdit.map.buttonMode=true;
 						var lonlat:LonLat=this.map.getLonLatFromLayerPx(px);
@@ -249,7 +273,8 @@ package org.openscales.core.handler.feature.draw
 						//We find the segment the point under the mouse belongs to
 							findPointUnderMouseCollection(vectorfeature.geometry,AbstractEditCollectionHandler._pointUnderTheMouse);
 						if(AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry!=null){
-								AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParent=vectorfeature;
+							//	AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParent=vectorfeature;
+								_editionFeatureArray.push(new Array(AbstractEditCollectionHandler._pointUnderTheMouse,vectorfeature));
 								AbstractEditCollectionHandler._pointUnderTheMouse.visible=true;
 						}
 						else AbstractEditCollectionHandler._pointUnderTheMouse.visible=false;
@@ -299,7 +324,9 @@ package org.openscales.core.handler.feature.draw
 		 	
 		 	
 		 }
-		 
+		 override public function refreshEditedfeatures(event:MapEvent=null):void{
+		 	
+		 }
 		 //getters && setters
 		 /**
 		 * Tolerance used for detecting  point

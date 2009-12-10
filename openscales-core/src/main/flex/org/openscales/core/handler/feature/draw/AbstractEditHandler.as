@@ -3,18 +3,19 @@ package org.openscales.core.handler.feature.draw
 	import flash.display.Sprite;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.Util;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
-
 	import org.openscales.core.events.MapEvent;
-
 	import org.openscales.core.feature.Feature;
-
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.geometry.Collection;
+	import org.openscales.core.geometry.Geometry;
+	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
+	import org.openscales.core.style.Style;
 
 	/**
 	* Abstract edit handler never instanciate this class
@@ -51,7 +52,12 @@ package org.openscales.core.handler.feature.draw
 		 * or associated with other handlers in LayerEditionHandler
 		 * */
 		protected var _isUsedAlone:Boolean=true;
-		
+		/**
+		 * The edition features array
+		 * It contains all virtual vertice used for edition and their parents
+		 * egg: A line contains at its first column the virtual vertice and at its' second column the parent of the virtual vertice
+		 **/
+		protected var _editionFeatureArray:Array=null;
 		/**
 		 * Constructor
 		 * @param map Map object
@@ -72,6 +78,7 @@ package org.openscales.core.handler.feature.draw
 			this._layerToEdit=layerToEdit;
 			super(map,active);
 			this._drawContainer=drawContainer; 
+			this._editionFeatureArray=new Array();
 		}
 		/**
 		 *@inheritDoc 
@@ -93,13 +100,16 @@ package org.openscales.core.handler.feature.draw
 		 	}
 		 	super.active=value;
 		 }
-
 		 /**
 		 * This function is used to start the edition of all vector features 
 		 * in a layer
 		 * only use by LayerEditionHandler
 		 * */
 		 public function refreshEditedfeatures(event:MapEvent=null):void{
+		 	
+		 }
+		
+		/*  public function refreshEditedfeatures(event:MapEvent=null):void{
 
 		 	if(_layerToEdit!=null && !_isUsedAlone){
 		 		for each(var vectorFeature:Feature in this._layerToEdit.features){	
@@ -107,7 +117,8 @@ package org.openscales.core.handler.feature.draw
 						//We display on the layer concerned by the operation the virtual vertices used for edition
 						displayVisibleVirtualVertice(vectorFeature);
 					}
-					else if(vectorFeature.isEditionFeature)
+					//Virtual vertices treatment
+					else if(vectorFeature is Point && Util.indexOf(this._editionFeatureArray,vectorFeature)!=-1)
 					{
 						//We remove the edition feature to create another 						
 						//TODO Damien nda only delete the feature concerned by the operation
@@ -120,9 +131,56 @@ package org.openscales.core.handler.feature.draw
 				}
 		 	}
 		 	
-		 }
- 
-		 
+		 } */
+  		/**
+		 * This function is used to start the edition of all vector features 
+		 * in a layer
+		 * @protected
+		 * @param feature:Feature the feature to treat
+		 * */
+ 		/* protected function refreshEditedfeature(feature:Feature):void{
+ 			if(_layerToEdit!=null && !_isUsedAlone){
+ 				if(feature.isEditable && feature.geometry is Collection){			
+						//We display on the layer concerned by the operation the virtual vertices used for edition
+						displayVisibleVirtualVertice(feature);
+					}
+					//Virtual vertices treatment
+					else if(feature is Point && Util.indexOf(this._editionFeatureArray,feature)!=-1)
+					{
+						//We remove the edition feature to create another 						
+						//TODO Damien nda only delete the feature concerned by the operation
+						_layerToEdit.removeFeature(feature);
+						this._featureClickHandler.removeControledFeature(feature);
+						Util.removeItem(this._editionFeatureArray,feature);
+						feature.destroy();
+						feature=null;
+					} 
+					else this._featureClickHandler.addControledFeature(feature);
+ 			}
+ 		} */
+ 		
+		 /**
+		 * create edition vertice(Virtual) only for edition feature
+		 * @param geometry
+		 * */
+		public function createEditionVertices(vectorfeature:Feature,collection:Collection=null,arrayToFill:Array=null):void {
+			if (collection == null)
+			collection=vectorfeature.geometry as Collection;
+			for (var i:int = 0; i < collection.componentsLength; i++) {
+				var geometry:Geometry = collection.componentByIndex(i);
+				if (geometry is Collection) {
+					createEditionVertices(vectorfeature,geometry as Collection,arrayToFill);
+				} else {
+					if (geometry is Point) {
+						var EditionVertice:PointFeature = new PointFeature(geometry.clone() as Point, null, Style.getDefaultCircleStyle(), true, collection);
+						//We fill the array with the virtual vertice
+						arrayToFill.push(EditionVertice);
+						/* EditionVertice.editionFeatureParent = vectorfeature; */
+					}
+				}
+			}
+		}
+		
 		 /**
 		 * Start the edition Mode
 		 * */
@@ -137,18 +195,23 @@ package org.openscales.core.handler.feature.draw
 			{
 				{
 				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_END,this._layerToEdit));			
-				for each(var vectorfeature:Feature in _layerToEdit.features){
+				//for each(var vectorfeature:Feature in _editionFeatureArray){
+				for(var i:int=0;i<_editionFeatureArray.length;i++){
+				var feature:Feature=_editionFeatureArray[i][0] as Feature;
 					//The edition feature are destroyed  in order to be elective for the Garbage Collector
-					if(vectorfeature.isEditionFeature){				
-						vectorfeature.destroy();
-						this._layerToEdit.removeFeature(vectorfeature);
-						vectorfeature.editionFeaturesArray=null;
-						this._featureClickHandler.removeControledFeature(vectorfeature);
-						vectorfeature=null;
-					}
-					else vectorfeature.editionFeaturesArray=null;
+					/* if(vectorfeature is PointFeature && Util.indexOf(this._editionFeatureArray,vectorfeature)!=-1){	 */			
+					if(feature!=null){	
+						feature.destroy();
+						this._layerToEdit.removeFeature(feature);
+						/* vectorfeature.editionFeaturesArray=null; */
+						this._featureClickHandler.removeControledFeature(feature);
+						feature=null;
+					}	
+					/* } */
+				/* 	else vectorfeature.editionFeaturesArray=null; */
 					}
 				}
+				_editionFeatureArray=new Array();
 			}
 		 	return true;
 		 }
@@ -216,16 +279,51 @@ package org.openscales.core.handler.feature.draw
 		 * */
 		protected function displayVisibleVirtualVertice(featureEdited:Feature):void{
 					if(featureEdited!=null) {
-					//Vertices update
-		 				if(featureEdited.editionFeaturesArray!=null)
+					//We only draw the points included in the map extent
+		 			var tmpfeature:Array=new Array();	
+		 			var feature:Feature;
+					
+					
+					
+					
+					/*for each(feature in _editionFeatureArray){*/
+					
+					for(var i:int=0;i<_editionFeatureArray.length;i++){
+						 feature:feature=_editionFeatureArray[i][0];
+						if(findVirtualVerticeParent(feature  as PointFeature)==featureEdited){
+							this._layerToEdit.removeFeature(feature);
+		 					this._featureClickHandler.removeControledFeature(feature);
+		 					tmpfeature.push(_editionFeatureArray[i]);
+						}
+					}
+					//feature to delete
+					if(tmpfeature.length!=0){
+						//for each(feature in tmpfeature){
+						for(i=0;i<tmpfeature.length;i++){
+							Util.removeItem(_editionFeatureArray,tmpfeature[i]);
+						}
+						 tmpfeature=new Array();
+					}
+					createEditionVertices(featureEdited,featureEdited.geometry as Collection,tmpfeature);
+					for each(feature in tmpfeature){
+						if(this.map.extent.containsBounds(feature.geometry.bounds)){
+							this._layerToEdit.addFeature(feature);
+		 					this._featureClickHandler.addControledFeature(feature);
+		 					this._editionFeatureArray.push(new Array(feature,featureEdited));
+						}
+					}
+					//for garbage collector
+					tmpfeature=null;	
+					 
+				/*	//Vertices update
+		 			  if(featureEdited.editionFeaturesArray!=null)
 		 					{
 		 						this._layerToEdit.removeFeatures(featureEdited.editionFeaturesArray);
 		 						this._featureClickHandler.removeControledFeatures(featureEdited.editionFeaturesArray);
-		 					}
-		 				featureEdited.refreshEditionVertices();		
-		 				//We only draw the points included in the map extent
-		 				var tmpfeature:Array=new Array();
-		 				for each(var feature:Feature in featureEdited.editionFeaturesArray){
+		 					} 
+		 				featureEdited.refreshEditionVertices();	 
+		 				
+		 				for each(var feature:Feature in _editionFeatureArray){
 		 					if(this.map.extent.containsBounds(feature.geometry.bounds)){
 		 						this._layerToEdit.addFeature(feature);
 		 						this._featureClickHandler.addControledFeature(feature);
@@ -233,9 +331,24 @@ package org.openscales.core.handler.feature.draw
 		 					}
 		 				}
 		 			//We update the editionFeaturesArray 
-		 			featureEdited.editionFeaturesArray=tmpfeature;
-		 			tmpfeature=null;
+		 			featureEdited.editionFeaturesArray=tmpfeature; 
+		 			tmpfeature=null; */
 		 		}
+		}
+		/**
+		 * This function is abble to find a virtual vertice parent
+		 * @param virtualVertice the virtual vertice 
+		 * @param arrayTosearch The array where to find the parent 
+		 * */
+		public function findVirtualVerticeParent(virtualVertice:PointFeature,arrayTosearch:Array=null):Feature{
+			if(virtualVertice){
+				if(!arrayTosearch)arrayTosearch=this._editionFeatureArray;
+				for(var i:int=0;i<arrayTosearch.length;i++){
+					//we return the parent if we find the virtual 
+					if(arrayTosearch[i][0]==virtualVertice) return arrayTosearch[i][1];
+				}	
+			}
+			return null;
 		}
 		 //getters & setters
 		 public function set layerToEdit(value:FeatureLayer):void{

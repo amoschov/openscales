@@ -2,6 +2,7 @@ package org.openscales.core.handler.feature.draw
 {
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.MapEvent;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.PointFeature;
 	
 	
@@ -46,5 +47,11 @@ package org.openscales.core.handler.feature.draw
 		 * after event like Mapevent.zoomend or moveend
 		 * */
 		 function refreshEditedfeatures(event:MapEvent=null):void;
+		 /**
+		 * This function is abble to find a virtual vertice parent
+		 * @param virtualVertice the virtual vertice 
+		 * @param arrayTosearch The array where to find the parent 
+		 * */
+		 function findVirtualVerticeParent(virtualVertice:PointFeature,arrayTosearch:Array=null):Feature;
 	}
 }

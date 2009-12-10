@@ -70,7 +70,7 @@ package org.openscales.core.feature
 		 * */
 		override public function clone():Feature {
 			var geometryClone:Geometry=this.geometry.clone();
-			var MultiPolygonFeatureClone:MultiPolygonFeature=new MultiPolygonFeature(geometryClone as MultiPolygon,null,this.style,this.isEditable,this.isEditionFeature);
+			var MultiPolygonFeatureClone:MultiPolygonFeature=new MultiPolygonFeature(geometryClone as MultiPolygon,null,this.style,this.isEditable);
 			return MultiPolygonFeatureClone;
 		}
 		

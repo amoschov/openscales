@@ -3,16 +3,17 @@ package org.openscales.core.handler.feature.draw
 	import flash.display.Sprite;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.geometry.Point;
-	import org.openscales.core.layer.FeatureLayer;
-	
 	import org.openscales.core.handler.feature.FeatureClickHandler;
+	import org.openscales.core.layer.FeatureLayer;
 
 	/**
 	 * This Handler is used for point edition 
@@ -84,6 +85,28 @@ package org.openscales.core.handler.feature.draw
 				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));				
 			}
 		 	return true;
+		 }
+		  /**
+		 * @inheritDoc 
+		 * */
+		override public function refreshEditedfeatures(event:MapEvent=null):void{
+		 	if(_layerToEdit!=null && !_isUsedAlone){
+		 		for each(var feature:Feature in this._layerToEdit.features){	
+					//Virtual vertices treatment
+					if(feature is Point && Util.indexOf(this._editionFeatureArray,feature)!=-1)
+					{
+						//We remove the edition feature to create another 						
+						//TODO Damien nda only delete the feature concerned by the operation
+						_layerToEdit.removeFeature(feature);
+						this._featureClickHandler.removeControledFeature(feature);
+						Util.removeItem(this._editionFeatureArray,feature);
+						feature.destroy();
+						feature=null;
+					} 
+					else this._featureClickHandler.addControledFeature(feature);
+				}
+		 	}
+		 	
 		 } 
 	}
 }

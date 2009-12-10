@@ -4,20 +4,19 @@ package org.openscales.core.handler.feature.draw
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.events.FeatureEvent;
-	import org.openscales.core.events.LayerEvent;
+	import org.openscales.core.events.MapEvent;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
-	import org.openscales.core.handler.feature.draw.AbstractEditCollectionHandler;
 
 	/**
 	 * This Handler is used for polygon edition 
@@ -29,30 +28,14 @@ package org.openscales.core.handler.feature.draw
 		{
 			super(map,active,layerToEdit,featureClickHandler,drawContainer,isUsedAlone);			
 		}
-		/**
-		 * This function is used for Polygons edition mode starting
-		 * 
-		 * */
-		override public function editionModeStart():Boolean{
-		 	for each(var vectorFeature:Feature in this._layerToEdit.features){	
-					if(vectorFeature.isEditable && vectorFeature.geometry is Polygon){			
-						//Clone or not
-						displayVisibleVirtualVertice(vectorFeature);
-					}
-				}
-					if(_isUsedAlone){
-						this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));	
-						this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
-					}			
-		 	return true;
-		 }
-		
-		
+	
 		 /**
 		 * @inheritDoc 
 		 * */
 		 override public function dragVerticeStart(vectorfeature:PointFeature):void{
-		 	if(vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature){
+		 	//The feature edited  is the parent of the virtual vertice
+		 	var featureEdited:Feature=findVirtualVerticeParent(vectorfeature as PointFeature);
+		 	if(featureEdited!=null && (featureEdited is PolygonFeature || featureEdited is MultiPolygonFeature)){
 		 		super.dragVerticeStart(vectorfeature);
 		 	}
 		 	
@@ -61,10 +44,40 @@ package org.openscales.core.handler.feature.draw
 		 * @inheritDoc 
 		 * */
 		 override  public function dragVerticeStop(vectorfeature:PointFeature):void{
-		 	if(vectorfeature.editionFeatureParent is PolygonFeature || vectorfeature.editionFeatureParent is MultiPolygonFeature){
-		 		return super.dragVerticeStop(vectorfeature);
+		 	//The feature edited  is the parent of the virtual vertice
+		 	var featureEdited:Feature=findVirtualVerticeParent(vectorfeature as PointFeature);
+		 	if(featureEdited!=null && (featureEdited is PolygonFeature || featureEdited is MultiPolygonFeature)){
+		 		 super.dragVerticeStop(vectorfeature);
 		 	}
 		 }
+		  /**
+		 * @inheritDoc 
+		 * */
+		override public function refreshEditedfeatures(event:MapEvent=null):void{
+
+		 	if(_layerToEdit!=null && !_isUsedAlone){
+		 		for each(var feature:Feature in this._layerToEdit.features){	
+					if(feature.isEditable && feature.geometry is Polygon){			
+						//We display on the layer concerned by the operation the virtual vertices used for edition
+						displayVisibleVirtualVertice(feature);
+					}
+					//Virtual vertices treatment
+					else if(feature is Point && Util.indexOf(this._editionFeatureArray,feature)!=-1)
+					{
+						//We remove the edition feature to create another 						
+						//TODO Damien nda only delete the feature concerned by the operation
+						_layerToEdit.removeFeature(feature);
+						this._featureClickHandler.removeControledFeature(feature);
+						Util.removeItem(this._editionFeatureArray,feature);
+						feature.destroy();
+						feature=null;
+					} 
+					else this._featureClickHandler.addControledFeature(feature);
+				}
+		 	}
+		 	
+		 }
+		 
 		/**
 		 * @inheritDoc 
 		 * */

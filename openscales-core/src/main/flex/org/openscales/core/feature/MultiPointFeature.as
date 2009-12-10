@@ -77,7 +77,7 @@ package org.openscales.core.feature {
 		 * */
 		override public function clone():Feature {
 			var geometryClone:Geometry = this.geometry.clone();
-			var MultiPointFeatureClone:MultiPointFeature = new MultiPointFeature(geometryClone as MultiPoint, null, this.style, this.isEditable, this.isEditionFeature);
+			var MultiPointFeatureClone:MultiPointFeature = new MultiPointFeature(geometryClone as MultiPoint, null, this.style, this.isEditable);
 			return MultiPointFeatureClone;
 
 		}
