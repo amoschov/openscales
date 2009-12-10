@@ -43,8 +43,11 @@ package {
 			_map.addControl(new MousePosition());
 			_map.addControl(new LayerSwitcher());
 			_map.addControl(new PanZoomBar());
-			new SelectFeaturesHandler(_map,true);
-
+			var selectHandler: SelectFeaturesHandler = new SelectFeaturesHandler(_map, true);
+			selectHandler.enableClickSelection = false;
+			selectHandler.enableBoxSelection = false;
+			selectHandler.enableOverSelection = true;
+			
 			// Add handlers
 			new WheelHandler(_map);
 			new DragHandler(_map);
