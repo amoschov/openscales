@@ -30,7 +30,7 @@
 				</property>
 			</activation>
             <properties>
-				<mvn.site>file:///tmp</mvn.site>
+				<mvn.site>file://c:/op11</mvn.site>
 				<openscales.host>openscales.org</openscales.host>
             </properties>
         </profile>

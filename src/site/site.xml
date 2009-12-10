@@ -20,8 +20,9 @@
 		</menu>
 
 		<menu name="Demo">
-			<item name="Examples" href="/examples/osExamples.html"/>
-			<item name="Examples source code" href="/examples/srcview/index.html" />
+			<item name="Flex Examples" href="/examples/osExamples.html"/>
+			<item name="AS3 Example" href="/examples/OpenscalesApplication.html"/>
+			<item name="Examples source code" href="/sources.html" />
 		</menu>
 
 		<menu name="API documentation">
