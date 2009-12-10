@@ -1,53 +1,46 @@
 OpenScales
 
-	OpenScales is a Open Source (LGPL) RIA mapping framework designed to allow you to build mapping RIA (Rich Internet Applications) easily. This documentation have been created for developers that are building OpenScales based applications.
+	{{{http://openscales.org/}OpenScales}} is a Open Source (LGPL) mapping framework based on ActionScript 3 and Flex. It has been designed for building Rich Internet Mapping Applications (RIMA) easily. Last stable release is <<OpenScales 1.1>>.
+
+	This documentation is the <<OpenScales 1.1 user guide>>. It has been been created to help you to build OpenScales based applications.
+
+	Feel free to join OpenScales community, submit issues, patches, discuss with us ...
 	
 [images/map-example.jpg]
 
 	OpenScales has been initially started from {{{http://code.google.com/p/flexlayers/}FlexLayers}} source code, donated by Scott Pezanowski. FlexLayers was a Flex port of {{{http://openlayers.org/}OpenLayers}}. Since the beginning, the codebase base has been extensively modified and improved. Nevertheless, even if OpenScales API is not strictly equivalent to OpenLayers one, if you have ever developed on OpenLayers, you will find OpenScales API quite easy to understand.
 
-Key classes
+Features
 
-	OpenScales is composed by the following key concepts :
+	* Support different kinds of layers
+		
+		* OGC protocols : WMS/WMS-C 1.1.1, WFS 1.0, GetCapabilities support
 
-	* <<Map>> : the map is the main class in OpenScales. A map allows to display one or more layers on a specified extent. Extent and zoom level can change based on user input like mouse or keyboard.
+		* OpenStreetMap
 
-	* <<Layer>> : a layer is a mapping data sources, usually available on a specific extent and zoom level ranges. There is 2 main kings of layer :
+		* IGN (French Geoportal) layers thanks to GeoRM support
 
-		* <<Feature layer>> : data are geometries like points or polygons with some attributes and style information
+		* KML (placemarks only)
 
-		* <<Raster layer>> : data are geolocalized pictures
+		* Simple image
 
-	* <<Handler>> : handlers listen to user input (mouse, keyboard) to move the map, zoom, draw features, etc.
+	* Optimized pure ActionScript 3 core (100 Kbytes)
 
-	* <<Controls>> : GUI components used to display buttons, sliders that allows to control the map
+	* Flex support built on top of the AS3 core
 
-Modules
+	* Drawing
 
-	OpenScales is composed by different modules (technology used between parenthesis) :
+	* Fast vector rendering
 
-	* {{{openscales-core/asdoc/index.html}openscales-core}} (ActionScript 3 library) : core modules that contains main classes like  Map, Layer, Handler ...
+	* Powerful Style API
 
-	* {{{openscales-proj4as/asdoc/index.html}openscales-proj4as}} (ActionScript 3 library) : projection support used to display layers with different projections (EPSG:4326, EPSG:90013) on the same map
+	* Popup support
 
-	* {{{openscales-fx/asdoc/index.html}openscales-fx}} (Flex library) : since openscales-core is developed in pure ActionScript 3 for size and performance reasons, openscales-fx provide some Flex components and wrappers useful to build easily OpenScales based applications using the power of Flex components
+	* Tweening effect for pan, zoom and tiles
 
-	* openscales-testing (Flex aplication) : unit test runner for OpenScales developers
+	* XML runtime configuration to get dynamic maps from a single SWF compiled application
 
-	* openscales-as-example (ActionScript 3 application) : pure ActionScript 3 demo application
-
-	* {{{examples/osExamples.html}openscales-fx-examples}} (Flex aplication) : sample Flex demo intended to show code samples and functionalities to application developers (you)
-
-	* openscales-air-example (AIR application) : desktop application demo build with AIR
-	Click on the module name to access to API reference documentation for the related module.
-
-Software design
-
-	OpenScales use the Map as a bus event useful for communication between modules in a loosely coupled way. For example, if you want to display a popup when a user click on a KML point feature, add a SelectFeatureHandler on your map and do a map.addEventListener(FeatureEvent.FEATURE_SELECTED, onFeatureSelected) in your application. You will be able to display a popup that will show feature attributes in the popup content.
-
-	When building your OpenScales based application, you will usually do this : listen to OpenScales events (MapEvent, LayerEvent, FeatureEvent) and build your own functionalities within a custom Flex user interface. Check {{{examples/osExamples.html}openscales-fx-examples}} for more code samples.
-
-	If you need to support a new kind of Layer, for example, you will usually extends existing class like Layer, Grid of FeatureLayer to implements what you need. Feel free to send a patch on openscales.org site if you think this functionality may be integrated in our code base.
+	* Powerful controls and handlers to help you to build your app !
 
 Platforms
 
@@ -58,6 +51,10 @@ Platforms
 	* <<Web>> (Flex) : OpenScales 1.1 run on Flash 9 and Flash 10 players, targeting 98% of current web browsers under Windows, Mac and Linux
 
 	* <<Desktop>> (AIR) : desktop mapping application based on OpenScales and AIR could be useful to manage offline mode, open local files like shapefiles, etc.
+
+Community
+
+	
 
 
 
