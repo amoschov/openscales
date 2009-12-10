@@ -9,7 +9,6 @@
   	<bannerLeft>
 	    <name>OpenScales</name>
 	    <src>images/OpenscalesLogo-GBl-BgCurs-Rounded.png</src>
-    	<href>http://openscales.org/</href>
  	</bannerLeft>
   
 	<body>
@@ -26,8 +25,8 @@
 		</menu>
 
 		<menu name="API documentation">
-			<item name="Flex components" href="/flex.html"/>
 			<item name="Core AsDocs" href="openscales-core/asdoc/index.html"/>
+			<item name="Flex components" href="/flex.html"/>
 			<item name="Flex AsDocs" href="openscales-fx/asdoc/index.html"/>
 			<item name="Proj4as AsDocs" href="openscales-proj4as/asdoc/index.html"/>
 		</menu>

@@ -1,6 +1,7 @@
 	This page list all Flex components available to create a Flex MXML application based on OpenScales. See demo source code for more details.
 
 Map
+
 	* Map : Flex map wrapper
 
 	* Extent : allows to define an extent by MXML
@@ -8,6 +9,7 @@ Map
 	* MaxExtent : allows to define an extent by MXML
 
 Layer
+
 	* FeatureLayer
 
 	* ImageLayer
@@ -29,6 +31,7 @@ Layer
 	* Osmarender
 
 Control
+
 	* ControlPanel : extends Panel to define some common parameter values
 
 	* LayerSwitcher : pure ActionScript 3 layer switcher
@@ -41,7 +44,7 @@ Control
 
 	* LayerSwitcherComponent : Flex layer switcher
 
-  	* MousePositionComponent : display coordinates of the map cursor
+	* MousePositionComponent : display coordinates of the map cursor
 
 	* PanComponent : 4 directions buttons to pan the map 
 
@@ -66,6 +69,7 @@ Control
 	* ScaleLine : display a scaleline based on map configuration
 
 Handler
+
 	* BorderPanHandler : move the map based on the distance between the center of the map and the cursor
 
 	* DragHandler : allow to pan the map with a mouse drag and drop
