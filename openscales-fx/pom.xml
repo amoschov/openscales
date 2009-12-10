@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
 	<artifactId>openscales-fx</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1</version>
 	<packaging>swc</packaging>
 	<name>Flex support</name>
 	<description>Unlike Core module that is pure ActionScript3, Openscales Fx module contains all Flex Framework support for OpenScales. It is mainly composed of native Flex components and wrapper around openscales-core classes</description>
@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.openscales</groupId>
 		<artifactId>openscales</artifactId>
-		<version>1.1-SNAPSHOT</version>
+		<version>1.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -47,7 +47,7 @@
 	  	<dependency>
 			<groupId>org.openscales</groupId>
 			<artifactId>openscales-core</artifactId>
-			<version>1.1-SNAPSHOT</version>
+			<version>1.1</version>
 			<type>swc</type>
 		</dependency>
 	</dependencies>
