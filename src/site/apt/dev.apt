@@ -21,19 +21,19 @@ Quick start with Flex Builder 3
 		
 		* File -> New -> Flex Project, set project name and click on finish
 		
-		* Create a libs directory where you put following libraries that are distributed in OpenScales 1.1 package :
+		* Create a libs directory where you put following libraries that are distributed in OpenScales 1.2-SNAPSHOT package :
 		
 			* gtween2.swc
 			
-			* openscales-core-1.1.swc
+			* openscales-core-1.2-SNAPSHOT.swc
 			
-			* openscales-fx-1.1.swc
+			* openscales-fx-1.2-SNAPSHOT.swc
 			
-			* openscales-proj4as-1.1.swc
+			* openscales-proj4as-1.2-SNAPSHOT.swc
 			
 		* Right click on your project -> Properties -> Flex build path -> Library path -> Add SWC folder -> libs -> OK -> OK
 		
-		* Start to develop your application ! You can copy and past code from samples available on openscales-flex-examples ({{{examples/osExamples.html}demo}}, {{{examples/srcview/index.html}source}}). Expand src to see all source code examples.
+		* Start to develop your application ! You can copy and paste code from samples available on the left menu.
 
 Key classes
 
@@ -41,7 +41,7 @@ Key classes
 
 	* <<Map>> : the map is the main class in OpenScales. A map allows to display one or more layers on a specified extent. Extent and zoom level can change based on user input like mouse or keyboard.
 
-	* <<Layer>> : a layer is a mapping data sources, usually available on a specific extent and zoom level ranges. There is 2 main kings of layer :
+	* <<Layer>> : a layer is a mapping data sources, usually available on a specific extent and zoom level ranges. There is 2 main kinds of layer :
 
 		* <<Feature layer>> : data are geometries like points or polygons with some attributes and style information
 
@@ -61,11 +61,11 @@ Modules
 
 	* {{{openscales-fx/asdoc/index.html}openscales-fx}} (Flex library) : since openscales-core is developed in pure ActionScript 3 for size and performance reasons, openscales-fx provide some Flex components and wrappers useful to build easily OpenScales based applications using the power of Flex components
 
-	* openscales-testing (Flex aplication) : unit test runner for OpenScales developers
+	* openscales-testing (Flex application) : unit test runner for OpenScales developers
 
 	* openscales-as-example (ActionScript 3 application) : pure ActionScript 3 demo application
 
-	* {{{examples/osExamples.html}openscales-fx-examples}} (Flex aplication) : sample Flex demo intended to show code samples and functionalities to application developers (you)
+	* {{{examples/osExamples.html}openscales-fx-examples}} (Flex application) : sample Flex demo intended to show code samples and functionalities to application developers (you)
 
 	* openscales-air-example (AIR application) : desktop application demo build with AIR
 	Click on the module name to access to API reference documentation for the related module.
@@ -76,5 +76,5 @@ Software design
 
 	When building your OpenScales based application, you will usually do this : listen to OpenScales events (MapEvent, LayerEvent, FeatureEvent) and build your own functionalities within a custom Flex user interface. Check {{{examples/osExamples.html}openscales-fx-examples}} for more code samples.
 
-	If you need to support a new kind of Layer, for example, you will usually extends existing class like Layer, Grid of FeatureLayer to implements what you need. Feel free to send a patch on openscales.org site if you think this functionality may be integrated in our code base.
+	If you need to support a new kind of Layer, for example, you will usually extend existing class like Layer, Grid of FeatureLayer to implements what you need. Feel free to send a patch on openscales.org site if you think this functionality may be integrated in our codebase.
 

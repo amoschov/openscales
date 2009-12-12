@@ -1,6 +1,6 @@
 	A usual question, especially from OpenLayers users, is how do I customize OpenScales on runtime. Indeed, unlike Javascript, ActionScript produce compile (SWF) application.
 
-	To customize OpenScales at runtime, you can use XML configuration to configure your application. When OpenScales in integrated in a professional application, the XML configuration file is usually generated dynamically thanks to server side technology like PHP, Ruby or JSP.
+	To customize OpenScales at runtime, you can use XML configuration to configure your application. When OpenScales is integrated in a professional application, the XML configuration file is usually generated dynamically thanks to server side technology like PHP, Ruby or JSP.
 
 	You can check this {{{configuration/sample.xml}sample xml configuration file}} to build your own. A XML schema will be provided in 1.2 release. To use this functionality, check Map and Configuraton classes AsDocs.
 

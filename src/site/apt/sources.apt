@@ -1,0 +1,39 @@
+ActionScript 3
+
+	* {{{examples/srcview/source/OpenscalesApplication.as.html}OpenscalesApplication.as}}
+
+Flex
+	
+	* {{{examples/srcview/source/CapabilitiesExample.mxml.html}CapabilitiesExample.mxml}}
+	
+	* {{{examples/srcview/source/DrawingExample.mxml.html}DrawingExample.mxml}}
+	
+	* {{{examples/srcview/source/FeaturesExample.mxml.html}FeaturesExample.mxml}}
+	
+	* {{{examples/srcview/source/GlobalExample.mxml.html}GlobalExample.mxml}}
+	
+	* {{{examples/srcview/source/ImageLayerExample.mxml.html}ImageLayerExample.mxml}}
+	
+	* {{{examples/srcview/source/InfoExample.mxml.html}InfoExample.mxml}}
+	
+	* {{{examples/srcview/source/KMLExample.mxml.html}KMLExample.mxml}}
+	
+	* {{{examples/srcview/source/LayersManagerExample.mxml.html}LayersManagerExample.mxml}}
+	
+	* {{{examples/srcview/source/OpenStreetMap.mxml.html}OpenStreetMap.mxml}}
+	
+	* {{{examples/srcview/source/OverviewExample.mxml.html}OverviewExample.mxml}}
+	
+	* {{{examples/srcview/source/PanZoomExample.mxml.html}PanZoomExample.mxml}}
+	
+	* {{{examples/srcview/source/SecurityMapExample.mxml.html}SecurityMapExample.mxml}}
+	
+	* {{{examples/srcview/source/StyleExample.mxml.html}StyleExample.mxml}}
+	
+	* {{{examples/srcview/source/WFSBaseLayerExample.mxml.html}WFSBaseLayerExample.mxml}}
+	
+	* {{{examples/srcview/source/WMSCExample.mxml.html}WMSCExample.mxml}}
+	
+	* {{{examples/srcview/source/WMSExample.mxml.html}WMSExample.mxml}}
+	
+	* {{{examples/srcview/source/YahooSearchExample.mxml.html}YahooSearchExample.mxml}}

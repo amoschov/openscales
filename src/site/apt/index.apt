@@ -1,14 +1,14 @@
 OpenScales
 
-	{{{http://openscales.org/}OpenScales}} is a Open Source (LGPL) mapping framework based on ActionScript 3 and Flex. It has been designed for building Rich Internet Mapping Applications (RIMA) easily. Last stable release is <<OpenScales 1.1>>.
+	{{{http://openscales.org/}OpenScales}} is a Open Source (LGPL) mapping framework based on ActionScript 3 and Flex. It has been designed for building Rich Internet Mapping Applications (RIMA) easily.
 
-	This documentation is the <<OpenScales 1.1 user guide>>. It has been been created to help you to build OpenScales based applications.
+	This documentation is the <<OpenScales 1.2-SNAPSHOT user guide>>. It has been created to help you to build OpenScales based applications.
 
 	Feel free to join OpenScales community, submit issues, patches, discuss with us ...
 	
 [images/map-example.jpg]
 
-	OpenScales has been initially started from {{{http://code.google.com/p/flexlayers/}FlexLayers}} source code, donated by Scott Pezanowski. FlexLayers was a Flex port of {{{http://openlayers.org/}OpenLayers}}. Since the beginning, the codebase base has been extensively modified and improved. Nevertheless, even if OpenScales API is not strictly equivalent to OpenLayers one, if you have ever developed on OpenLayers, you will find OpenScales API quite easy to understand.
+	OpenScales has been initially started from {{{http://code.google.com/p/flexlayers/}FlexLayers}} source code, donated by Scott Pezanowski. FlexLayers was a Flex port of {{{http://openlayers.org/}OpenLayers}}. Since the beginning, the codebase has been extensively modified and improved. Nevertheless, even if OpenScales API is not strictly equivalent to OpenLayers one, if you have ever developed on OpenLayers, you will find OpenScales API quite easy to understand.
 
 Features
 
@@ -48,7 +48,7 @@ Platforms
 
 	* <<Mobile>> (ActionScript 3) : tested on a Flash 10.1 player unreleased version running on Palm Pre. First OpenScales ready devices are expected for 2010 Q1.
 
-	* <<Web>> (Flex) : OpenScales 1.1 run on Flash 9 and Flash 10 players, targeting 98% of current web browsers under Windows, Mac and Linux
+	* <<Web>> (Flex) : OpenScales 1.2-SNAPSHOT run on Flash 10 players, targeting 98% of current web browsers under Windows, Mac and Linux
 
 	* <<Desktop>> (AIR) : desktop mapping application based on OpenScales and AIR could be useful to manage offline mode, open local files like shapefiles, etc.
 

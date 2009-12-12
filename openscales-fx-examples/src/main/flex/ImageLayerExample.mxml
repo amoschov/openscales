@@ -49,8 +49,8 @@
 			import org.openscales.core.Trace;
 			
 			[Bindable] private var map:Map = null;
-			[Bindable] public var displayTrace:Boolean = true;	
-			[Bindable] public var displayFirebugTrace:Boolean = true;
+			[Bindable] public var displayTrace:Boolean = false;	
+			[Bindable] public var displayFirebugTrace:Boolean = false;
 
 			private function initMap():void {
 				Trace.useFireBugConsole = displayFirebugTrace;
