@@ -195,9 +195,11 @@ package org.openscales.core.handler.feature
 		 * @param features:Array array of features to add
 		 * */
 		public function addControledFeature(feature:Feature):void{
-			this._featureArray.push(feature);
-			feature.addEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
-			feature.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
+			if(Util.indexOf(this._featureArray,feature)==-1){
+				this._featureArray.push(feature);
+				feature.addEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
+				feature.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
+			}
 		}
 		/**
 		 * This function is laun

@@ -60,22 +60,26 @@ package org.openscales.core.handler.feature.draw
 					if(feature.isEditable && feature.geometry is LineString){			
 						//We display on the layer concerned by the operation the virtual vertices used for edition
 						displayVisibleVirtualVertice(feature);
+						this._featureClickHandler.addControledFeature(feature);
 					}
 					//Virtual vertices treatment
-					else if(feature is Point && Util.indexOf(this._editionFeatureArray,feature)!=-1)
+					else if(feature is Point /*&&  Util.indexOf(this._editionFeatureArray,feature)!=-1 */)
 					{
-						//We remove the edition feature to create another 						
-						//TODO Damien nda only delete the feature concerned by the operation
-						_layerToEdit.removeFeature(feature);
-						this._featureClickHandler.removeControledFeature(feature);
-						Util.removeItem(this._editionFeatureArray,feature);
-						feature.destroy();
-						feature=null;
+						for(var i:int=0;i<this._editionFeatureArray.length;i++){
+							if(this._editionFeatureArray[i][0]==feature){
+								//We remove the edition feature to create another 						
+								//TODO Damien nda only delete the feature concerned by the operation
+								layerToEdit.removeFeature(feature);
+								this._featureClickHandler.removeControledFeature(feature);
+								Util.removeItem(this._editionFeatureArray,this._editionFeatureArray[i]);
+								feature.destroy();
+								feature=null;
+							}
+						}
 					} 
-					else this._featureClickHandler.addControledFeature(feature);
 				}
 		 	}
-		 	
+		 	super.refreshEditedfeatures();
 		 }
 		 
 		 /**

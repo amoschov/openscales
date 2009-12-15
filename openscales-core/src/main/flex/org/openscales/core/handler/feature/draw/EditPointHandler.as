@@ -3,7 +3,6 @@ package org.openscales.core.handler.feature.draw
 	import flash.display.Sprite;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
@@ -59,11 +58,15 @@ package org.openscales.core.handler.feature.draw
 			//We create a new point because of a bug on OpenScales
 			var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
 			var lonlat:LonLat=this.map.getLonLatFromLayerPx(px);
-			this._layerToEdit.removeFeature(vectorfeature);
-			var newPointFeature:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat));
-			newPointFeature.style=vectorfeature.style;
-			this._layerToEdit.addFeature(newPointFeature);
-			this._featureClickHandler.addControledFeature(newPointFeature);
+			//this._layerToEdit.removeFeature(vectorfeature);
+			//var newPointFeature:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat));
+			var newGeom:Point=new Point(lonlat.lon,lonlat.lat);
+			//newPointFeature.style=vectorfeature.style;
+			//this._layerToEdit.addFeature(newPointFeature);
+			//this._featureClickHandler.addControledFeature(newPointFeature);
+			vectorfeature.geometry=newGeom;
+			vectorfeature.x=0;
+			vectorfeature.y=0;
 			this._layerToEdit.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_STOP,vectorfeature));
 			this._layerToEdit.redraw();
 		}
@@ -92,18 +95,9 @@ package org.openscales.core.handler.feature.draw
 		override public function refreshEditedfeatures(event:MapEvent=null):void{
 		 	if(_layerToEdit!=null && !_isUsedAlone){
 		 		for each(var feature:Feature in this._layerToEdit.features){	
-					//Virtual vertices treatment
-					if(feature is Point && Util.indexOf(this._editionFeatureArray,feature)!=-1)
-					{
-						//We remove the edition feature to create another 						
-						//TODO Damien nda only delete the feature concerned by the operation
-						_layerToEdit.removeFeature(feature);
-						this._featureClickHandler.removeControledFeature(feature);
-						Util.removeItem(this._editionFeatureArray,feature);
-						feature.destroy();
-						feature=null;
-					} 
-					else this._featureClickHandler.addControledFeature(feature);
+						if(feature is PointFeature && feature.isEditable){
+							this._featureClickHandler.addControledFeature(feature);
+						}
 				}
 		 	}
 		 	

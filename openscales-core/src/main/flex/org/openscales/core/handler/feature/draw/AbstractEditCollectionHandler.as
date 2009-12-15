@@ -249,7 +249,7 @@ package org.openscales.core.handler.feature.draw
 					//for each(var feature:Feature in _editionFeatureArray){
 					for(var i:int=0;i<_editionFeatureArray.length;i++){
 						var feature:Feature=_editionFeatureArray[i][0] as Feature;
-						if(feature!=null){
+						if(feature!=null && feature!=AbstractEditCollectionHandler._pointUnderTheMouse &&  vectorfeature==_editionFeatureArray[i][1]){
 						var tmpPx:Pixel=this.map.getLayerPxFromLonLat(new LonLat((feature.geometry as Point).x,(feature.geometry as Point).y));
 						if(Math.abs(tmpPx.x-px.x)<this._ToleranceVirtualReal && Math.abs(tmpPx.y-px.y)<this._ToleranceVirtualReal)
 						{
@@ -262,8 +262,9 @@ package org.openscales.core.handler.feature.draw
 						layerToEdit.map.buttonMode=true;
 						var lonlat:LonLat=this.map.getLonLatFromLayerPx(px);
 						var PointGeomUnderTheMouse:Point=new Point(lonlat.lon,lonlat.lat);	
-						if(AbstractEditCollectionHandler._pointUnderTheMouse!=null)
+						if(AbstractEditCollectionHandler._pointUnderTheMouse!=null){
 						AbstractEditCollectionHandler._pointUnderTheMouse.geometry=PointGeomUnderTheMouse;
+						}
 						else {
 						AbstractEditCollectionHandler._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse,null,Style.getDefaultCircleStyle(),true);
 						this._featureClickHandler.addControledFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
@@ -271,10 +272,10 @@ package org.openscales.core.handler.feature.draw
 						if(AbstractEditCollectionHandler._pointUnderTheMouse.layer==null) layerToEdit.addFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
 						AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry=null;
 						//We find the segment the point under the mouse belongs to
-							findPointUnderMouseCollection(vectorfeature.geometry,AbstractEditCollectionHandler._pointUnderTheMouse);
+						findPointUnderMouseCollection(vectorfeature.geometry,AbstractEditCollectionHandler._pointUnderTheMouse);
 						if(AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry!=null){
 							//	AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParent=vectorfeature;
-								_editionFeatureArray.push(new Array(AbstractEditCollectionHandler._pointUnderTheMouse,vectorfeature));
+								 _editionFeatureArray.push(new Array(AbstractEditCollectionHandler._pointUnderTheMouse,vectorfeature)); 
 								AbstractEditCollectionHandler._pointUnderTheMouse.visible=true;
 						}
 						else AbstractEditCollectionHandler._pointUnderTheMouse.visible=false;
@@ -325,7 +326,11 @@ package org.openscales.core.handler.feature.draw
 		 	
 		 }
 		 override public function refreshEditedfeatures(event:MapEvent=null):void{
-		 	
+		 	if(AbstractEditCollectionHandler._pointUnderTheMouse){
+		 		this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
+		 		this._featureClickHandler.removeControledFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
+		 		AbstractEditCollectionHandler._pointUnderTheMouse=null;
+		 	}
 		 }
 		 //getters && setters
 		 /**

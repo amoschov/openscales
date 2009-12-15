@@ -2,8 +2,19 @@ package org.openscales.core.routing
 {
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.core.events.FeatureEvent;
+	import org.openscales.core.feature.Marker;
+	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.PointFeature;
+	import org.openscales.core.geometry.LineString;
+	import org.openscales.core.geometry.MultiLineString;
+	import org.openscales.core.geometry.Point;
+	import org.openscales.core.handler.feature.draw.FeatureLayerEditionHandler;
+	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
+	import org.openscales.core.style.Style;
 	
 	public class AbstractRouting implements IRouting
 	{
@@ -26,15 +37,32 @@ package org.openscales.core.routing
 		 /**
 		 * @private
 		 **/
-		 private var _startPoint:PointFeature=null;
+		 private var _startPoint:Marker=null;
 		 /**
 		 * @private 
 		 * */
-		 private var _endPoint:PointFeature=null;
+		 private var _endPoint:Marker=null;
 		 /**
 		 * @private
 		 * */
 		 private var _intermedPoints:Array=null;
+		 /**
+		 * @private
+		 * */
+		 private var _click:ClickHandler;
+		 /**
+		 * @private
+		 * */
+		 private var _featureLayerEdition:FeatureLayerEditionHandler;
+		 /**
+		 * @private 
+		 **/
+		 protected var _itinerary:MultiLineStringFeature=new MultiLineStringFeature(new MultiLineString(),null,Style.getDefaultLineStyle());
+		 /**
+		 * This attribute is used to manage point under trhe mouse when you move on a itinerary
+		 * @private
+		 **/
+		 private var _pointUnderTheMouse:PointFeature=null;
 		 /**
 		 *Constructor
 		 * @param map:Map Map Object
@@ -44,29 +72,110 @@ package org.openscales.core.routing
 		 **/
 		public function AbstractRouting(map:Map=null,resultsLayer:FeatureLayer=null,host:String=null,key:String=null)
 		{
-			this._map=map;
-			this._resultsLayer=resultsLayer;
+			this.map=map;
+			this.resultsLayer=resultsLayer;
 			this._host=host;
 			this._key=key;
 			_intermedPoints=new Array();
+			_pointUnderTheMouse=new PointFeature(null,null,Style.getDefaultCircleStyle());
 		}
 		
 		/**
 		 * This function displays the request's results on the concerned layer
-		 * @param:
+		 * @param:results itinerary points array
 		 **/
-		protected function displayResult():void{
+		protected function displayResult(results:Array):void{
+			if(results!=null){	
+				var itineraryGeometry:MultiLineString=new MultiLineString();
+				//This variable is used to know how much intermedPoints have been treat
+				//in order to don't scan intermediary point table again and again
+				var intermedPointTreat:Number=0;
+				var linestring:LineString;
+				for(var i:int=0;i<results.length;i++){				
+					if(_startPoint) resultsLayer.addFeature(_startPoint);
+					if(_endPoint) resultsLayer.addFeature(_endPoint);
+					if(i==0)
+					{
+						if(_startPoint && !((_startPoint.geometry as Point).equals(results[i] as Point))){
+							 linestring=new LineString([_startPoint.geometry as Point,results[i] as Point]);
+							itineraryGeometry.addComponent(linestring);
+						}
+					}
+					else{
+					
+						if(i==results.length-1){
+							if(_endPoint && !((_endPoint.geometry as Point).equals(results[i] as Point))){
+								 linestring=new LineString([_endPoint.geometry as Point,results[i] as Point]);
+								itineraryGeometry.addComponent(linestring);
+							}		
+						}
+						 linestring=new LineString([results[i-1] as Point,results[i] as Point]);
+						itineraryGeometry.addComponent(linestring);
+					}	
+				}
+				/* _itinerary.geometry=itineraryGeometry; */
+				  resultsLayer.removeFeature(_itinerary); 
+				// _itinerary.removeEventListener(MouseEvent.MOUSE_MOVE,createPoint);
+				_itinerary=new MultiLineStringFeature(itineraryGeometry,null,Style.getDefaultLineStyle()); 
+			//	_itinerary.addEventListener(MouseEvent.MOUSE_MOVE,createPoint);
+				resultsLayer.addFeature(_itinerary);
+				resultsLayer.redraw();
+				_featureLayerEdition.refreshEditedfeatures();
+			}	
 			
 		}
 		/**
 		 * for refreshing the itinerary
 		 * */
 		public function refreshRouting():void{
-			
+			sendRequest();
 		}
 		public function sendRequest():void{
-
 		}
+		/**
+		 * Add the itinerary points
+		 * */
+		public function addPoint(px:Pixel):void{
+			//we determine the point where the user clicked
+			if(_resultsLayer!=null){
+				var lonlat:LonLat = this.map.getLonLatFromLayerPx(px);
+			/* 	var featureAdded:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat),Style.getDefaultPointStyle()); */
+
+				if(!_startPoint)
+				{
+					var featureAdded:Marker=new Marker(new Point(lonlat.lon,lonlat.lat));
+					_startPoint=featureAdded;
+					_startPoint.isEditable=true;
+				}
+				else
+				{
+					var intermedfeatureAdded:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat),Style.getDefaultPointStyle());
+					 _intermedPoints.push(intermedfeatureAdded);
+				}
+			}
+			refreshRouting();
+		}
+		/**
+		 * Add or change the itinerary points
+		 * */
+		public function addfinalPoint(px:Pixel):void{
+		/*	if(_resultsLayer!=null){
+				if(event.target is Feature){
+					if(Util.indexOf(_intermedPoints,event.target)!=-1) Util.removeItem(_intermedPoints,event.target);
+					else if(_startPoint==event.target) _startPoint=null;
+					else if (_endPoint==event.target)  _endPoint=null;
+				}
+				else{*/
+					var lonlat:LonLat = this.map.getLonLatFromLayerPx(px);
+					if(!_endPoint)
+					{
+						_endPoint=new Marker(new Point(lonlat.lon,lonlat.lat));
+						_endPoint.isEditable=true;
+					}
+					else _endPoint.geometry=new Point(lonlat.lon,lonlat.lat);
+				//}
+				refreshRouting();
+			}
 		/**
 		 * To add an intermediary point to the itinerary
 		 * @param intermedPoint:PointFeature the point to add
@@ -80,8 +189,9 @@ package org.openscales.core.routing
 		 * */
 		 public function addIntermediaryPoints(intermedPointsArray:Array):void{
 		 	for each(var intermedPoint:PointFeature in intermedPointsArray){
-		 		addIntermediaryPoint(intermedPoint);
+		 		if(Util.indexOf(_intermedPoints,intermedPoint)==-1) _intermedPoints.push(intermedPoint);
 		 	}
+		 	refreshRouting();
 		 }
 		 /**
 		 * To remove an intermediary point from the itinerary
@@ -89,6 +199,7 @@ package org.openscales.core.routing
 		 * */
 		 public function removeIntermediaryPoint(intermedPoint:PointFeature):void{
 		 	Util.removeItem(_intermedPoints,intermedPoint);
+		 	refreshRouting();
 		 }
 		 /**
 		 * To remove an array of intermediary point from the itinerary
@@ -96,9 +207,32 @@ package org.openscales.core.routing
 		 * */
 		  public function removeIntermediaryPoints(intermedPointsArray:Array):void{
 		 	for each(var intermedPoint:PointFeature in intermedPointsArray){
-		 		removeIntermediaryPoint(intermedPoint);
+		 		Util.removeItem(_intermedPoints,intermedPoint);
+		 	}
+		 	refreshRouting();
+		 }
+		 
+		 public function  getIntermediaryPointByIndex(index:int):PointFeature{
+		 	if(index>=0 && index<_intermedPoints.length) return  _intermedPoints[index] as PointFeature;
+		 	return null;
+		 }
+		 /**
+		 * Number of intermediary points
+		 * @return iintermediary points array length
+		 **/
+		 public function intermediaryPointsNumber():Number{
+		 	return _intermedPoints.length;
+		 }
+		 
+		 public function editItinerary(event:FeatureEvent):void{
+		 	if(event.feature is PointFeature){
+		 		if(!(event.feature==_startPoint || Util.indexOf(_intermedPoints,event.feature)!=-1 || event.feature==_endPoint)){	 			
+		 			_intermedPoints.push(event.feature);
+		 	}
+		 	refreshRouting();
 		 	}
 		 }
+	
 		//getters && setters
 		/**
 		 *The url of the routing server 
@@ -120,9 +254,17 @@ package org.openscales.core.routing
 		}
 		/**
 		 * @private
-		 **/
+		 * */
 		public function set map(value:Map):void{
-			this._map=value;
+			if(value!=null && value!=_map){
+				this._map = value;
+				if(!_click) _click=new ClickHandler(null,true);
+				_click.map=_map;
+				_click.click=addPoint;
+				_click.doubleClick=addfinalPoint;
+				_map.addHandler(_click);
+				_map.addEventListener(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,editItinerary);
+			}
 		}
 		/**
 		 * The layer which contains the results of the request
@@ -134,31 +276,43 @@ package org.openscales.core.routing
 		 * @private
 		 **/
 		public function set resultsLayer(value:FeatureLayer):void{
-			this._resultsLayer=value;
+			if(value!=_resultsLayer && value!=null){
+				this._resultsLayer=value;
+//				_itinerary.addEventListener(MouseEvent.MOUSE_MOVE,createPoint);
+				resultsLayer.addFeature(_itinerary);
+				if(!_featureLayerEdition) _featureLayerEdition=new FeatureLayerEditionHandler(map,resultsLayer,true,true,true,false); 
+			}
 		}
 		/**
 		 * the routing start point 
 		 * */
-		 public function get startPoint():PointFeature{
+		 public function get startPoint():Marker{
 		 	return this._startPoint;
 		 }
 		 /**
 		 * @private
 		 * */
-		 public function set startPoint(value:PointFeature):void{
-		 	this._startPoint=value;
+		 public function set startPoint(value:Marker):void{
+		 	if(value!=_startPoint){
+		 		this._startPoint=value;
+		 		this._startPoint.style=Style.getDefaultPointStyle();
+		 		refreshRouting();
+		 	}
 		 }
 		 /**
 		 *The routing end point
 		 **/
-		 public function get endPoint():PointFeature{
+		 public function get endPoint():Marker{
 		 	return this._endPoint;
 		 }
 		 /**
 		 * @private
 		 **/
-		 public function set endPoint(value:PointFeature):void{
-		 	this._endPoint=value;
+		 public function set endPoint(value:Marker):void{
+		 	if(value!=_endPoint){
+		 		this._endPoint=value;
+		 		refreshRouting();
+		 	}	
 		 }
 	}
 }

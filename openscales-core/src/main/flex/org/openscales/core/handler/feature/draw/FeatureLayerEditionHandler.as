@@ -3,6 +3,8 @@ package org.openscales.core.handler.feature.draw
 	import flash.display.Sprite;
 	
 	import org.openscales.core.Map;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
@@ -12,6 +14,7 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
+	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
@@ -108,6 +111,7 @@ package org.openscales.core.handler.feature.draw
 				
 				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 				this.map.removeEventListener(FeatureEvent.FEATURE_OUT,onFeatureOut);
+				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_START,vectorfeature));
 			}
 		 }
 		 /**
@@ -143,6 +147,13 @@ package org.openscales.core.handler.feature.draw
 					 _featureEditedType=-1;
 					this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 					this.map.addEventListener(FeatureEvent.FEATURE_OUT,onFeatureOut);
+					//We define the new Position of the point before dispatching the event
+					var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
+					var lonlat:LonLat=this.map.getLonLatFromLayerPx(px);
+					vectorfeature.x=0;
+					vectorfeature.y=0;
+					vectorfeature.geometry=new Point(lonlat.lon,lonlat.lat);
+					this.map.dispatchEvent(new FeatureEvent(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,vectorfeature));
 				}
 			}
 			/**
@@ -189,19 +200,19 @@ package org.openscales.core.handler.feature.draw
 				var dblclickAlreadyStart:Boolean=false;
 				if(iEditPolygon!=null){
 					if(iEditPolygon.findVirtualVerticeParent(vectorfeature)!=null){
-						iEditPolygon.featureClick(event);
+						iEditPolygon.featureDoubleClick(event);
 						dblclickAlreadyStart=true;
 					}
 				}
 				if(!dblclickAlreadyStart && iEditPath!=null){
 					if(iEditPath.findVirtualVerticeParent(vectorfeature)!=null){
-						iEditPath..featureClick(event);
+						iEditPath.featureDoubleClick(event);
 						dblclickAlreadyStart=true;
 					}
 				}
 				if(!dblclickAlreadyStart && iEditPoint!=null){
 					if(iEditPoint.findVirtualVerticeParent(vectorfeature)!=null){
-						iEditPoint.featureClick(event);
+						iEditPoint.featureDoubleClick(event);
 					}
 				}
 				
@@ -232,8 +243,8 @@ package org.openscales.core.handler.feature.draw
 				
 					if(iEditPoint!=null) {
 						(this.iEditPoint as AbstractEditHandler).map=this.map;
-					/* 	iEditPoint.refreshEditedfeatures();
-						alreadystarted=true; */
+					 	iEditPoint.refreshEditedfeatures();
+						/* alreadystarted=true;  */
 					}
 					if(iEditPath!=null){
 						(this.iEditPath as AbstractEditHandler).map=this.map;
@@ -306,14 +317,15 @@ package org.openscales.core.handler.feature.draw
 					else if((vectorfeature is LineStringFeature ||  vectorfeature is MultiLineStringFeature) && iEditPath!=null) (iEditPath as AbstractEditCollectionHandler).createPointUndertheMouse(evt);
 		 }
 		 
-		private  function refreshEditedfeatures(event:MapEvent=null):void{
+		public  function refreshEditedfeatures(event:MapEvent=null):void{
 			if(_layerToEdit !=null)
 			{		
+				//Collection treatment
 				if(iEditPath!=null)iEditPath.refreshEditedfeatures(event);
 					
-				else if(iEditPolygon!=null)iEditPolygon.refreshEditedfeatures(event);
+			    if(iEditPolygon!=null)iEditPolygon.refreshEditedfeatures(event);
 				
-				else if(iEditPoint!=null) iEditPoint.refreshEditedfeatures(event);
+				if(iEditPoint!=null) iEditPoint.refreshEditedfeatures(event);
 				_layerToEdit.redraw();
 			}
 		}
