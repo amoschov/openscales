@@ -52,6 +52,10 @@ package org.openscales.core.handler.feature.draw
 		 */
 		private var _timer:Timer = new Timer(1000,1);
 		/**
+		 * To know if we displayed the virtual vertices of collection feature or not
+		 **/
+		 private var _displayedVirtualVertices:Boolean=true;
+		/**
 		 * This class is a handler used for Collection(Linestring Polygon MultiPolygon etc..) modification
 	 	* don't use it use EditPathHandler if you want to edit a LineString or a MultiLineString
 	 	* or EditPolygon 
@@ -70,7 +74,7 @@ package org.openscales.core.handler.feature.draw
 		 	for each(var vectorFeature:Feature in this._layerToEdit.features){	
 					if(vectorFeature.isEditable && vectorFeature.geometry is Collection){			
 						//Clone or not
-						displayVisibleVirtualVertice(vectorFeature);
+						if(displayedVirtualVertices)displayVisibleVirtualVertice(vectorFeature);
 					}
 				}
 					if(_isUsedAlone){
@@ -133,7 +137,7 @@ package org.openscales.core.handler.feature.draw
 		 			
 		 			if(index!=-1) parentGeometry.replaceComponent(index,newVertice);
 		 			else parentGeometry.addComponent(newVertice,indexOfFeatureCurrentlyDrag);
-		 			displayVisibleVirtualVertice(findVirtualVerticeParent(vectorfeature as PointFeature));	 				
+		 			if(displayedVirtualVertices)displayVisibleVirtualVertice(findVirtualVerticeParent(vectorfeature as PointFeature));	 				
 		 		}
 		 	}
 		 	//we add the new mouseEvent move and remove the MouseEvent on the draw Temporary feature
@@ -180,7 +184,7 @@ package org.openscales.core.handler.feature.draw
 		 	//We remove listeners and tempoorary point
 		 	//This is a bug we redraw the layer with new vertices for the impacted feature
 		 	//The click is considered as a bug for the moment	 	
-		 	 displayVisibleVirtualVertice(findVirtualVerticeParent(vectorfeature as PointFeature));
+		 	 if(displayedVirtualVertices)displayVisibleVirtualVertice(findVirtualVerticeParent(vectorfeature as PointFeature));
 		 	this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
 		 	this._layerToEdit.removeFeature(vectorfeature);
 		 	this._featureClickHandler.removeControledFeature(vectorfeature);
@@ -207,7 +211,7 @@ package org.openscales.core.handler.feature.draw
 		 	
 		 	if(index!=-1){	 		
 		 		vectorfeature.editionFeatureParentGeometry.removeComponent(vectorfeature.editionFeatureParentGeometry.componentByIndex(index));
-		 		 displayVisibleVirtualVertice(findVirtualVerticeParent(vectorfeature as PointFeature));
+		 		 if(displayedVirtualVertices)displayVisibleVirtualVertice(findVirtualVerticeParent(vectorfeature as PointFeature));
 		 	}
 		 	//we delete the point under the mouse 
 		 	this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
@@ -331,6 +335,7 @@ package org.openscales.core.handler.feature.draw
 		 		this._featureClickHandler.removeControledFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
 		 		AbstractEditCollectionHandler._pointUnderTheMouse=null;
 		 	}
+		 	_layerToEdit.redraw();
 		 }
 		 //getters && setters
 		 /**
@@ -342,6 +347,20 @@ package org.openscales.core.handler.feature.draw
 		 public function set detectionTolerance(value:Number):void{	 	
 		 	 this._detectionTolerance=value;
 		 }
-		 
+		 /**
+		 * To know if we displayed the virtual vertices of collection feature or not
+		 **/
+		 public function get displayedVirtualVertices():Boolean{
+		 	return this._displayedVirtualVertices;
+		 }
+		 /**
+		 * @private
+		 * */
+		 public function set displayedVirtualVertices(value:Boolean){
+		 	if(value!=this._displayedVirtualVertices){
+		 		this._displayedVirtualVertices=value;
+		 		refreshEditedfeatures();
+		 	}
+		 }
 	}
 }

@@ -14,6 +14,7 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LineString;
+	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
@@ -57,10 +58,10 @@ package org.openscales.core.handler.feature.draw
 
 		 	if(_layerToEdit!=null && !_isUsedAlone){
 		 		for each(var feature:Feature in this._layerToEdit.features){	
-					if(feature.isEditable && feature.geometry is LineString){			
+					if(feature.isEditable && feature.geometry is LineString || feature.geometry is MultiLineString){			
 						//We display on the layer concerned by the operation the virtual vertices used for edition
-						displayVisibleVirtualVertice(feature);
-						this._featureClickHandler.addControledFeature(feature);
+						//if the virtual vertices have to be displayed we displayed them
+						if(displayedVirtualVertices)displayVisibleVirtualVertice(feature);
 					}
 					//Virtual vertices treatment
 					else if(feature is Point /*&&  Util.indexOf(this._editionFeatureArray,feature)!=-1 */)

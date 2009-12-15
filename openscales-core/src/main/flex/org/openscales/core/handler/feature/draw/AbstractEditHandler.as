@@ -290,7 +290,9 @@ package org.openscales.core.handler.feature.draw
 					
 					for(var i:int=0;i<_editionFeatureArray.length;i++){
 						 feature:feature=_editionFeatureArray[i][0];
-						if(findVirtualVerticeParent(feature  as PointFeature)==featureEdited){
+						 var featureParent=findVirtualVerticeParent(feature  as PointFeature);
+						 //we alseo clean the virtual vertices array if the parent doesnt belongs anymore to the _layerToEdit.features array
+						if(featureParent==featureEdited || Util.indexOf(this._layerToEdit.features,featureParent)==-1){
 							this._layerToEdit.removeFeature(feature);
 		 					this._featureClickHandler.removeControledFeature(feature);
 		 					tmpfeature.push(_editionFeatureArray[i]);

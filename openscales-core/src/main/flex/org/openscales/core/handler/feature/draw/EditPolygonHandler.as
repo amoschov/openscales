@@ -13,6 +13,7 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
 	import org.openscales.core.geometry.Collection;
+	import org.openscales.core.geometry.MultiPolygon;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.feature.FeatureClickHandler;
@@ -57,7 +58,7 @@ package org.openscales.core.handler.feature.draw
 
 		 	if(_layerToEdit!=null && !_isUsedAlone){
 		 		for each(var feature:Feature in this._layerToEdit.features){	
-					if(feature.isEditable && feature.geometry is Polygon){			
+					if(feature.isEditable && feature.geometry is Polygon && feature.geometry is MultiPolygon){			
 						//We display on the layer concerned by the operation the virtual vertices used for edition
 						displayVisibleVirtualVertice(feature);
 					}

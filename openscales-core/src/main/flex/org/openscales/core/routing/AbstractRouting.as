@@ -92,31 +92,52 @@ package org.openscales.core.routing
 				var intermedPointTreat:Number=0;
 				var linestring:LineString;
 				for(var i:int=0;i<results.length;i++){				
-					if(_startPoint) resultsLayer.addFeature(_startPoint);
-					if(_endPoint) resultsLayer.addFeature(_endPoint);
+					/* if(_startPoint) {
+						resultsLayer.addFeature(_startPoint);
+						linestring.addComponent(_startPoint);
+					} */
+					/* if(_endPoint){
+						resultsLayer.addFeature(_endPoint);
+						linestring.addComponent(_endPoint.geometry as Point);
+					}  */
 					if(i==0)
 					{
-						if(_startPoint && !((_startPoint.geometry as Point).equals(results[i] as Point))){
-							 linestring=new LineString([_startPoint.geometry as Point,results[i] as Point]);
-							itineraryGeometry.addComponent(linestring);
+						if(_startPoint){
+							if(Util.indexOf(resultsLayer.features,_startPoint)==-1)resultsLayer.addFeature(_startPoint);
+							if(!linestring)linestring=new LineString([_startPoint.geometry]);
+							if(!((_startPoint.geometry as Point).equals(results[0] as Point))){	
+								linestring.addComponent(results[i] as Point);				
+								/*  linestring=new LineString([_startPoint.geometry as Point,results[i] as Point]);
+								itineraryGeometry.addComponent(linestring); */
+							}
 						}
 					}
 					else{
-					
-						if(i==results.length-1){
-							if(_endPoint && !((_endPoint.geometry as Point).equals(results[i] as Point))){
-								 linestring=new LineString([_endPoint.geometry as Point,results[i] as Point]);
-								itineraryGeometry.addComponent(linestring);
-							}		
+						if(i!=results.length-1){
+							linestring.addComponent(results[i] as Point);
 						}
-						 linestring=new LineString([results[i-1] as Point,results[i] as Point]);
-						itineraryGeometry.addComponent(linestring);
+						else{
+							if(_endPoint){
+								if(Util.indexOf(resultsLayer.features,_endPoint)==-1)resultsLayer.addFeature(_endPoint);								
+								if(!((_endPoint.geometry as Point).equals(results[i] as Point))){
+								/* linestring=new LineString([_endPoint.geometry as Point,results[i] as Point]);
+								itineraryGeometry.addComponent(linestring); */
+								linestring.addComponent(results[i] as Point);
+							}
+							linestring.addComponent(_endPoint.geometry as Point);
+						}
+						else linestring.addComponent(results[i] as Point);		
+					}
+						/*  linestring=new LineString([results[i-1] as Point,results[i] as Point]);
+						itineraryGeometry.addComponent(linestring); */
 					}	
 				}
+				itineraryGeometry.addComponent(linestring);
 				/* _itinerary.geometry=itineraryGeometry; */
 				  resultsLayer.removeFeature(_itinerary); 
 				// _itinerary.removeEventListener(MouseEvent.MOUSE_MOVE,createPoint);
 				_itinerary=new MultiLineStringFeature(itineraryGeometry,null,Style.getDefaultLineStyle()); 
+				_itinerary.isEditable=true;
 			//	_itinerary.addEventListener(MouseEvent.MOUSE_MOVE,createPoint);
 				resultsLayer.addFeature(_itinerary);
 				resultsLayer.redraw();
@@ -225,7 +246,7 @@ package org.openscales.core.routing
 		 }
 		 
 		 public function editItinerary(event:FeatureEvent):void{
-		 	if(event.feature is PointFeature){
+			if(event.feature is PointFeature){
 		 		if(!(event.feature==_startPoint || Util.indexOf(_intermedPoints,event.feature)!=-1 || event.feature==_endPoint)){	 			
 		 			_intermedPoints.push(event.feature);
 		 	}
