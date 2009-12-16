@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="210" height="208" backgroundColor="#FFFFFF">
+<mx:Script>
+		<![CDATA[
+			import org.openscales.core.layer.FeatureLayer;
+			import org.openscales.core.Map;
+			private var _map:Map;
+		]]>
+</mx:Script>
+	<mx:VBox x="10" y="10" height="188" width="186">
+		<mx:Label text="Routing component" width="184" fontFamily="Verdana" fontSize="12" fontWeight="bold" textAlign="center" textDecoration="underline"/>
+		<mx:RadioButton label="Add or Modify start point" width="184"/>
+		<mx:Label text="Legend" width="185" textAlign="center" textDecoration="underline" fontSize="11" fontWeight="bold"/>
+		<mx:HBox width="100%">
+			<mx:Image source="assets/images/marker-green.png"/>
+			<mx:Label text="Start point" height="29" width="135"/>
+		</mx:HBox>
+		<mx:HBox width="100%">
+			<mx:Image source="assets/images/marker.png"/>
+			<mx:Label text="End Point" height="29" width="135"/>
+		</mx:HBox>
+		<mx:HBox width="100%">
+			<mx:Image source="assets/images/marker-gold.png"/>
+			<mx:Label text="Intermediary points" height="29" width="135"/>
+		</mx:HBox>
+	</mx:VBox>
+	
+</Control>

@@ -56,8 +56,12 @@ package org.openscales.core.routing
 		 * @private
 		 * */
 		 [Embed(source="/assets/images/marker-gold.png")]
+		 private var _intermedPointClass:Class;
+		 /**
+		 * @private
+		 * */
+		 [Embed(source="/assets/images/marker.png")]
 		 private var _endPointClass:Class;
-
 		 /**
 		 *Constructor
 		 * @param map:Map Map Object
@@ -157,7 +161,10 @@ package org.openscales.core.routing
 					_startPoint=featureAdded;
 					_startPoint.image=_startPointclass;
 				}
-				else _intermedPoints.push(featureAdded);
+				else {
+					_intermedPoints.push(featureAdded);
+					featureAdded.image=_intermedPointClass;
+				}
 			}
 			refreshRouting();
 		}
