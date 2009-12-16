@@ -11,17 +11,18 @@ package org.openscales.core.routing
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.Point;
+	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.feature.draw.FeatureLayerEditionHandler;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Style;
 	
-	public class AbstractRouting implements IRouting
+	public class AbstractRouting extends Handler implements IRouting 
 	{
 		/**
 		 *@private 
 		 **/
-		private var _map:Map;
+		/* private var _map:Map; */
 		/**
 		 * @private
 		 **/
@@ -29,11 +30,11 @@ package org.openscales.core.routing
 		 /**
 		 * @private
 		 **/
-		 private var _key:String;
+		/*  private var _key:String; */
 		 /**
 		 * @private
 		 **/
-		 private var _host:String;
+		 /* private var _host:String; */
 		 /**
 		 * @private
 		 **/
@@ -76,12 +77,14 @@ package org.openscales.core.routing
 		 * @param host:String The url of the server used for the routing
 		 * @param key:String  The application key it could be null or not it depends on the application
 		 **/
-		public function AbstractRouting(map:Map=null,resultsLayer:FeatureLayer=null,host:String=null,key:String=null)
+		public function AbstractRouting(map:Map=null,active:Boolean=false,resultsLayer:FeatureLayer=null/* ,host:String=null,key:String=null */)
 		{
-			this.map=map;
+			/* this.map=map; */
+			
+			/* this._host=host;
+			this._key=key; */
+			super(map,active);
 			this.resultsLayer=resultsLayer;
-			this._host=host;
-			this._key=key;
 			_intermedPoints=new Array();
 			
 		}
@@ -253,35 +256,47 @@ package org.openscales.core.routing
 		/**
 		 *The url of the routing server 
 		 **/
-		public function get host():String{
+		/* public function get host():String{
 			return this._host;
-		}
+		} */
 		/**
 		 * @private
 		 **/
-		public function set host(value:String):void{
+		/* public function set host(value:String):void{
 			this._host=value;
-		}
+		} */
 		/**
 		 *Map object 
 		 **/
-		public function get map():Map{
+		/* public function get map():Map{
 			return this._map;
-		}
+		} */
 		/**
-		 * @private
+		 * @inherited
 		 * */
-		public function set map(value:Map):void{
-			if(value!=null && value!=_map){
-				this._map = value;
-				if(!_click) _click=new ClickHandler(null,true);
-				_click.map=_map;
+		override public function set map(value:Map):void{
+			super.map=value;
+			if(value!=null && map){
+				if(!_click) _click=new ClickHandler(map,true);
+				//Click callback functions
 				_click.click=addPoint;
 				_click.doubleClick=addfinalPoint;
-				_map.addHandler(_click);
-				_map.addEventListener(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,editItinerary);
+				map.addHandler(_click);
+				_click.active=this.active;
+				map.addEventListener(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,editItinerary);
 			}
+			
 		}
+		/**
+		 * @inherited
+		 * */
+		override public function set active(value:Boolean):void{
+			super.active=value;
+			if(_click!=null)_click.active=value;
+			if(_featureLayerEdition!=null)_featureLayerEdition.active=value;
+			
+		}
+		
 		/**
 		 * The layer which contains the results of the request
 		 **/
@@ -296,6 +311,7 @@ package org.openscales.core.routing
 				this._resultsLayer=value;
 				resultsLayer.addFeature(_itinerary);
 				if(!_featureLayerEdition) _featureLayerEdition=new FeatureLayerEditionHandler(map,resultsLayer,true,true,true,false); 
+				_featureLayerEdition.active=this.active;
 				_featureLayerEdition.displayedvirtualvertice=false;
 			}
 		}
