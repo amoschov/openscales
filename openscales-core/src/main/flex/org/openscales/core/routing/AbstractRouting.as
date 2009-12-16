@@ -69,7 +69,7 @@ package org.openscales.core.routing
 		 * @param host:String The url of the server used for the routing
 		 * @param key:String  The application key it could be null or not it depends on the application
 		 **/
-		public function AbstractRouting(map:Map=null,active:Boolean=false,resultsLayer:FeatureLayer=null/* ,host:String=null,key:String=null */)
+		public function AbstractRouting(map:Map=null,active:Boolean=false,resultsLayer:FeatureLayer=null)
 		{
 			super(map,active);
 			this.resultsLayer=resultsLayer;
@@ -237,6 +237,7 @@ package org.openscales.core.routing
 		 		if(!(event.feature==_startPoint || Util.indexOf(_intermedPoints,event.feature)!=-1 || event.feature==_endPoint)){	 
 		 			var intermedPoint:Marker=new Marker(event.feature.geometry as Point);
 		 			intermedPoint.isEditable=true;		
+		 			intermedPoint.image=_intermedPointClass;
 		 			_intermedPoints.push(intermedPoint);
 		 		}
 		 		refreshRouting();
@@ -254,6 +255,10 @@ package org.openscales.core.routing
 				//Click callback functions
 				_click.click=addPoint;
 				_click.doubleClick=addfinalPoint;
+				//featureLayerEdition
+				if(!_featureLayerEdition) _featureLayerEdition=new FeatureLayerEditionHandler(map,resultsLayer,true,true,true,false); 
+				if(!_featureLayerEdition.map)_featureLayerEdition.map=map;
+				map.addHandler(_featureLayerEdition);
 				map.addHandler(_click);
 				_click.active=this.active;
 				map.addEventListener(FeatureEvent.EDITION_POINT_FEATURE_DRAG_STOP,editItinerary);

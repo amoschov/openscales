@@ -46,7 +46,12 @@
 	<component id="TraceInfo" class="org.openscales.component.control.TraceInfo" />
 	<component id="ScaleLine" class="org.openscales.fx.control.FxScaleLine" />
 	<component id="Spinner" class="org.openscales.fx.control.FxSpinner" />
+	
+	<component id="FxSampleRouting" class="org.openscales.fx.routing.FxSampleRouting" />
 	<component id="SampleRoutingComponent" class="org.openscales.component.control.routing.SampleRoutingComponent"/>
+	
+	
+	
 	
 	<component id="ControlPanel" class="org.openscales.component.ControlPanel"/>
 	

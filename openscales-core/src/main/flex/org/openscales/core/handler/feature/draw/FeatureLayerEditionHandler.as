@@ -338,19 +338,23 @@ package org.openscales.core.handler.feature.draw
 		 * @inherited
 		 **/
 		override protected function registerListeners():void {
+		if(this.map){		
 			this.map.addEventListener(MapEvent.MOVE_END,refreshEditedfeatures);
 			this.map.addEventListener(MapEvent.ZOOM_END,refreshEditedfeatures);
 			this.map.addEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
 			this.map.addEventListener(FeatureEvent.FEATURE_OUT,onFeatureOut);
 		}
+		}
 		 /**
 		 * @inherited
 		 * */
 		override protected function unregisterListeners():void {
-			this.map.removeEventListener(MapEvent.MOVE_END,refreshEditedfeatures);
-			this.map.removeEventListener(MapEvent.ZOOM_END,refreshEditedfeatures);
-			this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
-			this.map.addEventListener(FeatureEvent.FEATURE_OUT,onFeatureOut);
+			if(this.map){	
+				this.map.removeEventListener(MapEvent.MOVE_END,refreshEditedfeatures);
+				this.map.removeEventListener(MapEvent.ZOOM_END,refreshEditedfeatures);
+				this.map.removeEventListener(FeatureEvent.FEATURE_MOUSEMOVE,createPointUndertheMouse);
+				this.map.addEventListener(FeatureEvent.FEATURE_OUT,onFeatureOut);
+			}	
 		}
 		//getters && setters
 		/**
@@ -380,6 +384,8 @@ package org.openscales.core.handler.feature.draw
 		 	if(value!=null){
 		 		super.map=value;
 		 		if(iEditPoint!=null)(this.iEditPoint as AbstractEditHandler).map=this.map;
+		 		if(iEditPath!=null)(this.iEditPath as AbstractEditHandler).map=this.map;
+		 		if(iEditPolygon!=null)(this.iEditPolygon as AbstractEditHandler).map=this.map;
 		 		this._featureClickHandler.map=value;
 		 		this.map.addChild(_drawContainer);
 		 	}

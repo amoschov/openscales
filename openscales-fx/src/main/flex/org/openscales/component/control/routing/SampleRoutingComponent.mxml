@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Control xmlns="org.openscales.component.control.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="210" height="208" backgroundColor="#FFFFFF">
+<Control xmlns="org.openscales.component.control.*"  xmlns:os="http://openscales.org" xmlns:mx="http://www.adobe.com/2006/mxml" width="210" height="208" backgroundColor="#FFFFFF" xmlns:osm="org.openscales.core.layer.osm.*">
 <mx:Script>
 		<![CDATA[
 			import org.openscales.core.layer.FeatureLayer;
 			import org.openscales.core.Map;
-			private var _map:Map;
+			[Bindable] public var resultsLayer:FeatureLayer;
 		]]>
 </mx:Script>
+	<os:FxSampleRouting map="{map}" resultsLayer="{resultsLayer}"/>
 	<mx:VBox x="10" y="10" height="188" width="186">
 		<mx:Label text="Routing component" width="184" fontFamily="Verdana" fontSize="12" fontWeight="bold" textAlign="center" textDecoration="underline"/>
 		<mx:RadioButton label="Add or Modify start point" width="184"/>
