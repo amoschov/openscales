@@ -50,6 +50,10 @@ package org.openscales.core.handler.feature.draw
 		
 		private var _featureEditedType:int=-1;
 		/**
+		 * @private
+		 * */
+		private var _displayedvirtualvertice:Boolean=true;
+		/**
 		 * Handler of edition mode 
 		 * @param editPoint to know if the edition of point is allowed
 		 * @param editPath to know if the edition of path is allowed
@@ -403,6 +407,17 @@ package org.openscales.core.handler.feature.draw
 				editionModeStop();
 			}
 			super.active=value;
+		}
+		
+		public function get displayedvirtualvertice():Boolean{
+			return this._displayedvirtualvertice;
+		}
+		public function set displayedvirtualvertice(value:Boolean):void{
+			if(value!=this._displayedvirtualvertice){	
+				this._displayedvirtualvertice=value;
+				if(iEditPath!=null)	(iEditPath as AbstractEditCollectionHandler).displayedVirtualVertices=value;
+				if(iEditPolygon!=null)(iEditPolygon as AbstractEditCollectionHandler).displayedVirtualVertices=value;
+			}
 		}
 	}
 }

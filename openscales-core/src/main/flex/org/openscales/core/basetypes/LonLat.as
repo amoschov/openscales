@@ -25,7 +25,10 @@ package org.openscales.core.basetypes
 		public function toShortString():String {
 			return this.lon + ", " + this.lat;
 		}
-
+		public function toShortString2():String {
+			return this.lat + ", " + this.lon;
+		}
+		
 		/**
 		 * Reprojection method => this method will convert the lonlat from source projection to dest projection.
 		 *

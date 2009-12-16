@@ -59,10 +59,20 @@ package org.openscales.core.routing
 		 **/
 		 protected var _itinerary:MultiLineStringFeature=new MultiLineStringFeature(new MultiLineString(),null,Style.getDefaultLineStyle());
 		 /**
+		 * @private
+		 * */
+		 [Embed(source="/assets/images/marker-green.png")]
+		 private var _startPointclass:Class;
+		  /**
+		 * @private
+		 * */
+		 [Embed(source="/assets/images/marker-gold.png")]
+		 private var _endPointClass:Class;
+		 /**
 		 * This attribute is used to manage point under trhe mouse when you move on a itinerary
 		 * @private
 		 **/
-		 private var _pointUnderTheMouse:PointFeature=null;
+		/*  private var _pointUnderTheMouse:PointFeature=null; */
 		 /**
 		 *Constructor
 		 * @param map:Map Map Object
@@ -77,7 +87,7 @@ package org.openscales.core.routing
 			this._host=host;
 			this._key=key;
 			_intermedPoints=new Array();
-			_pointUnderTheMouse=new PointFeature(null,null,Style.getDefaultCircleStyle());
+			/* _pointUnderTheMouse=new PointFeature(null,null,Style.getDefaultCircleStyle()); */
 		}
 		
 		/**
@@ -115,6 +125,15 @@ package org.openscales.core.routing
 					else{
 						if(i!=results.length-1){
 							linestring.addComponent(results[i] as Point);
+							if(intermedPointTreat!=_intermedPoints.length){
+								for(i=0;i<_intermedPoints.length;i++){
+									var intermedPoint:PointFeature=_intermedPoints[i] as PointFeature;
+									if(intermedPoint!=null && (intermedPoint.geometry as Point).equals(results[i] as Point)){
+										intermedPointTreat++;
+										if(Util.indexOf(this._resultsLayer.features,intermedPoint))this._resultsLayer.addFeature(intermedPoint);
+									}
+								}
+							}
 						}
 						else{
 							if(_endPoint){
@@ -161,18 +180,14 @@ package org.openscales.core.routing
 			if(_resultsLayer!=null){
 				var lonlat:LonLat = this.map.getLonLatFromLayerPx(px);
 			/* 	var featureAdded:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat),Style.getDefaultPointStyle()); */
-
-				if(!_startPoint)
-				{
 					var featureAdded:Marker=new Marker(new Point(lonlat.lon,lonlat.lat));
+					featureAdded.isEditable=true;
+				if(!_startPoint)
+				{		
 					_startPoint=featureAdded;
-					_startPoint.isEditable=true;
+					_startPoint.image=_startPointclass;
 				}
-				else
-				{
-					var intermedfeatureAdded:PointFeature=new PointFeature(new Point(lonlat.lon,lonlat.lat),Style.getDefaultPointStyle());
-					 _intermedPoints.push(intermedfeatureAdded);
-				}
+				else _intermedPoints.push(featureAdded);
 			}
 			refreshRouting();
 		}
@@ -191,6 +206,7 @@ package org.openscales.core.routing
 					if(!_endPoint)
 					{
 						_endPoint=new Marker(new Point(lonlat.lon,lonlat.lat));
+						_endPoint.image=_endPointClass;
 						_endPoint.isEditable=true;
 					}
 					else _endPoint.geometry=new Point(lonlat.lon,lonlat.lat);
@@ -302,6 +318,7 @@ package org.openscales.core.routing
 //				_itinerary.addEventListener(MouseEvent.MOUSE_MOVE,createPoint);
 				resultsLayer.addFeature(_itinerary);
 				if(!_featureLayerEdition) _featureLayerEdition=new FeatureLayerEditionHandler(map,resultsLayer,true,true,true,false); 
+				_featureLayerEdition.displayedvirtualvertice=false;
 			}
 		}
 		/**

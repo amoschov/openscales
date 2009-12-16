@@ -58,7 +58,7 @@ package org.openscales.core.handler.feature.draw
 
 		 	if(_layerToEdit!=null && !_isUsedAlone){
 		 		for each(var feature:Feature in this._layerToEdit.features){	
-					if(feature.isEditable && feature.geometry is Polygon && feature.geometry is MultiPolygon){			
+					if(feature.isEditable && (feature.geometry is Polygon || feature.geometry is MultiPolygon)){			
 						//We display on the layer concerned by the operation the virtual vertices used for edition
 						displayVisibleVirtualVertice(feature);
 					}
@@ -151,9 +151,9 @@ package org.openscales.core.handler.feature.draw
 		 		_drawContainer.graphics.clear();
 		 		_drawContainer.graphics.lineStyle(1, 0xFF00BB);	 
 		 		_drawContainer.graphics.moveTo(point1Px.x,point1Px.y);
-		 		_drawContainer.graphics.lineTo(map.mouseX-4, map.mouseY-4);
+		 		_drawContainer.graphics.lineTo(map.mouseX, map.mouseY);
 		 		_drawContainer.graphics.moveTo(point2Px.x,point2Px.y);
-		 		_drawContainer.graphics.lineTo(map.mouseX-4, map.mouseY-4);
+		 		_drawContainer.graphics.lineTo(map.mouseX, map.mouseY);
 		 		_drawContainer.graphics.endFill();
 				 }
 		 	}
