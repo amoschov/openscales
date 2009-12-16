@@ -12,16 +12,30 @@ package org.openscales.core.routing
 		{
 			super(map, resultsLayer, host, key);
 		}
+		/**
+		 *This function returns the points list ordered by distances from the start point 
+		 * 
+		 **/
 		override public function  sendRequest():void{
-			var results:Array=new Array();
-			for(var i:int=0;i<_vertices.length;i++){
-				results.push(_vertices[i]);
-			}
-			if(intermediaryPointsNumber()>0){				
-				for(i=0;i<intermediaryPointsNumber();i++){
-					results.push(getIntermediaryPointByIndex(i).geometry);
+			 var results:Array=new Array();
+			 var distanceArray:Array=new Array();
+			 if(startPoint)
+			 {
+			 	distanceArray.push(new Array(startPoint.point.distanceTo(startPoint.point),startPoint.geometry));
+			 	if(intermediaryPointsNumber()>0 || endPoint){
+					for(var i:int=0;i<_vertices.length;i++){
+					distanceArray.push(new Array(startPoint.point.distanceTo(_vertices[i] as Point),_vertices[i]));
+					}
 				}
-			}
+				for(i=0;i<intermediaryPointsNumber();i++){
+					distanceArray.push(new Array(startPoint.point.distanceTo(getIntermediaryPointByIndex(i).point),getIntermediaryPointByIndex(i).point));
+				}
+				distanceArray.sort();
+			 }
+			 for (i=0;i<distanceArray.length;i++){
+			 	results.push(distanceArray[i][1]);
+			 }
+			 if(endPoint) results.push(endPoint.geometry);
 			 displayResult(results);
 		}
 		
