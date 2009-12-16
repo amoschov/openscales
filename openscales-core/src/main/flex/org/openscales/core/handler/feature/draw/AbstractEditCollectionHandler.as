@@ -356,7 +356,7 @@ package org.openscales.core.handler.feature.draw
 		 /**
 		 * @private
 		 * */
-		 public function set displayedVirtualVertices(value:Boolean){
+		 public function set displayedVirtualVertices(value:Boolean):void{
 		 	if(value!=this._displayedVirtualVertices){
 		 		this._displayedVirtualVertices=value;
 		 		refreshEditedfeatures();

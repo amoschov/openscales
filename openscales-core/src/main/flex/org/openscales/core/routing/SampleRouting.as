@@ -18,7 +18,7 @@ package org.openscales.core.routing
 				results.push(_vertices[i]);
 			}
 			if(intermediaryPointsNumber()>0){				
-				for(var i:int=0;i<intermediaryPointsNumber();i++){
+				for(i=0;i<intermediaryPointsNumber();i++){
 					results.push(getIntermediaryPointByIndex(i).geometry);
 				}
 			}
