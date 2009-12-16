@@ -35,7 +35,7 @@ package org.openscales.core.feature {
 
 		protected function drawMark(mark:WellKnownMarker):void {
 			Trace.log("Drawing marks");
-			mark.fill.configureGraphics(this.graphics);
+			mark.fill.configureGraphics(this.graphics, this);
 			mark.stroke.configureGraphics(this.graphics);
 			// Variable declaration before for loop to improve performances
 			var p:Point = null;

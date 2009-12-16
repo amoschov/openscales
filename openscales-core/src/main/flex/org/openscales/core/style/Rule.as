@@ -1,7 +1,7 @@
 package org.openscales.core.style {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-	
+
 	import org.openscales.core.filter.IFilter;
 	import org.openscales.core.style.fill.Fill;
 	import org.openscales.core.style.marker.WellKnownMarker;
@@ -157,74 +157,12 @@ package org.openscales.core.style {
 
 			for each (var symbolizer:Symbolizer in this.symbolizers) {
 
-				symbolizer.configureGraphics(result.graphics);
+				symbolizer.configureGraphics(result.graphics, null);
 				drawMethod.apply(this, [symbolizer, result]);
 			}
 
 			return result;
 		}
-
-		public static function setStyle(symbolizer:Symbolizer, canvas:Sprite):void {
-			if (symbolizer is IFillSymbolizer) {
-				var fill:Fill = (symbolizer as IFillSymbolizer).fill;
-				if(fill){
-					fill.configureGraphics(canvas.graphics);
-				}
-				else{
-					canvas.graphics.endFill();
-				}
-			}
-			
-			if (symbolizer is IStrokeSymbolizer) {
-				var stroke:Stroke = (symbolizer as IStrokeSymbolizer).stroke;
-				if(stroke){
-					stroke.configureGraphics(canvas.graphics);
-				}
-				else{
-					canvas.graphics.lineStyle();
-				}
-			}
-		}
-
-		/*public static function configureGraphicsFill(fill:SolidFill, canvas:Sprite):void {
-			if (fill) {
-				canvas.graphics.beginFill(fill.color, fill.opacity);
-			} else {
-				canvas.graphics.endFill();
-			}
-		}*/
-
-		/*public static function configureGraphicsStroke(stroke:Stroke, canvas:Sprite):void {
-			if (stroke) {
-				var linecap:String;
-				var linejoin:String;
-				switch (stroke.linecap) {
-					case Stroke.LINECAP_ROUND:
-						linecap = CapsStyle.ROUND;
-						break;
-					case Stroke.LINECAP_SQUARE:
-						linecap = CapsStyle.SQUARE;
-						break;
-					default:
-						linecap = CapsStyle.NONE;
-				}
-
-				switch (stroke.linejoin) {
-					case Stroke.LINEJOIN_ROUND:
-						linejoin = JointStyle.ROUND;
-						break;
-					case Stroke.LINEJOIN_BEVEL:
-						linejoin = JointStyle.BEVEL;
-						break;
-					default:
-						linejoin = JointStyle.MITER;
-				}
-
-				canvas.graphics.lineStyle(stroke.width, stroke.color, stroke.opacity, false, "normal", linecap, linejoin);
-			} else {
-				canvas.graphics.lineStyle();
-			}
-		}*/
 
 		private function drawLine(symbolizer:Symbolizer, canvas:Sprite):void {
 
@@ -249,7 +187,7 @@ package org.openscales.core.style {
 
 		protected function drawMark(mark:WellKnownMarker, canvas:Sprite):void {
 
-			mark.fill.configureGraphics(canvas.graphics);
+			mark.fill.configureGraphics(canvas.graphics, null);
 			mark.stroke.configureGraphics(canvas.graphics);
 
 			switch (mark.wellKnownName) {

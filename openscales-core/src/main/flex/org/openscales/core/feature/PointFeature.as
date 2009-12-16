@@ -109,7 +109,7 @@ package org.openscales.core.feature {
 			x = dX + point.x / resolution;
 			y = dY - point.y / resolution;
 
-			mark.fill.configureGraphics(this.graphics);
+			mark.fill.configureGraphics(this.graphics, this);
 			mark.stroke.configureGraphics(this.graphics);
 
 			switch (mark.wellKnownName) {
