@@ -20,21 +20,9 @@ package org.openscales.core.routing
 	public class AbstractRouting extends Handler implements IRouting 
 	{
 		/**
-		 *@private 
-		 **/
-		/* private var _map:Map; */
-		/**
 		 * @private
 		 **/
 		 private var _resultsLayer:FeatureLayer;
-		 /**
-		 * @private
-		 **/
-		/*  private var _key:String; */
-		 /**
-		 * @private
-		 **/
-		 /* private var _host:String; */
 		 /**
 		 * @private
 		 **/
@@ -79,10 +67,6 @@ package org.openscales.core.routing
 		 **/
 		public function AbstractRouting(map:Map=null,active:Boolean=false,resultsLayer:FeatureLayer=null/* ,host:String=null,key:String=null */)
 		{
-			/* this.map=map; */
-			
-			/* this._host=host;
-			this._key=key; */
 			super(map,active);
 			this.resultsLayer=resultsLayer;
 			_intermedPoints=new Array();
@@ -254,24 +238,6 @@ package org.openscales.core.routing
 	
 		//getters && setters
 		/**
-		 *The url of the routing server 
-		 **/
-		/* public function get host():String{
-			return this._host;
-		} */
-		/**
-		 * @private
-		 **/
-		/* public function set host(value:String):void{
-			this._host=value;
-		} */
-		/**
-		 *Map object 
-		 **/
-		/* public function get map():Map{
-			return this._map;
-		} */
-		/**
 		 * @inherited
 		 * */
 		override public function set map(value:Map):void{
@@ -296,6 +262,7 @@ package org.openscales.core.routing
 			if(_featureLayerEdition!=null)_featureLayerEdition.active=value;
 			
 		}
+		
 		
 		/**
 		 * The layer which contains the results of the request

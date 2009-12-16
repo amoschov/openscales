@@ -55,6 +55,13 @@ package org.openscales.core.style.marker {
 
 			return this._yOffset;
 		}
-
+		
+		public function get image():Class{
+			return this._c;
+		}
+		public function set image(value:Class):void{
+			this._c=value;
+		}
+		
 	}
 }

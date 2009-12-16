@@ -18,7 +18,7 @@ package org.openscales.core.feature {
 		/**
 		 * Marker constructor
 		 */
-		public function Marker(geom:Point=null, data:Object=null, style:Style=null) {
+		public function Marker(geom:Point=null, data:Object=null,style:Style=null) {
 			super(geom, data, style, false);
 
 			this._graphic = new DisplayObjectMarker(this._image, -8, -16, 16);
@@ -47,6 +47,7 @@ package org.openscales.core.feature {
 
 		public function set image(value:Class):void {
 			this._image = value;
+			this._graphic.image=value;
 			this._drawn = false;
 
 		}

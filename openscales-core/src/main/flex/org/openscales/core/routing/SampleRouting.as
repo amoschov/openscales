@@ -8,7 +8,7 @@ package org.openscales.core.routing
 	{
 		private var _vertices:Array=new Array(new Point(4.8,45.0),new Point(4.9,45.80),new Point(4.9,45.9));
 		
-		public function SampleRouting(map:Map=null,active:Boolean=true, resultsLayer:FeatureLayer=null, host:String=null, key:String=null)
+		public function SampleRouting(map:Map=null,active:Boolean=false, resultsLayer:FeatureLayer=null, host:String=null, key:String=null)
 		{
 			super(map,active,resultsLayer);
 		}
