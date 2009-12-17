@@ -26,7 +26,12 @@ package org.openscales.proj4as {
 				trace("Proj4as initialization for " + source.srsCode + " or " + dest.srsCode + " not yet complete");
 				return point;
 			}
-
+			
+			
+			if (source.datum == dest.datum)
+			 return point; // no need to transform
+			 
+			 
 			// Workaround for Spherical Mercator
 			if ((source.srsProjNumber == "900913" && dest.datumCode != "WGS84") || (dest.srsProjNumber == "900913" && source.datumCode != "WGS84")) {
 				var wgs84:ProjProjection = WGS84;
