@@ -17,8 +17,6 @@ package org.openscales.core.layer.params.ogc
 		private var _request:String;
 		private var _srs:String;
 
-
-
 		private var _additionalParams:HashMap = null;
 
 		public function OGCParams(service:String, version:String, request:String) {
@@ -47,7 +45,8 @@ package org.openscales.core.layer.params.ogc
 			if (this._srs != null)
 				str += "SRS=" + this._srs + "&";
 
-			if (this.bbox != null)
+			if (this.bbox != null && !(_additionalParams.containsKey("CQL_FILTER") || 
+				_additionalParams.containsKey("FILTER") || _additionalParams.containsKey("FEATUREID")))
 				str += "BBOX=" + this.bbox + "&";
 
 			var keys:Array = _additionalParams.getKeys();
