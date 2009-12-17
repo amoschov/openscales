@@ -106,9 +106,11 @@ package org.openscales.core.layer
 					for(var iCol:int=0; iCol < row.length; iCol++) {
 						var tile:Tile = row[iCol];
 						this.removeTileMonitoringHooks(tile);
-						tile.destroy();
+						tile.destroy();						
 					}
 				}
+				while (this.numChildren > 0)
+				 this.removeChildAt(0);
 				this.grid = [];
 			}
 		}
