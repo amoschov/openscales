@@ -120,11 +120,19 @@ package org.openscales.core.tile
 				
 				// TODO : add parameter to control tween effect
 				var tw:GTween = new GTween(this, 0.3, {alpha:1});
+				tw.onComplete = clearBackground;
 				this.drawn = true;
 
 				//We put the loader into the cache if it's a recently loaded
 				if (this.layer is Grid && !cached)
 					(this.layer as Grid).addTileCache(loader.name,loader);
+			}
+		}
+		
+		private function clearBackground(gtween:GTween):void
+		{	
+			while (this.numChildren > 1) {
+				var child:DisplayObject = this.removeChildAt(0);
 			}
 		}
 
