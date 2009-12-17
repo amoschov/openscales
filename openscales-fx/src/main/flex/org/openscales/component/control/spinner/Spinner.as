@@ -45,14 +45,23 @@ package org.openscales.component.control.spinner {
 		}
 		
 		public function start():void {			
-			_timer.reset();
-			_timer.start();
-			this.visible = true;
+			
+			// timer could be null when the spinner (or the map component as a whole) has previously been removed from the stage
+			if(_timer != null)
+			{
+				_timer.reset();
+				_timer.start();
+				this.visible = true;
+			}
 		}
 		
 		public function stop():void 	{
-			_timer.stop();
-			this.visible = false;
+			
+			if(_timer != null)
+			{
+				_timer.stop();
+				this.visible = false;
+			}
 		}
 		
 		private function onTimer(event:TimerEvent):void	{
@@ -60,6 +69,10 @@ package org.openscales.component.control.spinner {
 		}
 		
 		override public function draw():void {
+			
+			// reset before drawing, or the child slices will just be added on top of the others 
+			super.draw();
+			
 			var i:int = _slices;
 			var degrees:int = 360 / _slices;
 			while (i--)	{
