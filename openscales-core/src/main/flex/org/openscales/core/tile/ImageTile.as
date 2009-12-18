@@ -96,31 +96,35 @@ package org.openscales.core.tile
 		}
 
 		/**
-		 * Method to draw the loader (recetly loaded or cached)
+		 * Method to draw the loader (recently loaded or cached)
 		 *
 		 * @param loader The loader to draw
 		 * @param cached Cached loader or not
 		 */
 		private function drawLoader(loader:Loader, cached:Boolean):void {
 
-			if(this.layer) {
-				
+			if(this.layer) {		
 
 				if(_drawPosition != null)
 				{
-					this.position = _drawPosition;
+					this.position = _drawPosition;					
 					_drawPosition = null;
 				}
-
-				this.addChild(loader);				
-
+				
+				// children below the current loader are not required any more
+				while (this.numChildren > 0) 
+				{
+					var child:DisplayObject = removeChildAt(0);
+				}		
+				this.addChild(loader);
+				
+				
 				// Tween tile effect 
 				if(!this.layer.contains(this))
 					this.layer.addChild(this);
 				
 				// TODO : add parameter to control tween effect
 				var tw:GTween = new GTween(this, 0.3, {alpha:1});
-				tw.onComplete = clearBackground;
 				this.drawn = true;
 
 				//We put the loader into the cache if it's a recently loaded
@@ -129,12 +133,6 @@ package org.openscales.core.tile
 			}
 		}
 		
-		private function clearBackground(gtween:GTween):void
-		{	
-			while (this.numChildren > 1) {
-				var child:DisplayObject = this.removeChildAt(0);
-			}
-		}
 
 		public function onTileLoadError(event:IOErrorEvent):void
 		{
