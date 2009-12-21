@@ -107,7 +107,6 @@ package org.openscales.core.layer {
 				map.removeEventListener(MapEvent.RESIZE, onMapResize);
 			}
 			this.map = null;
-
 		}
 
 		public function onMapResize(e:MapEvent):void {

@@ -87,7 +87,6 @@
 				markLyon = new Marker(new org.openscales.core.geometry.Point(lonlat.lon, lonlat.lat), {popupContentHTML: "This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
 				markLyon.addEventListener(MouseEvent.CLICK, showPopup);
 				markers.addFeature(markLyon);
-				markLyon.addEventListener(MouseEvent.CLICK, showPopup);
 				map.addLayer(markers);
 
 

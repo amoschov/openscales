@@ -35,9 +35,9 @@ package org.openscales.core.layer
 		private var _isInEditionMode:Boolean=false;
 	
 		public function FeatureLayer(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
-									projection:String = null, proxy:String = null)
+									srsCode:String = null, proxy:String = null)
 		{
-			super(name, isBaseLayer, visible, projection, proxy);
+			super(name, isBaseLayer, visible, srsCode, proxy);
 			this._displayProjection = this.projection.clone();
 			this.featuresBbox = new Bounds();
 			this.style = new Style();
