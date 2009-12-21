@@ -254,8 +254,8 @@ package org.openscales.core
 
 		/**
 		 * Removes a layer from the map by removing its visual element, then removing
-		 * it from the map's internal list of layers, setting the layer's map property
-		 * to null.
+		 * it from the map's internal list of layers.
+		 * You have to call layer.destroy after this function if needed !
 		 *
 		 * A LayerEvent.LAYER_REMOVED event is triggered.
 		 *
@@ -265,7 +265,7 @@ package org.openscales.core
 		 */
 		public function removeLayer(layer:Layer, setNewBaseLayer:Boolean = true):void {
 			this._layerContainer.removeChild(layer);
-			layer.destroy(setNewBaseLayer);
+			layer.map = null;
 			Util.removeItem(this.layers, layer);
 
 			if (setNewBaseLayer && (this.baseLayer == layer)) {

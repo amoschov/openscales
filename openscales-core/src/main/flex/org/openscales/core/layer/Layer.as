@@ -100,12 +100,6 @@ package org.openscales.core.layer {
 		}
 
 		public function destroy(setNewBaseLayer:Boolean=true):void {
-			if (this.map != null) {
-				map.removeEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
-				map.removeEventListener(MapEvent.MOVE_END, onMapMove);
-				map.removeEventListener(MapEvent.ZOOM_END, onMapZoom);
-				map.removeEventListener(MapEvent.RESIZE, onMapResize);
-			}
 			this.map = null;
 		}
 
@@ -120,20 +114,26 @@ package org.openscales.core.layer {
 		 * Here we take care to bring over any of the necessary default properties from the map.
 		 */
 		public function set map(map:Map):void {
+			if (this.map != null) {
+				this.map.removeEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
+				this.map.removeEventListener(MapEvent.MOVE_END, onMapMove);
+				this.map.removeEventListener(MapEvent.ZOOM_END, onMapZoom);
+				this.map.removeEventListener(MapEvent.RESIZE, onMapResize);
+			}
+			
 			this._map = map;
-
-			if (map) {
-				map.addEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
-				map.addEventListener(MapEvent.MOVE_END, onMapMove);
-				map.addEventListener(MapEvent.ZOOM_END, onMapZoom);
-				map.addEventListener(MapEvent.RESIZE, onMapResize);
-
-				if (!this.maxExtent) {
+			
+			if (this.map) {
+				this.map.addEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
+				this.map.addEventListener(MapEvent.MOVE_END, onMapMove);
+				this.map.addEventListener(MapEvent.ZOOM_END, onMapZoom);
+				this.map.addEventListener(MapEvent.RESIZE, onMapResize);
+				if (! this.maxExtent) {
 					this.maxExtent = this.map.maxExtent;
 				}
 			}
 		}
-
+		
 		public function onSecurityInitialized(e:SecurityEvent):void {
 			this.redraw();
 		}

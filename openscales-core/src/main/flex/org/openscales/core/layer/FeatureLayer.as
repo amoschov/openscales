@@ -41,7 +41,7 @@ package org.openscales.core.layer
 			this._displayProjection = this.projection.clone();
 			this.featuresBbox = new Bounds();
 			this.style = new Style();
-			//this.geometryType = ;
+			this.geometryType = null;
 			this.selectedFeatures = new Array();
 		}
 
