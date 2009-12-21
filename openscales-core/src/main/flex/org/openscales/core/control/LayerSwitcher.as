@@ -361,6 +361,9 @@ package org.openscales.core.control
 		 * @param event LayerEvent
 		 */
 		private function layerUpdated(event:LayerEvent):void {
+			if (event.type == LayerEvent.LAYER_REMOVED) {
+				event.layer.destroy();
+			}
 			this.draw();
 		}
 
