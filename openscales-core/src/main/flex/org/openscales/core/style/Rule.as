@@ -3,12 +3,8 @@ package org.openscales.core.style {
 	import flash.display.Sprite;
 
 	import org.openscales.core.filter.IFilter;
-	import org.openscales.core.style.fill.Fill;
 	import org.openscales.core.style.marker.WellKnownMarker;
-	import org.openscales.core.style.stroke.Stroke;
-	import org.openscales.core.style.symbolizer.IFillSymbolizer;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
-	import org.openscales.core.style.symbolizer.IStrokeSymbolizer;
 	import org.openscales.core.style.symbolizer.Symbolizer;
 
 	public class Rule {
@@ -190,22 +186,24 @@ package org.openscales.core.style {
 			mark.fill.configureGraphics(canvas.graphics, null);
 			mark.stroke.configureGraphics(canvas.graphics);
 
+			var size:Number = mark.getSizeValue(null);
+
 			switch (mark.wellKnownName) {
 
 				case WellKnownMarker.WKN_SQUARE:  {
-					canvas.graphics.drawRect(15 - mark.size / 2, 15 - mark.size / 2, mark.size, mark.size);
+					canvas.graphics.drawRect(15 - size / 2, 15 - size / 2, size, size);
 					break;
 				}
 				case WellKnownMarker.WKN_CIRCLE:  {
-					canvas.graphics.drawCircle(15, 15, mark.size / 2);
+					canvas.graphics.drawCircle(15, 15, size / 2);
 					break;
 				}
 				case WellKnownMarker.WKN_TRIANGLE:  {
 					// TODO : Check for the drawing of the triangles
-					canvas.graphics.moveTo(0, (mark.size / 2));
-					canvas.graphics.lineTo(mark.size, mark.size);
-					canvas.graphics.lineTo(0, mark.size);
-					canvas.graphics.lineTo(0, (mark.size / 2));
+					canvas.graphics.moveTo(0, (size / 2));
+					canvas.graphics.lineTo(size, size);
+					canvas.graphics.lineTo(0, size);
+					canvas.graphics.lineTo(0, (size / 2));
 					break;
 				}
 				// TODO : Implement other well known names and take into account opacity, rotation of the mark

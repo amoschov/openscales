@@ -1,21 +1,19 @@
-package org.openscales.core.feature
-{
-	import org.openscales.core.Trace;
+package org.openscales.core.feature {
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.style.Style;
+	import org.openscales.core.style.symbolizer.PointSymbolizer;
 	import org.openscales.core.style.symbolizer.Symbolizer;
+
 	/**
 	 * Feature used to draw a Polygon geometry on FeatureLayer
 	 */
-	public class PolygonFeature extends Feature
-	{
-		public function PolygonFeature(geom:Polygon=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null)
-		{
-			super(geom, data, style,isEditable,isEditionFeature);
+	public class PolygonFeature extends Feature {
+		public function PolygonFeature(geom:Polygon=null, data:Object=null, style:Style=null, isEditable:Boolean=false, isEditionFeature:Boolean=false, editionFeatureParentGeometry:Collection=null) {
+			super(geom, data, style, isEditable, isEditionFeature);
 		}
 
 		public function get polygon():Polygon {
@@ -23,49 +21,72 @@ package org.openscales.core.feature
 		}
 
 		override protected function executeDrawing(symbolizer:Symbolizer):void {
-			// Variable declaration before for loop to improve performances
-			var p:Point = null;
-			var x:Number; 
-            var y:Number;
-            var resolution:Number = this.layer.map.resolution 
-            var dX:int = -int(this.layer.map.layerContainer.x) + this.left; 
-            var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
-			var linearRing:LinearRing = null;
-			var j:int = 0;
-			
-			for (var i:int = 0; i < this.polygon.componentsLength; i++) {
-				linearRing = (this.polygon.componentByIndex(i) as LinearRing);
-				
-				// Draw the n-1 line of the polygon
-				for (j=0; j<linearRing.componentsLength; j++) {
-					p = linearRing.componentByIndex(j) as Point;
-					x = dX + p.x / resolution; 
-                	y = dY - p.y / resolution;
-					if (j==0) {
-						this.graphics.moveTo(x, y);
-					} else {
+
+			if (symbolizer is PointSymbolizer) {
+
+				this.renderPointSymbolizer(symbolizer as PointSymbolizer);
+			} else {
+				// Variable declaration before for loop to improve performances
+				var p:Point = null;
+				var x:Number;
+				var y:Number;
+				var resolution:Number = this.layer.map.resolution
+				var dX:int = -int(this.layer.map.layerContainer.x) + this.left;
+				var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
+				var linearRing:LinearRing = null;
+				var j:int = 0;
+
+				for (var i:int = 0; i < this.polygon.componentsLength; i++) {
+					linearRing = (this.polygon.componentByIndex(i) as LinearRing);
+
+					// Draw the n-1 line of the polygon
+					for (j = 0; j < linearRing.componentsLength; j++) {
+						p = linearRing.componentByIndex(j) as Point;
+						x = dX + p.x / resolution;
+						y = dY - p.y / resolution;
+						if (j == 0) {
+							this.graphics.moveTo(x, y);
+						} else {
+							this.graphics.lineTo(x, y);
+						}
+					}
+
+					// Draw the last line of the polygon, as Flash won't render it if there is no fill for the polygon
+					if (linearRing.componentsLength > 0) {
+						p = linearRing.componentByIndex(0) as Point;
+						x = dX + p.x / resolution;
+						y = dY - p.y / resolution;
 						this.graphics.lineTo(x, y);
 					}
 				}
-				
-				// Draw the last line of the polygon, as Flash won't render it if there is no fill for the polygon
-				if(linearRing.componentsLength > 0){
-					p = linearRing.componentByIndex(0) as Point;
-					x = dX + p.x / resolution; 
-                    y = dY - p.y / resolution;
-					this.graphics.lineTo(x,y);
-				}
 			}
 		}
+
+		protected function renderPointSymbolizer(symbolizer:PointSymbolizer):void {
+
+			var x:Number;
+			var y:Number;
+			var resolution:Number = this.layer.map.resolution
+			var dX:int = -int(this.layer.map.layerContainer.x) + this.left;
+			var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
+			x = dX + this.geometry.bounds.centerPixel.x / resolution;
+			y = dY - this.geometry.bounds.centerPixel.y / resolution;
+
+			if (symbolizer.graphic) {
+
+				this.addChild(symbolizer.graphic.getDisplayObject(this));
+			}
+		}
+
 		/**
-		 * To obtain feature clone 
+		 * To obtain feature clone
 		 * */
-		override public function clone():Feature{
-			var geometryClone:Geometry=this.geometry.clone();
-			var PolygonFeatureClone:PolygonFeature=new PolygonFeature(geometryClone as Polygon,null,this.style,this.isEditable);
+		override public function clone():Feature {
+			var geometryClone:Geometry = this.geometry.clone();
+			var PolygonFeatureClone:PolygonFeature = new PolygonFeature(geometryClone as Polygon, null, this.style, this.isEditable);
 			return PolygonFeatureClone;
-			
-		}	
+
+		}
 	}
 }
 

@@ -1,9 +1,8 @@
-package org.openscales.core.handler.feature
-{
+package org.openscales.core.handler.feature {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
-	
+
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
@@ -28,8 +27,8 @@ package org.openscales.core.handler.feature
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
 	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
 	import org.openscales.core.style.symbolizer.Symbolizer;
-	
-	
+
+
 	/**
 	 * Select Features by clicking, by drawing a selection box or by drawing a
 	 * freehand selection area.
@@ -39,87 +38,86 @@ package org.openscales.core.handler.feature
 	 * the new selection is removed.
 	 * A click on a selected feature unselect it.
 	 */
-	public class SelectFeaturesHandler extends ClickHandler
-	{
+	public class SelectFeaturesHandler extends ClickHandler {
 		/**
 		 * Array of the layers to treat during a selection.
 		 * If void (default), all the layers are managed.
 		 */
 		private var _layers:Array = new Array();
-		
+
 		/**
 		 * Array of some features that may not be selected.
 		 * If void (default), all the features of the _layers are selectable.
 		 */
 		private var _unselectableFeatures:Array = new Array();
-		
+
 		/**
 		 * Size in pixels of the selection buffer (default=2 so a point is a
 		 * 5-side square)
-		 */        
+		 */
 		private var _selectionBuffer:Number = 2;
-		
+
 		/**
 		 * Array of the selected features.
 		 */
 		private var _selectedFeatures:Array = new Array();
-		
+
 		/**
 		 * Callback function onSelectionUpdated(features:Array):void
 		 */
 		private var _onSelectionUpdated:Function = null;
-		
+
 		/**
 		 * Callback function onOverFeature(feature:Feature):void
 		 */
 		private var _onOverFeature:Function = null;
-		
+
 		/**
 		 * Callback function onOutFeature(feature:Feature):void
 		 */
 		private var _onOutFeature:Function = null;
-		
+
 		/**
 		 * Callback function onSelectedFeature(feature:Feature):void
 		 */
 		private var _onSelectedFeature:Function = null;
-		
+
 		/**
 		 * Callback function onUnselectedFeature(feature:Feature):void
 		 */
 		private var _onUnselectedFeature:Function = null;
-		
+
 		/**
 		 * Callback function selectedStyle(feature:Feature):Style
 		 * The default style function used is SelectFeaturesHandler.defaultSelectedStyle
 		 */
 		private var _selectedStyle:Function = SelectFeaturesHandler.defaultSelectedStyle;
-		
+
 		/**
 		 * Sprite used to display the selection box.
 		 */
-        private var _drawContainer:Sprite = new Sprite();
-		
+		private var _drawContainer:Sprite = new Sprite();
+
 		/**
 		 * Style of the selection area: border thin (default=1)
-		 */        
+		 */
 		private var _selectionAreaBorderThin:Number = 2;
-		
+
 		/**
 		 * Style of the selection area: border color (default=0xFFCC00)
-		 */        
+		 */
 		private var _selectionAreaBorderColor:uint = 0xFFCC00;
-		
+
 		/**
 		 * Style of the selection area: fill color (default=0xCC0000)
-		 */        
+		 */
 		private var _selectionAreaFillColor:uint = 0xCC0000;
-		
+
 		/**
 		 * Style of the selection area: opacity (default=0.33)
-		 */        
+		 */
 		private var _selectionAreaFillOpacity:Number = 0.33;
-		
+
 		private var _enableClickSelection:Boolean;
 		private var _enableBoxSelection:Boolean;
 		private var _enableSelection:Boolean;
@@ -129,27 +127,27 @@ package org.openscales.core.handler.feature
 		 * @param map the map associated to the handler
 		 * @param active boolean defining if the handler is active or not
 		 */
-		public function SelectFeaturesHandler(map:Map=null, active:Boolean=false, enableClickSelection:Boolean = true, enableBoxSelection:Boolean = true, enableOverSelection:Boolean = false) {
+		public function SelectFeaturesHandler(map:Map=null, active:Boolean=false, enableClickSelection:Boolean=true, enableBoxSelection:Boolean=true, enableOverSelection:Boolean=false) {
 			super(map, active);
 			if (this.map) {
 				this.map.addChild(_drawContainer);
 			}
-			
+
 			this.enableClickSelection = enableClickSelection;
-			this.enableBoxSelection= enableBoxSelection;
-			this.enableOverSelection= enableOverSelection;
-			
+			this.enableBoxSelection = enableBoxSelection;
+			this.enableOverSelection = enableOverSelection;
+
 		}
-		
+
 		public function set enableClickSelection(value:Boolean):void {
-			if(value)
+			if (value)
 				this.click = this.selectByClick;
 			else
 				this.click = null;
 		}
-		
+
 		public function set enableBoxSelection(value:Boolean):void {
-			if(value) {
+			if (value) {
 				this.drag = this.drawSelectionBox;
 				this.drop = this.selectByBox;
 			} else {
@@ -157,9 +155,9 @@ package org.openscales.core.handler.feature
 				this.drop = null;
 			}
 		}
-		
+
 		public function set enableOverSelection(value:Boolean):void {
-			if(value) {
+			if (value) {
 				this.onOverFeature = this.selectByOver;
 				this.onOutFeature = this.unselectByOut;
 			} else {
@@ -167,13 +165,14 @@ package org.openscales.core.handler.feature
 				this.onOutFeature = null;
 			}
 		}
-		
+
 		/**
 		 * Layers array getter and setter
 		 */
 		public function get layers():Array {
 			return this._layers;
 		}
+
 		public function set layers(value:Array):void {
 			// Assert that the input array is composed of not null FeatureLayers
 			if (value == null) {
@@ -184,7 +183,7 @@ package org.openscales.core.handler.feature
 				if (value.length > 0) {
 					var filteredValue:Array = new Array();
 					for each (var l:Layer in value) {
-						if ((l!=null) && (l is FeatureLayer)) {
+						if ((l != null) && (l is FeatureLayer)) {
 							filteredValue.push(l);
 						}
 					}
@@ -198,11 +197,11 @@ package org.openscales.core.handler.feature
 			// Unselect the features attached to the removed layers. If value is
 			// a void array, the new layers are all the layers of the map, so
 			// there is nothing to do in this case.
-			if ((value.length>0) && (this.layers.length>0) && (this.selectedFeatures.length>0)) {
+			if ((value.length > 0) && (this.layers.length > 0) && (this.selectedFeatures.length > 0)) {
 				var layer:FeatureLayer, i:int;
 				for each (layer in this.layers) {
 					// Is the layer in the array of the new layers ?
-					for (i=0; (i<value.length) && (layer!=value[i]); i++)
+					for (i = 0; (i < value.length) && (layer != value[i]); i++)
 						; // nothing else to do than to increment i
 					// No if i equals value.length, so unselect its features
 					if (i == value.length) {
@@ -213,13 +212,14 @@ package org.openscales.core.handler.feature
 			// Update the array of the layers to treat for the selection
 			this._layers = value;
 		}
-		
+
 		/**
 		 * unselectableFeatures array getter and setter
 		 */
 		public function get unselectableFeatures():Array {
 			return this._unselectableFeatures;
 		}
+
 		public function set unselectableFeatures(value:Array):void {
 			if ((value == null) || (value.length == 0)) {
 				this._unselectableFeatures = new Array();
@@ -228,133 +228,144 @@ package org.openscales.core.handler.feature
 				// Filter the currently selected features
 				var twoArrays:Array = this.filterUnselectableFeatures(this.selectedFeatures);
 				this._selectedFeatures = twoArrays[0];
-				var unselectedFeatures:Array = twoArrays[1]; 
+				var unselectedFeatures:Array = twoArrays[1];
 				// Dispatch a FEATURE_UNSELECTED event for all the unselected features
-				if (this.map && (unselectedFeatures.length>0)) {
+				if (this.map && (unselectedFeatures.length > 0)) {
 					var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, null);
 					fevt.features = unselectedFeatures;
 					this.map.dispatchEvent(fevt);
 				}
 			}
 		}
-		
+
 		/**
 		 * Selection buffer getter and setter
 		 */
 		public function get selectionBuffer():Number {
 			return this._selectionBuffer;
 		}
+
 		public function set selectionBuffer(value:Number):void {
-			this._selectionBuffer = Math.max(0,value);
+			this._selectionBuffer = Math.max(0, value);
 		}
-		
+
 		/**
 		 * On selection updated function getter and setter
 		 */
 		public function get onSelectionUpdated():Function {
 			return this._onSelectionUpdated;
 		}
+
 		public function set onSelectionUpdated(value:Function):void {
 			this._onSelectionUpdated = value;
 		}
-		
+
 		/**
 		 * On over feature function getter and setter
 		 */
 		public function get onOverFeature():Function {
 			return this._onOverFeature;
 		}
+
 		public function set onOverFeature(value:Function):void {
 			this._onOverFeature = value;
 		}
-		
+
 		/**
 		 * On out feature function getter and setter
 		 */
 		public function get onOutFeature():Function {
 			return this._onOutFeature;
 		}
+
 		public function set onOutFeature(value:Function):void {
 			this._onOutFeature = value;
 		}
-		
+
 		/**
 		 * On selected feature function getter and setter
 		 */
 		public function get onSelectedFeature():Function {
 			return this._onSelectedFeature;
 		}
+
 		public function set onSelectedFeature(value:Function):void {
 			this._onSelectedFeature = value;
 		}
-		
+
 		/**
 		 * On unselected feature function getter and setter
 		 */
 		public function get onUnselectedFeature():Function {
 			return this._onUnselectedFeature;
 		}
+
 		public function set onUnselectedFeature(value:Function):void {
 			this._onUnselectedFeature = value;
 		}
-		
+
 		/**
 		 * selectedStyle function getter and setter
 		 */
 		public function get selectedStyle():Function {
 			return this._selectedStyle;
 		}
+
 		public function set selectedStyle(value:Function):void {
 			this._selectedStyle = value;
 		}
-		
+
 		/**
 		 * Selection geometry's border thin getter and setter
 		 */
 		public function get selectionAreaBorderThin():Number {
 			return this._selectionAreaBorderThin;
 		}
+
 		public function set selectionAreaBorderThin(value:Number):void {
 			this._selectionAreaBorderThin = value;
 		}
-		
+
 		/**
 		 * Selection geometry's border color getter and setter
 		 */
 		public function get selectionAreaBorderColor():uint {
 			return this._selectionAreaBorderColor;
 		}
+
 		public function set selectionAreaBorderColor(value:uint):void {
 			this._selectionAreaBorderColor = value;
 		}
-		
+
 		/**
 		 * Selection geometry's fill color getter and setter
 		 */
 		public function get selectionAreaFillColor():uint {
 			return this._selectionAreaFillColor;
 		}
+
 		public function set selectionAreaFillColor(value:uint):void {
 			this._selectionAreaFillColor = value;
 		}
-		
+
 		/**
 		 * Selection geometry's fill opacity thin getter and setter
 		 */
 		public function get selectionAreaFillOpacity():Number {
 			return this._selectionAreaFillOpacity;
 		}
+
 		public function set selectionAreaFillOpacity(value:Number):void {
 			this._selectionAreaFillOpacity = value;
 		}
-		
+
 		/**
 		 * Array of the selected features
 		 */
 		public function get selectedFeatures():Array {
 			return this._selectedFeatures;
 		}
-		
+
 		/**
 		 * Set the map associated to the handler.
 		 * The current selection is cleared and the array of the layers to treat
@@ -375,7 +386,7 @@ package org.openscales.core.handler.feature
 				this.map.addChild(_drawContainer);
 			}
 		}
-		
+
 		/**
 		 * Add the listeners to the associated map
 		 */
@@ -391,7 +402,7 @@ package org.openscales.core.handler.feature
 				this.map.addEventListener(FeatureEvent.FEATURE_UNSELECTED, this.onUnselected);
 			}
 		}
-		
+
 		/**
 		 * Remove the listeners to the associated map
 		 */
@@ -407,7 +418,7 @@ package org.openscales.core.handler.feature
 			// Listeners of the super class
 			super.unregisterListeners();
 		}
-		
+
 		/**
 		 * Unselect all the features of the input layer.
 		 * @param layer the FeatureLayer removed from the layers to manage
@@ -424,19 +435,18 @@ package org.openscales.core.handler.feature
 			// Remove these features of the selection
 			this.unselect(featuresToUnselect);
 		}
-		
+
 		/**
 		 * Unselect all the features of the removed layer
 		 * @param evt the LayerEvent that defines the layer removed from the map
 		 */
 		private function onLayerRemoved(evt:LayerEvent):void {
-			if ((! evt) || (evt.type != LayerEvent.LAYER_REMOVED)
-				|| (! evt.layer) || (! (evt.layer is FeatureLayer))) {
+			if ((!evt) || (evt.type != LayerEvent.LAYER_REMOVED) || (!evt.layer) || (!(evt.layer is FeatureLayer))) {
 				return;
 			}
 			unselectFeaturesOfLayer(evt.layer as FeatureLayer);
 		}
-		
+
 		/**
 		 * If defined, use the onOverFeature callback function for all the
 		 * features of the input event.
@@ -449,7 +459,7 @@ package org.openscales.core.handler.feature
 				this.onSomething(evt, null, this.onOverFeature);
 			}
 		}
-		
+
 		/**
 		 * If defined, use the onOutFeature callback function for all the
 		 * features of the input event.
@@ -462,7 +472,7 @@ package org.openscales.core.handler.feature
 				this.onSomething(evt, null, this.onOutFeature);
 			}
 		}
-		
+
 		/**
 		 * If defined, use the onSelectedFeature callback function for all the
 		 * features of the input event.
@@ -475,7 +485,7 @@ package org.openscales.core.handler.feature
 				this.onSomething(evt, this.setSelectedStyle, this.onSelectedFeature);
 			}
 		}
-		
+
 		/**
 		 * If defined, use the onUnselectedFeature callback function for all the
 		 * features of the input event.
@@ -488,7 +498,7 @@ package org.openscales.core.handler.feature
 				this.onSomething(evt, this.resetStyle, this.onUnselectedFeature);
 			}
 		}
-		
+
 		/**
 		 * Generic function called by all the onOver, onOut, onSelected and
 		 * onUnselected functions.
@@ -501,28 +511,26 @@ package org.openscales.core.handler.feature
 		 * @param onSomethingFeature the callback function to use for each of
 		 * the features
 		 */
-		private function onSomething(evt:FeatureEvent,
-									updateStyleFeature:Function,
-									onSomethingFeature:Function):void {
+		private function onSomething(evt:FeatureEvent, updateStyleFeature:Function, onSomethingFeature:Function):void {
 			var i:int, layer:FeatureLayer, layersTmp:Array = new Array();
 
-			if(this._dragging)
-				return;			
-			
+			if (this._dragging)
+				return;
+
 			for each (var feature:Feature in evt.features) {
 				if (updateStyleFeature != null) {
 					updateStyleFeature(feature);
 				}
-				
+
 				if (onSomethingFeature != null) {
 					onSomethingFeature(feature);
 				}
-				
+
 				feature.draw();
 			}
-				
+
 		}
-				
+
 		/**
 		 * (Un)select all the features that contain the location clicked (the
 		 * selectionBuffer is used to enlarge the selection area).
@@ -535,16 +543,16 @@ package org.openscales.core.handler.feature
 			// A point and a selectionBuffer define a selection box...
 			this.selectByBox(p);
 		}
-		
+
 		private function selectByOver(feature:Feature):void {
 			this.unselect(this.selectedFeatures);
 			this.select([feature]);
 		}
-		
+
 		private function unselectByOut(feature:Feature):void {
 			this.unselect(this.selectedFeatures);
 		}
-		
+
 		/**
 		 * (Un)select all the features that intersect the box drawn (the
 		 * selectionBuffer is used to enlarge the selection area).
@@ -559,11 +567,11 @@ package org.openscales.core.handler.feature
 			// Get the selection area
 			var sbox:Bounds = this.selectionBoxCoordinates(p, this.selectionBuffer);
 			var sboxGeom:Geometry = (sbox) ? sbox.toGeometry() : null;
-        	
-        	// Select the features that intersect the geometry
+
+			// Select the features that intersect the geometry
 			this.selectByGeometry(sboxGeom, this._ctrlKey, this._shiftKey);
 		}
-		
+
 		/**
 		 * (Un)select all the features that intersect the input geometry.
 		 * If the array of layers is defined, only the features of these layers
@@ -579,7 +587,7 @@ package org.openscales.core.handler.feature
 			// Look for all the features that intersect the selection geometry
 			var featuresToSelect:Array = new Array();
 			if (geom) {
-				var layersToTest:Array = (this.layers.length>0) ? this.layers : this.map.featureLayers; 
+				var layersToTest:Array = (this.layers.length > 0) ? this.layers : this.map.featureLayers;
 				var layer:FeatureLayer, layersTmp:Array = new Array();
 				// Remove invisible layers from the list of selectable layers
 				for each (layer in layersToTest) {
@@ -598,13 +606,13 @@ package org.openscales.core.handler.feature
 				}
 			}
 			// Update the selection
-			if (substractiveMode && (! additiveMode)) {
+			if (substractiveMode && (!additiveMode)) {
 				this.unselect(featuresToSelect);
 			} else {
 				this.select(featuresToSelect, additiveMode);
 			}
 		}
-		
+
 		/**
 		 * Add or replace features to the current selection.
 		 * The features are asserted to be in one of the layers to manage.
@@ -623,11 +631,11 @@ package org.openscales.core.handler.feature
 			if (this.selectedFeatures.length > 0) {
 				var sf:Array = new Array(); // the features to keep selected
 				var i:int, found:Boolean;
-				if (! additiveMode) {
+				if (!additiveMode) {
 					// If additive mode is not selected, remove all the current
 					// selected features that are not in the input array.
 					for each (feature in this.selectedFeatures) {
-						for (i=0, found=false; (!found) && (i<featuresToSelect.length); i++) {
+						for (i = 0, found = false; (!found) && (i < featuresToSelect.length); i++) {
 							if (feature == featuresToSelect[i]) {
 								found = true;
 							}
@@ -648,12 +656,12 @@ package org.openscales.core.handler.feature
 				// Remove from the input array all the reselected features
 				var nsf:Array = new Array(); // the really new features in the input array
 				for each (feature in featuresToSelect) {
-					for (i=0, found=false; (!found) && (i<this.selectedFeatures.length); i++) {
+					for (i = 0, found = false; (!found) && (i < this.selectedFeatures.length); i++) {
 						if (feature == this.selectedFeatures[i]) {
 							found = true;
 						}
 					}
-					if (! found) {
+					if (!found) {
 						nsf.push(feature);
 					}
 				}
@@ -669,25 +677,25 @@ package org.openscales.core.handler.feature
 				this._selectedFeatures.push(feature);
 			}
 			// Dispatch a FEATURE_UNSELECTED event for all the unselected features
-			if (this.map && (removedFeatures.length>0)) {
+			if (this.map && (removedFeatures.length > 0)) {
 				fevt = new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, null, additiveMode);
 				fevt.features = removedFeatures;
 				this.map.dispatchEvent(fevt);
 			}
 			// Dispatch a FEATURE_SELECTED event for all the newly selected features
-			if (this.map && (featuresToSelect.length>0)) {
+			if (this.map && (featuresToSelect.length > 0)) {
 				fevt = new FeatureEvent(FeatureEvent.FEATURE_SELECTED, null, additiveMode);
 				fevt.features = featuresToSelect;
 				this.map.dispatchEvent(fevt);
 			}
 			// Log the selection modification
-			Trace.log("SelectFeaturesHandler: "+featuresToSelect.length+" new features selected with additive mode "+((additiveMode)?"ON":"OFF")+" and "+noselectedFeatures.length+" rejected features => "+this.selectedFeatures.length+" features selected");
+			Trace.log("SelectFeaturesHandler: " + featuresToSelect.length + " new features selected with additive mode " + ((additiveMode) ? "ON" : "OFF") + " and " + noselectedFeatures.length + " rejected features => " + this.selectedFeatures.length + " features selected");
 			// if the selection has been updated, use the associated callback
 			if (selectionUpdated && (this.onSelectionUpdated != null)) {
 				this.onSelectionUpdated(this.selectedFeatures);
 			}
 		}
-		
+
 		/**
 		 * Remove features from the current selection.
 		 * The features are asserted to be in one of the layers to manage.
@@ -700,58 +708,58 @@ package org.openscales.core.handler.feature
 			var feature:Feature;
 			var i:int, found:Boolean;
 			for each (feature in featuresToUnselect) {
-				for (i=0, found=false; (!found) && (i<this.selectedFeatures.length); i++) {
+				for (i = 0, found = false; (!found) && (i < this.selectedFeatures.length); i++) {
 					if (feature == this.selectedFeatures[i]) {
 						found = true;
 						removedFeatures.push(feature);
-						this.selectedFeatures.splice(i,1);
+						this.selectedFeatures.splice(i, 1);
 						selectionUpdated = true;
 					}
 				}
-				if (! found) {
+				if (!found) {
 					Trace.warning("unselect warning: unselected feature, nothing to do");
 				}
 			}
 			// Dispatch a FEATURE_UNSELECTED event for all the unselected features
-			if (this.map && (removedFeatures.length>0)) {
+			if (this.map && (removedFeatures.length > 0)) {
 				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, null);
 				fevt.features = removedFeatures;
 				this.map.dispatchEvent(fevt);
 			}
 			// Log the selection modification
-			Trace.log("SelectFeaturesHandler: "+removedFeatures.length+" features removed from the selection => "+this.selectedFeatures.length+" features selected");
+			Trace.log("SelectFeaturesHandler: " + removedFeatures.length + " features removed from the selection => " + this.selectedFeatures.length + " features selected");
 			// if the selection has been updated, use the associated callback
 			if (selectionUpdated && (this.onSelectionUpdated != null)) {
 				this.onSelectionUpdated(this.selectedFeatures);
 			}
 		}
-		
+
 		/**
 		 * Clear the current selection.
 		 */
 		public function clearSelection():void {
 			var selectionUpdated:Boolean = (this.selectedFeatures.length > 0);
 			// If the selection is void there is nothing to do
-			if (! selectionUpdated) {
+			if (!selectionUpdated) {
 				return;
 			}
 			// Clear the selection
 			var removedFeatures:Array = this.selectedFeatures;
 			this._selectedFeatures = new Array();
 			// Dispatch a FEATURE_UNSELECTED event for all the unselected features
-			if (this.map && (removedFeatures.length>0)) {
+			if (this.map && (removedFeatures.length > 0)) {
 				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, null);
 				fevt.features = removedFeatures;
 				this.map.dispatchEvent(fevt);
 			}
 			// Log the selection modification
-			Trace.log("SelectFeaturesHandler: selection cleared of its "+removedFeatures.length+" features");
+			Trace.log("SelectFeaturesHandler: selection cleared of its " + removedFeatures.length + " features");
 			// if the selection has been updated, use the associated callback
 			if (selectionUpdated && (this.onSelectionUpdated != null)) {
 				this.onSelectionUpdated(this.selectedFeatures);
 			}
 		}
-		
+
 		/**
 		 * Filter the input array of features to keep only those that are not
 		 * declared in the unselectableFeatures array.
@@ -763,20 +771,20 @@ package org.openscales.core.handler.feature
 			var acceptedFeatures:Array = new Array();
 			var rejectedFeatures:Array = new Array();
 			var i:int, found:Boolean;
-			for each(var feature:Feature in featuresToFilter) {
-				for(i=0, found=false; (!found) && (i<this.unselectableFeatures.length); i++) {
+			for each (var feature:Feature in featuresToFilter) {
+				for (i = 0, found = false; (!found) && (i < this.unselectableFeatures.length); i++) {
 					if (feature == this.unselectableFeatures[i]) {
 						found = true;
 						rejectedFeatures.push(feature);
 					}
 				}
-				if (! found) {
+				if (!found) {
 					acceptedFeatures.push(feature);
 				}
 			}
 			return [acceptedFeatures, rejectedFeatures];
 		}
-		
+
 		/**
 		 * Set the style of a selected feature depending on its type (point,
 		 * multipoint, linestring, multilinestring, polygon, multipolygon).
@@ -787,7 +795,7 @@ package org.openscales.core.handler.feature
 			feature.originalStyle = feature.style;
 			feature.style = (this.selectedStyle != null) ? this.selectedStyle(feature) : SelectFeaturesHandler.defaultSelectedStyle(feature);
 		}
-		
+
 		/**
 		 * Reset the style of a unselected feature
 		 * @param feature the feature to update its style
@@ -795,7 +803,7 @@ package org.openscales.core.handler.feature
 		private function resetStyle(feature:Feature):void {
 			feature.style = feature.originalStyle;
 		}
-		
+
 		/**
 		 * Display the selection box that the user is drawing.
 		 * @param evt the MouseEvent
@@ -810,7 +818,7 @@ package org.openscales.core.handler.feature
 			_drawContainer.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
 			_drawContainer.graphics.endFill();
 		}
-		
+
 		/**
 		 * Default style used for a selected feature.
 		 * The style depends on the type of the input feature (point, multipoint,
@@ -825,27 +833,25 @@ package org.openscales.core.handler.feature
 			if (feature is PointFeature || feature is MultiPointFeature) {
 				var markType:String = WellKnownMarker.WKN_SQUARE;
 				var markSize:Number = 12;
-				var currentMarkSymbolizer:Symbolizer = null;//feature.style.rules[0].symbolizers[0];
+				var currentMarkSymbolizer:Symbolizer = null; //feature.style.rules[0].symbolizers[0];
 				if (currentMarkSymbolizer && (currentMarkSymbolizer is PointSymbolizer)) {
-					var currentMark:WellKnownMarker = (currentMarkSymbolizer as PointSymbolizer).graphic as WellKnownMarker;
+					var currentMark:WellKnownMarker = (currentMarkSymbolizer as PointSymbolizer).graphic as WellKnownMarker; // FixMe : How can we be sure at this point that graphic is a WellKnownMarker ?
 					markType = currentMark.wellKnownName;
-					markSize = currentMark.size;
+					markSize = currentMark.size as Number;
 				}
 				selectedStyle = Style.getDefaultPointStyle();
-				symbolizer = new PointSymbolizer(new WellKnownMarker(markType, new SolidFill(color,opacity), new Stroke(color,borderThin), markSize));
-			}
-			else if (feature is LineStringFeature || feature is MultiLineStringFeature) {
+				symbolizer = new PointSymbolizer(new WellKnownMarker(markType, new SolidFill(color, opacity), new Stroke(color, borderThin), markSize));
+			} else if (feature is LineStringFeature || feature is MultiLineStringFeature) {
 				selectedStyle = Style.getDefaultSurfaceStyle();
-				symbolizer = new LineSymbolizer(new Stroke(color,borderThin));
-			}
-			else { //if (feature is PolygonFeature || feature is MultiPolygonFeature) {
+				symbolizer = new LineSymbolizer(new Stroke(color, borderThin));
+			} else { //if (feature is PolygonFeature || feature is MultiPolygonFeature) {
 				selectedStyle = Style.getDefaultSurfaceStyle();
-				symbolizer = new PolygonSymbolizer(new SolidFill(color,opacity), new Stroke(color,borderThin));
+				symbolizer = new PolygonSymbolizer(new SolidFill(color, opacity), new Stroke(color, borderThin));
 			}
 			selectedStyle.rules[0] = new Rule();
 			selectedStyle.rules[0].symbolizers.push(symbolizer);
 			return selectedStyle;
 		}
-		
+
 	}
 }

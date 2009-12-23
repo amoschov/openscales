@@ -40,19 +40,16 @@ package org.openscales.core.feature {
 		/**
 		 * To know if the vector feature  is a temporary used
 		 * for edition mode
-		 **/
-		/* private var _isEditionFeature:Boolean = false; */
-		
+		 **/ /* private var _isEditionFeature:Boolean = false; */
+
 		/**
 		 *Link to all temporary features used to edit the feature
-		 * */
-		/*private var _editionFeaturesArray:Array = new Array();*/
+		 * */ /*private var _editionFeaturesArray:Array = new Array();*/
 
 		/**
 		 * Edition feature parent
 		 * when the feature is an edition feature
-		 * */
-		/*private var _editionFeatureParent:Feature = null;*/
+		 * */ /*private var _editionFeatureParent:Feature = null;*/
 
 
 		/**
@@ -122,14 +119,14 @@ package org.openscales.core.feature {
 
 			this._isEditable = isEditable;
 			// A feature can't be editable and editionfeature(temporary feature )
-			/*if (isEditable) {
-				if (isEditionFeature) {
-					Trace.error("A feature can't be editable and edition feature(temporary feature ) at the same time");
-					//this._isEditionFeature = false;
-				}
-			} else {
-				//this._isEditionFeature = isEditionFeature;
-			}*/
+		/*if (isEditable) {
+		   if (isEditionFeature) {
+		   Trace.error("A feature can't be editable and edition feature(temporary feature ) at the same time");
+		   //this._isEditionFeature = false;
+		   }
+		   } else {
+		   //this._isEditionFeature = isEditionFeature;
+		 }*/
 
 		}
 
@@ -194,7 +191,7 @@ package org.openscales.core.feature {
 			this._attributes = null;
 			this._data = null;
 			/*this._editionFeatureParent = null;
-			this._editionFeaturesArray = null;*/
+			 this._editionFeaturesArray = null;*/
 			this._layer = null;
 			this._lonlat = null;
 			this.geometry = null;
@@ -217,7 +214,11 @@ package org.openscales.core.feature {
 		 * Inherited Feature classes usually override this function.
 		 */
 		public function draw():void {
+
 			this.graphics.clear();
+			while (this.numChildren > 0) {
+				this.removeChildAt(0);
+			}
 
 			var style:Style;
 			if (this.style == null) {
@@ -425,31 +426,28 @@ package org.openscales.core.feature {
 
 		/**
 		 *To get an editable clone
-		 **/
-		/*public function getEditableClone():Feature {
-			var editableClone:Feature = this.clone() as Feature;
-			editableClone._isEditionFeature = true;
-			editableClone.isEditable = false;
-			editableClone.editionFeatureParent = this;
-			return editableClone;
-		}*/
+		 **/ /*public function getEditableClone():Feature {
+		   var editableClone:Feature = this.clone() as Feature;
+		   editableClone._isEditionFeature = true;
+		   editableClone.isEditable = false;
+		   editableClone.editionFeatureParent = this;
+		   return editableClone;
+		 }*/
 
 		/**
 		 * delete edition vertice(Virtual) only for edition feature
-		 * */
-		/*public function deleteEditionVertices():void {
-			this._editionFeaturesArray = null;
-			this._editionFeaturesArray = new Array();
-		}*/
+		 * */ /*public function deleteEditionVertices():void {
+		   this._editionFeaturesArray = null;
+		   this._editionFeaturesArray = new Array();
+		 }*/
 
 		/**
 		 * Refresh edition vertice(Virtual) only for edition feature
 		 * @param geometry
-		 * */
-		/*public function RefreshEditionVertices():void {
-			deleteEditionVertices();
-			createEditionVertices();
-		}*/
+		 * */ /*public function RefreshEditionVertices():void {
+		   deleteEditionVertices();
+		   createEditionVertices();
+		 }*/
 
 		// END OF EDITION MODE
 
@@ -467,51 +465,47 @@ package org.openscales.core.feature {
 		 * */
 		public function set isEditable(value:Boolean):void {
 			this._isEditable = value;
-			/*if (_isEditable) {
-				this._isEditionFeature = false;
-			}*/
+		/*if (_isEditable) {
+		   this._isEditionFeature = false;
+		 }*/
 		}
 
 		/**
 		 * To know if the vector feature  is a temporary vector only used
 		 * for edition mode
-		 **/
-		/*public function get isEditionFeature():Boolean {
-			return this._isEditionFeature;
-		}*/
+		 **/ /*public function get isEditionFeature():Boolean {
+		   return this._isEditionFeature;
+		 }*/
 
 		/**
 		 * To know if the vector feature  is a temporary vector only used
 		 * for edition mode
-		 **/
-		/*public function set isEditionFeature(value:Boolean):void {
-			this._isEditionFeature = value;
-		}*/
+		 **/ /*public function set isEditionFeature(value:Boolean):void {
+		   this._isEditionFeature = value;
+		 }*/
 
 		/**
 		 *Link to all temporary features used to edit the feature
-		 * */
-		/*public function get editionFeaturesArray():Array {
-			return this._editionFeaturesArray;
-		}*/
+		 * */ /*public function get editionFeaturesArray():Array {
+		   return this._editionFeaturesArray;
+		 }*/
 
 		/**
 		 * @private
-		 * */
-		/*public function set editionFeaturesArray(value:Array):void {
-			this._editionFeaturesArray = value;
-		}*/
+		 * */ /*public function set editionFeaturesArray(value:Array):void {
+		   this._editionFeaturesArray = value;
+		 }*/
 
 		/*public function get editionFeatureParent():Feature {
-			if (!this.isEditionFeature)
-				return null;
-			return this._editionFeatureParent;
-		}
+		   if (!this.isEditionFeature)
+		   return null;
+		   return this._editionFeatureParent;
+		   }
 
-		public function set editionFeatureParent(value:Feature):void {
-			if (this.isEditionFeature)
-				this._editionFeatureParent = value;
-		}*/
+		   public function set editionFeatureParent(value:Feature):void {
+		   if (this.isEditionFeature)
+		   this._editionFeatureParent = value;
+		 }*/
 
 
 		static public function compatibleFeatures(features:Array):Boolean {

@@ -1,6 +1,8 @@
 package org.openscales.core.style.marker {
 	import flash.display.DisplayObject;
 
+	import org.openscales.core.feature.Feature;
+
 	/**
 	 * DisplayObjectMarker defines the representation of a punctual feature
 	 * as an instance of a given that extends DisplayObject
@@ -21,7 +23,7 @@ package org.openscales.core.style.marker {
 			this._yOffset = yOffset;
 		}
 
-		override protected function generateGraphic():DisplayObject {
+		override protected function generateGraphic(feature:Feature):DisplayObject {
 
 			var result:DisplayObject = (new _c() as DisplayObject);
 			result.x = this._xOffset;
@@ -55,13 +57,14 @@ package org.openscales.core.style.marker {
 
 			return this._yOffset;
 		}
-		
-		public function get image():Class{
+
+		public function get image():Class {
 			return this._c;
 		}
-		public function set image(value:Class):void{
-			this._c=value;
+
+		public function set image(value:Class):void {
+			this._c = value;
 		}
-		
+
 	}
 }

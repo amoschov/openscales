@@ -6,7 +6,8 @@
 				paddingLeft="5"
 				paddingRight="5"
 				paddingTop="5"
-				creationComplete="init();" viewSourceURL="srcview/index.html">
+				creationComplete="init();"
+				viewSourceURL="srcview/index.html">
 
 	<mx:Style>
 		ToolTip {
@@ -50,7 +51,7 @@
 				setOSdescription();
 				expandTree();
 				// Define the default example
-				tree.selectedIndex = 1;
+				tree.selectedIndex = 15;
 				updateSelectedExample();
 			}
 
@@ -154,6 +155,9 @@
 					<example viewStack="reprojectionAndQuery"
 							 label="Reproject and query"
 							 description="The 2 point features should be located at the same place : Lyon in France."/>
+					<example viewStack="statistics"
+							 label="Display Statistics"
+							 description="Display statistics on your maps"/>
 				</category>
 
 				<category label="Protocols">
@@ -231,10 +235,12 @@
 							displayTrace="{displayTrace}"/>
 			<os:OpenStreetMap id="reprojectionAndQuery"
 							  displayTrace="{displayTrace}"/>
+			<os:StatisticsExample id="statistics"
+								  displayTrace="{displayTrace}"/>
 
 			<!-- Protocols -->
 			<os:WFSBaseLayerExample id="wfsBase"
-							displayTrace="{displayTrace}"/>
+									displayTrace="{displayTrace}"/>
 			<os:WMSCExample id="wmsc"
 							displayTrace="{displayTrace}"/>
 			<os:WMSExample id="wms"

@@ -1,6 +1,6 @@
 package org.openscales.core.feature {
 	import flash.display.DisplayObject;
-	
+
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Collection;
@@ -31,7 +31,7 @@ package org.openscales.core.feature {
 		public function PointFeature(geom:Point=null, data:Object=null, style:Style=null, isEditionFeature:Boolean=false, editionFeatureParentGeometry:Collection=null) {
 			//The point is none editable
 			super(geom, data, style, false, isEditionFeature);
-			
+
 			this._isEditionFeature = isEditionFeature;
 			if (editionFeatureParentGeometry != null && isEditionFeature)
 				this._editionFeatureParentGeometry = editionFeatureParentGeometry;
@@ -39,11 +39,11 @@ package org.openscales.core.feature {
 				this._editionFeatureParentGeometry = null;
 			}
 		}
-		
+
 		override public function get lonlat():LonLat {
 			var value:LonLat = null;
 			if (this.point != null) {
-				value=  new LonLat(this.point.x, this.point.y);
+				value = new LonLat(this.point.x, this.point.y);
 			}
 			return value;
 		}
@@ -76,60 +76,18 @@ package org.openscales.core.feature {
 			var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
 			x = dX + point.x / resolution;
 			y = dY - point.y / resolution;
+			this.graphics.drawRect(x, y, 5, 5);
 
 			if (symbolizer is PointSymbolizer) {
 				var pointSymbolizer:PointSymbolizer = (symbolizer as PointSymbolizer);
 				if (pointSymbolizer.graphic) {
-					if (pointSymbolizer.graphic is WellKnownMarker) {
-						this.drawMark(pointSymbolizer.graphic as WellKnownMarker, x, y);
-					} else if (pointSymbolizer.graphic is DisplayObjectMarker) {
 
-						this.drawFlashGraphic(pointSymbolizer.graphic as DisplayObjectMarker, x, y);
-					}
+					var render:DisplayObject = pointSymbolizer.graphic.getDisplayObject(this);
+					render.x += x;
+					render.y += y;
+
+					this.addChild(render);
 				}
-			}
-		}
-
-		protected function drawFlashGraphic(marker:DisplayObjectMarker, x:Number, y:Number):void {
-
-			var instance:DisplayObject = marker.instance;
-			instance.x += x;
-			instance.y += y;
-
-			this.addChild(instance);
-		}
-
-		protected function drawMark(mark:WellKnownMarker, x:Number, y:Number):void {
-
-			var x:Number;
-			var y:Number;
-			var resolution:Number = this.layer.map.resolution
-			var dX:int = -int(this.layer.map.layerContainer.x) + this.left;
-			var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
-			x = dX + point.x / resolution;
-			y = dY - point.y / resolution;
-
-			mark.fill.configureGraphics(this.graphics, this);
-			mark.stroke.configureGraphics(this.graphics);
-
-			switch (mark.wellKnownName) {
-
-				case WellKnownMarker.WKN_SQUARE:  {
-					this.graphics.drawRect(x - (mark.size / 2), y - (mark.size / 2), mark.size, mark.size);
-					break;
-				}
-				case WellKnownMarker.WKN_CIRCLE:  {
-					this.graphics.drawCircle(x, y, mark.size / 2);
-					break;
-				}
-				case WellKnownMarker.WKN_TRIANGLE:  {
-					this.graphics.moveTo(x, y - (mark.size / 2));
-					this.graphics.lineTo(x + mark.size / 2, y + mark.size / 2);
-					this.graphics.lineTo(x - mark.size / 2, y + mark.size / 2);
-					this.graphics.lineTo(x, y - (mark.size / 2));
-					break;
-				}
-				// TODO : Implement other well known names and take into account opacity, rotation of the mark
 			}
 		}
 

@@ -1,4 +1,6 @@
 package org.openscales.core.feature {
+	import flash.display.DisplayObject;
+
 	import org.openscales.core.Trace;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
@@ -25,51 +27,15 @@ package org.openscales.core.feature {
 			if (symbolizer is PointSymbolizer) {
 				var pointSymbolizer:PointSymbolizer = (symbolizer as PointSymbolizer);
 				if (pointSymbolizer.graphic) {
-					if (pointSymbolizer.graphic is WellKnownMarker) {
-						this.drawMark(pointSymbolizer.graphic as WellKnownMarker);
-					}
+
+					var render:DisplayObject = pointSymbolizer.graphic.getDisplayObject(this);
+					render.x += x;
+					render.y += y;
+
+					this.addChild(render);
 				}
 			}
 
-		}
-
-		protected function drawMark(mark:WellKnownMarker):void {
-			Trace.log("Drawing marks");
-			mark.fill.configureGraphics(this.graphics, this);
-			mark.stroke.configureGraphics(this.graphics);
-			// Variable declaration before for loop to improve performances
-			var p:Point = null;
-			var x:Number;
-			var y:Number;
-			var resolution:Number = this.layer.map.resolution
-			var dX:int = -int(this.layer.map.layerContainer.x) + this.left;
-			var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
-
-			for (var i:int = 0; i < points.componentsLength; i++) {
-				p = points.componentByIndex(i) as Point;
-				x = dX + p.x / resolution;
-				y = dY - p.y / resolution;
-
-				switch (mark.wellKnownName) {
-
-					case WellKnownMarker.WKN_SQUARE:  {
-						this.graphics.drawRect(x - (mark.size / 2), y - (mark.size / 2), mark.size, mark.size);
-						break;
-					}
-					case WellKnownMarker.WKN_CIRCLE:  {
-						this.graphics.drawCircle(x, y, mark.size);
-						break;
-					}
-					case WellKnownMarker.WKN_TRIANGLE:  {
-						this.graphics.moveTo(x, y - (mark.size / 2));
-						this.graphics.lineTo(x + mark.size / 2, y + mark.size / 2);
-						this.graphics.lineTo(x - mark.size / 2, y + mark.size / 2);
-						this.graphics.lineTo(x, y - (mark.size / 2));
-						break;
-					}
-					// TODO : Implement other well known names and take into account opacity, rotation of the mark
-				}
-			}
 		}
 
 		/**
