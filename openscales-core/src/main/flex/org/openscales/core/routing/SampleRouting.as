@@ -1,13 +1,10 @@
 package org.openscales.core.routing
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.geometry.Point;
 	import org.openscales.core.layer.FeatureLayer;
 
 	public class SampleRouting extends AbstractRouting
 	{
-		private var _vertices:Array=new Array(new Point(4.8,45.0),new Point(4.9,45.80),new Point(4.9,45.9));
-		
 		public function SampleRouting(map:Map=null,active:Boolean=false, resultsLayer:FeatureLayer=null)
 		{
 			super(map,active,resultsLayer);
@@ -19,25 +16,40 @@ package org.openscales.core.routing
 		override public function  sendRequest():void{
 			 var results:Array=new Array();
 			 var distanceArray:Array=new Array();
+			 var distance:Array=new Array();
 			 if(startPoint)
 			 {
 			 	distanceArray.push(new Array(startPoint.point.distanceTo(startPoint.point),startPoint.geometry));
-			 	if(intermediaryPointsNumber()>0 || endPoint){
-					for(var i:int=0;i<_vertices.length;i++){
-					distanceArray.push(new Array(startPoint.point.distanceTo(_vertices[i] as Point),_vertices[i]));
-					}
-				}
-				for(i=0;i<intermediaryPointsNumber();i++){
+			 	distance.push(startPoint.point.distanceTo(startPoint.point));
+				for(var i:int=0;i<intermediaryPointsNumber();i++){
 					distanceArray.push(new Array(startPoint.point.distanceTo(getIntermediaryPointByIndex(i).point),getIntermediaryPointByIndex(i).point));
+						distance.push(startPoint.point.distanceTo(getIntermediaryPointByIndex(i).point));
 				}
-				distanceArray.sort();
+				distance.sort(sortOnValue);
 			 }
-			 for (i=0;i<distanceArray.length;i++){
-			 	results.push(distanceArray[i][1]);
+			 for(i=0;i<distance.length;i++)
+			 {
+			 	for(var j:int=0;j<distanceArray.length;j++){
+			 		if(distance[i]==distanceArray[j][0]){
+			 			results.push(distanceArray[j][1]);
+			 			break;
+			 		}
+			 	}
 			 }
+			/*  FOR (I=0;I<DISTANCEARRAY.LENGTH;I++){
+			 	RESULTS.PUSH(DISTANCEARRAY[I][1]);
+			 } */
 			 if(endPoint) results.push(endPoint.geometry);
 			 displayResult(results);
 		}
+		
+		public function sortOnValue(a:Number,b:Number):Number{
+			if(a>b) return 1;
+			else if(a<b) return -1;
+			else return 0;
+		}
+
+		
 		
 	}
 }

@@ -62,6 +62,12 @@ package org.openscales.core.routing
 		 * */
 		 [Embed(source="/assets/images/marker.png")]
 		 private var _endPointClass:Class;
+		 
+		 /**
+		 *@private 
+		 **/
+		 private var _forceStartPointDrawing:Boolean=false; 
+		 
 		 /**
 		 *Constructor
 		 * @param map:Map Map Object
@@ -150,14 +156,15 @@ package org.openscales.core.routing
 		/**
 		 * Add the itinerary points
 		 * */
-		public function addPoint(px:Pixel):void{
+		private function addPoint(px:Pixel):void{
 			//we determine the point where the user clicked
 			if(_resultsLayer!=null){
 				var lonlat:LonLat = this.map.getLonLatFromLayerPx(px);
 				var featureAdded:Marker=new Marker(new Point(lonlat.lon,lonlat.lat));
 				featureAdded.isEditable=true;
-				if(!_startPoint)
-				{		
+				if(!_startPoint || _forceStartPointDrawing)
+				{	
+					if(_startPoint) resultsLayer.removeFeature(_startPoint);	
 					_startPoint=featureAdded;
 					_startPoint.image=_startPointclass;
 				}
@@ -173,7 +180,7 @@ package org.openscales.core.routing
 		 * which is at this position(not treated yet)
 		 * @param px: The points coordinates
 		 * */
-		public function addfinalPoint(px:Pixel):void{
+		private function addfinalPoint(px:Pixel):void{
 			var lonlat:LonLat = this.map.getLonLatFromLayerPx(px);
 			if(!_endPoint)
 			{
@@ -226,7 +233,7 @@ package org.openscales.core.routing
 		 }
 		 /**
 		 * Number of intermediary points
-		 * @return iintermediary points array length
+		 * @return intermediary points array length
 		 **/
 		 public function intermediaryPointsNumber():Number{
 		 	return _intermedPoints.length;
@@ -243,7 +250,7 @@ package org.openscales.core.routing
 		 		refreshRouting();
 		 		}
 		 }
-	
+		
 		//getters && setters
 		/**
 		 * @inherited
@@ -324,6 +331,38 @@ package org.openscales.core.routing
 		 		this._endPoint=value;
 		 		refreshRouting();
 		 	}	
+		 }
+		 /**
+		 * This attribute forces the itinerary to add/change the location of start point by a click event
+		 * or when you call the addPoint Function  
+		 * */
+		 public function get forceStartPoint():Boolean{
+		 	return this._forceStartPointDrawing;
+		 }
+		 /**
+		 * @private
+		 * */
+		 public function set forceStartPoint(value:Boolean):void{
+		 	this._forceStartPointDrawing=value;
+		 }	
+		 /**
+		 * Set the picture behind the start point
+		 * */
+		 public function set startPointclass(value:Class):void{
+		 	if(value)_startPointclass=value;
+		 }
+		 
+		 /**
+		 * set the picture behind the stop point 
+		 **/
+		 public function set endPointClass(value:Class):void{
+		 	if(value)_endPointClass=value;
+		 }
+		 /**
+		 * set the  picture behind intermediary point 
+		 * */
+		 public function set intermedPointClass(value:Class):void{
+		 	if(value)_intermedPointClass=value;
 		 }
 	}
 }

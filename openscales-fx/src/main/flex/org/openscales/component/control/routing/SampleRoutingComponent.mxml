@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Control xmlns="org.openscales.component.control.*"  xmlns:os="http://openscales.org" xmlns:mx="http://www.adobe.com/2006/mxml" width="210" height="208" backgroundColor="#FFFFFF" xmlns:osm="org.openscales.core.layer.osm.*">
+<Control xmlns="org.openscales.component.control.*"  xmlns:os="http://openscales.org" xmlns:mx="http://www.adobe.com/2006/mxml" width="210" height="238" backgroundColor="#FFFFFF" xmlns:osm="org.openscales.core.layer.osm.*">
 <mx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
 			import org.openscales.core.layer.FeatureLayer;
 			import org.openscales.core.Map;
 			[Bindable] public var resultsLayer:FeatureLayer;
+		    [Embed(source="/assets/images/marker-green.png")]
+		    [Bindable] private var _startPointclass:Class;
+		    [Embed(source="/assets/images/marker-gold.png")]
+		    [Bindable] private var _intermedPointClass:Class;
+		    [Embed(source="/assets/images/marker.png")]
+		    [Bindable] private var _endPointClass:Class;
+			public function oncheckboxaddStartPointClick(event:Event):void{
+				fxSampleRouting.forceStartPoint=addStartPoint.selected;
+			}
+			public function oncheckboxActiveClick(event:Event):void{
+				fxSampleRouting.active=Active.selected;
+			}
 		]]>
 </mx:Script>
-	<os:FxSampleRouting map="{map}" resultsLayer="{resultsLayer}"/>
-	<mx:VBox x="10" y="10" height="188" width="186">
+	<os:FxSampleRouting id="fxSampleRouting" map="{map}" resultsLayer="{resultsLayer}" startPointClass="{_startPointclass}" endPointClass="{_endPointClass}" intermedPointClass="{_intermedPointClass}"/>
+	<mx:VBox x="10" y="10" height="206" width="186">
 		<mx:Label text="Routing component" width="184" fontFamily="Verdana" fontSize="12" fontWeight="bold" textAlign="center" textDecoration="underline"/>
-		<mx:RadioButton label="Add or Modify start point" width="184"/>
+		<!--<mx:RadioButton label="Add or Modify start point" width="184"  click="Alert.show('boo')"/>-->
+		<mx:CheckBox id="Active" label="Activate/deactivate the control" width="184" click="oncheckboxActiveClick(event)" selected="true"/>
+		<mx:CheckBox id="addStartPoint" label="Add or Modify start point location" width="184" click="oncheckboxaddStartPointClick(event)"/>
 		<mx:Label text="Legend" width="185" textAlign="center" textDecoration="underline" fontSize="11" fontWeight="bold"/>
 		<mx:HBox width="100%">
 			<mx:Image source="assets/images/marker-green.png"/>
