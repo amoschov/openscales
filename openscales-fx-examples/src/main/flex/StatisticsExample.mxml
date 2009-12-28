@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns="*"
+		   xmlns:mx="http://www.adobe.com/2006/mxml"
+		   xmlns:os="http://openscales.org"
+		   creationComplete="initMap();">
+
+	<os:Map id="fxmap"
+			width="100%"
+			height="100%"
+			zoom="5"
+			centerLonLat="4.84479575848897,45.7531798723947">
+
+		<os:TraceInfo id="traceInfo"
+					  x="{width-200}"
+					  y="0"
+					  visible="{displayTrace}"/>
+
+		<os:Mapnik name="Mapnik"
+				   isBaseLayer="true"
+				   proxy="http://openscales.org/proxy.php?url="/>
+
+		<!--<os:DragHandler/>-->
+		<os:WheelHandler/>
+
+		<os:Spinner id="spinner"
+					x="{width / 2}"
+					y="{height / 2}"/>
+		<os:MousePosition x="10"
+						  y="{height-20}"
+						  displayProjection="EPSG:4326"/>
+
+		<!-- Specific layers and handlers of this example -->
+		<os:WFS id="ignGeoplaRegion"
+				name="IGN - Geopla (Départements)"
+				url="http://openscales.org/geoserver/wfs"
+				typename="pg:simplif_dept"
+				projection="EPSG:2154"
+				version="1.0.0"
+				style="{this.createStyleLatitude()}"/>
+
+		<os:SelectFeaturesHandler id="selectFeatureHandler"
+								  active="true"/>
+	</os:Map>
+
+	<!-- Specific tools of this example -->
+
+	<os:ControlPanel x="10"
+					 y="10"
+					 width="140"
+					 title="Navigation">
+
+		<os:PanComponent map="{map}"/>
+		<mx:HBox width="100%"
+				 paddingLeft="5"
+				 paddingRight="5">
+			<os:ZoomComponent map="{map}"/>
+			<mx:Spacer width="100%"/>
+			<os:ZoomBoxComponent map="{map}"
+								 width="32"
+								 height="32"/>
+		</mx:HBox>
+	</os:ControlPanel>
+
+	<mx:Panel title="featureInfos"
+			  bottom="0"
+			  right="0">
+		<os:FeatureInfoComponent id="featureInfoComponent"
+								 creationComplete="(selectFeatureHandler.handler as SelectFeaturesHandler).onSelectedFeature = featureInfoComponent.showInfo"/>
+	</mx:Panel>
+
+	<mx:Script>
+		<![CDATA[
+			import statisticsexample.CircleSizeExpression;
+			import org.openscales.core.filter.expression.IExpression;
+			import org.openscales.core.style.marker.Marker;
+			import org.openscales.core.style.marker.WellKnownMarker;
+			import org.openscales.core.style.symbolizer.PointSymbolizer;
+			import mx.containers.VBox;
+			import org.openscales.core.filter.ContainsFilter;
+			import org.openscales.core.filter.ElseFilter;
+			import org.openscales.core.filter.IntersectsFilter;
+			import styleexample.CentroidYFilter;
+			import org.openscales.core.style.stroke.Stroke;
+			import org.openscales.core.style.fill.SolidFill;
+			import org.openscales.core.style.fill.BitmapFill;
+			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
+			import org.openscales.core.style.symbolizer.Symbolizer;
+			import org.openscales.core.handler.feature.SelectFeaturesHandler;
+			import mx.core.UIComponent;
+			import org.openscales.core.style.Rule;
+			import mx.controls.Label;
+			import mx.containers.HBox;
+			import org.openscales.core.Map;
+			import org.openscales.core.Trace;
+			import org.openscales.core.style.Style;
+			import org.openscales.core.basetypes.Bounds;
+
+			[Bindable]
+			private var map:Map = null;
+			[Bindable]
+			public var displayTrace:Boolean = false;
+			[Bindable]
+			public var displayFirebugTrace:Boolean = false;
+
+			[Bindable]
+			private var styles:Array = [];
+
+			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
+				map = fxmap.map;
+
+				// Specific initialize for this example
+				this.createStyleLatitude();
+			}
+
+			private function createStyleLatitude():void {
+				var style:Style = new Style();
+				style.name = "Latitude related coloration";
+				var fill:SolidFill, stroke:Stroke, symbolizer:Symbolizer, rule:Rule;
+
+				rule = new Rule();
+				rule.name = "Centroid Y-coordinate in [70000;75000]";
+				fill = new SolidFill(0x176273, .8);
+				stroke = new Stroke(0x0A2C33, 2);
+				symbolizer = new PolygonSymbolizer(fill, stroke);
+				rule.symbolizers.push(symbolizer);
+				style.rules.push(rule);
+
+
+				rule = new Rule();
+				rule.name = "Population sized circles";
+				var exp:IExpression = new CircleSizeExpression(5, 20, 74000, 2560000);
+				var marker:Marker = new WellKnownMarker(WellKnownMarker.WKN_CIRCLE, new SolidFill(0x84BF7A, .8), new Stroke(0x233321, 2), exp);
+				symbolizer = new PointSymbolizer(marker);
+				rule.symbolizers.push(symbolizer);
+				style.rules.push(rule);
+
+				this.styles.push(style);
+				this.ignGeoplaRegion.style = style;
+				this.ignGeoplaRegion.layer.redraw();
+			}
+		]]>
+	</mx:Script>
+
+</mx:Canvas>
+
