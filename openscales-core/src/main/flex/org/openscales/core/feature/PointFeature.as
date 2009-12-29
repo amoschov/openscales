@@ -17,27 +17,16 @@ package org.openscales.core.feature {
 	 * Feature used to draw a Point geometry on FeatureLayer
 	 */
 	public class PointFeature extends Feature {
-		//This attributes is use in features edition mode
-		/* private var _isEditionFeature:Boolean = false; */
 
 		/**
 		 * the geometry of the parent when the feature is an edition feature
 		 **/
 		private var _editionFeatureParentGeometry:Collection = null;
 
-		//Start drag pixel
-		private var _startdrag:Pixel = null;
 
-		public function PointFeature(geom:Point=null, data:Object=null, style:Style=null , isEditionFeature:Boolean=false, editionFeatureParentGeometry:Collection=null ) {
+		public function PointFeature(geom:Point=null, data:Object=null, style:Style=null ) {
 			//The point is none editable
-			super(geom, data, style, false/* , isEditionFeature */);
-
-			/* this._isEditionFeature = isEditionFeature;
-			if (editionFeatureParentGeometry != null && isEditionFeature)
-				this._editionFeatureParentGeometry = editionFeatureParentGeometry;
-			else {
-				this._editionFeatureParentGeometry = null;
-			} */
+			super(geom, data, style, false);
 		}
 
 		override public function get lonlat():LonLat {
@@ -50,7 +39,6 @@ package org.openscales.core.feature {
 
 		override public function destroy():void {
 			this._editionFeatureParentGeometry = null;
-			this._startdrag = null;
 			super.destroy();
 		}
 
@@ -100,16 +88,6 @@ package org.openscales.core.feature {
 			return PointFeatureClone;
 		}
 
-		/**
-		 * the geometry of the parent when the feature is an edition feature
-		 **/
-	/* 	public function get editionFeatureParentGeometry():Collection {
-			return this._editionFeatureParentGeometry;
-		}
-
-		public function set editionFeatureParentGeometry(value:Collection):void {
-			this._editionFeatureParentGeometry = value;
-		} */
 
 		/**
 		 * To know the segment of the Collection the edition point belongs to
@@ -194,12 +172,17 @@ package org.openscales.core.feature {
 				}
 			}
 			if (distanceArray.length > 1) {
-				distanceArray.sort();
+				distanceArray.sort(sortOnValue);
 				return distanceArray[0][1];
 			} else if (distanceArray.length == 1)
 				return distanceArray[0][1];
 			}
 			return -1;
+		}
+		private  function sortOnValue(a:Number,b:Number):Number{
+			if(a>b) return 1;
+			else if(a<b) return -1;
+			else return 0;
 		}
 	}
 }

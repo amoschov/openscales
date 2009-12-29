@@ -13,9 +13,9 @@ package org.openscales.core.feature
 	 */
 	public class LineStringFeature extends Feature
 	{
-		public function LineStringFeature(geom:LineString=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null) 
+		public function LineStringFeature(geom:LineString=null, data:Object=null, style:Style=null,isEditable:Boolean=false) 
 		{
-			super(geom, data, style,isEditable,isEditionFeature);
+			super(geom, data, style,isEditable);
 		}
 
 		public function get lineString():LineString {

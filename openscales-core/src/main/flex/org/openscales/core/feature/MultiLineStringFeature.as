@@ -13,9 +13,9 @@ package org.openscales.core.feature
 	 */
 	public class MultiLineStringFeature extends Feature
 	{
-		public function MultiLineStringFeature(geom:MultiLineString=null, data:Object=null, style:Style=null,isEditable:Boolean=false,isEditionFeature:Boolean=false,editionFeatureParentGeometry:Collection=null) 
+		public function MultiLineStringFeature(geom:MultiLineString=null, data:Object=null, style:Style=null,isEditable:Boolean=false) 
 		{
-			super(geom, data, style,isEditable,isEditionFeature);
+			super(geom, data, style,isEditable);
 		}
 
 		public function get lineStrings():MultiLineString {

@@ -16,8 +16,8 @@ package org.openscales.core.feature {
 	 * Feature used to draw a MultiPolygon geometry on FeatureLayer
 	 */
 	public class MultiPolygonFeature extends Feature {
-		public function MultiPolygonFeature(geom:MultiPolygon=null, data:Object=null, style:Style=null, isEditable:Boolean=false, isEditionFeature:Boolean=false, editionFeatureParentGeometry:Collection=null) {
-			super(geom, data, style, isEditable, isEditionFeature);
+		public function MultiPolygonFeature(geom:MultiPolygon=null, data:Object=null, style:Style=null, isEditable:Boolean=false) {
+			super(geom, data, style, isEditable);
 		}
 
 		public function get polygons():MultiPolygon {

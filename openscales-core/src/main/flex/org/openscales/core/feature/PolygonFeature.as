@@ -12,8 +12,8 @@ package org.openscales.core.feature {
 	 * Feature used to draw a Polygon geometry on FeatureLayer
 	 */
 	public class PolygonFeature extends Feature {
-		public function PolygonFeature(geom:Polygon=null, data:Object=null, style:Style=null, isEditable:Boolean=false, isEditionFeature:Boolean=false, editionFeatureParentGeometry:Collection=null) {
-			super(geom, data, style, isEditable, isEditionFeature);
+		public function PolygonFeature(geom:Polygon=null, data:Object=null, style:Style=null, isEditable:Boolean=false) {
+			super(geom, data, style, isEditable);
 		}
 
 		public function get polygon():Polygon {

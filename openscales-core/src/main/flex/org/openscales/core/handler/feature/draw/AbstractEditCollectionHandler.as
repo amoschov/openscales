@@ -104,11 +104,6 @@ package org.openscales.core.handler.feature.draw
 					//We start to drag the vector feature
 					vectorfeature.startDrag();
 					//We see if the feature already belongs to the edited vector feature
-					/*indexOfFeatureCurrentlyDrag=IsRealVertice(vectorfeature);
-					var parentgeometry:Collection=editionFeatureParentGeometry(vectorfeature,parentFeature.geometry as Collection);*/
-					//else it's a point under the mouse so we find the segement it belongs to
-				//	if(indexOfFeatureCurrentlyDrag==-1) indexOfFeatureCurrentlyDrag=vectorfeature.getSegmentsIntersection(vectorfeature.editionFeatureParentGeometry as Collection);
-				//	if(indexOfFeatureCurrentlyDrag==-1) indexOfFeatureCurrentlyDrag=vectorfeature.getSegmentsIntersection(parentgeometry as Collection);
 					indexOfFeatureCurrentlyDrag=findIndexOfFeatureCurrentlyDrag(vectorfeature);
 					if(vectorfeature!=AbstractEditCollectionHandler._pointUnderTheMouse)this._featureCurrentlyDrag=vectorfeature;
 					else this._featureCurrentlyDrag=null;
@@ -193,13 +188,13 @@ package org.openscales.core.handler.feature.draw
 		 override public function featureDoubleClick(event:FeatureEvent):void{
 		 	
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
-		 	//var index:int=IsRealVertice(vectorfeature);
-		 	var index:int=findIndexOfFeatureCurrentlyDrag(vectorfeature);
+		 	
 		 	var parentFeature:Feature=findVirtualVerticeParent(vectorfeature);
-		 	if(vectorfeature!=AbstractEditCollectionHandler._pointUnderTheMouse && parentFeature && parentFeature.geometry is Collection){
+		 	if(parentFeature && parentFeature.geometry is Collection){
 		 	var parentGeometry:Collection=editionFeatureParentGeometry(vectorfeature,parentFeature.geometry as Collection);
+		 	var index:int=IsRealVertice(vectorfeature,parentGeometry);
+		 	
 		 	if(index!=-1){	 		
-		 		//vectorfeature.editionFeatureParentGeometry.removeComponent(vectorfeature.editionFeatureParentGeometry.componentByIndex(index));
 		 		 parentGeometry.removeComponent(parentGeometry.componentByIndex(index));
 		 		 if(displayedVirtualVertices)displayVisibleVirtualVertice(findVirtualVerticeParent(vectorfeature as PointFeature));
 		 	}
@@ -241,7 +236,6 @@ package org.openscales.core.handler.feature.draw
 		 		var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
 				//drawing equals false if the mouse is too close from Virtual vertice
 				var drawing:Boolean=true;
-					//for each(var feature:Feature in _editionFeatureArray){
 					for(var i:int=0;i<_editionFeatureArray.length;i++){
 						var feature:Feature=_editionFeatureArray[i][0] as Feature;
 						if(feature!=null && feature!=AbstractEditCollectionHandler._pointUnderTheMouse &&  vectorfeature==_editionFeatureArray[i][1]){
@@ -261,21 +255,16 @@ package org.openscales.core.handler.feature.draw
 						AbstractEditCollectionHandler._pointUnderTheMouse.geometry=PointGeomUnderTheMouse;
 						}
 						else {
-						AbstractEditCollectionHandler._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse,null,Style.getDefaultCircleStyle(),true);
+						AbstractEditCollectionHandler._pointUnderTheMouse=new PointFeature(PointGeomUnderTheMouse,null,Style.getDefaultCircleStyle());
 						this._featureClickHandler.addControledFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
 						}
 						if(AbstractEditCollectionHandler._pointUnderTheMouse.layer==null) {
 							layerToEdit.addFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
 							 _editionFeatureArray.push(new Array(AbstractEditCollectionHandler._pointUnderTheMouse,vectorfeature));
 						}
-						//AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry=null;
-						//We find the segment the point under the mouse belongs to
-						/* findPointUnderMouseCollection(vectorfeature.geometry,AbstractEditCollectionHandler._pointUnderTheMouse); */
 						
 					 	if(findIndexOfFeatureCurrentlyDrag(AbstractEditCollectionHandler._pointUnderTheMouse)!=-1){ 
-								//AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParent=vectorfeature;
-								/*  _editionFeatureArray.push(new Array(AbstractEditCollectionHandler._pointUnderTheMouse,vectorfeature));  */
-								AbstractEditCollectionHandler._pointUnderTheMouse.visible=true;
+							AbstractEditCollectionHandler._pointUnderTheMouse.visible=true;
 						 } 
 						else AbstractEditCollectionHandler._pointUnderTheMouse.visible=false;
 						layerToEdit.redraw();	
@@ -296,34 +285,7 @@ package org.openscales.core.handler.feature.draw
 		 protected function drawTemporaryFeature(event:MouseEvent):void{
 		 	
 		 }
-		 /**
-		 * To find at which segments of a collection the point under the mouse belongs to
-		 * @private
-		 * */
-		/*  private function findPointUnderMouseCollection(vectorfeatureGeometry:Geometry,pointUnderTheMouse:PointFeature):void{
-		 			for (var i:int=0;i<(vectorfeatureGeometry as Collection).componentsLength;i++){
-		 				var geometry:Geometry=(vectorfeatureGeometry as Collection).componentByIndex(i);
-		 				if(geometry is Collection){
-		 					//we test if we have a Linestring or a linearring which extends LinesTRING because 
-		 					//there are the basics components of MultiLineString or MultiPolygon
-		 					if(!(geometry is LineString)){
-		 						findPointUnderMouseCollection(geometry,pointUnderTheMouse);
-		 					}
-		 					else{
-		 						if(pointUnderTheMouse.getSegmentsIntersection(geometry as Collection,this._detectionTolerance)!=-1){
-//		 							pointUnderTheMouse.editionFeatureParentGeometry=geometry as Collection;
-		 							break;
-		 						}
-		 					}
-		 				}
-		 				else{
-		 			//		 pointUnderTheMouse.editionFeatureParentGeometry=vectorfeatureGeometry as Collection;
-		 					 break;
-		 				}
-		 			} 
-		 	
-		 	
-		 } */
+	
 		 override public function refreshEditedfeatures(event:MapEvent=null):void{
 		 	if(AbstractEditCollectionHandler._pointUnderTheMouse){
 		 		this._layerToEdit.removeFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
@@ -354,25 +316,16 @@ package org.openscales.core.handler.feature.draw
 		 * */
 		 private function IsRealVertice(vectorfeature:PointFeature,parentgeometry:Collection):Number{
 		 	
-		 			/* var parentFeature:Feature=findVirtualVerticeParent(vectorfeature); */
-		 			/* if(parentFeature && parentFeature.geometry && parentFeature.geometry is Collection){ */
-		 				//We find the collection which directly has the point in its collection
-		 				/* var parentgeometry:Collection=editionFeatureParentGeometry(vectorfeature,parentFeature.geometry as Collection); */
-						if(parentgeometry){
+		 				if(parentgeometry){
 							var index:Number=0;		
-							//var componentLength:Number=(vectorfeature.editionFeatureParentGeometry as Collection).componentsLength;
-							//var componentLength:Number=parentgeometry.componentsLength;
-							var geom:Point=vectorfeature.geometry as Point;
+								var geom:Point=vectorfeature.geometry as Point;
 							//for each components of the geometry we see if the point belong to it
 							for(index=0;index<parentgeometry.componentsLength;index++){		
-								//var editionfeaturegeom:Point=(vectorfeature.editionFeatureParentGeometry as Collection).componentByIndex(index) as Point;
 								var editionfeaturegeom:Point=parentgeometry.componentByIndex(index) as Point;
 								if((vectorfeature.geometry as Point).x==editionfeaturegeom.x && (vectorfeature.geometry as Point).y==editionfeaturegeom.y) break;
 							}
 							if(index<parentgeometry.componentsLength) return index;
-							//else return -1;
 						}
-		 		/* 	} */
 		 			return -1;
 		 }
 		 /**

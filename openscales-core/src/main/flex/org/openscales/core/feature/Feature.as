@@ -37,20 +37,6 @@ package org.openscales.core.feature {
 		 **/
 		private var _isEditable:Boolean = false;
 
-		/**
-		 * To know if the vector feature  is a temporary used
-		 * for edition mode
-		 **/ /* private var _isEditionFeature:Boolean = false; */
-
-		/**
-		 *Link to all temporary features used to edit the feature
-		 * */ /*private var _editionFeaturesArray:Array = new Array();*/
-
-		/**
-		 * Edition feature parent
-		 * when the feature is an edition feature
-		 * */ /*private var _editionFeatureParent:Feature = null;*/
-
 
 		/**
 		 * Attributes usually generated from data parsing or user input
@@ -92,7 +78,7 @@ package org.openscales.core.feature {
 		 * @param lonlat The lonlat position of the feature.
 		 * @param data
 		 */
-		public function Feature(geom:Geometry=null, data:Object=null, style:Style=null, isEditable:Boolean=false, isEditionFeature:Boolean=false) {
+		public function Feature(geom:Geometry=null, data:Object=null, style:Style=null, isEditable:Boolean=false) {
 			this.layer = layer;
 			this.lonlat = lonlat;
 			if (data != null) {
@@ -118,15 +104,6 @@ package org.openscales.core.feature {
 			this.style = style ? style : null;
 
 			this._isEditable = isEditable;
-			// A feature can't be editable and editionfeature(temporary feature )
-		/*if (isEditable) {
-		   if (isEditionFeature) {
-		   Trace.error("A feature can't be editable and edition feature(temporary feature ) at the same time");
-		   //this._isEditionFeature = false;
-		   }
-		   } else {
-		   //this._isEditionFeature = isEditionFeature;
-		 }*/
 
 		}
 
@@ -190,8 +167,6 @@ package org.openscales.core.feature {
 		public function destroy():void {
 			this._attributes = null;
 			this._data = null;
-			/*this._editionFeatureParent = null;
-			 this._editionFeaturesArray = null;*/
 			this._layer = null;
 			this._lonlat = null;
 			this.geometry = null;
@@ -281,12 +256,10 @@ package org.openscales.core.feature {
 		}
 
 		public function onMouseDown(pevt:MouseEvent):void {
-			/* this.buttonMode=true; */
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEDOWN, this));
 		}
 
 		public function onMouseUp(pevt:MouseEvent):void {
-			/* this.buttonMode=false; */
 			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP, this, pevt.ctrlKey));
 		}
 
@@ -424,32 +397,7 @@ package org.openscales.core.feature {
 			Trace.log("Feature.executeDrawing");
 		}
 
-		/**
-		 *To get an editable clone
-		 **/ /*public function getEditableClone():Feature {
-		   var editableClone:Feature = this.clone() as Feature;
-		   editableClone._isEditionFeature = true;
-		   editableClone.isEditable = false;
-		   editableClone.editionFeatureParent = this;
-		   return editableClone;
-		 }*/
-
-		/**
-		 * delete edition vertice(Virtual) only for edition feature
-		 * */ /*public function deleteEditionVertices():void {
-		   this._editionFeaturesArray = null;
-		   this._editionFeaturesArray = new Array();
-		 }*/
-
-		/**
-		 * Refresh edition vertice(Virtual) only for edition feature
-		 * @param geometry
-		 * */ /*public function RefreshEditionVertices():void {
-		   deleteEditionVertices();
-		   createEditionVertices();
-		 }*/
-
-		// END OF EDITION MODE
+		
 
 
 		/**
@@ -465,48 +413,8 @@ package org.openscales.core.feature {
 		 * */
 		public function set isEditable(value:Boolean):void {
 			this._isEditable = value;
-		/*if (_isEditable) {
-		   this._isEditionFeature = false;
-		 }*/
+
 		}
-
-		/**
-		 * To know if the vector feature  is a temporary vector only used
-		 * for edition mode
-		 **/ /*public function get isEditionFeature():Boolean {
-		   return this._isEditionFeature;
-		 }*/
-
-		/**
-		 * To know if the vector feature  is a temporary vector only used
-		 * for edition mode
-		 **/ /*public function set isEditionFeature(value:Boolean):void {
-		   this._isEditionFeature = value;
-		 }*/
-
-		/**
-		 *Link to all temporary features used to edit the feature
-		 * */ /*public function get editionFeaturesArray():Array {
-		   return this._editionFeaturesArray;
-		 }*/
-
-		/**
-		 * @private
-		 * */ /*public function set editionFeaturesArray(value:Array):void {
-		   this._editionFeaturesArray = value;
-		 }*/
-
-		/*public function get editionFeatureParent():Feature {
-		   if (!this.isEditionFeature)
-		   return null;
-		   return this._editionFeatureParent;
-		   }
-
-		   public function set editionFeatureParent(value:Feature):void {
-		   if (this.isEditionFeature)
-		   this._editionFeatureParent = value;
-		 }*/
-
 
 		static public function compatibleFeatures(features:Array):Boolean {
 			if ((!features) || (features.length == 0) || (!features[0]) || (!(features[0] is Feature))) {

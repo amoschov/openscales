@@ -15,8 +15,8 @@ package org.openscales.core.feature {
 	 * Feature used to draw a MultiPoint geometry on FeatureLayer
 	 */
 	public class MultiPointFeature extends Feature {
-		public function MultiPointFeature(geom:MultiPoint=null, data:Object=null, style:Style=null, isEditable:Boolean=false, isEditionFeature:Boolean=false, editionFeatureParentGeometry:Collection=null) {
-			super(geom, data, style, isEditable, isEditionFeature);
+		public function MultiPointFeature(geom:MultiPoint=null, data:Object=null, style:Style=null, isEditable:Boolean=false) {
+			super(geom, data, style, isEditable);
 		}
 
 		public function get points():MultiPoint {

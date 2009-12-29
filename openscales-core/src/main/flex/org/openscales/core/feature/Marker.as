@@ -19,7 +19,7 @@ package org.openscales.core.feature {
 		 * Marker constructor
 		 */
 		public function Marker(geom:Point=null, data:Object=null,style:Style=null) {
-			super(geom, data, style, false);
+			super(geom, data, style);
 
 			this._graphic = new DisplayObjectMarker(this._image, -8, -16, 16);
 			var rule:Rule = new Rule();
