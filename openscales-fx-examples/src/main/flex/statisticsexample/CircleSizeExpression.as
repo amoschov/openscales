@@ -19,8 +19,8 @@ package statisticsexample {
 
 		public function evaluate(feature:Feature):Object {
 
-			var pop = parseFloat(feature.attributes['pop_f']) + parseFloat(feature.attributes['pop_m']);
-			var epsilon = pop - this._minValue;
+			var pop:Number = parseFloat(feature.attributes['pop_f']) + parseFloat(feature.attributes['pop_m']);
+			var epsilon:Number = pop - this._minValue;
 			return this._minSize + this._sizeDelta * epsilon / this._delta;
 		}
 	}

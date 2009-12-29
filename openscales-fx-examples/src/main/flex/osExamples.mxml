@@ -51,7 +51,7 @@
 				setOSdescription();
 				expandTree();
 				// Define the default example
-				tree.selectedIndex = 15;
+				tree.selectedIndex = 1;
 				updateSelectedExample();
 			}
 

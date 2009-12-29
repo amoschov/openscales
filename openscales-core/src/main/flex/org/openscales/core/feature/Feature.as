@@ -80,7 +80,7 @@ package org.openscales.core.feature {
 		 */
 		public function Feature(geom:Geometry=null, data:Object=null, style:Style=null, isEditable:Boolean=false) {
 			this.layer = layer;
-			this.lonlat = lonlat;
+
 			if (data != null) {
 				this.data = data;
 			} else {
@@ -92,7 +92,7 @@ package org.openscales.core.feature {
 				this.attributes = Util.extend(this.attributes, data);
 			}
 
-			this.lonlat = null;
+
 			this.geometry = geom;
 			if (this.geometry && this.geometry.id)
 				this.name = this.geometry.id;
@@ -171,7 +171,6 @@ package org.openscales.core.feature {
 			this._lonlat = null;
 			this.geometry = null;
 			this.layer = null;
-			this.lonlat = null;
 			this.data = null;
 
 			this.unregisterListeners();
@@ -240,11 +239,11 @@ package org.openscales.core.feature {
 		}
 
 		public function get lonlat():LonLat {
-			return this._lonlat;
-		}
-
-		public function set lonlat(value:LonLat):void {
-			this._lonlat = value;
+			var value:LonLat = null;
+			if (this.geometry != null) {
+				value = this.geometry.bounds.centerLonLat;   
+			}
+			return value;
 		}
 
 		public function onMouseClick(pevt:MouseEvent):void {
