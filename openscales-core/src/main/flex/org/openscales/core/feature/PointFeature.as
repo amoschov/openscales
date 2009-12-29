@@ -18,7 +18,7 @@ package org.openscales.core.feature {
 	 */
 	public class PointFeature extends Feature {
 		//This attributes is use in features edition mode
-		private var _isEditionFeature:Boolean = false;
+		/* private var _isEditionFeature:Boolean = false; */
 
 		/**
 		 * the geometry of the parent when the feature is an edition feature
@@ -28,16 +28,16 @@ package org.openscales.core.feature {
 		//Start drag pixel
 		private var _startdrag:Pixel = null;
 
-		public function PointFeature(geom:Point=null, data:Object=null, style:Style=null, isEditionFeature:Boolean=false, editionFeatureParentGeometry:Collection=null) {
+		public function PointFeature(geom:Point=null, data:Object=null, style:Style=null , isEditionFeature:Boolean=false, editionFeatureParentGeometry:Collection=null ) {
 			//The point is none editable
-			super(geom, data, style, false, isEditionFeature);
+			super(geom, data, style, false/* , isEditionFeature */);
 
-			this._isEditionFeature = isEditionFeature;
+			/* this._isEditionFeature = isEditionFeature;
 			if (editionFeatureParentGeometry != null && isEditionFeature)
 				this._editionFeatureParentGeometry = editionFeatureParentGeometry;
 			else {
 				this._editionFeatureParentGeometry = null;
-			}
+			} */
 		}
 
 		override public function get lonlat():LonLat {
@@ -103,13 +103,13 @@ package org.openscales.core.feature {
 		/**
 		 * the geometry of the parent when the feature is an edition feature
 		 **/
-		public function get editionFeatureParentGeometry():Collection {
+	/* 	public function get editionFeatureParentGeometry():Collection {
 			return this._editionFeatureParentGeometry;
 		}
 
 		public function set editionFeatureParentGeometry(value:Collection):void {
 			this._editionFeatureParentGeometry = value;
-		}
+		} */
 
 		/**
 		 * To know the segment of the Collection the edition point belongs to
@@ -142,7 +142,7 @@ package org.openscales.core.feature {
 					}
 					intersect = false;
 				}
-			}
+			
 			//The last segment
 			if ((collection.componentByIndex(0) as Point).x != (collection.componentByIndex(collection.componentsLength - 1) as Point).x || (collection.componentByIndex(0) as Point).y != (collection.componentByIndex(collection.componentsLength - 1) as Point).y) {
 				point1 = collection.componentByIndex(0) as Point;
@@ -198,6 +198,7 @@ package org.openscales.core.feature {
 				return distanceArray[0][1];
 			} else if (distanceArray.length == 1)
 				return distanceArray[0][1];
+			}
 			return -1;
 		}
 	}

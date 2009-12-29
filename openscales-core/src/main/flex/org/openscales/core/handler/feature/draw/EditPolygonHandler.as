@@ -89,12 +89,15 @@ package org.openscales.core.handler.feature.draw
 		override protected function drawTemporaryFeature(event:MouseEvent):void{
 		 	var pointUnderTheMouse:Boolean=false;
 		 	var parentgeom:Collection=null;
-		 	
-		 	
+		 	var parentFeature:Feature; 	
 		 	//We tests if it's the point under the mouse or not
-		 	if(this._featureCurrentlyDrag!=null) parentgeom=(this._featureCurrentlyDrag as PointFeature).editionFeatureParentGeometry;
+		 	if(this._featureCurrentlyDrag!=null){
+		 		parentFeature=findVirtualVerticeParent(this._featureCurrentlyDrag as PointFeature)
+		 		parentgeom=editionFeatureParentGeometry(this._featureCurrentlyDrag as PointFeature,parentFeature.geometry as Collection);
+		 	}
 		 	else{
-		 		parentgeom=AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry;
+		 		parentFeature=findVirtualVerticeParent(AbstractEditCollectionHandler._pointUnderTheMouse)
+		 		parentgeom=editionFeatureParentGeometry(AbstractEditCollectionHandler._pointUnderTheMouse,parentFeature.geometry as Collection);
 		 		pointUnderTheMouse=true;
 		 	}
 		 	//The mouse's button  is always down 

@@ -43,6 +43,9 @@
 			
 			public function onZoomSliderThumbRelease(event:SliderEvent):void {
 				map.zoom = zoomSlider.value;
+				
+				if(map.zoom!=zoomSlider.value)  zoomSlider.value=map.zoom;
+				
 				zoomSlider.addEventListener(SliderEvent.CHANGE,this.zoomSliderChange);
 			}
 			
