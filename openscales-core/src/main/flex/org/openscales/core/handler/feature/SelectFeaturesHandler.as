@@ -415,14 +415,38 @@ package org.openscales.core.handler.feature
 		private function unselectFeaturesOfLayer(layer:FeatureLayer):void {
 			// Look for all the selected features attached to the removed layers
 			var featuresToUnselect:Array = new Array();
-			for each (var feature:Feature in this.selectedFeatures) {
-				if (feature.layer == layer) {
-					featuresToUnselect.push(feature);
-					break;
+			for each (var featureTemp:Feature in this.selectedFeatures) {
+				if (featureTemp.layer == layer) {
+					featuresToUnselect.push(featureTemp);
 				}
 			}
-			// Remove these features of the selection
-			this.unselect(featuresToUnselect);
+			//ugly code : this code is copy of other function with some changement
+			//it will be great to improve this part
+			// Unselect the input features that are registred as selected
+			var selectionUpdated:Boolean = false;
+			var feature:Feature;
+			var i:int, found:Boolean;
+			for each (feature in featuresToUnselect) {
+				for (i=0, found=false; (!found) && (i<this.selectedFeatures.length); i++) {
+					if (feature == this.selectedFeatures[i]) {
+						found = true;
+						this.selectedFeatures.splice(i,1);
+						selectionUpdated = true;
+					}
+				}
+				if (! found) {
+					Trace.warning("unselect warning: unselected feature, nothing to do");
+				}
+			}
+			// Dispatch a FEATURE_SELECTED event for all the newly selected features
+		    var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, null);
+				fevt.features = new Array();
+				this.map.dispatchEvent(fevt);
+
+			// if the selection has been updated, use the associated callback
+			if (selectionUpdated && (this.onSelectionUpdated != null)) {
+				this.onSelectionUpdated(this.selectedFeatures);
+			}
 		}
 		
 		/**
@@ -503,7 +527,8 @@ package org.openscales.core.handler.feature
 		 */
 		private function onSomething(evt:FeatureEvent,
 									updateStyleFeature:Function,
-									onSomethingFeature:Function):void {
+									onSomethingFeature:Function):void 
+		{
 			var i:int, layer:FeatureLayer, layersTmp:Array = new Array();
 
 			if(this._dragging)
