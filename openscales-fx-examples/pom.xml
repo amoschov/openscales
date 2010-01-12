@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
 	<artifactId>openscales-fx-examples</artifactId>
-	<version>1.2-testm2release1</version>
+	<version>1.2-SNAPSHOT</version>
 	<packaging>swf</packaging>
 	<name>Flex examples</name>
 	
 	<parent>
 		<groupId>org.openscales</groupId>
 		<artifactId>openscales</artifactId>
-		<version>1.2-testm2release1</version>
+		<version>1.2-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
