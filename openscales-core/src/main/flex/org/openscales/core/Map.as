@@ -23,6 +23,7 @@ package org.openscales.core
 	import org.openscales.core.handler.IHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
+	import org.openscales.core.layer.PolyLayers;
 	import org.openscales.core.popup.Popup;
 	import org.openscales.core.security.ISecurity;
 
@@ -1049,6 +1050,12 @@ package org.openscales.core
 			for (var i:int=0; i<this.layerContainer.numChildren; i++) {
 				if (this.layerContainer.getChildAt(i) is FeatureLayer) {
 					layerArray.push(this.layerContainer.getChildAt(i));
+				}
+				if(this.layerContainer.getChildAt(i) is PolyLayers){
+					var layer:Layer = (this.layerContainer.getChildAt(i) as PolyLayers).getFeatureLayer();
+					if(layer != null){
+						layerArray.push(layer);
+					}
 				}
 			}
 			return layerArray;

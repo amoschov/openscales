@@ -6,6 +6,7 @@ package org.openscales.core.handler.feature
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
+	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
@@ -19,6 +20,7 @@ package org.openscales.core.handler.feature
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
+	import org.openscales.core.layer.PolyLayers;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.fill.SolidFill;
@@ -57,7 +59,7 @@ package org.openscales.core.handler.feature
 		 * Size in pixels of the selection buffer (default=2 so a point is a
 		 * 5-side square)
 		 */        
-		private var _selectionBuffer:Number = 2;
+		private var _selectionBuffer:Number = 10;
 		
 		/**
 		 * Array of the selected features.
@@ -455,10 +457,14 @@ package org.openscales.core.handler.feature
 		 */
 		private function onLayerRemoved(evt:LayerEvent):void {
 			if ((! evt) || (evt.type != LayerEvent.LAYER_REMOVED)
-				|| (! evt.layer) || (! (evt.layer is FeatureLayer))) {
+				|| (! evt.layer) || (! (evt.layer is FeatureLayer || evt.layer is PolyLayers)) ) {
 				return;
 			}
 			unselectFeaturesOfLayer(evt.layer as FeatureLayer);
+			//delete the layer that is removed
+			Util.removeItem(this.layers,evt.layer);
+			
+			
 		}
 		
 		/**
