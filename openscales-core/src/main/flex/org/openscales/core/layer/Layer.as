@@ -100,14 +100,21 @@ package org.openscales.core.layer {
 		}
 
 		public function destroy(setNewBaseLayer:Boolean=true):void {
+			
+			this.removeEventListenerFromMap();
+			this.map = null;
+
+		}
+		
+		public function removeEventListenerFromMap():void{
+			
 			if (this.map != null) {
 				map.removeEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
 				map.removeEventListener(MapEvent.MOVE_END, onMapMove);
 				map.removeEventListener(MapEvent.ZOOM_END, onMapZoom);
 				map.removeEventListener(MapEvent.RESIZE, onMapResize);
 			}
-			this.map = null;
-
+			
 		}
 
 		public function onMapResize(e:MapEvent):void {

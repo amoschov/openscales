@@ -24,7 +24,9 @@ package org.openscales.core.layer
 		override public function set map(map:Map):void {
 			if(map != null){
 			  this._firstLayer.map = map;
+			  this._firstLayer.removeEventListenerFromMap();
 			  this._lastLayer.map  = map;
+			  this._lastLayer.removeEventListenerFromMap();
 			  super.map = map;
 			  if(this.map.zoom > this._zoomToSwitch )
 			  {
@@ -63,6 +65,11 @@ package org.openscales.core.layer
 			  this.removeChild(this._firstLayer);
 			}
 			super.destroy(setNewBaseLayer);
+		}
+		
+		override public function onMapZoom(e:MapEvent):void {
+			changeLayer();
+			this.redraw();
 		}
 		
 		
@@ -140,7 +147,6 @@ package org.openscales.core.layer
 		 * @return true if the layer was redrawn, false if not
 		 */
 		override public function redraw(fullRedraw:Boolean = true):void {
-			changeLayer();
 			if(this.map.zoom > this._zoomToSwitch ) {
 				this._firstLayer.redraw();
 			  }
