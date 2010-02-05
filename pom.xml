@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
 	<artifactId>openscales</artifactId>
-	<version>1.1.2</version>
+	<version>1.1.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>OpenScales</name>
 	<description>OpenScales is a RIA mapping framework natively designed to allow you to build mapping RIA (Rich Internet Applications) easily</description>
@@ -189,9 +189,9 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:http:///localhost/openscales/tags/openscales-1.1.2</connection>
-		<developerConnection>scm:svn:http://localhost/svn/openscales/tags/openscales-1.1.2</developerConnection>
-		<url>http://openscales.org/p/openscales/source/tree/HEAD/tags/openscales-1.1.2</url>
+		<connection>scm:svn:http:///localhost/openscales/branches/openscales-1.1</connection>
+		<developerConnection>scm:svn:http://localhost/svn/openscales/branches/openscales-1.1</developerConnection>
+		<url>http://openscales.org/p/openscales/source/tree/HEAD/branches/openscales-1.1</url>
 	</scm>
 	<ciManagement>
 		<system>hudson</system>
