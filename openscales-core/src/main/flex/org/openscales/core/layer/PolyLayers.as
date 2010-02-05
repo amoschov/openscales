@@ -88,6 +88,27 @@ package org.openscales.core.layer
 			}
 		}
 		
+		override public function get minResolution():Number {
+			
+			if(this.map.zoom > this._zoomToSwitch )
+			{
+			  return this._firstLayer.minResolution;
+			}
+			else{
+			  return this._lastLayer.minResolution;
+			}
+			
+		}
+		
+		override public function get maxResolution():Number {
+			if(this.map.zoom > this._zoomToSwitch )
+			{
+			  return this._firstLayer.maxResolution;
+			}
+			else{
+			  return this._lastLayer.maxResolution;
+			}
+		}
 		/*before this zoom the firtlayer will be visible
 		  after this zoom the lastlayer will be visible
 		  */
