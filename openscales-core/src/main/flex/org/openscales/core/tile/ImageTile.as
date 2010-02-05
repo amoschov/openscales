@@ -44,6 +44,8 @@ package org.openscales.core.tile
 			
 			if(this.layer.contains(this))
 				this.layer.removeChild(this);
+			if(_request)
+					_request.destroy();	
 
 			super.destroy();
 		}
