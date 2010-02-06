@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:WindowedApplication layout="absolute"
-						xmlns:mx="http://www.adobe.com/2006/mxml"
-						xmlns:os="http://openscales.org"
-						creationComplete="initMap();">
+		xmlns:mx="http://www.adobe.com/2006/mxml"
+		xmlns:os="http://openscales.org"
+		creationComplete="initMap();">
 	<mx:Script>
 		<![CDATA[
 			import org.openscales.core.feature.PointFeature;

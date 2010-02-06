@@ -30,7 +30,7 @@ package {
 			mapnik.maxExtent = new Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);		
 			_map.addLayer(mapnik);
 
-			var cycle:CycleMap=new CycleMap("Cycle", true); // a base laye
+			var cycle:CycleMap=new CycleMap("Cycle", true); // a base layer
 			_map.addLayer(cycle); 
 			
 			
