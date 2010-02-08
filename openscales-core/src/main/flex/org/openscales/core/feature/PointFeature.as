@@ -49,14 +49,12 @@ package org.openscales.core.feature {
 		override public function draw():void {
 			var numChildren:Number = this.numChildren;
 			for (var i:Number = 0; i < numChildren; i++) {
-
 				this.removeChildAt(i);
 			}
 			super.draw();
 		}
 
 		override protected function executeDrawing(symbolizer:Symbolizer):void {
-
 			var x:Number;
 			var y:Number;
 			var resolution:Number = this.layer.map.resolution
@@ -69,11 +67,9 @@ package org.openscales.core.feature {
 			if (symbolizer is PointSymbolizer) {
 				var pointSymbolizer:PointSymbolizer = (symbolizer as PointSymbolizer);
 				if (pointSymbolizer.graphic) {
-
 					var render:DisplayObject = pointSymbolizer.graphic.getDisplayObject(this);
 					render.x += x;
 					render.y += y;
-
 					this.addChild(render);
 				}
 			}

@@ -16,20 +16,6 @@ package org.openscales.core.feature {
 		private var _graphic:DisplayObjectMarker;
 
 		/**
-		 * Marker constructor
-		 */
-		public function Marker(geom:Point=null, data:Object=null,style:Style=null) {
-			super(geom, data, style);
-
-			this._graphic = new DisplayObjectMarker(this._image, -8, -16, 16);
-			var rule:Rule = new Rule();
-			var symbolizer:PointSymbolizer = new PointSymbolizer(this._graphic);
-			rule.symbolizers.push(symbolizer);
-			this.style = new Style();
-			this.style.rules.push(rule);
-		}
-
-		/**
 		 * Boolean used to know if that marker has been draw. This is used to draw markers only
 		 *  when all the map and layer stuff are ready
 		 */
@@ -41,15 +27,27 @@ package org.openscales.core.feature {
 		[Embed(source="/assets/images/marker-blue.png")]
 		private var _image:Class;
 
+		/**
+		 * Marker constructor
+		 */
+		public function Marker(geom:Point=null, data:Object=null, style:Style=null) {
+			super(geom, data, style);
+			this._graphic = new DisplayObjectMarker(this._image, -8, -16, 16);
+			var rule:Rule = new Rule();
+			var symbolizer:PointSymbolizer = new PointSymbolizer(this._graphic);
+			rule.symbolizers.push(symbolizer);
+			this.style = new Style();
+			this.style.rules.push(rule);
+		}
+
 		public function get image():Class {
 			return this._image;
 		}
 
 		public function set image(value:Class):void {
 			this._image = value;
-			this._graphic.image=value;
+			this._graphic.image = value;
 			this._drawn = false;
-
 		}
 
 		/**
@@ -58,8 +56,8 @@ package org.openscales.core.feature {
 		override public function clone():Feature {
 			var geometryClone:Geometry = this.geometry.clone();
 			var MarkerClone:Marker = new Marker(geometryClone as Point, null, this.style);
+			// FixMe: data and image are not managed
 			return MarkerClone;
-
 		}
 	}
 }
