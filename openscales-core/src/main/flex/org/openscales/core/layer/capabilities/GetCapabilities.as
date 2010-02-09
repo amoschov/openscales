@@ -4,7 +4,7 @@ package org.openscales.core.layer.capabilities
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
-
+	
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.request.XMLRequest;
@@ -14,11 +14,7 @@ package org.openscales.core.layer.capabilities
 	 */
 	public class GetCapabilities
 	{
-		private const VERSIONS:Array = new Array("1.1.0","1.0.0");
-		private const PARSERS:Array = new Array(WFS110, WFS100);
-
-		private var versionsToUse:Array = null;
-		private var parsersToUse:Array = null;
+		private var _parsers:HashMap = null;
 
 		private var _service:String = null;
 		private var _version:String = null;
@@ -27,7 +23,7 @@ package org.openscales.core.layer.capabilities
 		private var _proxy:String = null;
 
 		private var _parser:CapabilitiesParser = null;
-
+		
 		private var _capabilities:HashMap = null;
 
 		private var _requested:Boolean = false;
@@ -43,15 +39,19 @@ package org.openscales.core.layer.capabilities
 			this._url = url;
 			this._request = "GetCapabilities";
 			this._capabilities = new HashMap(false)
+			this._parsers = new HashMap();
 
+			_parsers.put("WFS 1.0.0",WFS100);
+		    _parsers.put("WFS 1.1.0",WFS110);
+		    _parsers.put("WMS 1.0.0",WMS100);
+		    _parsers.put("WMS 1.1.0",WMS110);
+		    _parsers.put("WMS 1.1.1",WMS111);				
+				
 			this._proxy = proxy;
 
 			this._cbkFunc = cbkFunc;
-
-			this.versionsToUse = [];
-			this.parsersToUse = []
-
-			this.version = version;
+			
+			this._version = version;
 
 			this.requestCapabilities();
 
@@ -74,38 +74,19 @@ package org.openscales.core.layer.capabilities
 				Trace.error("GetCapabilities: URL must not be null");
 				return false;
 			}
+			
+			var parser:Class = _parsers.getValue(this._service + " " + version);
+            this._parser = new parser;
 
-			if (this._service == "WFS") {
-				var foundVersion:Boolean = false;
-				var i:Number = -1;
-				while (!foundVersion && i < versionsToUse.length) {
-					i += 1;
-					if (failedVersion != null && versionsToUse[i] != failedVersion) {
-						foundVersion = true;
-					}
-					else if (failedVersion == null) {
-						foundVersion = true;
-					}
-				}
-
-				if (!foundVersion) {
-					Trace.error("GetCapabilities: Not found server compatible version");
-					return false;
-				}
-				else {
-					var parser:Class = parsersToUse[i];
-					this._parser = new parser;
-					this._version = versionsToUse[i];
-				}
-			}
-			else if (this._service == "WMS") {
-				Trace.warning("WMS parser not implemented yet");
+			if (this._parser == null) 
+			{
+				Trace.error("GetCapabilities: Not found server compatible version");
 				return false;
 			}
-
+			
 			var urlRequest:String = this.buildRequestUrl(); 
 
-			new XMLRequest(urlRequest, this.parseResult, this._proxy);
+			new XMLRequest(urlRequest, this.parseResult, this._proxy,URLRequestMethod.GET,null,this.onFailure);
 
 			return true;
 		}
@@ -134,11 +115,22 @@ package org.openscales.core.layer.capabilities
 		 */
 		private function parseResult(event:Event):void {
 			var loader:URLLoader = event.target as URLLoader;
-			var doc:XML =  new XML(loader.data);
-
-			if (doc.@version != this._version) {
-				this.requestCapabilities(doc.@version);
+			
+			try
+			{
+				var doc:XML =  new XML(loader.data);
 			}
+			catch (error:Error) 
+			{
+			     trace("XML parse error");
+			     onFailure(event);
+			     return;
+			}
+
+            // this can cause "infinite loops" on 'buggy' WMS servers
+			//if (doc.@version != this._version) {
+			//	this.requestCapabilities(doc.@version);
+			//}
 
 			this._capabilities = this._parser.read(doc);
 			this._requested = true;
@@ -146,8 +138,21 @@ package org.openscales.core.layer.capabilities
 			if (this._cbkFunc != null) {
 				this._cbkFunc.call(this,this);
 			}
+		}
+		
+		/**
+		 * onFailure handler for XMLRequest 
+		 */
+		private function onFailure(event:Event):void 
+		{		
+			// load of capabilities failed. return empty capabilities map
+			Trace.error("Failed loading GetCapabilities XML request");
+			this._capabilities = new HashMap();
+			this._requested = true;
 
-
+			if (this._cbkFunc != null) {
+				this._cbkFunc.call(this,this);
+			}
 		}
 
 		/**
@@ -178,15 +183,6 @@ package org.openscales.core.layer.capabilities
 
 		public function get proxy():String {
 			return this._proxy;
-		}
-
-		public function set version(value:String):void {
-			var index:Number = VERSIONS.indexOf(value);
-			if(index >= 0) {
-				this.versionsToUse.push(VERSIONS[index]);
-				this.parsersToUse.push(PARSERS[index]);
-			}
-
 		}
 
 		public function get version():String {
