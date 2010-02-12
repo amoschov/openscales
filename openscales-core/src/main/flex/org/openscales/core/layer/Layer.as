@@ -100,7 +100,21 @@ package org.openscales.core.layer {
 		}
 
 		public function destroy(setNewBaseLayer:Boolean=true):void {
+			
+			this.removeEventListenerFromMap();
 			this.map = null;
+
+		}
+		
+		public function removeEventListenerFromMap():void{
+			
+			if (this.map != null) {
+				map.removeEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
+				map.removeEventListener(MapEvent.MOVE_END, onMapMove);
+				map.removeEventListener(MapEvent.ZOOM_END, onMapZoom);
+				map.removeEventListener(MapEvent.RESIZE, onMapResize);
+			}
+			
 		}
 
 		public function onMapResize(e:MapEvent):void {
@@ -115,10 +129,7 @@ package org.openscales.core.layer {
 		 */
 		public function set map(map:Map):void {
 			if (this.map != null) {
-				this.map.removeEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
-				this.map.removeEventListener(MapEvent.MOVE_END, onMapMove);
-				this.map.removeEventListener(MapEvent.ZOOM_END, onMapZoom);
-				this.map.removeEventListener(MapEvent.RESIZE, onMapResize);
+				removeEventListenerFromMap();
 			}
 			
 			this._map = map;

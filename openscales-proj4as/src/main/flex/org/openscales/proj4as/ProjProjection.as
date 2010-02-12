@@ -1,5 +1,28 @@
 package org.openscales.proj4as {
-	import org.openscales.proj4as.proj.*;
+	import org.openscales.proj4as.proj.IProjection;
+	import org.openscales.proj4as.proj.ProjAea;
+	import org.openscales.proj4as.proj.ProjAeqd;
+	import org.openscales.proj4as.proj.ProjEqc;
+	import org.openscales.proj4as.proj.ProjEqdc;
+	import org.openscales.proj4as.proj.ProjEqui;
+	import org.openscales.proj4as.proj.ProjGauss;
+	import org.openscales.proj4as.proj.ProjGstmerc;
+	import org.openscales.proj4as.proj.ProjLaea;
+	import org.openscales.proj4as.proj.ProjLcc;
+	import org.openscales.proj4as.proj.ProjLonglat;
+	import org.openscales.proj4as.proj.ProjMerc;
+	import org.openscales.proj4as.proj.ProjMill;
+	import org.openscales.proj4as.proj.ProjMoll;
+	import org.openscales.proj4as.proj.ProjNzmg;
+	import org.openscales.proj4as.proj.ProjOmerc;
+	import org.openscales.proj4as.proj.ProjOrtho;
+	import org.openscales.proj4as.proj.ProjParams;
+	import org.openscales.proj4as.proj.ProjSinu;
+	import org.openscales.proj4as.proj.ProjStere;
+	import org.openscales.proj4as.proj.ProjSterea;
+	import org.openscales.proj4as.proj.ProjTmerc;
+	import org.openscales.proj4as.proj.ProjUtm;
+	import org.openscales.proj4as.proj.ProjVandg;
 
 	public class ProjProjection {
 		/**
@@ -42,7 +65,6 @@ package org.openscales.proj4as {
 
             'CRS:84': "+title=WGS 84 longitude-latitude +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
 		}
-
 
 
 		protected var proj:IProjection;

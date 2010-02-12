@@ -3,6 +3,7 @@ package org.openscales.fx.handler.feature
 	import org.openscales.core.handler.feature.SelectFeaturesHandler;
 	import org.openscales.fx.handler.FxHandler;
 
+
 	public class FxSelectFeaturesHandler extends FxHandler
 	{
 		/**

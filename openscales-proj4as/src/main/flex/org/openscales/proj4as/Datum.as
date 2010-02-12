@@ -1,6 +1,5 @@
 package org.openscales.proj4as {
-	import org.openscales.proj4as.proj.AbstractProjProjection;
-	import org.openscales.proj4as.ProjConstants;
+	
 
 	public class Datum {
 		public var datum_type:int;

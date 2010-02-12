@@ -52,6 +52,7 @@ package org.openscales.core.layer
 			this.style = null;
 			this.geometryType = null;
 			this.selectedFeatures = null;
+			this.featuresBbox = null;
 		}
 		
 		// Clear layer and children graphics

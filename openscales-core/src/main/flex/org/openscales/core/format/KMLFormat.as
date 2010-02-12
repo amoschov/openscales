@@ -2,7 +2,6 @@ package org.openscales.core.format
 {
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.geometry.Point;
-	import org.openscales.core.style.Style;
 	import org.openscales.proj4as.ProjProjection;
 	
 

@@ -5,7 +5,7 @@
  */
 
 package org.openscales.proj4as {
-	import org.openscales.proj4as.proj.AbstractProjProjection;
+	
 
 	public class Proj4as {
 

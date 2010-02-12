@@ -8,7 +8,6 @@ package org.openscales.core.feature {
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.style.Style;
-	import org.openscales.core.style.marker.DisplayObjectMarker;
 	import org.openscales.core.style.marker.WellKnownMarker;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
 	import org.openscales.core.style.symbolizer.Symbolizer;
