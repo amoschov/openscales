@@ -485,10 +485,16 @@ package org.openscales.core.layer {
 		 * WFS servers in order to allow crossdomain requests. Remote servers can be used without
 		 * proxy script by using crossdomain.xml file like http://openscales.org/crossdomain.xml
 		 *
-		 * If not defined, use map proxy
+		 * There is 3 cases :
+		 *  - proxy is explicitly defined
+  		 *  - proxy is explicitly defined to "" => no proxy will be used
+  		 *  - proxy is null => use the proxy of the map
 		 */
 		public function get proxy():String {
-			return this._proxy;
+			var p:String = this._proxy;
+			if(!p && map && map.proxy)
+				p = map.proxy;
+			return p;
 		}
 
 		public function set proxy(value:String):void {
