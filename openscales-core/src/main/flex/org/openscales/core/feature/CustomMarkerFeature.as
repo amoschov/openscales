@@ -28,7 +28,7 @@ package org.openscales.core.feature
 		 * @param yOffset Offset allowing marker position adjustment following the Y axis (default 0)
 		 */
 		public function CustomMarkerFeature(clip:DisplayObject, geom:Point=null, data:Object=null, style:Style=null, xOffset:Number=0, yOffset:Number=0) {
-			super(geom, data, style, false);
+			super(geom, data, style);
 			_clip = clip;
 			_xOffset = xOffset;
 			_yOffset = yOffset;
