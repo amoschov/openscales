@@ -135,9 +135,6 @@ package org.openscales.core
 
 			this._layerContainer.addChild(layer);
 
-			if(layer.proxy == null)
-				layer.proxy = this.proxy;
-
 			layer.map = this;
 
 			if (layer.isBaseLayer) {
@@ -347,10 +344,15 @@ package org.openscales.core
 				Trace.warning("Map.addHandler: null handler not added");
 				return;
 			}
-			if (handler.map != this) {
+			
+			// If not map is defined, define this one as the map
+			if(!handler.map) {
+				handler.map = this;
+			} else if (handler.map != this) {
 				Trace.error("Map.addHandler: handler not added because it is associated to an other map");
 				return;
 			}
+			
 			// Is the input handler already registered ?
 			// Or an other handler of the same type ?
 			var i:int;

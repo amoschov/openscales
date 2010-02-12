@@ -43,14 +43,16 @@ package {
 			_map.addControl(new MousePosition());
 			_map.addControl(new LayerSwitcher());
 			_map.addControl(new PanZoomBar());
-			var selectHandler: SelectFeaturesHandler = new SelectFeaturesHandler(_map, true);
+			
+			var selectHandler: SelectFeaturesHandler = new SelectFeaturesHandler();
 			selectHandler.enableClickSelection = false;
 			selectHandler.enableBoxSelection = false;
 			selectHandler.enableOverSelection = true;
+			selectHandler.active = true;
 			
-			// Add handlers
-			new WheelHandler(_map);
-			new DragHandler(_map);
+			_map.addHandler(selectHandler);
+			_map.addHandler(new WheelHandler());
+			_map.addHandler(new DragHandler());
 
 			// Set the map center
 			_map.center=new LonLat(538850.47459,5740916.1243);
