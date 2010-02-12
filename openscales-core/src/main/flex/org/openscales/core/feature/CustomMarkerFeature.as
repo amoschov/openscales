@@ -1,4 +1,4 @@
-package com.atosorigin.aw.coregis.feature
+package org.openscales.core.feature
 {
 	import flash.display.DisplayObject;
 	
