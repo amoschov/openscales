@@ -25,16 +25,16 @@ package org.openscales.core.format
 	 */
 	public class WKTFormat extends Format
 	{
-
+		
 		private var _regExes:Object;
-
+		
 		/**
 		 * Create a new parser for WKT
 		 *
 		 * @return A new WKT parser.
 		 */
-		public function WKTFormat() {
-
+		public function WKTFormat()
+		{
 			this._regExes = {
 					'typeStr': /^\s*(\w+)\s*\(\s*(.*)\s*\)\s*$/,
 					'spaces': /\s+/,
@@ -42,9 +42,8 @@ package org.openscales.core.format
 					'doubleParenComma': /\)\s*\)\s*,\s*\(\s*\(/,
 					'trimParens': /^\s*\(?(.*?)\)?\s*$/
 				};
-
 		}
-
+		
 		/**
 		 * Deserialize a WKT string and return a vector feature or an
 		 * array of vector features
@@ -53,19 +52,20 @@ package org.openscales.core.format
 		 *
 		 * @return A feature or array of features for GEOMETRYCOLLECTION WKT.
 		 */
-		override public function read(wkt:Object):Object {
-			var features:Object, type:String, str:String;
-			var matches:Array = this._regExes.typeStr.exec(wkt);
-			if(matches) {
+		override public function read(wkt:Object):Object
+		{
+			var features:Object, type:String, args:String;
+			var regex:RegExp = this._regExes.typeStr;
+			var matches:Array = regex.exec(wkt as String);
+			if (matches)
+			{
 				type = matches[1].toLowerCase();
-				str = matches[2];
-				if(this.parse[type]) {
-					features = this.parse[type].apply(this, [str]);
-				}
+				args = matches[2];
+				features = parse(args, type);
 			}
 			return features;
 		}
-
+		
 		/**
 		 * Serialize a feature or array of features into a WKT string.
 		 *
@@ -73,171 +73,166 @@ package org.openscales.core.format
 		 *
 		 * @return The WKT string representation of the input geometries
 		 */
-		override public function write(features:Object):Object {
+		override public function write(features:Object):Object
+		{
 			var collection:Object, geom:Geometry, type:String, data:Object, isCollection:Boolean;
-			if(features.constructor == Array) {
+			
+			if(features.constructor == Array)
+			{
 				collection = features;
 				isCollection = true;
-			} else {
+			}
+			else
+			{
 				collection = [features];
 				isCollection = false;
 			}
 			var pieces:Array = [];
-			if(isCollection) {
+			if(isCollection)
+			{
 				pieces.push('GEOMETRYCOLLECTION(');
 			}
-			for(var i:int=0; i<collection.length; ++i) {
-				if(isCollection && i>0) {
+			for(var i:int=0; i<collection.length; ++i)
+			{
+				if(isCollection && i>0)
+				{
 					pieces.push(',');
 				}
 				geom = collection[i].geometry;
 				type = getQualifiedClassName(geom).split('::')[1].toLowerCase();
-				if(!extract[type]) {
+				data = extract(geom);
+				if (data == null)
 					return null;
-				}
-				data = extract[type]([geom]);
 				pieces.push(type.toUpperCase() + '(' + data + ')');
 			}
-			if(isCollection) {
+			if(isCollection)
+			{
 				pieces.push(')');
 			}
 			return pieces.join('');
 		}
-
-		// FIXME : refactor
-		public var extract:Object = {
-				'point': function(point:Pixel):String {
-				return point.x + ' ' + point.y;
-			},
-			'multipoint': function(multipoint:MultiPoint):String {
+		
+		private function extract(geometry:Geometry):String
+		{
+			if (geometry is Point)
+			{
+				return Point(geometry).x + ' ' + Point(geometry).y;
+			}
+			else if (geometry is MultiPoint)
+			{
 				var array:Array = [];
-				for(var i:int=0; i<multipoint.componentsLength; ++i) {
-					array.push(this.extract.point.apply(this, [multipoint.componentByIndex(i)]));
-				}
-				return array.join(',');
-			},
-
-			'linestring': function(linestring:LineString):String {
-				var array:Array = [];
-				for(var i:int=0; i<linestring.componentsLength; ++i) {
-					array.push(this.extract.point.apply(this, [linestring.componentByIndex(i)]));
-				}
-				return array.join(',');
-			},
-
-			'multilinestring': function(multilinestring:MultiLineString):String {
-				var array:Array = [];
-				for(var i:int=0; i<multilinestring.componentsLength; ++i) {
-					array.push('(' +
-						this.extract.linestring.apply(this, [multilinestring.componentByIndex(i)]) +
-						')');
-				}
-				return array.join(',');
-			},
-
-			'polygon': function(polygon:Polygon):String {
-				var array:Array = [];
-				for(var i:int=0; i<polygon.componentsLength; ++i) {
-					array.push('(' +
-						this.extract.linestring.apply(this, [polygon.componentByIndex(i)]) +
-						')');
-				}
-				return array.join(',');
-			},
-
-			'multipolygon': function(multipolygon:MultiPolygon):String {
-				var array:Array = [];
-				for(var i:int=0; i<multipolygon.componentsLength; ++i) {
-					array.push('(' +
-						this.extract.polygon.apply(this, [multipolygon.componentByIndex(i)]) +
-						')');
-				}
+				for (var i:int = 0; i < MultiPoint(geometry).componentsLength; ++i)
+					array.push(extract(MultiPoint(geometry).componentByIndex(i)));
 				return array.join(',');
 			}
-			};
-
-		public var parse:Object = {
-
-				'point': function(str:String):Feature {
-				var coords:Array = StringUtils.trim(str).split(this._regExes.spaces);
-				return new PointFeature(
-					new Point(coords[0], coords[1])
-					);
-			},
-
-			'multipoint': function(str:String):Feature {
-				var points:Array = StringUtils.trim(str).split(',');
+			else if (geometry is LineString)
+			{
+				array = [];
+				for (i = 0; i < LineString(geometry).componentsLength; ++i)
+					array.push(extract(LineString(geometry).componentByIndex(i)));
+				return array.join(',');
+			}
+			else if (geometry is MultiLineString)
+			{
+				array = [];
+				for (i = 0; i < MultiLineString(geometry).componentsLength; ++i)
+					array.push('(' + extract(MultiLineString(geometry).componentByIndex(i)) + ')');
+				return array.join(',');
+			}
+			else if (geometry is Polygon)
+			{
+				array = [];
+				for(i = 0; i < Polygon(geometry).componentsLength; ++i)
+					array.push('(' + extract(Polygon(geometry).componentByIndex(i)) + ')');
+				return array.join(',');
+			}
+			else if (geometry is MultiPolygon)
+			{
+				array = [];
+				for(i = 0; i < MultiPolygon(geometry).componentsLength; ++i)
+					array.push('(' + extract(MultiPolygon(geometry).componentByIndex(i)) + ')');
+				return array.join(',');
+			}
+			return null;
+		}
+		
+		private function parse(args:String, type:String):Object
+		{
+			if (type == "point")
+			{
+				var coords:Array = StringUtils.trim(args).split(this._regExes.spaces);
+				return new PointFeature(new Point(coords[0], coords[1]));
+			}
+			else if (type == "multipoint")
+			{
+				var points:Array = StringUtils.trim(args).split(',');
 				var components:Array = [];
-				for(var i:int=0; i<points.length; ++i) {
-					components.push(this.parse.point.apply(this, [points[i]]).geometry);
-				}
-				return new MultiPointFeature(
-					new MultiPoint(components)
-					);
-			},
-
-			'linestring': function(str:String):Feature {
-				var points:Array = StringUtils.trim(str).split(',');
-				var components:Array = [];
-				for(var i:int=0; i<points.length; ++i) {
-					components.push(this.parse.point.apply(this, [points[i]]).geometry);
-				}
+				for (var i:int = 0; i < points.length; ++i)
+					components.push( parse(points[i], "point").geometry );
+				return new MultiPointFeature(new MultiPoint(components));
+			}
+			else if (type == "linestring")
+			{
+				points = StringUtils.trim(args).split(',');
+				components = [];
+				for (i = 0; i < points.length; ++i)
+					components.push(parse(points[i], "point").geometry);
 				return new LineStringFeature(new LineString(components));
-			},
-
-			'multilinestring': function(str:String):Feature {
+			}
+			else if (type == "multilinestring")
+			{
 				var line:String;
-				var lines:Array = StringUtils.trim(str).split(this._regExes.parenComma);
-				var components:Array = [];
-				for(var i:int=0; i<lines.length; ++i) {
+				var lines:Array = StringUtils.trim(args).split(this._regExes.parenComma);
+				components = [];
+				for(i = 0; i < lines.length; ++i)
+				{
 					line = lines[i].replace(this._regExes.trimParens, '$1');
-					components.push(this.parse.linestring.apply(this, [line]).geometry);
+					components.push(parse(line, "linestring").geometry);
 				}
-				return new MultiLineStringFeature(
-					new MultiLineString(components)
-					);
-			},
-
-			'polygon': function(str:String):Feature {
-				var ring:String, linestring:String, linearring:LinearRing;
-				var rings:Array = StringUtils.trim(str).split(this._regExes.parenComma);
-				var components:Array = [];
-				for(var i:int=0; i<rings.length; ++i) {
+				return new MultiLineStringFeature( new MultiLineString(components) );
+			}
+			else if (type == "polygon")
+			{
+				var ring:String, lineString:LineString, linearRing:LinearRing;
+				var rings:Array = StringUtils.trim(args).split(this._regExes.parenComma);
+				components = [];
+				for(i = 0; i < rings.length; ++i)
+				{
 					ring = rings[i].replace(this._regExes.trimParens, '$1');
-					linestring = this.parse.linestring.apply(this, [ring]).geometry;
-					linearring = new LinearRing(linestring.components)
-					components.push(linearring);
+					lineString = parse(ring, "linestring").geometry;
+					
+					var ringComponents:Array = [];
+					for (i = 0; i < lineString.componentsLength; ++i)
+						ringComponents.push(lineString.componentByIndex(i));
+					linearRing = new LinearRing(ringComponents);
+					
+					components.push(linearRing);
 				}
-				return new PolygonFeature(
-					new Polygon(components)
-					);
-			},
-
-			'multipolygon': function(str:String):Feature {
+				return new PolygonFeature( new Polygon(components) );
+			}
+			else if (type == "multipolygon")
+			{
 				var polygon:String;
-				var polygons:Array = StringUtils.trim(str).split(this._regExes.doubleParenComma);
-				var components:Array = [];
-				for(var i:int=0; i<polygons.length; ++i) {
+				var polygons:Array = StringUtils.trim(args).split(this._regExes.doubleParenComma);
+				components = [];
+				for(i = 0; i < polygons.length; ++i)
+				{
 					polygon = polygons[i].replace(this._regExes.trimParens, '$1');
-					components.push(this.parse.polygon.apply(this, [polygon]).geometry);
+					components.push(parse(polygon, "polygon").geometry);
 				}
-				return new MultiPolygonFeature(
-					new MultiPolygon(components)
-					);
-			},
-
-			'geometrycollection': function(str:String):Array {
-				str = str.replace(/,\s*([A-Za-z])/g, '|$1');
-				var wktArray:Array = StringUtils.trim(str).split('|');
-				var components:Array = [];
-				for(var i:int=0; i<wktArray.length; ++i) {
+				return new MultiPolygonFeature( new MultiPolygon(components) );
+			}
+			else if (type == "geometrycollection")
+			{
+				args = args.replace(/,\s*([A-Za-z])/g, '|$1');
+				var wktArray:Array = StringUtils.trim(args).split('|');
+				components = [];
+				for(i = 0; i < wktArray.length; ++i)
 					components.push(new WKTFormat().read([wktArray[i]]));
-				}
 				return components;
 			}
-
-			};
-
+			return null;
+		}
+		
 	}
 }
-

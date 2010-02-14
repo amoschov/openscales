@@ -2,6 +2,7 @@ package org.openscales.core
 {
 	import org.openscales.core.configuration.ConfigurationTest;
 	import org.openscales.core.format.KMLFormatTest;
+	import org.openscales.core.format.WKTFormatTest;
 	import org.openscales.core.geometry.ContainsPointTest;
 	import org.openscales.core.layer.LayerTest;
 	import org.openscales.core.layer.capabilities.ParsingTest;
@@ -20,5 +21,6 @@ package org.openscales.core
 		public var t6:ConfigurationTest;
 		public var t7:KMLFormatTest;
 		public var t8:LayerTest;
+		public var t9:WKTFormatTest;
 	}
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" minWidth="1024" minHeight="768" xmlns:flexunit="flexunit.flexui.*"    creationComplete="onCreationComplete()" >	
+<mx:Script>
+	<![CDATA[
+
+		import org.flexunit.runner.Request;
+		import org.openscales.core.CoreTestSuite;
+		import org.openscales.core.geometry.ContainsPointTest;
+		import org.openscales.core.configuration.ConfigurationTest;
+		import org.openscales.core.MapTest;
+		import org.openscales.core.utils.SexagecimalTest;
+		import org.openscales.core.format.WKTFormatTest;
+		import org.openscales.core.format.KMLFormatTest;
+		import org.openscales.core.layer.capabilities.ParsingTest;
+		import org.openscales.core.layer.LayerTest;
+		import org.openscales.core.utils.StringUtilsTest;
+
+		public function currentRunTestSuite():Array
+		{
+			var testsToRun:Array = new Array();
+			testsToRun.push(org.openscales.core.CoreTestSuite);
+			testsToRun.push(org.openscales.core.geometry.ContainsPointTest);
+			testsToRun.push(org.openscales.core.configuration.ConfigurationTest);
+			testsToRun.push(org.openscales.core.MapTest);
+			testsToRun.push(org.openscales.core.utils.SexagecimalTest);
+			testsToRun.push(org.openscales.core.format.WKTFormatTest);
+			testsToRun.push(org.openscales.core.format.KMLFormatTest);
+			testsToRun.push(org.openscales.core.layer.capabilities.ParsingTest);
+			testsToRun.push(org.openscales.core.layer.LayerTest);
+			testsToRun.push(org.openscales.core.utils.StringUtilsTest);
+			return testsToRun;
+		}
+		private function onCreationComplete():void
+		{
+			testRunner.runWithFlexUnit4Runner(currentRunTestSuite(), "openscales-core");
+		}
+]]>
+</mx:Script>
+<flexunit:FlexUnitTestRunnerUI id="testRunner"/>
+</mx:Application>
