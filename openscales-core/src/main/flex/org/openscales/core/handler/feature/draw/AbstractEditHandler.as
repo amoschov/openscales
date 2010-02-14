@@ -228,12 +228,9 @@ package org.openscales.core.handler.feature.draw
 					//We only draw the points included in the map extent
 		 			var tmpfeature:Array=new Array();	
 		 			var feature:Feature;
-					
-					
-					
-					
+										
 					for(var i:int=0;i<_editionFeatureArray.length;i++){
-						 feature:feature=_editionFeatureArray[i][0];
+						 feature=_editionFeatureArray[i][0];
 						 var featureParent:Feature=findVirtualVerticeParent(feature  as PointFeature);
 						 //we alseo clean the virtual vertices array if the parent doesnt belongs anymore to the _layerToEdit.features array
 						if(featureParent==featureEdited || Util.indexOf(this._layerToEdit.features,featureParent)==-1){
