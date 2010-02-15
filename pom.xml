@@ -13,9 +13,9 @@
 	
 	<properties>
 		<flex.sdk.version>3.2.0.3958</flex.sdk.version>
-		<flexmojos.version>3.4.2</flexmojos.version>
+		<flexmojos.version>3.5.0</flexmojos.version>
 		<flex.player.version>9</flex.player.version>
-		<flexpmd.version>1.0.RC5</flexpmd.version>
+		<flexpmd.version>1.0</flexpmd.version>
 		<env>local</env>
 	</properties>
 
@@ -275,7 +275,7 @@
 	<dependency>
       <groupId>com.adobe.flexunit</groupId>
       <artifactId>flexunit</artifactId>
-      <version>4.0-beta-2</version>
+      <version>4.0-rc-1</version>
       <type>swc</type>
       <scope>test</scope>
     </dependency>
