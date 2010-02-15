@@ -176,6 +176,9 @@
 					<example viewStack="kml"
 							 label="KML Layer and popups"
 							 description="KML that contains placemarks"/>
+					<example viewStack="kmlfeatures"
+							 label="KML features support"
+							 description="Shows various features from KML supported by openscales."/>
 				</category>
 
 				<category label="Security">
@@ -248,6 +251,8 @@
 			<os:ImageLayerExample id="imageLayer"
 								  displayTrace="{displayTrace}"/>
 			<os:KMLExample id="kml"
+						   displayTrace="{displayTrace}"/>
+			<os:KMLFeaturesExample id="kmlfeatures"
 						   displayTrace="{displayTrace}"/>
 
 			<!-- Security -->
