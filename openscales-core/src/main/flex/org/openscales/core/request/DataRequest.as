@@ -37,7 +37,8 @@ package org.openscales.core.request {
 				this._onFailure = onFailure;
 
 				this._loader.name=url;
-				this._loader.contentLoaderInfo.addEventListener(Event.COMPLETE,onComplete,false, 0, true);
+				if(onComplete != null)
+					this._loader.contentLoaderInfo.addEventListener(Event.COMPLETE,onComplete,false, 0, true);
 				if(onFailure != null) {
 					this._loader.contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, onFailure, false, 0, true);
 				}
