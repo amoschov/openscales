@@ -7,8 +7,8 @@
 	<os:Map id="fxmap"
 			width="100%"
 			height="100%"
-			zoom="12"
-			centerLonLat="-112.175,36.091">
+			zoom="7"
+			centerLonLat="-116.953,37.267">
 
 		<os:TraceInfo id="traceInfo"
 					  x="{width-200}"
@@ -71,7 +71,7 @@
 			[Bindable] public var displayFirebugTrace:Boolean = false;
 
 			private function initMap():void {
-				Trace.useFireBugConsole = displayFirebugTrace;
+				Trace.useFireBugConsole = false;
 				map = fxmap.map;
 
 				map.addEventListener(FeatureEvent.FEATURE_CLICK, onFeatureClick);

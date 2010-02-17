@@ -22,7 +22,7 @@ package org.openscales.core.layer
 								   projection:String = null, proxy:String = null) {
 	        this._url = url;
 	        this.maxExtent = bounds;
-	        this._kmlFormat = new KMLFormat();
+	        this._kmlFormat = new KMLFormat(proxy);
 						
 	        super(name,isBaseLayer,visible,projection,proxy);
 			
@@ -66,10 +66,10 @@ package org.openscales.core.layer
 					this._kmlFormat.externalProj = this.projection;
 					this._kmlFormat.internalProj = this.map.baseLayer.projection;
 				}
-			
+
 				var features:Array = this._kmlFormat.read(this._xml) as Array;
 				this.addFeatures(features);
-				
+
 				this.clear();
 				this.draw();
 			}
