@@ -44,10 +44,13 @@ package org.openscales.core.format
 		[Embed(source="/assets/images/marker-blue.png")]
 		private var _defaultImage:Class;
 		
-		public function KMLFormat(proxy:String=null) {
-			this._proxy = proxy;
+		public function KMLFormat() {
 		}
 
+		public function set proxy(value:String):void {
+			this._proxy = value;
+		}
+		
 		/**
 		 * return the RGB color of a kml:color
 		 */
