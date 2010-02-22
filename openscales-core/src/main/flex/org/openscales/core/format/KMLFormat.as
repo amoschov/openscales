@@ -6,9 +6,6 @@ package org.openscales.core.format
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
-	import mx.utils.object_proxy;
-	
-	import org.openscales.core.Trace;
 	import org.openscales.core.feature.CustomMarkerFeature;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.PointFeature;
