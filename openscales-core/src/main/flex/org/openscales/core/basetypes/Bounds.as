@@ -193,9 +193,15 @@ package org.openscales.core.basetypes
 		}
 
 		/**
-		 * @private
+		 * Returns if the current bounds contains the coordinates passed ad param
+		 * 
+		 * @param x the x coordinate
+		 * @param y the y coordinate
+		 * @param inclusive It will include the border's bounds ?
+		 * 
+		 * @return true if coordinates are in the bounds, else false
 		 */
-		private function contains(x:Number, y:Number, inclusive:Boolean = true):Boolean {
+		public function contains(x:Number, y:Number, inclusive:Boolean = true):Boolean {
 			var contains:Boolean = false;
 			if (inclusive) {
 				contains = ((x >= this.left) && (x <= this.right) &&
