@@ -204,6 +204,14 @@ package org.openscales.core
 					this._baseLayer.visible = true;
 
 					var center:LonLat = this.center;
+					
+					// As we are defining a new baselayer, current center may not be valid anymore
+					// If so, the map uses the new baselayer's center
+					if(!this.isValidLonLat(center)){
+						
+						center = this.maxExtent.centerLonLat;
+					}	
+					
 					if (center != null) {
 						if (oldExtent == null) {
 							this.setCenter(center, this.zoom, false, true);
