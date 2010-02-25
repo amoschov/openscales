@@ -28,8 +28,11 @@ package org.openscales.proj4as {
 			}
 			
 			
-			if (source.datum == dest.datum)
-			 return point; // no need to transform
+			/* Didier: Why? EPSG:4171 (longlat) -> EPSG:2154 (lcc)
+             * source.datum==dest.datum !! no transfo
+             * if (source.datum == dest.datum)
+			 *  return point; // no need to transform
+             */
 			 
 			 
 			// Workaround for Spherical Mercator

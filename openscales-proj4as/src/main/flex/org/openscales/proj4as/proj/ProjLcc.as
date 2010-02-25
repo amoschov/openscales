@@ -88,14 +88,10 @@ package org.openscales.proj4as.proj {
 			var lon:Number=p.x;
 			var lat:Number=p.y;
 
-			// convert to radians
-			if (lat <= 90.0 && lat >= -90.0 && lon <= 180.0 && lon >= -180.0) {
-				//lon = lon * Proj4js.common.D2R;
-				//lat = lat * Proj4js.common.D2R;
-			} else {
-				trace("lcc:forward: llInputOutOfRange: " + lon + " : " + lat);
-				return null;
-			}
+            // singular cases :
+            if (Math.abs(2*Math.abs(lat)-ProjConstants.PI)<=ProjConstants.EPSLN) {
+                lat= ProjConstants.sign(lat)*(ProjConstants.HALF_PI - 2*ProjConstants.EPSLN);
+            }
 
 			var con:Number=Math.abs(Math.abs(lat) - ProjConstants.HALF_PI);
 			var ts:Number;
