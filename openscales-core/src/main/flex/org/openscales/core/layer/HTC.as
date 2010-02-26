@@ -45,11 +45,6 @@ package org.openscales.core.layer
   		
   		var zoomString:String = String(zoom);
   		
-  		if(zoomString.length == 1 ){
-  			zoomString = "0" + zoomString;
-  		}
-  		
-  		
   		srcfinal = mapName;
   		
   		srcfinal+= "_" +  format.substring(0,3)+"_" + String(this.tileWidth) + "_" + String(this.tileHeight) + "_" + zoomString +"/";
