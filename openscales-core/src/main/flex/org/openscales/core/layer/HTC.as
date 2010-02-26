@@ -11,7 +11,7 @@ package org.openscales.core.layer
 	{
 		public static const MISSING_TILE_URL:String="http://openstreetmap.org/openlayers/img/404.png";
 		
-		public static const DEFAULT_MAX_RESOLUTION:Number = 2047.99990273;
+		public static const DEFAULT_MAX_RESOLUTION:Number = 8191.99961092;
 		
 		public static const DEFAULT_NUM_ZOOM_LEVELS:uint = 16;
 		
