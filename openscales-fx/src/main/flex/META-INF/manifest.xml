@@ -18,6 +18,8 @@
 	<component id="Maplint" class="org.openscales.fx.layer.osm.FxMaplint" />
 	<component id="Osmarender" class="org.openscales.fx.layer.osm.FxOsmarender" />
 	
+	<component id="HTC" class="org.openscales.fx.layer.FxHTC" />
+	
 	<component id="LayerSwitcher" class="org.openscales.fx.control.FxLayerSwitcher" />
 	<component id="MousePosition" class="org.openscales.fx.control.FxMousePosition" />
 	<component id="PanZoom" class="org.openscales.fx.control.FxPanZoom" />
