@@ -6,6 +6,7 @@ package org.openscales.core.request
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
+	import flash.net.URLVariables;
 	
 	import org.openscales.core.Trace;
 	import org.openscales.core.security.ISecurity;
@@ -50,7 +51,11 @@ package org.openscales.core.request
 
 				if (method == URLRequestMethod.POST) {
 					urlRequest.data = postBody;
-					urlRequest.contentType = "application/xml";
+                    if (postBody is URLVariables) {
+                        urlRequest.contentType = "application/x-www-form-urlencoded";
+                    } else {
+					    urlRequest.contentType = "application/xml";
+                    }
 				}
 
 				if (onComplete != null) {
