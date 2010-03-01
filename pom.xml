@@ -188,6 +188,13 @@
 			<organizationUrl>http://www.atosworldline.com/</organizationUrl>
 			<timezone>+1</timezone>
 		</developer>
+		<developer>
+			<id>slopez</id>
+			<name>Simon Lopez</name>
+			<organization>Atos Worldline</organization>
+			<organizationUrl>http://www.atosworldline.com/</organizationUrl>
+			<timezone>+1</timezone>
+		</developer>
 	</developers>
 	<scm>
 		<connection>scm:svn:http:///localhost/openscales/trunk/</connection>

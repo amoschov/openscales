@@ -6,6 +6,7 @@ package org.openscales.core.format
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
+	import org.openscales.core.Trace;
 	import org.openscales.core.feature.CustomMarkerFeature;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.PointFeature;
@@ -40,6 +41,15 @@ package org.openscales.core.format
 		private var _images:Object = {};
 		[Embed(source="/assets/images/marker-blue.png")]
 		private var _defaultImage:Class;
+
+		// features
+		private var iconsfeatures:Array = new Array();
+		private var linesfeatures:Array = new Array();
+		private var polygonsfeatures:Array = new Array();
+		// styles
+		private var lineStyles:Object = new Object();
+		private var pointStyles:Object = new Object();
+		private var polygonStyles:Object = new Object();
 		
 		public function KMLFormat() {
 		}
@@ -92,28 +102,15 @@ package org.openscales.core.format
 				_img.addChild(_marker);
 			}
 		}
-		
-		/**
-		 * Read data
-		 *
-		 * @param data data to read/parse.
-		 *
-		 * @return array of features.
-		 */
-		override public function read(data:Object):Object {
-			var iconsfeatures:Array = new Array();
-			var linesfeatures:Array = new Array();
-			var polygonsfeatures:Array = new Array();
-			var dataXML:XML = data as XML;
 
-			var lineStyles:Object = new Object();
-			var pointStyles:Object = new Object();
-			var polygonStyles:Object = new Object();
-			
+		/**
+		 * load styles
+		 */
+		private function loadStyles(styles:XMLList):void {
+
 			use namespace google;
 			use namespace opengis;
-
-			var styles:XMLList = dataXML..Style;
+			
 			for each(var style:XML in styles) {
 				var id:String = "";
 				if(style.@id=="")
@@ -126,6 +123,7 @@ package org.openscales.core.format
 					color = KMLColorsToRGB(style.color.text());
 					alpha = KMLColorsToAlpha(style.color.text())
 				}
+
 				if(style.IconStyle != undefined) {
 					pointStyles[id] = new Object();
 					pointStyles[id]["icon"] = null
@@ -147,21 +145,11 @@ package org.openscales.core.format
 					}
 					if(style.IconStyle.scale != undefined)
 						pointStyles[id]["scale"] = Number(style.IconStyle.scale.text());
-
 					if(style.IconStyle.heading != undefined) //0 to 360°
 						pointStyles[id]["rotation"] = Number(style.IconStyle.headingtext());
-
 					// TODO implement offset support + rotation effect
-					/*
-					if(style.IconStyle.hotSpot != undefined) { // offset
-						if(style.IconStyle.hotSpot.@x && style.IconStyle.hotSpot.@xunits)
-							IiconX=OffsetPerform(style.IconStyle.hotSpot.@x, style.IconStyle.hotSpot.@xunits);
-						if(style.IconStyle.hotSpot.@y && style.IconStyle.hotSpot.@yunits)
-							IiconX=OffsetPerform(style.IconStyle.hotSpot.@y, style.IconStyle.hotSpot.@yunits);
-					}
-					*/
 				}
-
+				
 				if(style.LineStyle != undefined) {
 					var Lcolor:Number = color;
 					var Lalpha:Number = alpha;
@@ -217,11 +205,17 @@ package org.openscales.core.format
 					polygonStyles[id].name = id;
 				}
 			}
+		}
+		
+		/**
+		 * load placemarks
+		 */
+		private function loadPlacemarks(placemarks:XMLList):void {
 
-			var placemarks:XMLList = dataXML..Placemark;
+			use namespace google;
+			use namespace opengis;
 
 			for each(var placemark:XML in placemarks) {
-
 				var coordinates:Array;
 				var point:Point;
 				var htmlContent:String = "";
@@ -231,20 +225,21 @@ package org.openscales.core.format
 					attributes["name"] = placemark.name.text();
 					htmlContent = htmlContent + "<b>" + placemark.name.text() + "</b><br />";   
 				}
-
+				
 				if(placemark.description != undefined) {
 					attributes["description"] = placemark.description.text();
 					htmlContent = htmlContent + placemark.description.text() + "<br />";
 				}
-
+				
 				for each(var extendedData:XML in placemark.ExtendedData.Data) {
 					if(extendedData.value)
 						attributes[extendedData.@name] = extendedData.value.text();
 					htmlContent = htmlContent + "<b>" + extendedData.@name + "</b> : " + extendedData.value.text() + "<br />";
 				}		
 				attributes["popupContentHTML"] = htmlContent;
-
+				
 				var _id:String;
+
 				// LineStrings
 				if(placemark.LineString != undefined)
 				{
@@ -265,7 +260,7 @@ package org.openscales.core.format
 						if(_coords.length<2)
 							continue;
 						point = new Point(_coords[0].toString(),
-										  _coords[1].toString());
+							_coords[1].toString());
 						if (this._internalProj != null, this._externalProj != null) {
 							point.transform(this.externalProj, this.internalProj);
 						}
@@ -274,7 +269,7 @@ package org.openscales.core.format
 					var line:LineString = new LineString(points);
 					linesfeatures.push(new LineStringFeature(line,attributes,_Lstyle));
 				}
-
+				
 				// Polygons
 				// extrusions are not supported yet
 				if(placemark.Polygon != undefined) {
@@ -295,7 +290,7 @@ package org.openscales.core.format
 						if(_Pcoords.length<2)
 							continue;
 						point = new Point(_Pcoords[0].toString(),
-										  _Pcoords[1].toString());
+							_Pcoords[1].toString());
 						if (this._internalProj != null, this._externalProj != null) {
 							point.transform(this.externalProj, this.internalProj);
 						}
@@ -366,7 +361,29 @@ package org.openscales.core.format
 						iconsfeatures.push(new PointFeature(point, attributes, Style.getDefaultPointStyle()));
 				}
 			}
-			return polygonsfeatures.concat(linesfeatures.concat(iconsfeatures));
+		}
+		
+		/**
+		 * Read data
+		 *
+		 * @param data data to read/parse.
+		 *
+		 * @return array of features.
+		 */
+		override public function read(data:Object):Object {
+			var dataXML:XML = data as XML;
+
+			use namespace google;
+			use namespace opengis;
+
+			var styles:XMLList = dataXML..Style;
+			loadStyles(styles.copy());
+			var placemarks:XMLList = dataXML..Placemark;
+			loadPlacemarks(placemarks.copy());
+			
+			var _features:Array = polygonsfeatures.concat(linesfeatures, iconsfeatures);
+
+			return _features;
 		}
 		
 		public function get internalProj():ProjProjection {
