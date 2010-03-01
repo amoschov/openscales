@@ -64,13 +64,13 @@ package org.openscales.core.layer
 				child = this.getChildAt(i) as Sprite;
 				if(child) {
 					child.graphics.clear();
-				}
-				//for clear maker
-				for(var j:int=0; j<child.numChildren;j++){
-					child2 = child.getChildAt(j) as Sprite;
-				    if(child2) {
-					  child2.graphics.clear();
-				  }
+					//for clear maker
+					for(var j:int=0; j<child.numChildren;j++){
+						child2 = child.getChildAt(j) as Sprite;
+					    if(child2) {
+						  child2.graphics.clear();
+					  }
+					}
 				}
 			}
 		}
