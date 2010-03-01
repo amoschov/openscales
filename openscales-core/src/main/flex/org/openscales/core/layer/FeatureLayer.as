@@ -59,10 +59,18 @@ package org.openscales.core.layer
 		override public function clear():void {
 			this.graphics.clear();
 			var child:Sprite = null;
+			var child2:Sprite = null;
 			for(var i:int=0; i<this.numChildren;i++) {
 				child = this.getChildAt(i) as Sprite;
 				if(child) {
 					child.graphics.clear();
+				}
+				//for clear maker
+				for(var j:int=0; j<child.numChildren;j++){
+					child2 = child.getChildAt(j) as Sprite;
+				    if(child2) {
+					  child2.graphics.clear();
+				  }
 				}
 			}
 		}
