@@ -1,7 +1,6 @@
 package org.openscales.core.request
 {
-	import org.openscales.core.Trace;
-	import org.openscales.core.security.ISecurity;
+	//import org.openscales.core.Trace;
 	
 	/**
 	 * DataRequest is used to download binary data available from an URL, like
