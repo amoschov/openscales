@@ -13,7 +13,7 @@ package org.openscales.core.layer
 		
 		public static const DEFAULT_MAX_RESOLUTION:Number = 8191.99961092;
 		
-		public static const DEFAULT_NUM_ZOOM_LEVELS:uint = 16;
+		public static const DEFAULT_NUM_ZOOM_LEVELS:uint = 14;
 		
 
 		public function HTC(name:String = "", url:String = "", isBaseLayer:Boolean = true,
