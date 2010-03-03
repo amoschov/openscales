@@ -28,12 +28,12 @@
 			<version>2.0</version>
 			<type>swc</type>
 		</dependency>
-		<!--dependency>
+		<dependency>
 			<groupId>com.adobe</groupId>
 			<artifactId>as3corelib</artifactId>
-			<version>0.92</version>
+			<version>0.92.1</version>
 			<type>swc</type>
-		</dependency-->
+		</dependency>
 	</dependencies>
 	
 	<build>

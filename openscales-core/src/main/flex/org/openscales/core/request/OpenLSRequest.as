@@ -1,6 +1,6 @@
 package org.openscales.core.request
 {
-	//import com.adobe.serialization.json.JSON;
+	import com.adobe.serialization.json.JSON;
 	
 	import org.openscales.core.Trace;
 	
@@ -162,7 +162,7 @@ package org.openscales.core.request
 		 * @param resultsList XML document describing the results of a geocoding
 		 * @return a JSON string
 		 */
-		/*static public function resultsListtoJSON(resultsList:XMLList):String {
+		static public function resultsListtoJSON(resultsList:XMLList):String {
 			var xls:Namespace = new Namespace("xls", "http://www.opengis.net/xls");
 			var gml:Namespace = new Namespace("gml", "http://www.opengis.net/gml");
 			var jsonResults:Array = new Array(), jsonResult:Object, position:Array;
@@ -180,7 +180,7 @@ package org.openscales.core.request
 				jsonResults.push(jsonResult);
 			}
 			return JSON.encode(jsonResults);
-		}*/
+		}
 		
 	}
 	
