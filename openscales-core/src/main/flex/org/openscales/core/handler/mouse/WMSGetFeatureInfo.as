@@ -116,9 +116,13 @@ package org.openscales.core.handler.mouse
             infoParams.width = this.map.width;
 			
 			// request data
-			if(_request)
-				_request.destroy()
-			_request = new XMLRequest(theURL + "?" + infoParams.toGETString(), this.handleResponse, map.proxy);
+			if(_request) {
+				_request.destroy();
+			}
+			_request = new XMLRequest(theURL + "?" + infoParams.toGETString(), this.handleResponse);
+			_request.proxy = map.proxy;
+			//_request.security = null; //FixMe: should the security be managed here ?
+			_request.send();
 		}
 		
 		private function handleResponse(event:Event):void {

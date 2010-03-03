@@ -92,10 +92,13 @@ package org.openscales.core.security.ign
             Trace.log("Request a new token");
             this._requestPending = true;
             // GET:
-            var xr:XMLRequest= new XMLRequest(this.authUrl+this.authParams, authenticationResponse, this.proxy);
+            var xr:XMLRequest= new XMLRequest(this.authUrl+this.authParams, authenticationResponse);
             // POST:
-            //var uv:URLVariables= new URLVariables(this.authParams);
-            //var xr:XMLRequest= new XMLRequest(this.authUrl, authenticationResponse, this.proxy, URLRequestMethod.POST, null, null, uv);
+            //var xr:XMLRequest= new XMLRequest(this.authUrl, authenticationResponse);
+            //xr.postContent = new URLVariables(this.authParams);
+            // GET and POST:
+            xr.proxy = this.proxy;
+            xr.send();
         }
 
         /**
@@ -188,10 +191,13 @@ package org.openscales.core.security.ign
             Trace.log("Update token");
             this._requestPending = true;
             // GET:
-            var xr:XMLRequest= new XMLRequest(this.updateUrl+this.updateParams, authenticationUpdateResponse, this.proxy);
+            var xr:XMLRequest= new XMLRequest(this.updateUrl+this.updateParams, authenticationUpdateResponse);
             // POST:
-            //var uv:URLVariables= new URLVariables(this.updateParams);
-            //var xr:XMLRequest= new XMLRequest(this.updateUrl, authenticationUpdateResponse, this.proxy, URLRequestMethod.POST, null, null, uv);
+            //var xr:XMLRequest= new XMLRequest(this.updateUrl, authenticationUpdateResponse);
+            //xr.postContent = new URLVariables(this.updateParams);
+            // GET and POST:
+            xr.proxy = this.proxy;
+            xr.send();
         }
 
         /**
@@ -215,7 +221,9 @@ package org.openscales.core.security.ign
         }
 
         override public function logout():void {
-            new XMLRequest(this.releaseUrl, authenticationLogoutResponse, this.proxy);
+            var xr:XMLRequest= new XMLRequest(this.releaseUrl, authenticationLogoutResponse);
+            xr.proxy = this.proxy;
+            xr.send();
         }
 
         /**

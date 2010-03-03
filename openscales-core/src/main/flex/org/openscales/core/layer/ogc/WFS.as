@@ -234,7 +234,10 @@ package org.openscales.core.layer.ogc
 				_request.destroy();
 			this.loading = true;
 
-			_request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security,onFailure);
+			_request = new XMLRequest(url, onSuccess, onFailure);
+			_request.proxy = this.proxy;
+			_request.security = this.security;
+			_request.send();
 		}
 		
 		

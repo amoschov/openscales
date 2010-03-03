@@ -6,7 +6,6 @@ package org.openscales.core.format
 	import flash.display.Sprite;
 	import flash.events.Event;
 	
-	import org.openscales.core.Trace;
 	import org.openscales.core.feature.CustomMarkerFeature;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.PointFeature;
@@ -131,7 +130,10 @@ package org.openscales.core.format
 						try {
 							var _url:String = style.IconStyle.Icon.href.text();
 							var _req:DataRequest
-							_req = new DataRequest(_url,updateImages,this._proxy,null,updateImagesError);
+							_req = new DataRequest(_url, updateImages, updateImagesError);
+							_req.proxy = this._proxy;
+							//_req.security = this._security; // FixMe: should the security be managed here ?
+							_req.send();
 							_externalImages[_url] = _req;
 							pointStyles[id]["icon"] = _url;
 							_images[_url] = new Array();

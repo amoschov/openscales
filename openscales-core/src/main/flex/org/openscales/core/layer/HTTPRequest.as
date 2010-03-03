@@ -29,7 +29,6 @@ package org.openscales.core.layer
 		}
 
 		override public function destroy(setNewBaseLayer:Boolean = true):void {
-
 			super.destroy(setNewBaseLayer);
 		}
 
@@ -78,33 +77,24 @@ package org.openscales.core.layer
 
 		// Getters & setters	
 
-		public function get url():String
-		{
+		public function get url():String {
 			return this._url;
 		}
-
-		public function set url(value:String):void
-		{
+		public function set url(value:String):void {
 			this._url = value;
 		}
 
-		public function get altUrls():Array
-		{
+		public function get altUrls():Array {
 			return this._altUrls;
 		}
-
-		public function set altUrls(value:Array):void
-		{
+		public function set altUrls(value:Array):void {
 			this._altUrls = value;
 		}
 
-		public function get params():IHttpParams
-		{
+		public function get params():IHttpParams {
 			return this._params;
 		}
-
-		public function set params(value:IHttpParams):void
-		{
+		public function set params(value:IHttpParams):void {
 			this._params = value;
 		}
 

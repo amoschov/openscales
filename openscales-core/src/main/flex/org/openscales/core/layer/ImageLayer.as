@@ -54,7 +54,10 @@ package org.openscales.core.layer
 			}
 			
 	        if (! this._request) {
-				this._request = new DataRequest(this._url, onTileLoadEnd, this.proxy, this.security, onTileLoadError);
+				this._request = new DataRequest(this._url, onTileLoadEnd, onTileLoadError);
+				this._request.proxy = this.proxy;
+				this._request.security = this.security;
+				this._request.send();
 			} else {
 				this.clear();
 				this.draw();

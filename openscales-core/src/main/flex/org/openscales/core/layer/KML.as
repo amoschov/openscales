@@ -46,7 +46,10 @@ package org.openscales.core.layer
 			
 	        if (! this._request) {
 	        	this.loading = true;
-				this._request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security, onFailure);
+				this._request = new XMLRequest(url, onSuccess, onFailure);
+				this._request.proxy = this.proxy;
+				this._request.security = this.security;
+				this._request.send();
 			} else {
 				this.clear();
 				this.draw();

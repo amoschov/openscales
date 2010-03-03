@@ -100,14 +100,11 @@ package org.openscales.core.layer {
 		}
 
 		public function destroy(setNewBaseLayer:Boolean=true):void {
-			
 			this.removeEventListenerFromMap();
 			this.map = null;
-
 		}
 		
-		public function removeEventListenerFromMap():void{
-			
+		public function removeEventListenerFromMap():void {
 			if (this.map != null) {
 				map.removeEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
 				map.removeEventListener(MapEvent.MOVE_END, onMapMove);
@@ -171,7 +168,6 @@ package org.openscales.core.layer {
 		public function getZoomForExtent(extent:Bounds):Number {
 			var viewSize:Size = this.map.size;
 			var idealResolution:Number = Math.max(extent.width / viewSize.w, extent.height / viewSize.h);
-
 			return this.getZoomForResolution(idealResolution);
 		}
 

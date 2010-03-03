@@ -84,7 +84,10 @@ package org.openscales.core.tile
 				if(_request)
 					_request.destroy();	
 				this.loading = true;		     
-				_request = new DataRequest(this.url, onTileLoadEnd, this.layer.proxy, this.layer.security, onTileLoadError);
+				_request = new DataRequest(this.url, onTileLoadEnd, onTileLoadError);
+				_request.proxy = this.layer.proxy;
+				_request.security = this.layer.security;
+				_request.send();
 			}
 			return true;
 		}

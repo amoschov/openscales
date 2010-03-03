@@ -86,7 +86,10 @@ package org.openscales.core.layer.capabilities
 			
 			var urlRequest:String = this.buildRequestUrl(); 
 
-			new XMLRequest(urlRequest, this.parseResult, this._proxy,URLRequestMethod.GET,null,this.onFailure);
+			var _req:XMLRequest = new XMLRequest(urlRequest, this.parseResult, this.onFailure);
+			_req.proxy = this._proxy;
+			//_req.security = null; //FixMe: should the security be managed here ?
+			_req.send();
 
 			return true;
 		}
