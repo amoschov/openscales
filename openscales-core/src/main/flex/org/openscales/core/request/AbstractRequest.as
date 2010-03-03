@@ -17,8 +17,11 @@ package org.openscales.core.request
 	// for improvements ?
 	public class AbstractRequest implements IRequest
 	{
-
+		public static const PUT:String = "put";
+		public static const DELETE:String = "delete";
+		
 		private var _url:String;
+		private var _method:String = null;
 		private var _postContent:Object = null;
 		private var _postContentType:String = null;
 		// getter of postRequestData:Object
@@ -100,6 +103,35 @@ package org.openscales.core.request
 				return;
 			}
 			this._url = value;
+		}
+		
+		/**
+		 * Getter and setter of the method of the request.
+		 * The valid values are null (default), URLRequestMethod.GET,
+		 * URLRequestMethod.POST, AbstractRequest.PUT and AbstractRequest.DELETE.
+		 * If the value is null, the getter returns URLRequestMethod.POST if
+		 * postContent is not null and URLRequestMethod.GET otherwise.
+		 */
+		public function get method():String {
+			if (this._method) {
+				return this._method;
+			} else {
+				return (this.postContent) ? URLRequestMethod.POST : URLRequestMethod.GET;
+			}
+		}
+		public function set method(value:String):void {
+			switch (value) {
+				case URLRequestMethod.GET:
+				case URLRequestMethod.POST:
+				case AbstractRequest.PUT:
+				case AbstractRequest.DELETE:
+					this._method = value;
+					break;
+				default:
+					Trace.warning("AbstractRequest - set method: invalid value, null will be used");
+					this._method = null;
+					break;
+			}
 		}
 		
 		/**
@@ -216,7 +248,7 @@ package org.openscales.core.request
 					return;
 				}
 				var urlRequest:URLRequest = new URLRequest(_finalUrl);
-				urlRequest.method = (this.postContent) ? URLRequestMethod.POST : URLRequestMethod.GET;
+				urlRequest.method = this.method;
 				if (urlRequest.method == URLRequestMethod.POST) {
 					urlRequest.contentType = this.postContentType;
 					urlRequest.data = this.postContent;
