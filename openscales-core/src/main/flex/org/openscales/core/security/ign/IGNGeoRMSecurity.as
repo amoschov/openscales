@@ -178,7 +178,7 @@ package org.openscales.core.security.ign
 
         /** Return parameters string for release URL **/
         private function get releaseParams():String {
-            return this.securityParameter + "&output=xml";
+            return this.securityParameter;
         }
 
         /** Will use the same mechanism than at layer startup to update datas when the token will be retreived **/
@@ -221,7 +221,7 @@ package org.openscales.core.security.ign
         }
 
         override public function logout():void {
-            var xr:XMLRequest= new XMLRequest(this.releaseUrl, authenticationLogoutResponse);
+            var xr:XMLRequest= new XMLRequest(this.releaseUrl+this.releaseParams, authenticationLogoutResponse);
             xr.proxy = this.proxy;
             xr.send();
         }
