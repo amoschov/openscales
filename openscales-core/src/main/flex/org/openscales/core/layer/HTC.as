@@ -15,15 +15,24 @@ package org.openscales.core.layer
 		
 		public static const DEFAULT_NUM_ZOOM_LEVELS:uint = 14;
 		
-
+		public static const DEFAULT_ZOOM_MAX:uint = 16;
+		
+        private var _zoom_max:uint;
+        
+        public function set zoom_max(value:uint):void{
+        	this._zoom_max = value;
+        }
+        
 		public function HTC(name:String = "", url:String = "", isBaseLayer:Boolean = true,
-			visible:Boolean = true, projection:String = null, proxy:String = null) {
+			visible:Boolean = true, projection:String = null, proxy:String = null,maxResolution:Number=DEFAULT_MAX_RESOLUTION,
+			numZoomLevel:uint=DEFAULT_NUM_ZOOM_LEVELS,zoom_max:uint=DEFAULT_ZOOM_MAX) {
 			
+			this._zoom_max = zoom_max;
 			if (projection == null || projection == "")
 				projection = "EPSG:900913";
 
 			super(name, url, isBaseLayer, visible, projection, proxy);
-            this.generateResolutions(DEFAULT_NUM_ZOOM_LEVELS, DEFAULT_MAX_RESOLUTION);
+            this.generateResolutions(numZoomLevel, maxResolution);
 		}
 
 		override public function getURL(bounds:Bounds):String
@@ -33,7 +42,7 @@ package org.openscales.core.layer
 		var mapName:String = this.name;
 		//htc has reverse zoom 
 		var resolution:Number = this.map.resolution;
-		var zoom:int = DEFAULT_NUM_ZOOM_LEVELS - this.map.zoom;
+		var zoom:int = _zoom_max - this.map.zoom ;
         // calcul du numero de la tuile
         var numX:Number = Math.floor(bounds.centerPixel.x / (this.tileWidth * resolution));
 
