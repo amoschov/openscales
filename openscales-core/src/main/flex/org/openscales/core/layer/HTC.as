@@ -62,7 +62,7 @@ package org.openscales.core.layer
 		 * @param numZoomLevel:uint the number of zoom level. Default DEFAULT_NUM_ZOOM_LEVELS
 		 * @param zoom_max:uint the maximum zoom value. Default DEFAULT_ZOOM_MAX
 		 */
-		public function HTC(name:String = "",
+		public function HTC(name:String,
 							url:String,
 							isBaseLayer:Boolean = true,
 							visible:Boolean = true,
