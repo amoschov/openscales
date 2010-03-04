@@ -46,6 +46,7 @@
     <classEntry path="org.openscales.fx.layer.FxHTTPRequest"/>
     <classEntry path="org.openscales.fx.layer.FxImageLayer"/>
     <classEntry path="org.openscales.fx.layer.FxKML"/>
+	<classEntry path="org.openscales.fx.layer.FxHTC"/>
     <classEntry path="org.openscales.fx.layer.FxLayer"/>
     <classEntry path="org.openscales.fx.layer.FxWFS"/>
     <classEntry path="org.openscales.fx.layer.FxWMS"/>

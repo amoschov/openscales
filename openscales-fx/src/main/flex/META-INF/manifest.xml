@@ -12,6 +12,7 @@
 	<component id="WMSC" class="org.openscales.fx.layer.FxWMSC" />
 	<component id="WFS" class="org.openscales.fx.layer.FxWFS" />
 	<component id="KML" class="org.openscales.fx.layer.FxKML" />
+	<component id="HTC" class="org.openscales.fx.layer.FxHTC" />
 	
 	<component id="Mapnik" class="org.openscales.fx.layer.osm.FxMapnik" />
 	<component id="CycleMap" class="org.openscales.fx.layer.osm.FxCycleMap" />
@@ -49,9 +50,6 @@
 	
 	<component id="FxSampleRouting" class="org.openscales.fx.routing.FxSampleRouting" />
 	<component id="SampleRoutingComponent" class="org.openscales.component.control.routing.SampleRoutingComponent"/>
-	
-	
-	
 	
 	<component id="ControlPanel" class="org.openscales.component.ControlPanel"/>
 	

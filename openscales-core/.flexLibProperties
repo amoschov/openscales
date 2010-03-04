@@ -101,6 +101,7 @@
 <classEntry path="org.openscales.core.layer.Layer"/>
 <classEntry path="org.openscales.core.layer.PolyLayers"/>
 <classEntry path="org.openscales.core.layer.TMS"/>
+<classEntry path="org.openscales.core.layer.HTC"/>
 <classEntry path="org.openscales.core.layer.capabilities.CapabilitiesParser"/>
 <classEntry path="org.openscales.core.layer.capabilities.GetCapabilities"/>
 <classEntry path="org.openscales.core.layer.capabilities.WFS100"/>
