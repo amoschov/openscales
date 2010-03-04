@@ -45,7 +45,7 @@ package org.openscales.core.layer
 		 * 
 		 * @return String the tile image format
 		 */
-		public function get format():void {
+		public function get format():String {
 			return this._format;
 		}
 
