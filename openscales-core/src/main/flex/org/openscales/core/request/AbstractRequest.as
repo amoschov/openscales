@@ -26,12 +26,13 @@ package org.openscales.core.request
 		 * prevent browser's "saturation"
 		 */
 		public static const DEFAULT_MAX_CONN:uint = 10;
+		private static const DEFAULT_MAX_ACTIVE_TIME:uint = 5000; // 5s
 		private static var _maxConn:uint = DEFAULT_MAX_CONN;
-		private static const DEFAULT_MAX_ACTIVE_TIME:uint = 5000; //5s
-		private var _duration:Number = DEFAULT_MAX_ACTIVE_TIME;
-		private var _timer:Timer = new Timer(_duration,1);
 		private static var _pendingRequests:Array = new Array();
 		private static var _activeConn:HashMap = new HashMap();
+		
+		private var _duration:Number = DEFAULT_MAX_ACTIVE_TIME;
+		private var _timer:Timer = null;
 
 		public static const PUT:String = "put";
 		public static const DELETE:String = "delete";
@@ -61,58 +62,84 @@ package org.openscales.core.request
 		 * @param onFailure Function called when an error occurs
 		 */
 		public function AbstractRequest(SWForImage:Boolean, url:String, onComplete:Function, onFailure:Function=null) {
+			// Create a loader for a SWF or an image (Loader), or for an URL (URLLoader)
+			this._loader = (SWForImage) ? new Loader() : new URLLoader();
+
+			this.url = url;
+			this._onComplete = onComplete;
+			this._onFailure = onFailure;
+			
+			this._addListeners();
+		}
+		
+		/**
+		 * Destroy the request.
+		 */
+		public function destroy():void {
+			this._isSent = true;
+			if (AbstractRequest._activeConn.containsKey(this)) {
+				try {
+					this.loader.close();
+				} catch(e:Error) {
+					Trace.error(e.message);
+				}
+				this._removeListeners();
+				AbstractRequest._activeConn.remove(this);
+				AbstractRequest._runPending();
+			} else {
+				var i:int = AbstractRequest._pendingRequests.indexOf(this);
+				if (i!=-1) {
+					AbstractRequest._pendingRequests.splice(i, 1);
+				}
+				this._removeListeners();
+			}
+			//this._loader = null; // FixMe
+		}
+		
+		/**
+		 * Add listeners
+		 */
+		private function _addListeners():void {
 			try {
-				// Create a loader for a SWF or an image (Loader), or for an URL (URLLoader)
-				this._loader = (SWForImage) ? new Loader() : new URLLoader();
-
-				this.url = url;
-
-				this._onComplete = onComplete;
-				this._onFailure = onFailure;
-				this._addListeners();
+				this.loaderInfo.addEventListener(Event.COMPLETE, this._loadEnd, false, int.MAX_VALUE, true);
+				this.loaderInfo.addEventListener(IOErrorEvent.IO_ERROR, this._loadEnd, false, int.MAX_VALUE, true);
+				this.loaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this._loadEnd, false, int.MAX_VALUE, true);
+	
+				if (this._onComplete != null) {
+					this.loaderInfo.addEventListener(Event.COMPLETE, this._onComplete);
+				}
+	
+				if (this._onFailure != null) {
+					this.loaderInfo.addEventListener(IOErrorEvent.IO_ERROR, this._onFailure);
+					this.loaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this._onFailure);
+				}
 			} catch (e:Error) {
 				Trace.error(e.message);
 			}
 		}
-
+		
 		/**
-		 * add listeners
-		 */
-		private function _addListeners():void {
-			_timer.addEventListener(TimerEvent.TIMER, _loadEnd);
-			this.loaderInfo.addEventListener(Event.COMPLETE, this._loadEnd,false,int.MAX_VALUE,true);
-			this.loaderInfo.addEventListener(IOErrorEvent.IO_ERROR, this._loadEnd,false,int.MAX_VALUE,true);
-			this.loaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this._loadEnd,false,int.MAX_VALUE,true);
-
-			if (this._onComplete != null) {
-				this.loaderInfo.addEventListener(Event.COMPLETE, this._onComplete);
-			}
-
-			if (this._onFailure != null) {
-				this.loaderInfo.addEventListener(IOErrorEvent.IO_ERROR, this._onFailure);
-				this.loaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this._onFailure);
-			}
-		}
-
-		/**
-		 * remove listeners
+		 * Remove listeners
 		 */
 		private function _removeListeners():void {
-			_timer.removeEventListener(TimerEvent.TIMER, _loadEnd);
-			this.loaderInfo.removeEventListener(Event.COMPLETE, this._loadEnd);
-			this.loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, this._loadEnd);
-			this.loaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, this._loadEnd);
-
-			if (this._onComplete != null) {
-				this.loaderInfo.removeEventListener(Event.COMPLETE, this._onComplete);
-			}
-
-			if (this._onFailure != null) {
-				this.loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, this._onFailure);
-				this.loaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, this._onFailure);
+			try {
+				this.loaderInfo.removeEventListener(Event.COMPLETE, this._loadEnd);
+				this.loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, this._loadEnd);
+				this.loaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, this._loadEnd);
+	
+				if (this._onComplete != null) {
+					this.loaderInfo.removeEventListener(Event.COMPLETE, this._onComplete);
+				}
+	
+				if (this._onFailure != null) {
+					this.loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, this._onFailure);
+					this.loaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, this._onFailure);
+				}
+			} catch (e:Error) {
+				Trace.error(e.message);
 			}
 		}
-
+		
 		/**
 		 * When a loader ends, then start another if one
 		 * 
@@ -120,54 +147,31 @@ package org.openscales.core.request
 		 * We don't care about whitch one it is because it just means that a connection have been released.
 		 */
 		private function _loadEnd(e:Event=null):void {
-			this._timer.stop();
-			if(!e || e.type == TimerEvent.TIMER) {
+			if (this._timer) {
+				this._timer.stop();
+			}
+			if ((! e) || (e.type == TimerEvent.TIMER)) {
 				this.destroy();
 				if (this._onFailure != null) {
 					this._onFailure(new IOErrorEvent(IOErrorEvent.IO_ERROR));
 				}
 			}		
-			_activeConn.remove(this);
-			_runPending();
+			AbstractRequest._activeConn.remove(this);
+			AbstractRequest._runPending();
 		}
-
-		/**
-		 * Destroy the request.
-		 */
-		public function destroy():void {
-			this._isSent = true;
-			if(_activeConn.containsKey(this)) {
-				try {
-					this.loader.close();
-				} catch(e:Error){
-					Trace.error(e.message);
-				};
-				this._removeListeners();
-				_activeConn.remove(this);
-				_runPending();
-				return;
-			}
-
-			this._removeListeners();
-			var i:int = _pendingRequests.indexOf(this);
-			if(i!=-1) {
-				_pendingRequests.splice(i,1);
-			}
-			//this._loader = null; // FixMe
-		}
-
+		
 		/**
 		 * Run pending connections if there is at least one
 		 */
-		private function _runPending():void {
-			var i:int = _maxConn-_activeConn.size();
-			while(_pendingRequests.length > 0 && i>0) {
-				var pending:AbstractRequest = _pendingRequests.shift();
+		static private function _runPending():void {
+			var i:int = (AbstractRequest.maxConn==0) ? AbstractRequest._pendingRequests.length : (AbstractRequest.maxConn - AbstractRequest._activeConn.size());
+			while ((i > 0) && (AbstractRequest._pendingRequests.length > 0)) {
+				var pending:AbstractRequest = AbstractRequest._pendingRequests.shift();
 				pending.execute();
 				i--;
 			}
 		}
-
+		
 		/**
 		 * Getter and setter of the url of the request.
 		 */
@@ -309,8 +313,10 @@ package org.openscales.core.request
 
 		/**
 		 * Send the request (can be called only once).
-		 * URLRequestMethod.POST is used if postContent is not null and
-		 * URLRequestMethod.GET otherwise (default).
+		 * The request is really launched if the maximum number of parallels
+		 * requests is not reached and it is pooled otherwise.
+		 * If AbstractRequest.maxConn is zero, all the requests are launched
+		 * immediately.
 		 */
 		public function send():void {
 			if (this.isSent) {
@@ -318,21 +324,18 @@ package org.openscales.core.request
 				return;
 			}
 			this._isSent = true;
-			if(_activeConn.size()<_maxConn) {
-				execute();
-			}
-			else {
-				_pendingRequests.push(this);
+			if ((AbstractRequest.maxConn == 0) || (AbstractRequest._activeConn.size() < AbstractRequest.maxConn)) {
+				this.execute();
+			} else {
+				AbstractRequest._pendingRequests.push(this);
 			}
 		}
 
 		/**
-		 * Send the request (can be called only once).
-		 * URLRequestMethod.POST is used if postContent is not null and
-		 * URLRequestMethod.GET otherwise (default).
+		 * Execute the request
 		 */
 		private function execute():void {
-			_activeConn.put(this,null);
+			AbstractRequest._activeConn.put(this, null);
 			try {
 				// Define the urlRequest
 				var _finalUrl:String = this.finalUrl;
@@ -345,7 +348,11 @@ package org.openscales.core.request
 					urlRequest.contentType = this.postContentType;
 					urlRequest.data = this.postContent;
 				}
-				_timer.start();
+				if (this.duration > 0) {
+					this._timer = new Timer(this.duration, 1);
+					this._timer.addEventListener(TimerEvent.TIMER, this._loadEnd);
+					this._timer.start();
+				} // else ther is no timeout for the request
 				if (this.loader is Loader) {
 					this.loader.name = this.url; // Needed, see KMLFormat.updateImages for instance
 					// Define the context for the loading of the SWF or Image
@@ -359,20 +366,20 @@ package org.openscales.core.request
 				}
 			} catch (e:Error) {
 				Trace.error("OpenLSRequest - send: " + e.message);
-				_loadEnd(null);
+				this._loadEnd(null);
 			}
 		}
 
 		/**
-		 * setter for the maximum running connections
+		 * Setter for the maximum running connections
+		 * If the value is zero, all the pending requests will be sent and the
+		 * future requests will be sent immediately.
 		 * 
 		 * @param value:uint the number of connections allowed
 		 */
-		public function set maxConn(value:uint):void {
-			if(value>0) {
-				_maxConn = value;
-				_runPending();
-			}
+		static public function set maxConn(value:uint):void {
+			AbstractRequest._maxConn = value;
+			AbstractRequest._runPending();
 		}
 
 		/**
@@ -380,22 +387,21 @@ package org.openscales.core.request
 		 * 
 		 * @return uint the allowed number of running connection
 		 */
-		public function get maxConn():uint {
-			return _maxConn;
+		static public function get maxConn():uint {
+			return AbstractRequest._maxConn;
 		}
 
 		/**
-		 * setter for the delay before forcing an active connexion to close
+		 * Setter for the delay before forcing an active connexion to close.
+		 * If the value is zero, no timeout will be used.
 		 * 
 		 * @param Number number delay in milliseconds
 		 */ 
 		public function set duration(value:Number):void {
-			if(value<1 || this.isSent)
+			if (this.isSent) {
 				return;
+			}
 			this._duration = value;
-			_timer.removeEventListener(TimerEvent.TIMER, _loadEnd);
-			this._timer = new Timer(this._duration,1);
-			_timer.addEventListener(TimerEvent.TIMER, _loadEnd);
 		}
 
 		/**
