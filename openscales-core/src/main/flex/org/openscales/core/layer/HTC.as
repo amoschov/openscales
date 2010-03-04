@@ -35,7 +35,7 @@ package org.openscales.core.layer
 		public function set format(value:String):void {
 			if(value.length==0)
 				return;
-			else if(value.charAt(0)='.')
+			else if(value.charAt(0)=='.')
 				this._format = value.substr(1,value.length-1);
 			else
 				this._format = value;
