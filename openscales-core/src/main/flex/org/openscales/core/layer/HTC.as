@@ -100,7 +100,7 @@ package org.openscales.core.layer
 			var numX:Number = Math.floor(bounds.centerPixel.x / (this.tileWidth * resolution));
 			var numY:Number = Math.floor(bounds.centerPixel.y / (this.tileHeight * resolution));
 
-			var srcfinal = this.url+this.name;
+			var srcfinal:String = this.url+this.name;
 
 			srcfinal+= "_" +  this._format + "_" + String(this.tileWidth) + "_" + String(this.tileHeight) + "_" + zoomString + "/";
 
