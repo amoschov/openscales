@@ -29,18 +29,15 @@ package org.openscales.core.layer
 		private var _serverResolutions:Array = null;
 
 		public function TMS(name:String, url:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
-			projection:String = null, proxy:String = null) {
-
+							projection:String = null, proxy:String = null) {
 			super(name, url, params,isBaseLayer, visible, projection, proxy);
-
 		}
 
-		override public function getURL(bounds:Bounds):String
-		{
+		override public function getURL(bounds:Bounds):String {
 			var res:Number = this.map.resolution;
 			var x:Number = Math.round((bounds.left - this._tileOrigin.lon) / (res * this.tileWidth));
 			var y:Number = Math.round((bounds.bottom - this._tileOrigin.lat) / (res * this.tileHeight));
-			var z:Number = this._serverResolutions != null ? this._serverResolutions.indexOf(res) : this.map.zoom;
+			var z:Number = (this._serverResolutions!=null) ? this._serverResolutions.indexOf(res) : this.map.zoom;
 			// Overrided so commented
 			// Use name instead of layername, cf. http://trac.openlayers.org/ticket/737
 			var path:String = ""/*this.serviceVersion + "/" + this.name + "/" + z + "/" + x + "/" + y + "." + this.type*/;
@@ -48,14 +45,13 @@ package org.openscales.core.layer
 			return url + path;
 		}
 
-		override public function addTile(bounds:Bounds, position:Pixel):Tile
-		{
+		override public function addTile(bounds:Bounds, position:Pixel):Tile {
 			return new ImageTile(this, position, bounds, null, new Size(this.tileWidth, this.tileHeight));
 		}
 
 		override public function set map(map:Map):void {
 			super.map = map;
-			if (!this._tileOrigin) {
+			if (! this._tileOrigin) {
 				this._tileOrigin = new LonLat(this.map.maxExtent.left, this.map.maxExtent.bottom);
 			}
 		} 

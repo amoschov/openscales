@@ -56,33 +56,34 @@ package org.openscales.core.tile
 		 * @return Always returns true.
 		 */
 		override public function draw():Boolean {
-
 			//this.clear();
 
 			if (this.layer != this.layer.map.baseLayer) {
-				if(_drawPosition != null)
+				if(_drawPosition != null) {
 					this.bounds = this.getBoundsFromBaseLayer(_drawPosition);
-				else
+				} else {
 					this.bounds = this.getBoundsFromBaseLayer(position);
+				}
 			}
-			//if (!super.draw()) {
+			//if (! super.draw()) {
 			//	return false;    
 			//}
-			if(!withinMapBounds()) {
+			if(! withinMapBounds()) {
 				return false;    
 			}
-			if(this.url == null) {
+			if (this.url == null) {
 				this.url = this.layer.getURL(this.bounds);
 			}
-
+			
 			var cachedLoader:Loader = null;	
-
-			//If the tile (loader) was already loaded and is in the cache, we draw it
-			if (this.layer is Grid && (cachedLoader=(this.layer as Grid).getTileCache(this.url)) != null)
+			
+			// If the tile (loader) was already loaded and is in the cache, we draw it
+			if ((this.layer is Grid) && ((cachedLoader=(this.layer as Grid).getTileCache(this.url)) != null)) {
 				drawLoader(cachedLoader,true);
-			else {        	
-				if(_request)
-					_request.destroy();	
+			} else {
+				if (_request) {
+					_request.destroy();
+				}	
 				this.loading = true;		     
 				_request = new DataRequest(this.url, onTileLoadEnd, onTileLoadError);
 				_request.proxy = this.layer.proxy;
@@ -92,8 +93,7 @@ package org.openscales.core.tile
 			return true;
 		}
 
-		public function onTileLoadEnd(event:Event):void
-		{
+		public function onTileLoadEnd(event:Event):void {
 			this.loading = false;
 			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
 			var loader:Loader = loaderInfo.loader as Loader;
@@ -107,51 +107,45 @@ package org.openscales.core.tile
 		 * @param cached Cached loader or not
 		 */
 		private function drawLoader(loader:Loader, cached:Boolean):void {
-
-			if(this.layer) {		
-
-				if(_drawPosition != null)
-				{
+			if (this.layer) {		
+				if (_drawPosition != null) {
 					this.position = _drawPosition;					
 					_drawPosition = null;
 				}
+//Trace.debug("ImageTile - drawLoader: url="+this.url+" ; pos="+this.position);
 				
 				// children below the current loader are not required any more
-				while (this.numChildren > 0) 
-				{
+				while (this.numChildren > 0) {
 					var child:DisplayObject = removeChildAt(0);
 				}		
 				this.addChild(loader);
 				
-				
 				// Tween tile effect 
-				if(!this.layer.contains(this))
+				if (! this.layer.contains(this)) {
 					this.layer.addChild(this);
+				}
 				
 				// TODO : add parameter to control tween effect
 				var tw:GTween = new GTween(this, 0.3, {alpha:1});
 				this.drawn = true;
-
-				//We put the loader into the cache if it's a recently loaded
-				if (this.layer is Grid && !cached)
-					(this.layer as Grid).addTileCache(loader.name,loader);
+				
+				// We put the loader into the cache if it's a recently loaded
+				if ((this.layer is Grid) && (! cached)) {
+					(this.layer as Grid).addTileCache(loader.name, loader);
+				}
 			}
 		}
 		
-
-		public function onTileLoadError(event:IOErrorEvent):void
-		{
-			
-			if (++this._attempt > this.layer.map.IMAGE_RELOAD_ATTEMPTS) {
-				Trace.error("Error when loading tile " + this.url);
+		public function onTileLoadError(event:IOErrorEvent):void {
+			if ((! this.layer) || (! this.layer.map) || (++this._attempt <= this.layer.map.IMAGE_RELOAD_ATTEMPTS)) {
+				// Retry loading
+				Trace.log("ImageTile - onTileLoadError: Error while loading tile " + this.url+" ; retry #" + this._attempt);
+				this.draw();
+			} else {
+				// Maximum number of tries reached
+				Trace.error("ImageTile - onTileLoadError: Error while loading tile " + this.url);
 				this.loading = false;
-				return;
 			}
-
-			// retry load
-			Trace.log("Retry " + this._attempt + " tile " + this.url);
-			this.url = this.layer.getURL(this.bounds);
-			this.draw();
 		}
 
 		/**
@@ -161,13 +155,10 @@ package org.openscales.core.tile
 			super.clear();
 			this.alpha = 0;
 
-			if(this._request)
-			{
+			if(this._request) {
 				this.loading = false;
-				
 				_request.destroy();
 			}
-
 			
 			while (this.numChildren > 0) {
 				var child:DisplayObject = removeChildAt(0);

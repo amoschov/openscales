@@ -25,8 +25,8 @@ package org.openscales.core.request
 		 * can manage the number of simultaneous connections and
 		 * prevent browser's "saturation"
 		 */
-		public static const DEFAULT_MAX_CONN:uint = 10;
-		private static const DEFAULT_MAX_ACTIVE_TIME:uint = 5000; // 5s
+		public static const DEFAULT_MAX_CONN:uint = 10; // number of parallel requests
+		private static const DEFAULT_MAX_ACTIVE_TIME:uint = 0; // 5000 for a timeout of 5s by request
 		private static var _maxConn:uint = DEFAULT_MAX_CONN;
 		private static var _pendingRequests:Array = new Array();
 		private static var _activeConn:HashMap = new HashMap();
@@ -418,9 +418,9 @@ package org.openscales.core.request
 
 		/**
 		 * Setter for the delay before forcing an active connexion to close.
-		 * If the value is zero, no timeout will be used.
+		 * If the value is zero (default), no timeout will be used.
 		 * 
-		 * @param Number number delay in milliseconds
+		 * @param Number value delay in milliseconds
 		 */ 
 		public function set duration(value:Number):void {
 			if (this.isSent) {

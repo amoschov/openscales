@@ -94,7 +94,7 @@ package org.openscales.core.security.ign
             // GET:
             var xr:XMLRequest= new XMLRequest(this.authUrl+this.authParams, authenticationResponse);
             // POST:
-            //var xr:XMLRequest= new XMLRequest(this.authUrl, authenticationResponse);
+            //var xr:XMLRequest = new XMLRequest(this.authUrl, authenticationResponse);
             //xr.postContent = new URLVariables(this.authParams);
             // GET and POST:
             xr.proxy = this.proxy;
@@ -107,7 +107,7 @@ package org.openscales.core.security.ign
         private function authenticationResponse(e:Event):void {
             var loader:URLLoader = e.target as URLLoader;
             try {
-                var doc:XML =  new XML(loader.data);
+                var doc:XML = new XML(loader.data);
                 this.token = doc.toString();
                 this._initialized = true;
                 Trace.log("Valid token received : " + this.token);
@@ -193,7 +193,7 @@ package org.openscales.core.security.ign
             // GET:
             var xr:XMLRequest= new XMLRequest(this.updateUrl+this.updateParams, authenticationUpdateResponse);
             // POST:
-            //var xr:XMLRequest= new XMLRequest(this.updateUrl, authenticationUpdateResponse);
+            //var xr:XMLRequest = new XMLRequest(this.updateUrl, authenticationUpdateResponse);
             //xr.postContent = new URLVariables(this.updateParams);
             // GET and POST:
             xr.proxy = this.proxy;
@@ -206,7 +206,7 @@ package org.openscales.core.security.ign
         private function authenticationUpdateResponse(e:Event):void {
             var loader:URLLoader = e.target as URLLoader;
             try {
-                var doc:XML =  new XML(loader.data);
+                var doc:XML = new XML(loader.data);
                 this.token = doc.toString();
                 Trace.log("Valid token received : " + this.token);
                 map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_UPDATED, this));
@@ -221,7 +221,7 @@ package org.openscales.core.security.ign
         }
 
         override public function logout():void {
-            var xr:XMLRequest= new XMLRequest(this.releaseUrl+this.releaseParams, authenticationLogoutResponse);
+            var xr:XMLRequest = new XMLRequest(this.releaseUrl+this.releaseParams, authenticationLogoutResponse);
             xr.proxy = this.proxy;
             xr.send();
         }

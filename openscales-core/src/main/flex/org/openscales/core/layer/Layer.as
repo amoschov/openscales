@@ -306,7 +306,7 @@ package org.openscales.core.layer {
 
 		/**
 		 * @return Return the minimum zoom level allowed to display the layer.
-		 * The level returned does not take in account map or baselayer
+		 * The level returned does not take into account the map / baselayer
 		 * information, see inRange for that. 
 		 */
 		public function get minZoomLevel():Number {
