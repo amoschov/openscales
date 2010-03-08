@@ -20,11 +20,10 @@ package org.openscales.core.layer
 		private var _params:IHttpParams = null;
 
 		public function HTTPRequest(name:String, url:String, params:IHttpParams = null, isBaseLayer:Boolean = false, 
-			visible:Boolean = true, projection:String = null, proxy:String = null,onLoadComplete:Function=null) {
-
+									visible:Boolean = true, projection:String = null, proxy:String = null,
+									onLoadComplete:Function=null) {
 			super(name, isBaseLayer, visible, projection, proxy);
-
-			this._url=url;
+			this._url = url;
 			this.params = params;
 		}
 
@@ -32,11 +31,9 @@ package org.openscales.core.layer
 			super.destroy(setNewBaseLayer);
 		}
 
-		public function getUrls():Array 
-		{
+		public function getUrls():Array {
 			var urls:Array = null;
-
-			if((altUrls == null) || (altUrls.length == 0)) {
+			if ((altUrls == null) || (altUrls.length == 0)) {
 				urls = new Array(1);
 				urls[0] = this.url;
 			} else {
@@ -46,10 +43,10 @@ package org.openscales.core.layer
 					urls[i] = altUrls[i-1];
 				}
 			}
-
 			return urls;
 
 		}
+		
 		/**
 		 * selectUrl() implements the standard floating-point multiplicative
 		 *     hash function described by Knuth, and hashes the contents of the
@@ -69,14 +66,12 @@ package org.openscales.core.layer
 				product *= paramString.charCodeAt(i) * this.URL_HASH_FACTOR; 
 				product -= Math.floor(product); 
 			}
-
 			return urls[Math.floor(product * urls.length)];
 		}
-
-
-
+		
+		
 		// Getters & setters	
-
+		
 		public function get url():String {
 			return this._url;
 		}
@@ -97,8 +92,6 @@ package org.openscales.core.layer
 		public function set params(value:IHttpParams):void {
 			this._params = value;
 		}
-
-
 
 	}
 }
