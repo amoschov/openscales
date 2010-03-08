@@ -11,7 +11,7 @@ package org.openscales.core.request
 	import flash.net.URLVariables;
 	import flash.system.LoaderContext;
 	import flash.utils.Timer;
-
+	
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.security.ISecurity;
@@ -77,12 +77,12 @@ package org.openscales.core.request
 		 */
 		public function destroy():void {
 			this._isSent = true;
+			try {
+				this.loader.close();
+			} catch(e:Error) {
+				// empty catch is evil, but here it's fair
+			}
 			if (AbstractRequest._activeConn.containsKey(this)) {
-				try {
-					this.loader.close();
-				} catch(e:Error) {
-					Trace.error(e.message);
-				}
 				this._removeListeners();
 				AbstractRequest._activeConn.remove(this);
 				AbstractRequest._runPending();
@@ -152,9 +152,6 @@ package org.openscales.core.request
 			}
 			if ((! e) || (e.type == TimerEvent.TIMER)) {
 				this.destroy();
-				if (this._onFailure != null) {
-					this._onFailure(new IOErrorEvent(IOErrorEvent.IO_ERROR));
-				}
 			}		
 			AbstractRequest._activeConn.remove(this);
 			AbstractRequest._runPending();
@@ -277,7 +274,7 @@ package org.openscales.core.request
 		/**
 		 * Getter of the loader of the request.
 		 */
-		protected function get loader():Object {
+		public function get loader():Object {
 			return this._loader;
 		}
 
