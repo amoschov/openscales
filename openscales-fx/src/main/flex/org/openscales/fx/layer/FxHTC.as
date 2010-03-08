@@ -4,9 +4,9 @@ package org.openscales.fx.layer
 	
 	public class FxHTC extends FxLayer
 	{
-		public function FxHTC(name:String,url:String)
+		public function FxHTC()
 		{
-			this._layer=new HTC(name,url);
+			this._layer=new HTC("","");
 			super();
 		}
 
