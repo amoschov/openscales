@@ -11,7 +11,7 @@ package org.openscales.core.layer.osm
 	 */	
 	public class OSM extends TMS
 	{
-		public static const MISSING_TILE_URL:String="http://openstreetmap.org/openlayers/img/404.png";
+		public static const MISSING_TILE_URL:String="http://www.openstreetmap.org/openlayers/img/404.png";
 		
 		public static const DEFAULT_MAX_RESOLUTION:Number = 156543.0339;
 		
