@@ -48,6 +48,7 @@ package org.openscales.core.request
 		private var _onComplete:Function = null;
 		private var _onFailure:Function = null;
 		private var _isSent:Boolean = false;
+		private var _isCompleted:Boolean = false;
 		private var _loader:Object = null;
 		// getter of loaderInfo:Object
 		// getter of finalUrl:String
@@ -78,9 +79,13 @@ package org.openscales.core.request
 		public function destroy():void {
 			this._isSent = true;
 			try {
+				if (this._isCompleted && (this.loader is Loader)) {
+					(this.loader as Loader).unload();
+				} // else ? // FixMe
 				this.loader.close();
 			} catch(e:Error) {
-				// empty catch is evil, but here it's fair
+				//Trace.error(e.message);
+				// Empty catch is evil, but here it's fair.
 			}
 			if (AbstractRequest._activeConn.containsKey(this)) {
 				this._removeListeners();
@@ -93,6 +98,9 @@ package org.openscales.core.request
 				}
 				this._removeListeners();
 			}
+			if (this._timer) {
+				this._timer = null;
+			}
 			//this._loader = null; // FixMe
 		}
 		
@@ -103,12 +111,15 @@ package org.openscales.core.request
 			try {
 				this.loaderInfo.addEventListener(Event.COMPLETE, this._loadEnd, false, int.MAX_VALUE, true);
 				this.loaderInfo.addEventListener(IOErrorEvent.IO_ERROR, this._loadEnd, false, int.MAX_VALUE, true);
+				// IOErrorEvent.IO_ERROR must be listened to avoid this following error:
+				// IOErrorEvent non pris en charge : text=Error #2124: Le type du fichier chargé est inconnu.
 				this.loaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this._loadEnd, false, int.MAX_VALUE, true);
-	
+				// SecurityErrorEvent.SECURITY_ERROR must be listened for the cross domain errors
+				
 				if (this._onComplete != null) {
 					this.loaderInfo.addEventListener(Event.COMPLETE, this._onComplete);
 				}
-	
+				
 				if (this._onFailure != null) {
 					this.loaderInfo.addEventListener(IOErrorEvent.IO_ERROR, this._onFailure);
 					this.loaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, this._onFailure);
@@ -126,11 +137,11 @@ package org.openscales.core.request
 				this.loaderInfo.removeEventListener(Event.COMPLETE, this._loadEnd);
 				this.loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, this._loadEnd);
 				this.loaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, this._loadEnd);
-	
+				
 				if (this._onComplete != null) {
 					this.loaderInfo.removeEventListener(Event.COMPLETE, this._onComplete);
 				}
-	
+				
 				if (this._onFailure != null) {
 					this.loaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, this._onFailure);
 					this.loaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, this._onFailure);
@@ -146,13 +157,28 @@ package org.openscales.core.request
 		 * @param e:Event one of the listened events.
 		 * We don't care about whitch one it is because it just means that a connection have been released.
 		 */
-		private function _loadEnd(e:Event=null):void {
+		private function _loadEnd(event:Event=null):void {
 			if (this._timer) {
 				this._timer.stop();
 			}
-			if ((! e) || (e.type == TimerEvent.TIMER)) {
-				this.destroy();
-			}		
+			if ((! event) || (event.type == TimerEvent.TIMER)) {
+				if (this._onFailure != null) {
+					this._onFailure(new IOErrorEvent(IOErrorEvent.IO_ERROR));
+				}
+				this.destroy(); // called last since the listeners will be removed
+			} else {
+				if (event.type == Event.COMPLETE) {
+					this._isCompleted = true;
+				}
+				else if (this._onFailure == null) {
+					switch (event.type) {
+						case IOErrorEvent.IO_ERROR:
+						case SecurityErrorEvent.SECURITY_ERROR:
+							Trace.error(event.toString());
+							break;
+					}
+				}
+			}
 			AbstractRequest._activeConn.remove(this);
 			AbstractRequest._runPending();
 		}
@@ -337,6 +363,8 @@ package org.openscales.core.request
 				// Define the urlRequest
 				var _finalUrl:String = this.finalUrl;
 				if ((_finalUrl==null) || (_finalUrl=="")) {
+					// invalid url, abort
+					this._loadEnd(null);
 					return;
 				}
 				var urlRequest:URLRequest = new URLRequest(_finalUrl);
@@ -349,7 +377,7 @@ package org.openscales.core.request
 					this._timer = new Timer(this.duration, 1);
 					this._timer.addEventListener(TimerEvent.TIMER, this._loadEnd);
 					this._timer.start();
-				} // else ther is no timeout for the request
+				} // else there is no timeout for the request
 				if (this.loader is Loader) {
 					this.loader.name = this.url; // Needed, see KMLFormat.updateImages for instance
 					// Define the context for the loading of the SWF or Image
