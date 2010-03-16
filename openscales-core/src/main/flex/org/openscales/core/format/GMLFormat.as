@@ -2,9 +2,16 @@ package org.openscales.core.format
 {
 	import flash.utils.getQualifiedClassName;
 	import flash.xml.XMLNode;
-
+	
+	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
 	import org.openscales.core.feature.Feature;
+	import org.openscales.core.feature.LineStringFeature;
+	import org.openscales.core.feature.MultiLineStringFeature;
+	import org.openscales.core.feature.MultiPointFeature;
+	import org.openscales.core.feature.MultiPolygonFeature;
+	import org.openscales.core.feature.PointFeature;
+	import org.openscales.core.feature.PolygonFeature;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
@@ -16,14 +23,6 @@ package org.openscales.core.format
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
-	import org.openscales.core.feature.Feature;
-	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.feature.MultiPointFeature;
-	import org.openscales.core.feature.LineStringFeature;
-	import org.openscales.core.feature.MultiLineStringFeature;
-	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.feature.MultiPolygonFeature;
-	import org.openscales.core.Trace;
 
 	/**
 	 * Read/Write GML. Supports the GML simple features profile.
@@ -54,14 +53,17 @@ package org.openscales.core.format
 
 		private var _dim:Number;
 
+		private var _onFeature:Function;
+
 		/**
 		 * GMLFormat constructor
 		 *
 		 * @param extractAttributes
 		 *
 		 */
-		public function GMLFormat(extractAttributes:Boolean = true) {
+		public function GMLFormat(extractAttributes:Boolean = true, onFeature:Function = null) {
 			this.extractAttributes = extractAttributes;
+			this._onFeature=onFeature;
 		}
 
 		/**
@@ -93,12 +95,21 @@ package org.openscales.core.format
 			this.dim = (dim == 3) ? 3 : 2;
 
 			var features:Array = [];
-
-			for (var i:int = 0; i < featureNodes.length(); i++) {
-				var feature:Feature = this.parseFeature(featureNodes[i]);
-
-				if (feature) {
-					features.push(feature);
+			var feature:Feature;
+			var i:int;
+			if(this._onFeature!=null) {
+				for (i = 0; i < featureNodes.length(); i++) {
+					feature = this.parseFeature(featureNodes[i]);
+					if (feature) {
+						this._onFeature(feature);
+					}
+				}
+			} else {
+				for (i = 0; i < featureNodes.length(); i++) {
+					feature = this.parseFeature(featureNodes[i]);
+					if (feature) {
+						features.push(feature);
+					}
 				}
 			}
 			return features;

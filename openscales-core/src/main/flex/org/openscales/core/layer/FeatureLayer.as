@@ -2,7 +2,7 @@ package org.openscales.core.layer
 {
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
-	
+
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
@@ -12,7 +12,7 @@ package org.openscales.core.layer
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.style.Style;
 	import org.openscales.proj4as.ProjProjection;
-	
+
 	/**
 	 * Layer that display features stored as child element
 	 */
@@ -27,13 +27,13 @@ package org.openscales.core.layer
 		private var _featuresBbox:Bounds = null;
 
 		private var _style:Style = null;
-		
+
 		private var _geometryType:String = null;
-		
+
 		private var _selectedFeatures:Array = null;
-		
+
 		private var _isInEditionMode:Boolean=false;
-	
+
 		public function FeatureLayer(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
 									srsCode:String = null, proxy:String = null)
 		{
@@ -54,18 +54,20 @@ package org.openscales.core.layer
 			this.selectedFeatures = null;
 			this.featuresBbox = null;
 		}
-		
+
 		// Clear layer and children graphics
 		override public function clear():void {
 			this.graphics.clear();
 			var child:Sprite = null;
 			var child2:Sprite = null;
-			for(var i:int=0; i<this.numChildren;i++) {
+			var numChild:int = this.numChildren;
+			for(var i:int=0; i<numChild;i++) {
 				child = this.getChildAt(i) as Sprite;
 				if(child) {
 					child.graphics.clear();
 					//Cleanup child subchilds (ex childs of pointfeatures)
-					for(var j:int=0; j<child.numChildren;j++){
+					var numChild2:int =  child.numChildren;
+					for(var j:int=0; j<numChild2;j++){
 						child2 = child.getChildAt(j) as Sprite;
 						if(child2) {
 							child2.graphics.clear();
@@ -74,7 +76,7 @@ package org.openscales.core.layer
 				}
 			}
 		}
-		
+
 		private function updateCurrentProjection(evt:LayerEvent = null):void {
 			if ((this.map) && (this.map.baseLayer) && (this._displayProjection.srsCode != this.map.baseLayer.projection.srsCode)) {
 				if(this.features.length > 0){	
@@ -112,14 +114,14 @@ package org.openscales.core.layer
 		 */
 		public function addFeatures(features:Array):void {
 			var fevt:FeatureEvent = null;
-			
+
 			// Dispatch an event before the features are added
 			if(this.map){
 				fevt = new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, null);
 				fevt.features = features;
 				this.map.dispatchEvent(fevt);
 			}
-			
+
 			for (var i:int = 0; i < features.length; i++) {
 				this.addFeature(features[i], false);
 			}
@@ -147,13 +149,13 @@ package org.openscales.core.layer
 					getQualifiedClassName(this.geometryType);
 				throw throwStr;
 			}
-			
+
 			// If needed dispatch a PRE_INSERT event before the feature is added
 			if (dispatchFeatureEvent && this.map) {
 				fevt = new FeatureEvent(FeatureEvent.FEATURE_PRE_INSERT, feature);
 				this.map.dispatchEvent(fevt);
 			}
-			
+
 			// Add the feature to the layer
 			feature.layer = this;
 			this.addChild(feature);
@@ -163,7 +165,7 @@ package org.openscales.core.layer
 				this.map.dispatchEvent(fevt);
 			}
 		}
-		
+
 		override public function reset():void {
 			var features:Array = this.features;
 			for (var i:int = 0; i < features.length; i++) {
@@ -176,7 +178,7 @@ package org.openscales.core.layer
 				this.map.dispatchEvent(fevt);
 			}
 		}
-		
+
 		override protected function draw():void {
 			this.cacheAsBitmap = false;
 			for each (var feature:Feature in this.features){
@@ -184,7 +186,7 @@ package org.openscales.core.layer
 			}
 			this.cacheAsBitmap = true;
 		}
-		
+
 		public function removeFeatures(features:Array):void {
 			for (var i:int = 0; i < features.length; i++) {
 				this.removeFeature(features[i], false);
@@ -238,30 +240,29 @@ package org.openscales.core.layer
 		public function set selectedFeatures(value:Array):void {
 			this._selectedFeatures = value;
 		}
-		
+
 		public function get style():Style {
 			return this._style;
 		}
-		
+
 		public function set style(value:Style):void {
 			this._style = value;
 		}
-		
+
 		public function get geometryType():String {
 			return this._geometryType;
 		}
-		
+
 		public function set geometryType(value:String):void {
 			this._geometryType = value;
 		}
-		
+
 		public function get inEditionMode():Boolean {
 			return this._isInEditionMode;
 		}
-		
+
 		public function set inEditionMode(value:Boolean):void {
 			this._isInEditionMode = value;
 		}
-
 	}
 }

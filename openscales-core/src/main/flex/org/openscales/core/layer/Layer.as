@@ -231,7 +231,6 @@ package org.openscales.core.layer {
 		 * Clear the layer graphics
 		 */
 		public function clear():void {
-			
 		}
 		
 		/**
