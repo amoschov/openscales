@@ -8,7 +8,6 @@ package org.openscales.core.layer
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
-	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.style.Style;
 	import org.openscales.proj4as.ProjProjection;
@@ -167,16 +166,7 @@ package org.openscales.core.layer
 		}
 
 		override public function reset():void {
-			var features:Array = this.features;
-			for (var i:int = 0; i < features.length; i++) {
-				this.removeFeature(features[i], false);
-			}
-			// Dispatch an event with all the features removed
-			if (this.map) {
-				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_DELETING, null);
-				fevt.features = features;
-				this.map.dispatchEvent(fevt);
-			}
+			this.removeFeatures(this.features);
 		}
 
 		override protected function draw():void {
