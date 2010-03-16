@@ -82,7 +82,8 @@ package org.openscales.core.format
 			}
 
 			var featureNodes:XMLList = dataXML..*::featureMember;
-			if (featureNodes.length() == 0) { return []; }
+			var j:int = featureNodes.length();
+			if (j == 0) { return []; }
 
 			var dim:int;
 			var coordNodes:XMLList = featureNodes[0].*::posList;
@@ -97,7 +98,6 @@ package org.openscales.core.format
 			var features:Array = [];
 			var feature:Feature;
 			var i:int;
-			var j:int = featureNodes.length();
 			if(this._onFeature!=null) {
 				for (i = 0; i < j; i++) {
 					feature = this.parseFeature(featureNodes[i]);
@@ -236,7 +236,9 @@ package org.openscales.core.format
 		public function parseAttributes(xmlNode:XML):Object {
 			var nodes:XMLList = xmlNode.children();
 			var attributes:Object = {};
-			for(var i:int = 0; i < nodes.length(); i++) {
+			var j:int = nodes.length();
+			var i:int;
+			for(i = 0; i < j; i++) {
 				var name:String = nodes[i].localName();
 				var value:Object = nodes[i].valueOf();
 				if(name == null){
@@ -263,8 +265,10 @@ package org.openscales.core.format
 		public function parsePolygonNode(polygonNode:Object):Polygon {
 			var linearRings:XMLList = polygonNode..*::LinearRing;
 			// Optimize by specifying the array size
-			var rings:Array = new Array(linearRings.length());
-			for (var i:int = 0; i < linearRings.length(); i++) {
+			var j:int = linearRings.length();
+			var rings:Array = new Array(j);
+			var i:int;
+			for (i = 0; i < j; i++) {
 				rings[i] = new LinearRing(this.parseCoords(linearRings[i]));
 			}
 			return new Polygon(rings);
@@ -297,10 +301,13 @@ package org.openscales.core.format
 				while (nums[0] == "") 
 					nums.shift();
 
-				while (nums[nums.length-1] == "") 
+				var j:int = nums.length;
+				while (nums[j-1] == "") 
 					nums.pop();
 
-				for(var i:int = 0; i < nums.length; i = i + this.dim) {
+				j = nums.length;
+				var i:int;
+				for(i = 0; i < j; i = i + this.dim) {
 					x = Number(nums[i]);
 					y = Number(nums[i+1]);
 					var p:Point = new Point(x, y);
@@ -322,7 +329,9 @@ package org.openscales.core.format
 		 */
 		override public function write(features:Object):Object {
 			var featureCollection:XML = new XML("<" + this._wfsprefix + ":" + this._collectionName + " xmlns:" + this._wfsprefix + "=\"" + this._wfsns + "\"></" + this._wfsprefix + ":" + this._collectionName + ">");
-			for (var i:int=0; i < features.length; i++) {
+			var j:int = features.length;
+			var i:int;
+			for (i = 0; i < j; i++) {
 				featureCollection.appendChild(this.createFeatureXML(features[i]));
 			}
 			return featureCollection;
@@ -401,7 +410,9 @@ package org.openscales.core.format
 				var parts:Object = "";
 				parts = geometry.components;   
 
-				for (var i:int = 0; i < parts.length; i++) { 
+				var j:int = parts.length;
+				var i:int;
+				for (i = 0; i < j; i++) { 
 					var pointMember:XML = new XML("<" + this._gmlprefix + ":pointMember xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":pointMember>");
 					var point:XML = new XML("<" + this._gmlprefix + ":Point xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":Point>");
 					point.appendChild(this.buildCoordinatesNode(parts[i]));
@@ -438,7 +449,9 @@ package org.openscales.core.format
 
 			var path:String = "";
 			if (points) {
-				for (var i:int = 0; i < points.length; i++) {
+				var j:int = points.length;
+				var i:int;
+				for (i = 0; i < j; i++) {
 					if (this.internalProj != null && this.externalProj != null)
 						(points[i] as Point).transform(this.internalProj, this.externalProj);
 					path += points[i].x + "," + points[i].y + " ";
