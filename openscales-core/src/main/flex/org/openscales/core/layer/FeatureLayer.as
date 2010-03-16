@@ -33,8 +33,11 @@ package org.openscales.core.layer
 
 		private var _isInEditionMode:Boolean=false;
 
-		public function FeatureLayer(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
-									srsCode:String = null, proxy:String = null)
+		public function FeatureLayer(name:String,
+									 isBaseLayer:Boolean = false,
+									 visible:Boolean = true,
+									 srsCode:String = null,
+									 proxy:String = null)
 		{
 			super(name, isBaseLayer, visible, srsCode, proxy);
 			this._displayProjection = this.projection.clone();
@@ -56,7 +59,6 @@ package org.openscales.core.layer
 
 		// Clear layer and children graphics
 		override public function clear():void {
-			this.graphics.clear();
 			var child:Sprite = null;
 			var child2:Sprite = null;
 			var numChild:int = this.numChildren;
@@ -66,7 +68,8 @@ package org.openscales.core.layer
 					child.graphics.clear();
 					//Cleanup child subchilds (ex childs of pointfeatures)
 					var numChild2:int =  child.numChildren;
-					for(var j:int=0; j<numChild2;j++){
+					var j:int;
+					for(j=0; j<numChild2;j++){
 						child2 = child.getChildAt(j) as Sprite;
 						if(child2) {
 							child2.graphics.clear();
@@ -74,6 +77,7 @@ package org.openscales.core.layer
 					}
 				}
 			}
+			this.graphics.clear();
 		}
 
 		private function updateCurrentProjection(evt:LayerEvent = null):void {
@@ -121,7 +125,9 @@ package org.openscales.core.layer
 				this.map.dispatchEvent(fevt);
 			}
 
-			for (var i:int = 0; i < features.length; i++) {
+			var i:int;
+			var j:int = features.length
+			for (i = 0; i < j; i++) {
 				this.addFeature(features[i], false);
 			}
 
@@ -178,7 +184,9 @@ package org.openscales.core.layer
 		}
 
 		public function removeFeatures(features:Array):void {
-			for (var i:int = 0; i < features.length; i++) {
+			var i:int;
+			var j:int = features.length
+			for (i = 0; i < j; i++) {
 				this.removeFeature(features[i], false);
 			}
 			// Dispatch an event with all the features removed
@@ -190,9 +198,13 @@ package org.openscales.core.layer
 		}
 
 		public function removeFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
-			for(var j:int = 0;j<this.numChildren;j++) {
-				if (this.getChildAt(j) == feature)
-					this.removeChildAt(j);
+			var i:int;
+			var j:int = this.numChildren;
+			for(i = 0;i<j;i++) {
+				if (this.getChildAt(i) == feature) {
+					this.removeChildAt(i);
+					break;
+				}
 			}
 			if (Util.indexOf(this.selectedFeatures, feature) != -1){
 				Util.removeItem(this.selectedFeatures, feature);
@@ -207,7 +219,9 @@ package org.openscales.core.layer
 		//Getters and setters
 		public function get features():Array {
 			var featureArray:Array = new Array();
-			for(var i:int = 0;i<this.numChildren;i++) {
+			var i:int;
+			var j:int = this.numChildren;
+			for(i = 0;i<j;i++) {
 				if(this.getChildAt(i) is Feature) {
 					featureArray.push(this.getChildAt(i));
 				}
