@@ -215,5 +215,18 @@ package org.openscales.core.layer
 		}
 		
 		
-	}
+           /**
+             * Get a polyLayers zoomToSwitch
+             */
+            public function get zoomToSwitch():Number{
+                  return this._zoomToSwitch;
+            }
+            
+            /**
+             * Set a polyLayers zoomToSwitch
+             */
+            public function set zoomToSwitch(value:Number):void {
+                  this._zoomToSwitch = value;
+            }
+   }
 }
