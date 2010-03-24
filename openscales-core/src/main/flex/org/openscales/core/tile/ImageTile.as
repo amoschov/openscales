@@ -5,18 +5,15 @@ package org.openscales.core.tile
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
-	import flash.display.Bitmap;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	
-	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.Layer;
-	import org.openscales.core.layer.ogc.WMS;
 	import org.openscales.core.request.DataRequest;
 
 	/**
@@ -91,10 +88,11 @@ package org.openscales.core.tile
 
 		public function onTileLoadEnd(event:Event):void
 		{
-			this.loading = false;
+			
 			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
 			var loader:Loader = loaderInfo.loader as Loader;
 			drawLoader(loader, false);
+			
 		}
 
 		/**
@@ -113,7 +111,8 @@ package org.openscales.core.tile
 					this.position = _drawPosition;
 					_drawPosition = null;
 				}
-
+                loader.width = this.size.w;
+			    loader.height = this.size.h;
 				this.addChild(loader);				
 
 				// Tween tile effect 
@@ -122,6 +121,7 @@ package org.openscales.core.tile
 				
 				// TODO : add parameter to control tween effect
 				var tw:GTween = new GTween(this, 0.3, {alpha:1});
+				tw.onComplete = this.onTweenComplete;
 				this.drawn = true;
 
 				//We put the loader into the cache if it's a recently loaded
@@ -129,6 +129,9 @@ package org.openscales.core.tile
 					(this.layer as Grid).addTileCache(loader.name,loader);
 			}
 		}
+		public function onTweenComplete(tween:GTween):void{
+					this.loading = false;
+        }
 
 		public function onTileLoadError(event:IOErrorEvent):void
 		{
