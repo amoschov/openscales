@@ -474,7 +474,12 @@ package org.openscales.core
 		 * @param dragTween
 		 *
 		 */
-		public function setCenter(lonlat:LonLat, zoom:Number = NaN, dragging:Boolean = false, forceZoomChange:Boolean = false, dragTween:Boolean = false, resizing:Boolean = false):void {
+		public function setCenter(lonlat:LonLat,
+								  zoom:Number = NaN,
+								  dragging:Boolean = false,
+								  forceZoomChange:Boolean = false,
+								  dragTween:Boolean = false,
+								  resizing:Boolean = false):void {
 			var zoomChanged:Boolean = forceZoomChange || (this.isValidZoomLevel(zoom) && (zoom!=this._zoom));
 						
 			if (lonlat && !this.isValidLonLat(lonlat)) {
@@ -835,7 +840,6 @@ package org.openscales.core
 					var bmp:Bitmap = bitmapTransition.removeChildAt(0) as Bitmap;
 					bmp.bitmapData.dispose();
 					bmp.bitmapData = null;
-					
 				}
 
 				// We draw the loaded tiles onto the background transition.
@@ -877,7 +881,6 @@ package org.openscales.core
 				_zooming = false;
 				setCenter(null, newZoom);
 				layerContainer.visible = true;
-
 			} 
 		}
 
@@ -892,15 +895,18 @@ package org.openscales.core
 					break;
 				}	
 				case LayerEvent.LAYER_LOAD_END: {
+					if(this._bitmapTransition != null && this._baseLayer != null && this._baseLayer.loadComplete){
+						this._bitmapTransition.alpha=0;
+					}
 					// check all layers 
 					for (var i:Number = 0;i<this.layers.length;i++)	{
 						var layer:Layer = this.layers[i];
 						if (layer != null && !layer.loadComplete)
 						  return;	
 					}
-											
+
 					// all layers are done loading.					
-					this.loading = false;					
+					this.loading = false;
 					break;
 				}						
 			}
