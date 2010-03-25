@@ -916,6 +916,9 @@ package org.openscales.core
 					break;
 				}	
 				case LayerEvent.LAYER_LOAD_END: {
+					if(this._bitmapTransition != null && this._baseLayer != null && this._baseLayer.loadComplete){
+						this._bitmapTransition.alpha=0;
+					}
 					// check all layers 
 					for (var i:Number = 0;i<this.layers.length;i++)	{
 						var layer:Layer = this.layers[i];

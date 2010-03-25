@@ -135,7 +135,9 @@ package org.openscales.core.layer.ogc
 						this.draw();
 						this.loadFeatures(this.getFullRequestString());
 					} else {
+						this.loading = true;
 						super.redraw();
+						this.loading = false;
 					}
 				}
 				
