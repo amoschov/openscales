@@ -31,7 +31,6 @@ package org.openscales.core.layer.ogc
 
 		}
 	    override public function get maxExtent():Bounds {
-			
 			if(!super.maxExtent)
 				return null;
 			
