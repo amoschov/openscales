@@ -2,7 +2,7 @@ package org.openscales.core.layer.ogc
 {
 	import flash.events.Event;
 	import flash.net.URLLoader;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
@@ -104,8 +104,8 @@ package org.openscales.core.layer.ogc
 		}
 
 		override public function redraw(fullRedraw:Boolean = true):void {
+			this.clear();
 			if (!displayed) {
-				this.clear();
 				return;
 			}
 
@@ -127,24 +127,29 @@ package org.openscales.core.layer.ogc
 				this.loadFeatures(this.getFullRequestString());
 				this._firstRendering = false;
 			} else {
-				// else reuse the existing one
-				if (previousFeatureBbox.containsBounds(projectedBounds)) {
-					super.redraw();
-				} else {
-					// Use GetCapabilities to know if all features have already been retreived.
-					// If they are, we don't request data again
-					if ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent")))) {
-						this.featuresBbox = projectedBounds;
-						this.clear();
-						this.draw();
-						this.loadFeatures(this.getFullRequestString());
-					} else {
-						super.redraw();
+				// Use GetCapabilities to know if all features have already been retreived.
+				// If they are, we don't request data again
+				if (!previousFeatureBbox.containsBounds(projectedBounds)
+					&& ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent"))))){
+					var _features:Array = new Array();
+					if(fullRedraw) {
+						//backup previous features for proper cleanup at the end
+						_features = this.features;
 					}
+					this.featuresBbox = projectedBounds;
+					this.loadFeatures(this.getFullRequestString());
+					if(fullRedraw && _features.length>0) {
+						this.removeFeatures(_features);
+					}
+					this.draw();
+				}else {
+					this.loading = true;
+					this.draw();
+					this.loading = false;
 				}
 			}
 		}
-		 
+
 		/**
 		 * Combine the layer's url with its params and these newParams.
 		 *
@@ -152,7 +157,6 @@ package org.openscales.core.layer.ogc
 		 * @param altUrl Use this as the url instead of the layer's url
 		 */
 		public function getFullRequestString(altUrl:String = null):String {
-
 			var url:String;
 
 			if (altUrl != null)
@@ -265,13 +269,14 @@ package org.openscales.core.layer.ogc
 
 			gml.read(doc);
 
+			this.draw();
+
 			if (map) {
                 this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_END, this ));
 			} else {
                 Trace.warning("Warning : no LAYER_LOAD_END dispatched because map event dispatcher is not defined"); 	
 			}
-
-			this.draw();
+			
 		}
 
 		override public function addFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {

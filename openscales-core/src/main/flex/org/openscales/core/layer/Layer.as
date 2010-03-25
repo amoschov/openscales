@@ -262,8 +262,6 @@ package org.openscales.core.layer {
 				this.draw();
 			}
 		}
-		
-		
 
 		public  function get inRange():Boolean {
             var inRange:Boolean = false;

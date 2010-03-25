@@ -172,7 +172,8 @@ package org.openscales.core.layer
 		}
 
 		override public function reset():void {
-			this.removeFeatures(this.features);
+			var _features:Array = this.features;
+			this.removeFeatures(_features);
 		}
 
 		override protected function draw():void {
@@ -186,7 +187,7 @@ package org.openscales.core.layer
 		public function removeFeatures(features:Array):void {
 			var i:int;
 			var j:int = features.length
-			for (i = 0; i < j; i++) {
+			for (i = j; i > 0; i--) {
 				this.removeFeature(features[i], false);
 			}
 			// Dispatch an event with all the features removed
