@@ -213,20 +213,19 @@ package org.openscales.core.layer
 				return null;
 			}
 		}
-		
-		
-           /**
-             * Get a polyLayers zoomToSwitch
-             */
-            public function get zoomToSwitch():Number{
-                  return this._zoomToSwitch;
-            }
-            
-            /**
-             * Set a polyLayers zoomToSwitch
-             */
-            public function set zoomToSwitch(value:Number):void {
-                  this._zoomToSwitch = value;
-            }
+
+		/**
+		 * Get a polyLayers zoomToSwitch
+		 */
+		public function get zoomToSwitch():Number{
+			return this._zoomToSwitch;
+		}
+
+		/**
+		 * Set a polyLayers zoomToSwitch
+		 */
+		public function set zoomToSwitch(value:Number):void {
+			this._zoomToSwitch = value;
+		}
    }
 }
