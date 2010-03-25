@@ -77,6 +77,8 @@ package org.openscales.core.request
 		 * Destroy the request.
 		 */
 		public function destroy():void {
+			if(!this._isSent && this.security!=null)
+				this.security.removeWaitingRequest(this);
 			this._isSent = true;
 			try {
 				if (this._isCompleted && (this.loader is Loader)) {
@@ -84,7 +86,6 @@ package org.openscales.core.request
 				} // else ? // FixMe
 				this.loader.close();
 			} catch(e:Error) {
-				//Trace.error(e.message);
 				// Empty catch is evil, but here it's fair.
 			}
 			if (AbstractRequest._activeConn.containsKey(this)) {

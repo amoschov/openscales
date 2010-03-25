@@ -1,6 +1,6 @@
 package org.openscales.core.security
 {
-	import org.openscales.core.layer.Layer;
+	import org.openscales.core.request.AbstractRequest;
 
 	/**
 	 * Represent a security mecanism that will use remote services to authenticate and retreive a token.
@@ -33,6 +33,11 @@ package org.openscales.core.security
 		 */
 		function get securityParameter():String;
 
+		/**
+		 * Register/Remove waiting requests
+		 */
+		function addWaitingRequest(request:AbstractRequest):void;
+		function removeWaitingRequest(request:AbstractRequest):void;
 	}
 }
 

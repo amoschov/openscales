@@ -81,12 +81,16 @@ package org.openscales.core.tile
 			} else {
 				if (_request) {
 					_request.destroy();
-				}	
+				}
 				this.loading = true;		     
 				_request = new DataRequest(this.url, onTileLoadEnd, onTileLoadError);
 				_request.proxy = this.layer.proxy;
 				_request.security = this.layer.security;
-				_request.send();
+				if(this.layer.security==null || this.layer.security.initialized) {
+					_request.send();
+				} else {
+					this.layer.security.addWaitingRequest(_request);
+				}
 			}
 			return true;
 		}

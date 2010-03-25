@@ -1,6 +1,7 @@
 package org.openscales.core.security
 {
 	import org.openscales.core.Map;
+	import org.openscales.core.request.AbstractRequest;
 	import org.openscales.core.security.events.SecurityEvent;
 
 
@@ -13,6 +14,8 @@ package org.openscales.core.security
 		 * Map used to dispatch events
 		 */
 		private var _map:Map = null;
+		
+		private var _waitingRequests:Array = null;
 		
 		protected var _initialized:Boolean = false;
 		
@@ -31,6 +34,15 @@ package org.openscales.core.security
 		public function initialize():void {
 			this._initialized = true;
 			map.dispatchEvent(new SecurityEvent(SecurityEvent.SECURITY_INITIALIZED, this));
+			if(this._waitingRequests!=null) {
+				var i:int = this._waitingRequests.length;
+				var request:AbstractRequest;
+				for(i;i>0;i--) {
+					request = this._waitingRequests.pop();
+					request.send();
+				}
+				this._waitingRequests = null;
+			}
 		}
 
 		public function update():void {
@@ -76,7 +88,27 @@ package org.openscales.core.security
 		public function get initialized():Boolean {
 			return this._initialized;
 		}
+		
+		public function addWaitingRequest(request:AbstractRequest):void {
+			if(this.initialized) {
+				request.send();
+			} else {
+				if(this._waitingRequests==null)
+					this._waitingRequests = new Array();
+				if(this._waitingRequests.indexOf(request)==-1)
+					return;
+				this._waitingRequests.push(request);
+			}
+		}
 
+		public function removeWaitingRequest(request:AbstractRequest):void {
+			if(this._waitingRequests==null)
+				return;
+			var i:int = this._waitingRequests.indexOf(request);
+			if(i==-1)
+				return;
+			this._waitingRequests.splice(i,1);
+		}
 	}
 }
 

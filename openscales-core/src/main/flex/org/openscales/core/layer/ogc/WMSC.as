@@ -11,8 +11,13 @@ package org.openscales.core.layer.ogc
 
 	public class WMSC extends WMS
 	{
-		public function WMSC(name:String = "", url:String = "", layers:String = "", isBaseLayer:Boolean = false, 
-			visible:Boolean = true, projection:String = null, proxy:String = null)
+		public function WMSC(name:String = "",
+							 url:String = "",
+							 layers:String = "",
+							 isBaseLayer:Boolean = false,
+							 visible:Boolean = true,
+							 projection:String = null,
+							 proxy:String = null)
 		{
 			super(name, url, layers, isBaseLayer, visible, projection, proxy);
 
