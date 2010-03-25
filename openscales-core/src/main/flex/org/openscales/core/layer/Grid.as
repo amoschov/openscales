@@ -1,6 +1,6 @@
 package org.openscales.core.layer
 {
-	import flash.display.Loader;
+	import flash.display.Bitmap;
 	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
@@ -106,9 +106,11 @@ package org.openscales.core.layer
 					for(var iCol:int=0; iCol < row.length; iCol++) {
 						var tile:Tile = row[iCol];
 						this.removeTileMonitoringHooks(tile);
-						tile.destroy();
+						tile.destroy();						
 					}
 				}
+				while (this.numChildren > 0)
+				 this.removeChildAt(0);
 				this.grid = [];
 			}
 		}
@@ -116,20 +118,18 @@ package org.openscales.core.layer
 		/**
 		 * Methodd to cache a tile
 		 */
-		public function addTileCache(url:String,loader:Loader):void {
-			
+		public function addTileCache(url:String,bitmap:Bitmap):void {
 			//We check if there's space in the cache
 			if(cachedTiles.size() < CACHE_SIZE) {
-				cachedTiles.put(url,loader);
+				cachedTiles.put(url,bitmap);
 				cachedTilesUrl[cptCached] = url;
 			}
 			//Otherwise, we remove from the cache the older cached tile
 			else {
 				var oldUrl:String = cachedTilesUrl[cptCached];
-				var oldLW:Loader = cachedTiles.getValue(oldUrl);
 				cachedTiles.remove(oldUrl);
 				cachedTilesUrl[cptCached] = url;
-				cachedTiles.put(url,loader);
+				cachedTiles.put(url,bitmap);
 			}
 			cptCached++; if(cptCached == CACHE_SIZE) cptCached = 0;
 		}
@@ -137,11 +137,8 @@ package org.openscales.core.layer
 		/**
 		 * Method to get a cached tile by its url
 		 */
-		public function getTileCache(url:String):Loader {
-
-			var loader:Loader = cachedTiles.getValue(url);
-
-			return loader;
+		public function getTileCache(url:String):Bitmap {
+			return cachedTiles.getValue(url) as Bitmap;
 		}
 
 		override public function redraw(fullRedraw:Boolean = true):void {
