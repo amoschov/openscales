@@ -125,7 +125,9 @@ package org.openscales.core.layer.ogc
 			} else {
 				// else reuse the existing one
 				if (previousFeatureBbox.containsBounds(projectedBounds)) {
+					this.loading = true;
 					super.redraw();
+					this.loading = false;
 				} else {
 					// Use GetCapabilities to know if all features have already been retreived.
 					// If they are, we don't request data again
