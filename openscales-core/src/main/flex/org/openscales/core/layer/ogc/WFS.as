@@ -2,6 +2,7 @@ package org.openscales.core.layer.ogc
 {
 	import flash.events.Event;
 	import flash.net.URLLoader;
+	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
