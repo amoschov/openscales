@@ -8,7 +8,6 @@ package org.openscales.core
 	import flash.display.Sprite;
 	import flash.geom.Rectangle;
 	import flash.utils.getQualifiedClassName;
-	import flash.utils.setTimeout;
 	
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.DraggableSprite;
@@ -102,18 +101,6 @@ package org.openscales.core
 			
 			this._configuration = new Configuration();
 		}
-
-	    private function clearTransitionBitMap(event:LayerEvent):void{
-			
-			if(this._bitmapTransition != null && this.baseLayer == event.layer){
-		       			this._bitmapTransition.alpha = 0;		
-			}
-			
-			
-		}
-		
-		
-		
 
 		private function destroy():Boolean {
 			if (this.layers != null) {
@@ -215,10 +202,8 @@ package org.openscales.core
 
 					this._baseLayer = newBaseLayer;
 					this._baseLayer.visible = true;
-                    //add event on base layer
-					this.addEventListener(LayerEvent.LAYER_LOAD_END,this.clearTransitionBitMap);
-                    
-                   var center:LonLat = this.center;
+
+					var center:LonLat = this.center;
 					
 					// As we are defining a new baselayer, current center may not be valid anymore
 					// If so, the map uses the new baselayer's center
