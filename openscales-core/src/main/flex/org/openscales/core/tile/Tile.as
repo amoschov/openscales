@@ -2,6 +2,7 @@ package org.openscales.core.tile
 {
 	import flash.display.Sprite;
 	
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
@@ -204,7 +205,7 @@ package org.openscales.core.tile
 		/**
 		 * Used to set loading status of tile
 		 */
-		protected function set loading(value:Boolean):void {		
+		protected function set loading(value:Boolean):void {
 			if (value == true && this._loading == false) {
 				this._loading = value;
 				// to inform layer that loading of tile has been started
