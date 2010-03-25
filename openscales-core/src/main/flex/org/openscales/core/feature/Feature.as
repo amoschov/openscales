@@ -92,7 +92,6 @@ package org.openscales.core.feature {
 				this.attributes = Util.extend(this.attributes, data);
 			}
 
-
 			this.geometry = geom;
 			if (this.geometry && this.geometry.id)
 				this.name = this.geometry.id;
@@ -104,7 +103,6 @@ package org.openscales.core.feature {
 			this.style = style ? style : null;
 
 			this._isEditable = isEditable;
-
 		}
 
 		/**

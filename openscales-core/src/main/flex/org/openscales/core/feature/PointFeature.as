@@ -46,9 +46,9 @@ package org.openscales.core.feature {
 		}
 
 		override public function draw():void {
-			var numChildren:Number = this.numChildren;
-			for (var i:Number = 0; i < numChildren; i++) {
-				this.removeChildAt(i);
+			var i:int = this.numChildren;
+			for (i; i > 0; i--) {
+				this.removeChildAt(0);
 			}
 			super.draw();
 		}
