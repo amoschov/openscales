@@ -13,6 +13,7 @@ package org.openscales.core.request
 	import flash.utils.Timer;
 	
 	import org.openscales.core.Trace;
+	import org.openscales.core.UID;
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.security.ISecurity;
 
@@ -50,6 +51,9 @@ package org.openscales.core.request
 		private var _isSent:Boolean = false;
 		private var _isCompleted:Boolean = false;
 		private var _loader:Object = null;
+		
+		private var _uid:String;
+
 		// getter of loaderInfo:Object
 		// getter of finalUrl:String
 		
@@ -62,7 +66,12 @@ package org.openscales.core.request
 		 * @param onComplete Function called when the request is completed
 		 * @param onFailure Function called when an error occurs
 		 */
-		public function AbstractRequest(SWForImage:Boolean, url:String, onComplete:Function, onFailure:Function=null) {
+		public function AbstractRequest(SWForImage:Boolean,
+										url:String,
+										onComplete:Function,
+										onFailure:Function=null) {
+			var uid:UID = new UID();
+			this._uid = uid.gen_uid();
 			// Create a loader for a SWF or an image (Loader), or for an URL (URLLoader)
 			this._loader = (SWForImage) ? new Loader() : new URLLoader();
 
@@ -72,7 +81,7 @@ package org.openscales.core.request
 			
 			this._addListeners();
 		}
-		
+
 		/**
 		 * Destroy the request.
 		 */
@@ -88,9 +97,9 @@ package org.openscales.core.request
 			} catch(e:Error) {
 				// Empty catch is evil, but here it's fair.
 			}
-			if (AbstractRequest._activeConn.containsKey(this)) {
+			if (AbstractRequest._activeConn.containsKey(uid)) {
 				this._removeListeners();
-				AbstractRequest._activeConn.remove(this);
+				AbstractRequest._activeConn.remove(uid);
 				AbstractRequest._runPending();
 			} else {
 				var i:int = AbstractRequest._pendingRequests.indexOf(this);
@@ -180,7 +189,7 @@ package org.openscales.core.request
 					}
 				}
 			}
-			AbstractRequest._activeConn.remove(this);
+			AbstractRequest._activeConn.remove(uid);
 			AbstractRequest._runPending();
 		}
 		
@@ -208,6 +217,10 @@ package org.openscales.core.request
 				return;
 			}
 			this._url = value;
+		}
+
+		public function get uid():String {
+			return this._uid;
 		}
 
 		/**
@@ -359,7 +372,7 @@ package org.openscales.core.request
 		 * Execute the request
 		 */
 		private function execute():void {
-			AbstractRequest._activeConn.put(this, null);
+			AbstractRequest._activeConn.put(uid, null);
 			try {
 				// Define the urlRequest
 				var _finalUrl:String = this.finalUrl;
