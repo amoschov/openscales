@@ -11,8 +11,7 @@ package org.openscales.core
 
 		public function UID() {
 			var date:Date = new Date();
-			var id:Number = Math.random()*Number.MAX_VALUE;
-			prefix = "uid"+date.getTime()+id;
+			prefix = "uid"+date.getTime()+"_";
 		}
 		
 		public function gen_uid():String {
@@ -25,8 +24,7 @@ package org.openscales.core
 			if(counter==Number.MAX_VALUE){
 				counter=0;
 				var date:Date = new Date();
-				var id:Number = Math.random()*Number.MAX_VALUE;
-				prefix = "uid"+date.getTime()+id;
+				prefix = "uid"+date.getTime()+"_";
 			}
 			counter++;
 			return prefix+counter;
