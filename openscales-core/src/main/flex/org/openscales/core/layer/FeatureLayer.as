@@ -2,7 +2,7 @@ package org.openscales.core.layer
 {
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
@@ -172,8 +172,19 @@ package org.openscales.core.layer
 		}
 
 		override public function reset():void {
-			var _features:Array = this.features;
-			this.removeFeatures(_features);
+			var i:int = this.numChildren-1;
+			var deleted:Boolean = false;
+			for(i;i>-1;i--) {
+				if(this.getChildAt(i) is Feature) {
+					this.removeChildAt(i);
+					deleted=true;
+				}
+			}
+			if (deleted && this.map) {
+				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_DELETING, null);
+				fevt.features = features;
+				this.map.dispatchEvent(fevt);
+			}
 		}
 
 		override protected function draw():void {
@@ -185,11 +196,9 @@ package org.openscales.core.layer
 		}
 
 		public function removeFeatures(features:Array):void {
-			var i:int;
-			var j:int = features.length
-			for (i = j; i > 0; i--) {
+			var i:int = features.length;
+			for (i; i > 0; i--)
 				this.removeFeature(features[i], false);
-			}
 			// Dispatch an event with all the features removed
 			if (this.map) {
 				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_DELETING, null);
