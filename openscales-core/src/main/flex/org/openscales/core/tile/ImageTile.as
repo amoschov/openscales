@@ -3,7 +3,6 @@ package org.openscales.core.tile
 	import com.gskinner.motion.GTween;
 	
 	import flash.display.Bitmap;
-	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
