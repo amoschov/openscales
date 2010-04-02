@@ -3,6 +3,8 @@ package org.openscales.core
 	/**
 	 * allow creation of unique ID string.
 	 * This could be usefull with HashMaps for instance.
+	 * 
+	 * @author slopez
 	 */
 	public class UID
 	{

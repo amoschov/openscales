@@ -11,6 +11,7 @@ package org.openscales.core.tile
 	
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.basetypes.LinkedList.LinkedListBitmapNode;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.layer.Grid;
@@ -73,11 +74,10 @@ package org.openscales.core.tile
 				this.url = this.layer.getURL(this.bounds);
 			}
 			
-			var cachedBitmap:Bitmap;	
-			// If the tile (loader) was already loaded and is in the cache, we draw it
+			var cachedBitmap:Bitmap;
 			if ((this.layer is Grid) && ((cachedBitmap=(this.layer as Grid).getTileCache(this.url)) != null)) {
 				drawLoader(this.url,cachedBitmap,true);
-			} else {
+			}else {
 				if (_request) {
 					_request.destroy();
 				}
@@ -132,10 +132,11 @@ package org.openscales.core.tile
 				var tw:GTween = new GTween(this, 0.3, {alpha:1});
 				tw.onComplete = this.onTweenComplete;
 				this.drawn = true;
-				
+
 				// We put the loader into the cache if it's a recently loaded
 				if ((this.layer is Grid) && (! cached)) {
-					(this.layer as Grid).addTileCache(url, bitmap);
+					var node:LinkedListBitmapNode = new LinkedListBitmapNode(bitmap,url);
+					(this.layer as Grid).addTileCache(node);
 				}
 			}
 		}

@@ -2,7 +2,11 @@ package org.openscales.core.layer
 {
 	import flash.display.Bitmap;
 	
+	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.basetypes.LinkedList.LinkedListBitmapNode;
+	import org.openscales.core.basetypes.LinkedList.ILinkedListNode;
+	import org.openscales.core.basetypes.LinkedList.LinkedList;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
@@ -39,6 +43,7 @@ package org.openscales.core.layer
 
 		private var cachedTiles:HashMap = null;
 		private var cachedTilesUrl:Array = null;
+		private var cachedTilesQueue:LinkedList = new LinkedList();
 		private var cptCached:int = 0;
 		
 		private var _tileWidth:Number = DEFAULT_TILE_WIDTH;
@@ -71,9 +76,6 @@ package org.openscales.core.layer
 			this.grid = new Array();
 
 			this.buffer = 1;
-
-			cachedTiles = new HashMap();
-			cachedTilesUrl = new Array(CACHE_SIZE);
 			
 			this.addEventListener(TileEvent.TILE_LOAD_END,tileLoadHandler);
 			this.addEventListener(TileEvent.TILE_LOAD_START,tileLoadHandler);
@@ -96,8 +98,9 @@ package org.openscales.core.layer
 
 		override public function destroy(newBaseLayer:Boolean = true):void {
 			this.clear();
+			cachedTilesQueue.clear();
 			this.grid = null;
-			super.destroy(); 
+			super.destroy();
 		}
 
 		/**
@@ -121,31 +124,32 @@ package org.openscales.core.layer
 		}
 
 		/**
-		 * Methodd to cache a tile
+		 * cache a tile
 		 */
-		public function addTileCache(url:String,bitmap:Bitmap):void {
-			//We check if there's space in the cache
-			if(cachedTiles.size() < CACHE_SIZE) {
-				cachedTiles.put(url,bitmap);
-				cachedTilesUrl[cptCached] = url;
+		public function addTileCache(node:ILinkedListNode):void {
+			if(!cachedTilesQueue.moveTail(node.uid)) {
+				cachedTilesQueue.insertTail(node);
+				cptCached++;
+				if(cptCached==CACHE_SIZE+1){
+					cachedTilesQueue.removeHead();
+					cptCached--;
+				}
 			}
-			//Otherwise, we remove from the cache the older cached tile
-			else {
-				var oldUrl:String = cachedTilesUrl[cptCached];
-				cachedTiles.remove(oldUrl);
-				cachedTilesUrl[cptCached] = url;
-				cachedTiles.put(url,bitmap);
-			}
-			cptCached++; if(cptCached == CACHE_SIZE) cptCached = 0;
 		}
-
 		/**
-		 * Method to get a cached tile by its url
+		 * get a cached tile
 		 */
 		public function getTileCache(url:String):Bitmap {
-			return cachedTiles.getValue(url) as Bitmap;
+			var node:ILinkedListNode = cachedTilesQueue.getUID(url);
+			if(node == null){
+				return null;
+			}else if(node is LinkedListBitmapNode) {
+				this.addTileCache(node);
+				return (node as LinkedListBitmapNode).bitmap();
+			}
+			return null;
 		}
-
+		
 		override public function redraw(fullRedraw:Boolean = true):void {
 						
 			if (!displayed) {

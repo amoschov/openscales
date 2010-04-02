@@ -27,7 +27,7 @@ package org.openscales.core.layer.ogc
 			
 			this.singleTile = true;
 			
-			CACHE_SIZE = 2;
+			CACHE_SIZE = 32;
 
 		}
 	    override public function get maxExtent():Bounds {
