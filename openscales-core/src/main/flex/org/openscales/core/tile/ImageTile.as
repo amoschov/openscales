@@ -83,9 +83,9 @@ package org.openscales.core.tile
 				}
 				this.loading = true;		     
 				_request = new DataRequest(this.url, onTileLoadEnd, onTileLoadError);
-				_request.proxy = this.layer.proxy;
 				_request.security = this.layer.security;
-				if(this.layer.security==null || this.layer.security.initialized) {
+				if(this.layer.security==null) {
+					_request.proxy = this.layer.proxy;
 					_request.send();
 				} else {
 					this.layer.security.addWaitingRequest(_request);
@@ -97,8 +97,12 @@ package org.openscales.core.tile
 		public function onTileLoadEnd(event:Event):void {
 			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
 			var loader:Loader = loaderInfo.loader as Loader;
+			try {
 			var bitmap:Bitmap = Bitmap(loader.content);
 			drawLoader(loader.name, bitmap, false);
+			} catch(e:Event) {
+				Trace.log(e.type);
+			}
 		}
 
 		/**

@@ -52,9 +52,12 @@ package org.openscales.core.layer {
 		/**
 		 * Layer constructor
 		 */
-		public function Layer(name:String, isBaseLayer:Boolean=false,
-							visible:Boolean=true, srsCode:String=null,
-							proxy:String=null, security:ISecurity=null) {
+		public function Layer(name:String,
+							  isBaseLayer:Boolean=false,
+							  visible:Boolean=true,
+							  srsCode:String=null,
+							  proxy:String=null,
+							  security:ISecurity=null) {
 
 			this.name = name;
 			this.doubleClickEnabled = true;
@@ -65,7 +68,7 @@ package org.openscales.core.layer {
 			if ((srsCode == null) || (srsCode == "")) {
 				srsCode = Layer.DEFAULT_SRS_CODE;
 			}
-			
+
 			// Define the projection and the resolutions
 			this._projection = new ProjProjection(srsCode);
 			this.generateResolutions();
@@ -77,7 +80,6 @@ package org.openscales.core.layer {
 		public function generateResolutions(numZoomLevels:uint=Layer.DEFAULT_NUM_ZOOM_LEVELS, nominalResolution:Number=NaN):void {
 
 			if (isNaN(nominalResolution)) {
-
 				if (this.projection.srsCode == Layer.DEFAULT_SRS_CODE) {
 					nominalResolution = Layer.DEFAULT_NOMINAL_RESOLUTION;
 				} else {
@@ -103,7 +105,7 @@ package org.openscales.core.layer {
 			this.removeEventListenerFromMap();
 			this.map = null;
 		}
-		
+
 		public function removeEventListenerFromMap():void {
 			if (this.map != null) {
 				map.removeEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
@@ -111,7 +113,6 @@ package org.openscales.core.layer {
 				map.removeEventListener(MapEvent.ZOOM_END, onMapZoom);
 				map.removeEventListener(MapEvent.RESIZE, onMapResize);
 			}
-			
 		}
 
 		public function onMapResize(e:MapEvent):void {
@@ -128,9 +129,9 @@ package org.openscales.core.layer {
 			if (this.map != null) {
 				removeEventListenerFromMap();
 			}
-			
+
 			this._map = map;
-			
+
 			if (this.map) {
 				this.map.addEventListener(SecurityEvent.SECURITY_INITIALIZED, onSecurityInitialized);
 				this.map.addEventListener(MapEvent.MOVE_END, onMapMove);
@@ -145,11 +146,11 @@ package org.openscales.core.layer {
 		public function onSecurityInitialized(e:SecurityEvent):void {
 			this.redraw();
 		}
-		
+
 		public function onMapMove(e:MapEvent):void {
 			this.redraw(false);
 		}
-		
+
 		public function onMapZoom(e:MapEvent):void {
 			this.redraw();
 		}
@@ -191,7 +192,6 @@ package org.openscales.core.layer {
 			return i - 1;
 		}
 
-
 		/**
 		 * Return a LonLat which is the passed-in map Pixel, translated into
 		 * lon/lat by the layer.
@@ -225,32 +225,30 @@ package org.openscales.core.layer {
 			}
 			return px;
 		}
-		
-		
+
 		/**
 		 * Clear the layer graphics
 		 */
 		public function clear():void {
 		}
-		
+
 		/**
 		 * Reset layer data
 		 */
 		public function reset():void {
-			
 		}
-		
+
 		/**
 		 * Reset layer data
 		 */
 		protected function draw():void {
 			Trace.debug("Draw layer");
 		}
-		
+
 		public function get displayed():Boolean {
 			return this.visible && this.inRange && this.extent;
 		}	
-		
+
 		/**
 		 * Clear and draw, if needed, layer based on current data eventually retreived previously by moveTo function.
 		 * 
@@ -275,7 +273,6 @@ package org.openscales.core.layer {
 			}
             return inRange;
         }
-
 
 		public function getURL(bounds:Bounds):String {
 			return null;
@@ -383,7 +380,6 @@ package org.openscales.core.layer {
 			return maxRes;
 		}
 
-
 		public function get minResolution():Number {
 			var minRes:Number = NaN;
 			if (this.resolutions && (this.resolutions.length > 0)) {
@@ -447,7 +443,6 @@ package org.openscales.core.layer {
 				this.generateResolutions();
 			}
 		}
-
 
 		/**
 		 * Whether or not the layer is a base layer. This should be set

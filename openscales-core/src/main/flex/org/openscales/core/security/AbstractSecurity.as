@@ -90,6 +90,7 @@ package org.openscales.core.security
 		}
 		
 		public function addWaitingRequest(request:AbstractRequest):void {
+			request.proxy = this.proxy;
 			if(this.initialized) {
 				request.send();
 			} else {
@@ -107,6 +108,7 @@ package org.openscales.core.security
 			var i:int = this._waitingRequests.indexOf(request);
 			if(i==-1)
 				return;
+			request.proxy=null;
 			this._waitingRequests.splice(i,1);
 		}
 	}
