@@ -90,7 +90,8 @@ package org.openscales.core.security
 		}
 		
 		public function addWaitingRequest(request:AbstractRequest):void {
-			request.proxy = this.proxy;
+			if(request.proxy == null)
+				request.proxy = this.proxy;
 			if(this.initialized) {
 				request.send();
 			} else {

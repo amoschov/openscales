@@ -84,8 +84,8 @@ package org.openscales.core.tile
 				this.loading = true;		     
 				_request = new DataRequest(this.url, onTileLoadEnd, onTileLoadError);
 				_request.security = this.layer.security;
+				_request.proxy = this.layer.proxy;
 				if(this.layer.security==null) {
-					_request.proxy = this.layer.proxy;
 					_request.send();
 				} else {
 					this.layer.security.addWaitingRequest(_request);
