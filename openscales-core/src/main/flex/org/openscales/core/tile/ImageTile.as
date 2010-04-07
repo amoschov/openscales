@@ -73,7 +73,11 @@ package org.openscales.core.tile
 			if (this.url == null) {
 				this.url = this.layer.getURL(this.bounds);
 			}
-			
+
+			if (_request && _request.url != this.url) {
+				return true;
+			}
+
 			var cachedBitmap:Bitmap;
 			if ((this.layer is Grid) && ((cachedBitmap=(this.layer as Grid).getTileCache(this.url)) != null)) {
 				drawLoader(this.url,cachedBitmap,true);
