@@ -86,6 +86,7 @@ package org.openscales.core.request
 		 * Destroy the request.
 		 */
 		public function destroy():void {
+			this._removeListeners();
 			if(!this._isSent && this.security!=null)
 				this.security.removeWaitingRequest(this);
 			this._isSent = true;
@@ -98,7 +99,6 @@ package org.openscales.core.request
 				// Empty catch is evil, but here it's fair.
 			}
 			if (AbstractRequest._activeConn.containsKey(uid)) {
-				this._removeListeners();
 				AbstractRequest._activeConn.remove(uid);
 				AbstractRequest._runPending();
 			} else {
@@ -106,7 +106,6 @@ package org.openscales.core.request
 				if (i!=-1) {
 					AbstractRequest._pendingRequests.splice(i, 1);
 				}
-				this._removeListeners();
 			}
 			if (this._timer) {
 				this._timer = null;
@@ -171,7 +170,7 @@ package org.openscales.core.request
 			if (this._timer) {
 				this._timer.stop();
 			}
-			if ((! event) || (event.type == TimerEvent.TIMER)) {
+			if (event==null || (event.type == TimerEvent.TIMER)) {
 				if (this._onFailure != null) {
 					this._onFailure(new IOErrorEvent(IOErrorEvent.IO_ERROR));
 				}
@@ -341,7 +340,7 @@ package org.openscales.core.request
 				_finalUrl += this.security.securityParameter;
 			}
 
-			if ((this.proxy != null) && (this.proxy != "")) {
+			if ((this.proxy != null)) {
 				_finalUrl = this.proxy + encodeURIComponent(_finalUrl);
 			}
 
