@@ -68,7 +68,8 @@
 		</mx:HBox>
 		<os:OverviewMapComponent map="{map}" width="140">
 			<os:Mapnik name="Mapnik"
-					   isBaseLayer="true"/>
+					   isBaseLayer="true"
+					   proxy="http://openscales.org/proxy.php?url="/>
 		</os:OverviewMapComponent>
 	</os:ControlPanel>
 	
