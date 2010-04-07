@@ -101,6 +101,7 @@ package org.openscales.core.basetypes.LinkedList
 			if(this._head!=null) {
 				cpt--;
 				if(this._head.nextNode==null) {
+					this._head.clear();
 					this._tail = null;
 					this._head = null;
 					return;
@@ -115,6 +116,7 @@ package org.openscales.core.basetypes.LinkedList
 			if(this._tail!=null) {
 				cpt--;
 				if(this._tail.previousNode==null) {
+					this._tail.clear();
 					this._head==null;
 					this._tail==null;
 					return;
