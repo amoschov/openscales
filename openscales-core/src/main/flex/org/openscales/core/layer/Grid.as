@@ -41,7 +41,6 @@ package org.openscales.core.layer
 
 		protected var CACHE_SIZE:int = 64;
 
-		private var cachedTiles:HashMap = null;
 		private var cachedTilesQueue:LinkedList = new LinkedList();
 		private var cptCached:int = 0;
 		
