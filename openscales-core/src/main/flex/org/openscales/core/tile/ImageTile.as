@@ -8,7 +8,7 @@ package org.openscales.core.tile
 	import flash.display.LoaderInfo;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
-	
+
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LinkedList.LinkedListBitmapNode;
@@ -97,12 +97,8 @@ package org.openscales.core.tile
 		public function onTileLoadEnd(event:Event):void {
 			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
 			var loader:Loader = loaderInfo.loader as Loader;
-			try {
 			var bitmap:Bitmap = Bitmap(loader.content);
 			drawLoader(loader.name, bitmap, false);
-			} catch(e:Event) {
-				Trace.log(e.type);
-			}
 		}
 
 		/**

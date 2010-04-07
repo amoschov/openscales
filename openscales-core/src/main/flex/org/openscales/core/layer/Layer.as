@@ -479,10 +479,9 @@ package org.openscales.core.layer {
   		 *  - proxy is null => use the proxy of the map
 		 */
 		public function get proxy():String {
-			var p:String = this._proxy;
-			if(!p && map && map.proxy)
-				p = map.proxy;
-			return p;
+			if(this._proxy == null && map && map.proxy)
+				return map.proxy;
+			return this._proxy;
 		}
 
 		public function set proxy(value:String):void {

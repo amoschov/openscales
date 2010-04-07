@@ -20,8 +20,13 @@ package org.openscales.core.layer.ogc
 
 		private var _reproject:Boolean = true;
 
-		public function WMS(name:String = "", url:String = "", layers:String = "", isBaseLayer:Boolean = false, 
-			visible:Boolean = true, projection:String = null, proxy:String = null) {
+		public function WMS(name:String = "",
+							url:String = "",
+							layers:String = "",
+							isBaseLayer:Boolean = false, 
+							visible:Boolean = true,
+							projection:String = null,
+							proxy:String = null) {
 
 			super(name, url, new WMSParams(layers), isBaseLayer, visible, projection, proxy);
 			

@@ -10,8 +10,11 @@ package org.openscales.core.layer.osm
 	 */
 	public class Mapnik extends OSM
 	{
-		public function Mapnik(name:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
-			projection:String = null, proxy:String = null)
+		public function Mapnik( name:String,
+								isBaseLayer:Boolean = false,
+								visible:Boolean = true, 
+								projection:String = null,
+								proxy:String = null)
 		{
 			var url:String = "http://a.tile.openstreetmap.org/";
 			super(name, url, isBaseLayer, visible, projection, proxy);

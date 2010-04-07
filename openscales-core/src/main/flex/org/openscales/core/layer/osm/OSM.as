@@ -15,8 +15,12 @@ package org.openscales.core.layer.osm
 		
 		public static const DEFAULT_MAX_RESOLUTION:Number = 156543.0339;
 		
-		public function OSM(name:String, url:String, isBaseLayer:Boolean = false,
-			visible:Boolean = true, projection:String = null, proxy:String = null) {
+		public function OSM(name:String,
+							url:String,
+							isBaseLayer:Boolean = false,
+							visible:Boolean = true,
+							projection:String = null,
+							proxy:String = null) {
 			
 			if (projection == null || projection == "")
 				projection = "EPSG:900913";
