@@ -8,14 +8,14 @@ package {
 	import org.openscales.core.control.LayerSwitcher;
 	import org.openscales.core.control.MousePosition;
 	import org.openscales.core.control.PanZoomBar;
-	import org.openscales.core.handler.mouse.ClickHandler;
-	import org.openscales.core.handler.mouse.DragHandler;
 	import org.openscales.core.handler.feature.SelectFeaturesHandler;
+	import org.openscales.core.handler.mouse.DragHandler;
 	import org.openscales.core.handler.mouse.WheelHandler;
 	import org.openscales.core.layer.ogc.WFS;
 	import org.openscales.core.layer.osm.CycleMap;
 	import org.openscales.core.layer.osm.Mapnik;
 	import org.openscales.core.style.Style;
+	import org.openscales.proj4as.ProjProjection;
 
 	[SWF(width='600',height='400')]
 	public class OpenscalesApplication extends Sprite {
@@ -26,15 +26,18 @@ package {
 			_map.size=new Size(600, 400);
 
 			// Add layers to map
-			var mapnik:Mapnik=new Mapnik("Mapnik", true); // a base layer
+			var mapnik:Mapnik=new Mapnik("Mapnik"); // a base layer
+			mapnik.isBaseLayer = true;
 			mapnik.maxExtent = new Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);		
 			_map.addLayer(mapnik);
 
-			var cycle:CycleMap=new CycleMap("Cycle", true); // a base laye
+			var cycle:CycleMap=new CycleMap("Cycle"); // a base layer
+			cycle.isBaseLayer = true;
 			_map.addLayer(cycle); 
 			
 			
-			var regions:WFS = new WFS("IGN - Geopla (Region)", "http://openscales.org/geoserver/wfs","pg:ign_geopla_region",false,true,"EPSG:2154");
+			var regions:WFS = new WFS("IGN - Geopla (Region)", "http://openscales.org/geoserver/wfs","pg:ign_geopla_region");
+			regions.projection = new ProjProjection("EPSG:2154");
 			regions.style = Style.getDefaultSurfaceStyle();
 			
 			_map.addLayer(regions);
