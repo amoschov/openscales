@@ -72,18 +72,9 @@ package org.openscales.core.layer.ogc
 		 */	                    
 		public function WFS(name:String,
 							url:String,
-							typename:String,
-							isBaseLayer:Boolean = false,
-							visible:Boolean = true,
-							projection:String = null,
-							proxy:String = null,
-							useCapabilities:Boolean=false,
-							capabilities:HashMap=null) {
+							typename:String) {
 
-			this.capabilities = capabilities;
-			this.useCapabilities = useCapabilities;
-
-			super(name, isBaseLayer, visible, projection, proxy);
+			super(name);
 
 			if (!(this.geometryColumn)) {
 				this.geometryColumn = "the_geom";

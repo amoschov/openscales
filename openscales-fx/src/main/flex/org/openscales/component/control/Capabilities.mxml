@@ -4,6 +4,7 @@
 	
 	<mx:Script>
 		<![CDATA[
+			import org.openscales.proj4as.ProjProjection;
 			import org.openscales.core.style.marker.WellKnownMarker;
 			import org.openscales.core.style.fill.SolidFill;
 			import org.openscales.core.style.symbolizer.PointSymbolizer;
@@ -90,7 +91,10 @@
 				if (!addedLayers.containsKey(this.list.selectedItem)) {
 					var typename:String= this.list.selectedItem as String;
 					var srs:String = capabilities.getValue(this.list.selectedItem).getValue("SRS");
-					var newLayer:WFS = new WFS(typename,this.url,typename,false,true,srs,null,true,capabilities.getValue(this.list.selectedItem as String));
+					var newLayer:WFS = new WFS(typename,this.url,typename);
+					newLayer.projection = new ProjProjection(srs);
+					newLayer.useCapabilities = true;
+					newLayer.capabilities = capabilities.getValue(this.list.selectedItem as String);
 					newLayer.isBaseLayer = false;
 					
 					var s:Style = Style.getDefaultSurfaceStyle();

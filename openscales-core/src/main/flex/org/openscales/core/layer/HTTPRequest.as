@@ -22,12 +22,8 @@ package org.openscales.core.layer
 		public function HTTPRequest(name:String,
 									url:String,
 									params:IHttpParams = null,
-									isBaseLayer:Boolean = false, 
-									visible:Boolean = true,
-									projection:String = null,
-									proxy:String = null,
 									onLoadComplete:Function=null) {
-			super(name, isBaseLayer, visible, projection, proxy);
+			super(name);
 			this._url = url;
 			this.params = params;
 		}

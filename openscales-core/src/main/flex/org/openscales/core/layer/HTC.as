@@ -1,6 +1,7 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.proj4as.ProjProjection;
 	
 	/**
 	 * High Traffic Client (HTC) layers
@@ -64,10 +65,6 @@ package org.openscales.core.layer
 		 */
 		public function HTC(name:String,
 							url:String,
-							isBaseLayer:Boolean = true,
-							visible:Boolean = true,
-							projection:String = null,
-							proxy:String = null,
 							maxResolution:Number=DEFAULT_MAX_RESOLUTION,
 							numZoomLevel:uint=DEFAULT_NUM_ZOOM_LEVELS,
 							zoom_max:uint=DEFAULT_ZOOM_MAX) {
@@ -75,12 +72,10 @@ package org.openscales.core.layer
 			// prevent malformed urls due to lack of slash sign
 			if(url.length>0 && url.substr(-1,1)!="/")
 				url+="/";
-
+			super(name,url);
+			this.isBaseLayer = true;
+			this.projection = new ProjProjection("EPSG:900913");
 			this._zoom_max = zoom_max;
-			if (projection == null || projection == "")
-				projection = "EPSG:900913";
-
-			super(name, url, isBaseLayer, visible, projection, proxy);
 			this.generateResolutions(numZoomLevel, maxResolution);
 		}
 

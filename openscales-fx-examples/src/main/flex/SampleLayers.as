@@ -17,11 +17,12 @@ package {
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.fill.SolidFill;
+	import org.openscales.core.style.marker.WellKnownMarker;
 	import org.openscales.core.style.stroke.Stroke;
 	import org.openscales.core.style.symbolizer.LineSymbolizer;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
 	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
-	import org.openscales.core.style.marker.WellKnownMarker;
+	import org.openscales.proj4as.ProjProjection;
 
 	public class SampleLayers
 	{
@@ -37,7 +38,9 @@ package {
 		 * Returns a sample layer of drawn features
 		 */
 		static public function baseLayerOSM():Mapnik {
-			return new Mapnik("Mapnik", true);
+			var layer:Mapnik = new Mapnik("Mapnik");
+			layer.isBaseLayer = true;
+			return layer;
 		}
 		
 		/**
@@ -45,7 +48,8 @@ package {
 		 */
 		static public function features():FeatureLayer {
 			// Create the drawings layer and some useful variables
-			var layer:FeatureLayer = new FeatureLayer("Drawing samples",false,true,"EPSG:4326");
+			var layer:FeatureLayer = new FeatureLayer("Drawing samples");
+			layer.projection = new ProjProjection("EPSG:4326");
 			var style:Style;
 			var rule:Rule;
 			var arrayComponents:Array;

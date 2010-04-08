@@ -115,13 +115,16 @@ package org.openscales.core.layer
 		  
 		private var _zoomToSwitch:Number;
 		
-		public function PolyLayers(name:String, firstLayer:Layer,lastLayer:Layer,zoomToSwitch:Number,isBaseLayer:Boolean=false, visible:Boolean=true)
+		public function PolyLayers(name:String,
+								   firstLayer:Layer,
+								   lastLayer:Layer,
+								   zoomToSwitch:Number)
 		{
 			
             this._firstLayer = firstLayer;
             this._lastLayer = lastLayer;	
             this._zoomToSwitch = zoomToSwitch;		
-			super(name, isBaseLayer, visible, null, null);
+			super(name);
 		}
 		override public function onMapResize(e:MapEvent):void {
 			

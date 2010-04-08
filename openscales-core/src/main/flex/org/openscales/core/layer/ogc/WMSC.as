@@ -13,13 +13,9 @@ package org.openscales.core.layer.ogc
 	{
 		public function WMSC(name:String = "",
 							 url:String = "",
-							 layers:String = "",
-							 isBaseLayer:Boolean = false,
-							 visible:Boolean = true,
-							 projection:String = null,
-							 proxy:String = null)
+							 layers:String = "")
 		{
-			super(name, url, layers, isBaseLayer, visible, projection, proxy);
+			super(name, url, layers);
 
 			this.singleTile = false;
 

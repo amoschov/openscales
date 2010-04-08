@@ -62,14 +62,10 @@ package org.openscales.core.layer
 		 */
 		public function Grid(name:String,
 							 url:String,
-							 params:IHttpParams = null,
-							 isBaseLayer:Boolean = false, 
-							 visible:Boolean = true,
-							 projection:String = null,
-							 proxy:String = null) {
+							 params:IHttpParams = null) {
 
 			//TOdo delete url and params after osmparams work
-			super(name, url, params, isBaseLayer, visible, projection, proxy);
+			super(name, url, params);
 
 			this.grid = new Array();
 

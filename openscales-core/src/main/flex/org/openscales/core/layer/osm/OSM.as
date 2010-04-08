@@ -1,8 +1,8 @@
 package org.openscales.core.layer.osm
 {
 	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.Unit;
 	import org.openscales.core.layer.TMS;
+	import org.openscales.proj4as.ProjProjection;
 
 	/**
 	 * Base class for Open Street Map layers
@@ -16,17 +16,10 @@ package org.openscales.core.layer.osm
 		public static const DEFAULT_MAX_RESOLUTION:Number = 156543.0339;
 		
 		public function OSM(name:String,
-							url:String,
-							isBaseLayer:Boolean = false,
-							visible:Boolean = true,
-							projection:String = null,
-							proxy:String = null) {
-			
-			if (projection == null || projection == "")
-				projection = "EPSG:900913";
+							url:String) {
 
-			super(name, url, isBaseLayer, visible, projection, proxy);
-			
+			super(name, url);
+			this.projection = new ProjProjection("EPSG:900913");
 			// Use the projection to access to the unit
 			/* this.units = Unit.METER; */
 			this.maxExtent = new Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);

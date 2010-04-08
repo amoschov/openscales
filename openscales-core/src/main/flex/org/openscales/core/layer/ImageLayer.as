@@ -22,12 +22,14 @@ package org.openscales.core.layer
 		private var _request:DataRequest = null;
 		private var _size:Size = null;
 		
-	    public function ImageLayer(name:String, url:String, bounds:Bounds, isBaseLayer:Boolean = true, visible:Boolean = true, 
-								   projection:String = null, proxy:String = null) {
+	    public function ImageLayer(name:String,
+	    						  url:String,
+	    						  bounds:Bounds) {
 	        this._url = url;
 	        this.maxExtent = bounds;
 						
-	        super(name,isBaseLayer,visible,projection,proxy,null);
+	        super(name);
+	        this.isBaseLayer = true;
 			
 	    }
 	

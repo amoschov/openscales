@@ -18,15 +18,11 @@ package org.openscales.core.layer
 
 	    public function KML(name:String,
 	    					url:String,
-	    					bounds:Bounds,
-	    					isBaseLayer:Boolean = false,
-	    					visible:Boolean = true, 
-							projection:String = null,
-							proxy:String = null) {
+	    					bounds:Bounds) {
 	        this._url = url;
 	        this.maxExtent = bounds;
 
-	        super(name,isBaseLayer,visible,projection,proxy);
+	        super(name);
 			this._kmlFormat = new KMLFormat();
 	    }
 

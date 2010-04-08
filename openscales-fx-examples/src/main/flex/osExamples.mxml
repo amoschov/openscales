@@ -40,7 +40,7 @@
 			[Bindable]
 			private var displayTrace:Boolean = false;
 			[Bindable]
-			private var displayFirebugTrace:Boolean = false;
+			private var displayFirebugTrace:Boolean = true;
 
 			[Bindable]
 			private var selectedNode:XML = null;

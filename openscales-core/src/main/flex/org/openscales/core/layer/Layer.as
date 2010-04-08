@@ -52,29 +52,13 @@ package org.openscales.core.layer {
 		/**
 		 * Layer constructor
 		 */
-		public function Layer(name:String,
-							  isBaseLayer:Boolean=false,
-							  visible:Boolean=true,
-							  srsCode:String=null,
-							  proxy:String=null,
-							  security:ISecurity=null) {
-
+		public function Layer(name:String) {
 			this.name = name;
+			this.visible = true;
+			this.isBaseLayer = false;
 			this.doubleClickEnabled = true;
-			this.isBaseLayer = isBaseLayer;
-			this.visible = visible;
-
-			// If the srsCode is not defined, we init it with the default one
-			if ((srsCode == null) || (srsCode == "")) {
-				srsCode = Layer.DEFAULT_SRS_CODE;
-			}
-
-			// Define the projection and the resolutions
-			this._projection = new ProjProjection(srsCode);
+			this._projection = new ProjProjection(Layer.DEFAULT_SRS_CODE);
 			this.generateResolutions();
-
-			this._proxy = proxy;
-			this._security = security;
 		}
 
 		public function generateResolutions(numZoomLevels:uint=Layer.DEFAULT_NUM_ZOOM_LEVELS, nominalResolution:Number=NaN):void {

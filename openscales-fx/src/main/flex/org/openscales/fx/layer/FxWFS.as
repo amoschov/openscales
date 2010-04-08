@@ -28,9 +28,14 @@ package org.openscales.fx.layer
 
     override public function init():void {
 		this._isBaseLayer = false;
-        this._layer = new WFS("", "", "", this._isBaseLayer, true, this._projection,null,_useCapabilities);
+        this._layer = new WFS("", "", "");
+        this._layer.isBaseLayer=this._isBaseLayer;
+        this._layer.visible=true
+        if(this._projection != null)
+        	this._layer.projection = new ProjProjection(this._projection);
+        (this._layer as WFS).useCapabilities=_useCapabilities;
     }
-	
+
     override protected function createChildren():void {
 		super.createChildren();
 		for(var i:int=0; i < this.rawChildren.numChildren ; i++) {

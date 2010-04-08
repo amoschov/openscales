@@ -33,13 +33,9 @@ package org.openscales.core.layer
 
 		private var _isInEditionMode:Boolean=false;
 
-		public function FeatureLayer(name:String,
-									 isBaseLayer:Boolean = false,
-									 visible:Boolean = true,
-									 srsCode:String = null,
-									 proxy:String = null)
+		public function FeatureLayer(name:String)
 		{
-			super(name, isBaseLayer, visible, srsCode, proxy);
+			super(name);
 			this._displayProjection = this.projection.clone();
 			this.featuresBbox = new Bounds();
 			this.style = new Style();
@@ -277,6 +273,11 @@ package org.openscales.core.layer
 
 		public function set inEditionMode(value:Boolean):void {
 			this._isInEditionMode = value;
+		}
+
+		override public function set projection(value:ProjProjection):void {
+			super.projection = value;
+			this._displayProjection = this.projection.clone();
 		}
 	}
 }
