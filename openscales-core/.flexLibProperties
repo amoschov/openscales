@@ -22,7 +22,6 @@
 <classEntry path="org.openscales.core.style.symbolizer.PointSymbolizer"/>
 <classEntry path="org.openscales.core.filter.IntersectsFilter"/>
 <classEntry path="org.openscales.core.layer.ImageLayer"/>
-<classEntry path="org.openscales.core.Map"/>
 <classEntry path="org.openscales.core.layer.TMS"/>
 <classEntry path="org.openscales.core.layer.capabilities.WMS111"/>
 <classEntry path="org.openscales.core.basetypes.DraggableSprite"/>
@@ -155,6 +154,7 @@
 <classEntry path="org.openscales.core.handler.feature.draw.AbstractDrawHandler"/>
 <classEntry path="org.openscales.core.handler.mouse.WheelHandler"/>
 <classEntry path="org.openscales.core.layer.ogc.WMS"/>
+<classEntry path="org.openscales.core.basetypes.LinkedList.AbstractLinkedListNode"/>
 <classEntry path="org.openscales.core.handler.mouse.BorderPanHandler"/>
 <classEntry path="org.openscales.core.layer.osm.Osmarender"/>
 <classEntry path="org.openscales.core.layer.params.ogc.WFSParams"/>
