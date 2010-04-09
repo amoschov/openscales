@@ -21,8 +21,7 @@ package org.openscales.core.layer
 
 		public function HTTPRequest(name:String,
 									url:String,
-									params:IHttpParams = null,
-									onLoadComplete:Function=null) {
+									params:IHttpParams = null) {
 			super(name);
 			this._url = url;
 			this.params = params;
