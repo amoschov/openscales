@@ -26,13 +26,13 @@ package org.openscales.core.layer
 			this._kmlFormat = new KMLFormat();
 	    }
 
-		 override public function destroy(setNewBaseLayer:Boolean = true):void {
+		 override public function destroy():void {
 			if (this._request) {
 				this._request.destroy();
 				this._request = null;
 			}
 			this.loading = false;
-			super.destroy(setNewBaseLayer);
+			super.destroy();
 		}
 
 		override public function redraw(fullRedraw:Boolean = true):void {

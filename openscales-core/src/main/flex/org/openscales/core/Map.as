@@ -57,7 +57,7 @@ package org.openscales.core
 		private var _loading:Boolean;
 		private var _center:LonLat = null;
 		private var _maxExtent:Bounds = null;
-		
+		private var _destroying:Boolean = false;
 		/**
 		 * Enable tween effect when zooming
 		 */
@@ -106,6 +106,7 @@ package org.openscales.core
 				for (var i:int = this.layers.length - 1; i>=0; i--) {
 					this.layers[i].destroy(false);
 				}
+				this.removeAllLayers();
 			}
 			if (this._controls != null) {
 				for (var j:int = this._controls.length - 1; j>=0; j--) {
@@ -260,7 +261,7 @@ package org.openscales.core
 		 * @param setNewBaseLayer if set to true, a new base layer will be set if the removed
 		 * 	layer was a based layer
 		 */
-		public function removeLayer(layer:Layer, setNewBaseLayer:Boolean = true):void {
+		public function removeLayer(layer:Layer, setNewBaseLayer:Boolean=true):void {
 			this._layerContainer.removeChild(layer);
 			layer.map = null;
 			Util.removeItem(this.layers, layer);
@@ -281,7 +282,7 @@ package org.openscales.core
 
 		public function removeAllLayers():void {
 			for(var i:int=this.layers.length-1; i>=0; i--) {
-				removeLayer(this.layers[i], false);
+				removeLayer(this.layers[i],false);
 			}
 		}
 		

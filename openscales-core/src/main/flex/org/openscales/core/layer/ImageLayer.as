@@ -33,12 +33,12 @@ package org.openscales.core.layer
 			
 	    }
 	
-	     override public function destroy(setNewBaseLayer:Boolean = true):void {
+	     override public function destroy():void {
 	        if (this._request) {
 	            this._request.destroy();
 	            this._request = null;
 	        }
-	        super.destroy(setNewBaseLayer);
+	        super.destroy();
 	    } 
 	   
 	    override public function set map(value:Map):void {

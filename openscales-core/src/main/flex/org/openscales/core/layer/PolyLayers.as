@@ -57,14 +57,14 @@ package org.openscales.core.layer
 			
 		}
 		
-		override public function destroy(setNewBaseLayer:Boolean=true):void {
+		override public function destroy():void {
 			if(_isFirstLayer== false)
 			{
 			  this.removeChild(this._lastLayer);
             }else{
 			  this.removeChild(this._firstLayer);
 			}
-			super.destroy(setNewBaseLayer);
+			super.destroy();
 		}
 		
 		override public function onMapZoom(e:MapEvent):void {

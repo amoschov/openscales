@@ -27,10 +27,6 @@ package org.openscales.core.layer
 			this.params = params;
 		}
 
-		override public function destroy(setNewBaseLayer:Boolean = true):void {
-			super.destroy(setNewBaseLayer);
-		}
-
 		public function getUrls():Array {
 			var urls:Array = null;
 			if ((altUrls == null) || (altUrls.length == 0)) {

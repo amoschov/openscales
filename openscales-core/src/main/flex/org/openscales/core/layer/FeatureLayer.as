@@ -43,7 +43,7 @@ package org.openscales.core.layer
 			this.selectedFeatures = new Array();
 		}
 
-		override public function destroy(setNewBaseLayer:Boolean = true):void {
+		override public function destroy():void {
 			super.destroy();  
 			this.reset();
 			this._displayProjection = null;

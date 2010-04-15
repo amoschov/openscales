@@ -85,7 +85,7 @@ package org.openscales.core.layer {
 			this._autoResolution = true;
 		}
 
-		public function destroy(setNewBaseLayer:Boolean=true):void {
+		public function destroy():void {
 			this.removeEventListenerFromMap();
 			this.map = null;
 		}
@@ -236,7 +236,7 @@ package org.openscales.core.layer {
 		/**
 		 * Clear and draw, if needed, layer based on current data eventually retreived previously by moveTo function.
 		 * 
-		 * @return true if the layer was redrawn, false if not
+		 * @param fullRedraw boolean forece the redraw
 		 */
 		public function redraw(fullRedraw:Boolean = true):void {
 			this.clear();

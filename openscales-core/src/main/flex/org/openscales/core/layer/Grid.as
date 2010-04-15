@@ -89,7 +89,7 @@ package org.openscales.core.layer
 			super.onMapZoom(e);
 		}
 
-		override public function destroy(newBaseLayer:Boolean = true):void {
+		override public function destroy():void {
 			this.clear();
 			tileCache.clear();
 			this.grid = null;
