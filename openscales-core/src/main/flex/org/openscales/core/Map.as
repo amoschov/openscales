@@ -68,6 +68,7 @@ package org.openscales.core
 		private var _configuration:IConfiguration;
 		
 		private var _securities:Array=new Array();
+		private var _extent:Bounds;
 		/**
 		 * Map constructor
 		 *
@@ -1008,22 +1009,27 @@ package org.openscales.core
 		}
 
 		public function get extent():Bounds {
-			var extent:Bounds = null;
-
-			if ((this.center != null) && (this.resolution != -1)) {
-
-				var w_deg:Number = this.size.w * this.resolution;
-				var h_deg:Number = this.size.h * this.resolution;
-
-				extent = new Bounds(this.center.lon - w_deg / 2,
-					this.center.lat - h_deg / 2,
-					this.center.lon + w_deg / 2,
-					this.center.lat + h_deg / 2);
-			} 
-
-			return extent;
+			if(_extent == null){
+				var extent:Bounds = null;
+	
+				if ((this.center != null) && (this.resolution != -1)) {
+	
+					var w_deg:Number = this.size.w * this.resolution;
+					var h_deg:Number = this.size.h * this.resolution;
+	
+					extent = new Bounds(this.center.lon - w_deg / 2,
+						this.center.lat - h_deg / 2,
+						this.center.lon + w_deg / 2,
+						this.center.lat + h_deg / 2);
+				} 
+	
+				return extent;
+			}
+			else return _extent;
 		}
-
+		public function set extent(bounds:Bounds):void {
+			_extent = bounds;
+		}
 		public function get resolution():Number {
 			return (this.baseLayer) ? this.baseLayer.resolutions[this.zoom] : NaN;
 		}
