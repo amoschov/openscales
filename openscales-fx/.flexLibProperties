@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<flexLibProperties includeAllClasses="true" version="1">
+<flexLibProperties includeAllClasses="false" version="1">
   <includeClasses>
     <classEntry path="org.openscales.component.ControlPanel"/>
     <classEntry path="org.openscales.component.control.Capabilities"/>
@@ -43,10 +43,10 @@
     <classEntry path="org.openscales.fx.handler.mouse.FxWheelHandler"/>
     <classEntry path="org.openscales.fx.layer.FxFeatureLayer"/>
     <classEntry path="org.openscales.fx.layer.FxGrid"/>
+    <classEntry path="org.openscales.fx.layer.FxHTC"/>
     <classEntry path="org.openscales.fx.layer.FxHTTPRequest"/>
     <classEntry path="org.openscales.fx.layer.FxImageLayer"/>
     <classEntry path="org.openscales.fx.layer.FxKML"/>
-	<classEntry path="org.openscales.fx.layer.FxHTC"/>
     <classEntry path="org.openscales.fx.layer.FxLayer"/>
     <classEntry path="org.openscales.fx.layer.FxWFS"/>
     <classEntry path="org.openscales.fx.layer.FxWMS"/>

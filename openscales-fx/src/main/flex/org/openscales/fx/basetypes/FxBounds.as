@@ -14,7 +14,11 @@ package org.openscales.fx.basetypes
 			super();
 		}
 		
-		public function set left(value:Number):void {
+		/** Comment to avoid a conflict with FLex 4 classes
+		  * TODO : refactor before 1.2 release
+		  **/
+		
+		/*public function set left(value:Number):void {
 			if(this.bounds != null)
 				this.bounds.left = value;
 		}
@@ -32,7 +36,7 @@ package org.openscales.fx.basetypes
 		public function set top(value:Number):void {
 			if(this.bounds != null)
 				this.bounds.top = value;
-		}
+		}*/
 				
 		public function get bounds():Bounds {
 			return this._bounds;

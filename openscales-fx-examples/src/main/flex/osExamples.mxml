@@ -128,7 +128,7 @@
 					<example viewStack="capabilities"
 							 label="Add layers dynamically"
 							 description="Specify a WFS a server, then click on the 'Go!' button to display all the WFS layers available.\nSelect a layer name to have its description.\nDouble-click to add the layer to the map ; for instance topp:states draws the United States (be patient, this will take few seconds).\nYou can modify the style of the layer you add.\n Try to add the same layer twice, a modal popup is displayed.\nThe layers manager is automatically updated."/>
-					<example viewStack="styleManager"
+					<example viewStack="styleExample"
 							 label="Style vector layers"
 							 description="The style of the french regions depend on filters parameterized by the geometry of the features.\nThe legend is automatically generated from the style.\nClick on a region to see its attributes in the information panel.\nUse the top-right button to switch the style of the rendering."/>
 				</category>
@@ -220,7 +220,7 @@
 									 displayTrace="{displayTrace}"/>
 			<os:CapabilitiesExample id="capabilities"
 									displayTrace="{displayTrace}"/>
-			<os:StyleExample id="styleManager"
+			<os:StyleExample id="styleExample"
 							 displayTrace="{displayTrace}"/>
 
 			<!-- Localize -->
