@@ -21,10 +21,9 @@ package org.openscales.core.basetypes
 			super();
 		}
 
-		override public function startDrag(lockCenter:Boolean = false, bounds:Rectangle = null):void
-		{
+		override public function startDrag(lockCenter:Boolean = false, bounds:Rectangle = null):void {
 			_dragging = true;
-			_prev = new Point(stage.mouseX, stage.mouseY);
+			_prev = new Point(parent.mouseX, parent.mouseY); // Map is always parent
 
 			if (lockCenter) {
 				// Untested
@@ -47,8 +46,8 @@ package org.openscales.core.basetypes
 				unregisterListeners(event.currentTarget as Stage);
 				return;
 			}
-			this.x += - _prev.x + (_prev.x = stage.mouseX);
-			this.y += - _prev.y + (_prev.y = stage.mouseY);
+			this.x += - _prev.x + (_prev.x = parent.mouseX);
+			this.y += - _prev.y + (_prev.y = parent.mouseY);
 		}
 
 		private function registerListeners():void

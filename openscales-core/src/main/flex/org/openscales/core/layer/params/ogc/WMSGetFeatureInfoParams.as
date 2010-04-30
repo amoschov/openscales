@@ -38,7 +38,9 @@ package org.openscales.core.layer.params.ogc
 
 		override public function toGETString():String {
 			var str:String = super.toGETString();
-
+			if (this.bbox != null)
+				str += "BBOX=" + this.bbox + "&";
+			
 			if (this._format != null)
 				str += "INFO_FORMAT=" + this._format + "&";
 

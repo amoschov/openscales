@@ -71,7 +71,7 @@ package org.openscales.core.handler.mouse
 			if (this.map.bitmapTransition)
 				this.map.bitmapTransition.startDrag();
 
-			this._start = new Pixel((event as MouseEvent).stageX,(event as MouseEvent).stageY);
+			this._start = new Pixel(this.map.mouseX,this.map.mouseY);
 			this._startCenter = this.map.center;
 			this.map.buttonMode=true;
 			this._dragging=true;
@@ -89,7 +89,7 @@ package org.openscales.core.handler.mouse
 				this.map.bitmapTransition.stopDrag();
 
 			this.map.buttonMode=false;
-			this.done(new Pixel((event as MouseEvent).stageX, (event as MouseEvent).stageY));
+			this.done(new Pixel(this.map.mouseX, this.map.mouseY));
 			// A MapEvent.MOVE_END is emitted by the "set center" called in this.done
 			this._dragging=false;
 			if (this.oncomplete!=null)

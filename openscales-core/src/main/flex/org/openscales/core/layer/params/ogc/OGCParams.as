@@ -45,10 +45,6 @@ package org.openscales.core.layer.params.ogc
 			if (this._srs != null)
 				str += "SRS=" + this._srs + "&";
 
-			if (this.bbox != null && !(_additionalParams.containsKey("CQL_FILTER") || 
-				_additionalParams.containsKey("FILTER") || _additionalParams.containsKey("FEATUREID")))
-				str += "BBOX=" + this.bbox + "&";
-
 			var keys:Array = _additionalParams.getKeys();
 			for (var i:Number=0; i < keys.length; i++) {
 				var key:String = keys.pop();
