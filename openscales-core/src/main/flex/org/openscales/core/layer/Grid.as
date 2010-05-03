@@ -246,7 +246,17 @@ package org.openscales.core.layer
 			this.removeExcessTiles(1,1);
 		}
 
-		public function initGriddedTiles(bounds:Bounds):void {
+		/**
+		 * Ititialize gridded tiles
+		 * 
+		 * when clearTiles == true (most of time), Tile.clearAndMoveTo is called. 
+		 * This method reset tile, so produce a white flash (usefull when loading map)
+		 * Actually used when zooming in / out
+		 * 
+		 * when clearTiles == false, Tile.moveTo is called,
+		 * no white flash, but there is some problems if used for something else than modifying map extent
+		 */
+		public function initGriddedTiles(bounds:Bounds, clearTiles:Boolean=true):void {
 			var viewSize:Size = this.map.size;
 			var minRows:Number = Math.ceil(viewSize.h/this.tileHeight) + 
 											Math.max(1, 2 * this.buffer);
@@ -267,7 +277,7 @@ package org.openscales.core.layer
 			var tileoffsety:Number = -tilerowremain * this.tileHeight;
 			var tileoffsetlat:Number = extent.bottom + tilerow * tilelat;
 
-			tileoffsetx = Math.round(tileoffsetx); // heaven help us
+			tileoffsetx = Math.round(tileoffsetx);
 			tileoffsety = Math.round(tileoffsety);
 
 			this._origin = new Pixel(tileoffsetx, tileoffsety);
@@ -302,7 +312,10 @@ package org.openscales.core.layer
 						tile = this.addTile(tileBounds, px);
 						row.push(tile);
 					} else {
-						tile.clearAndMoveTo(tileBounds, px, false);
+						if(clearTiles)
+							tile.clearAndMoveTo(tileBounds, px, false);
+						else 
+							tile.moveTo(tileBounds, px, false);
 					}
 
 					tileoffsetlon += tilelon;       
@@ -395,7 +408,9 @@ package org.openscales.core.layer
 
 		public function removeTileMonitoringHooks(tile:Tile):void {
 		}
-
+		/**
+		 * This metod is called only when mapEvent.MOVE_END is thrown
+		 */
 		public function moveGriddedTiles(bounds:Bounds):void {
 			var buffer:Number = this.buffer || 1;
 			while (true) {
