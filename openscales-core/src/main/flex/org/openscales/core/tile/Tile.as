@@ -211,7 +211,7 @@ package org.openscales.core.tile
 				this.layer.dispatchEvent(new TileEvent(TileEvent.TILE_LOAD_START,this));
 			}	
 
-			if (value == false && this._loading == true) {
+			if (value == false && this._loading == true && this.layer!=null) { // this.layer can be null, if you're unlucky and removed layer before it was totally loaded
 				this._loading = value;
 				// to inform layer that loading of tile has been ended				
 				this.layer.dispatchEvent(new TileEvent(TileEvent.TILE_LOAD_END,this));		
