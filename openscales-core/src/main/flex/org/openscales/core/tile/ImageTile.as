@@ -127,8 +127,6 @@ package org.openscales.core.tile
 				if (! this.layer.contains(this)) {
 					this.layer.addChild(this);
 				}
-
-				this.loading = true;
 				var tw:GTween = new GTween(this, 0.3, {alpha:1});
 				tw.onComplete = this.onTweenComplete;
 				this.drawn = true;
@@ -165,7 +163,6 @@ package org.openscales.core.tile
 			this.alpha = 0;
 
 			if(this._request) {
-				this.loading = false;
 				_request.destroy();
 			}
 			
