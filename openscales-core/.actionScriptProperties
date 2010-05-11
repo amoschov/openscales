@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<actionScriptProperties mainApplicationPath="core.as" projectUUID="f6ff2797-b319-45bd-bf52-f613b60ff979" version="6">
-  <compiler additionalCompilerArguments="" autoRSLOrdering="true" copyDependentFiles="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" sourceFolderPath="src/main/flex" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
+<actionScriptProperties mainApplicationPath="core.as" projectUUID="b6ab45c8-b7b0-4bea-a712-2b5815a021cc" version="6">
+  <compiler additionalCompilerArguments="" autoRSLOrdering="true" copyDependentFiles="false" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="false" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin" sourceFolderPath="src/main/flex" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath>
       <compilerSourcePathEntry kind="1" linkType="1" path="src/test/flex"/>
     </compilerSourcePath>
     <libraryPath defaultLinkType="1">
-      <libraryPathEntry kind="3" linkType="1" path="/openscales-proj4as/bin/openscales-proj4as.swc" useDefaultLinkType="false"/>
       <libraryPathEntry kind="1" linkType="1" path="libs"/>
       <libraryPathEntry kind="4" path=""/>
+      <libraryPathEntry kind="3" linkType="1" path="/openscales-proj4as/bin/openscales-proj4as.swc" useDefaultLinkType="false"/>
+      <libraryPathEntry kind="3" linkType="1" path="/openscales-geometry/bin/openscales-geometry.swc" useDefaultLinkType="false"/>
     </libraryPath>
     <sourceAttachmentPath/>
   </compiler>

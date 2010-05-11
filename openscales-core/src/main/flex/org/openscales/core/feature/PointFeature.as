@@ -110,7 +110,7 @@ package org.openscales.core.feature {
 							intersect = true;
 						}
 						if (intersect)
-							arrayResult.push(new Array(new LineString(new Array(point1, point2)), i + 1));
+							arrayResult.push(new Array(new LineString(new <Geometry>[point1, point2]), i + 1));
 
 					}
 					intersect = false;
@@ -130,7 +130,7 @@ package org.openscales.core.feature {
 						intersect = true;
 					}
 					if (intersect)
-						arrayResult.push(new Array(new LineString(new Array(point1, point2)), collection.componentsLength));
+						arrayResult.push(new Array(new LineString(new <Geometry>[point1, point2]), collection.componentsLength));
 
 				}
 			}

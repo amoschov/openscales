@@ -56,7 +56,6 @@
 						<org.openscales.core.filter>Feature filter used to define feature styles</org.openscales.core.filter>
 						<org.openscales.core.feature>Features are a geolocalized graphical element</org.openscales.core.feature>
 						<org.openscales.core.format>Protocol or file format implentations</org.openscales.core.format>
-						<org.openscales.core.geometry>Geometries are descriptions of a geographic object</org.openscales.core.geometry>
 						<org.openscales.core.handler>Handlers react to user event to modify the map state (zoom, position). Handlers can dispatch high level events that will be used to interact with controls</org.openscales.core.handler>
 						<org.openscales.core.handler.mouse>Mouse related handlers</org.openscales.core.handler.mouse>
 						<org.openscales.core.handler.feature>Feature drawing related handlers</org.openscales.core.handler.feature>
