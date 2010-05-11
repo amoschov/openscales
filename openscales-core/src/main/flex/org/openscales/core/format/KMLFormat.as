@@ -10,6 +10,7 @@ package org.openscales.core.format
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.Point;
@@ -256,7 +257,7 @@ package org.openscales.core.format
 					_Ldata = _Ldata.replace("\n"," ");
 					_Ldata = _Ldata.replace(/^\s*(.*?)\s*$/g, "$1");
 					coordinates = _Ldata.split(" ");
-					var points:Array = new Array();
+					var points:Vector.<Geometry> = new Vector.<Geometry>();
 					for each(var coords:String in coordinates) {
 						var _coords:Array = coords.split(",");
 						if(_coords.length<2)
@@ -286,7 +287,7 @@ package org.openscales.core.format
 					_Pdata = _Pdata.replace("\n"," ");
 					_Pdata = _Pdata.replace(/^\s*(.*?)\s*$/g, "$1");
 					coordinates = _Pdata.split(" ");
-					var Ppoints:Array = new Array();
+					var Ppoints:Vector.<Geometry> = new Vector.<Geometry>();
 					for each(var Pcoords:String in coordinates) {
 						var _Pcoords:Array = Pcoords.split(",");
 						if(_Pcoords.length<2)
@@ -298,7 +299,7 @@ package org.openscales.core.format
 						}
 						Ppoints.push(point);
 					}
-					var lines:Array = new Array();
+					var lines:Vector.<Geometry> = new Vector.<Geometry>(1);
 					lines.push(new LinearRing(Ppoints));
 					polygonsfeatures.push(new PolygonFeature(new Polygon(lines),attributes,_Pstyle));
 				}

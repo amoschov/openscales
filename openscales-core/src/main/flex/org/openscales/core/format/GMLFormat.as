@@ -23,6 +23,7 @@ package org.openscales.core.format
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
+	import org.openscales.core.geometry.Geometry;
 
 	/**
 	 * Read/Write GML. Supports the GML simple features profile.
@@ -130,7 +131,8 @@ package org.openscales.core.format
 		 */
 		public function parseFeature(xmlNode:XML):Feature {
 			var geom:Collection = null;
-			var p:Array = new Array();
+			var p:Vector.<Geometry> = new Vector.<Geometry>();
+			var pMat:Vector.<Vector.<Geometry>> = new Vector.<Vector.<Geometry>>();
 
 			var feature:Feature = null;
 
@@ -147,7 +149,8 @@ package org.openscales.core.format
 					var polygon:Polygon = this.parsePolygonNode(polygons[i]);
 					geom.addComponent(polygon);
 				}
-			} else if (xmlNode..*::MultiLineString.length() > 0) {
+			}
+            else if (xmlNode..*::MultiLineString.length() > 0) {
 				var multilinestring:XML = xmlNode..*::MultiLineString[0];
 
 				geom = new MultiLineString();
@@ -171,7 +174,7 @@ package org.openscales.core.format
 
 				for (i = 0; i < j; i++) {
 					p = this.parseCoords(points[i]);
-					geom.addComponents(p[0]);
+					geom.addComponents(new <Geometry>[p[0]]);
 				}
 			} else if (xmlNode..*::Polygon.length() > 0) {
 				var polygon2:XML = xmlNode..*::Polygon[0];
@@ -266,7 +269,7 @@ package org.openscales.core.format
 			var linearRings:XMLList = polygonNode..*::LinearRing;
 			// Optimize by specifying the array size
 			var j:int = linearRings.length();
-			var rings:Array = new Array(j);
+			var rings:Vector.<Geometry> = new Vector.<Geometry>(j);
 			var i:int;
 			for (i = 0; i < j; i++) {
 				rings[i] = new LinearRing(this.parseCoords(linearRings[i]));
@@ -277,10 +280,10 @@ package org.openscales.core.format
 		/**
 		 * Return an array of coords
 		 */ 
-		public function parseCoords(xmlNode:XML):Array {
+		public function parseCoords(xmlNode:XML):Vector.<Geometry> {
 			var x:Number, y:Number, left:Number, bottom:Number, right:Number, top:Number;
 
-			var points:Array = new Array();
+			var points:Vector.<Geometry>  = new Vector.<Geometry>();
 
 			if (xmlNode) {
 

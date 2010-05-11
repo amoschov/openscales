@@ -5,6 +5,7 @@ package {
 	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.MultiLineString;
@@ -52,8 +53,8 @@ package {
 			layer.projection = new ProjProjection("EPSG:4326");
 			var style:Style;
 			var rule:Rule;
-			var arrayComponents:Array;
-			var arrayVertices:Array;
+			var arrayComponents:Vector.<Geometry>;
+			var arrayVertices:Vector.<Geometry>;
 			var point:org.openscales.core.geometry.Point;
 			
 			// Add some (black) objects for the tests of inclusion with all the
@@ -78,19 +79,19 @@ package {
 			style = new Style();
 			style.rules[0] = new Rule();
 			style.rules[0].symbolizers.push(new PolygonSymbolizer(new SolidFill(0x999999,0.5),new Stroke(0x000000,2)));
-			arrayComponents = new Array();
-			  arrayComponents.push(new org.openscales.core.geometry.Point(4.5714111327782625, 45.76368130194846));
-			  arrayComponents.push(new org.openscales.core.geometry.Point(5.117294311391419, 45.69513978441103));
+			arrayComponents = new Vector.<Geometry>(2);
+			  arrayComponents[0]=new org.openscales.core.geometry.Point(4.5714111327782625, 45.76368130194846);
+			  arrayComponents[1]=new org.openscales.core.geometry.Point(5.117294311391419, 45.69513978441103);
 			layer.addFeature(new LineStringFeature(new LineString(arrayComponents),null,style));
 			//(layer.features[layer.features.length-1] as Feature).id = "blackLineString";
 			// A Polygon intersecting all the other objects.
-			arrayComponents = new Array();
-			arrayVertices = new Array();
-			  arrayVertices.push(new org.openscales.core.geometry.Point(4.5727844237936415, 45.713361819965364));
-			  arrayVertices.push(new org.openscales.core.geometry.Point(5.0300903319148516, 45.713361819965364));
-			  arrayVertices.push(new org.openscales.core.geometry.Point(5.0300903319148516, 45.659157810588724));
-			  arrayVertices.push(new org.openscales.core.geometry.Point(4.5727844237936415, 45.659157810588724));
-			arrayComponents.push(new LinearRing(arrayVertices));
+			arrayComponents = new Vector.<Geometry>(1);
+			  arrayVertices = new Vector.<Geometry>(4);
+			  arrayVertices[0]=new org.openscales.core.geometry.Point(4.5727844237936415, 45.713361819965364);
+			  arrayVertices[1]=new org.openscales.core.geometry.Point(5.0300903319148516, 45.713361819965364);
+			  arrayVertices[2]=new org.openscales.core.geometry.Point(5.0300903319148516, 45.659157810588724);
+			  arrayVertices[3]=new org.openscales.core.geometry.Point(4.5727844237936415, 45.659157810588724);
+			arrayComponents[0]=new LinearRing(arrayVertices);
 			layer.addFeature(new PolygonFeature(new Polygon(arrayComponents),null,style));
 			//(layer.features[layer.features.length-1] as Feature).id = "blackPolygon";
 			
@@ -108,7 +109,7 @@ package {
 			style = new Style();
 			style.rules[0] = new Rule();
 			(style.rules[0] as Rule).symbolizers.push(new PointSymbolizer(new WellKnownMarker(WellKnownMarker.WKN_SQUARE,new SolidFill(0xFF9900,0.5),new Stroke(0xFF9900,2),10)));
-			arrayComponents = new Array();
+			arrayComponents = new Vector.<Geometry>(11);
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.841262817300238, 45.790978602336864));
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.787704467700456, 45.78044438566825));
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.789077758715836, 45.76463932817484));
@@ -127,7 +128,7 @@ package {
 			style = new Style();
 			style.rules[0] = new Rule();
 			(style.rules[0] as Rule).symbolizers.push(new LineSymbolizer(new Stroke(0x33FF00,3)));
-			arrayComponents = new Array();
+			arrayComponents = new Vector.<Geometry>();
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.841262817300238, 45.806776194899484));
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.759552001885187, 45.785711742833584));
 			  arrayComponents.push(new org.openscales.core.geometry.Point(4.712173461854611, 45.76511833511852));
@@ -147,19 +148,19 @@ package {
 			(style.rules[0] as Rule).symbolizers.push(new LineSymbolizer(new Stroke(0xFF3300,5)));
 			(style.rules[0] as Rule).symbolizers.push(new LineSymbolizer(new Stroke(0xFFFFFF,2)));
 			
-			arrayComponents = new Array();
-			arrayVertices = new Array();
+			arrayComponents = new Vector.<Geometry>();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(5.051376342653225, 45.67595227768875));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(5.06030273425319, 45.69274170598194));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(5.08708190905308, 45.69466017695171));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(5.10012817369918, 45.704251544623304));
 			arrayComponents.push(new LineString(arrayVertices));
-			arrayVertices = new Array();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.970352172745865, 45.700894753090175));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(5.001251220591892, 45.68458747014324));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(5.047943115114779, 45.670194742323545));
 			arrayComponents.push(new LineString(arrayVertices));
-			arrayVertices = new Array();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.965545654192038, 45.70569010786783));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.959365844622833, 45.67835107594167));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.924346923730667, 45.66683590649083));
@@ -172,8 +173,8 @@ package {
 			style = new Style();
 			style.rules[0] = new Rule();
 			(style.rules[0] as Rule).symbolizers.push(new PolygonSymbolizer(new SolidFill(0x0033FF,0.5),new Stroke(0x0033FF,2)));
-			arrayComponents = new Array();
-			arrayVertices = new Array();
+			arrayComponents = new Vector.<Geometry>();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.841262817300238, 45.790978602336864));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.787704467700456, 45.78044438566825));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.789077758715836, 45.76463932817484));
@@ -186,13 +187,13 @@ package {
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.899627685453846, 45.78235984585472));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.863922119053991, 45.776613267874524));
 			arrayComponents.push(new LinearRing(arrayVertices));
-			arrayVertices = new Array();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.85399, 45.76610));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.85399, 45.74071));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.89399, 45.74071));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.89399, 45.76610));
 			arrayComponents.push(new LinearRing(arrayVertices));
-			arrayVertices = new Array();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.830276489177206, 45.74451732248572));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.823410034100311, 45.73684988805274));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.823410034100311, 45.727743442058525));
@@ -204,13 +205,13 @@ package {
 			//(layer.features[layer.features.length-1] as Feature).id = "Polygon";
 			
 			// Add a MultiPolygon.
-			var polygonArray:Array = new Array();
+			var polygonArray:Vector.<Geometry>= new Vector.<Geometry>(3);
 			style = new Style();
 			style.rules[0] = new Rule();
 			(style.rules[0] as Rule).symbolizers.push(new PolygonSymbolizer(new SolidFill(0xFF00FF,0.5),new Stroke(0xFF00FF,2)));
 			// 1st polygon
-			arrayComponents = new Array();
-			arrayVertices = new Array();
+			arrayComponents = new Vector.<Geometry>();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.587203979455121, 45.76559733794923));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.581024169885915, 45.74116294948335));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.535018920870719, 45.711443990657614));
@@ -225,7 +226,7 @@ package {
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.650375366162556, 45.79815988146484));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.624969482378044, 45.790499817491956));
 			arrayComponents.push(new LinearRing(arrayVertices));
-			arrayVertices = new Array();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.600936889608912, 45.76368130194846));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.601623535116601, 45.75170458597825));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.61672973628577, 45.75170458597825));
@@ -233,16 +234,16 @@ package {
 			arrayComponents.push(new LinearRing(arrayVertices));
 			polygonArray.push(new Polygon(arrayComponents));
 			// 2nd polygon
-			arrayComponents = new Array();
-			arrayVertices = new Array();
+			arrayComponents = new Vector.<Geometry>();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.6146697997627015, 45.82209079519674));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.613296508747322, 45.817305435010816));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.622909545854975, 45.81778398953689));
 			arrayComponents.push(new LinearRing(arrayVertices));
 			polygonArray.push(new Polygon(arrayComponents));
 			// 3rd polygon
-			arrayComponents = new Array();
-			arrayVertices = new Array();
+			arrayComponents = new Vector.<Geometry>();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.603683471639669, 45.704251544623304));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.590637206993569, 45.70185385695145));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.577590942347468, 45.69657858210952));
@@ -257,7 +258,7 @@ package {
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.624969482378044, 45.700894753090175));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.6146697997627015, 45.70473106981803));
 			arrayComponents.push(new LinearRing(arrayVertices));
-			arrayVertices = new Array();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.6208496093319065, 45.69609898698994));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.613296508747322, 45.68842490567441));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.63046264643956, 45.68266865365893));
@@ -273,8 +274,8 @@ package {
 			style.rules[0] = new Rule();
 			style.rules[0].symbolizers.push(new PolygonSymbolizer(new SolidFill(0x999999,0.5),new Stroke(0x000000,2)));
 			//
-			arrayComponents = new Array();
-			arrayVertices = new Array();
+			arrayComponents =new Vector.<Geometry>();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.81399, 45.77610));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.81399, 45.76571));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.83399, 45.76571));
@@ -283,8 +284,8 @@ package {
 			layer.addFeature(new PolygonFeature(new Polygon(arrayComponents),null,style));
 			//(layer.features[layer.features.length-1] as Feature).id = "blackPolygon1";
 			//
-			arrayComponents = new Array();
-			arrayVertices = new Array();
+			arrayComponents = new Vector.<Geometry>();
+			arrayVertices = new Vector.<Geometry>();
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.873535156161644, 45.75889092403663));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.860488891515543, 45.75170458597825));
 			  arrayVertices.push(new org.openscales.core.geometry.Point(4.872161865146266, 45.74547567775447));

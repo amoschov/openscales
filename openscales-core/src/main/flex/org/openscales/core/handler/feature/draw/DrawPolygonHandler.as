@@ -8,6 +8,7 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.geometry.Polygon;
@@ -108,8 +109,8 @@ package org.openscales.core.handler.feature.draw
 				var polygon:Polygon=null;
 				//2 cases, and very different. If the user starts the polygon or if the user is drawing the polygon
 				if(newFeature) {					
-					 lring = new LinearRing([point]);
-					 polygon = new Polygon([lring]);
+					 lring = new LinearRing(new <Geometry>[point]);
+					 polygon = new Polygon(new <Geometry>[lring]);
 					this._firstPointPixel= new Pixel(map.mouseX ,map.mouseY);
 				
 					

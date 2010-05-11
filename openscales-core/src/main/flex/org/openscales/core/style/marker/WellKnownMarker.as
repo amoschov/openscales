@@ -73,7 +73,7 @@ package org.openscales.core.style.marker {
 					shape.graphics.moveTo(0, -(size / 2));
 					shape.graphics.lineTo(size / 2, size / 2);
 					shape.graphics.lineTo(-size / 2, size / 2);
-					shape.graphics.lineTo(0, (size / 2));
+					shape.graphics.lineTo(0, -(size / 2));
 					break;
 				}
 				// TODO : Add support for other well known names

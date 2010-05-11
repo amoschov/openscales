@@ -8,6 +8,7 @@ package org.openscales.core.routing
 	import org.openscales.core.feature.Marker;
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.PointFeature;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.Point;
@@ -101,7 +102,7 @@ package org.openscales.core.routing
 						if(_startPoint){
 							//We work on the starting point 
 							if(Util.indexOf(resultsLayer.features,_startPoint)==-1)resultsLayer.addFeature(_startPoint);
-							if(!linestring)linestring=new LineString([_startPoint.geometry]);
+							if(!linestring)linestring=new LineString(new <Geometry>[_startPoint.geometry]);
 							//if the first point is not the starting point
 							if(!((_startPoint.geometry as Point).equals(results[0] as Point))){	
 								linestring.addComponent(results[i] as Point);				

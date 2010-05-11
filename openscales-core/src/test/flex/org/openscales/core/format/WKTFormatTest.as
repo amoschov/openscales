@@ -9,6 +9,7 @@ package org.openscales.core.format
 	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.MultiLineString;
@@ -91,7 +92,7 @@ package org.openscales.core.format
 		[Test]
 		public function testWriteMultiPoint():void
 		{
-			var multiPoint:MultiPoint = new MultiPoint([new Point(11, 12), new Point(21, 22)]);
+			var multiPoint:MultiPoint = new MultiPoint(new <Geometry>[new Point(11, 12), new Point(21, 22)]);
 			var multiPointFeature:MultiPointFeature = new MultiPointFeature(multiPoint);
 			trace(format.write(multiPointFeature));
 			Assert.assertNotNull(format.write(multiPointFeature));
@@ -100,7 +101,7 @@ package org.openscales.core.format
 		[Test]
 		public function testWriteLineString():void
 		{
-			var line:LineString = new LineString([new Point(11, 12), new Point(21, 22), new Point(31, 32)]);
+			var line:LineString = new LineString(new <Geometry>[new Point(11, 12), new Point(21, 22), new Point(31, 32)]);
 			var lineFeature:LineStringFeature = new LineStringFeature(line);
 			trace(format.write(lineFeature));
 			Assert.assertNotNull(format.write(lineFeature));
@@ -109,9 +110,9 @@ package org.openscales.core.format
 		[Test]
 		public function testWriteMultiLineString():void
 		{
-			var line1:LineString = new LineString([new Point(111, 112), new Point(121, 122), new Point(131, 132)]);
-			var line2:LineString = new LineString([new Point(211, 212), new Point(221, 222), new Point(231, 232)]);
-			var multiline:MultiLineString = new MultiLineString([line1, line2]);
+			var line1:LineString = new LineString(new <Geometry>[new Point(111, 112), new Point(121, 122), new Point(131, 132)]);
+			var line2:LineString = new LineString(new <Geometry>[new Point(211, 212), new Point(221, 222), new Point(231, 232)]);
+			var multiline:MultiLineString = new MultiLineString(new <Geometry>[line1, line2]);
 			var multilineFeature:MultiLineStringFeature = new MultiLineStringFeature(multiline);
 			trace(format.write(multilineFeature));
 			Assert.assertNotNull(format.write(multilineFeature));
@@ -120,9 +121,9 @@ package org.openscales.core.format
 		[Test]
 		public function testWritePolygon():void
 		{
-			var ring1:LinearRing = new LinearRing([new Point(0, 0), new Point(0, 3), new Point(3, 3), new Point(3, 0)]);
-			var ring2:LinearRing = new LinearRing([new Point(1, 1), new Point(1, 2), new Point(2, 2), new Point(2, 1)]);
-			var polygon:Polygon = new Polygon([ring1, ring2]);
+			var ring1:LinearRing = new LinearRing(new <Geometry>[new Point(0, 0), new Point(0, 3), new Point(3, 3), new Point(3, 0)]);
+			var ring2:LinearRing = new LinearRing(new <Geometry>[new Point(1, 1), new Point(1, 2), new Point(2, 2), new Point(2, 1)]);
+			var polygon:Polygon = new Polygon(new <Geometry>[ring1, ring2]);
 			var polygonFeature:PolygonFeature = new PolygonFeature(polygon);
 			trace(format.write(polygonFeature));
 			Assert.assertNotNull(format.write(polygonFeature));
@@ -131,10 +132,10 @@ package org.openscales.core.format
 		[Test]
 		public function testWriteMultiPolygon():void
 		{
-			var ring1:LinearRing = new LinearRing([new Point(0, 0), new Point(0, 3), new Point(3, 3), new Point(3, 0)]);
-			var ring2:LinearRing = new LinearRing([new Point(1, 1), new Point(1, 2), new Point(2, 2), new Point(2, 1)]);
-			var ring3:LinearRing = new LinearRing([new Point(0, 0), new Point(0, -1), new Point(-1, -1), new Point(-1, 0)]);
-			var multipolygon:MultiPolygon = new MultiPolygon([new Polygon([ring1, ring2]), new Polygon([ring3])]);
+			var ring1:LinearRing = new LinearRing(new <Geometry>[new Point(0, 0), new Point(0, 3), new Point(3, 3), new Point(3, 0)]);
+			var ring2:LinearRing = new LinearRing(new <Geometry>[new Point(1, 1), new Point(1, 2), new Point(2, 2), new Point(2, 1)]);
+			var ring3:LinearRing = new LinearRing(new <Geometry>[new Point(0, 0), new Point(0, -1), new Point(-1, -1), new Point(-1, 0)]);
+			var multipolygon:MultiPolygon = new MultiPolygon(new <Geometry>[new Polygon(new <Geometry>[ring1, ring2]), new Polygon(new <Geometry>[ring3])]);
 			var multiPolygonFeature:MultiPolygonFeature = new MultiPolygonFeature(multipolygon);
 			trace(format.write(multiPolygonFeature));
 			Assert.assertNotNull(format.write(multiPolygonFeature));

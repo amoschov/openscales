@@ -166,7 +166,7 @@ package org.openscales.core.format
 			else if (type == "multipoint")
 			{
 				var points:Array = StringUtils.trim(args).split(',');
-				var components:Array = [];
+				var components:Vector.<Geometry> = new Vector.<Geometry>(points.length);
 				for (var i:int = 0; i < points.length; ++i)
 					components.push( parse(points[i], "point").geometry );
 				return new MultiPointFeature(new MultiPoint(components));
@@ -174,7 +174,7 @@ package org.openscales.core.format
 			else if (type == "linestring")
 			{
 				points = StringUtils.trim(args).split(',');
-				components = [];
+				components = new Vector.<Geometry>(points.length);
 				for (i = 0; i < points.length; ++i)
 					components.push(parse(points[i], "point").geometry);
 				return new LineStringFeature(new LineString(components));
@@ -183,7 +183,7 @@ package org.openscales.core.format
 			{
 				var line:String;
 				var lines:Array = StringUtils.trim(args).split(this._regExes.parenComma);
-				components = [];
+				components = new Vector.<Geometry>(lines.length);
 				for(i = 0; i < lines.length; ++i)
 				{
 					line = lines[i].replace(this._regExes.trimParens, '$1');
@@ -195,13 +195,13 @@ package org.openscales.core.format
 			{
 				var ring:String, lineString:LineString, linearRing:LinearRing;
 				var rings:Array = StringUtils.trim(args).split(this._regExes.parenComma);
-				components = [];
+				components = new Vector.<Geometry>();
 				for(i = 0; i < rings.length; ++i)
 				{
 					ring = rings[i].replace(this._regExes.trimParens, '$1');
 					lineString = parse(ring, "linestring").geometry;
 					
-					var ringComponents:Array = [];
+					var ringComponents:Vector.<Geometry> = new Vector.<Geometry>(lineString.componentsLength);
 					for (i = 0; i < lineString.componentsLength; ++i)
 						ringComponents.push(lineString.componentByIndex(i));
 					linearRing = new LinearRing(ringComponents);
@@ -214,7 +214,7 @@ package org.openscales.core.format
 			{
 				var polygon:String;
 				var polygons:Array = StringUtils.trim(args).split(this._regExes.doubleParenComma);
-				components = [];
+				components =new Vector.<Geometry>(polygons.length);
 				for(i = 0; i < polygons.length; ++i)
 				{
 					polygon = polygons[i].replace(this._regExes.trimParens, '$1');
@@ -226,7 +226,7 @@ package org.openscales.core.format
 			{
 				args = args.replace(/,\s*([A-Za-z])/g, '|$1');
 				var wktArray:Array = StringUtils.trim(args).split('|');
-				components = [];
+				components = new Vector.<Geometry>(wktArray.length);
 				for(i = 0; i < wktArray.length; ++i)
 					components.push(new WKTFormat().read([wktArray[i]]));
 				return components;

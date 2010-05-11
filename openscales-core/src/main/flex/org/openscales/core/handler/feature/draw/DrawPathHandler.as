@@ -8,6 +8,7 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.LineStringFeature;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.mouse.ClickHandler;
@@ -127,7 +128,7 @@ package org.openscales.core.handler.feature.draw
 			
 			//The user click for the first time
 			if(newFeature){
-				_lineString = new LineString([point]);
+				_lineString = new LineString(new <Geometry>[point]);
 				lastPoint = point;
 				//the current drawn linestringfeature
 				this._currentLineStringFeature= new LineStringFeature(_lineString,null, Style.getDrawLineStyle(),true);
