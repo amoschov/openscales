@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun name="" >
+<testsuite  name="Default Test Suite" project="openscales-geometry">
+<testsuite name="org.openscales.core.geometry:ContainsPointTest" type="testsuiteclass"/>
+<testsuite name="org.openscales.core:GeometryTestSuite" type="testcaseclass"/>
+</testsuite>
+</testrun>

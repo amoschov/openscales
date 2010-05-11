@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.openscales</groupId>
+	<artifactId>openscales-geometry</artifactId>
+	<version>1.2-SNAPSHOT</version>
+	<packaging>swc</packaging>
+	<name>Core</name>
+	<description>core modules that contains main classes like  Map, Layer, Handler ...</description>
+	
+	<parent>
+		<groupId>org.openscales</groupId>
+		<artifactId>openscales</artifactId>
+		<version>1.2-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	
+	<dependencies>
+		<dependency>
+			<groupId>com.gskinner</groupId>
+			<artifactId>gtween</artifactId>
+			<version>2.0</version>
+			<type>swc</type>
+		</dependency>
+		<dependency>
+			<groupId>com.adobe</groupId>
+			<artifactId>as3corelib</artifactId>
+			<version>0.92.1</version>
+			<type>swc</type>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.sonatype.flexmojos</groupId>
+				<artifactId>flexmojos-maven-plugin</artifactId>
+				<version>${flexmojos.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<packageDescriptions>
+						<org.openscales.core.geometry>Geometries are descriptions of a geographic object</org.openscales.core.geometry>
+					</packageDescriptions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<reporting>
+        <plugins>
+            <plugin>
+                <groupId>com.adobe.ac</groupId>
+                <artifactId>flex-pmd-maven-plugin</artifactId>
+                <version>${flexpmd.version}</version>
+            </plugin>
+        </plugins>
+    </reporting>
+	
+</project>
