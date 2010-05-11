@@ -1,7 +1,5 @@
 package org.openscales.core.geometry
 {
-	import mx.controls.Alert;
-	
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -31,7 +29,7 @@ package org.openscales.core.geometry
 			// If one (or more) vertex is invalid, this condition is not tested
 			if (validVertices) {
 				if (vertices && (vertices.length < 2)) {
-					Alert.show("LineString constructor WARNING : too few vertices (" + vertices.length + ")");
+					trace("LineString constructor WARNING : too few vertices (" + vertices.length + ")");
 				}
 			}
 			// Initialize the object

@@ -17,7 +17,9 @@ package org.openscales.core.geometry
 
 		override public function addComponent(point:Geometry, index:Number=NaN):Boolean {
 			var added:Boolean = false;
-			var lastPoint:Point = (this._components[this.componentsLength-1] as Point);
+			if(0<this.componentsLength){
+			  var lastPoint:Point = (this._components[this.componentsLength-1] as Point);
+			}
 			if (!isNaN(index) || !(point as Point).equals(lastPoint)) {
 				added = super.addComponent(point, index);
 			}
@@ -76,7 +78,7 @@ package org.openscales.core.geometry
 		 */
 		public function containsMultiPoint(mp:MultiPoint):Boolean {
 			for(var i:int=0; i<mp.componentsLength; i++) {
-				if (! this._components[mp.componentByIndex(i)]) {
+				if (! this.containsPoint(mp.componentByIndex(i) as Point) ) {
 					return false;
 				}
 			}

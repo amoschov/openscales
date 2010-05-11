@@ -218,7 +218,7 @@ package org.openscales.core.geometry
      	 */
 		public function removeComponent(component:Geometry):void {    
 			var indice:int = this._components.indexOf(component);
-			this._components.splice(indice,indice);
+			this._components.splice(indice,1);
 			this.clearBounds();
 		}
 		
