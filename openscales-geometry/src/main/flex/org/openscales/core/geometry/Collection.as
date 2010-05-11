@@ -36,7 +36,7 @@ package org.openscales.core.geometry
      	 */
 		public function Collection(components:Vector.<Geometry>) {
 			super();
-			this.components = new Vector.<Geometry>();
+			this._components = new Vector.<Geometry>();
             if (components != null) {
 				this.addComponents(components);
 			}
@@ -112,9 +112,9 @@ package org.openscales.core.geometry
      	 * @return A string representation of the components of this collection
       	 */
 		public function get componentsString():String {
-			var strings:Vector.<String> = new Vector.<String>;
+			var strings:Vector.<String> = new Vector.<String>(this.componentsLength);
 			for(var i:int = 0; i < this.componentsLength; i++) {
-				strings.push(this._components[i].toShortString());
+				strings[i]=(this._components[i].toShortString());
 			}
 			return strings.join(",");
 		}
