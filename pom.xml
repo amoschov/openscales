@@ -56,6 +56,7 @@
 		<module>openscales-fx-examples</module>
 		<module>openscales-fx</module>
 		<module>openscales-proj4as</module>
+		<module>openscales-geometry</module>
 	</modules>
 	
 	<issueManagement>
