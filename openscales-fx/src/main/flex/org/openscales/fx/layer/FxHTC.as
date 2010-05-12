@@ -4,8 +4,7 @@ package org.openscales.fx.layer
 	
 	public class FxHTC extends FxLayer
 	{
-		public function FxHTC()
-		{
+		public function FxHTC() {
 			this._layer=new HTC("","");
 			super();
 		}
@@ -23,6 +22,16 @@ package org.openscales.fx.layer
 		public function set url(value:String):void {
 			if(this.layer != null)
 				(this.layer as HTC).url = value;
+		}
+
+		public function set format(value:String):void {
+			if(this.layer != null)
+				(this.layer as HTC).format = value;
+		}
+
+		public function set directoryPrefix(value:String):void {
+			if(this.layer != null)
+				(this.layer as HTC).directoryPrefix = value;
 		}
 	}
 }

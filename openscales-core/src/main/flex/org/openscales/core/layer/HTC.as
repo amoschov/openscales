@@ -21,6 +21,8 @@ package org.openscales.core.layer
 		
 		private var _format:String = "png";
 
+		private var _directoryPrefix:String = "";
+
 		/**
 		 * setter for the max zoom level
 		 */
@@ -51,14 +53,32 @@ package org.openscales.core.layer
 		}
 
 		/**
+		 * setter for directory name
+		 * 
+		 * @param value:String the directory name
+		 */
+		public function set directoryPrefix(value:String):void {
+			if(value.length==0)
+				this._directoryPrefix = "";
+			else if(value.charAt(value.length-1)=="_")
+				this._directoryPrefix = value;
+			else
+				this._directoryPrefix = value+"_";
+		}
+		/**
+		 * getter for directory name
+		 * 
+		 * @return String the directory name
+		 */
+		public function get directoryPrefix():String {
+			return this._directoryPrefix;
+		}
+
+		/**
 		 * Constructor
 		 * 
 		 * @param name:String the name of the layer
 		 * @param url:String URL of the server
-		 * @param isBaseLayer:Boolean is the layer a baselayer. Default true
-		 * @param visible:Boolean is the layer visible. Default true
-		 * @param projection:String the projection of the layer. Default null
-		 * @param proxy:String the proxy to use for the request, usefull when the server does not have a crossdomain.xml. Default null
 		 * @param maxResolution:Number the max resolution tu use for the computation of resolutions. default DEFAULT_MAX_RESOLUTION
 		 * @param numZoomLevel:uint the number of zoom level. Default DEFAULT_NUM_ZOOM_LEVELS
 		 * @param zoom_max:uint the maximum zoom value. Default DEFAULT_ZOOM_MAX
@@ -95,9 +115,9 @@ package org.openscales.core.layer
 			var numX:Number = Math.floor(bounds.centerPixel.x / (this.tileWidth * resolution));
 			var numY:Number = Math.floor(bounds.centerPixel.y / (this.tileHeight * resolution));
 
-			var srcfinal:String = this.url+this.name;
+			var srcfinal:String = this.url+this.directoryPrefix;
 
-			srcfinal+= "_" +  this._format + "_" + String(this.tileWidth) + "_" + String(this.tileHeight) + "_" + zoomString + "/";
+			srcfinal+= this._format + "_" + String(this.tileWidth) + "_" + String(this.tileHeight) + "_" + zoomString + "/";
 
 			var minusX:String = "";
 			if(numX <0){
