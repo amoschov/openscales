@@ -287,12 +287,14 @@ package org.openscales.core.format
 					_Pdata = _Pdata.replace(/^\s*(.*?)\s*$/g, "$1");
 					coordinates = _Pdata.split(" ");
 					var Ppoints:Array = new Array();
-					for each(var Pcoords:String in coordinates) {
-						var _Pcoords:Array = Pcoords.split(",");
+					var Pcoords:String;
+					var _Pcoords:Array;
+					for each(Pcoords in coordinates) {
+						_Pcoords = Pcoords.split(",");
 						if(_Pcoords.length<2)
 							continue;
 						point = new Point(_Pcoords[0].toString(),
-							_Pcoords[1].toString());
+										  _Pcoords[1].toString());
 						if (this._internalProj != null, this._externalProj != null) {
 							point.transform(this.externalProj, this.internalProj);
 						}
@@ -300,6 +302,28 @@ package org.openscales.core.format
 					}
 					var lines:Array = new Array();
 					lines.push(new LinearRing(Ppoints));
+					if(placemark.Polygon.innerBoundaryIs != undefined) {
+						try {
+							_Pdata = placemark.Polygon.innerBoundaryIs.LinearRing.coordinates.text();
+							_Pdata = _Pdata.replace("\n"," ");
+							_Pdata = _Pdata.replace(/^\s*(.*?)\s*$/g, "$1");
+							coordinates = _Pdata.split(" ");
+							Ppoints = new Array();
+							for each(Pcoords in coordinates) {
+								_Pcoords = Pcoords.split(",");
+								if(_Pcoords.length<2)
+									continue;
+								point = new Point(_Pcoords[0].toString(),
+												  _Pcoords[1].toString());
+								if (this._internalProj != null, this._externalProj != null) {
+									point.transform(this.externalProj, this.internalProj);
+								}
+								Ppoints.push(point);
+							}
+							lines.push(new LinearRing(Ppoints));
+						} catch(e:Error) {
+						}
+					}
 					polygonsfeatures.push(new PolygonFeature(new Polygon(lines),attributes,_Pstyle));
 				}
 				
