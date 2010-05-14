@@ -51,7 +51,8 @@ package org.openscales.core.layer.params.ogc
 				str += "BBOX=" + this.bbox + "&";
 
 			var keys:Array = _additionalParams.getKeys();
-			for (var i:Number=0; i < keys.length; i++) {
+			var n:uint = keys.length;
+			for (n; n>0; n--) {
 				var key:String = keys.pop();
 				var value:String = _additionalParams.getValue(key);
 
