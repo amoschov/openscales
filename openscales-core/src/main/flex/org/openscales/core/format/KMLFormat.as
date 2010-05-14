@@ -273,7 +273,6 @@ package org.openscales.core.format
 				}
 				
 				// Polygons
-				// extrusions are not supported yet
 				if(placemark.Polygon != undefined) {
 					var _Pstyle:Style = Style.getDefaultSurfaceStyle();
 					if(placemark.styleUrl != undefined)
