@@ -26,21 +26,20 @@
 					this._showDataTip = false;
 				}
 			}
-					
-					
+
 			private function onZoomOutClick(event:MouseEvent):void{
 				this.map.zoom--;
 			}
-			
+
 			private function onZoomInClick(event:MouseEvent):void{
 				this.map.zoom++;
 			}
-			
+
 			public function onZoomSliderThumbPress(event:SliderEvent):void {
 				zoomSlider.removeEventListener(SliderEvent.CHANGE,this.zoomSliderChange);
 				zoomSlider.addEventListener(SliderEvent.THUMB_RELEASE,this.onZoomSliderThumbRelease);
 			}
-			
+
 			public function onZoomSliderThumbRelease(event:SliderEvent):void {
 				map.zoom = zoomSlider.value;
 				
@@ -48,18 +47,18 @@
 				
 				zoomSlider.addEventListener(SliderEvent.CHANGE,this.zoomSliderChange);
 			}
-			
+
 			public function zoomSliderChange(event:Event):void {
 				map.zoom = zoomSlider.value;
 			}
-						
+
 			private function initializeZoomLevels(event:Event = null):void {
 				zoomSlider.maximum = map.baseLayer.maxZoomLevel;
 				zoomSlider.minimum = map.baseLayer.minZoomLevel;
 				zoomSlider.value = map.zoom;
 				zoomSlider.addEventListener(SliderEvent.CHANGE,this.zoomSliderChange);
 			}
-			
+
 			override public function set active(value:Boolean):void {
 				if(value) {					
 					map.addEventListener(LayerEvent.BASE_LAYER_CHANGED, this.initializeZoomLevels);
@@ -71,15 +70,15 @@
 				}
 				super.active = value;
 			}
-			
+
 			private function updateZoomLevels(event:Event = null):void {
 				zoomSlider.value = map.zoom;
 			}
-			
+
 			public function set toolTipZoomIn(value:String):void{ 
 				this._toolTipZoomIn = value;
 			}
-			
+
 			public function set toolTipZoomOut(value:String):void{ 
 				this._toolTipZoomOut = value;
 			}
@@ -89,32 +88,29 @@
 			}
 		]]>
 	</mx:Script>
-	
-	<mx:Style>
-		.zoomSliderStyle {
-		}
-	</mx:Style>
-	
+
 	<mx:HBox verticalAlign="middle">
 
 		<mx:VBox height="100%">
 
-			<mx:Button id="zoomIn" styleName="zoomIn"
+			<mx:Button id="zoomIn"
 				toolTip="{this._toolTipZoomIn}"
 				useHandCursor="true" buttonMode="true"
-				click="this.onZoomInClick(event);" />
+				click="this.onZoomInClick(event);"
+				icon="@Embed(source='/assets/images/mapZoomIn-upskin.swf')" width="21"/>
 
 			<mx:Spacer height="100%" />
 
-			<mx:Button id="zoomOut" styleName="zoomOut"
+			<mx:Button id="zoomOut"
 				toolTip="{this._toolTipZoomOut}"
 				useHandCursor="true" buttonMode="true"
-				click="this.onZoomOutClick(event);" />
+				click="this.onZoomOutClick(event);"
+				icon="@Embed(source='/assets/images/mapZoomOut-upskin.swf')" width="21"/>
 
 		</mx:VBox>
 
 		<mx:VSlider id="zoomSlider"
-			toolTip="{this._toolTipZoomSlider}" styleName="zoom"
+			toolTip="{this._toolTipZoomSlider}"
 			height="100"
 			liveDragging="true" allowTrackClick="true"
 			tickInterval="1" snapInterval="1" 
@@ -123,23 +119,5 @@
 			 />
 
 	</mx:HBox>
-
-	<mx:Style>
-		Button.zoomOut
-		{
-			upSkin: Embed('/assets/images/mapZoomOut-upskin.swf');
-			overSkin: Embed('/assets/images/mapZoomOut-upskin.swf');
-			downSkin: Embed('/assets/images/mapZoomOut-upskin.swf');
-			disabledSkin: Embed('/assets/images/mapZoomOut-upskin.swf');
-		}
-		
-		Button.zoomIn
-		{
-			upSkin: Embed('/assets/images/mapZoomIn-upskin.swf');
-			overSkin: Embed('/assets/images/mapZoomIn-upskin.swf');
-			downSkin: Embed('/assets/images/mapZoomIn-upskin.swf');
-			disabledSkin: Embed('/assets/images/mapZoomIn-upskin.swf');
-		}
-	</mx:Style>
 
 </control:Control>
