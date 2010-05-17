@@ -28,6 +28,12 @@
 			<version>0.92.1</version>
 			<type>swc</type>
 		</dependency>
+		<dependency>
+			<groupId>org.openscales</groupId>
+			<artifactId>openscales-proj4as</artifactId>
+			<version>1.2-SNAPSHOT</version>
+			<type>swc</type>
+		</dependency>
 	</dependencies>
 	
 	<build>
