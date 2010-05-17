@@ -2,6 +2,8 @@ package org.openscales.core.format
 {
 	import flash.utils.getQualifiedClassName;
 	
+	import mx.core.ComponentDescriptor;
+	
 	import org.openscales.core.StringUtils;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.feature.Feature;
@@ -168,7 +170,7 @@ package org.openscales.core.format
 				var points:Array = StringUtils.trim(args).split(',');
 				var components:Vector.<Geometry> = new Vector.<Geometry>(points.length);
 				for (var i:int = 0; i < points.length; ++i)
-					components.push( parse(points[i], "point").geometry );
+					components[i] = parse(points[i], "point").geometry;
 				return new MultiPointFeature(new MultiPoint(components));
 			}
 			else if (type == "linestring")
@@ -176,7 +178,7 @@ package org.openscales.core.format
 				points = StringUtils.trim(args).split(',');
 				components = new Vector.<Geometry>(points.length);
 				for (i = 0; i < points.length; ++i)
-					components.push(parse(points[i], "point").geometry);
+					components[i] = parse(points[i], "point").geometry;
 				return new LineStringFeature(new LineString(components));
 			}
 			else if (type == "multilinestring")
@@ -187,7 +189,7 @@ package org.openscales.core.format
 				for(i = 0; i < lines.length; ++i)
 				{
 					line = lines[i].replace(this._regExes.trimParens, '$1');
-					components.push(parse(line, "linestring").geometry);
+					components[i]=parse(line, "linestring").geometry;
 				}
 				return new MultiLineStringFeature( new MultiLineString(components) );
 			}
@@ -195,18 +197,18 @@ package org.openscales.core.format
 			{
 				var ring:String, lineString:LineString, linearRing:LinearRing;
 				var rings:Array = StringUtils.trim(args).split(this._regExes.parenComma);
-				components = new Vector.<Geometry>();
+				components = new Vector.<Geometry>(rings.length);
 				for(i = 0; i < rings.length; ++i)
 				{
 					ring = rings[i].replace(this._regExes.trimParens, '$1');
 					lineString = parse(ring, "linestring").geometry;
 					
 					var ringComponents:Vector.<Geometry> = new Vector.<Geometry>(lineString.componentsLength);
-					for (i = 0; i < lineString.componentsLength; ++i)
-						ringComponents.push(lineString.componentByIndex(i));
+					for (var j:int = 0; j < lineString.componentsLength; ++j)
+						ringComponents[j]=lineString.componentByIndex(j);
 					linearRing = new LinearRing(ringComponents);
 					
-					components.push(linearRing);
+					components[i] = linearRing;
 				}
 				return new PolygonFeature( new Polygon(components) );
 			}
@@ -218,7 +220,7 @@ package org.openscales.core.format
 				for(i = 0; i < polygons.length; ++i)
 				{
 					polygon = polygons[i].replace(this._regExes.trimParens, '$1');
-					components.push(parse(polygon, "polygon").geometry);
+					components[i] = parse(polygon, "polygon").geometry;
 				}
 				return new MultiPolygonFeature( new MultiPolygon(components) );
 			}
@@ -228,7 +230,7 @@ package org.openscales.core.format
 				var wktArray:Array = StringUtils.trim(args).split('|');
 				components = new Vector.<Geometry>(wktArray.length);
 				for(i = 0; i < wktArray.length; ++i)
-					components.push(new WKTFormat().read([wktArray[i]]));
+					components[i] = Vector.<Geometry>(new WKTFormat().read([wktArray[i]]));
 				return components;
 			}
 			return null;
