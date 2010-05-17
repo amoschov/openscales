@@ -10,13 +10,14 @@
 				viewSourceURL="srcview/index.html">
 
 	<mx:Style>
-		ToolTip {
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		mx|ToolTip {
 			cornerRadius: 6;
 			backgroundAlpha: 0.66;
 			backgroundColor: #000000;
 			color: #ffff66;
 		}
-		Panel {
+		mx|Panel {
 			borderAlpha: 0.66;
 			borderColor: #000000;
 			titleStyleName: "PanelTitle";

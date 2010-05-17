@@ -274,7 +274,6 @@ package org.openscales.core.format
 				}
 				
 				// Polygons
-				// extrusions are not supported yet
 				if(placemark.Polygon != undefined) {
 					var _Pstyle:Style = Style.getDefaultSurfaceStyle();
 					if(placemark.styleUrl != undefined)
@@ -288,19 +287,43 @@ package org.openscales.core.format
 					_Pdata = _Pdata.replace(/^\s*(.*?)\s*$/g, "$1");
 					coordinates = _Pdata.split(" ");
 					var Ppoints:Vector.<Geometry> = new Vector.<Geometry>();
-					for each(var Pcoords:String in coordinates) {
-						var _Pcoords:Array = Pcoords.split(",");
+					var Pcoords:String;
+					var _Pcoords:Array;
+					for each(Pcoords in coordinates) {
+						_Pcoords = Pcoords.split(",");
 						if(_Pcoords.length<2)
 							continue;
 						point = new Point(_Pcoords[0].toString(),
-							_Pcoords[1].toString());
+										  _Pcoords[1].toString());
 						if (this._internalProj != null, this._externalProj != null) {
 							point.transform(this.externalProj, this.internalProj);
 						}
 						Ppoints.push(point);
 					}
 					var lines:Vector.<Geometry> = new Vector.<Geometry>(1);
-					lines.push(new LinearRing(Ppoints));
+					lines[0] = new LinearRing(Ppoints);
+					if(placemark.Polygon.innerBoundaryIs != undefined) {
+						try {
+							_Pdata = placemark.Polygon.innerBoundaryIs.LinearRing.coordinates.text();
+							_Pdata = _Pdata.replace("\n"," ");
+							_Pdata = _Pdata.replace(/^\s*(.*?)\s*$/g, "$1");
+							coordinates = _Pdata.split(" ");
+							Ppoints = new Vector.<Geometry>();
+							for each(Pcoords in coordinates) {
+								_Pcoords = Pcoords.split(",");
+								if(_Pcoords.length<2)
+									continue;
+								point = new Point(_Pcoords[0].toString(),
+												  _Pcoords[1].toString());
+								if (this._internalProj != null, this._externalProj != null) {
+									point.transform(this.externalProj, this.internalProj);
+								}
+								Ppoints.push(point);
+							}
+							lines.push(new LinearRing(Ppoints));
+						} catch(e:Error) {
+						}
+					}
 					polygonsfeatures.push(new PolygonFeature(new Polygon(lines),attributes,_Pstyle));
 				}
 				

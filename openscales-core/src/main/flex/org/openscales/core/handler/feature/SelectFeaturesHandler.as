@@ -2,7 +2,7 @@ package org.openscales.core.handler.feature {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
@@ -179,8 +179,9 @@ package org.openscales.core.handler.feature {
 				Trace.error("SelectFeaturesHandler - invalid layers (null)");
 				return;
 			} else {
+				var len:int = value.length;
 				// Restrict the input array to the not null FeatureLayers
-				if (value.length > 0) {
+				if (len > 0) {
 					var filteredValue:Array = new Array();
 					for each (var l:Layer in value) {
 						if ((l != null) && (l is FeatureLayer)) {
@@ -188,7 +189,8 @@ package org.openscales.core.handler.feature {
 						}
 					}
 					value = filteredValue;
-					if (value.length == 0) {
+					len = value.length;
+					if (len == 0) {
 						Trace.error("SelectFeaturesHandler - invalid layers (none FeatureLayer)");
 						return;
 					}
@@ -197,12 +199,13 @@ package org.openscales.core.handler.feature {
 			// Unselect the features attached to the removed layers. If value is
 			// a void array, the new layers are all the layers of the map, so
 			// there is nothing to do in this case.
-			if ((value.length > 0) && (this.layers.length > 0) && (this.selectedFeatures.length > 0)) {
-				var layer:FeatureLayer, i:int;
+			if ((len > 0) && (this.layers.length > 0) && (this.selectedFeatures.length > 0)) {
+				var layer:FeatureLayer;
+				var i:int=0;
 				for each (layer in this.layers) {
 					// Is the layer in the array of the new layers ?
-					for (i = 0; (i < value.length) && (layer != value[i]); i++)
-						; // nothing else to do than to increment i
+					while(i<len && layer != value[i])
+						i++;// nothing else to do than to increment i
 					// No if i equals value.length, so unselect its features
 					if (i == value.length) {
 						unselectFeaturesOfLayer(layer);
