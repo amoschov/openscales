@@ -1,5 +1,6 @@
 package org.openscales.core.layer
 {
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 	
@@ -29,9 +30,11 @@ package org.openscales.core.layer
 
 		private var _geometryType:String = null;
 
-		private var _selectedFeatures:Array = null;
+		private var _selectedFeatures:Vector.<String> = null;
 
 		private var _isInEditionMode:Boolean=false;
+
+		private var _featuresID:Vector.<String> = new Vector.<String>();
 
 		public function FeatureLayer(name:String)
 		{
@@ -40,7 +43,7 @@ package org.openscales.core.layer
 			this.featuresBbox = new Bounds();
 			this.style = new Style();
 			this.geometryType = null;
-			this.selectedFeatures = new Array();
+			this.selectedFeatures = new Vector.<String>();
 		}
 
 		override public function destroy():void {
@@ -111,7 +114,7 @@ package org.openscales.core.layer
 		 *
 		 * @param features array
 		 */
-		public function addFeatures(features:Array):void {
+		public function addFeatures(features:Vector.<Feature>):void {
 			var fevt:FeatureEvent = null;
 
 			// Dispatch an event before the features are added
@@ -141,9 +144,14 @@ package org.openscales.core.layer
 		 * @param feature The feature to add
 		 */
 		public function addFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
+
+			if(this._featuresID.indexOf(feature.name)!=-1)
+				return;
+			this._featuresID.push(feature.name);
+
 			var fevt:FeatureEvent = null;
 			// Check if the feature may be added to this layer
-			var vectorfeature:Feature = (feature as Feature);
+			var vectorfeature:Feature = feature;
 			if (this.geometryType &&
 				(getQualifiedClassName(vectorfeature.geometry) != this.geometryType)) {
 				var throwStr:String = "addFeatures : component should be an " + 
@@ -170,6 +178,7 @@ package org.openscales.core.layer
 		override public function reset():void {
 			var i:int = this.numChildren-1;
 			var deleted:Boolean = false;
+			this._featuresID = new Vector.<String>();
 			for(i;i>-1;i--) {
 				if(this.getChildAt(i) is Feature) {
 					this.removeChildAt(i);
@@ -185,15 +194,19 @@ package org.openscales.core.layer
 
 		override protected function draw():void {
 			this.cacheAsBitmap = false;
-			for each (var feature:Feature in this.features){
-				feature.draw();
+			var j:int = this.numChildren - 1;
+			var o:DisplayObject;
+			for(j ; j>-1 ; --j) {
+				o = this.getChildAt(j);
+				if(o is Feature)
+					(o as Feature).draw();
 			}
 			this.cacheAsBitmap = true;
 		}
 
-		public function removeFeatures(features:Array):void {
-			var i:int = features.length;
-			for (i; i > 0; i--)
+		public function removeFeatures(features:Vector.<Feature>):void {
+			var i:int = features.length-1;
+			for (i; i > -1; i--)
 				this.removeFeature(features[i], false);
 			// Dispatch an event with all the features removed
 			if (this.map) {
@@ -204,7 +217,13 @@ package org.openscales.core.layer
 		}
 
 		public function removeFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
-			var i:int;
+			if(feature==null)
+				return;
+			var i:int = this._featuresID.indexOf(feature.name);
+			if(i==-1)
+				return;
+			this._featuresID.splice(i,1);
+
 			var j:int = this.numChildren;
 			for(i = 0;i<j;i++) {
 				if (this.getChildAt(i) == feature) {
@@ -212,8 +231,9 @@ package org.openscales.core.layer
 					break;
 				}
 			}
-			if (Util.indexOf(this.selectedFeatures, feature) != -1){
-				Util.removeItem(this.selectedFeatures, feature);
+			i = this.selectedFeatures.indexOf(feature);
+			if (i != -1){
+				this.selectedFeatures.slice(i,1);
 			}
 			// If needed, dispatch an event with the feature added
 			if (dispatchFeatureEvent && this.map) {
@@ -222,17 +242,29 @@ package org.openscales.core.layer
 			}
 		}
 
+		public function get feauturesID():Vector.<String> {
+			var _features:Vector.<String> = new Vector.<String>(this._featuresID.length);
+			var i:uint = 0;
+			var s:String;
+			for each(s in this._featuresID) {
+				_features[i]=s;
+				i++;
+			}
+			return _features;
+		}
+
 		//Getters and setters
-		public function get features():Array {
-			var featureArray:Array = new Array();
-			var i:int;
-			var j:int = this.numChildren;
-			for(i = 0;i<j;i++) {
-				if(this.getChildAt(i) is Feature) {
-					featureArray.push(this.getChildAt(i));
+		public function get features():Vector.<Feature> {
+			var _features:Vector.<Feature> = new Vector.<Feature>();
+			var j:int = this.numChildren - 1;
+			var o:DisplayObject;
+			for(j ; j>-1 ; --j) {
+				o = this.getChildAt(j)
+				if(o is Feature) {
+					_features.push(o);
 				}
 			}
-			return featureArray;
+			return _features;
 		}
 
 		public function get featuresBbox():Bounds {
@@ -243,11 +275,11 @@ package org.openscales.core.layer
 			this._featuresBbox = value;
 		}
 
-		public function get selectedFeatures():Array {
+		public function get selectedFeatures():Vector.<String> {
 			return this._selectedFeatures;
 		}
 
-		public function set selectedFeatures(value:Array):void {
+		public function set selectedFeatures(value:Vector.<String>):void {
 			this._selectedFeatures = value;
 		}
 

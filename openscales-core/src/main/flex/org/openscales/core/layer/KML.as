@@ -1,13 +1,14 @@
 package org.openscales.core.layer
 {
-	import org.openscales.core.Trace;
-	import org.openscales.core.format.KMLFormat;
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.request.XMLRequest;
-
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
+	
+	import org.openscales.core.Trace;
+	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.core.feature.Feature;
+	import org.openscales.core.format.KMLFormat;
+	import org.openscales.core.request.XMLRequest;
 
 	public class KML extends FeatureLayer
 	{
@@ -66,7 +67,7 @@ package org.openscales.core.layer
 					this._kmlFormat.internalProj = this.map.baseLayer.projection;
 				}
 				this._kmlFormat.proxy = this.proxy;
-				var features:Array = this._kmlFormat.read(this._xml) as Array;
+				var features:Vector.<Feature> = this._kmlFormat.read(this._xml) as Vector.<Feature>;
 				this.addFeatures(features);
 
 				this.clear();

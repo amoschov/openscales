@@ -84,7 +84,7 @@ package org.openscales.core.handler.feature
 			if(feature!=null){
 				for each(var featureLayer:FeatureLayer in _draggableLayers){
 					//The feature belongs to a draggable layers
-					if(Util.indexOf(featureLayer.features,feature)!=-1){
+					if(featureLayer.features.indexOf(feature)!=-1){
 						addFeature=true;	
 						break;
 					}

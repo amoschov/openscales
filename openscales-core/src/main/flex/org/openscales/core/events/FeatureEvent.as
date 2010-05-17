@@ -13,7 +13,7 @@ package org.openscales.core.events
 		 * An array of features concerned by the event. Array is used in order to handle cases when the event concern one or
 		 * more features like selection. 
 		 */
-		private var _features:Array = null;
+		private var _features:Vector.<Feature> = null;
 
 		/**
 		 * To know if ctrl key is pressed
@@ -129,10 +129,10 @@ package org.openscales.core.events
 		/**
 		 * Features concerned by the event. If only one feature is concerned, you should use the feature (without s) getter and setter.
 		 */
-		public function get features():Array{
+		public function get features():Vector.<Feature>{
 			return this._features;
 		}
-		public function set features(value:Array):void{
+		public function set features(value:Vector.<Feature>):void{
 			this._features=value;
 		}
 		
@@ -143,7 +143,9 @@ package org.openscales.core.events
 			return this._features[0];
 		}
 		public function set feature(value:Feature):void{
-			this._features=new Array(value);
+			var v:Vector.<Feature> = new Vector.<Feature>(1);
+			v[0]=value;
+			this._features = v;
 		}
 
 		/**

@@ -8,6 +8,7 @@ package org.openscales.core.layer.ogc
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.maps.HashMap;
+	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.format.Format;
@@ -57,6 +58,8 @@ package org.openscales.core.layer.ogc
 
 		private var _firstRendering:Boolean = true;
 
+		private var _fullRedraw:Boolean = false;
+		private var _oldFeatures:Vector.<Feature> = null;
 		/**
 		 * WFS class constructor
 		 *
@@ -123,15 +126,13 @@ package org.openscales.core.layer.ogc
 				if (!previousFeatureBbox.containsBounds(projectedBounds)
 					&& ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent"))))){
 					var _features:Array = new Array();
-					if(fullRedraw) {
-						//backup previous features for proper cleanup at the end
-						_features = this.features;
-					}
 					this.featuresBbox = projectedBounds;
 					this.loadFeatures(this.getFullRequestString());
 					if(fullRedraw && _features.length>0) {
-						this.removeFeatures(_features);
+						this._fullRedraw = true;
 					}
+					this.loadFeatures(this.getFullRequestString());
+
 					this.draw();
 				}else {
 					this.loading = true;
@@ -252,13 +253,25 @@ package org.openscales.core.layer.ogc
 				Trace.error(error.message);
 			}
 
-			var gml:GMLFormat = new GMLFormat(this.extractAttributes,this.addFeature);
+			if(this._fullRedraw) {
+				this._oldFeatures = this.features;
+			}
+			var gml:GMLFormat = new GMLFormat(this.extractAttributes,this.addFeature,this.feauturesID,this._oldFeatures);
+
 			if (this.map.baseLayer.projection != null && this.projection != null && this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
 				gml.externalProj = this.projection;
 				gml.internalProj = this.map.baseLayer.projection;
 			}
 
 			gml.read(doc);
+
+			if(this._fullRedraw) {
+				var f:Feature;
+				for each(f in this._oldFeatures) {
+					this.removeFeature(f,true);
+				}
+			}
+			this._oldFeatures = null;
 
 			this.draw();
 
@@ -267,7 +280,6 @@ package org.openscales.core.layer.ogc
 			} else {
                 Trace.warning("Warning : no LAYER_LOAD_END dispatched because map event dispatcher is not defined"); 	
 			}
-			
 		}
 
 		override public function addFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
@@ -285,6 +297,10 @@ package org.openscales.core.layer.ogc
 		 */
 		protected function onFailure(event:Event):void {
 			this.loading = false;
+			if(this._fullRedraw) {
+				this._fullRedraw = false;
+				this.reset();
+			}
 			Trace.error("Error when loading WFS request " + this._url);			
 		}
 

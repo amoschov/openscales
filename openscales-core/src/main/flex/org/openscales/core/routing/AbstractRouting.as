@@ -101,7 +101,7 @@ package org.openscales.core.routing
 					{
 						if(_startPoint){
 							//We work on the starting point 
-							if(Util.indexOf(resultsLayer.features,_startPoint)==-1)resultsLayer.addFeature(_startPoint);
+							if(resultsLayer.features.indexOf(_startPoint)==-1)resultsLayer.addFeature(_startPoint);
 							if(!linestring)linestring=new LineString(new <Geometry>[_startPoint.geometry]);
 							//if the first point is not the starting point
 							if(!((_startPoint.geometry as Point).equals(results[0] as Point))){	
@@ -116,7 +116,7 @@ package org.openscales.core.routing
 						else{
 							if(_endPoint){
 								//like in the starting point treatment
-								if(Util.indexOf(resultsLayer.features,_endPoint)==-1)resultsLayer.addFeature(_endPoint);								
+								if(resultsLayer.features.indexOf(_endPoint)==-1)resultsLayer.addFeature(_endPoint);								
 								if(!((_endPoint.geometry as Point).equals(results[i] as Point))){
 								linestring.addComponent(results[i] as Point);
 							}
@@ -131,7 +131,7 @@ package org.openscales.core.routing
 									var intermedPoint:PointFeature=_intermedPoints[j] as PointFeature;
 									if(intermedPoint!=null && (intermedPoint.geometry as Point).equals(results[i] as Point)){
 										intermedPointTreat++;
-										if(Util.indexOf(this._resultsLayer.features,intermedPoint))this._resultsLayer.addFeature(intermedPoint);
+										if(this._resultsLayer.features.indexOf(intermedPoint))this._resultsLayer.addFeature(intermedPoint);
 									}
 								}
 							}	

@@ -60,7 +60,7 @@ package org.openscales.core.handler.feature {
 		/**
 		 * Array of the selected features.
 		 */
-		private var _selectedFeatures:Array = new Array();
+		private var _selectedFeatures:Vector.<Feature> = new Vector.<Feature>();
 
 		/**
 		 * Callback function onSelectionUpdated(features:Array):void
@@ -231,7 +231,7 @@ package org.openscales.core.handler.feature {
 				// Filter the currently selected features
 				var twoArrays:Array = this.filterUnselectableFeatures(this.selectedFeatures);
 				this._selectedFeatures = twoArrays[0];
-				var unselectedFeatures:Array = twoArrays[1];
+				var unselectedFeatures:Vector.<Feature> = twoArrays[1];
 				// Dispatch a FEATURE_UNSELECTED event for all the unselected features
 				if (this.map && (unselectedFeatures.length > 0)) {
 					var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, null);
@@ -365,7 +365,7 @@ package org.openscales.core.handler.feature {
 		/**
 		 * Array of the selected features
 		 */
-		public function get selectedFeatures():Array {
+		public function get selectedFeatures():Vector.<Feature> {
 			return this._selectedFeatures;
 		}
 
@@ -428,7 +428,7 @@ package org.openscales.core.handler.feature {
 		 */
 		private function unselectFeaturesOfLayer(layer:FeatureLayer):void {
 			// Look for all the selected features attached to the removed layers
-			var featuresToUnselect:Array = new Array();
+			var featuresToUnselect:Vector.<Feature> = new Vector.<Feature>();
 			for each (var feature:Feature in this.selectedFeatures) {
 				if (feature.layer == layer) {
 					featuresToUnselect.push(feature);
@@ -549,7 +549,9 @@ package org.openscales.core.handler.feature {
 
 		private function selectByOver(feature:Feature):void {
 			this.unselect(this.selectedFeatures);
-			this.select([feature]);
+			var v:Vector.<Feature> = new Vector.<Feature>();
+			v.push(feature);
+			this.select(v);
 		}
 
 		private function unselectByOut(feature:Feature):void {
@@ -588,7 +590,7 @@ package org.openscales.core.handler.feature {
 		 */
 		private function selectByGeometry(geom:Geometry, additiveMode:Boolean=false, substractiveMode:Boolean=false):void {
 			// Look for all the features that intersect the selection geometry
-			var featuresToSelect:Array = new Array();
+			var featuresToSelect:Vector.<Feature> = new Vector.<Feature>();
 			if (geom) {
 				var layersToTest:Array = (this.layers.length > 0) ? this.layers : this.map.featureLayers;
 				var layer:FeatureLayer, layersTmp:Array = new Array();
@@ -623,16 +625,16 @@ package org.openscales.core.handler.feature {
 		 * @param additiveMode if true the input features are added to the
 		 * current selection ; if false they replace it
 		 */
-		private function select(featuresToSelect:Array, additiveMode:Boolean=false):void {
+		private function select(featuresToSelect:Vector.<Feature>, additiveMode:Boolean=false):void {
 			var selectionUpdated:Boolean = false;
-			var removedFeatures:Array = new Array(); // the features to remove of the current selection
+			var removedFeatures:Vector.<Feature> = new Vector.<Feature>(); // the features to remove of the current selection
 			var feature:Feature;
 			var fevt:FeatureEvent;
 			// If the current selection is not void, first we restrict the
 			// features of the input array to the really new selected features
 			// and we unselect the features that need it.
 			if (this.selectedFeatures.length > 0) {
-				var sf:Array = new Array(); // the features to keep selected
+				var sf:Vector.<Feature> = new Vector.<Feature>(); // the features to keep selected
 				var i:int, found:Boolean;
 				if (!additiveMode) {
 					// If additive mode is not selected, remove all the current
@@ -657,7 +659,7 @@ package org.openscales.core.handler.feature {
 					this._selectedFeatures = sf;
 				}
 				// Remove from the input array all the reselected features
-				var nsf:Array = new Array(); // the really new features in the input array
+				var nsf:Vector.<Feature> = new Vector.<Feature>(); // the really new features in the input array
 				for each (feature in featuresToSelect) {
 					for (i = 0, found = false; (!found) && (i < this.selectedFeatures.length); i++) {
 						if (feature == this.selectedFeatures[i]) {
@@ -673,7 +675,7 @@ package org.openscales.core.handler.feature {
 			// Filter the features to select to avoid the unselectable features
 			var twoArrays:Array = this.filterUnselectableFeatures(featuresToSelect);
 			featuresToSelect = twoArrays[0];
-			var noselectedFeatures:Array = twoArrays[1];
+			var noselectedFeatures:Vector.<Feature> = twoArrays[1];
 			// Add all the really new selected features to the selection
 			for each (feature in featuresToSelect) {
 				feature.selected = true;
@@ -704,10 +706,10 @@ package org.openscales.core.handler.feature {
 		 * The features are asserted to be in one of the layers to manage.
 		 * @param featuresToUnselect the array of the features to remove
 		 */
-		private function unselect(featuresToUnselect:Array):void {
+		private function unselect(featuresToUnselect:Vector.<Feature>):void {
 			// Unselect the input features that are registred as selected
 			var selectionUpdated:Boolean = false;
-			var removedFeatures:Array = new Array(); // the features really removed from the current selection
+			var removedFeatures:Vector.<Feature> = new Vector.<Feature>(); // the features really removed from the current selection
 			var feature:Feature;
 			var i:int, found:Boolean;
 			for each (feature in featuresToUnselect) {
@@ -747,8 +749,8 @@ package org.openscales.core.handler.feature {
 				return;
 			}
 			// Clear the selection
-			var removedFeatures:Array = this.selectedFeatures;
-			this._selectedFeatures = new Array();
+			var removedFeatures:Vector.<Feature> = this.selectedFeatures;
+			this._selectedFeatures = new Vector.<Feature>();
 			// Dispatch a FEATURE_UNSELECTED event for all the unselected features
 			if (this.map && (removedFeatures.length > 0)) {
 				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, null);
@@ -770,9 +772,9 @@ package org.openscales.core.handler.feature {
 		 * @return array of two arrays, the first contains the accepted features
 		 * and the second contains the rejected features.
 		 */
-		private function filterUnselectableFeatures(featuresToFilter:Array):Array {
-			var acceptedFeatures:Array = new Array();
-			var rejectedFeatures:Array = new Array();
+		private function filterUnselectableFeatures(featuresToFilter:Vector.<Feature>):Array {
+			var acceptedFeatures:Vector.<Feature> = new Vector.<Feature>();
+			var rejectedFeatures:Vector.<Feature> = new Vector.<Feature>();
 			var i:int, found:Boolean;
 			for each (var feature:Feature in featuresToFilter) {
 				for (i = 0, found = false; (!found) && (i < this.unselectableFeatures.length); i++) {

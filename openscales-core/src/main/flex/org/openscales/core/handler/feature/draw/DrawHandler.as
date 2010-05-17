@@ -117,7 +117,7 @@ package org.openscales.core.handler.feature.draw
 		 * User clicks on delete selected feature button
 		 */
 		public function deleteSelectedFeatures():void {
-			var featuresToDelete:Array = this.selectFeaturesHandler.selectedFeatures;
+			var featuresToDelete:Vector.<Feature> = this.selectFeaturesHandler.selectedFeatures;
 			this.selectFeaturesHandler.clearSelection();
 			this.drawLayer.removeFeatures(featuresToDelete);
 		}
