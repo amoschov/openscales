@@ -3,7 +3,6 @@ package org.openscales.core
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
-	import flash.xml.XMLNode;
 
 	import org.openscales.core.StringUtils;
 
@@ -28,38 +27,6 @@ package org.openscales.core
 				destination[property] = source[property];
 			}
 			return destination;
-		}
-
-		/**
-		 * Remove an item of an array
-		 *
-		 * @param array the array containing items
-		 * @param item item to remove
-		 *
-		 * @return the new array
-		 */
-		public static function removeItem(array:Array, item:Object):Array {
-			for(var i:int=0; i < array.length; i++) {
-				if(array[i] == item) {
-					array.splice(i,1);
-				}
-			}
-			return array;
-		}
-
-		/**
-		 * Get the index of an object in an array
-		 *
-		 * @param array array containning items
-		 * @param obj Item that we find index
-		 *
-		 * @return index of the item
-		 */
-		public static function indexOf(array:Array, obj:Object):int {
-			for(var i:int=0; i < array.length; i++) {
-				if (array[i] == obj) return i;
-			}
-			return -1;
 		}
 
 		/**

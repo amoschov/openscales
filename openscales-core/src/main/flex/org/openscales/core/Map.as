@@ -49,8 +49,8 @@ package org.openscales.core
 
 		private var _baseLayer:Layer = null;
 		private var _layerContainer:DraggableSprite = null;
-		private var _controls:Array = null;
-		private var _handlers:Array = null;
+		private var _controls:Vector.<IControl> = new Vector.<IControl>();
+		private var _handlers:Vector.<IHandler> = new Vector.<IHandler>();
 		private var _size:Size = null;
 		private var _zoom:Number = 0;
 		private var _zooming:Boolean = false;
@@ -67,7 +67,7 @@ package org.openscales.core
 		private var _bitmapTransition:DraggableSprite;
 		private var _configuration:IConfiguration;
 		
-		private var _securities:Array=new Array();
+		private var _securities:Vector.<ISecurity>=new Vector.<ISecurity>();
 		private var _extent:Bounds;
 		/**
 		 * Map constructor
@@ -77,10 +77,7 @@ package org.openscales.core
 		 */
 		public function Map(width:Number=600, height:Number=400) {
 			super();
-			
-			this._controls = new Array();
-			this._handlers = new Array();
-			this._securities=new Array();
+
 			this.size = new Size(width, height);
 			
 			this._layerContainer = new DraggableSprite();
@@ -103,15 +100,20 @@ package org.openscales.core
 		}
 
 		private function destroy():Boolean {
-			if (this.layers != null) {
-				for (var i:int = this.layers.length - 1; i>=0; i--) {
-					this.layers[i].destroy(false);
+			var l:Vector.<Layer> = this.layers;
+			var i:int;
+			if (l != null) {
+				i = l.length - 1;
+				for(i;i>-1;--i){
+					l[i].destroy();
 				}
 				this.removeAllLayers();
 			}
+			//TODO
 			if (this._controls != null) {
-				for (var j:int = this._controls.length - 1; j>=0; j--) {
-					this._controls[j].destroy();
+				i = this._controls.length - 1;
+				for(i;i>-1;--i){
+					this._controls[i].destroy();
 				}
 				this._controls = null;
 			}
@@ -161,7 +163,9 @@ package org.openscales.core
 		 * @param layers to add.
 		 */
 		public function addLayers(layers:Array):void {
-			for (var i:int = 0; i <  layers.length; i++) {
+			var j:uint = layers.length;
+			var i:uint = 0;
+			for (i; i <  j; ++i) {
 				this.addLayer(layers[i]);
 			}
 		}
@@ -183,7 +187,7 @@ package org.openscales.core
 				this.bitmapTransition.alpha = 0;
 			
 			if (newBaseLayer != this.baseLayer) {
-				if (Util.indexOf(this.layers, newBaseLayer) != -1) {
+				if (this.layers.indexOf(newBaseLayer) != -1) {
 					// if we set a baselayer with a different projection, we
 					// change the map's projected datas
 					if (this.baseLayer) {
@@ -265,12 +269,16 @@ package org.openscales.core
 		public function removeLayer(layer:Layer, setNewBaseLayer:Boolean=true):void {
 			this._layerContainer.removeChild(layer);
 			layer.map = null;
-			Util.removeItem(this.layers, layer);
+			var l:Vector.<Layer> = this.layers;
+			var i:int = l.indexOf(layer);
+			if(i>-1)
+				l.slice(i,1);
 
 			if (setNewBaseLayer && (this.baseLayer == layer)) {
 				this._baseLayer = null;
-				for(var i:int=0; i < this.layers.length; i++) {
-					var iLayer:Layer = this.layers[i];
+				i = l.length;
+				for(var j:int=0; j < i; ++j) {
+					var iLayer:Layer = l[j];
 					if (iLayer.isBaseLayer) {
 						this.baseLayer = iLayer;
 						break;
@@ -308,8 +316,8 @@ package org.openscales.core
 			// Is the input control already rgistered ?
 			// Or an other control of the same type ?
 			var i:int;
-			for (i=0; i<this.controls.length; i++) {
-				if (control == this.controls[i]) {
+			for (i=0; i<this._controls.length; i++) {
+				if (control == this._controls[i]) {
 					Trace.warning("Map.addControl: this control is already registered ("+getQualifiedClassName(control)+")");
 					return;
 				}
@@ -385,8 +393,8 @@ package org.openscales.core
 		 * @param handler the handler to remove.
 		 */
 		public function removeHandler(handler:IHandler):void {
-			var newHandlers:Array = new Array();
-			for each (var mapHandler:IHandler in this.handlers) {
+			var newHandlers:Vector.<IHandler> = new Vector.<IHandler>();
+			for each (var mapHandler:IHandler in this._handlers) {
 				if (mapHandler == handler) {
 					handler.active = false;
 					handler.map = null;
@@ -721,18 +729,22 @@ package org.openscales.core
 		 * @return  Boolean true or false depends on the success of removing
 		 **/
 		public function removeSecurity(security:ISecurity):Boolean {
-			var securityLength:uint = this._securities.length;
-			return (Util.removeItem(this._securities, security).length < securityLength);
+			var i:int = this._securities.indexOf(security);
+			if(i!=-1) {
+				this._securities.slice(i,1);
+				return true;
+			}
+			return false;
 		}
 		/**
 		 * find a security requester by its class name
 		 * @return the security 
 		 * */
 		public function findSecurityByClass(securityClass:String):ISecurity{
-			
-			for(var i:int=0;i<this._securities.length;i++){
+			var i:int = this._securities.length - 1;
+			for(i;i>-1;--i){
 				if(securityClass==getQualifiedClassName(this._securities[i])){
-					return this._securities[i] as ISecurity;
+					return this._securities[i];
 				}
 			}
 			return null;
@@ -747,16 +759,17 @@ package org.openscales.core
 		public function addSecurities(securities:Array):Boolean{
 			
 			if(securities==null) return false;
-				for(var i:int=0;i<securities.length;i++){
-					var security:ISecurity=securities[i] as ISecurity;
-					//security is not null 
-					if(security!=null)
+			var i:int = securities.length - 1;
+			for(i;i>-1;--i){
+				var security:ISecurity=securities[i] as ISecurity;
+				//security is not null 
+				if(security!=null)
 					//The security 
 					if(this.addSecurity(security)==false){
 						return false;
 						break;
 					}
-				}
+			}
 			return true;
 		}
 		/**
@@ -766,16 +779,17 @@ package org.openscales.core
 		 * */
 		public function addSecurity(security:ISecurity):Boolean{
 			//if security is not null && there is not the same type of security 
-			var addSecurity:Boolean=true;
-			if(security==null) {addSecurity=false;return addSecurity}
-			for(var i:int=0;i<this._securities.length;i++){
+			if(security==null) {
+				return false;
+			}
+			var i:int = this._securities.length - 1;
+			for(i;i>-1;--i){
 				if(getQualifiedClassName(security)==getQualifiedClassName(this._securities[i])){
-					addSecurity=false;
-					break;
+					return false;
 				}
 			}
-			if(addSecurity) this._securities.push(security);
-			return addSecurity;
+			this._securities.push(security);
+			return true;
 		}
 		// Getters & setters as3
 		
@@ -901,8 +915,10 @@ package org.openscales.core
 						this._bitmapTransition.alpha=0;
 					}
 					// check all layers 
-					for (var i:Number = 0;i<this.layers.length;i++)	{
-						var layer:Layer = this.layers[i];
+					var l:Vector.<Layer> = this.layers;
+					var i:int = l.length -1;
+					for (i;i>-1;--i)	{
+						var layer:Layer = l[i];
 						if (layer != null && !layer.loadComplete)
 						  return;	
 					}
@@ -956,14 +972,14 @@ package org.openscales.core
 		/**
 		 * Map controls
 		 */
-		public function get controls():Array {
+		public function get controls():Vector.<IControl> {
 			return this._controls;
 		}
 
 		/**
 		 * Map handlers
 		 */
-		public function get handlers():Array {
+		public function get handlers():Vector.<IHandler> {
 			return this._handlers;
 		}
 
@@ -1043,30 +1059,36 @@ package org.openscales.core
 			return scale;
 		}
 		
-		public function get layers():Array {
-			var layerArray:Array = new Array();
+		public function get layers():Vector.<Layer> {
+			var layerArray:Vector.<Layer> = new Vector.<Layer>();
 			if (this.layerContainer == null) {
 				return layerArray;
 			}
-			for (var i:int=0; i<this.layerContainer.numChildren; i++) {
-				if(this.layerContainer.getChildAt(i) is Layer) {
-					layerArray.push(this.layerContainer.getChildAt(i));
+			var s:DisplayObject;
+			var i:int = this.layerContainer.numChildren - 1;
+			for (i;i>-1;--i) {
+				s = this.layerContainer.getChildAt(i);
+				if(s is Layer) {
+					layerArray.push(s);
 				}
 			}
-			return layerArray;
+			return layerArray.reverse();
 		}
 		
-		public function get featureLayers():Array {
-			var layerArray:Array = new Array();
+		public function get featureLayers():Vector.<Layer> {
+			var layerArray:Vector.<Layer> = new Vector.<Layer>();
 			if (this.layerContainer == null) {
 				return layerArray;
 			}
-			for (var i:int=0; i<this.layerContainer.numChildren; i++) {
-				if (this.layerContainer.getChildAt(i) is FeatureLayer) {
-					layerArray.push(this.layerContainer.getChildAt(i));
+			var s:DisplayObject;
+			var i:int = this.layerContainer.numChildren -1;
+			for (i;i>-1;--i) {
+				s = this.layerContainer.getChildAt(i);
+				if(s is FeatureLayer) {
+					layerArray.push(s);
 				}
 			}
-			return layerArray;
+			return layerArray.reverse();
 		}
 	
 		/**

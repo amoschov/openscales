@@ -43,7 +43,7 @@ package org.openscales.core.handler.feature {
 		 * Array of the layers to treat during a selection.
 		 * If void (default), all the layers are managed.
 		 */
-		private var _layers:Array = new Array();
+		private var _layers:Vector.<Layer> = new Vector.<Layer>();
 
 		/**
 		 * Array of some features that may not be selected.
@@ -169,11 +169,11 @@ package org.openscales.core.handler.feature {
 		/**
 		 * Layers array getter and setter
 		 */
-		public function get layers():Array {
+		public function get layers():Vector.<Layer> {
 			return this._layers;
 		}
 
-		public function set layers(value:Array):void {
+		public function set layers(value:Vector.<Layer>):void {
 			// Assert that the input array is composed of not null FeatureLayers
 			if (value == null) {
 				Trace.error("SelectFeaturesHandler - invalid layers (null)");
@@ -182,7 +182,7 @@ package org.openscales.core.handler.feature {
 				var len:int = value.length;
 				// Restrict the input array to the not null FeatureLayers
 				if (len > 0) {
-					var filteredValue:Array = new Array();
+					var filteredValue:Vector.<Layer> = new Vector.<Layer>();
 					for each (var l:Layer in value) {
 						if ((l != null) && (l is FeatureLayer)) {
 							filteredValue.push(l);
@@ -378,7 +378,7 @@ package org.openscales.core.handler.feature {
 			// Reset the selection and the array of the layers to treat
 			if (this.map != value) {
 				clearSelection();
-				this.layers = new Array();
+				this.layers = new Vector.<Layer>();
 			}
 			// Update the map associated to the handler
 			if (this.map) {
@@ -592,8 +592,8 @@ package org.openscales.core.handler.feature {
 			// Look for all the features that intersect the selection geometry
 			var featuresToSelect:Vector.<Feature> = new Vector.<Feature>();
 			if (geom) {
-				var layersToTest:Array = (this.layers.length > 0) ? this.layers : this.map.featureLayers;
-				var layer:FeatureLayer, layersTmp:Array = new Array();
+				var layersToTest:Vector.<Layer> = (this.layers.length > 0) ? this.layers : this.map.featureLayers;
+				var layer:FeatureLayer, layersTmp:Vector.<Layer> = new Vector.<Layer>();
 				// Remove invisible layers from the list of selectable layers
 				for each (layer in layersToTest) {
 					if (layer.displayed) {

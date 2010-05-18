@@ -61,14 +61,14 @@ package org.openscales.core.cursor
 				}
 			}
 			// Display the position of the mouse
-map = null; // FixMe: the display of the coordinates is limited to 3 digits currently :-(
+			map = null; // FixMe: the display of the coordinates is limited to 3 digits currently :-(
 			if (map) {
 				// Display the position in the map's coordinate system
 				var lonLat:LonLat = map.center;
 				var mousePosition:MousePosition = null;
 				for(i=0; i<map.controls.length; i++) {
 					if (map.controls[i] is MousePosition) {
-						mousePosition = map.controls[i];
+						mousePosition = (map.controls[i] as MousePosition);
 						break;
 					}
 				}

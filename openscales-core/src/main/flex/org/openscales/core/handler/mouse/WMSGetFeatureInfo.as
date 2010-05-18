@@ -9,6 +9,7 @@ package org.openscales.core.handler.mouse
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.GetFeatureInfoEvent;
 	import org.openscales.core.handler.Handler;
+	import org.openscales.core.layer.Layer;
 	import org.openscales.core.layer.ogc.WMS;
 	import org.openscales.core.layer.params.ogc.WMSGetFeatureInfoParams;
 	import org.openscales.core.layer.params.ogc.WMSParams;
@@ -87,7 +88,7 @@ package org.openscales.core.handler.mouse
 			var layerStyles:String = null;
 			var theURL:String = _url;
 			if (_layers == null) {
-				var layers:Array = map.layers;
+				var layers:Vector.<Layer> = map.layers;
 				for (var i:Number = 0; i < layers.length; i++) {
 					if (!layers[i].visible) continue;
 					if (!(layers[i] is WMS)) continue;

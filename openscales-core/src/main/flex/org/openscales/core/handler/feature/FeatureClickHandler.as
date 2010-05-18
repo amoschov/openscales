@@ -5,7 +5,6 @@ package org.openscales.core.handler.feature
 	import flash.utils.Timer;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.Feature;
@@ -23,7 +22,7 @@ package org.openscales.core.handler.feature
 		 * Array which contains the feature concerned by the click
 		 * 
 		 * */
-		private	var _featureArray:Array;
+		private	var _featureArray:Vector.<Feature> = new Vector.<Feature>();;
 		
 		private var _featureEvent:FeatureEvent;
 		/**
@@ -62,8 +61,7 @@ package org.openscales.core.handler.feature
 		 * */
 		public function FeatureClickHandler(map:Map=null, active:Boolean=false)
 		{
-			super(map, active);
-			this._featureArray=new Array();		
+			super(map, active);	
 		}
 		
 		 override protected function registerListeners():void{
@@ -88,8 +86,8 @@ package org.openscales.core.handler.feature
 				if(_click != null)
 				{
 				//If the handler could treat operation on this feature
-				if(Util.indexOf(_featureArray,_featureEvent.feature)!=-1){
-				_click(_featureEvent);
+				if(_featureArray.indexOf(_featureEvent.feature)!=-1){
+					_click(_featureEvent);
 				}
 				_timer.stop();
 				_clickNum=0;
@@ -99,8 +97,8 @@ package org.openscales.core.handler.feature
 			else {
 				
 				//If the handler could treat operation on this feature
-				if(Util.indexOf(_featureArray,_featureEvent.feature)!=-1)
-				_doubleClick(_featureEvent);
+				if(_featureArray.indexOf(_featureEvent.feature)!=-1)
+					_doubleClick(_featureEvent);
 				_timer.stop();
 				_clickNum=0;
 			}
@@ -165,7 +163,9 @@ package org.openscales.core.handler.feature
 		 * @param feature:Feature feature to remove
 		 * */
 		public function removeControledFeature(feature:Feature):void{
-			Util.removeItem(this._featureArray,feature);
+			var i:int = this._featureArray.indexOf(feature);
+			if(i!=-1)
+				this._featureArray.slice(i,1);
 			feature.removeEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
 			feature.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
 		}
@@ -195,7 +195,7 @@ package org.openscales.core.handler.feature
 		 * @param features:Array array of features to add
 		 * */
 		public function addControledFeature(feature:Feature):void{
-			if(Util.indexOf(this._featureArray,feature)==-1){
+			if(this._featureArray.indexOf(feature)==-1){
 				this._featureArray.push(feature);
 				feature.addEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
 				feature.addEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
@@ -206,17 +206,17 @@ package org.openscales.core.handler.feature
 		 * */
 		private function dragfeatureStart(event:FeatureEvent):void{
 			var vectorfeature:Feature=event.feature as Feature;
-			if(Util.indexOf(_featureArray,vectorfeature)!=-1){
-			if(this._startDrag!=null) 
+			if(_featureArray.indexOf(vectorfeature)!=-1){
+				if(this._startDrag!=null) 
 				{
-				this._startDrag(event);
-				this._isdragging=true;
+					this._startDrag(event);
+					this._isdragging=true;
 				}
 			}
 		}
 		private function dragfeatureStop(event:FeatureEvent):void{
 			var vectorfeature:Feature=event.feature as Feature;
-			if(Util.indexOf(_featureArray,_featureEvent.feature)!=-1){
+			if(_featureArray.indexOf(_featureEvent.feature)!=-1){
 			if(this._stopDrag!=null){
 				this._stopDrag(event);
 				

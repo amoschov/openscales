@@ -57,7 +57,7 @@ package org.openscales.core.handler.feature.draw
 		 * It contains all virtual vertice used for edition and their parents
 		 * egg: A line contains at its first column the virtual vertice and at its' second column the parent of the virtual vertice
 		 **/
-		protected var _editionFeatureArray:Array=null;
+		protected var _editionFeatureArray:Vector.<Vector.<Feature>>=new Vector.<Vector.<Feature>>();
 		/**
 		 * Constructor
 		 * @param map Map object
@@ -78,7 +78,6 @@ package org.openscales.core.handler.feature.draw
 			this._layerToEdit=layerToEdit;
 			super(map,active);
 			this._drawContainer=drawContainer; 
-			this._editionFeatureArray=new Array();
 		}
 		/**
 		 *@inheritDoc 
@@ -114,18 +113,23 @@ package org.openscales.core.handler.feature.draw
 		 * create edition vertice(Virtual) only for edition feature
 		 * @param geometry
 		 * */
-		public function createEditionVertices(vectorfeature:Feature,collection:Collection=null,arrayToFill:Array=null):void {
+		public function createEditionVertices(vectorfeature:Feature,collection:Collection=null,arrayToFill:Vector.<Vector.<Feature>>=null):void {
 			if (collection == null)
 			collection=vectorfeature.geometry as Collection;
-			for (var i:int = 0; i < collection.componentsLength; i++) {
+			var j:uint = collection.componentsLength;
+			var v:Vector.<Feature>;
+			for (var i:int = 0; i < j; ++i) {
 				var geometry:Geometry = collection.componentByIndex(i);
 				if (geometry is Collection) {
 					createEditionVertices(vectorfeature,geometry as Collection,arrayToFill);
 				} else {
 					if (geometry is Point) {
-						var EditionVertice:PointFeature = new PointFeature(geometry.clone() as Point, null, Style.getDefaultCircleStyle());
+						var EditionVertice:Feature = new PointFeature(geometry.clone() as Point, null, Style.getDefaultCircleStyle());
 						//We fill the array with the virtual vertice
-						arrayToFill.push(EditionVertice);
+						v = new Vector.<Feature>(2);
+						v[0]=EditionVertice;
+						v[1]=null
+						arrayToFill.push(v);
 						/* EditionVertice.editionFeatureParent = vectorfeature; */
 					}
 				}
@@ -157,7 +161,7 @@ package org.openscales.core.handler.feature.draw
 					}	
 					}
 				}
-				_editionFeatureArray=new Array();
+				_editionFeatureArray=new Vector.<Vector.<Feature>>();
 			}
 		 	return true;
 		 }
@@ -226,14 +230,13 @@ package org.openscales.core.handler.feature.draw
 		protected function displayVisibleVirtualVertice(featureEdited:Feature):void{
 					if(featureEdited!=null) {
 					//We only draw the points included in the map extent
-		 			var tmpfeature:Array=new Array();	
+		 			var tmpfeature:Vector.<Vector.<Feature>>=new Vector.<Vector.<Feature>>();	
 		 			var feature:Feature;
-										
-					for(var i:int=0;i<_editionFeatureArray.length;i++){
+					var i:int = _editionFeatureArray.length - 1;
+					for(i;i>-1;--i){
 						 feature=_editionFeatureArray[i][0];
 						 var featureParent:Feature=findVirtualVerticeParent(feature  as PointFeature);
-						 //we alseo clean the virtual vertices array if the parent doesnt belongs anymore to the _layerToEdit.features array
-						 var array:Array = new Array();
+						 //we also clean the virtual vertices array if the parent doesnt belongs anymore to the _layerToEdit.features array
 						if(featureParent==featureEdited || this._layerToEdit.features.indexOf(featureParent)==-1){
 							this._layerToEdit.removeFeature(feature);
 		 					this._featureClickHandler.removeControledFeature(feature);
@@ -243,17 +246,26 @@ package org.openscales.core.handler.feature.draw
 					//feature to delete
 					if(tmpfeature.length!=0){
 						//for each(feature in tmpfeature){
-						for(i=0;i<tmpfeature.length;i++){
-							Util.removeItem(_editionFeatureArray,tmpfeature[i]);
+						i = tmpfeature.length - 1;
+						var j:int;
+						for(i;i>-1;--i){
+							j = _editionFeatureArray.indexOf(tmpfeature[i]);
+							if(j!=-1)
+								_editionFeatureArray.slice(j,1);
 						}
-						 tmpfeature=new Array();
+						 tmpfeature=null;
 					}
 					createEditionVertices(featureEdited,featureEdited.geometry as Collection,tmpfeature);
-					for each(feature in tmpfeature){
-						if(this.map.extent.containsBounds(feature.geometry.bounds)){
-							this._layerToEdit.addFeature(feature);
-		 					this._featureClickHandler.addControledFeature(feature);
-		 					this._editionFeatureArray.push(new Array(feature,featureEdited));
+					var v:Vector.<Feature>;
+					for each(v in tmpfeature){
+						if(this.map.extent.containsBounds(v[0].geometry.bounds)){
+							this._layerToEdit.addFeature(v[0]);
+		 					this._featureClickHandler.addControledFeature(v[0]);
+							v = new Vector.<Feature>(2);
+							v[0]=feature;
+							v[1]=featureEdited;
+		 					this._editionFeatureArray.push(v);
+							v=null;
 						}
 					}
 					//for garbage collector
@@ -265,9 +277,10 @@ package org.openscales.core.handler.feature.draw
 		 * @param virtualVertice the virtual vertice 
 		 * @param arrayTosearch The array where to find the parent 
 		 * */
-		public function findVirtualVerticeParent(virtualVertice:PointFeature,arrayTosearch:Array=null):Feature{
+		public function findVirtualVerticeParent(virtualVertice:PointFeature,arrayTosearch:Vector.<Vector.<Feature>>=null):Feature{
 			if(virtualVertice){
-				if(!arrayTosearch)arrayTosearch=this._editionFeatureArray;
+				if(!arrayTosearch)
+					arrayTosearch=this._editionFeatureArray;
 				for(var i:int=0;i<arrayTosearch.length;i++){
 					//we return the parent if we find the virtual 
 					if(arrayTosearch[i][0]==virtualVertice) return arrayTosearch[i][1];
