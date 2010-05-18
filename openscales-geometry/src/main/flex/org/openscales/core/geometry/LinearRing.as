@@ -48,7 +48,7 @@ package org.openscales.core.geometry
 			var wn:int = 0; // the winding number-
 			var p0:Point; // first vertex of the current edge
 			var p1:Point;  // second vertex of the current edge
-			for(var i:int=0; i<this.componentsLength; i++) {
+			for(var i:int=0; i<this.componentsLength; ++i) {
 				p0 = (this._components[i] as Point);
 				if(i==this.componentsLength-1) {
 					p1 = (this._components[0] as Point);

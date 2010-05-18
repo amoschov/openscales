@@ -1,6 +1,5 @@
 package org.openscales.core.geometry
 {
-	import flash.trace.Trace;
 	import flash.utils.getQualifiedClassName;
 	/**
 	 * A Polygon is a collection of Geometry LinearRings defining a Mathematical
@@ -19,7 +18,7 @@ package org.openscales.core.geometry
 			// Check if all the components to add are LinearRing
 			var validRings:Boolean = true;
 			if (rings) {
-				for(var i:int=0; i<rings.length; i++) {
+				for(var i:int=0; i<rings.length; ++i) {
 					if ((rings[i]==undefined) || (! (rings[i] is LinearRing))) {
 						validRings = false;
 						rings = null;
@@ -51,7 +50,7 @@ package org.openscales.core.geometry
 		 */
 		override public function toShortString():String {
 			var s:String = "(";
-			for(var i:int=0; i<this.componentsLength; i++) {
+			for(var i:int=0; i<this.componentsLength; ++i) {
 				s = s + this._components[i].toShortString();
 			}
 			return s + ")";
@@ -74,7 +73,7 @@ package org.openscales.core.geometry
         		return 0.0;
         	}
 			var _area:Number = (this._components[0] as LinearRing).area;
-        	for (var i:int=1; i<this.componentsLength; i++) {
+        	for (var i:int=1; i<this.componentsLength; ++i) {
             	_area -= (this._components[i] as LinearRing).area;
         	}
         	if (_area < 0) {
@@ -155,7 +154,7 @@ package org.openscales.core.geometry
 				//   action should be made for each case..
 				// Test for the intersection of each LinearRing of tis Polygon
 				//   with the geometry (LineString or LinearRing)
-				for(i=0; i<this.componentsLength; i++) {
+				for(i=0; i<this.componentsLength; ++i) {
 					if ((geom as LineString).intersects(this._components[i])) {
 						return true;
 					}
@@ -184,7 +183,7 @@ package org.openscales.core.geometry
 					// included in one of the holes of the input polygon.
 					var outerLR:LinearRing = this._components[0] as LinearRing;
 					var geomHole:LinearRing;
-					for(i=1; i<(geom as Polygon).componentsLength; i++) {
+					for(i=1; i<(geom as Polygon).componentsLength; ++i) {
 						geomHole = (geom as Polygon).componentByIndex(i) as LinearRing;
 						if (geomHole.containsMultiPoint(outerLR as MultiPoint)) {
 							return false;

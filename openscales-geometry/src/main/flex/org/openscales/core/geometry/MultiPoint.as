@@ -30,7 +30,7 @@ package org.openscales.core.geometry
 		
 		override public function toShortString():String {
 			var s:String = "(";
-			for(var i:int=0; i<this.componentsLength; i++) {
+			for(var i:int=0; i<this.componentsLength; ++i) {
 				s = s + this._components[i].toShortString();
 			}
 			return s + ")";
@@ -42,7 +42,7 @@ package org.openscales.core.geometry
 		 * @param dest The destination projection
 		 */
 		override public function transform(source:ProjProjection, dest:ProjProjection):void {
-			for(var i:int=0; i<this.componentsLength; i++) {
+			for(var i:int=0; i<this.componentsLength; ++i) {
 				this._components[i].transform(source, dest);
 			}
 		}

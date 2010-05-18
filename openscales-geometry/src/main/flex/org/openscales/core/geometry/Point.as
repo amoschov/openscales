@@ -18,15 +18,15 @@ package org.openscales.core.geometry
 		public function Point(x:Number = NaN, y:Number = NaN) {
 			super();
 
-			this.x = x;
-			this.y = y;
+			this._x = x;
+			this._y = y;
 		}		
 		
 		/**
 		 * To get this geometry clone
 		 * */
 		override public function clone():Geometry{
-			return new Point(this.x,this.y);
+			return new Point(this._x,this._y);
 		}
 		
 		/**
@@ -37,16 +37,16 @@ package org.openscales.core.geometry
 		}
 		
 		override public function calculateBounds():void {
-			this.bounds = new Bounds(this.x, this.y, this.x, this.y);
+			this.bounds = new Bounds(this._x, this._y, this._x, this._y);
 		}
 
 		override public function distanceTo(point:Geometry, options:Object=null):Number{
 			var distance:Number = 0.0;
-			if ( (!isNaN(this.x)) && (!isNaN(this.y)) && 
+			if ( (!isNaN(this._x)) && (!isNaN(this._y)) && 
 				((point as Point) != null) && (!isNaN((point as Point).x)) && (!isNaN((point as Point).y)) ) {
 
-				var dx2:Number = Math.pow(this.x - (point as Point).x, 2);
-				var dy2:Number = Math.pow(this.y - (point as Point).y, 2);
+				var dx2:Number = Math.pow(this._x - (point as Point).x, 2);
+				var dy2:Number = Math.pow(this._y - (point as Point).y, 2);
 				distance = Math.sqrt( dx2 + dy2 );
 			}
 			return distance;
@@ -55,19 +55,19 @@ package org.openscales.core.geometry
 		public function equals(point:Point):Boolean {
 			var equals:Boolean = false;
 			if (point != null) {
-				equals = ((this.x == point.x && this.y == point.y) ||
-					(isNaN(this.x) && isNaN(this.y) && isNaN(point.x) && isNaN(point.y)));
+				equals = ((this._x == point.x && this._y == point.y) ||
+					(isNaN(this._x) && isNaN(this._y) && isNaN(point.x) && isNaN(point.y)));
 			}
 			return equals;
 		}
 
 		override public function toShortString():String {
-			return (this.x + ", " + this.y);
+			return (this._x + ", " + this._y);
 		}
 
 		public function move(x:Number, y:Number):void {
-			this.x = this.x + x;
-			this.y = this.y + y;
+			this._x = this._x + x;
+			this._y = this._y + y;
 		}
 				
 		/**
@@ -87,10 +87,10 @@ package org.openscales.core.geometry
 		 * @param dest The destination projection
 		 */
 		override public function transform(source:ProjProjection, dest:ProjProjection):void {
-			var p:ProjPoint = new ProjPoint(this.x, this.y);
+			var p:ProjPoint = new ProjPoint(this._x, this._y);
 			Proj4as.transform(source, dest, p);
-			this.x = p.x;
-			this.y = p.y;
+			this._x = p.x;
+			this._y = p.y;
 		}
 
 		public function get x():Number {

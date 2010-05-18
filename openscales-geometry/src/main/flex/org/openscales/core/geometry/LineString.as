@@ -17,7 +17,7 @@ package org.openscales.core.geometry
 			// Check if all the components to add are Points
 			var validVertices:Boolean = true;
 			if (vertices) {
-				for(var i:int=0; i<vertices.length; i++) {
+				for(var i:int=0; i<vertices.length; ++i) {
 					if ((vertices[i]==undefined) || (! (vertices[i] is Point))) {
 						validVertices = false;
 						vertices = null;
@@ -43,9 +43,9 @@ package org.openscales.core.geometry
 		 */
 		override public function addComponents(vertices:Vector.<Geometry>):void {
 			// Check if all the components to add are Points
-			for(var i:int=0; i<vertices.length; i++) {
+			for(var i:int=0; i<vertices.length; ++i) {
 				if (! (vertices[i] is Point)) {
-					//Trace.error("LineString.addComponents ERROR : invalid parameter " + i);
+					trace("LineString.addComponents ERROR : invalid parameter " + i);
 					return;
 				}
 			}
@@ -61,7 +61,7 @@ package org.openscales.core.geometry
 		override public function removeComponent(vertex:Geometry):void {
 			// Check if the geometry to remove is a Point
 			if (! (vertex is Point)) {
-				//Trace.error("LineString.removeComponent ERROR : invalid parameter");
+				trace("LineString.removeComponent ERROR : invalid parameter");
 				return; 
 			}
 			// Check if this object will stay a LineString after the removing
@@ -69,7 +69,7 @@ package org.openscales.core.geometry
 			if (this.componentsLength > 2) {
 				super.removeComponent(vertex);
 			} else {
-				//Trace.error("LineString.removeComponent ERROR : too few components (" + this.componentsLength + ")"); 
+				trace("LineString.removeComponent ERROR : too few components (" + this.componentsLength + ")"); 
 			}
 		}
 		
@@ -99,7 +99,7 @@ package org.openscales.core.geometry
 		override public function get length():Number {
 			var length:Number = 0.0;
 			if (this.componentsLength > 1) {
-				for(var i:int=1; i<this.componentsLength; i++) {
+				for(var i:int=1; i<this.componentsLength; ++i) {
 					length += this._components[i-1].distanceTo(this._components[i]);
 				}
 			}
@@ -114,7 +114,7 @@ package org.openscales.core.geometry
 		 */
 		public function transformLineString(source:ProjProjection, dest:ProjProjection):void {
 			if (this.componentsLength > 0) {
-				for(var i:int=0; i<this.componentsLength; i++){
+				for(var i:int=0; i<this.componentsLength; ++i){
 					this._components[i].transform(source, dest);
 				} 
 			}	
