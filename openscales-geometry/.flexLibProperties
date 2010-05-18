@@ -10,7 +10,6 @@
     <classEntry path="org.openscales.core.basetypes.Unit"/>
     <classEntry path="org.openscales.core.geometry.Collection"/>
     <classEntry path="org.openscales.core.geometry.Geometry"/>
-    <classEntry path="org.openscales.core.geometry.IPoint"/>
     <classEntry path="org.openscales.core.geometry.LineString"/>
     <classEntry path="org.openscales.core.geometry.LinearRing"/>
     <classEntry path="org.openscales.core.geometry.MultiLineString"/>

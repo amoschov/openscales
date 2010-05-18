@@ -79,28 +79,26 @@ package org.openscales.core.feature {
 		 * @param data
 		 */
 		public function Feature(geom:Geometry=null, data:Object=null, style:Style=null, isEditable:Boolean=false) {
-			this.layer = layer;
-
 			if (data != null) {
-				this.data = data;
+				this._data = data;
 			} else {
-				this.data = new Object();
+				this._data = new Object();
 			}
 
-			this.attributes = new Object();
+			this._attributes = new Object();
 			if (data) {
-				this.attributes = Util.extend(this.attributes, data);
+				this._attributes = Util.extend(this._attributes, data);
 			}
 
-			this.geometry = geom;
-			if (this.geometry && this.geometry.id)
-				this.name = this.geometry.id;
-			this.state = null;
-			this.attributes = new Object();
+			this._geometry = geom;
+			if (this._geometry && this._geometry.id)
+				this.name = this._geometry.id;
+			this._state = null;
+			this._attributes = new Object();
 			if (data) {
-				this.attributes = Util.extend(this.attributes, data);
+				this.attributes = Util.extend(this._attributes, data);
 			}
-			this.style = style ? style : null;
+			this._style = style ? style : null;
 
 			this._isEditable = isEditable;
 		}
@@ -111,16 +109,16 @@ package org.openscales.core.feature {
 		 */
 		public function onMouseHover(pevt:MouseEvent):void {
 			this.buttonMode = true;
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER, this));
+			this._layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OVER, this));
 		}
 
 		public function onMouseMove(pevt:MouseEvent):void {
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEMOVE, this));
+			this._layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEMOVE, this));
 		}
 
 		public function onMouseOut(pevt:MouseEvent):void {
 			this.buttonMode = false;
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT, this));
+			this._layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_OUT, this));
 		}
 
 		public function registerListeners():void {
@@ -167,10 +165,7 @@ package org.openscales.core.feature {
 			this._data = null;
 			this._layer = null;
 			this._lonlat = null;
-			this.geometry = null;
-			this.layer = null;
-			this.data = null;
-
+			this._geometry = null;
 			this.unregisterListeners();
 		}
 
@@ -193,11 +188,11 @@ package org.openscales.core.feature {
 			}
 
 			var style:Style;
-			if (this.style == null) {
+			if (this._style == null) {
 				// FIXME : Ugly thing done here
 				style = (this.layer as FeatureLayer).style;
 			} else {
-				style = this.style;
+				style = this._style;
 			}
 
 			// Storage variables to handle the rules to render if no rule applied to the feature
@@ -238,26 +233,26 @@ package org.openscales.core.feature {
 
 		public function get lonlat():LonLat {
 			var value:LonLat = null;
-			if (this.geometry != null) {
-				value = this.geometry.bounds.centerLonLat;   
+			if (this._geometry != null) {
+				value = this._geometry.bounds.centerLonLat;   
 			}
 			return value;
 		}
 
 		public function onMouseClick(pevt:MouseEvent):void {
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK, this, pevt.ctrlKey));
+			this._layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_CLICK, this, pevt.ctrlKey));
 		}
 
 		public function onMouseDoubleClick(pevt:MouseEvent):void {
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DOUBLECLICK, this));
+			this._layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DOUBLECLICK, this));
 		}
 
 		public function onMouseDown(pevt:MouseEvent):void {
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEDOWN, this));
+			this._layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEDOWN, this));
 		}
 
 		public function onMouseUp(pevt:MouseEvent):void {
-			this.layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP, this, pevt.ctrlKey));
+			this._layer.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_MOUSEUP, this, pevt.ctrlKey));
 		}
 
 		/**
@@ -265,8 +260,8 @@ package org.openscales.core.feature {
 		 */
 		public function onScreen():Boolean {
 			var onScreen:Boolean = false;
-			if ((this.layer != null) && (this.layer.map != null)) {
-				var screenBounds:Bounds = this.layer.map.extent;
+			if ((this._layer != null) && (this._layer.map != null)) {
+				var screenBounds:Bounds = this._layer.map.extent;
 				onScreen = screenBounds.containsLonLat(this.lonlat);
 			}
 			return onScreen;
@@ -281,15 +276,15 @@ package org.openscales.core.feature {
 		}
 
 		public function get top():Number {
-			if (this.layer)
-				return this.layer.extent.top / this.layer.map.resolution;
+			if (this._layer)
+				return this._layer.extent.top / this._layer.map.resolution;
 			else
 				return NaN;
 		}
 
 		public function get left():Number {
 			if (this.layer)
-				return -this.layer.extent.left / this.layer.map.resolution;
+				return -this._layer.extent.left / this._layer.map.resolution;
 			else
 				return NaN;
 		}
@@ -304,7 +299,7 @@ package org.openscales.core.feature {
 		public function atPoint(lonlat:LonLat, toleranceLon:Number, toleranceLat:Number):Boolean {
 			var atPoint:Boolean = false;
 			if (this.geometry) {
-				atPoint = this.geometry.atPoint(lonlat, toleranceLon, toleranceLat);
+				atPoint = this._geometry.atPoint(lonlat, toleranceLon, toleranceLat);
 			}
 			return atPoint;
 		}
@@ -323,7 +318,7 @@ package org.openscales.core.feature {
 
 		public function set state(value:String):void {
 			if (value == State.UPDATE) {
-				switch (this.state) {
+				switch (this._state) {
 					case State.UNKNOWN:
 					case State.DELETE:
 						this._state = value;
@@ -333,7 +328,7 @@ package org.openscales.core.feature {
 						break;
 				}
 			} else if (value == State.INSERT) {
-				switch (this.state) {
+				switch (this._state) {
 					case State.UNKNOWN:
 						break;
 					default:
