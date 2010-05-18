@@ -68,12 +68,9 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.handler.feature.SelectFeaturesHandler;
-			import org.openscales.core.handler.Handler;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
-
-			// Specific imports for this example			
+			import org.openscales.core.feature.Feature;
 			import org.openscales.core.feature.LineStringFeature;
 			import org.openscales.core.feature.MultiLineStringFeature;
 			import org.openscales.core.feature.MultiPointFeature;
@@ -89,12 +86,14 @@
 			import org.openscales.core.geometry.MultiPolygon;
 			import org.openscales.core.geometry.Point;
 			import org.openscales.core.geometry.Polygon;
+			import org.openscales.core.handler.Handler;
+			import org.openscales.core.handler.feature.SelectFeaturesHandler;
 			import org.openscales.core.layer.FeatureLayer;
 			import org.openscales.core.style.Rule;
 			import org.openscales.core.style.Style;
 			import org.openscales.core.style.fill.SolidFill;
-			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
 			import org.openscales.core.style.stroke.Stroke;
+			import org.openscales.core.style.symbolizer.PolygonSymbolizer;
 			
 			[Bindable] private var map:Map = null;
 			[Bindable] public var displayTrace:Boolean = false;	
@@ -109,7 +108,7 @@
 				// Usefull to test selection when a layer is not displayed
 				layer.minZoomLevel = 10;
 				
-				(selectFeaturesHandler.handler as SelectFeaturesHandler).unselectableFeatures = [ layer.getChildAt(4) as PolygonFeature ];
+				(selectFeaturesHandler.handler as SelectFeaturesHandler).unselectableFeatures = new <Feature>[ layer.getChildAt(4) as PolygonFeature ];
 				map.addLayer(layer);
 				testContainsPoint(layer);
 				testIntersects(layer);
