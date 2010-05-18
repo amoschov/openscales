@@ -33,7 +33,7 @@ package org.openscales.core.geometry
 		 * Return an array of all the vertices (Point) of this geometry
 		 */
 		override public function toVertices():Vector.<Geometry> {
-			return new Vector.<Geometry>[ this.clone() ];
+			return new <Geometry>[ this.clone() ];
 		}
 		
 		override public function calculateBounds():void {
