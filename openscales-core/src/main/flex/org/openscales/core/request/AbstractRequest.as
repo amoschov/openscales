@@ -92,7 +92,7 @@ package org.openscales.core.request
 			this._isSent = true;
 			try {
 				if (this._isCompleted && (this.loader is Loader)) {
-					(this.loader as Loader).unload();
+					(this.loader as Loader).unloadAndStop(true);
 				} // else ? // FixMe
 				this.loader.close();
 			} catch(e:Error) {

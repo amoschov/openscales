@@ -19,6 +19,7 @@
     <classEntry path="org.openscales.core.geometry.Polygon"/>
     <classEntry path="org.openscales.core.GeometryTestSuite"/>
     <classEntry path="org.openscales.core.geometry.ContainsPointTest"/>
+    <classEntry path="org.openscales.core.geometry.OperationGeometryTest"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>
