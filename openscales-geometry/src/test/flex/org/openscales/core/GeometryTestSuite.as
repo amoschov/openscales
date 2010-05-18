@@ -2,6 +2,7 @@ package org.openscales.core
 {
 
 	import org.openscales.core.geometry.ContainsPointTest;
+	import org.openscales.core.geometry.OperationGeometryTest;
 
 	
 	[Suite]
@@ -9,7 +10,8 @@ package org.openscales.core
 	public class GeometryTestSuite
 	{
 
-		public var t5:ContainsPointTest;
+		public var t1:ContainsPointTest;
+		public var t2:OperationGeometryTest;
 
 	}
 }

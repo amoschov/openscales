@@ -129,9 +129,9 @@ package org.openscales.core.geometry
 		/**
 		 * Return an array of all the vertices (Point) of this geometry
 		 */
-		override public function toVertices():Vector.<Geometry> {
-			var vertices:Vector.<Geometry> = new Vector.<Geometry>();
-			var componentVertices:Vector.<Geometry>;
+		override public function toVertices():Vector.<Point> {
+			var vertices:Vector.<Point> = new Vector.<Point>();
+			var componentVertices:Vector.<Point>;
 			for(var i:int=0; i<this.componentsLength; ++i) {
 				componentVertices = this._components[i].toVertices();
 				vertices = vertices.concat(componentVertices);

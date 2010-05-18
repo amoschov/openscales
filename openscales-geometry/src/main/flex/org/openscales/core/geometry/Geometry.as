@@ -119,7 +119,7 @@ package org.openscales.core.geometry
 		/**
 		 * Return an array of all the vertices (Point) of this geometry
 		 */
-		public function toVertices():Vector.<Geometry> {
+		public function toVertices():Vector.<Point> {
 			return new Vector.<Geometry>;
 		}
 
@@ -194,7 +194,7 @@ package org.openscales.core.geometry
 			}
 			// The two geometries intersect, so the inclusion may be tested by
 			// using the containsPoint for each vertex of the input geometry.
-			var vertices:Vector.<Geometry> = geom.toVertices();
+			var vertices:Vector.<Point> = geom.toVertices();
 			if (vertices.length == 0) {
 				return false;
 			}
