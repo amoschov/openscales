@@ -1,5 +1,6 @@
 package org.openscales.core.geometry
 {
+	import org.openscales.core.UtilGeometry;
 	import org.openscales.core.basetypes.LonLat;
 		
 	/**
@@ -57,13 +58,13 @@ package org.openscales.core.geometry
 				}
 				if (p0.y <= p.y) {
 					if (p1.y > p.y) {
-						if (Geometry.isLeftOrRight(p, p0, p1) > 0) {
+						if (UtilGeometry.isLeftOrRight(p, p0, p1) > 0) {
 							wn++;
 						}
 					}
 				} else {
 					if (p1.y <= p.y) {
-						if (Geometry.isLeftOrRight(p, p0, p1) < 0) {
+						if (UtilGeometry.isLeftOrRight(p, p0, p1) < 0) {
 							wn--;
 						}
 					}

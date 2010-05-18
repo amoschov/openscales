@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="false" version="1">
   <includeClasses>
-    <classEntry path="org.openscales.core.geometry.Polygon"/>
-    <classEntry path="org.openscales.core.geometry.Collection"/>
-    <classEntry path="org.openscales.core.geometry.MultiPolygon"/>
-    <classEntry path="org.openscales.core.geometry.ContainsPointTest"/>
-    <classEntry path="org.openscales.core.basetypes.LonLat"/>
-    <classEntry path="org.openscales.core.basetypes.Size"/>
-    <classEntry path="org.openscales.core.geometry.MultiLineString"/>
-    <classEntry path="org.openscales.core.geometry.Point"/>
-    <classEntry path="org.openscales.core.geometry.LinearRing"/>
     <classEntry path="org.openscales.core.StringUtils"/>
-    <classEntry path="org.openscales.core.GeometryTestSuite"/>
-    <classEntry path="org.openscales.core.geometry.Geometry"/>
-    <classEntry path="org.openscales.core.basetypes.Unit"/>
-    <classEntry path="org.openscales.core.geometry.LineString"/>
+    <classEntry path="org.openscales.core.UtilGeometry"/>
     <classEntry path="org.openscales.core.basetypes.Bounds"/>
+    <classEntry path="org.openscales.core.basetypes.LonLat"/>
+    <classEntry path="org.openscales.core.basetypes.Pixel"/>
+    <classEntry path="org.openscales.core.basetypes.Size"/>
+    <classEntry path="org.openscales.core.basetypes.Unit"/>
+    <classEntry path="org.openscales.core.geometry.Collection"/>
+    <classEntry path="org.openscales.core.geometry.Geometry"/>
+    <classEntry path="org.openscales.core.geometry.IPoint"/>
+    <classEntry path="org.openscales.core.geometry.LineString"/>
+    <classEntry path="org.openscales.core.geometry.LinearRing"/>
+    <classEntry path="org.openscales.core.geometry.MultiLineString"/>
     <classEntry path="org.openscales.core.geometry.MultiPoint"/>
+    <classEntry path="org.openscales.core.geometry.MultiPolygon"/>
+    <classEntry path="org.openscales.core.geometry.Point"/>
+    <classEntry path="org.openscales.core.geometry.Polygon"/>
+    <classEntry path="org.openscales.core.GeometryTestSuite"/>
+    <classEntry path="org.openscales.core.geometry.ContainsPointTest"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

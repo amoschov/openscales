@@ -1,5 +1,6 @@
 package org.openscales.core.geometry
 {
+	import org.openscales.core.UtilGeometry;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -201,7 +202,7 @@ package org.openscales.core.geometry
 					// Now it sure that the bounding box of the two segments
 					//   intersect themselves, so we have to perform the real
 					//   intersection test of the two segments
-					if (Geometry.segmentsIntersect(seg1, seg2)) {
+					if (UtilGeometry.segmentsIntersect(seg1, seg2)) {
 						// These two segments intersect, there is no need to
 						//   continue the tests for all the other couples of
 						//   segments

@@ -51,7 +51,7 @@ package org.openscales.core.geometry
 		}
 		
 		public function componentByIndex(i:int):Geometry {
-			return ((i<0)||(i>=this._components.length)) ? null : (this._components[i] as Geometry);
+			return ((i<0)||(i>=this._components.length)) ? null : this._components[i];
 		}
 		
 		/**

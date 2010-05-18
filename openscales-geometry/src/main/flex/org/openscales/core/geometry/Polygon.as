@@ -238,31 +238,7 @@ package org.openscales.core.geometry
     	} */
 	
 
-		/**
- 		* Create a regular polygon around a radius. Useful for creating circles 
- 		* and the like.
- 		*
- 		* @param origin The center of polygon.
- 		* @param radius Distance to vertex, in map units.
- 		* @param sides Number of sides. 20 approximates a circle.
- 		* @param rotation original angle of rotation, in degrees.
- 		*/
-		 public function createRegularPolygon(origin:Point, radius:Number, sides:Number, rotation:Number):Polygon {  
-    		var angle:Number = Math.PI * ((1/sides) - (1/2));
-    		if(rotation) {
-        		angle += (rotation / 180) * Math.PI;
-    		}
-    		var rotatedAngle:Number, x:Number, y:Number;
-    		var points:Vector.<Geometry> = new Vector.<Geometry>(sides);
-    		for(var i:Number=0; i<sides; ++i) {
-        		rotatedAngle = angle + (i * 2 * Math.PI / sides);
-        		x = origin.x + (radius * Math.cos(rotatedAngle));
-        		y = origin.y + (radius * Math.sin(rotatedAngle));
-        		points[i]=new Point(x, y);
-    		}
-    		var ring:LinearRing = new LinearRing(points);
-    		return new Polygon(new <Geometry>[ring]);
-		} 
+		
 		/**
 		 * To get this geometry clone
 		 * */
