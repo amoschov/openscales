@@ -15,7 +15,7 @@ package org.openscales.core.security
 		 */
 		private var _map:Map = null;
 		
-		private var _waitingRequests:Array = null;
+		private var _waitingRequests:Vector.<AbstractRequest> = null;
 		
 		protected var _initialized:Boolean = false;
 		
@@ -37,7 +37,7 @@ package org.openscales.core.security
 			if(this._waitingRequests!=null) {
 				var i:int = this._waitingRequests.length;
 				var request:AbstractRequest;
-				for(i;i>0;i--) {
+				for(i;i>0;--i) {
 					request = this._waitingRequests.pop();
 					request.send();
 				}
@@ -96,7 +96,7 @@ package org.openscales.core.security
 				request.send();
 			} else {
 				if(this._waitingRequests==null)
-					this._waitingRequests = new Array();
+					this._waitingRequests = new Vector.<AbstractRequest>();
 				if(this._waitingRequests.indexOf(request)==-1)
 					return;
 				this._waitingRequests.push(request);

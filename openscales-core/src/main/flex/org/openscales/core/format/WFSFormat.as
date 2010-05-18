@@ -71,7 +71,8 @@ package org.openscales.core.format
 			geomContainer.appendChild(geometryNode);
 			var featureContainer:XML = new XML("<" + this._featurePrefix + ":" + this._featureName + " xmlns:" + this._featurePrefix + "=\"" + this._featureNS + "\"></" + this._featurePrefix + ":" + this._featureName + ">");
 			featureContainer.appendChild(geomContainer);
-			for(var attr:String in feature.attributes) {
+			var attr:String;
+			for(attr in feature.attributes) {
 				var attrText:XMLNode = new XMLNode(2, feature.attributes[attr]); 
 				var nodename:String = attr;
 				if (attr.search(":") != -1) {

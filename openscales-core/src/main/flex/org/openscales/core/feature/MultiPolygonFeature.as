@@ -1,6 +1,6 @@
 package org.openscales.core.feature {
 	import flash.display.DisplayObject;
-
+	
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Collection;
 	import org.openscales.core.geometry.Geometry;
@@ -34,8 +34,11 @@ package org.openscales.core.feature {
 				var polygon:Polygon = null;
 				var linearRing:LinearRing = null;
 				var p:Point = null;
-				var i:int = 0;
-				var j:int = 0;
+				var i:int;
+				var j:int;
+				var k:int;
+				var l:int;
+				var m:int;
 				var pAux:Pixel = null;
 				var count:int = 0;
 				var countFeature:int = 0;
@@ -44,12 +47,14 @@ package org.openscales.core.feature {
 				var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
 				var x:Number;
 				var y:Number;
-				for (var k:int = 0; k < this.polygons.componentsLength; k++) {
+				l = this.polygons.componentsLength;
+				for (k = 0; k < l; ++k) {
 					polygon = (this.polygons.componentByIndex(k) as Polygon);
 					for (i = 0; i < polygon.componentsLength; i++) {
 						linearRing = (polygon.componentByIndex(i) as LinearRing);
-						// Draws the n-1 polygon lines 
-						for (j = 0; j < linearRing.componentsLength; j++) {
+						// Draws the n-1 polygon lines
+						m = linearRing.componentsLength;
+						for (j = 0; j < m; ++j) {
 							p = (linearRing.componentByIndex(j) as Point);
 							//optimizing 
 							x = dX + p.x / resolution;
@@ -61,7 +66,7 @@ package org.openscales.core.feature {
 							}
 						}
 						// Draws the last line of the polygon, as Flash won't render it if there is no fill 
-						if (linearRing.componentsLength > 0) {
+						if (m > 0) {
 							p = linearRing.componentByIndex(0) as Point;
 							x = dX + p.x / resolution;
 							y = dY - p.y / resolution;

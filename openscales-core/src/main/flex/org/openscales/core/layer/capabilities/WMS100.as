@@ -19,7 +19,7 @@ package org.openscales.core.layer.capabilities
 			super();
 
 			this._version = "1.0.0";
-			
+
 			this._layerNode = "Layer";
 			this._name = "Name";
 			this._title = "Title";

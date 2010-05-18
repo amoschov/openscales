@@ -1,6 +1,6 @@
 package org.openscales.core.feature {
 	import flash.display.DisplayObject;
-
+	
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.geometry.Collection;
@@ -96,8 +96,12 @@ package org.openscales.core.feature {
 			var LineString1:LineString = null;
 			var intersect:Boolean = false;
 			var distanceArray:Array = new Array();
+			var i:int;
+			var j:int;
+
 			if (collection != null) {
-				for (var i:int = 0; i < collection.componentsLength - 1; i++) {
+				j = collection.componentsLength - 1;
+				for (i = 0; i < j; ++i) {
 					var point1:Point = collection.componentByIndex(i) as Point;
 					var point2:Point = collection.componentByIndex(i + 1) as Point;
 
@@ -135,10 +139,11 @@ package org.openscales.core.feature {
 				}
 			}
 			distanceArray = new Array();
-			for (var k:int = 0; k < arrayResult.length; k++) {
+			j = arrayResult.length;
+			for (i = 0; i < j; i++) {
 				//Scalar product to find the closest point with tolerance
-				var pointA:Point = (arrayResult[k][0] as LineString).componentByIndex(0) as Point;
-				var pointB:Point = (arrayResult[k][0] as LineString).componentByIndex(1) as Point;
+				var pointA:Point = (arrayResult[i][0] as LineString).componentByIndex(0) as Point;
+				var pointB:Point = (arrayResult[i][0] as LineString).componentByIndex(1) as Point;
 
 				var pointPx:Pixel = this.layer.map.getLayerPxFromLonLat(new LonLat(point.x, point.y));
 
@@ -163,7 +168,7 @@ package org.openscales.core.feature {
 				var distance:Number = Math.pow((scalarPointPointAPower - scalarAHAB / scalarPointAPointBPower), 1 / 2);
 
 				if (distance < detectionTolerance) {
-					distanceArray.push(new Array(distance, arrayResult[k][1]));
+					distanceArray.push(new Array(distance, arrayResult[i][1]));
 				}
 			}
 			if (distanceArray.length > 1) {

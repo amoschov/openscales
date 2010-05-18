@@ -47,7 +47,7 @@ package org.openscales.core.layer.params.ogc
 
 			var keys:Array = _additionalParams.getKeys();
 			var n:uint = keys.length;
-			for (n; n>0; n--) {
+			for (n; n>0; --n) {
 				var key:String = keys.pop();
 				var value:String = _additionalParams.getValue(key);
 

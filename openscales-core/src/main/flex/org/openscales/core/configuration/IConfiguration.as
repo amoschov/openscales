@@ -26,12 +26,12 @@ package org.openscales.core.configuration
 		/**
 		 * Return layers configured between the <layers> </layers> elements
 		 */
-		function get layersFromMap():Array;
+		function get layersFromMap():Vector.<Layer>;
 
 		/**
 		 * Return layers configured between the <Catalog> </Catalog> elements (recursively parsed in all categories)
 		 */	
-		function get layersFromCatalog():Array;
+		function get layersFromCatalog():Vector.<Layer>;
 		
 		/**
 		 * @return The child items of <Catalog> </Catalog> elements 

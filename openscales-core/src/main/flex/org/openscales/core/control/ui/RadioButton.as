@@ -1,7 +1,7 @@
 package org.openscales.core.control.ui
 {
 	import flash.display.Bitmap;
-
+	
 	import org.openscales.core.basetypes.Pixel;
 
 	/**
@@ -39,7 +39,8 @@ package org.openscales.core.control.ui
 		public function set status(value:Boolean):void {
 			this._status = value;
 
-			for(var i:int=0; i<this.numChildren;i++) {
+			var i:int = this.numChildren;
+			for(i; i>0;--i) {
 				this.removeChildAt(0);
 			}
 

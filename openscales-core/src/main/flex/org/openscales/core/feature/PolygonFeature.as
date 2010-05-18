@@ -34,13 +34,16 @@ package org.openscales.core.feature {
 				var dX:int = -int(this.layer.map.layerContainer.x) + this.left;
 				var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
 				var linearRing:LinearRing = null;
-				var j:int = 0;
+				var i:int;
+				var j:int;
+				var k:int = this.polygon.componentsLength;
+				var l:int;
 
-				for (var i:int = 0; i < this.polygon.componentsLength; i++) {
+				for (i = 0; i < k; ++i) {
 					linearRing = (this.polygon.componentByIndex(i) as LinearRing);
-
+					l = linearRing.componentsLength;
 					// Draw the n-1 line of the polygon
-					for (j = 0; j < linearRing.componentsLength; j++) {
+					for (j = 0; j < l; ++j) {
 						p = linearRing.componentByIndex(j) as Point;
 						x = dX + p.x / resolution;
 						y = dY - p.y / resolution;

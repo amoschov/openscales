@@ -18,7 +18,7 @@ package org.openscales.core.control
 		public static var X:int = 4;
 		public static var Y:int = 4;
 		private var _slideFactor:int = 50;
-		private var _buttons:Array = null;
+		private var _buttons:Vector.<Button> = null;
 		private var _tween:Boolean;
 
 		[Embed(source="/assets/images/north-mini.png")]
@@ -71,7 +71,7 @@ package org.openscales.core.control
 			var px:Pixel = this.position;
 
 			// place the controls
-			this.buttons = new Array();
+			this.buttons = new Vector.<Button>();
 
 			var sz:Size = new Size(18,18);
 
@@ -156,11 +156,11 @@ package org.openscales.core.control
 			this._slideFactor = value;   
 		}
 
-		public function get buttons():Array {
+		public function get buttons():Vector.<Button> {
 			return this._buttons;   
 		}
 
-		public function set buttons(value:Array):void {
+		public function set buttons(value:Vector.<Button>):void {
 			this._buttons = value;   
 		}
 

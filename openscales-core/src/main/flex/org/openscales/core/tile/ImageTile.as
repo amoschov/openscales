@@ -167,8 +167,8 @@ package org.openscales.core.tile
 			}
 			
 			var i:int = this.numChildren;
-			for(i;i>0;i--) {
-				var child:DisplayObject = removeChildAt(0);
+			for(i;i>0;--i) {
+				removeChildAt(0);
 			}
 		}
 

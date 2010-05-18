@@ -162,7 +162,7 @@ package org.openscales.core
 		 * Add a group of layers.
 		 * @param layers to add.
 		 */
-		public function addLayers(layers:Array):void {
+		public function addLayers(layers:Vector.<Layer>):void {
 			var j:uint = layers.length;
 			var i:uint = 0;
 			for (i; i <  j; ++i) {

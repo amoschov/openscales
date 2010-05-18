@@ -263,7 +263,7 @@ package org.openscales.core.format
 			var attributes:Object = {};
 			var j:int = nodes.length();
 			var i:int;
-			for(i = 0; i < j; i++) {
+			for(i = 0; i < j; ++i) {
 				var name:String = nodes[i].localName();
 				var value:Object = nodes[i].valueOf();
 				if(name == null){
@@ -437,7 +437,7 @@ package org.openscales.core.format
 
 				var j:int = parts.length;
 				var i:int;
-				for (i = 0; i < j; i++) { 
+				for (i = 0; i < j; ++i) { 
 					var pointMember:XML = new XML("<" + this._gmlprefix + ":pointMember xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":pointMember>");
 					var point:XML = new XML("<" + this._gmlprefix + ":Point xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":Point>");
 					point.appendChild(this.buildCoordinatesNode(parts[i]));
@@ -476,7 +476,7 @@ package org.openscales.core.format
 			if (points) {
 				var j:int = points.length;
 				var i:int;
-				for (i = 0; i < j; i++) {
+				for (i = 0; i < j; ++i) {
 					if (this.internalProj != null && this.externalProj != null)
 						(points[i] as Point).transform(this.internalProj, this.externalProj);
 					path += points[i].x + "," + points[i].y + " ";

@@ -58,7 +58,8 @@ package org.openscales.core.layer
 		 */
 		public function selectUrl(paramString:String, urls:Array):String {
 			var product:Number = 1;
-			for (var i:int = 0, len:int=paramString.length; i < len; i++) { 
+			var i:int = 0, len:int=paramString.length;
+			for (i; i < len; ++i) { 
 				product *= paramString.charCodeAt(i) * this.URL_HASH_FACTOR; 
 				product -= Math.floor(product); 
 			}

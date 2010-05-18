@@ -49,7 +49,7 @@ package org.openscales.core.handler.feature {
 		 * Array of some features that may not be selected.
 		 * If void (default), all the features of the _layers are selectable.
 		 */
-		private var _unselectableFeatures:Array = new Array();
+		private var _unselectableFeatures:Vector.<Feature> = new Vector.<Feature>();
 
 		/**
 		 * Size in pixels of the selection buffer (default=2 so a point is a
@@ -219,25 +219,24 @@ package org.openscales.core.handler.feature {
 		/**
 		 * unselectableFeatures array getter and setter
 		 */
-		public function get unselectableFeatures():Array {
+		public function get unselectableFeatures():Vector.<Feature> {
 			return this._unselectableFeatures;
 		}
 
-		public function set unselectableFeatures(value:Array):void {
+		public function set unselectableFeatures(value:Vector.<Feature>):void {
+			this._unselectableFeatures = new Vector.<Feature>();
 			if ((value == null) || (value.length == 0)) {
-				this._unselectableFeatures = new Array();
-			} else {
-				this._unselectableFeatures = value;
-				// Filter the currently selected features
-				var twoArrays:Array = this.filterUnselectableFeatures(this.selectedFeatures);
-				this._selectedFeatures = twoArrays[0];
-				var unselectedFeatures:Vector.<Feature> = twoArrays[1];
-				// Dispatch a FEATURE_UNSELECTED event for all the unselected features
-				if (this.map && (unselectedFeatures.length > 0)) {
-					var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, null);
-					fevt.features = unselectedFeatures;
-					this.map.dispatchEvent(fevt);
-				}
+				return
+			}
+			// Filter the currently selected features
+			var twoArrays:Vector.<Vector.<Feature>> = this.filterUnselectableFeatures(this._selectedFeatures);
+			this._selectedFeatures = twoArrays[0];
+			var unselectedFeatures:Vector.<Feature> = twoArrays[1];
+			// Dispatch a FEATURE_UNSELECTED event for all the unselected features
+			if (this.map && (unselectedFeatures.length > 0)) {
+				var fevt:FeatureEvent = new FeatureEvent(FeatureEvent.FEATURE_UNSELECTED, null);
+				fevt.features = unselectedFeatures;
+				this.map.dispatchEvent(fevt);
 			}
 		}
 
@@ -673,7 +672,7 @@ package org.openscales.core.handler.feature {
 				featuresToSelect = nsf;
 			}
 			// Filter the features to select to avoid the unselectable features
-			var twoArrays:Array = this.filterUnselectableFeatures(featuresToSelect);
+			var twoArrays:Vector.<Vector.<Feature>> = this.filterUnselectableFeatures(featuresToSelect);
 			featuresToSelect = twoArrays[0];
 			var noselectedFeatures:Vector.<Feature> = twoArrays[1];
 			// Add all the really new selected features to the selection
@@ -772,7 +771,7 @@ package org.openscales.core.handler.feature {
 		 * @return array of two arrays, the first contains the accepted features
 		 * and the second contains the rejected features.
 		 */
-		private function filterUnselectableFeatures(featuresToFilter:Vector.<Feature>):Array {
+		private function filterUnselectableFeatures(featuresToFilter:Vector.<Feature>):Vector.<Vector.<Feature>> {
 			var acceptedFeatures:Vector.<Feature> = new Vector.<Feature>();
 			var rejectedFeatures:Vector.<Feature> = new Vector.<Feature>();
 			var i:int, found:Boolean;
@@ -787,7 +786,10 @@ package org.openscales.core.handler.feature {
 					acceptedFeatures.push(feature);
 				}
 			}
-			return [acceptedFeatures, rejectedFeatures];
+			var v:Vector.<Vector.<Feature>> = new Vector.<Vector.<Feature>>(2,true);
+			v[0] = acceptedFeatures;
+			v[1] = rejectedFeatures;
+			return v;
 		}
 
 		/**

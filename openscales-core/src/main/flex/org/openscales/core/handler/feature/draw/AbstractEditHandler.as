@@ -118,7 +118,8 @@ package org.openscales.core.handler.feature.draw
 			collection=vectorfeature.geometry as Collection;
 			var j:uint = collection.componentsLength;
 			var v:Vector.<Feature>;
-			for (var i:int = 0; i < j; ++i) {
+			var i:int;
+			for (i=0; i < j; ++i) {
 				var geometry:Geometry = collection.componentByIndex(i);
 				if (geometry is Collection) {
 					createEditionVertices(vectorfeature,geometry as Collection,arrayToFill);

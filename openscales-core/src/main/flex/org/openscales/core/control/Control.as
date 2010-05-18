@@ -3,7 +3,7 @@ package org.openscales.core.control
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
-
+	
 	import org.openscales.core.Map;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
@@ -59,8 +59,9 @@ package org.openscales.core.control
 		public function draw():void {
 			// Reset before drawing
 			this.graphics.clear();
-			while (this.numChildren > 0) {
-				var child:DisplayObject = removeChildAt(0);
+			var i:int = this.numChildren;
+			for(i;i>0;--i) {
+				removeChildAt(0);
 			}
 		}
 

@@ -68,8 +68,9 @@ package org.openscales.core.control
 		 */
 		public function redraw(obt:Object = null):void {
 			if (this != null) {
-				while (numChildren > 0) {
-					var child:DisplayObject = removeChildAt(0);
+				var i:int = this.numChildren;
+				for(i;i>0;--i) {
+					removeChildAt(0);
 				}
 			}
 			this.draw();
@@ -80,7 +81,7 @@ package org.openscales.core.control
 		 */
 		override public function draw():void {
 
-			this.buttons = [];
+			this.buttons = new Vector.<Button>();
 			var px:Pixel = this.position;
 			var sz:Size = new Size(18,18);
 

@@ -125,15 +125,15 @@ package org.openscales.core.configuration
                   return this._config;
             }
             
-            public function get layersFromMap():Array {
+            public function get layersFromMap():Vector.<Layer> {
                   //we search direclty all nodes contained in <Layers> </Layers>
                   var layersNodes:XMLList = config.Layers.*;
                   
                   //the tab which contains layers to add
-                  var layers:Array = new Array ();
+                  var layers:Vector.<Layer> = new Vector.<Layer> ();
                   
                   if (layersNodes.length() == 0) {
-                        Trace.log("There's no layer on the map");return [];
+                        Trace.log("There's no layer on the map");return layers;
                   } 
                   // Manage the different catalog in the file
                   for each(var node:XML in layersNodes){
@@ -144,13 +144,13 @@ package org.openscales.core.configuration
                   return layers;
             }
             
-            public function get layersFromCatalog():Array {                  
+            public function get layersFromCatalog():Vector.<Layer> {                  
                   if (this.catalog.length == 0) {
-                        Trace.log("There's no layer on the catalog");return [];
+                        Trace.log("There's no layer on the catalog");return layers;
                   }
                   
                   var layersNodes:XMLList = config.Catalog..Category.*;
-                  var layers:Array = [];             
+                  var layers:Vector.<Layer> = new Vector.<Layer> ();             
 
                   for each(var layerXml:XML in layersNodes)
                   {

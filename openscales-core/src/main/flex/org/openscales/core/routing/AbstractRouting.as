@@ -85,53 +85,57 @@ package org.openscales.core.routing
 		 * This function displays the request's results on the concerned layer
 		 * @param:results itinerary points array
 		 **/
-		protected function displayResult(results:Array):void{
+		protected function displayResult(results:Vector.<Point>):void{
 			if(results!=null){	
 				var itineraryGeometry:MultiLineString=new MultiLineString();
 				//This variable is used to know how much intermedPoints have been treat
 				//in order to don't scan intermediary point table again and again
 				var intermedPointTreat:Number=0;
 				var linestring:LineString;
-				for(var i:int=0;i<results.length;i++){				
+				var j:int = results.length;
+				var i:uint;
+				for(i=0;i<j;++i){				
 
 					if(i==0)
 					{
 						if(_startPoint){
 							//We work on the starting point 
-							if(resultsLayer.features.indexOf(_startPoint)==-1)resultsLayer.addFeature(_startPoint);
+							if(_resultsLayer.features.indexOf(_startPoint)==-1)resultsLayer.addFeature(_startPoint);
 							if(!linestring)linestring=new LineString(new <Geometry>[_startPoint.geometry]);
 							//if the first point is not the starting point
-							if(!((_startPoint.geometry as Point).equals(results[0] as Point))){	
-								linestring.addComponent(results[i] as Point);				
+							if(!((_startPoint.geometry as Point).equals(results[0]))){	
+								linestring.addComponent(results[i]);				
 							}
 						}
 					}
 					else{
 						if(i!=results.length-1){
-							linestring.addComponent(results[i] as Point);
+							linestring.addComponent(results[i]);
 						}
 						else{
 							if(_endPoint){
 								//like in the starting point treatment
 								if(resultsLayer.features.indexOf(_endPoint)==-1)resultsLayer.addFeature(_endPoint);								
-								if(!((_endPoint.geometry as Point).equals(results[i] as Point))){
-								linestring.addComponent(results[i] as Point);
+								if(!((_endPoint.geometry as Point).equals(results[i]))){
+								linestring.addComponent(results[i]);
 							}
 							linestring.addComponent(_endPoint.geometry as Point);
 						}
-						else linestring.addComponent(results[i] as Point);		
+						else linestring.addComponent(results[i]);		
 					}
 					}
 					//intermediary marker treatment
 					if(intermedPointTreat!=_intermedPoints.length){
-								for(var j:int=0;j<_intermedPoints.length;j++){
-									var intermedPoint:PointFeature=_intermedPoints[j] as PointFeature;
-									if(intermedPoint!=null && (intermedPoint.geometry as Point).equals(results[i] as Point)){
-										intermedPointTreat++;
-										if(this._resultsLayer.features.indexOf(intermedPoint))this._resultsLayer.addFeature(intermedPoint);
-									}
-								}
-							}	
+						j = _intermedPoints.length;
+						var k:uint;
+						for(k=0;k<j;++j) {
+							var intermedPoint:PointFeature=_intermedPoints[k] as PointFeature;
+							if(intermedPoint!=null && (intermedPoint.geometry as Point).equals(results[i])){
+								intermedPointTreat++;
+								if(this._resultsLayer.features.indexOf(intermedPoint))this._resultsLayer.addFeature(intermedPoint);
+							}
+						}
+					}	
 				}
 				itineraryGeometry.addComponent(linestring);
 				resultsLayer.removeFeature(_itinerary); 
@@ -194,15 +198,17 @@ package org.openscales.core.routing
 		 * @param intermedPoint:PointFeature the point to add
 		 * */
 		public function addIntermediaryPoint(intermedPoint:PointFeature):void{
-			if(_intermedPoints.indexOf(intermedPoint)==-1) _intermedPoints.push(intermedPoint);
+			if(_intermedPoints.indexOf(intermedPoint)==-1)
+				_intermedPoints.push(intermedPoint);
 		}
 		/**
 		 * To add an array of intermediaries point to the itinerary
-		 * @param intermedPointArray:Array the array to add
+		 * @param intermedPointArray:Vector.<PointFeature> the array to add
 		 * */
-		public function addIntermediaryPoints(intermedPointsArray:Array):void{
+		public function addIntermediaryPoints(intermedPointsArray:Vector.<PointFeature>):void{
 			for each(var intermedPoint:PointFeature in intermedPointsArray){
-				if(_intermedPoints.indexOf(intermedPoint)==-1) _intermedPoints.push(intermedPoint);
+				if(_intermedPoints.indexOf(intermedPoint)==-1)
+					_intermedPoints.push(intermedPoint);
 			}
 			refreshRouting();
 		}
@@ -221,7 +227,7 @@ package org.openscales.core.routing
 	     * @param intermedPoint:PointFeature the array to remove
 		 *
 		 */
-		public function removeIntermediaryPoints(intermedPointsArray:Array):void{
+		public function removeIntermediaryPoints(intermedPointsArray:Vector.<PointFeature>):void{
 			var i:int;
 			for each(var intermedPoint:PointFeature in intermedPointsArray){
 				i = _intermedPoints.indexOf(intermedPoint);

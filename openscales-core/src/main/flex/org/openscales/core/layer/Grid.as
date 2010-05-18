@@ -4,9 +4,9 @@ package org.openscales.core.layer
 	
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.LinkedList.LinkedListBitmapNode;
 	import org.openscales.core.basetypes.LinkedList.ILinkedListNode;
 	import org.openscales.core.basetypes.LinkedList.LinkedList;
+	import org.openscales.core.basetypes.LinkedList.LinkedListBitmapNode;
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
@@ -15,7 +15,6 @@ package org.openscales.core.layer
 	import org.openscales.core.events.TileEvent;
 	import org.openscales.core.layer.params.IHttpParams;
 	import org.openscales.core.tile.ImageTile;
-	import org.openscales.core.tile.Tile;
 
 	/**
 	 * Base class for layers that use a lattice of tiles.
@@ -29,7 +28,7 @@ package org.openscales.core.layer
 		private const DEFAULT_TILE_HEIGHT:Number = 256;
 
 		/** The grid array contains tiles **/		
-		private var _grid:Array = null;
+		private var _grid:Vector.<Vector.<ImageTile>> = null;
 
 		private var _singleTile:Boolean = false;
 
@@ -67,7 +66,7 @@ package org.openscales.core.layer
 			//TOdo delete url and params after osmparams work
 			super(name, url, params);
 
-			this.grid = new Array();
+			//this.grid = new Vector.<Vector.<Tile>>();
 
 			this.buffer = 1;
 			
@@ -78,9 +77,11 @@ package org.openscales.core.layer
 		override public function onMapZoom(e:MapEvent):void {
 			// Clear pending requests after zooming in order to avoid to add
 			// too many tile requests  when the user is zooming step by step
-			for each(var array:Array in grid)	{
-				for (var i:Number = 0;i<array.length;i++)	{
-					var tile:Tile = array[i];
+			var j:uint;
+			for each(var array:Vector.<ImageTile> in this._grid)	{
+				j = array.length;
+				for (var i:Number = 0;i<j;i++)	{
+					var tile:ImageTile = array[i];
 					if (tile != null && !tile.loadComplete) {
 						tile.clear();
 					}
@@ -101,18 +102,22 @@ package org.openscales.core.layer
 		 *    destroy() on each of them to kill circular references
 		 */
 		override public function clear():void {
-			if (this.grid) {
-				for(var iRow:int=0; iRow < this.grid.length; iRow++) {
-					var row:Array = this.grid[iRow];
-					for(var iCol:int=0; iCol < row.length; iCol++) {
-						var tile:Tile = row[iCol];
+			if (this._grid && this._grid.length>0) {
+				var i:uint = this._grid.length;
+				var j:uint = this._grid[0].length;
+				var iRow:uint;
+				var iCol:uint;
+				for(iRow=0; iRow < i; ++iRow) {
+					var row:Vector.<ImageTile> = this._grid.pop();
+					for(iCol=0; iCol < j; ++iCol) {
+						var tile:ImageTile = row.pop();
 						this.removeTileMonitoringHooks(tile);
 						tile.destroy();						
 					}
 				}
 				while (this.numChildren > 0)
 					this.removeChildAt(0);
-				this.grid = [];
+				this.grid = null;
 			}
 		}
 
@@ -152,7 +157,7 @@ package org.openscales.core.layer
 			
 			var bounds:Bounds = this.map.extent.clone();
 			
-			var forceReTile:Boolean = !this.grid.length || fullRedraw;
+			var forceReTile:Boolean = this._grid==null || !this._grid.length || fullRedraw;
 
 			var tilesBounds:Bounds = this.getTilesBounds();            
 
@@ -200,19 +205,21 @@ package org.openscales.core.layer
 		 * @return A Bounds object representing the bounds of all the currently loaded tiles
 		 */
 		public function getTilesBounds():Bounds {
-			var bounds:Bounds = null; 
+			if(this._grid == null)
+				return null;
+			var i:uint = this._grid.length;
 
-			if (this.grid.length) {
-				var bottom:int = this.grid.length - 1;
-				var bottomLeftTile:Tile = this.grid[bottom][0];
-				var right:int = this.grid[0].length - 1; 
-				var topRightTile:Tile = this.grid[0][right];
-				bounds = new Bounds(bottomLeftTile.bounds.left, 
+			if (i>0) {
+				var bottom:int = i - 1;
+				var bottomLeftTile:ImageTile = this._grid[bottom][0];
+				var right:int = this._grid[0].length - 1; 
+				var topRightTile:ImageTile = this._grid[0][right];
+				return new Bounds(bottomLeftTile.bounds.left, 
 									bottomLeftTile.bounds.bottom,
 									topRightTile.bounds.right, 
 									topRightTile.bounds.top);
-			}   
-			return bounds;
+			}
+			return null;
 		}
 
 		/**
@@ -231,15 +238,17 @@ package org.openscales.core.layer
 			var ul:LonLat = new LonLat(tileBounds.left, tileBounds.top);
 			var px:Pixel = this.map.getLayerPxFromLonLat(ul);
 
-			if (!this.grid.length) {
-				this.grid[0] = [];
+			if(this._grid==null) {
+				this._grid = new Vector.<Vector.<ImageTile>>(1,true);
+				this._grid[0] = new Vector.<ImageTile>(1,true);
+				this._grid[0][0] = null;
 			}
 
-			var tile:Tile = this.grid[0][0];
+			var tile:ImageTile = this._grid[0][0];
 			if (!tile) {
 				tile = this.addTile(tileBounds, px);
 				tile.draw();
-				this.grid[0][0] = tile;
+				this._grid[0][0] = tile;
 			} else {
 				tile.moveTo(tileBounds, px);
 			}           
@@ -286,12 +295,19 @@ package org.openscales.core.layer
 			var startLon:Number = tileoffsetlon;
 			var rowidx:int = 0;
 
+			if(this._grid == null) {
+				this._grid = new Vector.<Vector.<ImageTile>>();
+			}
 			do {
-				var row:Array = this.grid[rowidx++];
-				if (!row) {
-					row = [];
-					this.grid.push(row);
+				var row:Vector.<ImageTile>;
+				if(this._grid.length==rowidx) {
+					row = new Vector.<ImageTile>;
+					this._grid.push(row);
+				} else {
+					row = this._grid[rowidx];
 				}
+				rowidx=++rowidx;
+
 				tileoffsetlon = startLon;
 				tileoffsetx = startX;
 				var colidx:int = 0;
@@ -307,16 +323,18 @@ package org.openscales.core.layer
 					y -= int(this.map.layerContainer.y);
 
 					var px:Pixel = new Pixel(x, y);
-					var tile:Tile = row[colidx++];
-					if (!tile) {
+					var tile:ImageTile;
+					if(row.length==colidx) {
 						tile = this.addTile(tileBounds, px);
 						row.push(tile);
 					} else {
+						tile = row[colidx];
 						if(clearTiles)
 							tile.clearAndMoveTo(tileBounds, px, false);
 						else 
 							tile.moveTo(tileBounds, px, false);
 					}
+					colidx=++colidx;
 
 					tileoffsetlon += tilelon;       
 					tileoffsetx += this.tileWidth;
@@ -350,7 +368,7 @@ package org.openscales.core.layer
 			var direction:int = 0;
 			var directionsTried:int = 0;
 
-			while( directionsTried < directions.length) {
+			while( directionsTried < 4) {
 				var testRow:int = iRow;
 				var testCell:int = iCell;
 				switch (directions[direction]) {
@@ -371,9 +389,9 @@ package org.openscales.core.layer
 				// if the test grid coordinates are within the bounds of the 
 				//  grid, get a reference to the tile.
 				var tile:ImageTile = null;
-				if ((testRow < this.grid.length) && (testRow >= 0) &&
-					(testCell < this.grid[0].length) && (testCell >= 0)) {
-					tile = this.grid[testRow][testCell];
+				if ((testRow < this._grid.length) && (testRow >= 0) &&
+					(testCell < this._grid[0].length) && (testCell >= 0)) {
+					tile = this._grid[testRow][testCell];
 				}
 
 				if ((tile != null) && (!tile.queued)) {
@@ -401,12 +419,12 @@ package org.openscales.core.layer
 			}
 		}
 
-		public function addTile(bounds:Bounds, position:Pixel):Tile {
+		public function addTile(bounds:Bounds, position:Pixel):ImageTile {
 			return null;
 		}
 
 
-		public function removeTileMonitoringHooks(tile:Tile):void {
+		public function removeTileMonitoringHooks(tile:ImageTile):void {
 		}
 		/**
 		 * This metod is called only when mapEvent.MOVE_END is thrown
@@ -430,10 +448,13 @@ package org.openscales.core.layer
 				}
 			};
 			if (this.buffer == 0) {
-				for (var r:int=0, rl:int=this.grid.length; r<rl; r++) {
-					var row:Array = this.grid[r];
-					for (var c:int=0, cl:int=row.length; c<cl; c++) {
-						var tile:Tile = row[c];
+				var rl:int = this._grid.length;
+				var cl:int;
+				for (var r:int=0; r<rl; r++) {
+					var row:Vector.<ImageTile> = this._grid[r];
+					cl = row.length;
+					for (var c:int=0; c<cl; ++c) {
+						var tile:ImageTile = row[c];
 						if (!tile.drawn && 
 							tile.bounds.intersectsBounds(bounds, false)) {
 							tile.draw();
@@ -450,15 +471,16 @@ package org.openscales.core.layer
 		 *                          if false, then append to end
 		 */
 		private function shiftRow(prepend:Boolean):void {
-			var modelRowIndex:int = (prepend) ? 0 : (this.grid.length - 1);
-			var modelRow:Array = this.grid[modelRowIndex];
+			var modelRowIndex:int = (prepend) ? 0 : (this._grid.length - 1);
+			var modelRow:Vector.<ImageTile> = this._grid[modelRowIndex];
 			var resolution:Number = this.map.resolution;
 			var deltaY:Number = (prepend) ? -this.tileHeight : this.tileHeight;
 			var deltaLat:Number = resolution * -deltaY;
-			var row:Array = (prepend) ? this.grid.pop() : this.grid.shift();
+			var row:Vector.<ImageTile> = (prepend) ? this._grid.pop() : this._grid.shift();
 
-			for (var i:int=0; i < modelRow.length; i++) {
-				var modelTile:Tile = modelRow[i];
+			var j:uint = modelRow.length;
+			for (var i:uint=0; i < j; ++i) {
+				var modelTile:ImageTile = modelRow[i];
 				var bounds:Bounds = modelTile.bounds.clone();
 				var position:Pixel = modelTile.position.clone();
 				bounds.bottom = bounds.bottom + deltaLat;
@@ -468,9 +490,9 @@ package org.openscales.core.layer
 			}
 
 			if (prepend) {
-				this.grid.unshift(row);
+				this._grid.unshift(row);
 			} else {
-				this.grid.push(row);
+				this._grid.push(row);
 			}
 		}
 
@@ -485,21 +507,22 @@ package org.openscales.core.layer
 			var resolution:Number = this.map.resolution;
 			var deltaLon:Number = resolution * deltaX;
 
-			for (var i:int=0; i<this.grid.length; i++) {
-				var row:Array = this.grid[i];
+			var j:uint = this._grid.length;
+			for (var i:uint=0; i<j; ++i) {
+				var row:Vector.<ImageTile> = this._grid[i];
 				var modelTileIndex:int = (prepend) ? 0 : (row.length - 1);
-				var modelTile:Tile = row[modelTileIndex];
+				var modelTile:ImageTile = row[modelTileIndex];
 				var bounds:Bounds = modelTile.bounds.clone();
 				var position:Pixel = modelTile.position.clone();
 				bounds.left = bounds.left + deltaLon;
 				bounds.right = bounds.right + deltaLon;
 				position.x = position.x + deltaX;
-				var tile:Tile = prepend ? this.grid[i].pop() : this.grid[i].shift()
+				var tile:ImageTile = prepend ? this._grid[i].pop() : this._grid[i].shift()
 				tile.clearAndMoveTo(bounds, position);
 				if (prepend) {
-					this.grid[i].unshift(tile);
+					this._grid[i].unshift(tile);
 				} else {
-					this.grid[i].push(tile);
+					this._grid[i].push(tile);
 				}
 			}
 		}
@@ -512,18 +535,18 @@ package org.openscales.core.layer
 		 * @param colums Maximum number of columns we want our grid to have.
 		 */
 		public function removeExcessTiles(rows:int, columns:int):void {
-			while (this.grid.length > rows) {
-				var row:Array = this.grid.pop();
+			while (this._grid.length > rows) {
+				var row:Vector.<ImageTile> = this._grid.pop();
 				for (var i:int=0, l:int=row.length; i<l; i++) {
-					var tile:Tile = row[i];
+					var tile:ImageTile = row[i];
 					this.removeTileMonitoringHooks(tile)
 					tile.destroy();
 				}
 			}
 
-			while (this.grid[0].length > columns) {
-				for (i=0, l=this.grid.length; i<l; i++) {
-					row = this.grid[i];
+			while (this._grid[0].length > columns) {
+				for (i=0, l=this._grid.length; i<l; i++) {
+					row = this._grid[i];
 					tile = row.pop();
 					this.removeTileMonitoringHooks(tile);
 					tile.destroy();
@@ -561,9 +584,10 @@ package org.openscales.core.layer
 				}
 				case TileEvent.TILE_LOAD_END:	{
 					// check if there are still tiles loading
-					for each(var array:Array in grid)	{
-						for (var i:Number = 0;i<array.length;i++)	{
-							var tile:Tile = array[i];
+					for each(var array:Vector.<ImageTile> in this._grid)	{
+						var j:uint = array.length;
+						for (var i:Number = 0;i<j;i++)	{
+							var tile:ImageTile = array[i];
 							if (tile != null && !tile.loadComplete)
 							  return;	
 						}
@@ -579,11 +603,11 @@ package org.openscales.core.layer
 			return (this._imageSize || new Size(this.tileWidth, this.tileHeight)); 
 		}
 
-		public function get grid():Array {
+		public function get grid():Vector.<Vector.<ImageTile>> {
 			return this._grid;
 		}
 
-		public function set grid(value:Array):void {
+		public function set grid(value:Vector.<Vector.<ImageTile>>):void {
 			this._grid = value;
 		}
 

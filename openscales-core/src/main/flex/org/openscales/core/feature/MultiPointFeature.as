@@ -32,11 +32,11 @@ package org.openscales.core.feature {
 			var resolution:Number = this.layer.map.resolution 
 			var dX:int = -int(this.layer.map.layerContainer.x) + this.left; 
 			var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
-			var j:int = 0;
 			
 			var point:Point = null;
-			
-			for(var i:int=0;i<this.points.componentsLength;i++){
+			var i:int;
+			var j:int = this.points.componentsLength;
+			for(i=0;i<j;++i){
 			
 				point = this.points.componentByIndex(i) as Point;
 				

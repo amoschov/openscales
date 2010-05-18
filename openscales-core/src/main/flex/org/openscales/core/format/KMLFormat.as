@@ -210,7 +210,28 @@ package org.openscales.core.format
 				}
 			}
 		}
-		
+
+		private function _loadPolygon(_Pdata:String):LinearRing {
+			_Pdata = _Pdata.replace("\n"," ");
+			_Pdata = _Pdata.replace(/^\s*(.*?)\s*$/g, "$1");
+			var coordinates:Array = _Pdata.split(" ");
+			var Ppoints:Vector.<Geometry> = new Vector.<Geometry>();
+			var Pcoords:String;
+			var _Pcoords:Array;
+			var point:Point;
+			for each(Pcoords in coordinates) {
+				_Pcoords = Pcoords.split(",");
+				if(_Pcoords.length<2)
+					continue;
+				point = new Point(_Pcoords[0].toString(),
+					_Pcoords[1].toString());
+				if (this._internalProj != null, this._externalProj != null) {
+					point.transform(this.externalProj, this.internalProj);
+				}
+				Ppoints.push(point);
+			}
+			return new LinearRing(Ppoints);
+		}
 		/**
 		 * load placemarks
 		 */
@@ -259,7 +280,8 @@ package org.openscales.core.format
 					_Ldata = _Ldata.replace(/^\s*(.*?)\s*$/g, "$1");
 					coordinates = _Ldata.split(" ");
 					var points:Vector.<Geometry> = new Vector.<Geometry>();
-					for each(var coords:String in coordinates) {
+					var coords:String;
+					for each(coords in coordinates) {
 						var _coords:Array = coords.split(",");
 						if(_coords.length<2)
 							continue;
@@ -283,45 +305,12 @@ package org.openscales.core.format
 						if(polygonStyles[_id] != undefined)
 							_Pstyle = polygonStyles[_id];
 					}
-					var _Pdata:String = placemark.Polygon.outerBoundaryIs.LinearRing.coordinates.text();
-					_Pdata = _Pdata.replace("\n"," ");
-					_Pdata = _Pdata.replace(/^\s*(.*?)\s*$/g, "$1");
-					coordinates = _Pdata.split(" ");
-					var Ppoints:Vector.<Geometry> = new Vector.<Geometry>();
-					var Pcoords:String;
-					var _Pcoords:Array;
-					for each(Pcoords in coordinates) {
-						_Pcoords = Pcoords.split(",");
-						if(_Pcoords.length<2)
-							continue;
-						point = new Point(_Pcoords[0].toString(),
-										  _Pcoords[1].toString());
-						if (this._internalProj != null, this._externalProj != null) {
-							point.transform(this.externalProj, this.internalProj);
-						}
-						Ppoints.push(point);
-					}
 					var lines:Vector.<Geometry> = new Vector.<Geometry>(1);
-					lines[0] = new LinearRing(Ppoints);
+					lines[0] = this._loadPolygon(placemark.Polygon.outerBoundaryIs.LinearRing.coordinates.text());
+
 					if(placemark.Polygon.innerBoundaryIs != undefined) {
 						try {
-							_Pdata = placemark.Polygon.innerBoundaryIs.LinearRing.coordinates.text();
-							_Pdata = _Pdata.replace("\n"," ");
-							_Pdata = _Pdata.replace(/^\s*(.*?)\s*$/g, "$1");
-							coordinates = _Pdata.split(" ");
-							Ppoints = new Vector.<Geometry>();
-							for each(Pcoords in coordinates) {
-								_Pcoords = Pcoords.split(",");
-								if(_Pcoords.length<2)
-									continue;
-								point = new Point(_Pcoords[0].toString(),
-												  _Pcoords[1].toString());
-								if (this._internalProj != null, this._externalProj != null) {
-									point.transform(this.externalProj, this.internalProj);
-								}
-								Ppoints.push(point);
-							}
-							lines.push(new LinearRing(Ppoints));
+							lines.push(this._loadPolygon(placemark.Polygon.innerBoundaryIs.LinearRing.coordinates.text()));
 						} catch(e:Error) {
 						}
 					}

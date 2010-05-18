@@ -68,23 +68,20 @@ package org.openscales.core.handler.feature.draw
 	    /**
 		 * @inheritDoc 
 		 * */
-		 override public function editionModeStart():Boolean{
-		 if(this._layerToEdit !=null)
-			{
+		override public function editionModeStart():Boolean {
+			if(this._layerToEdit !=null) {
 				//We create an editable clone for all existant vector feature
-				for each(var vectorFeature:Feature in this._layerToEdit.features){	
+				for each(var vectorFeature:Feature in this._layerToEdit.features) {	
 					if(vectorFeature.isEditable && vectorFeature is PointFeature){				
-				{
-					this._featureClickHandler.addControledFeature(vectorFeature);
-					this._featureClickHandler.active=true;
-					}	
+						this._featureClickHandler.addControledFeature(vectorFeature);
+						this._featureClickHandler.active=true;
 					}
 				}
 				this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_EDITION_MODE_START,this._layerToEdit));				
 			}
 		 	return true;
 		 }
-		  /**
+		/**
 		 * @inheritDoc 
 		 * */
 		override public function refreshEditedfeatures(event:MapEvent=null):void{

@@ -61,14 +61,16 @@ package org.openscales.core.layer
 			var child:Sprite = null;
 			var child2:Sprite = null;
 			var numChild:int = this.numChildren;
-			for(var i:int=0; i<numChild;i++) {
+			var i:int;
+			var j:int;
+			var numChild2:int;
+			for(i=0; i<numChild;++i) {
 				child = this.getChildAt(i) as Sprite;
 				if(child) {
 					child.graphics.clear();
 					//Cleanup child subchilds (ex childs of pointfeatures)
-					var numChild2:int =  child.numChildren;
-					var j:int;
-					for(j=0; j<numChild2;j++){
+					numChild2 =  child.numChildren;
+					for(j=0; j<numChild2;++j){
 						child2 = child.getChildAt(j) as Sprite;
 						if(child2) {
 							child2.graphics.clear();
@@ -206,7 +208,7 @@ package org.openscales.core.layer
 
 		public function removeFeatures(features:Vector.<Feature>):void {
 			var i:int = features.length-1;
-			for (i; i > -1; i--)
+			for (i; i > -1; --i)
 				this.removeFeature(features[i], false);
 			// Dispatch an event with all the features removed
 			if (this.map) {
@@ -225,7 +227,7 @@ package org.openscales.core.layer
 			this._featuresID.splice(i,1);
 
 			var j:int = this.numChildren;
-			for(i = 0;i<j;i++) {
+			for(i = 0;i<j;++i) {
 				if (this.getChildAt(i) == feature) {
 					this.removeChildAt(i);
 					break;
@@ -248,7 +250,7 @@ package org.openscales.core.layer
 			var s:String;
 			for each(s in this._featuresID) {
 				_features[i]=s;
-				i++;
+				++i;
 			}
 			return _features;
 		}

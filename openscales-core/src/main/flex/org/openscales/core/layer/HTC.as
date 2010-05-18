@@ -131,11 +131,13 @@ package org.openscales.core.layer
 			var indice:int;
 			// adjust length of X an Y coordinates
 			var numXString:String = String(Math.abs(numX));
-			for(indice=7-numXString.length;indice>0;indice--){
+			indice=7-numXString.length;
+			for(indice;indice>0;--indice){
 				numXString = '0' + numXString;
 			}
 			var numYString:String = String(Math.abs(numY));
-			for(indice=7-numYString.length;indice>0;indice--){
+			indice=7-numYString.length;
+			for(indice;indice>0;--indice){
 				numYString = '0' + numYString;
 			}
 

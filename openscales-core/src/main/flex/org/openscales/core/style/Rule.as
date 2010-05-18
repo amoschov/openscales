@@ -1,7 +1,7 @@
 package org.openscales.core.style {
 	import flash.display.DisplayObject;
 	import flash.display.Sprite;
-
+	
 	import org.openscales.core.filter.IFilter;
 	import org.openscales.core.style.marker.WellKnownMarker;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
@@ -27,7 +27,7 @@ package org.openscales.core.style {
 
 		private var _filter:IFilter = null;
 
-		private var _symbolizers:Array = [];
+		private var _symbolizers:Vector.<Symbolizer> = new Vector.<Symbolizer>();
 
 		public function Rule() {
 		}
@@ -113,12 +113,12 @@ package org.openscales.core.style {
 		/**
 		 * The list of symbolizers defining the ruless
 		 */
-		public function get symbolizers():Array {
+		public function get symbolizers():Vector.<Symbolizer> {
 
 			return this._symbolizers;
 		}
 
-		public function set symbolizers(value:Array):void {
+		public function set symbolizers(value:Vector.<Symbolizer>):void {
 
 			this._symbolizers = value;
 		}

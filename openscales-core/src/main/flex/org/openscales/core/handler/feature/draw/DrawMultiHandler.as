@@ -5,7 +5,6 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPointFeature;
 	import org.openscales.core.feature.MultiPolygonFeature;
-	import org.openscales.core.feature.Feature;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.MultiLineString;
 	import org.openscales.core.geometry.MultiPoint;
@@ -16,8 +15,8 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.fill.SolidFill;
-	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
 	import org.openscales.core.style.stroke.Stroke;
+	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
 
 
 	/**
@@ -43,7 +42,7 @@ package org.openscales.core.handler.feature.draw
 			super(map, active, drawLayer);
 		}
 
-		public function buttonClicked(selectedFeatures:Array):Feature {
+		public function buttonClicked(selectedFeatures:Vector.<Feature>):Feature {
 			var feature:Feature;
 			if (drawLayer != null) {
 				feature = this.draw(selectedFeatures); 
@@ -57,7 +56,7 @@ package org.openscales.core.handler.feature.draw
 		 *
 		 * @return The feature create
 		 */
-		private function draw(selectedFeatures:Array):Feature {
+		private function draw(selectedFeatures:Vector.<Feature>):Feature {
 			var f:Feature;
 			var array:Array = new Array();
 			var multiPoint:MultiPoint = new MultiPoint();
@@ -68,7 +67,8 @@ package org.openscales.core.handler.feature.draw
 			var multiLineStringFeature:MultiLineStringFeature;
 			var multiPolygonFeature:MultiPolygonFeature;
 			var feature:Feature;
-			
+			var i:int;
+			var j:int;
 			
 			// FixMe: the style should not be hard coded bust should be dependant
 			// on the current style of the objects
@@ -80,11 +80,9 @@ package org.openscales.core.handler.feature.draw
 			// features of the type of the last one in selectedFeatures are
 			// managed
 			for each(f in selectedFeatures){
-				if(f != null) 
-				{
+				if(f != null) {
 					//Add all selected feature in a multigeometry
-					if(f.geometry is Point)
-					{
+					if(f.geometry is Point) {
 						multiPoint.addPoint(f.geometry as Point);
 						drawType = "MultiPoint";
 						
@@ -110,7 +108,8 @@ package org.openscales.core.handler.feature.draw
 
 					else if(f.geometry is MultiPoint)
 					{
-						for(var i:int = 0;i<(f.geometry as MultiPoint).componentsLength;i++) {
+						j = (f.geometry as MultiPoint).componentsLength;
+						for(i = 0;i<j;++i) {
 							multiPoint.addPoint((f.geometry as MultiPoint).componentByIndex(i) as Point);
 						}
 						drawType = "MultiPoint";
@@ -120,8 +119,9 @@ package org.openscales.core.handler.feature.draw
 					}
 					else if(f.geometry is MultiLineString)
 					{
-						for(var k:int = 0;k<(f.geometry as MultiLineString).componentsLength;k++) {
-							multiLineString.addLineString((f.geometry as MultiLineString).componentByIndex(k) as LineString);
+						j = (f.geometry as MultiLineString).componentsLength;
+						for(i = 0;i<j;++i) {
+							multiLineString.addLineString((f.geometry as MultiLineString).componentByIndex(i) as LineString);
 						}
 						drawType = "MultiLineString";
 						

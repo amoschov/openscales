@@ -70,7 +70,7 @@ package org.openscales.core.layer.ogc
 			return requestString;
 		}
 
-		override public function addTile(bounds:Bounds, position:Pixel):Tile {
+		override public function addTile(bounds:Bounds, position:Pixel):ImageTile {
 			var url:String = this.getURL(bounds);
 			return new ImageTile(this, position, bounds, 
 				url, new Size(this.tileWidth, this.tileHeight));

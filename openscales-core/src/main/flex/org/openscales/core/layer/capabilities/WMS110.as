@@ -55,13 +55,10 @@ package org.openscales.core.layer.capabilities
 				value = layer.Title;
 				layerCapabilities.put("Title", value);
 
-		                value = layer.SRS.toString();  
-                
-		                while (value.search(" ") > 0)
-				{  
-		     	           value = value.replace(" ",",");
-	    			}
-                
+				value = layer.SRS.toString();  
+				while (value.search(" ") > 0)
+					value = value.replace(" ",",");
+
 				layerCapabilities.put("SRS", value);
 
 				value = layer.Abstract;
@@ -83,9 +80,7 @@ package org.openscales.core.layer.capabilities
 				
 				
                 if (name != "")
-                {
-				    this._capabilities.put(name, layerCapabilities);
-			    }
+					this._capabilities.put(name, layerCapabilities);
 
 				//We cannot use clear() or reset() or we'll loose the datas
 				layerCapabilities = new HashMap();
@@ -101,7 +96,8 @@ package org.openscales.core.layer.capabilities
 		 */
 		private function removeNamespaces(doc:XML):void {
 			var namespaces:Array = doc.inScopeNamespaces();
-			for each (var ns:String in namespaces) {
+			var ns:String;
+			for each (ns in namespaces) {
 				doc.removeNamespace(new Namespace(ns));
 			}
 		}

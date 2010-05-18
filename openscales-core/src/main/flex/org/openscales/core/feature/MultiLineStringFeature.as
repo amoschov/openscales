@@ -35,11 +35,15 @@ package org.openscales.core.feature
             var dX:int = -int(this.layer.map.layerContainer.x) + this.left; 
             var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
 			var lineString:LineString = null;
+			var i:int;
 			var j:int = 0;
+			var k:int = this.lineStrings.componentsLength;
+			var l:int;
 			
-			for (var i:int = 0; i < this.lineStrings.componentsLength; i++) {
+			for (i = 0; i < k; i++) {
 				lineString = (this.lineStrings.componentByIndex(i) as LineString);
-				for (j = 0; j < lineString.componentsLength; j++) {
+				l = lineString.componentsLength;
+				for (j = 0; j < l; j++) {
 					p = lineString.componentByIndex(j) as Point;
 					x = dX + p.x / resolution; 
                 	y = dY - p.y / resolution;

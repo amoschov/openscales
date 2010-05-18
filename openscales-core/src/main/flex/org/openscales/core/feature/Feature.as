@@ -2,7 +2,7 @@ package org.openscales.core.feature {
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.utils.getQualifiedClassName;
-
+	
 	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
 	import org.openscales.core.basetypes.Bounds;
@@ -372,7 +372,7 @@ package org.openscales.core.feature {
 			var symbolizers:Array;
 			var j:uint;
 			var symbolizersCount:uint = rule.symbolizers.length;
-			for (j = 0; j < symbolizersCount; j++) {
+			for (j = 0; j < symbolizersCount; ++j) {
 				symbolizer = rule.symbolizers[j];
 				if (this.acceptSymbolizer(symbolizer)) {
 					symbolizer.configureGraphics(this.graphics, this);
@@ -408,7 +408,7 @@ package org.openscales.core.feature {
 
 		}
 
-		static public function compatibleFeatures(features:Array):Boolean {
+		static public function compatibleFeatures(features:Vector.<Feature>):Boolean {
 			if ((!features) || (features.length == 0) || (!features[0]) || (!(features[0] is Feature))) {
 				return false;
 			}

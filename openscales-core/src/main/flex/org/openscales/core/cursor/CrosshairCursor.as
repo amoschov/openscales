@@ -7,10 +7,10 @@ package org.openscales.core.cursor
 	import flash.geom.Point;
 	import flash.text.TextField;
 	
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.control.MousePosition;
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
+	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.core.control.MousePosition;
 	
 	/**
 	 * Crosshair cursor that displays the coordinates of the location pointed.
@@ -54,7 +54,9 @@ package org.openscales.core.cursor
         	// Try to get a map under the cursor
 			var objects:Array = (event.currentTarget as Stage).getObjectsUnderPoint(new flash.geom.Point(stage.mouseX,stage.mouseY));
 			var map:Map = null;
-			for(var i:int=0; i<objects.length; i++) {
+			var j:uint = objects.length;
+			var i:uint;
+			for(i=0; i<j; i++) {
 				if (objects[i] is Map) {
 					map = objects[i];
 					break;
@@ -66,7 +68,8 @@ package org.openscales.core.cursor
 				// Display the position in the map's coordinate system
 				var lonLat:LonLat = map.center;
 				var mousePosition:MousePosition = null;
-				for(i=0; i<map.controls.length; i++) {
+				j = map.controls.length;
+				for(i=0; i<j; i++) {
 					if (map.controls[i] is MousePosition) {
 						mousePosition = (map.controls[i] as MousePosition);
 						break;

@@ -77,7 +77,8 @@ package org.openscales.core.layer {
 			// Generate default resolutions
 			this._resolutions = new Array();
 			this._resolutions.push(nominalResolution);
-			for (var i:int = 1; i < numZoomLevels; i++) {
+			var i:int = 1;
+			for (i; i < numZoomLevels; ++i) {
 				this._resolutions.push(this.resolutions[i - 1] / 2);
 			}
 			this._resolutions.sort(Array.NUMERIC | Array.DESCENDING);
@@ -167,8 +168,10 @@ package org.openscales.core.layer {
 			}
 			if(resolution < this.resolutions[this.maxZoomLevel]) {
 				return this.maxZoomLevel;
-			}			
-			for (var i:int = this.minZoomLevel + 1; i < this.maxZoomLevel; i++) {
+			}
+			var i:int = this.minZoomLevel + 1;
+			var j:int = this.maxZoomLevel
+			for (i; i < j; ++i) {
 				if ((this.resolutions[i] < resolution) && (Math.abs(this.resolutions[i] - resolution) > RESOLUTION_TOLERANCE)) {
 					break;
 				}

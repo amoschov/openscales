@@ -33,8 +33,8 @@ package org.openscales.core.feature
             var resolution:Number = this.layer.map.resolution 
             var dX:int = -int(this.layer.map.layerContainer.x) + this.left; 
             var dY:int = -int(this.layer.map.layerContainer.y) + this.top;
-			
-			for (var i:int = 0; i < this.lineString.componentsLength; i++) {
+			var j:uint = this.lineString.componentsLength;
+			for (var i:uint = 0; i < j; ++i) {
 				p = this.lineString.componentByIndex(i) as Point;
 				x = dX + p.x / resolution; 
                 y = dY - p.y / resolution;

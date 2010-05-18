@@ -56,16 +56,15 @@ package org.openscales.core.layer.capabilities
 				value = layer.Title;
 				layerCapabilities.put("Title", value);
 
-		                var srsNodes:XMLList = layer.SRS;
-		                var csSrsList:String = "";
-		                for each (var srs:XML in srsNodes)
-		                {
-				    value = srs.toString();
-				    if (csSrsList != "")
-				        csSrsList = csSrsList + "," + value;
-				    else
-				        csSrsList = value;
-				    
+				var srsNodes:XMLList = layer.SRS;
+				var csSrsList:String = "";
+				for each (var srs:XML in srsNodes)
+				{
+					value = srs.toString();
+					if (csSrsList != "")
+						csSrsList = csSrsList + "," + value;
+					else
+						csSrsList = value;
 				}
 				layerCapabilities.put("SRS", csSrsList);
 				
@@ -79,17 +78,15 @@ package org.openscales.core.layer.capabilities
 
 				layerCapabilities.put("LatLonBoundingBox", new Bounds(left,bottom,right,top));
 
-    				left = new Number(layer.BoundingBox.@minx.toXMLString());
-    				bottom = new Number(layer.BoundingBox.@miny.toXMLString());
-    				right = new Number(layer.BoundingBox.@maxx.toXMLString());
-    				top = new Number(layer.BoundingBox.@maxy.toXMLString());
+				left = new Number(layer.BoundingBox.@minx.toXMLString());
+				bottom = new Number(layer.BoundingBox.@miny.toXMLString());
+				right = new Number(layer.BoundingBox.@maxx.toXMLString());
+				top = new Number(layer.BoundingBox.@maxy.toXMLString());
     						
-    				layerCapabilities.put("BoundingBox", new Bounds(left,bottom,right,top));
+				layerCapabilities.put("BoundingBox", new Bounds(left,bottom,right,top));
 				
-                if (name != "")
-                {
-				    this._capabilities.put(name, layerCapabilities);
-			    }
+				if (name != "")
+					this._capabilities.put(name, layerCapabilities);
 
 				//We cannot use clear() or reset() or we'll loose the datas
 				layerCapabilities = new HashMap();
@@ -105,7 +102,8 @@ package org.openscales.core.layer.capabilities
 		 */
 		private function removeNamespaces(doc:XML):void {
 			var namespaces:Array = doc.inScopeNamespaces();
-			for each (var ns:String in namespaces) {
+			var ns:String;
+			for each (ns in namespaces) {
 				doc.removeNamespace(new Namespace(ns));
 			}
 		}
