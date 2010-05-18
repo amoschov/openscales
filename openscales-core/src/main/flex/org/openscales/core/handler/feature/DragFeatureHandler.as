@@ -8,6 +8,7 @@ package org.openscales.core.handler.feature
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.handler.mouse.DragHandler;
 	import org.openscales.core.layer.FeatureLayer;
+	import org.openscales.core.layer.Layer;
 	
 	/**
 	 * DragFeature is use to drag a feature
@@ -25,11 +26,11 @@ package org.openscales.core.handler.feature
 		 * Array of features which are undraggabled and belongs to a
 		 * draggable layers 
 	 	* */	 
-		 private var _undraggableFeatures:Array=null;	
+		 private var _undraggableFeatures:Vector.<Layer> = new Vector.<Layer>();	
 		 /**
 		 * Array of layers which allow dragging
 		 * */
-		 private var _draggableLayers:Array=null;
+		 private var _draggableLayers:Vector.<Layer> = new Vector.<Layer>();
 	 	/**
 	 	 * Constructor class
 	 	 * 
@@ -39,8 +40,6 @@ package org.openscales.core.handler.feature
 		public function DragFeatureHandler(map:Map=null, active:Boolean=false)
 		{
 			super(map, active);
-			_undraggableFeatures=new Array();
-			_draggableLayers=new Array();
 		}
 		/**
 		 * This function is launched when the Mouse is down
@@ -48,7 +47,7 @@ package org.openscales.core.handler.feature
 		override  protected function onMouseDown(event:Event):void{
 			var feature:Feature=event.target as Feature;
 			//The target is a feature , its' layer is draggable and it doesn't belongs to the undraggableFeatures Array
-			if(feature!=null && Util.indexOf(_draggableLayers,feature.layer)!=-1 && Util.indexOf(_undraggableFeatures,feature)==-1){
+			if(feature!=null && _draggableLayers.indexOf(feature.layer)!=-1 && _undraggableFeatures.indexOf(feature)==-1){
 				feature.startDrag();
 				_featureCurrentlyDragged=feature;
 				this.map.dispatchEvent(new FeatureEvent(FeatureEvent.FEATURE_DRAG_START,feature));
@@ -84,13 +83,13 @@ package org.openscales.core.handler.feature
 			if(feature!=null){
 				for each(var featureLayer:FeatureLayer in _draggableLayers){
 					//The feature belongs to a draggable layers
-					if(Util.indexOf(featureLayer.features,feature)!=-1){
+					if(featureLayer.features.indexOf(feature)!=-1){
 						addFeature=true;	
 						break;
 					}
 				}
 				if(addFeature){
-					if(Util.indexOf(_undraggableFeatures,feature)==-1){
+					if(_undraggableFeatures.indexOf(feature)==-1){
 						_undraggableFeatures.push(feature);
 					}
 				}
@@ -110,7 +109,7 @@ package org.openscales.core.handler.feature
 		 * @param layer:FeatureLayer the layer to add
 		 * */
 		public function addDraggableLayer(layer:FeatureLayer):void{
-			if(layer!=null && Util.indexOf(_draggableLayers,layer)==-1){
+			if(layer!=null && _draggableLayers.indexOf(layer)==-1){
 				_draggableLayers.push(layer);
 			}
 		}

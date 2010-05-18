@@ -15,6 +15,7 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.handler.feature.SelectFeaturesHandler;
 	import org.openscales.core.handler.mouse.DragHandler;
 	import org.openscales.core.layer.FeatureLayer;
+	import org.openscales.core.layer.Layer;
 
 	public class DrawHandler extends Handler
 	{
@@ -117,7 +118,7 @@ package org.openscales.core.handler.feature.draw
 		 * User clicks on delete selected feature button
 		 */
 		public function deleteSelectedFeatures():void {
-			var featuresToDelete:Array = this.selectFeaturesHandler.selectedFeatures;
+			var featuresToDelete:Vector.<Feature> = this.selectFeaturesHandler.selectedFeatures;
 			this.selectFeaturesHandler.clearSelection();
 			this.drawLayer.removeFeatures(featuresToDelete);
 		}
@@ -129,7 +130,9 @@ package org.openscales.core.handler.feature.draw
 				this.selectFeaturesHandler = new SelectFeaturesHandler(this.map, false);
 				this.selectFeaturesHandler.onSelectionUpdated = this.onSelectionUpdated;
 				this.map.addLayer(drawLayer);
-				this.selectFeaturesHandler.layers = [drawLayer];
+				
+				this.selectFeaturesHandler.layers = new Vector.<Layer>();
+				this.selectFeaturesHandler.layers.push(drawLayer);
 				
 				//Properties of MultiHandler
 				this.multiFeaturesHandler.map = value;

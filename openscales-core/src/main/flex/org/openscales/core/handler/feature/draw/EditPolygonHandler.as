@@ -65,13 +65,14 @@ package org.openscales.core.handler.feature.draw
 					//Virtual vertices treatment
 					else if(feature is Point /* && Util.indexOf(this._editionFeatureArray,feature)!=-1 */)
 					{
-						for(var i:int=0;i<this._editionFeatureArray.length;i++){
+						var i:int = this._editionFeatureArray.length - 1;
+						for(i;i>-1;--i){
 							if(this._editionFeatureArray[i][0]==feature){
 								//We remove the edition feature to create another 						
 								//TODO Damien nda only delete the feature concerned by the operation
 								_layerToEdit.removeFeature(feature);
 								this._featureClickHandler.removeControledFeature(feature);
-								Util.removeItem(this._editionFeatureArray,this._editionFeatureArray[i]);
+								this._editionFeatureArray.slice(i,1);
 								feature.destroy();
 								feature=null;
 							}

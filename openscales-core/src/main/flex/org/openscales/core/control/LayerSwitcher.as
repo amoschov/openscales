@@ -246,9 +246,10 @@ package org.openscales.core.control
 				// count overlays
 				var oCount:Number = 0;
 				
-				var layerArray:Array = this.map.layers;
-				for(i=layerArray.length-1;i>=0;i--) {
-					layer = layerArray[i] as Layer;
+				var layerArray:Vector.<Layer> = this.map.layers;
+				i=layerArray.length-1;
+				for(i;i>=0;--i) {
+					layer = layerArray[i];
 					if(!layer.isBaseLayer && !layer.isFixed) {
 						oCount++;
 					}
@@ -264,9 +265,10 @@ package org.openscales.core.control
 					this.addChild(overlayTextField);
 				}
 				
-				// Display overlays				
-				for(i=layerArray.length-1;i>=0;i--) {
-					layer = layerArray[i] as Layer;
+				// Display overlays
+				i=layerArray.length-1;
+				for(i;i>=0;--i) {
+					layer = layerArray[i];
 					if(!layer.isBaseLayer && !layer.isFixed) {
 						if(_firstOverlays)
 						{

@@ -84,6 +84,10 @@ package org.openscales.component.control
     {
     }
 
+	public function destroy():void {
+		this._map = null;
+		this._fxmap = null;
+	}
     public function set position(px:Pixel):void
     {
       if (px != null) {

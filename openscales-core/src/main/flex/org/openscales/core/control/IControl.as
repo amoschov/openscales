@@ -19,6 +19,8 @@ package org.openscales.core.control {
 
 		function draw():void;
 
+		function destroy():void;
+
 		function set position(px:Pixel):void;
 
 		function get position():Pixel;

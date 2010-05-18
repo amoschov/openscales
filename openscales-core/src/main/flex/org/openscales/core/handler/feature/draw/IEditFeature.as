@@ -52,6 +52,6 @@ package org.openscales.core.handler.feature.draw
 		 * @param virtualVertice the virtual vertice 
 		 * @param arrayTosearch The array where to find the parent 
 		 * */
-		 function findVirtualVerticeParent(virtualVertice:PointFeature,arrayTosearch:Array=null):Feature;
+		 function findVirtualVerticeParent(virtualVertice:PointFeature,arrayTosearch:Vector.<Vector.<Feature>>=null):Feature;
 	}
 }

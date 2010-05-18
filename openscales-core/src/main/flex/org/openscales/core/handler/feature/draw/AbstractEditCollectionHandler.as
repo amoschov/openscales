@@ -260,7 +260,10 @@ package org.openscales.core.handler.feature.draw
 						}
 						if(AbstractEditCollectionHandler._pointUnderTheMouse.layer==null) {
 							layerToEdit.addFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
-							 _editionFeatureArray.push(new Array(AbstractEditCollectionHandler._pointUnderTheMouse,vectorfeature));
+							var v:Vector.<Feature> = new Vector.<Feature>(2);
+							v[0] = AbstractEditCollectionHandler._pointUnderTheMouse;
+							v[1] = vectorfeature
+							 _editionFeatureArray.push(v);
 						}
 						
 					 	if(findIndexOfFeatureCurrentlyDrag(AbstractEditCollectionHandler._pointUnderTheMouse)!=-1){ 

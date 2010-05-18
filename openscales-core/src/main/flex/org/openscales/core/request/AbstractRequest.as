@@ -29,7 +29,7 @@ package org.openscales.core.request
 		public static const DEFAULT_MAX_CONN:uint = 10; // number of parallel requests
 		private static const DEFAULT_MAX_ACTIVE_TIME:uint = 0; // 5000 for a timeout of 5s by request
 		private static var _maxConn:uint = DEFAULT_MAX_CONN;
-		private static var _pendingRequests:Array = new Array();
+		private static var _pendingRequests:Vector.<AbstractRequest> = new Vector.<AbstractRequest>();
 		private static var _activeConn:HashMap = new HashMap();
 		
 		private var _duration:Number = DEFAULT_MAX_ACTIVE_TIME;

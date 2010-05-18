@@ -13,6 +13,7 @@ package org.openscales.core.format
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
 	import org.openscales.core.geometry.Collection;
+	import org.openscales.core.geometry.Geometry;
 	import org.openscales.core.geometry.LineString;
 	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.geometry.MultiLineString;
@@ -23,7 +24,6 @@ package org.openscales.core.format
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
-	import org.openscales.core.geometry.Geometry;
 
 	/**
 	 * Read/Write GML. Supports the GML simple features profile.
@@ -55,6 +55,8 @@ package org.openscales.core.format
 		private var _dim:Number;
 
 		private var _onFeature:Function;
+		private var _featuresID:Vector.<String>;
+		private var _oldFeatures:Vector.<Feature>;
 
 		/**
 		 * GMLFormat constructor
@@ -62,9 +64,14 @@ package org.openscales.core.format
 		 * @param extractAttributes
 		 *
 		 */
-		public function GMLFormat(extractAttributes:Boolean = true, onFeature:Function = null) {
+		public function GMLFormat(extractAttributes:Boolean = true,
+								  onFeature:Function = null,
+								  featuresID:Vector.<String> = null,
+								  oldfeatures:Vector.<Feature> = null) {
 			this.extractAttributes = extractAttributes;
 			this._onFeature=onFeature;
+			this._featuresID = featuresID;
+			this._oldFeatures = oldfeatures;
 		}
 
 		/**
@@ -99,16 +106,31 @@ package org.openscales.core.format
 			var features:Array = [];
 			var feature:Feature;
 			var i:int;
+			var xmlNode:XML;
+			var id:String;
 			if(this._onFeature!=null) {
-				for (i = 0; i < j; i++) {
-					feature = this.parseFeature(featureNodes[i]);
+				for each(xmlNode in featureNodes) {
+					id = (xmlNode..@fid).toString();
+					i = this._featuresID.indexOf(id);
+					if(this._featuresID!=null && i!=-1) {
+						if(this._oldFeatures!=null)
+							this._oldFeatures.slice(i,1);
+						continue;
+					}
+					feature = this.parseFeature(xmlNode);
 					if (feature) {
 						this._onFeature(feature);
 					}
 				}
 			} else {
-				for (i = 0; i < j; i++) {
-					feature = this.parseFeature(featureNodes[i]);
+				for each(xmlNode in featureNodes) {
+					id = (xmlNode..@fid).toString()
+					i = this._featuresID.indexOf(id);
+					if(this._featuresID!=null && i!=-1) {
+						this._oldFeatures.slice(i,1);
+						continue;
+					}
+					feature = this.parseFeature(xmlNode);
 					if (feature) {
 						features.push(feature);
 					}

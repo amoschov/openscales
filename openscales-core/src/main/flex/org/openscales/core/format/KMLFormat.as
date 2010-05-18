@@ -7,6 +7,7 @@ package org.openscales.core.format
 	import flash.events.Event;
 	
 	import org.openscales.core.feature.CustomMarkerFeature;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
@@ -43,9 +44,9 @@ package org.openscales.core.format
 		private var _defaultImage:Class;
 
 		// features
-		private var iconsfeatures:Array = new Array();
-		private var linesfeatures:Array = new Array();
-		private var polygonsfeatures:Array = new Array();
+		private var iconsfeatures:Vector.<Feature> = new Vector.<Feature>();
+		private var linesfeatures:Vector.<Feature> = new Vector.<Feature>();
+		private var polygonsfeatures:Vector.<Feature> = new Vector.<Feature>();
 		// styles
 		private var lineStyles:Object = new Object();
 		private var pointStyles:Object = new Object();
@@ -407,7 +408,7 @@ package org.openscales.core.format
 			var placemarks:XMLList = dataXML..Placemark;
 			loadPlacemarks(placemarks.copy());
 			
-			var _features:Array = polygonsfeatures.concat(linesfeatures, iconsfeatures);
+			var _features:Vector.<Feature> = polygonsfeatures.concat(linesfeatures, iconsfeatures);
 
 			return _features;
 		}
