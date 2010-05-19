@@ -150,8 +150,9 @@ package org.openscales.core.format
 			return deleteNode;
 		}
 
-		public function destroy():void {
+		override public function destroy():void {
 			this.layer = null;
+			super.destroy();
 		}
 
 		//Getters and Setters

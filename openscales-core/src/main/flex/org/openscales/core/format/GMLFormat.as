@@ -1,6 +1,8 @@
 package org.openscales.core.format
 {
+	import flash.utils.clearInterval;
 	import flash.utils.getQualifiedClassName;
+	import flash.utils.setInterval;
 	import flash.xml.XMLNode;
 	
 	import org.openscales.core.Trace;
@@ -55,8 +57,16 @@ package org.openscales.core.format
 		private var _dim:Number;
 
 		private var _onFeature:Function;
-		private var _featuresID:Vector.<String>;
-		private var _oldFeatures:Vector.<Feature>;
+
+
+		private var xmlString:String;
+		private var sXML:String;
+		private var eXML:String    = "</gml:featureMember></wfs:FeatureCollection>";
+		private var eFXML:String   = "</gml:featureMember>";
+		private var sFXML:String   = "<gml:featureMember>";
+		private var step:int       = 200;
+		private var lastInd:int    = 0;
+		private var idinterval:int = -1;
 
 		/**
 		 * GMLFormat constructor
@@ -65,13 +75,9 @@ package org.openscales.core.format
 		 *
 		 */
 		public function GMLFormat(extractAttributes:Boolean = true,
-								  onFeature:Function = null,
-								  featuresID:Vector.<String> = null,
-								  oldfeatures:Vector.<Feature> = null) {
+								  onFeature:Function = null) {
 			this.extractAttributes = extractAttributes;
 			this._onFeature=onFeature;
-			this._featuresID = featuresID;
-			this._oldFeatures = oldfeatures;
 		}
 
 		/**
@@ -82,61 +88,74 @@ package org.openscales.core.format
 		 * @return features.
 		 */
 		override public function read(data:Object):Object {
-			var dataXML:XML = null;
-			if (typeof data == "string") { 
-				dataXML = new XML(data);
+			this.xmlString = data as String;
+			data = null;
+			if(this.xmlString.indexOf(this.sFXML)!=-1) {
+				var end:int = this.xmlString.indexOf(">",this.xmlString.indexOf(">")+1)+1;
+				this.sXML = this.xmlString.slice(0,end);
+			/*
+				var dim:int;
+				var coordNodes:XMLList = featureNodes[0].*::posList;
+				if (coordNodes.length() == 0) {
+					coordNodes = featureNodes[0].*::pos;
+				}
+				if (coordNodes.length() > 0) {
+					dim = coordNodes[0].@*::srsDimension;
+				}    
+				this.dim = (dim == 3) ? 3 : 2;
+			*/
+				this.dim = 2;
+				this.idinterval = setInterval(readTimer,10);
 			} else {
-				dataXML = XML(data);
+				this.xmlString = null;
 			}
-
-			var featureNodes:XMLList = dataXML..*::featureMember;
-			var j:int = featureNodes.length();
-			if (j == 0) { return []; }
-
-			var dim:int;
-			var coordNodes:XMLList = featureNodes[0].*::posList;
-			if (coordNodes.length() == 0) {
-				coordNodes = featureNodes[0].*::pos;
-			}
-			if (coordNodes.length() > 0) {
-				dim = coordNodes[0].@*::srsDimension;
-			}    
-			this.dim = (dim == 3) ? 3 : 2;
-
-			var features:Array = [];
-			var feature:Feature;
-			var i:int;
+			return null;
+		}
+		
+		private function readTimer():void {
+			this.lastInd = this.xmlString.indexOf(this.sFXML,this.lastInd);
+			if(this.lastInd==-1)
+				return;
 			var xmlNode:XML;
+			var feature:Feature;
 			var id:String;
-			if(this._onFeature!=null) {
-				for each(xmlNode in featureNodes) {
-					id = (xmlNode..@fid).toString();
-					i = this._featuresID.indexOf(id);
-					if(this._featuresID!=null && i!=-1) {
-						if(this._oldFeatures!=null)
-							this._oldFeatures.slice(i,1);
-						continue;
-					}
-					feature = this.parseFeature(xmlNode);
+			var end:int;
+
+			var i:int = -1;
+			while(this.lastInd!=-1 && ++i<this.step) {
+				end = this.xmlString.indexOf(eFXML,this.lastInd);
+				if(end<0)
+					break;
+				xmlNode = new XML( this.sXML + this.xmlString.substr(this.lastInd,end-this.lastInd) + this.eXML )
+				this.lastInd = this.xmlString.indexOf(this.sFXML,this.lastInd+1);
+				if(this._onFeature!=null) {
+					feature = parseFeature(xmlNode);
 					if (feature) {
 						this._onFeature(feature);
 					}
-				}
-			} else {
-				for each(xmlNode in featureNodes) {
-					id = (xmlNode..@fid).toString()
-					i = this._featuresID.indexOf(id);
-					if(this._featuresID!=null && i!=-1) {
-						this._oldFeatures.slice(i,1);
-						continue;
-					}
-					feature = this.parseFeature(xmlNode);
-					if (feature) {
-						features.push(feature);
-					}
-				}
+					
+				} 
 			}
-			return features;
+			if(this.lastInd==-1) {
+				clearInterval( this.idinterval  );
+				this.idinterval=-1;
+				this.xmlString = null;
+				this.sXML = null;
+			}
+			
+		}
+
+		public function reset():void {
+			if(this.idinterval!=-1) {
+				clearInterval( this.idinterval );
+				this.idinterval=-1;
+				this.xmlString = null;
+				this.sXML = null;
+			}
+		}
+		public function destroy():void {
+			this.reset();
+			this._onFeature = null;
 		}
 
 		/**

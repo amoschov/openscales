@@ -60,6 +60,9 @@ package org.openscales.core.layer.ogc
 
 		private var _fullRedraw:Boolean = false;
 		private var _oldFeatures:Vector.<Feature> = null;
+
+		private var _gml:GMLFormat = null;
+
 		/**
 		 * WFS class constructor
 		 *
@@ -87,6 +90,12 @@ package org.openscales.core.layer.ogc
 			this.url = url;
 		}
 
+		override public function destroy():void {
+			if(this._gml != null)
+				this._gml.destroy();
+			this._gml = null;
+			super.destroy();
+		}
 		override public function set map(map:Map):void {
 			super.map = map;
 
@@ -114,8 +123,14 @@ package org.openscales.core.layer.ogc
 				projectedBounds = this.maxExtent.clone();
 			}
 			var previousFeatureBbox:Bounds = this.featuresBbox.clone(); 
+
 			this.params.bbox = projectedBounds.boundsToString();
 
+			if (!this._firstRendering
+				&& !previousFeatureBbox.containsBounds(projectedBounds)) {
+				this.reset();
+				this._firstRendering = true;
+			}
 			if (this._firstRendering) {
 				this.featuresBbox = projectedBounds;
 				this.loadFeatures(this.getFullRequestString());
@@ -123,7 +138,7 @@ package org.openscales.core.layer.ogc
 			} else {
 				// Use GetCapabilities to know if all features have already been retreived.
 				// If they are, we don't request data again
-				if (!previousFeatureBbox.containsBounds(projectedBounds)
+				/*if (!previousFeatureBbox.containsBounds(projectedBounds)
 					&& ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent"))))){
 					var _features:Array = new Array();
 					this.featuresBbox = projectedBounds;
@@ -134,11 +149,11 @@ package org.openscales.core.layer.ogc
 					this.loadFeatures(this.getFullRequestString());
 
 					this.draw();
-				}else {
+				}else {*/
 					this.loading = true;
 					this.draw();
 					this.loading = false;
-				}
+				/*}*/
 			}
 		}
 
@@ -246,24 +261,27 @@ package org.openscales.core.layer.ogc
 			this.loading = false;			
 
 			// To avoid errors in case of the WFS server is dead
-			try {
+			/*try {
 				var doc:XML =  new XML(loader.data);
 			}
 			catch(error:Error) {
 				Trace.error(error.message);
-			}
+			}*/
 
 			if(this._fullRedraw) {
 				this._oldFeatures = this.features;
 			}
-			var gml:GMLFormat = new GMLFormat(this.extractAttributes,this.addFeature,this.feauturesID,this._oldFeatures);
+			if(this._gml != null)
+				this._gml.reset();
+			else
+				this._gml = new GMLFormat(this.extractAttributes,this.addFeature);
 
 			if (this.map.baseLayer.projection != null && this.projection != null && this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
-				gml.externalProj = this.projection;
-				gml.internalProj = this.map.baseLayer.projection;
+				this._gml.externalProj = this.projection;
+				this._gml.internalProj = this.map.baseLayer.projection;
 			}
 
-			gml.read(doc);
+			this._gml.read(loader.data as String);
 
 			if(this._fullRedraw) {
 				var f:Feature;
