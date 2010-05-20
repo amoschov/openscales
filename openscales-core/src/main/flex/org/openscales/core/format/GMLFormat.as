@@ -7,6 +7,7 @@ package org.openscales.core.format
 	
 	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
+	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;
@@ -57,7 +58,7 @@ package org.openscales.core.format
 		private var _dim:Number;
 
 		private var _onFeature:Function;
-
+		private var _ids:HashMap;
 
 		private var xmlString:String;
 		private var sXML:String;
@@ -75,9 +76,11 @@ package org.openscales.core.format
 		 *
 		 */
 		public function GMLFormat(extractAttributes:Boolean = true,
-								  onFeature:Function = null) {
+								  onFeature:Function = null,
+								  ids:HashMap=null) {
 			this.extractAttributes = extractAttributes;
 			this._onFeature=onFeature;
+			this._ids = ids;
 		}
 
 		/**
@@ -118,23 +121,24 @@ package org.openscales.core.format
 				return;
 			var xmlNode:XML;
 			var feature:Feature;
-			var id:String;
 			var end:int;
 
-			var i:int = -1;
-			while(this.lastInd!=-1 && ++i<this.step) {
+			while(this.lastInd!=-1) {
 				end = this.xmlString.indexOf(eFXML,this.lastInd);
 				if(end<0)
 					break;
 				xmlNode = new XML( this.sXML + this.xmlString.substr(this.lastInd,end-this.lastInd) + this.eXML )
 				this.lastInd = this.xmlString.indexOf(this.sFXML,this.lastInd+1);
+				if(this._ids.containsKey((xmlNode..@fid) as String))
+					continue;
 				if(this._onFeature!=null) {
 					feature = parseFeature(xmlNode);
 					if (feature) {
 						this._onFeature(feature);
 					}
 					
-				} 
+				}
+				break;
 			}
 			if(this.lastInd==-1) {
 				clearInterval( this.idinterval  );

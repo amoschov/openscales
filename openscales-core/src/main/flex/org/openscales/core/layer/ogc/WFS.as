@@ -29,6 +29,8 @@ package org.openscales.core.layer.ogc
 		private var _featureNS:String = null;
 
 		private var _geometryColumn:String = null;
+		
+		private var _ids:HashMap = new HashMap();
 
 		/**
 		 * 	 Should the WFS layer parse attributes from the retrieved
@@ -59,7 +61,6 @@ package org.openscales.core.layer.ogc
 		private var _firstRendering:Boolean = true;
 
 		private var _fullRedraw:Boolean = false;
-		private var _oldFeatures:Vector.<Feature> = null;
 
 		private var _gml:GMLFormat = null;
 
@@ -126,11 +127,6 @@ package org.openscales.core.layer.ogc
 
 			this.params.bbox = projectedBounds.boundsToString();
 
-			if (!this._firstRendering
-				&& !previousFeatureBbox.containsBounds(projectedBounds)) {
-				this.reset();
-				this._firstRendering = true;
-			}
 			if (this._firstRendering) {
 				this.featuresBbox = projectedBounds;
 				this.loadFeatures(this.getFullRequestString());
@@ -138,7 +134,7 @@ package org.openscales.core.layer.ogc
 			} else {
 				// Use GetCapabilities to know if all features have already been retreived.
 				// If they are, we don't request data again
-				/*if (!previousFeatureBbox.containsBounds(projectedBounds)
+				if (!previousFeatureBbox.containsBounds(projectedBounds)
 					&& ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent"))))){
 					var _features:Array = new Array();
 					this.featuresBbox = projectedBounds;
@@ -149,11 +145,11 @@ package org.openscales.core.layer.ogc
 					this.loadFeatures(this.getFullRequestString());
 
 					this.draw();
-				}else {*/
+				}else {
 					this.loading = true;
 					this.draw();
 					this.loading = false;
-				/*}*/
+				}
 			}
 		}
 
@@ -268,13 +264,10 @@ package org.openscales.core.layer.ogc
 				Trace.error(error.message);
 			}*/
 
-			if(this._fullRedraw) {
-				this._oldFeatures = this.features;
-			}
 			if(this._gml != null)
 				this._gml.reset();
 			else
-				this._gml = new GMLFormat(this.extractAttributes,this.addFeature);
+				this._gml = new GMLFormat(this.extractAttributes,this.addFeature,this._ids);
 
 			if (this.map.baseLayer.projection != null && this.projection != null && this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
 				this._gml.externalProj = this.projection;
@@ -284,12 +277,12 @@ package org.openscales.core.layer.ogc
 			this._gml.read(loader.data as String);
 
 			if(this._fullRedraw) {
-				var f:Feature;
-				for each(f in this._oldFeatures) {
-					this.removeFeature(f,true);
-				}
+				var farray:Array = this._ids.getValues();
+				var i:uint = farray.length;
+				for(;i>0;--i)
+					this.removeFeature(farray.pop(),true);
 			}
-			this._oldFeatures = null;
+			this._ids.clear();
 
 			this.draw();
 
@@ -301,11 +294,16 @@ package org.openscales.core.layer.ogc
 		}
 
 		override public function addFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
-			for each(var _feature:Feature in this.features)
-				if(_feature.name == feature.name)
-					return;
 			super.addFeature(feature,dispatchFeatureEvent);
+			if(feature.layer==null)
+				return;
 			feature.draw();
+			this._ids.put(feature.name,feature);
+		}
+		
+		override public function removeFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
+			this._ids.remove(feature.name);
+			super.removeFeature(feature,dispatchFeatureEvent);
 		}
 
 		/**
