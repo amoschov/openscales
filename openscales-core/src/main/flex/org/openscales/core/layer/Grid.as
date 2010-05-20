@@ -239,8 +239,8 @@ package org.openscales.core.layer
 			var px:Pixel = this.map.getLayerPxFromLonLat(ul);
 
 			if(this._grid==null) {
-				this._grid = new Vector.<Vector.<ImageTile>>(1,true);
-				this._grid[0] = new Vector.<ImageTile>(1,true);
+				this._grid = new Vector.<Vector.<ImageTile>>(1);
+				this._grid[0] = new Vector.<ImageTile>(1);
 				this._grid[0][0] = null;
 			}
 
