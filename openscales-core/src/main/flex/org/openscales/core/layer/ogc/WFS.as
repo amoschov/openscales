@@ -30,7 +30,7 @@ package org.openscales.core.layer.ogc
 
 		private var _geometryColumn:String = null;
 		
-		private var _ids:HashMap = new HashMap();
+		private var _featuresids:HashMap = new HashMap();
 
 		/**
 		 * 	 Should the WFS layer parse attributes from the retrieved
@@ -256,18 +256,10 @@ package org.openscales.core.layer.ogc
 
 			this.loading = false;			
 
-			// To avoid errors in case of the WFS server is dead
-			/*try {
-				var doc:XML =  new XML(loader.data);
-			}
-			catch(error:Error) {
-				Trace.error(error.message);
-			}*/
-
 			if(this._gml != null)
 				this._gml.reset();
 			else
-				this._gml = new GMLFormat(this.extractAttributes,this.addFeature,this._ids);
+				this._gml = new GMLFormat(this.extractAttributes,this.addFeature,this._featuresids);
 
 			if (this.map.baseLayer.projection != null && this.projection != null && this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
 				this._gml.externalProj = this.projection;
@@ -277,12 +269,12 @@ package org.openscales.core.layer.ogc
 			this._gml.read(loader.data as String);
 
 			if(this._fullRedraw) {
-				var farray:Array = this._ids.getValues();
+				var farray:Array = this._featuresids.getValues();
 				var i:uint = farray.length;
 				for(;i>0;--i)
 					this.removeFeature(farray.pop(),true);
 			}
-			this._ids.clear();
+			this._featuresids.clear();
 
 			this.draw();
 
@@ -298,11 +290,11 @@ package org.openscales.core.layer.ogc
 			if(feature.layer==null)
 				return;
 			feature.draw();
-			this._ids.put(feature.name,feature);
+			this._featuresids.put(feature.name,feature);
 		}
 		
 		override public function removeFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
-			this._ids.remove(feature.name);
+			this._featuresids.remove(feature.name);
 			super.removeFeature(feature,dispatchFeatureEvent);
 		}
 
