@@ -1,7 +1,10 @@
 package org.openscales.core.format
 {
+	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.utils.clearInterval;
 	import flash.utils.getQualifiedClassName;
+	import flash.utils.getTimer;
 	import flash.utils.setInterval;
 	import flash.xml.XMLNode;
 	
@@ -27,47 +30,54 @@ package org.openscales.core.format
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
-
+	
 	/**
 	 * Read/Write GML. Supports the GML simple features profile.
 	 */
 	public class GMLFormat extends Format
 	{
 		protected var _featureNS:String = "http://openscales.org/OpenScales";
-
+		
 		protected var _featureName:String = "featureMember";
-
+		
 		protected var _featurePrefix:String = "OpenScales"; 
-
+		
 		protected var _layerName:String = "features";
-
+		
 		protected var _geometryName:String = "geometry";
-
+		
 		protected var _collectionName:String = "FeatureCollection";
-
+		
 		protected var _gmlns:String = "http://www.opengis.net/gml";
-
+		
 		protected var _gmlprefix:String = "gml";
-
+		
 		protected var _wfsns:String = "http://www.opengis.net/wfs";
-
+		
 		protected var _wfsprefix:String = "wfs";
-
+		
 		private var _extractAttributes:Boolean = true;
-
+		
 		private var _dim:Number;
-
+		
 		private var _onFeature:Function;
-		private var _featuresids:HashMap;
 
+        private var _featuresids:HashMap;
+		
+		
 		private var xmlString:String;
 		private var sXML:String;
 		private var eXML:String    = "</gml:featureMember></wfs:FeatureCollection>";
 		private var eFXML:String   = "</gml:featureMember>";
 		private var sFXML:String   = "<gml:featureMember>";
+		private var step:int       = 200;
 		private var lastInd:int    = 0;
-		private var idinterval:int = -1;
-
+		//fps
+		private var allowedTime:Number = 1000/30 ;
+		private var startTime:Number = 0;
+		private var savedIndex:Number = 0;
+		private var sprite:Sprite = new Sprite();
+		
 		/**
 		 * GMLFormat constructor
 		 *
@@ -79,9 +89,9 @@ package org.openscales.core.format
 								  extractAttributes:Boolean = true) {
 			this.extractAttributes = extractAttributes;
 			this._onFeature=onFeature;
-			this._featuresids = featuresids;
+            this._featuresids = featuresids;
 		}
-
+		
 		/**
 		 * Read data
 		 *
@@ -89,13 +99,15 @@ package org.openscales.core.format
 		 *
 		 * @return features.
 		 */
+		
+		
 		override public function read(data:Object):Object {
 			this.xmlString = data as String;
 			data = null;
-			if(this.xmlString.indexOf(this.sFXML)!=-1) {
-				var end:int = this.xmlString.indexOf(">",this.xmlString.indexOf(">")+1)+1;
+			if(this.xmlString.indexOf(this.sFXML)!=-1){
+              	var end:int = this.xmlString.indexOf(">",this.xmlString.indexOf(">")+1)+1;
 				this.sXML = this.xmlString.slice(0,end);
-			/*
+                /*
 				var dim:int;
 				var coordNodes:XMLList = featureNodes[0].*::posList;
 				if (coordNodes.length() == 0) {
@@ -105,24 +117,31 @@ package org.openscales.core.format
 					dim = coordNodes[0].@*::srsDimension;
 				}    
 				this.dim = (dim == 3) ? 3 : 2;
-			*/
-				this.dim = 2;
-				this.idinterval = setInterval(readTimer,10);
+			    */
+			  this.dim = 2;
+              this.sprite.addEventListener(Event.ENTER_FRAME, this.readTimer);
 			} else {
 				this.xmlString = null;
 			}
 			return null;
 		}
 		
-		private function readTimer():void {
+		
+		private function readTimer(event:Event):void {
+			startTime = getTimer();
 			this.lastInd = this.xmlString.indexOf(this.sFXML,this.lastInd);
 			if(this.lastInd==-1)
 				return;
 			var xmlNode:XML;
 			var feature:Feature;
-			var end:int;
-
+			var end:int;		
+			
+			
 			while(this.lastInd!=-1) {
+				if (getTimer() - startTime > allowedTime){
+					return;
+				}
+				
 				end = this.xmlString.indexOf(eFXML,this.lastInd);
 				if(end<0)
 					break;
@@ -130,34 +149,35 @@ package org.openscales.core.format
 				this.lastInd = this.xmlString.indexOf(this.sFXML,this.lastInd+1);
 				if(this._featuresids.containsKey((xmlNode..@fid) as String))
 					continue;
-				feature = parseFeature(xmlNode);
+
+				feature = this.parseFeature(xmlNode);
 				if (feature) {
 					this._onFeature(feature);
 				}
-				break;
 			}
-			if(this.lastInd==-1) {
-				clearInterval( this.idinterval  );
-				this.idinterval=-1;
+
+           if(this.lastInd==-1) {
+				this.sprite.removeEventListener(Event.ENTER_FRAME,this.readTimer)
 				this.xmlString = null;
-				this.sXML = null;
+                this.sXML = null;
+				return;
 			}
 			
+			
+			
 		}
-
+		
+		
 		public function reset():void {
-			if(this.idinterval!=-1) {
-				clearInterval( this.idinterval );
-				this.idinterval=-1;
 				this.xmlString = null;
 				this.sXML = null;
-			}
 		}
+		
 		public function destroy():void {
 			this.reset();
 			this._onFeature = null;
 		}
-
+		
 		/**
 		 *    It creates the geometries that are then attached to the returned
 		 *    feature, and calls parseAttributes() to get attribute data out.
@@ -174,15 +194,15 @@ package org.openscales.core.format
 			var geom:Collection = null;
 			var p:Vector.<Geometry> = new Vector.<Geometry>();
 			var pMat:Vector.<Vector.<Geometry>> = new Vector.<Vector.<Geometry>>();
-
+			
 			var feature:Feature = null;
-
+			
 			var i:int;
 			var j:int;
-
+			
 			if (xmlNode..*::MultiPolygon.length() > 0) {
 				var multipolygon:XML = xmlNode..*::MultiPolygon[0];
-
+				
 				geom = new MultiPolygon();
 				var polygons:XMLList = multipolygon..*::Polygon;
 				j = polygons.length();
@@ -191,13 +211,13 @@ package org.openscales.core.format
 					geom.addComponent(polygon);
 				}
 			}
-            else if (xmlNode..*::MultiLineString.length() > 0) {
+			else if (xmlNode..*::MultiLineString.length() > 0) {
 				var multilinestring:XML = xmlNode..*::MultiLineString[0];
-
+				
 				geom = new MultiLineString();
 				var lineStrings:XMLList = multilinestring..*::LineString;
 				j = lineStrings.length();
-
+				
 				for (i = 0; i < j; i++) {
 					p = this.parseCoords(lineStrings[i]);
 					if(p){
@@ -207,37 +227,37 @@ package org.openscales.core.format
 				}
 			} else if (xmlNode..*::MultiPoint.length() > 0) {
 				var multiPoint:XML = xmlNode..*::MultiPoint[0];
-
+				
 				geom = new MultiPoint();
-
+				
 				var points:XMLList = multiPoint..*::Point;
 				j = points.length();
-
+				
 				for (i = 0; i < j; i++) {
 					p = this.parseCoords(points[i]);
 					geom.addComponents(new <Geometry>[p[0]]);
 				}
 			} else if (xmlNode..*::Polygon.length() > 0) {
 				var polygon2:XML = xmlNode..*::Polygon[0];
-
+				
 				geom = this.parsePolygonNode(polygon2);
 			} else if (xmlNode..*::LineString.length() > 0) {
 				var lineString2:XML = xmlNode..*::LineString[0];
-
+				
 				p = this.parseCoords(lineString2);
 				if (p) {
 					geom = new LineString(p);
 				}
 			} else if (xmlNode..*::Point.length() > 0) {
 				var point:XML = xmlNode..*::Point[0];
-
+				
 				geom = new MultiPoint();
 				p = this.parseCoords(point);
 				if (p) {
 					geom.addComponent(p[0]);
 				}
 			}
-
+			
 			if (geom) {
 				// Test more specific geom before because for is operator, a lineString is a multipoint for example (inheritance) 
 				if (geom is MultiPolygon) {
@@ -256,20 +276,20 @@ package org.openscales.core.format
 					Trace.warning("GMLFormat.parseFeature: unrecognized geometry);"); 
 					return null; 
 				}
-
+				
 				feature.name = xmlNode..@fid;
-
+				
 				if (this.extractAttributes) {
 					feature.attributes = this.parseAttributes(xmlNode);
 				}    
-
+				
 				return feature;
-
+				
 			} else {
 				return null;
 			}
 		}
-
+		
 		/**
 		 * Parse attributes
 		 *
@@ -288,7 +308,7 @@ package org.openscales.core.format
 				if(name == null){
 					continue;    
 				}
-
+				
 				// Check for a leaf node
 				if((nodes[i].children().length() == 1)
 					&& !(nodes[i].children().children()[0] is XML)) {
@@ -298,7 +318,7 @@ package org.openscales.core.format
 			}   
 			return attributes;
 		}
-
+		
 		/**
 		 * Given a GML node representing a polygon geometry
 		 *
@@ -317,38 +337,38 @@ package org.openscales.core.format
 			}
 			return new Polygon(rings);
 		}
-
+		
 		/**
 		 * Return an array of coords
 		 */ 
 		public function parseCoords(xmlNode:XML):Vector.<Geometry> {
 			var x:Number, y:Number, left:Number, bottom:Number, right:Number, top:Number;
-
+			
 			var points:Vector.<Geometry>  = new Vector.<Geometry>();
-
+			
 			if (xmlNode) {
-
+				
 				var coordNodes:XMLList = xmlNode.*::posList;
-
+				
 				if (coordNodes.length() == 0) { 
 					coordNodes = xmlNode.*::pos;
 				}    
-
+				
 				if (coordNodes.length() == 0) {
 					coordNodes = xmlNode.*::coordinates;
 				}    
-
+				
 				var coordString:String = coordNodes[0].text();
-
+				
 				var nums:Array = (coordString) ? coordString.split(/[, \n\t]+/) : [];
-
+				
 				while (nums[0] == "") 
 					nums.shift();
-
+				
 				var j:int = nums.length;
 				while (nums[j-1] == "") 
 					nums.pop();
-
+				
 				j = nums.length;
 				var i:int;
 				for(i = 0; i < j; i = i + this.dim) {
@@ -363,7 +383,7 @@ package org.openscales.core.format
 			}
 			return points;
 		}
-
+		
 		/**
 		 * Generate a GML document object given a list of features.
 		 *
@@ -380,7 +400,7 @@ package org.openscales.core.format
 			}
 			return featureCollection;
 		}
-
+		
 		/**
 		 * Accept a Vector feature, and build a GML node for it.
 		 *
@@ -408,7 +428,7 @@ package org.openscales.core.format
 			featureNode.appendChild(featureContainer);
 			return featureNode;
 		}
-
+		
 		/**
 		 * create a GML Object
 		 *
@@ -421,39 +441,39 @@ package org.openscales.core.format
 			if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPolygon"
 				|| getQualifiedClassName(geometry) == "org.openscales.core.geometry::Polygon") {
 				gml = new XML("<" + this._gmlprefix + ":MultiPolygon xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":MultiPolygon>");
-
+				
 				var polygonMember:XML = new XML("<" + this._gmlprefix + ":polygonMember xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":polygonMember>");
-
+				
 				var polygon:XML = new XML("<" + this._gmlprefix + ":Polygon xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":Polygon>");
 				var outerRing:XML = new XML("<" + this._gmlprefix + ":outerBoundaryIs xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":outerBoundaryIs>");
 				var linearRing:XML = new XML("<" + this._gmlprefix + ":LinearRing xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":LinearRing>");
-
+				
 				linearRing.appendChild(this.buildCoordinatesNode(geometry.components[0]));
 				outerRing.appendChild(linearRing);
 				polygon.appendChild(outerRing);
 				polygonMember.appendChild(polygon);
-
+				
 				gml.appendChild(polygonMember);
 			}
 			else if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiLineString"
 				|| getQualifiedClassName(geometry) == "org.openscales.core.geometry::LineString") {
 				gml = new XML("<" + this._gmlprefix + ":MultiLineString xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":MultiLineString>");
-
+				
 				var lineStringMember:XML = new XML("<" + this._gmlprefix + ":lineStringMember xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":lineStringMember>");
-
+				
 				var lineString:XML = new XML("<" + this._gmlprefix + ":LineString xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":LineString>");
-
+				
 				lineString.appendChild(this.buildCoordinatesNode(geometry));
 				lineStringMember.appendChild(lineString);
-
+				
 				gml.appendChild(lineStringMember);
 			}
 			else if (getQualifiedClassName(geometry) == "org.openscales.core.geometry::MultiPoint") {
-
+				
 				gml = new XML("<" + this._gmlprefix + ":MultiPoint xmlns:" + this._gmlprefix + "=\"" + this._gmlns + "\"></" + this._gmlprefix + ":MultiPoint>");
 				var parts:Object = "";
 				parts = geometry.components;   
-
+				
 				var j:int = parts.length;
 				var i:int;
 				for (i = 0; i < j; ++i) { 
@@ -470,7 +490,7 @@ package org.openscales.core.format
 			}
 			return gml; 
 		}
-
+		
 		/**
 		 * Builds the coordinates XmlNode
 		 *
@@ -483,14 +503,14 @@ package org.openscales.core.format
 			coordinatesNode.@decimal = ".";
 			coordinatesNode.@cs = ",";
 			coordinatesNode.@ts = " ";
-
+			
 			var points:Array = null;
 			if (geometry.components) {
 				if (geometry.components.length > 0) {
 					points = geometry.components;
 				}
 			}
-
+			
 			var path:String = "";
 			if (points) {
 				var j:int = points.length;
@@ -509,47 +529,47 @@ package org.openscales.core.format
 				}
 				path += geometry.x + "," + geometry.y + " ";
 			}    
-
+			
 			coordinatesNode.appendChild(path);
-
+			
 			return coordinatesNode;
 		}
-
-
+		
+		
 		//Getters and Setters
-
+		
 		public function get extractAttributes():Boolean {
 			return this._extractAttributes;
 		}
-
+		
 		public function set extractAttributes(value:Boolean):void {
 			this._extractAttributes = value;
 		}
-
+		
 		public function get dim():Number {
 			return this._dim;
 		}
-
+		
 		public function set dim(value:Number):void {
 			this._dim = value;
 		}
-
+		
 		public function get internalProj():ProjProjection {
 			return this._internalProj;
 		}
-
+		
 		public function set internalProj(value:ProjProjection):void {
 			this._internalProj = value;
 		}
-
+		
 		public function get externalProj():ProjProjection {
 			return this._externalProj;
 		}
-
+		
 		public function set externalProj(value:ProjProjection):void {
 			this._externalProj = value;
 		}
-
+		
 	}
 }
 
