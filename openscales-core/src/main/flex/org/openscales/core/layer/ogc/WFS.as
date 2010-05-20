@@ -92,6 +92,9 @@ package org.openscales.core.layer.ogc
 		}
 
 		override public function destroy():void {
+			if(this._request)
+				this._request.destroy();
+			this._request = null;
 			if(this._gml != null)
 				this._gml.destroy();
 			this._gml = null;
