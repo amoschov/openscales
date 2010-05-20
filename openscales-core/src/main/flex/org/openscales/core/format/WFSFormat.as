@@ -23,7 +23,7 @@ package org.openscales.core.format
 		 * @param layer
 		 */
 		public function WFSFormat(layer:WFS) {
-
+			super(layer.addFeature,layer.featuresids,true);
 			this.layer = layer;
 			if (this.layer.featureNS) {
 				this._featureNS = this.layer.featureNS;

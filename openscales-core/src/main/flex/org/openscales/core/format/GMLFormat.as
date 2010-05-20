@@ -74,9 +74,9 @@ package org.openscales.core.format
 		 * @param extractAttributes
 		 *
 		 */
-		public function GMLFormat(extractAttributes:Boolean = true,
-								  onFeature:Function = null,
-								  featuresids:HashMap=null) {
+		public function GMLFormat(onFeature:Function,
+								  featuresids:HashMap,
+								  extractAttributes:Boolean = true) {
 			this.extractAttributes = extractAttributes;
 			this._onFeature=onFeature;
 			this._featuresids = featuresids;
@@ -90,8 +90,6 @@ package org.openscales.core.format
 		 * @return features.
 		 */
 		override public function read(data:Object):Object {
-			if(this._onFeature==null)
-				return null;
 			this.xmlString = data as String;
 			data = null;
 			if(this.xmlString.indexOf(this.sFXML)!=-1) {
@@ -132,11 +130,9 @@ package org.openscales.core.format
 				this.lastInd = this.xmlString.indexOf(this.sFXML,this.lastInd+1);
 				if(this._featuresids.containsKey((xmlNode..@fid) as String))
 					continue;
-				if(this._onFeature!=null) {
-					feature = parseFeature(xmlNode);
-					if (feature) {
-						this._onFeature(feature);
-					}
+				feature = parseFeature(xmlNode);
+				if (feature) {
+					this._onFeature(feature);
 				}
 				break;
 			}

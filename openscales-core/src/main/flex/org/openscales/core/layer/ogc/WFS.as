@@ -259,7 +259,7 @@ package org.openscales.core.layer.ogc
 			if(this._gml != null)
 				this._gml.reset();
 			else
-				this._gml = new GMLFormat(this.extractAttributes,this.addFeature,this._featuresids);
+				this._gml = new GMLFormat(this.addFeature,this._featuresids,this.extractAttributes);
 
 			if (this.map.baseLayer.projection != null && this.projection != null && this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
 				this._gml.externalProj = this.projection;
@@ -283,6 +283,10 @@ package org.openscales.core.layer.ogc
 			} else {
                 Trace.warning("Warning : no LAYER_LOAD_END dispatched because map event dispatcher is not defined"); 	
 			}
+		}
+
+		public function get featuresids():HashMap {
+			return this._featuresids;
 		}
 
 		override public function addFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
