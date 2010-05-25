@@ -32,7 +32,7 @@ package org.openscales.core.feature {
 		 */
 		public function Marker(geom:Point=null, data:Object=null, style:Style=null) {
 			super(geom, data, style);
-			this._graphic = new DisplayObjectMarker(this._image, -8, -16, 16);
+			this._graphic = new DisplayObjectMarker(this._image, -11, -25, 16);
 			var rule:Rule = new Rule();
 			var symbolizer:PointSymbolizer = new PointSymbolizer(this._graphic);
 			rule.symbolizers.push(symbolizer);
