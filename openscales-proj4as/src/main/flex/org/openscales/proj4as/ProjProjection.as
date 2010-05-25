@@ -148,7 +148,16 @@ package org.openscales.proj4as {
 		public function clone():ProjProjection {
 			return new ProjProjection(this.srsCode);
 		}
-		
+
+		/**
+		 * Allow to add unsupported srscodes
+		 * @param name:String the srs name
+		 * @param def:String the srs definition
+		 */
+		static public function addSrsCode(name:String,def:String):void {
+			ProjProjection.additionnalDefs[name] = def;
+		}
+
 		private function loadProjDefinition():void {
 			if (this.srsCode != null && ProjProjection.defs[this.srsCode] != null) {
 				this.parseDef(ProjProjection.defs[this.projParams.srsCode]);
@@ -157,10 +166,6 @@ package org.openscales.proj4as {
 				this.parseDef(ProjProjection.additionnalDefs[this.projParams.srsCode]);
 				this.initTransforms();
 			}
-		}
-
-		static public function addSrsCode(name:String,def:String):void {
-			ProjProjection.additionnalDefs[name] = def;
 		}
 
 		protected function initTransforms():void {
