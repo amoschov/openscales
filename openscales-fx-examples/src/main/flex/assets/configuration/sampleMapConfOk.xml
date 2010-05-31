@@ -1,0 +1,62 @@
+<Map name="fxmapy" width="600" height="400" maxExtent="-180,-90,180,90"
+	zoom="4" lon="-74.011" lat="40.710" projection="EPSG:4326">
+
+	<Layers>
+	
+				
+			<WMSC name="Nasa"
+				 url="http://openscales.org/geoserver/gwc/service/wms"
+				 layers="bluemarble"
+				 format="image/jpeg"
+				 maxExtent="-180,-90,180,90"
+				 isBaseLayer="true"
+				 maxResolution="1.40625" numZoomLevels="16"
+				 projection="EPSG:4326"
+				 
+				 />
+			<WFS name="Topp States (WFS) own style"
+				url="http://openscales.org/geoserver/wfs"
+				typename="topp:states"
+				projection="EPSG:4326"
+				version="1.0.0"
+				isBaseLayer="false"
+				maxExtent="-180,-90,180,90" maxResolution="1.40625" numZoomLevels="16" >	
+				<Style>
+                  <rules>
+                    <rule>
+                     <PolygonSymbolizer>
+                       <stroke color="0x454545"  width="1"  opacity="1" linecap="LINECAP_ROUND" linejoin="LINEJOIN_ROUND" />
+                     <fill>
+                        <SolidFill color="0x545454" opacity="1"/>
+                     </fill>
+                  </PolygonSymbolizer>
+                 </rule>
+                </rules>
+               </Style>
+             </WFS>
+             
+             <WFS name="Topp States (WFS)"
+				url="http://openscales.org/geoserver/wfs"
+				typename="topp:states"
+				projection="EPSG:4326"
+				version="1.0.0"
+				isBaseLayer="false"
+				style="DefaultCircleStyle" maxExtent="-180,-90,180,90" maxResolution="1.40625" numZoomLevels="16" />
+	
+	</Layers>
+
+	<Handlers>
+		<DragHandler active="true" />
+		<WheelHandler active="true" />
+	</Handlers>
+
+	<Controls>
+		<PanZoom id="pan" x="15" y="15" />
+		<LayerSwitcher />
+	</Controls>
+    <Custom>
+		<Projections>
+			<Projection label="WGS84G">EPSG:4326</Projection>
+		</Projections>
+	</Custom>
+</Map>

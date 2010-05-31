@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns="*" xmlns:mx="http://www.adobe.com/2006/mxml"
+		   xmlns:os="http://openscales.org" creationComplete="initMap();">
+	
+	
+	<mx:Canvas id="mapContainer" name="mapContainer"
+			   width="100%" height="100%"
+			   visible="true"/>
+	
+	<mx:Script>
+       <![CDATA[
+		   import mx.events.DragEvent;
+		   
+		   import org.openscales.core.Map;
+		   import org.openscales.core.Trace;
+		   import org.openscales.core.basetypes.Size;
+		   import org.openscales.core.configuration.Configuration;
+		   import org.openscales.core.configuration.IConfiguration;
+		   import org.openscales.core.events.MapEvent;
+		   import org.openscales.core.style.Style;
+			
+			[Bindable] private var map:Map = null;
+			[Bindable] public var displayTrace:Boolean = false;	
+			[Bindable] public var displayFirebugTrace:Boolean = false;
+			[Embed(source="/assets/configuration/sampleMapConfOk.xml", mimeType="application/octet-stream")]
+			protected const SampleMapConfOk:Class;
+			
+			protected function sampleMapConfOkXML():XML {
+				var ba : ByteArray = (new SampleMapConfOk()) as ByteArray;
+				return new XML(ba.readUTFBytes( ba.length ));
+			}
+			
+			private function initMap():void {
+				Trace.useFireBugConsole = displayFirebugTrace;
+				var sampleMapConfOk:XML = this.sampleMapConfOkXML();
+				var map:Map = new Map(600,400);
+				map.configuration.config = sampleMapConfOk;
+				map.configuration.configureMap(map);
+				mapContainer.rawChildren.addChildAt(map, 0);
+				map.size = new Size(mapContainer.width, mapContainer.height);
+			}
+		   
+		]]>
+	</mx:Script>
+	
+</mx:Canvas>
