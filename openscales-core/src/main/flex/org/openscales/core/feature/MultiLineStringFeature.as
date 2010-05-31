@@ -1,11 +1,10 @@
 package org.openscales.core.feature
 {
 	import org.openscales.core.Trace;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.MultiLineString;
-	import org.openscales.core.geometry.Point;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.LineString;
+	import org.openscales.geometry.MultiLineString;
+	import org.openscales.geometry.Point;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.Symbolizer;
 	/**
@@ -39,21 +38,26 @@ package org.openscales.core.feature
 			var j:int = 0;
 			var k:int = this.lineStrings.componentsLength;
 			var l:int;
+			var coords:Vector.<Number>;
+			var commands:Vector.<int> = new Vector.<int>();
 			
 			for (i = 0; i < k; i++) {
 				lineString = (this.lineStrings.componentByIndex(i) as LineString);
-				l = lineString.componentsLength;
-				for (j = 0; j < l; j++) {
-					p = lineString.componentByIndex(j) as Point;
-					x = dX + p.x / resolution; 
-                	y = dY - p.y / resolution;
-                	
+				l = lineString.componentsLength*2;
+				coords =lineString.getcomponentsClone();
+				commands= new Vector.<int>(lineString.componentsLength);
+				for (j = 0; j < l; j+=2){
+					
+					coords[j] = dX + coords[j] / resolution; 
+					coords[j+1] = dY - coords[j+1] / resolution;
+					
 					if (j==0) {
-						this.graphics.moveTo(x, y);
+						commands.push(1);
 					} else {
-						this.graphics.lineTo(x, y); 
+						commands.push(2); 
 					}
 				}
+				this.graphics.drawPath(commands, coords);
 			}
 		}
 		/**

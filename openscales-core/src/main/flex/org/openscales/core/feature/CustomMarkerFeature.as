@@ -3,7 +3,7 @@ package org.openscales.core.feature
 	import flash.display.DisplayObject;
 	
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.geometry.Point;
+	import org.openscales.geometry.Point;
 	import org.openscales.core.style.Style;
 	
 	/**

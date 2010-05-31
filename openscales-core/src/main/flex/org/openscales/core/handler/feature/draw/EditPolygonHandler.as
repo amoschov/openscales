@@ -12,12 +12,12 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.MultiPolygon;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
+	import org.openscales.geometry.ICollection;
+	import org.openscales.geometry.MultiPolygon;
+	import org.openscales.geometry.Point;
+	import org.openscales.geometry.Polygon;
 
 	/**
 	 * This Handler is used for polygon edition 
@@ -72,7 +72,7 @@ package org.openscales.core.handler.feature.draw
 								//TODO Damien nda only delete the feature concerned by the operation
 								_layerToEdit.removeFeature(feature);
 								this._featureClickHandler.removeControledFeature(feature);
-								this._editionFeatureArray.slice(i,1);
+								this._editionFeatureArray.splice(i,1);
 								feature.destroy();
 								feature=null;
 							}
@@ -89,17 +89,19 @@ package org.openscales.core.handler.feature.draw
 		 * */
 		override protected function drawTemporaryFeature(event:MouseEvent):void{
 		 	var pointUnderTheMouse:Boolean=false;
-		 	var parentgeom:Collection=null;
+		 	var parentgeom:ICollection=null;
 		 	var parentFeature:Feature; 	
 		 	//We tests if it's the point under the mouse or not
 		 	if(this._featureCurrentlyDrag!=null){
 		 		parentFeature=findVirtualVerticeParent(this._featureCurrentlyDrag as PointFeature)
-		 		parentgeom=editionFeatureParentGeometry(this._featureCurrentlyDrag as PointFeature,parentFeature.geometry as Collection);
+		 		parentgeom=editionFeatureParentGeometry(this._featureCurrentlyDrag as PointFeature,parentFeature.geometry as ICollection);
 		 	}
 		 	else{
-		 		parentFeature=findVirtualVerticeParent(AbstractEditCollectionHandler._pointUnderTheMouse)
-		 		parentgeom=editionFeatureParentGeometry(AbstractEditCollectionHandler._pointUnderTheMouse,parentFeature.geometry as Collection);
-		 		pointUnderTheMouse=true;
+				
+		 		  parentFeature=findVirtualVerticeParent(AbstractEditCollectionHandler._pointUnderTheMouse)
+		 		  parentgeom=editionFeatureParentGeometry(AbstractEditCollectionHandler._pointUnderTheMouse,parentFeature.geometry as ICollection);
+		 		  pointUnderTheMouse=true;
+				
 		 	}
 		 	//The mouse's button  is always down 
 		 	if(event.buttonDown){

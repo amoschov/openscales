@@ -14,7 +14,7 @@ package org.openscales.core.handler.feature {
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPointFeature;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.geometry.Geometry;
+	import org.openscales.geometry.Geometry;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
@@ -786,7 +786,7 @@ package org.openscales.core.handler.feature {
 					acceptedFeatures.push(feature);
 				}
 			}
-			var v:Vector.<Vector.<Feature>> = new Vector.<Vector.<Feature>>(2,true);
+			var v:Vector.<Vector.<Feature>> = new Vector.<Vector.<Feature>>();
 			v[0] = acceptedFeatures;
 			v[1] = rejectedFeatures;
 			return v;

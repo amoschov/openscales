@@ -11,11 +11,11 @@ package org.openscales.core.format
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.LinearRing;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.Polygon;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.LineString;
+	import org.openscales.geometry.LinearRing;
+	import org.openscales.geometry.Point;
+	import org.openscales.geometry.Polygon;
 	import org.openscales.core.request.DataRequest;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
@@ -215,7 +215,7 @@ package org.openscales.core.format
 			_Pdata = _Pdata.replace("\n"," ");
 			_Pdata = _Pdata.replace(/^\s*(.*?)\s*$/g, "$1");
 			var coordinates:Array = _Pdata.split(" ");
-			var Ppoints:Vector.<Geometry> = new Vector.<Geometry>();
+			var Ppoints:Vector.<Number> = new Vector.<Number>();
 			var Pcoords:String;
 			var _Pcoords:Array;
 			var point:Point;
@@ -228,7 +228,8 @@ package org.openscales.core.format
 				if (this._internalProj != null, this._externalProj != null) {
 					point.transform(this.externalProj, this.internalProj);
 				}
-				Ppoints.push(point);
+				Ppoints.push(point.x);
+				Ppoints.push(point.y);
 			}
 			return new LinearRing(Ppoints);
 		}
@@ -279,7 +280,7 @@ package org.openscales.core.format
 					_Ldata = _Ldata.replace("\n"," ");
 					_Ldata = _Ldata.replace(/^\s*(.*?)\s*$/g, "$1");
 					coordinates = _Ldata.split(" ");
-					var points:Vector.<Geometry> = new Vector.<Geometry>();
+					var points:Vector.<Number> = new Vector.<Number>();
 					var coords:String;
 					for each(coords in coordinates) {
 						var _coords:Array = coords.split(",");
@@ -290,7 +291,8 @@ package org.openscales.core.format
 						if (this._internalProj != null, this._externalProj != null) {
 							point.transform(this.externalProj, this.internalProj);
 						}
-						points.push(point);
+						points.push(point.x);
+						points.push(point.y);
 					}
 					var line:LineString = new LineString(points);
 					linesfeatures.push(new LineStringFeature(line,attributes,_Lstyle));

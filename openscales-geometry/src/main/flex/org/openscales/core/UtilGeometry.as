@@ -6,10 +6,10 @@ package org.openscales.core
 	import flash.xml.XMLNode;
 	
 	import org.openscales.core.StringUtils;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.LinearRing;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.Polygon;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.LinearRing;
+	import org.openscales.geometry.Point;
+	import org.openscales.geometry.Polygon;
 
 	public class UtilGeometry
 	{
@@ -439,12 +439,15 @@ package org.openscales.core
 				angle += (rotation / 180) * Math.PI;
 			}
 			var rotatedAngle:Number, x:Number, y:Number;
-			var points:Vector.<Geometry> = new Vector.<Geometry>(sides);
-			for(var i:Number=0; i<sides; ++i) {
+			var realLength:uint = sides*2;
+			var points:Vector.<Number> = new Vector.<Number>(realLength);
+			
+			for(var i:Number=0; i<realLength; ++i) {
 				rotatedAngle = angle + (i * 2 * Math.PI / sides);
 				x = origin.x + (radius * Math.cos(rotatedAngle));
 				y = origin.y + (radius * Math.sin(rotatedAngle));
-				points[i]=new Point(x, y);
+				points[i]=x
+				points[++i]=y;
 			}
 			var ring:LinearRing = new LinearRing(points);
 			return new Polygon(new <Geometry>[ring]);

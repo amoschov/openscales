@@ -1,9 +1,9 @@
 package org.openscales.core.basetypes
 {
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.LinearRing;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.Polygon;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.LinearRing;
+	import org.openscales.geometry.Point;
+	import org.openscales.geometry.Polygon;
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
@@ -406,11 +406,11 @@ package org.openscales.core.basetypes
      	 */
     	 public function toGeometry():Polygon {
         	 return new Polygon(new <Geometry>[
-            	 new LinearRing(new <Geometry>[
-                	 new Point(this.left, this.bottom),
-                	 new Point(this.right, this.bottom),
-                	 new Point(this.right, this.top),
-                	 new Point(this.left, this.top)])
+            	 new LinearRing(new <Number>[
+                	 this.left, this.bottom,
+                	 this.right, this.bottom,
+                	 this.right, this.top,
+                	 this.left, this.top])
          	]);
     	 }
 	}

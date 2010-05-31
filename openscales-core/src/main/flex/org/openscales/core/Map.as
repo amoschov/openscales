@@ -272,7 +272,7 @@ package org.openscales.core
 			var l:Vector.<Layer> = this.layers;
 			var i:int = l.indexOf(layer);
 			if(i>-1)
-				l.slice(i,1);
+				l.splice(i,1);
 
 			if (setNewBaseLayer && (this.baseLayer == layer)) {
 				this._baseLayer = null;
@@ -731,7 +731,7 @@ package org.openscales.core
 		public function removeSecurity(security:ISecurity):Boolean {
 			var i:int = this._securities.indexOf(security);
 			if(i!=-1) {
-				this._securities.slice(i,1);
+				this._securities.splice(i,1);
 				return true;
 			}
 			return false;

@@ -65,7 +65,7 @@
 			import org.openscales.core.feature.Feature;
 			import org.openscales.core.basetypes.LonLat;
 			import org.openscales.core.layer.osm.Mapnik;
-			import org.openscales.core.geometry.Point;
+			import org.openscales.geometry.Point;
 			import org.openscales.core.events.MapEvent;
 
 			public var markLyon:Marker;
@@ -85,7 +85,7 @@
 				markers.projection = new ProjProjection("EPSG:27700");
 				markers.generateResolutions(18);
 				markers.style = Style.getDefaultPointStyle();
-				markLyon = new Marker(new org.openscales.core.geometry.Point(lonlat.lon, lonlat.lat), {popupContentHTML: "This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
+				markLyon = new Marker(new org.openscales.geometry.Point(lonlat.lon, lonlat.lat), {popupContentHTML: "This is a popup<br /><b>Bold text</b><br /><u>Link to <a href=\"http://openscales.org\" target=\"_new\">OpenScales</a></u>"});
 				markLyon.addEventListener(MouseEvent.CLICK, showPopup);
 				markers.addFeature(markLyon);
 				map.addLayer(markers);
@@ -94,7 +94,7 @@
 				var vect:FeatureLayer = new FeatureLayer("Reprojected vector");
 				vect.projection = new ProjProjection("EPSG:27700");
 				vect.style = Style.getDefaultPointStyle();
-				var p:org.openscales.core.geometry.Point = new org.openscales.core.geometry.Point(lonlat.lon, lonlat.lat);
+				var p:org.openscales.geometry.Point = new org.openscales.geometry.Point(lonlat.lon, lonlat.lat);
 				vect.generateResolutions(18);
 				vect.addFeature(new PointFeature(p));
 				map.addLayer(vect);

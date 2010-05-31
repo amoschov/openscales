@@ -10,7 +10,7 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.geometry.Point;
+	import org.openscales.geometry.Point;
 	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
 

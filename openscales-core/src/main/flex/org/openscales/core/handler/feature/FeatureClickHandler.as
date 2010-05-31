@@ -165,7 +165,7 @@ package org.openscales.core.handler.feature
 		public function removeControledFeature(feature:Feature):void{
 			var i:int = this._featureArray.indexOf(feature);
 			if(i!=-1)
-				this._featureArray.slice(i,1);
+				this._featureArray.splice(i,1);
 			feature.removeEventListener(FeatureEvent.FEATURE_MOUSEUP,this.mouseUp);
 			feature.removeEventListener(FeatureEvent.FEATURE_MOUSEDOWN,this.mouseDown);
 		}

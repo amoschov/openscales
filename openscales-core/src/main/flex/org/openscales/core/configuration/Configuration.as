@@ -1,5 +1,7 @@
 package org.openscales.core.configuration
 {
+      import flash.geom.Point;
+      
       import org.openscales.core.Map;
       import org.openscales.core.Trace;
       import org.openscales.core.basetypes.Bounds;
@@ -25,6 +27,15 @@ package org.openscales.core.configuration
       import org.openscales.core.layer.params.ogc.WMSParams;
       import org.openscales.core.security.AbstractSecurity;
       import org.openscales.core.security.ign.IGNGeoRMSecurity;
+      import org.openscales.core.style.Rule;
+      import org.openscales.core.style.Style;
+      import org.openscales.core.style.fill.SolidFill;
+      import org.openscales.core.style.marker.Marker;
+      import org.openscales.core.style.marker.WellKnownMarker;
+      import org.openscales.core.style.stroke.Stroke;
+      import org.openscales.core.style.symbolizer.LineSymbolizer;
+      import org.openscales.core.style.symbolizer.PointSymbolizer;
+      import org.openscales.core.style.symbolizer.PolygonSymbolizer;
       import org.openscales.proj4as.ProjProjection;
 
       /**
@@ -201,9 +212,12 @@ package org.openscales.core.configuration
                   else{visible = true;}
                   
                   var name:String=xmlNode.@name;
-                  
-                  var proxy:String=xmlNode.@proxy;
-                  
+				  var proxy:String = null;
+				  if(String(xmlNode.@proxy) != "")
+				  {
+				    proxy=xmlNode.@proxy;
+				  }
+				
                   var projection:String=xmlNode.@projection;
                   var resolution:Array=null;
                    if(xmlNode.@resolutions!=null && xmlNode.@resolutions=="") 
@@ -300,6 +314,15 @@ package org.openscales.core.configuration
                         wfsLayer.useCapabilities = useCapabilities;
                         wfsLayer.capabilities = capabilities;
                         wfsLayer.projection = new ProjProjection(projection);
+						
+						if(String(xmlNode.@style) !="")
+						{
+						  wfsLayer.style = this.getDefaultStyle(String(xmlNode.@style));
+						}else{
+							var xmlStyle:XMLList = xmlNode.*::Style;
+							if(xmlStyle.length()!=0)
+								wfsLayer.style = this.parseStyle(xmlStyle[0]);
+						}
 
 						if (String(xmlNode.@minZoomLevel) != "" ) {
 							wfsLayer.minZoomLevel = Number(xmlNode.@minZoomLevel);
@@ -336,6 +359,126 @@ package org.openscales.core.configuration
                   //Init layer parameters
                   return layer;
             }
+			/**
+			 * 
+			 **/
+			
+			protected function parseStyle(styleNode:XML):Style {
+				var style:Style = new Style();
+				var ruleNodes:XMLList = styleNode.rules.*;
+				var i:uint = 0;
+				for each (var xmlRule:XML in ruleNodes){
+					
+					style.rules[i] = this.parseRule(xmlRule);
+					i++;
+				}
+				
+				return style;
+				
+			}
+			
+			protected function parseRule(xmlRule:XML):Rule{
+				
+				var rule:Rule = new Rule();
+				var symbolizer:XMLList = xmlRule.*;
+					
+				for each (var xmlSymbolizer:XML in symbolizer){
+				  if(xmlSymbolizer.name() =="PointSymbolizer"){
+					  rule.symbolizers.push(this.parsePointSymbolizer(xmlSymbolizer));
+				  }else if(xmlSymbolizer.name() =="PolygonSymbolizer"){
+					  rule.symbolizers.push(this.parsePolygonSymbolizer(xmlSymbolizer));
+				  }else if(xmlSymbolizer.name() =="LineSymbolizer"){
+					  rule.symbolizers.push(this.parseLineSymbolizer(xmlSymbolizer));
+				  }
+			    }
+				return rule;
+			}
+			
+			protected function parsePointSymbolizer(xmlSymbolizer:XML):PointSymbolizer{
+				var xmlMakers:XML = xmlSymbolizer.child(0);
+				var poinSymbolizer:PointSymbolizer;
+				var marker:Marker;
+				
+				if(xmlMakers.name() =="WellKnownMarker"){
+					var fill:SolidFill = null;
+					var stroke:Stroke = null;
+					for each (var fillAndStroke:XML in xmlMakers.children()){
+						if(fillAndStroke.name() == "SolidFill"){
+							fill = new SolidFill(fillAndStroke.@color,fillAndStroke.@opacity);
+						}else if(fillAndStroke.name() == "stroke"){
+							stroke = new Stroke(fillAndStroke.@color,fillAndStroke.@width,fillAndStroke.@opacity,fillAndStroke.@linecap,fillAndStroke.@linejoin);
+						}
+					}
+					marker = new WellKnownMarker(xmlMakers.@wellKnowName,null,null,xmlMakers.@size,xmlMakers.@opacity,xmlMakers.@rotation);
+					poinSymbolizer = new PointSymbolizer(marker);
+					
+				}else if(xmlMakers.name() =="Marker"){
+					marker = new Marker(xmlMakers.@size,xmlMakers.@opacity,xmlMakers.@rotation);
+				}
+			    return poinSymbolizer;
+			}
+			
+			protected function parsePolygonSymbolizer(xmlSymbolizer:XML):PolygonSymbolizer{
+				
+				var polygonSymbolizer:PolygonSymbolizer;
+				var fill:SolidFill = null;
+				var stroke:Stroke = null;
+				for each (var fillAndStroke:XML in xmlSymbolizer.children()){
+  				  if(fillAndStroke.name() == "fill"){
+					  var solidFill:XML = fillAndStroke.children()[0];
+					  if(solidFill.name() == "SolidFill"){
+						fill = new SolidFill(solidFill.@color,solidFill.@opacity);
+					  }
+					}else if(fillAndStroke.name() == "stroke"){
+						stroke = new Stroke(fillAndStroke.@color,fillAndStroke.@width,fillAndStroke.@opacity,fillAndStroke.@linecap,fillAndStroke.@linejoin);
+				  }
+				}
+				polygonSymbolizer = new PolygonSymbolizer(fill,stroke);
+				
+				return polygonSymbolizer;
+			}
+			
+			protected function parseLineSymbolizer(xmlSymbolizer:XML):LineSymbolizer{
+				var xmlStroke:XML = xmlSymbolizer.child(0);
+				var lineSymbolizer:LineSymbolizer;
+				var stroke:Stroke = null;
+					stroke = new Stroke(xmlStroke.@color,xmlStroke.@width,xmlStroke.@opacity,xmlStroke.@linecap,xmlStroke.@linejoin);
+				
+					lineSymbolizer = new LineSymbolizer(stroke)
+				
+				return lineSymbolizer;
+			}
+			
+			
+			
+			
+			
+			protected function getDefaultStyle(defaultStyle:String):Style {
+				if(defaultStyle == "DefaultCircleStyle"){
+					return Style.getDefaultCircleStyle();
+				}
+				if(defaultStyle == "DefaultLineStyle"){
+					return Style.getDefaultLineStyle();
+				}
+				if(defaultStyle == "DefaultLineStyle"){
+					return Style.getDefaultLineStyle();
+				}
+				if(defaultStyle == "DefaultPointStyle"){
+					return Style.getDefaultPointStyle();
+				}
+				if(defaultStyle == "DefaultSurfaceStyle"){
+					return Style.getDefaultSurfaceStyle();
+				}
+				if(defaultStyle == "DrawLineStyle"){
+					return Style.getDrawLineStyle();
+				}
+				if(defaultStyle == "DrawSurfaceStyle"){
+					return Style.getDrawSurfaceStyle();
+				}
+				
+				Trace.error("you must define a style for feature layer");
+				return null;
+			}
             
             protected function parseHandler(xmlNode:XML):Handler {
                  var handler:Handler;

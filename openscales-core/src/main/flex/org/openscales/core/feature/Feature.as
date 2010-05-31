@@ -9,9 +9,8 @@ package org.openscales.core.feature {
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.filter.ElseFilter;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.Point;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.Point;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.style.Rule;
@@ -91,8 +90,6 @@ package org.openscales.core.feature {
 			}
 
 			this._geometry = geom;
-			if (this._geometry && this._geometry.id)
-				this.name = this._geometry.id;
 			this._state = null;
 			this._attributes = new Object();
 			if (data) {

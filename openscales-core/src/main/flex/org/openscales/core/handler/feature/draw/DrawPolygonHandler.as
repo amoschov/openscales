@@ -8,10 +8,10 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.LinearRing;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.Polygon;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.LinearRing;
+	import org.openscales.geometry.Point;
+	import org.openscales.geometry.Polygon;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Style;
@@ -109,13 +109,13 @@ package org.openscales.core.handler.feature.draw
 				var polygon:Polygon=null;
 				//2 cases, and very different. If the user starts the polygon or if the user is drawing the polygon
 				if(newFeature) {					
-					 lring = new LinearRing(new <Geometry>[point]);
+					 lring = new LinearRing(new <Number>[point.x,point.y]);
 					 polygon = new Polygon(new <Geometry>[lring]);
 					this._firstPointPixel= new Pixel(map.mouseX ,map.mouseY);
 				
 					
 					this._polygonFeature=new PolygonFeature(polygon,null,null,true);
-					
+					this._polygonFeature.name = name;
 					
 					//this._polygonFeature=new PolygonFeature(				
 					this._polygonFeature.style = Style.getDrawSurfaceStyle();
@@ -140,7 +140,7 @@ package org.openscales.core.handler.feature.draw
 					}
 					//add the point to the linearRing
 					 lring=(this._polygonFeature.geometry as Polygon).componentByIndex(0) as LinearRing;
-					lring.addComponent(point);
+					lring.addPoint(point.x,point.y);
 				}
 				//final redraw layer
 				drawLayer.redraw();

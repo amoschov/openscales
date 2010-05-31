@@ -7,7 +7,9 @@
 				paddingRight="5"
 				paddingTop="5"
 				creationComplete="init();"
-				viewSourceURL="srcview/index.html">
+				viewSourceURL="srcview/index.html"
+				frameRate="12"
+				>
 
 	<mx:Style>
 		@namespace mx "library://ns.adobe.com/flex/mx";
@@ -132,6 +134,10 @@
 					<example viewStack="styleExample"
 							 label="Style vector layers"
 							 description="The style of the french regions depend on filters parameterized by the geometry of the features.\nThe legend is automatically generated from the style.\nClick on a region to see its attributes in the information panel.\nUse the top-right button to switch the style of the rendering."/>
+					<example viewStack="externalConfigurationExample"
+							 label="configuration from external file"
+							 description=""/>
+					
 				</category>
 
 				<category label="Localize">
@@ -222,6 +228,9 @@
 			<os:CapabilitiesExample id="capabilities"
 									displayTrace="{displayTrace}"/>
 			<os:StyleExample id="styleExample"
+							 displayTrace="{displayTrace}"/>
+			
+			<os:ExternalConfigurationExample id="externalConfigurationExample"
 							 displayTrace="{displayTrace}"/>
 
 			<!-- Localize -->

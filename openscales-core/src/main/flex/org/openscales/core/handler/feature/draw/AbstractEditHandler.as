@@ -9,13 +9,13 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Style;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.ICollection;
+	import org.openscales.geometry.Point;
 
 	/**
 	* Abstract edit handler never instanciate this class
@@ -113,23 +113,23 @@ package org.openscales.core.handler.feature.draw
 		 * create edition vertice(Virtual) only for edition feature
 		 * @param geometry
 		 * */
-		public function createEditionVertices(vectorfeature:Feature,collection:Collection=null,arrayToFill:Vector.<Vector.<Feature>>=null):void {
+		public function createEditionVertices(vectorfeature:Feature,collection:ICollection=null,arrayToFill:Vector.<Vector.<Feature>>=null):void {
 			if (collection == null)
-			collection=vectorfeature.geometry as Collection;
+			collection=vectorfeature.geometry as ICollection;
 			var j:uint = collection.componentsLength;
 			var v:Vector.<Feature>;
 			var i:int;
 			for (i=0; i < j; ++i) {
 				var geometry:Geometry = collection.componentByIndex(i);
-				if (geometry is Collection) {
-					createEditionVertices(vectorfeature,geometry as Collection,arrayToFill);
+				if (geometry is ICollection) {
+					createEditionVertices(vectorfeature,geometry as ICollection,arrayToFill);
 				} else {
 					if (geometry is Point) {
-						var EditionVertice:Feature = new PointFeature(geometry.clone() as Point, null, Style.getDefaultCircleStyle());
+						var EditionVertice:PointFeature = new PointFeature(geometry as Point, null, Style.getDefaultCircleStyle());
 						//We fill the array with the virtual vertice
-						v = new Vector.<Feature>(2);
+						v = new Vector.<Feature>();
 						v[0]=EditionVertice;
-						v[1]=null
+						v[1]=null;
 						arrayToFill.push(v);
 						/* EditionVertice.editionFeatureParent = vectorfeature; */
 					}
@@ -252,17 +252,18 @@ package org.openscales.core.handler.feature.draw
 						for(i;i>-1;--i){
 							j = _editionFeatureArray.indexOf(tmpfeature[i]);
 							if(j!=-1)
-								_editionFeatureArray.slice(j,1);
+								_editionFeatureArray.splice(j,1);
 						}
-						 tmpfeature=null;
+						 tmpfeature= new Vector.<Vector.<Feature>>();
 					}
-					createEditionVertices(featureEdited,featureEdited.geometry as Collection,tmpfeature);
+					createEditionVertices(featureEdited,featureEdited.geometry as ICollection,tmpfeature);
 					var v:Vector.<Feature>;
 					for each(v in tmpfeature){
 						if(this.map.extent.containsBounds(v[0].geometry.bounds)){
 							this._layerToEdit.addFeature(v[0]);
 		 					this._featureClickHandler.addControledFeature(v[0]);
-							v = new Vector.<Feature>(2);
+							feature = v[0];
+							v = new Vector.<Feature>();
 							v[0]=feature;
 							v[1]=featureEdited;
 		 					this._editionFeatureArray.push(v);

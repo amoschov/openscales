@@ -8,12 +8,13 @@
 		<![CDATA[
 			import org.flexunit.flexui.controls.left.events.SearchBarEvent;
 			import org.flexunit.flexui.data.filter.TestfFunctionStatuses;
-			import org.openscales.core.CoreTestSuite;
-			import org.flexunit.runner.FlexUnitCore;
 			import org.flexunit.flexui.event.TestsCompleteEvent;
-
+			import org.flexunit.runner.FlexUnitCore;
+			import org.openscales.GeometryTestSuite;
+			import org.openscales.core.CoreTestSuite;
 			
-			private var flexUnitcore:FlexUnitCore;
+			
+            private var flexUnitcore:FlexUnitCore;
 			
 			private function init():void {
 		 				 		
@@ -22,7 +23,7 @@
 		 		flexUnitcore = new FlexUnitCore();
 				flexUnitcore.addListener(testRunner);
 				// One line by test suite
-				flexUnitcore.run(CoreTestSuite);
+				flexUnitcore.run(CoreTestSuite,GeometryTestSuite);
 				
 		 	}
 		 	

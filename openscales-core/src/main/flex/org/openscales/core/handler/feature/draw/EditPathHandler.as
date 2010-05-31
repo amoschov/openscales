@@ -12,12 +12,13 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.MultiLineString;
-	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
+	import org.openscales.geometry.Collection;
+	import org.openscales.geometry.ICollection;
+	import org.openscales.geometry.LineString;
+	import org.openscales.geometry.MultiLineString;
+	import org.openscales.geometry.Point;
 	
 	/**
 	 * This Handler is used for Path edition 
@@ -74,7 +75,7 @@ package org.openscales.core.handler.feature.draw
 								//TODO Damien nda only delete the feature concerned by the operation
 								layerToEdit.removeFeature(feature);
 								this._featureClickHandler.removeControledFeature(feature);
-								this._editionFeatureArray.slice(i,1);
+								this._editionFeatureArray.splice(i,1);
 								feature.destroy();
 								feature=null;
 							}
@@ -90,18 +91,18 @@ package org.openscales.core.handler.feature.draw
 		 * */
 		 override protected function drawTemporaryFeature(event:MouseEvent):void{
 		 	var pointUnderTheMouse:Boolean=false;
-		 	var parentgeom:Collection=null;
+		 	var parentgeom:ICollection=null;
 		 	var parentFeature:Feature;
 		 	//the feature currently dragged is a real vertice
 		 	if(this._featureCurrentlyDrag!=null){
 		 		parentFeature=findVirtualVerticeParent(this._featureCurrentlyDrag as PointFeature)
-		 		parentgeom=editionFeatureParentGeometry(this._featureCurrentlyDrag as PointFeature,parentFeature.geometry as Collection);
+		 		parentgeom=editionFeatureParentGeometry(this._featureCurrentlyDrag as PointFeature,parentFeature.geometry as ICollection);
 		 	}
 		 	//the feature currently dragged is a point under the mouse 	
 		 	else{
 		 		// parentgeom=AbstractEditCollectionHandler._pointUnderTheMouse.editionFeatureParentGeometry;
 		 		parentFeature=findVirtualVerticeParent(AbstractEditCollectionHandler._pointUnderTheMouse)
-		 		parentgeom=editionFeatureParentGeometry(AbstractEditCollectionHandler._pointUnderTheMouse,parentFeature.geometry as Collection);
+		 		parentgeom=editionFeatureParentGeometry(AbstractEditCollectionHandler._pointUnderTheMouse,parentFeature.geometry as ICollection);
 		 		pointUnderTheMouse=true;
 		 	}
 		 	

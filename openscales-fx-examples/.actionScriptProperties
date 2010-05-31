@@ -13,8 +13,8 @@
     <sourceAttachmentPath/>
   </compiler>
   <applications>
-    <application path="osExamples.mxml"/>
     <application path="KMLExample.mxml"/>
+    <application path="osExamples.mxml"/>
     <application path="SecurityMapExample.mxml"/>
   </applications>
   <modules/>

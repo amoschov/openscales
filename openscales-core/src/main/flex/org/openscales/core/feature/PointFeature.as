@@ -3,14 +3,14 @@ package org.openscales.core.feature {
 	
 	import org.openscales.core.basetypes.LonLat;
 	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.Point;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.marker.WellKnownMarker;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
 	import org.openscales.core.style.symbolizer.Symbolizer;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.ICollection;
+	import org.openscales.geometry.LineString;
+	import org.openscales.geometry.Point;
 
 	/**
 	 * Feature used to draw a Point geometry on FeatureLayer
@@ -20,7 +20,7 @@ package org.openscales.core.feature {
 		/**
 		 * the geometry of the parent when the feature is an edition feature
 		 **/
-		private var _editionFeatureParentGeometry:Collection = null;
+		private var _editionFeatureParentGeometry:ICollection = null;
 
 
 		public function PointFeature(geom:Point=null, data:Object=null, style:Style=null ) {
@@ -90,7 +90,7 @@ package org.openscales.core.feature {
 		 * @param detectionTolerance:Number
 		 * @return the segment number
 		 * */
-		public function getSegmentsIntersection(collection:Collection, detectionTolerance:Number=8):int {
+		public function getSegmentsIntersection(collection:ICollection, detectionTolerance:Number=8):int {
 
 			var arrayResult:Array = new Array();
 			var LineString1:LineString = null;
@@ -114,17 +114,16 @@ package org.openscales.core.feature {
 							intersect = true;
 						}
 						if (intersect)
-							arrayResult.push(new Array(new LineString(new <Geometry>[point1, point2]), i + 1));
+							arrayResult.push(new Array(new LineString(new <Number>[point1.x,point1.y, point2.x,point2.y]), i + 1));
 
 					}
 					intersect = false;
 				}
 			
 			//The last segment
-			if ((collection.componentByIndex(0) as Point).x != (collection.componentByIndex(collection.componentsLength - 1) as Point).x || (collection.componentByIndex(0) as Point).y != (collection.componentByIndex(collection.componentsLength - 1) as Point).y) {
-				point1 = collection.componentByIndex(0) as Point;
-				point2 = collection.componentByIndex(collection.componentsLength - 1) as Point;
-
+			point1 = collection.componentByIndex(0) as Point;
+			point2 = collection.componentByIndex(collection.componentsLength - 1) as Point;
+			if (point1.x != point2.x || point1.y != point2.y) {
 				if (point1 != null && point2 != null) {
 					top = Math.max(point1.y, point2.y);
 					right = Math.max(point1.x, point2.x);
@@ -134,7 +133,7 @@ package org.openscales.core.feature {
 						intersect = true;
 					}
 					if (intersect)
-						arrayResult.push(new Array(new LineString(new <Geometry>[point1, point2]), collection.componentsLength));
+						arrayResult.push(new Array(new LineString(new <Number>[point1.x,point1.y, point2.x,point2.y]), collection.componentsLength));
 
 				}
 			}

@@ -143,7 +143,7 @@ package org.openscales.core.events
 			return this._features[0];
 		}
 		public function set feature(value:Feature):void{
-			var v:Vector.<Feature> = new Vector.<Feature>(1);
+			var v:Vector.<Feature> = new Vector.<Feature>();
 			v[0]=value;
 			this._features = v;
 		}
