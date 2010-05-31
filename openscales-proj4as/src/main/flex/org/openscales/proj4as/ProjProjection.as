@@ -68,8 +68,12 @@ package org.openscales.proj4as {
             'IGNF:LAMB93': "+title=Lambert 93 +proj=lcc +towgs84=0.0000,0.0000,0.0000 +a=6378137.0000 +rf=298.2572221010000 +lat_0=46.500000000 +lon_0=3.000000000 +lat_1=44.000000000 +lat_2=49.000000000 +x_0=700000.000 +y_0=6600000.000 +units=m +no_defs",
 
             'CRS:84': "+title=WGS 84 longitude-latitude +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
-		}
+		};
 
+		/**
+		 * this allow adding other projections if not supported officialy
+		 */
+		private static var additionnalDefs:Object={};
 
 		protected var proj:IProjection;
 
@@ -144,10 +148,22 @@ package org.openscales.proj4as {
 		public function clone():ProjProjection {
 			return new ProjProjection(this.srsCode);
 		}
-		
+
+		/**
+		 * Allow to add unsupported srscodes
+		 * @param name:String the srs name
+		 * @param def:String the srs definition
+		 */
+		static public function addSrsCode(name:String,def:String):void {
+			ProjProjection.additionnalDefs[name] = def;
+		}
+
 		private function loadProjDefinition():void {
 			if (this.srsCode != null && ProjProjection.defs[this.srsCode] != null) {
 				this.parseDef(ProjProjection.defs[this.projParams.srsCode]);
+				this.initTransforms();
+			} else if(ProjProjection.additionnalDefs[this.srsCode] != null) {
+				this.parseDef(ProjProjection.additionnalDefs[this.projParams.srsCode]);
 				this.initTransforms();
 			}
 		}

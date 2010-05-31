@@ -19,9 +19,15 @@ package org.openscales.core.layer.params.ogc
 		private var _transparent:Boolean;
 		private var _bgcolor:String;
 		private var _tiled:Boolean;
+		private var _sld:String;
 
-		public function WMSParams(layers:String, format:String = "image/jpeg", transparent:Boolean = false, 
-			tiled:Boolean = false, styles:String = null, bgcolor:String = null)
+		public function WMSParams(layers:String,
+								  format:String = "image/jpeg",
+								  transparent:Boolean = false,
+								  tiled:Boolean = false,
+								  styles:String = null,
+								  bgcolor:String = null,
+								  sld:String=null)
 		{
 			super("WMS", "1.1.1", "GetMap");
 
@@ -32,8 +38,8 @@ package org.openscales.core.layer.params.ogc
 			this._transparent = transparent;
 			this._tiled = tiled;
 			this._styles = styles;	
-			this._bgcolor = bgcolor;		
-
+			this._bgcolor = bgcolor;
+			this._sld = sld;
 		}
 
 		override public function toGETString():String {
@@ -61,6 +67,8 @@ package org.openscales.core.layer.params.ogc
 			if (this._bgcolor != null)
 				str += "BGCOLOR=" + this._bgcolor + "&";
 
+			if (this._sld != null)
+				str += "SLD=" + this._sld + "&";
 
 			return str.substr(0, str.length-1);
 		}
@@ -137,6 +145,14 @@ package org.openscales.core.layer.params.ogc
 
 		public function set bgcolor(bgcolor:String):void {
 			_bgcolor = bgcolor;
+		}
+
+		public function get sld():String {
+			return this._sld;
+		}
+
+		public function set sld(value:String):void {
+			this._sld = value;
 		}
 	}
 }
