@@ -228,6 +228,7 @@ package org.openscales.core.handler.feature {
 			if ((value == null) || (value.length == 0)) {
 				return
 			}
+			this._unselectableFeatures = value;
 			// Filter the currently selected features
 			var twoArrays:Vector.<Vector.<Feature>> = this.filterUnselectableFeatures(this._selectedFeatures);
 			this._selectedFeatures = twoArrays[0];
