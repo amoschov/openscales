@@ -11,6 +11,7 @@ package org.openscales.geometry
 	{
 		/**
 		 * The component parts of this geometry
+		 * 
 		 */
 		protected var _components:Vector.<Number> = null;
 		
@@ -23,7 +24,16 @@ package org.openscales.geometry
 		
 		/**
 		 * Creates a Geometry Collection
-		 *
+		 * the geometry is a vector of point which are stocked in vector.<Number>
+		 * "even index" are x and "uneven index" are y
+		 * exemple : 
+		 * this._components[0] => first x
+		 * this._components[1] => first y 
+		 * this._components[2] => second x
+		 * this._components[3] => second y
+		 * .
+		 * . 
+		 * 
 		 * @param components
 		 */
 		public function CollectionPoint(points:Vector.<Number>) {
@@ -76,7 +86,7 @@ package org.openscales.geometry
 		}
 		
 		/**
-		 * Number of components in the collection
+		 * Number of Point in the collection
 		 */		
 		public function get componentsLength():int {
 			return this._components.length/2;
