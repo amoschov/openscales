@@ -14,7 +14,7 @@
 		    import org.openscales.core.Map;
 		    import org.openscales.core.layer.ogc.WFS;
 		    import mx.controls.Button;
-		    import org.openscales.core.basetypes.Bounds;
+		    import org.openscales.basetypes.Bounds;
 		    import mx.controls.CheckBox;
 		    import mx.controls.RadioButtonGroup;
 		    import mx.controls.RadioButton;

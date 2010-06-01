@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <flexLibProperties includeAllClasses="false" version="1">
   <includeClasses>
-    <classEntry path="org.openscales.core.StringUtils"/>
-    <classEntry path="org.openscales.core.UtilGeometry"/>
-    <classEntry path="org.openscales.core.basetypes.Bounds"/>
-    <classEntry path="org.openscales.core.basetypes.LonLat"/>
-    <classEntry path="org.openscales.core.basetypes.Pixel"/>
-    <classEntry path="org.openscales.core.basetypes.Size"/>
-    <classEntry path="org.openscales.core.basetypes.Unit"/>
+    <classEntry path="org.openscales.StringUtils"/>
+    <classEntry path="org.openscales.UtilGeometry"/>
+    <classEntry path="org.openscales.basetypes.Bounds"/>
+    <classEntry path="org.openscales.basetypes.LonLat"/>
+    <classEntry path="org.openscales.basetypes.Pixel"/>
+    <classEntry path="org.openscales.basetypes.Size"/>
+    <classEntry path="org.openscales.basetypes.Unit"/>
     <classEntry path="org.openscales.geometry.Collection"/>
     <classEntry path="org.openscales.geometry.CollectionPoint"/>
     <classEntry path="org.openscales.geometry.Geometry"/>

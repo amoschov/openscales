@@ -5,8 +5,8 @@ package org.openscales.core.layer.ogc
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.basetypes.Bounds;
+	import org.openscales.basetypes.LonLat;
 	import org.openscales.core.basetypes.maps.HashMap;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;

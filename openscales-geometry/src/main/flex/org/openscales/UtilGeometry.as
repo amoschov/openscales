@@ -1,11 +1,11 @@
-package org.openscales.core
+package org.openscales
 {
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.geom.Utils3D;
 	import flash.xml.XMLNode;
 	
-	import org.openscales.core.StringUtils;
+	import org.openscales.StringUtils;
 	import org.openscales.geometry.Geometry;
 	import org.openscales.geometry.LinearRing;
 	import org.openscales.geometry.Point;

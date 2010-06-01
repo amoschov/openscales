@@ -5,7 +5,7 @@ package org.openscales.core.handler.feature
 	import flash.utils.Timer;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.handler.Handler;

@@ -1,6 +1,6 @@
 package org.openscales.core.events
 {
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 	import org.openscales.core.feature.Feature;
 
 	/**

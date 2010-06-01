@@ -10,10 +10,10 @@ package org.openscales.core.tile
 	import flash.events.IOErrorEvent;
 
 	import org.openscales.core.Trace;
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 	import org.openscales.core.basetypes.LinkedList.LinkedListBitmapNode;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.basetypes.Pixel;
+	import org.openscales.basetypes.Size;
 	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.request.DataRequest;

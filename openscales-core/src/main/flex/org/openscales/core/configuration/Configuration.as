@@ -4,8 +4,8 @@ package org.openscales.core.configuration
       
       import org.openscales.core.Map;
       import org.openscales.core.Trace;
-      import org.openscales.core.basetypes.Bounds;
-      import org.openscales.core.basetypes.LonLat;
+      import org.openscales.basetypes.Bounds;
+      import org.openscales.basetypes.LonLat;
       import org.openscales.core.basetypes.maps.HashMap;
       import org.openscales.core.control.Control;
       import org.openscales.core.control.LayerSwitcher;

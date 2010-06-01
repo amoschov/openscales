@@ -7,7 +7,7 @@ package org.openscales.core.layer
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Feature;

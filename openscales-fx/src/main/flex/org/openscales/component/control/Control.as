@@ -6,7 +6,7 @@ package org.openscales.component.control
   import mx.events.FlexEvent;
   
   import org.openscales.core.Map;
-  import org.openscales.core.basetypes.Pixel;
+  import org.openscales.basetypes.Pixel;
   import org.openscales.core.control.IControl;
   import org.openscales.fx.FxMap;
 

@@ -3,8 +3,7 @@ package org.openscales.core
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
-
-	import org.openscales.core.StringUtils;
+	
 
 	public class Util
 	{

@@ -6,7 +6,7 @@
 		<![CDATA[
 			import org.openscales.core.events.MapEvent;
 			import org.openscales.core.events.LayerEvent;
-			import org.openscales.core.basetypes.Pixel;
+			import org.openscales.basetypes.Pixel;
 			import org.openscales.core.Map;
 			import mx.events.SliderEvent;
 			

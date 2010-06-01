@@ -1,6 +1,6 @@
 package org.openscales.geometry
 {
-	import org.openscales.core.UtilGeometry;
+	import org.openscales.UtilGeometry;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**

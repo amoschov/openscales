@@ -5,8 +5,8 @@ package org.openscales.core.feature {
 	
 	import org.openscales.core.Trace;
 	import org.openscales.core.Util;
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.basetypes.Bounds;
+	import org.openscales.basetypes.LonLat;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.filter.ElseFilter;
 	import org.openscales.geometry.Geometry;

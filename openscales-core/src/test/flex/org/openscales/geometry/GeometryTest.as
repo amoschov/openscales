@@ -6,8 +6,8 @@ package org.openscales.geometry
 	
 	import org.flexunit.Assert;
 	import org.openscales.core.Trace;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.geometry.Point;
 	
 	public class GeometryTest

@@ -5,8 +5,8 @@ package org.openscales.core.handler.feature {
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.Bounds;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Feature;

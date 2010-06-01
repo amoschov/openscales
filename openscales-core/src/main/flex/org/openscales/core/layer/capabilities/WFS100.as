@@ -1,6 +1,6 @@
 package org.openscales.core.layer.capabilities
 {
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 
 	/**
 	 * WFS 1.0.0 capabilities parser

@@ -1,6 +1,6 @@
 package org.openscales.core.layer.osm
 {
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 	import org.openscales.core.layer.TMS;
 	import org.openscales.proj4as.ProjProjection;
 

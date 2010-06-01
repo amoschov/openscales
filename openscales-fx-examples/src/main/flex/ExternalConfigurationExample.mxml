@@ -13,7 +13,7 @@
 		   
 		   import org.openscales.core.Map;
 		   import org.openscales.core.Trace;
-		   import org.openscales.core.basetypes.Size;
+		   import org.openscales.basetypes.Size;
 		   import org.openscales.core.configuration.Configuration;
 		   import org.openscales.core.configuration.IConfiguration;
 		   import org.openscales.core.events.MapEvent;

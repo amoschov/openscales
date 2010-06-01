@@ -5,7 +5,7 @@ package org.openscales.core.layer
 	import flash.net.URLRequestMethod;
 	
 	import org.openscales.core.Trace;
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.format.KMLFormat;
 	import org.openscales.core.request.XMLRequest;

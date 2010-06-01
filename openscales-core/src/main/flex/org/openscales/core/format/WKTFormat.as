@@ -4,7 +4,7 @@ package org.openscales.core.format
 	
 	import mx.core.ComponentDescriptor;
 	
-	import org.openscales.core.StringUtils;
+	import org.openscales.StringUtils;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;

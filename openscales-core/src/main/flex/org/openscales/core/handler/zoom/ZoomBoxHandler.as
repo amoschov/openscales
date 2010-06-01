@@ -4,9 +4,9 @@ package org.openscales.core.handler.zoom
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.Bounds;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.events.ZoomBoxEvent;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.mouse.DragHandler;

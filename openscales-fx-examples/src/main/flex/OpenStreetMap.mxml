@@ -63,7 +63,7 @@
 			import org.openscales.core.popup.Popup;
 			import org.openscales.core.control.MousePosition;
 			import org.openscales.core.feature.Feature;
-			import org.openscales.core.basetypes.LonLat;
+			import org.openscales.basetypes.LonLat;
 			import org.openscales.core.layer.osm.Mapnik;
 			import org.openscales.geometry.Point;
 			import org.openscales.core.events.MapEvent;

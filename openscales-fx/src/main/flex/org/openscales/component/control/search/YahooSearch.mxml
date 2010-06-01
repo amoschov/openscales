@@ -10,7 +10,7 @@
 			import mx.rpc.events.FaultEvent;
 			import mx.rpc.events.ResultEvent;
 			
-			import org.openscales.core.basetypes.LonLat;
+			import org.openscales.basetypes.LonLat;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 			import org.openscales.proj4as.ProjProjection;

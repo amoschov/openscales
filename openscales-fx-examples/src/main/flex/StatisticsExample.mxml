@@ -93,7 +93,7 @@
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
 			import org.openscales.core.style.Style;
-			import org.openscales.core.basetypes.Bounds;
+			import org.openscales.basetypes.Bounds;
 
 			[Bindable]
 			private var map:Map = null;

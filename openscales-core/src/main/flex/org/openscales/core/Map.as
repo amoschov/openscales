@@ -9,12 +9,12 @@ package org.openscales.core
 	import flash.geom.Rectangle;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 	import org.openscales.core.basetypes.DraggableSprite;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.basetypes.Unit;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Pixel;
+	import org.openscales.basetypes.Size;
+	import org.openscales.basetypes.Unit;
 	import org.openscales.core.configuration.Configuration;
 	import org.openscales.core.configuration.IConfiguration;
 	import org.openscales.core.control.IControl;
