@@ -160,18 +160,20 @@ package org.openscales.geometry
 		 */
 		override public function calculateBounds():void {
 			this._bounds = null;
-			var length:uint = this._components.length-1;
+			var length:uint = this._components.length;
 			if (length > 0) {
 				var left:Number = this._components[0];
 				var bottom:Number = this._components[1];
 				var right:Number = this._components[0];
 				var top:Number = this._components[1];
-				for (var i:int=2; i<length - 1; ++i) {
-					left = (left < this._components[i]) ? left : this._components[i];
-					right = (right > this._components[i]) ? right : this._components[i];
-					++i;
-					bottom = (bottom < this._components[i]) ? bottom : this._components[i];
-					top = (top > this._components[i]) ?top : this._components[i];
+				var tempNumber:Number;
+				for (var i:int=2; i<length; i+=2) {
+					tempNumber = this._components[i];
+					left = (left < tempNumber) ? left :tempNumber;
+					right = (right > tempNumber) ? right : tempNumber;
+					tempNumber = this._components[i+1];
+					bottom = (bottom < tempNumber) ? bottom : tempNumber;
+					top = (top > tempNumber) ?top : tempNumber;
 				}
 				this._bounds = new Bounds(left,bottom,right,top);
 			}

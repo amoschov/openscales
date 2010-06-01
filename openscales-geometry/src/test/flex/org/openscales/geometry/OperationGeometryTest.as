@@ -1,6 +1,7 @@
 package org.openscales.geometry
 {
 	import org.flexunit.Assert;
+	import org.openscales.basetypes.Bounds;
 
 	public class OperationGeometryTest
 	{
@@ -53,10 +54,10 @@ package org.openscales.geometry
 			arrayVertices.push(45.659157810588724);
 			var linearRing:LinearRing = new LinearRing(arrayVertices);
 			var point:Point = new Point(8.4527844237936415,80.45454545454);
-			var pointTest:Point = linearRing.getPointAt(2);
 			linearRing.addComponent(point,2);
-			Assert.assertTrue(point.x,pointTest.x);
-			Assert.assertTrue(point.y,pointTest.y);
+			var pointTest:Point = linearRing.getPointAt(2);
+			Assert.assertEquals(point.x,pointTest.x);
+			Assert.assertEquals(point.y,pointTest.y);
 		}
 		
 		/**
@@ -74,10 +75,88 @@ package org.openscales.geometry
 			arrayVertices.push(4.5727844237936415);
 			arrayVertices.push(45.659157810588724);
 			var linearRing:LinearRing = new LinearRing(arrayVertices);
-			var pointTest:Point = linearRing.getPointAt(2);
 			linearRing.addPoint(8.4527844237936415,80.45454545454,2);
-			Assert.assertTrue(8.4527844237936415,pointTest.x);
-			Assert.assertTrue(80.45454545454,pointTest.y);
+			var pointTest:Point = linearRing.getPointAt(2);
+			Assert.assertEquals(8.4527844237936415,pointTest.x);
+			Assert.assertEquals(80.45454545454,pointTest.y);
+			
+		}
+		
+		/**
+		 * Test addcomponent function 
+		 */
+		[Test] public function testGeometryReplaceComponent():void {
+			// Create a LinearRing.
+			var arrayVertices:Vector.<Number> = new Vector.<Number>();
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.659157810588724);
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.659157810588724);
+			var linearRing:LinearRing = new LinearRing(arrayVertices);
+			
+			var point:Point = new Point(8.4527844237936415,80.45454545454);
+			linearRing.replaceComponent(2,point);
+			var pointTest:Point = linearRing.getPointAt(2);
+			Assert.assertEquals(pointTest.x,point.x);
+			Assert.assertEquals(pointTest.y,point.y);
+
+			
+		}
+		
+		/**
+		 * Test addcomponent function 
+		 */
+		[Test] public function testGeometryBounds():void {
+			// Create a LinearRing.
+			var arrayVertices:Vector.<Number> = new Vector.<Number>();
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.659157810588724);
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.659157810588724);
+			var linearRing:LinearRing = new LinearRing(arrayVertices);
+			var bounds:Bounds = linearRing.bounds;
+			Assert.assertEquals(bounds.left,4.5727844237936415);
+			Assert.assertEquals(bounds.right,5.0300903319148516);
+			Assert.assertEquals(bounds.top,45.713361819965364);
+			Assert.assertEquals(bounds.bottom,45.659157810588724);
+			
+			linearRing.addPoint(80,50);
+ 			bounds = linearRing.bounds;
+			Assert.assertEquals(bounds.left,4.5727844237936415);
+			Assert.assertEquals(bounds.right,80);
+			Assert.assertEquals(bounds.top,50);
+			Assert.assertEquals(bounds.bottom,45.659157810588724);
+			
+			
+		}
+		
+		/**
+		 * Test addcomponent function 
+		 */
+		[Test] public function testGeometryContains():void {
+			// Create a LinearRing.
+			var arrayVertices:Vector.<Number> = new Vector.<Number>();
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.659157810588724);
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.659157810588724);
+			var linearRing:LinearRing = new LinearRing(arrayVertices);
+			var containsGeometry:Boolean = linearRing.contains(new Point(5,45.68));
+			Assert.assertTrue(containsGeometry);
+			containsGeometry = linearRing.contains(new Point(80,90));
+			Assert.assertFalse(containsGeometry);
 			
 		}
 	}

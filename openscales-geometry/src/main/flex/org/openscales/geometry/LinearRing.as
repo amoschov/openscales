@@ -56,7 +56,7 @@ package org.openscales.geometry
 				realIndex = i*2;
 				p0= new Point(this._components[realIndex],this._components[realIndex + 1]);
 				
-				if(i==this.componentsLength-1) {
+				if(i==length-1) {
 					p1 = new Point(this._components[0],this._components[1]);
 					
 				} else {
