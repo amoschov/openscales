@@ -1,7 +1,7 @@
 package org.openscales.core.routing
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.geometry.Point;
+	import org.openscales.geometry.Point;
 	import org.openscales.core.layer.FeatureLayer;
 
 	public class SampleRouting extends AbstractRouting

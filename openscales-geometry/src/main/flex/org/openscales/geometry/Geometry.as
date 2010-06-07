@@ -1,7 +1,7 @@
-package org.openscales.core.geometry
+package org.openscales.geometry
 {
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.basetypes.Bounds;
+	import org.openscales.basetypes.LonLat;
 	import org.openscales.proj4as.ProjProjection;
 
 
@@ -13,17 +13,8 @@ package org.openscales.core.geometry
 	public class Geometry 
 	{
 		/**
-     	 * A unique identifier for this geometry.
-     	 */
-		private var _id:String = null;
-
-		/**
-     	 * This is set when a Geometry is added as component of another geometry
-     	 */
-		private var _parent:Geometry = null;
-		
-		/**
      	 * The bounds of this geometry
+		 * 
      	 */
 		protected var _bounds:Bounds = null;
 		
@@ -31,21 +22,10 @@ package org.openscales.core.geometry
 		 * projection of the geometry 
 		 */
 		protected var _projection:String = "EPSG:4326";
-		
-
-		/**
-		 * Geometry constructor
-		 */
-		public function Geometry(id:String = null) {
-			this._id = id;
-		}
-
 		/**
 		 * Destroys the geometry
 		 */
 		public function destroy():void {
-			this.id = null;
-
 			this._bounds = null;
 		}
 		
@@ -73,9 +53,6 @@ package org.openscales.core.geometry
 		 */
 		public function clearBounds():void {
 			this._bounds = null;
-			if (this._parent) {
-				this._parent.clearBounds();
-			} 
 		}
 
 		/**
@@ -166,6 +143,7 @@ package org.openscales.core.geometry
     		var distance:Number;
     		// TODO
     		return distance;
+			
     	}
 		
 		/**
@@ -235,25 +213,10 @@ package org.openscales.core.geometry
 			return 0.0;
 		}
 
-		public function get id():String {
-			return this._id;
-		}
-
 		public function set projection(value:String):void {
 			this._projection = value;
 		}
 		
-		public function set id(value:String):void {
-			this._id = value;
-		}
-
-		public function get parent():Geometry {
-			return this._parent;
-		}
-
-		public function set parent(value:Geometry):void {
-			this._parent = value;
-		}
 	}
 }
 

@@ -1,7 +1,7 @@
 // ActionScript file
 package org.openscales.core.layer.capabilities
 {
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 
 	/**
 	 * WFS 1.1.1 capabilities parser

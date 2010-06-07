@@ -3,8 +3,8 @@ package org.openscales.core.handler.mouse
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.Map;

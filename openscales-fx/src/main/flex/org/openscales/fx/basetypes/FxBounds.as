@@ -2,7 +2,7 @@ package org.openscales.fx.basetypes
 {
 	import mx.core.UIComponent;
 	
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 
 	public class FxBounds extends UIComponent
 	{

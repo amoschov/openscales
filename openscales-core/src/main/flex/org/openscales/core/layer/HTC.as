@@ -1,6 +1,6 @@
 package org.openscales.core.layer
 {
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 	import org.openscales.proj4as.ProjProjection;
 	
 	/**

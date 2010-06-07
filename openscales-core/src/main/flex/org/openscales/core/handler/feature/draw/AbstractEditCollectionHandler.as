@@ -6,18 +6,18 @@ package org.openscales.core.handler.feature.draw
 	import flash.utils.Timer;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.feature.FeatureClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Style;
+	import org.openscales.geometry.ICollection;
+	import org.openscales.geometry.Point;
 
 
 	/**
@@ -70,7 +70,7 @@ package org.openscales.core.handler.feature.draw
 		 * */
 		override public function editionModeStart():Boolean{
 		 	for each(var vectorFeature:Feature in this._layerToEdit.features){	
-					if(vectorFeature.isEditable && vectorFeature.geometry is Collection){			
+					if(vectorFeature.isEditable && vectorFeature.geometry is ICollection){			
 						//Clone or not
 						if(displayedVirtualVertices)displayVisibleVirtualVertice(vectorFeature);
 					}
@@ -100,7 +100,7 @@ package org.openscales.core.handler.feature.draw
 		 override public function dragVerticeStart(vectorfeature:PointFeature):void{
 			if(vectorfeature!=null){
 					var parentFeature:Feature=findVirtualVerticeParent(vectorfeature);
-		 			if(parentFeature && parentFeature.geometry is Collection){
+		 			if(parentFeature && parentFeature.geometry is ICollection){
 						//We start to drag the vector feature
 						vectorfeature.startDrag();
 						//We see if the feature already belongs to the edited vector feature
@@ -127,8 +127,8 @@ package org.openscales.core.handler.feature.draw
 		 		vectorfeature.stopDrag();
 		 		//var parentGeometry:Collection=vectorfeature.editionFeatureParentGeometry as Collection;
 		 		var parentFeature:Feature=findVirtualVerticeParent(vectorfeature);
-		 		if(parentFeature && parentFeature.geometry is Collection){
-		 			var parentGeometry:Collection=editionFeatureParentGeometry(vectorfeature,parentFeature.geometry as Collection);
+		 		if(parentFeature && parentFeature.geometry is ICollection){
+		 			var parentGeometry:ICollection=editionFeatureParentGeometry(vectorfeature,parentFeature.geometry as ICollection);
 					var componentLength:Number=parentGeometry.componentsLength;
 					this._layerToEdit.removeFeature(vectorfeature);
 					this._featureClickHandler.removeControledFeature(vectorfeature);
@@ -198,8 +198,8 @@ package org.openscales.core.handler.feature.draw
 		 	var vectorfeature:PointFeature=event.feature as PointFeature;
 		 	
 		 	var parentFeature:Feature=findVirtualVerticeParent(vectorfeature);
-		 	if(parentFeature && parentFeature.geometry is Collection){
-			 	var parentGeometry:Collection=editionFeatureParentGeometry(vectorfeature,parentFeature.geometry as Collection);
+		 	if(parentFeature && parentFeature.geometry is ICollection){
+			 	var parentGeometry:ICollection=editionFeatureParentGeometry(vectorfeature,parentFeature.geometry as ICollection);
 			 	var index:int=IsRealVertice(vectorfeature,parentGeometry);
 
 			 	if(index!=-1){	 		
@@ -240,7 +240,7 @@ package org.openscales.core.handler.feature.draw
 		 * */
 		 public function createPointUndertheMouse(evt:FeatureEvent):void{
 		 	var vectorfeature:Feature=evt.feature as Feature;		 	
-		 	if(vectorfeature!=null && vectorfeature.layer==_layerToEdit && vectorfeature.geometry is Collection){
+		 	if(vectorfeature!=null && vectorfeature.layer==_layerToEdit && vectorfeature.geometry is ICollection){
 		 		_timer.stop();
 		 		vectorfeature.buttonMode=false; 
 		 		var px:Pixel=new Pixel(this._layerToEdit.mouseX,this._layerToEdit.mouseY);
@@ -270,9 +270,9 @@ package org.openscales.core.handler.feature.draw
 						}
 						if(AbstractEditCollectionHandler._pointUnderTheMouse.layer==null) {
 							layerToEdit.addFeature(AbstractEditCollectionHandler._pointUnderTheMouse);
-							var v:Vector.<Feature> = new Vector.<Feature>(2);
+							var v:Vector.<Feature> = new Vector.<Feature>();
 							v[0] = AbstractEditCollectionHandler._pointUnderTheMouse;
-							v[1] = vectorfeature
+							v[1] = vectorfeature;
 							 _editionFeatureArray.push(v);
 						}
 						
@@ -313,8 +313,8 @@ package org.openscales.core.handler.feature.draw
 		 * */
 		 public function findIndexOfFeatureCurrentlyDrag(vectorfeature:PointFeature):Number{
 		 	var parentFeature:Feature=findVirtualVerticeParent(vectorfeature);
-		 var parentgeometry:Collection=editionFeatureParentGeometry(vectorfeature,parentFeature.geometry as Collection);
-		 	if(parentFeature && parentFeature.geometry && parentFeature.geometry is Collection){
+		 var parentgeometry:ICollection=editionFeatureParentGeometry(vectorfeature,parentFeature.geometry as ICollection);
+		 	if(parentFeature && parentFeature.geometry && parentFeature.geometry is ICollection){
 		 		if(vectorfeature==AbstractEditCollectionHandler._pointUnderTheMouse){
 		 			return vectorfeature.getSegmentsIntersection(parentgeometry);
 		 		}
@@ -327,7 +327,7 @@ package org.openscales.core.handler.feature.draw
 		 * if it's a point returns its index else returns -1
 		 * @private
 		 * */
-		 private function IsRealVertice(vectorfeature:PointFeature,parentgeometry:Collection):Number{
+		 private function IsRealVertice(vectorfeature:PointFeature,parentgeometry:ICollection):Number{
 		 	
 		 				if(parentgeometry){
 							var index:Number=0;		
@@ -345,8 +345,9 @@ package org.openscales.core.handler.feature.draw
 		 /**
 		 * This function find a parent Geometry of an edition feature
 		 * @param point
+		 * todo:realy needs to be rewrited
 		 * */
-		 public function editionFeatureParentGeometry(point:PointFeature,parentGeometry:Collection):Collection{
+		 public function editionFeatureParentGeometry(point:PointFeature,parentGeometry:ICollection):ICollection{
 			if(point && parentGeometry){
 				if(parentGeometry){
 					var i:int;
@@ -361,13 +362,13 @@ package org.openscales.core.handler.feature.draw
 					}
 					else{
 						for(i=0;i<parentGeometry.componentsLength;i++){
-							var geomParent:Collection=editionFeatureParentGeometry(point,parentGeometry.componentByIndex(i) as Collection);
+							var geomParent:ICollection=editionFeatureParentGeometry(point,parentGeometry.componentByIndex(i) as ICollection);
 							if(geomParent!=null){
 								return geomParent;
 							}
 						}
 					} 
-					return parentGeometry.componentByIndex(0) as Collection;
+					return parentGeometry as ICollection;
 				}
 				}
 			}

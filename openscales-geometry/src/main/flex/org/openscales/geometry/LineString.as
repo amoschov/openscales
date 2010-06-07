@@ -1,6 +1,6 @@
-package org.openscales.core.geometry
+package org.openscales.geometry
 {
-	import org.openscales.core.UtilGeometry;
+	import org.openscales.UtilGeometry;
 	import org.openscales.proj4as.ProjProjection;
 
 	/**
@@ -14,65 +14,11 @@ package org.openscales.core.geometry
 		 * 
 		 * @param vertices Array of two or more points
 		 */
-		public function LineString(vertices:Vector.<Geometry>) {
-			// Check if all the components to add are Points
-			var validVertices:Boolean = true;
-			if (vertices) {
-				for(var i:int=0; i<vertices.length; ++i) {
-					if ((vertices[i]==undefined) || (! (vertices[i] is Point))) {
-						validVertices = false;
-						vertices = null;
-						break;
-					}
-				}
-			}
-			// Check if almost two vertices are defined.
-			// If one (or more) vertex is invalid, this condition is not tested
-			if (validVertices) {
-				if (vertices && (vertices.length < 2)) {
-					trace("LineString constructor WARNING : too few vertices (" + vertices.length + ")");
-				}
-			}
-			// Initialize the object
+		public function LineString(vertices:Vector.<Number>) {
 			super(vertices);
 		}
 		
-		/**
-		 * Add vertices to the end of the LineString
-		 * 
-		 * @param vertices the array of vertices to add
-		 */
-		override public function addComponents(vertices:Vector.<Geometry>):void {
-			// Check if all the components to add are Points
-			for(var i:int=0; i<vertices.length; ++i) {
-				if (! (vertices[i] is Point)) {
-					trace("LineString.addComponents ERROR : invalid parameter " + i);
-					return;
-				}
-			}
-			// Add the vertices to the LineString
-			super.addComponents(vertices);
-		}
 		
-		/**
-		 * Remove a vertex of the LineString.
-		 * 
-		 * @param vertex the vertex of the LineString to remove
-		 */
-		override public function removeComponent(vertex:Geometry):void {
-			// Check if the geometry to remove is a Point
-			if (! (vertex is Point)) {
-				trace("LineString.removeComponent ERROR : invalid parameter");
-				return; 
-			}
-			// Check if this object will stay a LineString after the removing
-			//   (2 vertices min) and try to remove this Collection's component
-			if (this.componentsLength > 2) {
-				super.removeComponent(vertex);
-			} else {
-				trace("LineString.removeComponent ERROR : too few components (" + this.componentsLength + ")"); 
-			}
-		}
 		
 		/**
 		 * @param index the index of the attended vertex
@@ -80,10 +26,11 @@ package org.openscales.core.geometry
 		 */
 		public function getPointAt(index:Number):Point {
 			// Return null for an invalid request
-			if ((index<0) || (index>=this.componentsLength)) {
+			var realIndex:uint = index * 2;
+			if ((realIndex<0) || (realIndex>=this._components.length)) {
 				return null;
 			}
-			return (this._components[index] as Point);
+			return new Point(this._components[realIndex],this._components[realIndex + 1]);
 		}
 		
 		/**
@@ -99,28 +46,18 @@ package org.openscales.core.geometry
 		 */
 		override public function get length():Number {
 			var length:Number = 0.0;
-			if (this.componentsLength > 1) {
-				for(var i:int=1; i<this.componentsLength; ++i) {
-					length += this._components[i-1].distanceTo(this._components[i]);
+			var dx2:Number;
+			var dy2:Number
+			var tabLength:uint = this._components.length;
+			if (tabLength > 1) {
+				for(var i:int=2; i<tabLength; i+=2) {
+					 dx2 = Math.pow(this._components[i-2] - this._components[i], 2);
+					 dy2 = Math.pow(this._components[i - 1] - this._components[i + 1], 2);
+					length += Math.sqrt( dx2 + dy2 );
 				}
 			}
 			return length;
 		}
-		
-		/**
-		 * Method to convert the multipoint (x/y) from a projection system to an other.
-		 * 
-		 * @param source The source projection
-		 * @param dest The destination projection
-		 */
-		public function transformLineString(source:ProjProjection, dest:ProjProjection):void {
-			if (this.componentsLength > 0) {
-				for(var i:int=0; i<this.componentsLength; ++i){
-					this._components[i].transform(source, dest);
-				} 
-			}	
-		}
-		
 		/**
      	 * Test for instersection between this LineString and a geometry.
      	 * 
@@ -224,12 +161,12 @@ package org.openscales.core.geometry
 		 */
 		private function getXsortedSegments():Vector.<Vector.<Point>> {
 			var point1:Point, point2:Point;
-			var numSegs:int = this.componentsLength-1;
+			var numSegs:int = this._components.length-3;
 			var segments:Vector.<Vector.<Point>> = new Vector.<Vector.<Point>>(numSegs);
 			for(var i:int=0; i<numSegs; ++i) {
-				point1 = (this._components[i] as Point);
-				point2 = (this._components[i+1] as Point);
-				segments[i] = (point2.x < point1.x) ? new <Point>[point2,point1] :  new <Point>[point1,point2];
+				point1 = new Point(this._components[i],this._components[i+1])
+				point2 = new Point(this._components[i + 2],this._components[i + 3])
+				segments[i] = (this._components[i+2] < this._components[i]) ? new <Point>[point2,point1] :  new <Point>[point1,point2];
 			}
 			return segments;
 		}
@@ -238,8 +175,8 @@ package org.openscales.core.geometry
 		 * */
 		override public function clone():Geometry{
 			var lineStringClone:LineString=new LineString(null);
-			var component:Vector.<Geometry>=this.getcomponentsClone();
-			lineStringClone.addComponents(component);
+			var component:Vector.<Number>=this.getcomponentsClone();
+			lineStringClone.addPoints(component);
 			return lineStringClone;
 		}
 	}

@@ -18,15 +18,15 @@ package org.openscales.core.format
 	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.LinearRing;
-	import org.openscales.core.geometry.MultiLineString;
-	import org.openscales.core.geometry.MultiPoint;
-	import org.openscales.core.geometry.MultiPolygon;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.Polygon;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.ICollection;
+	import org.openscales.geometry.LineString;
+	import org.openscales.geometry.LinearRing;
+	import org.openscales.geometry.MultiLineString;
+	import org.openscales.geometry.MultiPoint;
+	import org.openscales.geometry.MultiPolygon;
+	import org.openscales.geometry.Point;
+	import org.openscales.geometry.Polygon;
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
@@ -73,7 +73,7 @@ package org.openscales.core.format
 		private var step:int       = 200;
 		private var lastInd:int    = 0;
 		//fps
-		private var allowedTime:Number = 1000/30 ;
+		private var allowedTime:Number = 1000/40 ;
 		private var startTime:Number = 0;
 		private var savedIndex:Number = 0;
 		private var sprite:Sprite = new Sprite();
@@ -191,9 +191,10 @@ package org.openscales.core.format
 		 * @return A vetor of feature
 		 */
 		public function parseFeature(xmlNode:XML):Feature {
-			var geom:Collection = null;
-			var p:Vector.<Geometry> = new Vector.<Geometry>();
-			var pMat:Vector.<Vector.<Geometry>> = new Vector.<Vector.<Geometry>>();
+			var geom:ICollection = null;
+			var p:Vector.<Number> = new Vector.<Number>();
+			var p2:Vector.<Geometry> = new Vector.<Geometry>();
+
 			
 			var feature:Feature = null;
 			
@@ -218,7 +219,7 @@ package org.openscales.core.format
 				var lineStrings:XMLList = multilinestring..*::LineString;
 				j = lineStrings.length();
 				
-				for (i = 0; i < j; i++) {
+				for (i = 0; i < j; ++i) {
 					p = this.parseCoords(lineStrings[i]);
 					if(p){
 						var lineString:LineString = new LineString(p);
@@ -232,11 +233,10 @@ package org.openscales.core.format
 				
 				var points:XMLList = multiPoint..*::Point;
 				j = points.length();
+				p = this.parseCoords(points[i]);
+				if (p)
+				  geom.addPoints(p);
 				
-				for (i = 0; i < j; i++) {
-					p = this.parseCoords(points[i]);
-					geom.addComponents(new <Geometry>[p[0]]);
-				}
 			} else if (xmlNode..*::Polygon.length() > 0) {
 				var polygon2:XML = xmlNode..*::Polygon[0];
 				
@@ -254,7 +254,7 @@ package org.openscales.core.format
 				geom = new MultiPoint();
 				p = this.parseCoords(point);
 				if (p) {
-					geom.addComponent(p[0]);
+					geom.addPoints(p);
 				}
 			}
 			
@@ -330,7 +330,7 @@ package org.openscales.core.format
 			var linearRings:XMLList = polygonNode..*::LinearRing;
 			// Optimize by specifying the array size
 			var j:int = linearRings.length();
-			var rings:Vector.<Geometry> = new Vector.<Geometry>(j);
+			var rings:Vector.<Geometry> = new Vector.<Geometry>();
 			var i:int;
 			for (i = 0; i < j; i++) {
 				rings[i] = new LinearRing(this.parseCoords(linearRings[i]));
@@ -341,10 +341,10 @@ package org.openscales.core.format
 		/**
 		 * Return an array of coords
 		 */ 
-		public function parseCoords(xmlNode:XML):Vector.<Geometry> {
+		public function parseCoords(xmlNode:XML):Vector.<Number> {
 			var x:Number, y:Number, left:Number, bottom:Number, right:Number, top:Number;
 			
-			var points:Vector.<Geometry>  = new Vector.<Geometry>();
+			var points:Vector.<Number>  = new Vector.<Number>();
 			
 			if (xmlNode) {
 				
@@ -377,7 +377,8 @@ package org.openscales.core.format
 					var p:Point = new Point(x, y);
 					if (this._internalProj != null, this._externalProj != null)
 						p.transform(this.externalProj, this.internalProj);
-					points.push(p);
+					points.push(p.x);
+					points.push(p.y);
 				}
 				return points
 			}

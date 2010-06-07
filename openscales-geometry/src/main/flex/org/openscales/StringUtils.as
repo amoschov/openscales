@@ -1,4 +1,4 @@
-package org.openscales.core {
+package org.openscales {
 	import flash.system.Capabilities;
 
 	/**

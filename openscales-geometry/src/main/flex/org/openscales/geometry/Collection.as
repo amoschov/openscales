@@ -1,9 +1,9 @@
-package org.openscales.core.geometry
+package org.openscales.geometry
 {
 	import flash.trace.Trace;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.UtilGeometry;
+	import org.openscales.UtilGeometry;
 	import org.openscales.proj4as.ProjProjection;
 
 
@@ -15,7 +15,7 @@ package org.openscales.core.geometry
 	 * The getArea and getLength functions here merely iterate through the components,
 	 * summing their respective areas and lengths.
 	 */	
-	public class Collection extends Geometry
+	public class Collection extends Geometry implements ICollection
 	{
 		/**
      	 * The component parts of this geometry
@@ -28,6 +28,11 @@ package org.openscales.core.geometry
      	 * component types are not restricted.
      	 */
 		private var _componentTypes:Vector.<String> = null;
+		
+		
+		public function addPoints(components:Vector.<Number>):void{
+			
+		}
 		
 		/**
      	 * Creates a Geometry Collection
@@ -188,8 +193,6 @@ package org.openscales.core.geometry
 					} else {
 						this._components.push(component);
 					}
-					
-					component.parent = this;
 					this.clearBounds();
 					added = true;
 				}

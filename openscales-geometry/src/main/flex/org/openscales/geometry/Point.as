@@ -1,7 +1,7 @@
-package org.openscales.core.geometry
+package org.openscales.geometry
 {
 	
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;
 	import org.openscales.proj4as.ProjProjection;
@@ -34,7 +34,7 @@ package org.openscales.core.geometry
 		 * Return an array of all the vertices (Point) of this geometry
 		 */
 		override public function toVertices():Vector.<Point> {
-			return new <Point>[ this.clone() as org.openscales.core.geometry.Point ];
+			return new <Point>[ this.clone() as Point ];
 		}
 		
 		override public function calculateBounds():void {

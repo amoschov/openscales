@@ -1,7 +1,7 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.proj4as.ProjProjection;
     /**

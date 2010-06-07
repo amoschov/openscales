@@ -1,4 +1,4 @@
-package org.openscales.core.geometry
+package org.openscales.geometry
 {
 	import flash.utils.getQualifiedClassName;
 	/**
@@ -34,7 +34,7 @@ package org.openscales.core.geometry
 			}
 			// Initialize the object
 			super(rings);
-    		this.componentTypes = new <String>["org.openscales.core.geometry::LinearRing"];
+    		this.componentTypes = new <String>["org.openscales.geometry::LinearRing"];
 		}
 		
 		/**
@@ -171,7 +171,7 @@ package org.openscales.core.geometry
 				return this.containsPoint((geom as LineString).componentByIndex(0) as Point)
 					|| ((geom is LinearRing) && (geom as LinearRing).containsPoint((this._components[0] as LinearRing).componentByIndex(0) as Point));
 			}
-			else if (getQualifiedClassName(geom) == "org.openscales.core.geometry::Polygon") {
+			else if (getQualifiedClassName(geom) == "org.openscales.geometry::Polygon") {
 				// Two holed polygons intersect if and only if one of them
 				//  intersects with the outer LinearRing of the other polygon
 				//  without being fully included in one of its holes.
@@ -192,7 +192,9 @@ package org.openscales.core.geometry
 					return true;
 				}
 			}
-			else {  // geom is a multi-geometry
+			else if(getQualifiedClassName(geom) == "org.openscales.geometry::MultiPoint"){
+				return (geom as MultiPoint).intersects(this);
+			} {  // geom is a multi-geometry
 				return (geom as Collection).intersects(this);
 			}
     	}

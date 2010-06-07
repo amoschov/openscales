@@ -5,7 +5,7 @@ package org.openscales.core.control
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
 
 	/**

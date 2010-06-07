@@ -77,15 +77,15 @@
 			import org.openscales.core.feature.MultiPolygonFeature;
 			import org.openscales.core.feature.PointFeature;
 			import org.openscales.core.feature.PolygonFeature;
-			import org.openscales.core.geometry.Collection;
-			import org.openscales.core.geometry.Geometry;
-			import org.openscales.core.geometry.LineString;
-			import org.openscales.core.geometry.LinearRing;
-			import org.openscales.core.geometry.MultiLineString;
-			import org.openscales.core.geometry.MultiPoint;
-			import org.openscales.core.geometry.MultiPolygon;
-			import org.openscales.core.geometry.Point;
-			import org.openscales.core.geometry.Polygon;
+			import org.openscales.geometry.Collection;
+			import org.openscales.geometry.Geometry;
+			import org.openscales.geometry.LineString;
+			import org.openscales.geometry.LinearRing;
+			import org.openscales.geometry.MultiLineString;
+			import org.openscales.geometry.MultiPoint;
+			import org.openscales.geometry.MultiPolygon;
+			import org.openscales.geometry.Point;
+			import org.openscales.geometry.Polygon;
 			import org.openscales.core.handler.Handler;
 			import org.openscales.core.handler.feature.SelectFeaturesHandler;
 			import org.openscales.core.layer.FeatureLayer;
@@ -127,7 +127,7 @@
 				testExpectedResult = true;
 				geom1 = ((layer.getChildAt(9) as PolygonFeature).geometry as Collection).componentByIndex(0);
 				geom2 = (layer.getChildAt(5) as PointFeature).geometry;
-				testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.core.geometry.Point);
+				testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.geometry.Point);
 				textResult = "Does the outer LinearRing of the blue Polygon contain the red point (true) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 
@@ -135,7 +135,7 @@
 				testExpectedResult = false;
 				geom1 = ((layer.getChildAt(9) as PolygonFeature).geometry as Collection).componentByIndex(0);
 				geom2 = (layer.getChildAt(0) as PointFeature).geometry;
-				testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.core.geometry.Point);
+				testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.geometry.Point);
 				textResult = "Does the outer LinearRing of the blue Polygon contain the black point below the violet multipolygon (false) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 
@@ -143,7 +143,7 @@
 				testExpectedResult = false;
 				geom1 = ((layer.getChildAt(9) as PolygonFeature).geometry as Collection).componentByIndex(0);
 				geom2 = (layer.getChildAt(2) as PointFeature).geometry;
-				testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.core.geometry.Point);
+				testResult = (geom1 as LinearRing).containsPoint(geom2 as org.openscales.geometry.Point);
 				textResult = "Does the outer LinearRing of the blue Polygon contain the nearest black point (false) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 
@@ -151,7 +151,7 @@
 				testExpectedResult = true;
 				geom1 = (layer.getChildAt(9) as PolygonFeature).geometry;
 				geom2 = (layer.getChildAt(5) as PointFeature).geometry;
-				testResult = (geom1 as Polygon).isPointInPolygon(geom2 as org.openscales.core.geometry.Point, false);
+				testResult = (geom1 as Polygon).isPointInPolygon(geom2 as org.openscales.geometry.Point, false);
 				textResult = "Does the blue Polygon contain the red point without managing its holes (true) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 
@@ -159,7 +159,7 @@
 				testExpectedResult = false;
 				geom1 = (layer.getChildAt(9) as PolygonFeature).geometry;
 				geom2 = (layer.getChildAt(5) as PointFeature).geometry;
-				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point);
+				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.geometry.Point);
 				textResult = "Does the blue Polygon contain the red point without managing its holes (false) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 				
@@ -167,7 +167,7 @@
 				testExpectedResult = true;
 				geom1 = ((layer.getChildAt(10) as MultiPolygonFeature).geometry as Collection).componentByIndex(0) as Collection;
 				geom2 = (layer.getChildAt(0) as PointFeature).geometry;
-				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point);
+				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.geometry.Point);
 				textResult = "Does the violet MultiPolygon contain the upper black point (true) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 				
@@ -175,7 +175,7 @@
 				testExpectedResult = false;
 				geom1 = ((layer.getChildAt(10) as MultiPolygonFeature).geometry as Collection).componentByIndex(0) as Collection;
 				geom2 = (layer.getChildAt(1) as PointFeature).geometry;
-				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.core.geometry.Point);
+				testResult = (geom1 as Polygon).containsPoint(geom2 as org.openscales.geometry.Point);
 				textResult = "Does the violet MultiPolygon contain the lower black point (false) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 			}
@@ -193,7 +193,7 @@
 				testExpectedResult = true;
 				geom1 = (layer.getChildAt(9) as PolygonFeature).geometry;
 				geom2 = (layer.getChildAt(4) as PolygonFeature).geometry;
-				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.core.geometry.Polygon);
+				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.geometry.Polygon);
 				textResult = "Does the blue Polygon intersect the big black rectangle (true) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 				
@@ -201,7 +201,7 @@
 				testExpectedResult = true;
 				geom1 = (layer.getChildAt(9) as PolygonFeature).geometry;
 				geom2 = (layer.getChildAt(11) as PolygonFeature).geometry;
-				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.core.geometry.Polygon);
+				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.geometry.Polygon);
 				textResult = "Does the blue Polygon intersect the inside small black rectangle (true) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 				
@@ -209,7 +209,7 @@
 				testExpectedResult = false;
 				geom1 = (layer.getChildAt(9) as PolygonFeature).geometry;
 				geom2 = (layer.getChildAt(12) as PolygonFeature).geometry;
-				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.core.geometry.Polygon);
+				testResult = (geom1 as Polygon).intersects(geom2 as org.openscales.geometry.Polygon);
 				textResult = "Does the blue Polygon intersect the black lozenge (false) ? => "+testResult;
 				if (testResult==testExpectedResult) Trace.info(textResult) else Trace.error(textResult);
 			}

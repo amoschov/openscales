@@ -1,6 +1,6 @@
 package org.openscales.fx.layer
 {
-	import org.openscales.core.basetypes.LonLat;
+	import org.openscales.basetypes.LonLat;
 	import org.openscales.core.layer.TMS;
 	
 	public class FxTMS extends FxGrid

@@ -1,4 +1,4 @@
-package org.openscales.core.basetypes
+package org.openscales.basetypes
 {
 	import org.openscales.proj4as.Proj4as;
 	import org.openscales.proj4as.ProjPoint;

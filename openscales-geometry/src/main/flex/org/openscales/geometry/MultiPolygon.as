@@ -1,4 +1,4 @@
-package org.openscales.core.geometry
+package org.openscales.geometry
 {
 	import org.openscales.proj4as.ProjProjection;
 
@@ -10,7 +10,7 @@ package org.openscales.core.geometry
 
 		public function MultiPolygon(components:Vector.<Geometry> = null) {
 			super(components);
-			this.componentTypes = new <String>["org.openscales.core.geometry::Polygon"];
+			this.componentTypes = new <String>["org.openscales.geometry::Polygon"];
 		}
 		
 		/**

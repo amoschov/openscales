@@ -13,9 +13,9 @@ package org.openscales.fx
 	import org.openscales.component.control.TraceInfo;
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.basetypes.Bounds;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Size;
 	import org.openscales.core.control.IControl;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;

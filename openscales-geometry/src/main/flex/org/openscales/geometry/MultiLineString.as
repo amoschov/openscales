@@ -1,4 +1,4 @@
-package org.openscales.core.geometry
+package org.openscales.geometry
 {
 	import org.openscales.proj4as.ProjProjection;
 
@@ -10,7 +10,7 @@ package org.openscales.core.geometry
 
 		public function MultiLineString(components:Vector.<Geometry> = null) {
 			super(components);
-			this.componentTypes = new <String>["org.openscales.core.geometry::LineString"];
+			this.componentTypes = new <String>["org.openscales.geometry::LineString"];
 		}
 		
 		/**
@@ -49,7 +49,7 @@ package org.openscales.core.geometry
 		override public function transform(source:ProjProjection, dest:ProjProjection):void {
 			if(this.componentsLength > 0){
 				for(var i:int=0; i<this.componentsLength; ++i) {
-					(this._components[i] as LineString).transformLineString(source, dest);
+					(this._components[i] as LineString).transform(source, dest);
 				}
 			}
 		}

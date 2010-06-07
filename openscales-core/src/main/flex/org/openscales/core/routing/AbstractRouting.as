@@ -1,21 +1,21 @@
 package org.openscales.core.routing
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.feature.Marker;
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.MultiLineString;
-	import org.openscales.core.geometry.Point;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.feature.draw.FeatureLayerEditionHandler;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Style;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.LineString;
+	import org.openscales.geometry.MultiLineString;
+	import org.openscales.geometry.Point;
 	
 	public class AbstractRouting extends Handler implements IRouting 
 	{
@@ -101,7 +101,10 @@ package org.openscales.core.routing
 						if(_startPoint){
 							//We work on the starting point 
 							if(_resultsLayer.features.indexOf(_startPoint)==-1)resultsLayer.addFeature(_startPoint);
-							if(!linestring)linestring=new LineString(new <Geometry>[_startPoint.geometry]);
+							if(!linestring){
+								var point:Point = _startPoint.geometry as Point;
+								linestring=new LineString(new <Number>[point.x,point.y]);
+							}
 							//if the first point is not the starting point
 							if(!((_startPoint.geometry as Point).equals(results[0]))){	
 								linestring.addComponent(results[i]);				
@@ -219,7 +222,7 @@ package org.openscales.core.routing
 		public function removeIntermediaryPoint(intermedPoint:PointFeature):void{
 			var i:int = _intermedPoints.indexOf(intermedPoint);
 			if(i!=-1)
-				_intermedPoints.slice(i,1);
+				_intermedPoints.splice(i,1);
 			refreshRouting();
 		}
 		/**
@@ -232,7 +235,7 @@ package org.openscales.core.routing
 			for each(var intermedPoint:PointFeature in intermedPointsArray){
 				i = _intermedPoints.indexOf(intermedPoint);
 				if(i!=-1)
-					_intermedPoints.slice(i,1);
+					_intermedPoints.slice(i,i+1);
 			}
 			refreshRouting();
 		}

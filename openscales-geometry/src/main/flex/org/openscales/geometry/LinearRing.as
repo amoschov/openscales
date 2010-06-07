@@ -1,7 +1,8 @@
-package org.openscales.core.geometry
+package org.openscales.geometry
 {
-	import org.openscales.core.UtilGeometry;
-	import org.openscales.core.basetypes.LonLat;
+
+	import org.openscales.UtilGeometry;
+	import org.openscales.basetypes.LonLat;
 		
 	/**
 	 * A Linear Ring is a special LineString which is closed. 
@@ -12,14 +13,14 @@ package org.openscales.core.geometry
 	 */
 	public class LinearRing extends LineString
 	{
-		public function LinearRing(points:Vector.<Geometry> = null) {
+		public function LinearRing(points:Vector.<Number> = null) {
 			super(points);
 		}
 
 		override public function addComponent(point:Geometry, index:Number=NaN):Boolean {
 			var added:Boolean = false;
 			if(0<this.componentsLength){
-			  var lastPoint:Point = (this._components[this.componentsLength-1] as Point);
+			  var lastPoint:Point = this.getPointAt(this.componentsLength-1);
 			}
 			if (!isNaN(index) || !(point as Point).equals(lastPoint)) {
 				added = super.addComponent(point, index);
@@ -49,22 +50,27 @@ package org.openscales.core.geometry
 			var wn:int = 0; // the winding number-
 			var p0:Point; // first vertex of the current edge
 			var p1:Point;  // second vertex of the current edge
-			for(var i:int=0; i<this.componentsLength; ++i) {
-				p0 = (this._components[i] as Point);
-				if(i==this.componentsLength-1) {
-					p1 = (this._components[0] as Point);
+			var realIndex:uint = 0;
+			var length:int = this.componentsLength;
+			for(var i:int=0; i<length; ++i) {
+				realIndex = i*2;
+				p0= new Point(this._components[realIndex],this._components[realIndex + 1]);
+				
+				if(i==length-1) {
+					p1 = new Point(this._components[0],this._components[1]);
+					
 				} else {
-					p1 = (this._components[i + 1] as Point);
+					p1 = new Point(this._components[realIndex + 2],this._components[realIndex + 3]);
 				}
 				if (p0.y <= p.y) {
 					if (p1.y > p.y) {
-						if (UtilGeometry.isLeftOrRight(p, p0, p1) > 0) {
+						if (UtilGeometry.isLeftOrRight(p, p0,p1) > 0) {
 							wn++;
 						}
 					}
 				} else {
 					if (p1.y <= p.y) {
-						if (UtilGeometry.isLeftOrRight(p, p0, p1) < 0) {
+						if (UtilGeometry.isLeftOrRight(p,p0,p1) < 0) {
 							wn--;
 						}
 					}
@@ -133,8 +139,8 @@ package org.openscales.core.geometry
 		 * */
 		override public function clone():Geometry{
 			var LinearRingClone:LinearRing=new LinearRing();
-			var component:Vector.<Geometry>=this.getcomponentsClone();
-			LinearRingClone.addComponents(component);
+			var component:Vector.<Number>=this.getcomponentsClone();
+			LinearRingClone.addPoints(component);
 			return LinearRingClone;
 		}
 	}

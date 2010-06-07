@@ -1,12 +1,13 @@
 package org.openscales.core.layer
 {
 	import flash.display.DisplayObject;
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.utils.getQualifiedClassName;
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Util;
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Feature;
@@ -59,7 +60,7 @@ package org.openscales.core.layer
 		// Clear layer and children graphics
 		override public function clear():void {
 			var child:Sprite = null;
-			var child2:Sprite = null;
+			var child2:Shape = null;
 			var numChild:int = this.numChildren;
 			var i:int;
 			var j:int;
@@ -71,7 +72,7 @@ package org.openscales.core.layer
 					//Cleanup child subchilds (ex childs of pointfeatures)
 					numChild2 =  child.numChildren;
 					for(j=0; j<numChild2;++j){
-						child2 = child.getChildAt(j) as Sprite;
+						child2 = child.getChildAt(j) as Shape;
 						if(child2) {
 							child2.graphics.clear();
 						}
@@ -235,7 +236,7 @@ package org.openscales.core.layer
 			}
 			i = this.selectedFeatures.indexOf(feature);
 			if (i != -1){
-				this.selectedFeatures.slice(i,1);
+				this.selectedFeatures.splice(i,1);
 			}
 			// If needed, dispatch an event with the feature added
 			if (dispatchFeatureEvent && this.map) {

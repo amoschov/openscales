@@ -5,8 +5,8 @@ package org.openscales.core.handler.feature {
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.Bounds;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.events.FeatureEvent;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.feature.Feature;
@@ -14,7 +14,7 @@ package org.openscales.core.handler.feature {
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPointFeature;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.geometry.Geometry;
+	import org.openscales.geometry.Geometry;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
@@ -228,6 +228,7 @@ package org.openscales.core.handler.feature {
 			if ((value == null) || (value.length == 0)) {
 				return
 			}
+			this._unselectableFeatures = value;
 			// Filter the currently selected features
 			var twoArrays:Vector.<Vector.<Feature>> = this.filterUnselectableFeatures(this._selectedFeatures);
 			this._selectedFeatures = twoArrays[0];
@@ -786,7 +787,7 @@ package org.openscales.core.handler.feature {
 					acceptedFeatures.push(feature);
 				}
 			}
-			var v:Vector.<Vector.<Feature>> = new Vector.<Vector.<Feature>>(2,true);
+			var v:Vector.<Vector.<Feature>> = new Vector.<Vector.<Feature>>();
 			v[0] = acceptedFeatures;
 			v[1] = rejectedFeatures;
 			return v;

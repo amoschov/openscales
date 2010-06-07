@@ -1,8 +1,8 @@
-package org.openscales.core
+package org.openscales
 {
 
-	import org.openscales.core.geometry.ContainsPointTest;
-	import org.openscales.core.geometry.OperationGeometryTest;
+	import org.openscales.geometry.ContainsPointTest;
+	import org.openscales.geometry.OperationGeometryTest;
 
 	
 	[Suite]

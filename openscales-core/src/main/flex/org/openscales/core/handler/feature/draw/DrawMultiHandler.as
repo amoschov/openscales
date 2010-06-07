@@ -5,18 +5,20 @@ package org.openscales.core.handler.feature.draw
 	import org.openscales.core.feature.MultiLineStringFeature;
 	import org.openscales.core.feature.MultiPointFeature;
 	import org.openscales.core.feature.MultiPolygonFeature;
-	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.MultiLineString;
-	import org.openscales.core.geometry.MultiPoint;
-	import org.openscales.core.geometry.MultiPolygon;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.Polygon;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Rule;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.fill.SolidFill;
 	import org.openscales.core.style.stroke.Stroke;
 	import org.openscales.core.style.symbolizer.PolygonSymbolizer;
+	import org.openscales.geometry.CollectionPoint;
+	import org.openscales.geometry.ICollection;
+	import org.openscales.geometry.LineString;
+	import org.openscales.geometry.MultiLineString;
+	import org.openscales.geometry.MultiPoint;
+	import org.openscales.geometry.MultiPolygon;
+	import org.openscales.geometry.Point;
+	import org.openscales.geometry.Polygon;
 
 
 	/**
@@ -83,7 +85,8 @@ package org.openscales.core.handler.feature.draw
 				if(f != null) {
 					//Add all selected feature in a multigeometry
 					if(f.geometry is Point) {
-						multiPoint.addPoint(f.geometry as Point);
+						var point:Point = f.geometry as Point ;
+						multiPoint.addPoint(point.x,point.y);
 						drawType = "MultiPoint";
 						
 						_multiPolygonForbidden = false;
@@ -109,9 +112,7 @@ package org.openscales.core.handler.feature.draw
 					else if(f.geometry is MultiPoint)
 					{
 						j = (f.geometry as MultiPoint).componentsLength;
-						for(i = 0;i<j;++i) {
-							multiPoint.addPoint((f.geometry as MultiPoint).componentByIndex(i) as Point);
-						}
+						multiPoint.addPoints((f.geometry as CollectionPoint).getcomponentsClone()); 
 						drawType = "MultiPoint";
 						
 						_multiPolygonForbidden = false;

@@ -1,9 +1,8 @@
 package org.openscales.core.feature {
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.LinearRing;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.Polygon;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.LinearRing;
+	import org.openscales.geometry.Point;
+	import org.openscales.geometry.Polygon;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;
 	import org.openscales.core.style.symbolizer.Symbolizer;
@@ -38,29 +37,32 @@ package org.openscales.core.feature {
 				var j:int;
 				var k:int = this.polygon.componentsLength;
 				var l:int;
+				var coords:Vector.<Number>;
+				var commands:Vector.<int> = new Vector.<int>();
 
 				for (i = 0; i < k; ++i) {
 					linearRing = (this.polygon.componentByIndex(i) as LinearRing);
-					l = linearRing.componentsLength;
-					// Draw the n-1 line of the polygon
-					for (j = 0; j < l; ++j) {
-						p = linearRing.componentByIndex(j) as Point;
-						x = dX + p.x / resolution;
-						y = dY - p.y / resolution;
-						if (j == 0) {
-							this.graphics.moveTo(x, y);
+					l = linearRing.componentsLength*2;
+					coords =linearRing.getcomponentsClone();
+					commands= new Vector.<int>();
+					for (j = 0; j < l; j+=2){
+						
+						coords[j] = dX + coords[j] / resolution; 
+						coords[j+1] = dY - coords[j+1] / resolution;
+						
+						if (j==0) {
+							commands.push(1);
 						} else {
-							this.graphics.lineTo(x, y);
+							commands.push(2); 
 						}
 					}
-
 					// Draw the last line of the polygon, as Flash won't render it if there is no fill for the polygon
 					if (linearRing.componentsLength > 0) {
-						p = linearRing.componentByIndex(0) as Point;
-						x = dX + p.x / resolution;
-						y = dY - p.y / resolution;
-						this.graphics.lineTo(x, y);
+						coords.push(coords[0]); 
+						coords.push(coords[1]);
+						commands.push(2);
 					}
+					this.graphics.drawPath(commands, coords);
 				}
 			}
 		}

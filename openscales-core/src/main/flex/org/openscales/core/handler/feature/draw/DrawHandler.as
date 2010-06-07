@@ -4,18 +4,19 @@ package org.openscales.core.handler.feature.draw
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.events.DrawingEvent;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.geometry.LinearRing;
 	import org.openscales.core.handler.Handler;
 	import org.openscales.core.handler.feature.SelectFeaturesHandler;
 	import org.openscales.core.handler.mouse.DragHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.layer.Layer;
+	import org.openscales.geometry.LinearRing;
+	import org.openscales.geometry.Point;
 
 	public class DrawHandler extends Handler
 	{
@@ -264,9 +265,10 @@ package org.openscales.core.handler.feature.draw
 			 */
 			public function onDeleteLastClick(event:Event):void {
 				var last:Number = drawLayer.features.length - 1;
+				if(last == -1) return;
+				
 				var lastFeature:Feature = null;
-
-				var pointToDelete:org.openscales.core.geometry.Point;
+                var pointToDelete:org.openscales.geometry.Point;
 
 				if (drawType == "") {
 					drawLayer.removeFeature(drawLayer.features[last]);

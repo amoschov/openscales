@@ -1,7 +1,7 @@
 package org.openscales.fx.control
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.control.ScaleLine;
 	
 	public class FxScaleLine extends FxControl

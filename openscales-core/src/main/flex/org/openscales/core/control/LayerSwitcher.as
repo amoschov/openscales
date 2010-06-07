@@ -8,7 +8,7 @@ package org.openscales.core.control
 	import flash.text.TextFormat;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.control.ui.Arrow;
 	import org.openscales.core.control.ui.Button;
 	import org.openscales.core.control.ui.CheckBox;

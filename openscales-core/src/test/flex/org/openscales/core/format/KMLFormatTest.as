@@ -1,10 +1,12 @@
 package org.openscales.core.format
 {
 	
-	import org.flexunit.Assert;
 	import flash.utils.ByteArray;
-	import org.openscales.core.feature.PointFeature;
+	
+	import org.flexunit.Assert;
+	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.LineStringFeature;
+	import org.openscales.core.feature.PointFeature;
 
 	/**
 	 * Used some tips detailed on http://dispatchevent.org/roger/embed-almost-anything-in-your-swf/ to load XML
@@ -39,10 +41,10 @@ package org.openscales.core.format
 		[Test]
 		public function testReadSample1KML( ) : void {
 			var kmlFormat:KMLFormat = new KMLFormat();
-			var features:Array = kmlFormat.read(this.sample1KML()) as Array;
+			var features:Vector.<Feature> = kmlFormat.read(this.sample1KML()) as Vector.<Feature>;
 			
 			Assert.assertEquals(1, features.length);
-			var firstFeature:PointFeature = features[0];
+			var firstFeature:PointFeature = features[0] as PointFeature;
 			Assert.assertNotNull(firstFeature);
 			Assert.assertEquals(0.5777064, firstFeature.point.x);
 			Assert.assertEquals(44.83799619999999, firstFeature.point.y);
@@ -56,10 +58,10 @@ package org.openscales.core.format
 		[Test]
 		public function testReadSample2KML( ) : void {
 			var kmlFormat:KMLFormat = new KMLFormat();
-			var features:Array = kmlFormat.read(this.sample2KML()) as Array;
+			var features:Vector.<Feature> = kmlFormat.read(this.sample2KML()) as Vector.<Feature>;
 			
 			Assert.assertEquals(1, features.length);
-			var firstFeature:PointFeature = features[0];
+			var firstFeature:PointFeature = features[0] as PointFeature;
 			Assert.assertNotNull(firstFeature);
 			Assert.assertEquals(-122.0822035425683, firstFeature.point.x);
 			Assert.assertEquals(37.42228990140251, firstFeature.point.y);
@@ -70,10 +72,10 @@ package org.openscales.core.format
 		[Test]
 		public function testReadSample3KML( ) : void {
 			var kmlFormat:KMLFormat = new KMLFormat();
-			var features:Array = kmlFormat.read(this.sample3KML()) as Array;
+			var features:Vector.<Feature> = kmlFormat.read(this.sample3KML()) as Vector.<Feature>;
 
 			Assert.assertEquals(1, features.length);
-			var firstFeature:LineStringFeature = features[0];
+			var firstFeature:LineStringFeature = features[0] as LineStringFeature;
 			Assert.assertNotNull(firstFeature);
 			Assert.assertEquals(46,firstFeature.lineString.componentsLength);
 			

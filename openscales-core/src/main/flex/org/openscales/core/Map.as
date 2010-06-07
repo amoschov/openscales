@@ -9,12 +9,12 @@ package org.openscales.core
 	import flash.geom.Rectangle;
 	import flash.utils.getQualifiedClassName;
 	
-	import org.openscales.core.basetypes.Bounds;
+	import org.openscales.basetypes.Bounds;
 	import org.openscales.core.basetypes.DraggableSprite;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
-	import org.openscales.core.basetypes.Unit;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Pixel;
+	import org.openscales.basetypes.Size;
+	import org.openscales.basetypes.Unit;
 	import org.openscales.core.configuration.Configuration;
 	import org.openscales.core.configuration.IConfiguration;
 	import org.openscales.core.control.IControl;
@@ -272,7 +272,7 @@ package org.openscales.core
 			var l:Vector.<Layer> = this.layers;
 			var i:int = l.indexOf(layer);
 			if(i>-1)
-				l.slice(i,1);
+				l.splice(i,1);
 
 			if (setNewBaseLayer && (this.baseLayer == layer)) {
 				this._baseLayer = null;
@@ -731,7 +731,7 @@ package org.openscales.core
 		public function removeSecurity(security:ISecurity):Boolean {
 			var i:int = this._securities.indexOf(security);
 			if(i!=-1) {
-				this._securities.slice(i,1);
+				this._securities.splice(i,1);
 				return true;
 			}
 			return false;

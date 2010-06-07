@@ -5,7 +5,7 @@
 	<artifactId>openscales-geometry</artifactId>
 	<version>1.2-SNAPSHOT</version>
 	<packaging>swc</packaging>
-	<name>Core</name>
+	<name>Openscales-Geometry</name>
 	<description>core modules that contains main classes like  Map, Layer, Handler ...</description>
 	
 	<parent>

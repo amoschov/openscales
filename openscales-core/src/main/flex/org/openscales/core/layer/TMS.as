@@ -1,14 +1,13 @@
 package org.openscales.core.layer
 {
 	import org.openscales.core.Map;
-	import org.openscales.core.Trace;
-	import org.openscales.core.basetypes.Bounds;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Size;
+	import org.openscales.basetypes.Bounds;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Pixel;
+	import org.openscales.basetypes.Size;
 	import org.openscales.core.tile.ImageTile;
 	import org.openscales.core.tile.Tile;
-	
+
 	/**
 	 * The Tiled Web Service provides access to resources, in particular, to rendered
 	 * cartographic tiles at fixed scales.

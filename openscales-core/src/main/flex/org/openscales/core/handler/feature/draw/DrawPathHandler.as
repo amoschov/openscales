@@ -4,13 +4,13 @@ package org.openscales.core.handler.feature.draw
 	import flash.events.MouseEvent;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.feature.LineStringFeature;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.Point;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.LineString;
+	import org.openscales.geometry.Point;
 	import org.openscales.core.handler.mouse.ClickHandler;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Style;
@@ -110,7 +110,6 @@ package org.openscales.core.handler.feature.draw
 					
 					if(this._currentLineStringFeature!=null){
 						this._currentLineStringFeature.style=Style.getDefaultLineStyle();
-						this._currentLineStringFeature.name="path." + id.toString(); id++;
 						drawLayer.redraw();
 					}
 			}	
@@ -128,10 +127,11 @@ package org.openscales.core.handler.feature.draw
 			
 			//The user click for the first time
 			if(newFeature){
-				_lineString = new LineString(new <Geometry>[point]);
+				_lineString = new LineString(new <Number>[point.x,point.y]);
 				lastPoint = point;
 				//the current drawn linestringfeature
 				this._currentLineStringFeature= new LineStringFeature(_lineString,null, Style.getDrawLineStyle(),true);
+				this._currentLineStringFeature.name="path." + id.toString(); ++id;
 				drawLayer.addFeature(_currentLineStringFeature);
 				
 				newFeature = false;
@@ -140,7 +140,7 @@ package org.openscales.core.handler.feature.draw
 			}
 			else {								
 				if(!point.equals(lastPoint)){
-					_lineString.addPoint(point);
+					_lineString.addPoint(point.x,point.y);
 					drawLayer.redraw();
 					lastPoint = point;
 				}								

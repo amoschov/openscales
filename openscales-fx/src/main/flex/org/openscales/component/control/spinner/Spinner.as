@@ -6,7 +6,7 @@ package org.openscales.component.control.spinner {
 	import flash.utils.Timer;
 	
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.control.Control;
 	import org.openscales.core.events.MapEvent;
 	

@@ -6,8 +6,8 @@ package org.openscales.core.control
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
-	import org.openscales.core.basetypes.Pixel;
-	import org.openscales.core.basetypes.Unit;
+	import org.openscales.basetypes.Pixel;
+	import org.openscales.basetypes.Unit;
 	import org.openscales.core.events.LayerEvent;
 	import org.openscales.core.events.MapEvent;
 

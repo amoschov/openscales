@@ -2,10 +2,9 @@ package org.openscales.core.feature {
 	import flash.display.DisplayObject;
 	
 	import org.openscales.core.Trace;
-	import org.openscales.core.geometry.Collection;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.MultiPoint;
-	import org.openscales.core.geometry.Point;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.MultiPoint;
+	import org.openscales.geometry.Point;
 	import org.openscales.core.style.Style;
 	import org.openscales.core.style.marker.WellKnownMarker;
 	import org.openscales.core.style.symbolizer.PointSymbolizer;

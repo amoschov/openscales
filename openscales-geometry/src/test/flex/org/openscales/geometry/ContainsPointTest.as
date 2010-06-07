@@ -1,4 +1,4 @@
-package org.openscales.core.geometry
+package org.openscales.geometry
 {	
 	import org.flexunit.Assert;
 
@@ -10,11 +10,15 @@ package org.openscales.core.geometry
 		 */
 		[Test] public function testLinearRingContainsPoint():void {
 			// Create a LinearRing.
-			var arrayVertices:Vector.<Geometry> = new Vector.<Geometry>();
-			  arrayVertices.push(new Point(4.5727844237936415, 45.713361819965364));
-			  arrayVertices.push(new Point(5.0300903319148516, 45.713361819965364));
-			  arrayVertices.push(new Point(5.0300903319148516, 45.659157810588724));
-			  arrayVertices.push(new Point(4.5727844237936415, 45.659157810588724));
+			var arrayVertices:Vector.<Number> = new Vector.<Number>();
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.659157810588724);
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.659157810588724);
 			var linearRing:LinearRing = new LinearRing(arrayVertices);
 			// Create a point into the LinearRing and test the inclusion
 			var pointIn:Point = new Point(4.78, 45.7);
@@ -24,11 +28,15 @@ package org.openscales.core.geometry
 		
 		[Test] public function testLinearRingNotContainsPoint():void {
 			// Create a LinearRing.
-			var arrayVertices:Vector.<Geometry> = new Vector.<Geometry>();
-			  arrayVertices.push(new Point(4.5727844237936415, 45.713361819965364));
-			  arrayVertices.push(new Point(5.0300903319148516, 45.713361819965364));
-			  arrayVertices.push(new Point(5.0300903319148516, 45.659157810588724));
-			  arrayVertices.push(new Point(4.5727844237936415, 45.659157810588724));
+			var arrayVertices:Vector.<Number> = new Vector.<Number>();
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.659157810588724);
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.659157810588724);
 			var linearRing:LinearRing = new LinearRing(arrayVertices);
 			// Create a point into the LinearRing and test the inclusion
 
@@ -42,11 +50,15 @@ package org.openscales.core.geometry
 		[Test] public function testPolygonContainsPoint():void {
 			// Create a Polygon.
 			var rings:Vector.<Geometry> = new Vector.<Geometry>();
-			var arrayVertices:Vector.<Geometry> = new Vector.<Geometry>();
-			  arrayVertices.push(new Point(4.5727844237936415, 45.713361819965364));
-			  arrayVertices.push(new Point(5.0300903319148516, 45.713361819965364));
-			  arrayVertices.push(new Point(5.0300903319148516, 45.659157810588724));
-			  arrayVertices.push(new Point(4.5727844237936415, 45.659157810588724));
+			var arrayVertices:Vector.<Number> = new Vector.<Number>();
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.659157810588724);
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.659157810588724);
 			rings.push(new LinearRing(arrayVertices));
 			var polygon:Polygon = new Polygon(rings);
 			// Create a point out the Polygon and test the inclusion
@@ -63,11 +75,15 @@ package org.openscales.core.geometry
 		[Test] public function testPolygonNotContainsPoint():void {
 			// Create a Polygon.
 			var rings:Vector.<Geometry> = new Vector.<Geometry>();
-			var arrayVertices:Vector.<Geometry> = new Vector.<Geometry>();
-			  arrayVertices.push(new Point(4.5727844237936415, 45.713361819965364));
-			  arrayVertices.push(new Point(5.0300903319148516, 45.713361819965364));
-			  arrayVertices.push(new Point(5.0300903319148516, 45.659157810588724));
-			  arrayVertices.push(new Point(4.5727844237936415, 45.659157810588724));
+			var arrayVertices:Vector.<Number> = new Vector.<Number>();
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.713361819965364);
+			arrayVertices.push(5.0300903319148516);
+			arrayVertices.push(45.659157810588724);
+			arrayVertices.push(4.5727844237936415);
+			arrayVertices.push(45.659157810588724);
 			rings.push(new LinearRing(arrayVertices));
 			var polygon:Polygon = new Polygon(rings);
 			// Create a point out the Polygon and test the inclusion

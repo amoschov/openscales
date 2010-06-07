@@ -4,10 +4,10 @@ package org.openscales.core.handler.feature.draw
 	
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
-	import org.openscales.core.basetypes.LonLat;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Pixel;
 	import org.openscales.core.feature.PointFeature;
-	import org.openscales.core.geometry.Point;
+	import org.openscales.geometry.Point;
 	import org.openscales.core.layer.FeatureLayer;
 	import org.openscales.core.style.Style;
 

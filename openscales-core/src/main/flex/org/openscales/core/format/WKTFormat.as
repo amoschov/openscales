@@ -4,8 +4,7 @@ package org.openscales.core.format
 	
 	import mx.core.ComponentDescriptor;
 	
-	import org.openscales.core.StringUtils;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.StringUtils;
 	import org.openscales.core.feature.Feature;
 	import org.openscales.core.feature.LineStringFeature;
 	import org.openscales.core.feature.MultiLineStringFeature;
@@ -13,14 +12,14 @@ package org.openscales.core.format
 	import org.openscales.core.feature.MultiPolygonFeature;
 	import org.openscales.core.feature.PointFeature;
 	import org.openscales.core.feature.PolygonFeature;
-	import org.openscales.core.geometry.Geometry;
-	import org.openscales.core.geometry.LineString;
-	import org.openscales.core.geometry.LinearRing;
-	import org.openscales.core.geometry.MultiLineString;
-	import org.openscales.core.geometry.MultiPoint;
-	import org.openscales.core.geometry.MultiPolygon;
-	import org.openscales.core.geometry.Point;
-	import org.openscales.core.geometry.Polygon;
+	import org.openscales.geometry.Geometry;
+	import org.openscales.geometry.LineString;
+	import org.openscales.geometry.LinearRing;
+	import org.openscales.geometry.MultiLineString;
+	import org.openscales.geometry.MultiPoint;
+	import org.openscales.geometry.MultiPolygon;
+	import org.openscales.geometry.Point;
+	import org.openscales.geometry.Polygon;
 
 	/**
 	 * Read/Write WKT.
@@ -174,6 +173,10 @@ package org.openscales.core.format
 			var coords:Array;
 			var points:Array;
 			var components:Vector.<Geometry>;
+			var componentsNumber:Vector.<Number>;
+			var point:Point;
+			var realIndice:uint;
+			
 			if (type == "point")
 			{
 				coords = StringUtils.trim(args).split(this._regExes.spaces);
@@ -182,20 +185,30 @@ package org.openscales.core.format
 			else if (type == "multipoint")
 			{
 				points = StringUtils.trim(args).split(',');
-				components = new Vector.<Geometry>(points.length);
-				j = points.length;
-				for (i = 0; i < j; ++i)
-					components[i] = parse(points[i], "point").geometry;
-				return new MultiPointFeature(new MultiPoint(components));
+				componentsNumber = new Vector.<Number>(points.length*2);
+				j = points.length 
+				realIndice = 0;
+				for (i = 0; i < j; ++i){
+					point = parse(points[i], "point").geometry as Point;
+					realIndice = i *2;
+					componentsNumber[realIndice] = point.x;
+					componentsNumber[realIndice + 1] = point.y; 
+				}
+				return new MultiPointFeature(new MultiPoint(componentsNumber));
 			}
 			else if (type == "linestring")
 			{
 				points = StringUtils.trim(args).split(',');
-				components = new Vector.<Geometry>(points.length);
+				componentsNumber = new Vector.<Number>(points.length*2);
 				j = points.length;
-				for (i = 0; i < j; ++i)
-					components[i] = parse(points[i], "point").geometry;
-				return new LineStringFeature(new LineString(components));
+				realIndice = 0;
+				for (i = 0; i < j; ++i){
+					point = parse(points[i], "point").geometry;
+					realIndice = i *2;
+					componentsNumber[realIndice] = point.x;
+					componentsNumber[realIndice + 1] = point.y; 
+				}
+				return new LineStringFeature(new LineString(componentsNumber));
 			}
 			else if (type == "multilinestring")
 			{
@@ -220,12 +233,13 @@ package org.openscales.core.format
 				{
 					ring = rings[i].replace(this._regExes.trimParens, '$1');
 					lineString = parse(ring, "linestring").geometry;
+					var l:int = lineString.componentsLength * 2;
+					var ringComponents:Vector.<Number> = new Vector.<Number>(l);
+					ringComponents = lineString.getcomponentsClone();
+					point = lineString.getPointAt(0)
+					ringComponents[l-2] = point.x;
+					ringComponents[l-1] = point.y;
 					
-					var ringComponents:Vector.<Geometry> = new Vector.<Geometry>(lineString.componentsLength);
-					var k:int = 0;
-					var l:int = lineString.componentsLength;
-					for (k; k < l; ++k)
-						ringComponents[j]=lineString.componentByIndex(k);
 					linearRing = new LinearRing(ringComponents);
 					
 					components[i] = linearRing;

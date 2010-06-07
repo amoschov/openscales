@@ -1,7 +1,7 @@
 package org.openscales.core.control {
 
 	import org.openscales.core.Map;
-	import org.openscales.core.basetypes.Pixel;
+	import org.openscales.basetypes.Pixel;
 
 	/**
 	 * Controls affect the display or behavior of the map.
