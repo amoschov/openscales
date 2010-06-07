@@ -18,8 +18,6 @@ package org.openscales.core.layer
 		public static const DEFAULT_ZOOM_MAX:uint = 16;
 
 		private var _zoom_max:uint;
-		
-		private var _format:String = "png";
 
 		private var _directoryPrefix:String = "";
 
@@ -28,28 +26,6 @@ package org.openscales.core.layer
 		 */
 		public function set zoom_max(value:uint):void{
 			this._zoom_max = value;
-		}
-
-		/**
-		 * setter for tile image format
-		 * 
-		 * @param value:String the tile image extention
-		 */
-		public function set format(value:String):void {
-			if(value.length==0)
-				return;
-			else if(value.charAt(0)=='.')
-				this._format = value.substr(1,value.length-1);
-			else
-				this._format = value;
-		}
-		/**
-		 * getter for tile image format
-		 * 
-		 * @return String the tile image format
-		 */
-		public function get format():String {
-			return this._format;
 		}
 
 		/**
@@ -117,7 +93,7 @@ package org.openscales.core.layer
 
 			var srcfinal:String = this.url+this.directoryPrefix;
 
-			srcfinal+= this._format + "_" + String(this.tileWidth) + "_" + String(this.tileHeight) + "_" + zoomString + "/";
+			srcfinal+= this.format + "_" + String(this.tileWidth) + "_" + String(this.tileHeight) + "_" + zoomString + "/";
 
 			var minusX:String = "";
 			if(numX <0){
@@ -143,7 +119,7 @@ package org.openscales.core.layer
 
 			srcfinal+="x" + minusX +  numXString.substr(0,4) + "/" + numXString.substr(4,3) + "/y" + minusY +  numYString.substr(0,4)+"/"  + numYString.substr(4,3);
 
-			return srcfinal + "." + this._format;
+			return srcfinal + "." + this.format;
 		}
 	}
 }
