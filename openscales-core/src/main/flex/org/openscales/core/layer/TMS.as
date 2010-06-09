@@ -50,7 +50,7 @@ package org.openscales.core.layer
 		}
 
 		override public function addTile(bounds:Bounds, position:Pixel):ImageTile {
-			return new ImageTile(this, position, bounds, null, new Size(this.tileWidth, this.tileHeight));
+			return new ImageTile(this, position, bounds, this.getURL(bounds), new Size(this.tileWidth, this.tileHeight));
 		}
 
 		override public function set map(map:Map):void {

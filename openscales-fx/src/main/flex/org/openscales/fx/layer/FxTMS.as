@@ -8,10 +8,8 @@ package org.openscales.fx.layer
 		public function FxTMS()
 		{
 			super();
-			this._layer = new TMS("","");
-		}
-		override public function init():void {
-			this._layer = new TMS("","");
+			if(this._layer == null)
+				this._layer = new TMS("","");
 		}
 		public function set format(value:String):void {
 			if(this.layer != null)
