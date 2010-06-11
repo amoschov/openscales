@@ -9,16 +9,17 @@ package org.openscales.fx
 	import mx.events.FlexEvent;
 	import mx.events.ResizeEvent;
 	
+	import org.openscales.basetypes.Bounds;
+	import org.openscales.basetypes.LonLat;
+	import org.openscales.basetypes.Size;
 	import org.openscales.component.control.Control;
 	import org.openscales.component.control.TraceInfo;
 	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
-	import org.openscales.basetypes.Bounds;
-	import org.openscales.basetypes.LonLat;
-	import org.openscales.basetypes.Size;
 	import org.openscales.core.control.IControl;
 	import org.openscales.core.events.MapEvent;
 	import org.openscales.core.layer.Layer;
+	import org.openscales.core.security.ISecurity;
 	import org.openscales.fx.configuration.FxConfiguration;
 	import org.openscales.fx.control.FxControl;
 	import org.openscales.fx.handler.FxHandler;
@@ -190,13 +191,16 @@ package org.openscales.fx
 				child = this.rawChildren.getChildAt(i);
 			
 			 	if (child is FxAbstractSecurity){
-					var layers:Array = (child as FxAbstractSecurity).layers.split(",");
+					var fxSecurity:FxAbstractSecurity = (child as FxAbstractSecurity);
+					fxSecurity.map = this._map;
+					var security:ISecurity = fxSecurity.security;
+					var layers:Array = fxSecurity.layers.split(",");
 					var layer:Layer = null;
 					 for each (var name:String in layers) {
 						layer = map.getLayerByName(name);
 						if(layer) {
 							(child as FxAbstractSecurity).map = this._map;
-							layer.security = (child as FxAbstractSecurity).security;
+							layer.security = security;
 						}
 					 }
 				}

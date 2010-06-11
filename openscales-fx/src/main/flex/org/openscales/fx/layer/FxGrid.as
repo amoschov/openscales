@@ -17,7 +17,12 @@ package org.openscales.fx.layer
 	    public function set tileHeight(value:Number):void {
 	    	if(this.layer != null)
 	    		(this.layer as Grid).tileHeight = value;
-	    }	
+	    }
+
+		public function set singleTile(value:Boolean):void {
+			if(this.layer != null)
+				(this.layer as Grid).singleTile = value;
+		}
 		
 	}
 }
