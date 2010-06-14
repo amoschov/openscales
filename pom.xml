@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
 	<artifactId>openscales</artifactId>
-	<version>1.1.9-SNAPSHOT</version>
+	<version>1.1.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>OpenScales</name>
 	<description>OpenScales is a RIA mapping framework natively designed to allow you to build mapping RIA (Rich Internet Applications) easily</description>
@@ -43,7 +43,7 @@
 			</activation>
             <properties>
 				<mvn.site>file:///WEBS/pht/openscales.org/docs/mvn-site</mvn.site>
-				<openscales.host>openscales.org</openscales.host>
+				<openscales.host>localhost</openscales.host>
             </properties>
         </profile>
 	</profiles>

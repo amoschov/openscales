@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
 	<artifactId>openscales-proj4as</artifactId>
-	<version>1.1.9-SNAPSHOT</version>
+	<version>1.1.8-SNAPSHOT</version>
 	<packaging>swc</packaging>
 	<name>Projection support</name>
 	<description>Projection support used to display layers with different projections (EPSG:4326, EPSG:90013) on the same map</description>
@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.openscales</groupId>
 		<artifactId>openscales</artifactId>
-		<version>1.1.9-SNAPSHOT</version>
+		<version>1.1.8-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
