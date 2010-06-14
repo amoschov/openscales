@@ -18,11 +18,9 @@
 		<flexpmd.version>1.0</flexpmd.version>
 		<env>local</env>
 	</properties>
-
-	
 	<profiles>
 		<profile>
-            <id>env-local</id> 
+			<id>env-local</id> 
 			<activation>
 				<activeByDefault>true</activeByDefault>
 				<property>
@@ -30,26 +28,25 @@
 					<value>local</value>
 				</property>
 			</activation>
-            <properties>
+			<properties>
 				<mvn.site>file:///tmp</mvn.site>
 				<openscales.host>openscales.org</openscales.host>
-            </properties>
-        </profile>
+			</properties>
+		</profile>
 		<profile>
-            <id>env-dev</id>
+			<id>env-dev</id>
 			<activation>
 				<property>
 					<name>env</name>
 					<value>dev</value>
 				</property>
 			</activation>
-            <properties>
+			<properties>
 				<mvn.site>file:///WEBS/pht/openscales.org/docs/mvn-site</mvn.site>
 				<openscales.host>localhost</openscales.host>
-            </properties>
-        </profile>
+			</properties>
+		</profile>
 	</profiles>
-	
 	<modules>
 		<module>openscales-core</module>
 		<module>openscales-as-examples</module>
@@ -58,7 +55,6 @@
 		<module>openscales-proj4as</module>
 		<module>openscales-geometry</module>
 	</modules>
-	
 	<issueManagement>
 		<system>Bitbucket Issue management</system>
 		<url>http://bitbucket.org/gis/openscales/issues</url>
@@ -224,7 +220,7 @@
 				<version>${flexmojos.version}</version>
 				<extensions>true</extensions>
 				<dependencies>
-          				<dependency>
+		  				<dependency>
 						<groupId>com.adobe.flex</groupId>
 						<artifactId>compiler</artifactId>
 						<version>${flex.sdk.version}</version>
@@ -258,23 +254,19 @@
 	</build>
 
 	<dependencies>
-
-	<dependency>
-            <groupId>com.adobe.flex.framework</groupId>
-            <artifactId>flex-framework</artifactId>
-            <version>${flex.sdk.version}</version>
-            <type>pom</type>
-        </dependency>
-	
-	<dependency>
-      <groupId>com.adobe.flexunit</groupId>
-      <artifactId>flexunit</artifactId>
-      <version>4.0-rc-1</version>
-      <type>swc</type>
-      <scope>test</scope>
-    </dependency>
-
-		
+		<dependency>
+			<groupId>com.adobe.flex.framework</groupId>
+			<artifactId>flex-framework</artifactId>
+			<version>${flex.sdk.version}</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>com.adobe.flexunit</groupId>
+			<artifactId>flexunit</artifactId>
+			<version>4.0-rc-1</version>
+			<type>swc</type>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	
 	<reporting>
@@ -285,13 +277,13 @@
 				<version>2.4.3</version>
 			</plugin>
 			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-site-plugin</artifactId>
-			    <version>2.0.1</version>
-			    <configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>2.0.1</version>
+				<configuration>
 					<inputEncoding>UTF-8</inputEncoding>
 					<outputEncoding>UTF-8</outputEncoding>
-			    </configuration>
+				</configuration>
 			</plugin>
 		</plugins>
   	</reporting>
@@ -322,7 +314,7 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</pluginRepository>
-    		
+			
 	</pluginRepositories>
 
 	 <distributionManagement>
