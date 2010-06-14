@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
 	<artifactId>openscales-as-examples</artifactId>
-	<version>1.1.2</version>
+	<version>1.1.8-SNAPSHOT</version>
 	<packaging>swf</packaging>
 	<name>AS examples</name>
 	<description>Pure ActionScript 3 demo application</description>
@@ -11,7 +11,7 @@
 	<parent>
 		<groupId>org.openscales</groupId>
 		<artifactId>openscales</artifactId>
-		<version>1.1.2</version>
+		<version>1.1.8-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	
@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>org.openscales</groupId>
 			<artifactId>openscales-core</artifactId>
-			<version>1.1.2</version>
+			<version>1.1.8-SNAPSHOT</version>
 			<type>swc</type>
 		</dependency>
 	</dependencies>	

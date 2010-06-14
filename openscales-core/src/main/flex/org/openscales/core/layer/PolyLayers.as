@@ -207,13 +207,25 @@ package org.openscales.core.layer
 					return this._firstLayer as FeatureLayer;
 				}
 				if(this._lastLayer is FeatureLayer){
-					return this._firstLayer as FeatureLayer;
+					return this._lastLayer as FeatureLayer;
 				}
 				
 				return null;
 			}
 		}
-		
-		
-	}
+
+		/**
+		 * Get a polyLayers zoomToSwitch
+		 */
+		public function get zoomToSwitch():Number{
+			return this._zoomToSwitch;
+		}
+
+		/**
+		 * Set a polyLayers zoomToSwitch
+		 */
+		public function set zoomToSwitch(value:Number):void {
+			this._zoomToSwitch = value;
+		}
+   }
 }

@@ -38,7 +38,7 @@ package org.openscales.core.format
 			
 			for each(var placemark:XML in placemarks) {
 				if(placemark.Point == undefined)
-					break;
+					continue;
 				
 				var htmlContent:String = "";
 				var coordinates:Array = placemark.Point.coordinates.text().split(",");

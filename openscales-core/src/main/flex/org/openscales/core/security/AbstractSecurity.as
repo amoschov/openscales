@@ -54,6 +54,14 @@ package org.openscales.core.security
 			this._map = value;
 		}
 		
+		/**
+		 * Proxy used for security authentication
+		 *  
+		 * There is 3 cases :
+		 *  - proxy is explicitly defined
+		 *  - proxy is explicitly defined to "" => no proxy will be used
+		 *  - proxy is null => use the proxy of the map
+		 */
 		public function get proxy():String {
 			var p:String = this._proxy;
 			if(!p && map && map.proxy)

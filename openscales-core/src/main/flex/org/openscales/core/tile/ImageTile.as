@@ -2,21 +2,20 @@ package org.openscales.core.tile
 {
 	import com.gskinner.motion.GTween;
 	
+	import flash.display.Bitmap;
+	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.Loader;
 	import flash.display.LoaderInfo;
-	import flash.display.Bitmap;
 	import flash.events.Event;
 	import flash.events.IOErrorEvent;
 	
-	import org.openscales.core.Map;
 	import org.openscales.core.Trace;
 	import org.openscales.core.basetypes.Bounds;
 	import org.openscales.core.basetypes.Pixel;
 	import org.openscales.core.basetypes.Size;
 	import org.openscales.core.layer.Grid;
 	import org.openscales.core.layer.Layer;
-	import org.openscales.core.layer.ogc.WMS;
 	import org.openscales.core.request.DataRequest;
 
 	/**
@@ -45,7 +44,7 @@ package org.openscales.core.tile
 			if(this.layer.contains(this))
 				this.layer.removeChild(this);
 			if(_request)
-					_request.destroy();	
+				_request.destroy();	
 
 			super.destroy();
 		}
@@ -56,93 +55,99 @@ package org.openscales.core.tile
 		 * @return Always returns true.
 		 */
 		override public function draw():Boolean {
-
 			//this.clear();
 
 			if (this.layer != this.layer.map.baseLayer) {
-				if(_drawPosition != null)
+				if(_drawPosition != null) {
 					this.bounds = this.getBoundsFromBaseLayer(_drawPosition);
-				else
+				} else {
 					this.bounds = this.getBoundsFromBaseLayer(position);
+				}
 			}
-			//if (!super.draw()) {
+			//if (! super.draw()) {
 			//	return false;    
 			//}
-			if(!withinMapBounds()) {
+			if(! withinMapBounds()) {
 				return false;    
 			}
-			if(this.url == null) {
+			if (this.url == null) {
 				this.url = this.layer.getURL(this.bounds);
 			}
-
-			var cachedLoader:Loader = null;	
-
-			//If the tile (loader) was already loaded and is in the cache, we draw it
-			if (this.layer is Grid && (cachedLoader=(this.layer as Grid).getTileCache(this.url)) != null)
-				drawLoader(cachedLoader,true);
-			else {        	
-				if(_request)
-					_request.destroy();	
+			
+			var cachedBitmap:Bitmap;	
+			// If the tile (loader) was already loaded and is in the cache, we draw it
+			if ((this.layer is Grid) && ((cachedBitmap=(this.layer as Grid).getTileCache(this.url)) != null)) {
+				drawLoader(this.url,cachedBitmap,true);
+			} else {
+				if (_request) {
+					_request.destroy();
+				}	
 				this.loading = true;		     
 				_request = new DataRequest(this.url, onTileLoadEnd, this.layer.proxy, this.layer.security, onTileLoadError);
 			}
 			return true;
 		}
 
-		public function onTileLoadEnd(event:Event):void
-		{
-			this.loading = false;
+		public function onTileLoadEnd(event:Event):void {
 			var loaderInfo:LoaderInfo = event.target as LoaderInfo;
 			var loader:Loader = loaderInfo.loader as Loader;
-			drawLoader(loader, false);
+			var bitmap:Bitmap = Bitmap(loader.content);
+			drawLoader(loader.name, bitmap, false);
 		}
 
 		/**
-		 * Method to draw the loader (recetly loaded or cached)
+		 * Method to draw the loader (recently loaded or cached)
 		 *
-		 * @param loader The loader to draw
+		 * @param url The tile url
+		 * @param bitmap The bitmap to draw
 		 * @param cached Cached loader or not
 		 */
-		private function drawLoader(loader:Loader, cached:Boolean):void {
-
-			if(this.layer) {
-				
-
-				if(_drawPosition != null)
-				{
-					this.position = _drawPosition;
+		private function drawLoader(url:String, bitmap:Bitmap, cached:Boolean):void {
+			if (this.layer) {		
+				if (_drawPosition != null) {
+					this.position = _drawPosition;					
 					_drawPosition = null;
 				}
 
-				this.addChild(loader);				
+				bitmap.width = this.size.w;
+				bitmap.height = this.size.h;
 
-				// Tween tile effect 
-				if(!this.layer.contains(this))
-					this.layer.addChild(this);
+				this.addChildAt(bitmap,0);
+				var i:int = this.numChildren-1;
+				for(i;i>0;i--)
+					this.removeChildAt(i);
 				
-				// TODO : add parameter to control tween effect
-				var tw:GTween = new GTween(this, 0.3, {alpha:1});
-				this.drawn = true;
+				// Tween tile effect 
+				if (! this.layer.contains(this)) {
+					this.layer.addChild(this);
+				}
 
-				//We put the loader into the cache if it's a recently loaded
-				if (this.layer is Grid && !cached)
-					(this.layer as Grid).addTileCache(loader.name,loader);
+				this.loading = true;
+				var tw:GTween = new GTween(this, 0.3, {alpha:1});
+				tw.onComplete = this.onTweenComplete;
+				this.drawn = true;
+				
+				// We put the loader into the cache if it's a recently loaded
+				if ((this.layer is Grid) && (! cached)) {
+					(this.layer as Grid).addTileCache(url, bitmap);
+				}
 			}
 		}
 
-		public function onTileLoadError(event:IOErrorEvent):void
-		{
-			
-			if (++this._attempt > this.layer.map.IMAGE_RELOAD_ATTEMPTS) {
-				Trace.error("Error when loading tile " + this.url);
+		public function onTweenComplete(tween:GTween):void{
+			this.loading = false;
+		}
+		
+		public function onTileLoadError(event:IOErrorEvent):void {
+			if ((! this.layer) || (! this.layer.map) || (++this._attempt <= this.layer.map.IMAGE_RELOAD_ATTEMPTS)) {
+				// Retry loading
+				Trace.log("ImageTile - onTileLoadError: Error while loading tile " + this.url+" ; retry #" + this._attempt);
+				this.draw();
+			} else {
+				// Maximum number of tries reached
+				Trace.error("ImageTile - onTileLoadError: Error while loading tile " + this.url);
 				this.loading = false;
-				return;
 			}
-
-			// retry load
-			Trace.log("Retry " + this._attempt + " tile " + this.url);
-			this.url = this.layer.getURL(this.bounds);
-			this.draw();
 		}
 
 		/**
@@ -152,15 +157,13 @@ package org.openscales.core.tile
 			super.clear();
 			this.alpha = 0;
 
-			if(this._request)
-			{
+			if(this._request) {
 				this.loading = false;
-				
 				_request.destroy();
 			}
-
 			
-			while (this.numChildren > 0) {
+			var i:int = this.numChildren;
+			for(i;i>0;i--) {
 				var child:DisplayObject = removeChildAt(0);
 			}
 		}

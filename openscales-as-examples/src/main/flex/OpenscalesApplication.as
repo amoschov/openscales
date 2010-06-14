@@ -27,10 +27,12 @@ package {
 
 			// Add layers to map
 			var mapnik:Mapnik=new Mapnik("Mapnik", true); // a base layer
+			mapnik.proxy = "http://openscales.org/proxy.php?url=";
 			mapnik.maxExtent = new Bounds(-20037508.34,-20037508.34,20037508.34,20037508.34);		
 			_map.addLayer(mapnik);
 
-			var cycle:CycleMap=new CycleMap("Cycle", true); // a base laye
+			var cycle:CycleMap=new CycleMap("Cycle", true); // a base layer
+			cycle.proxy = "http://openscales.org/proxy.php?url=";
 			_map.addLayer(cycle); 
 			
 			
@@ -43,14 +45,16 @@ package {
 			_map.addControl(new MousePosition());
 			_map.addControl(new LayerSwitcher());
 			_map.addControl(new PanZoomBar());
-			var selectHandler: SelectFeaturesHandler = new SelectFeaturesHandler(_map, true);
+			
+			var selectHandler: SelectFeaturesHandler = new SelectFeaturesHandler();
 			selectHandler.enableClickSelection = false;
 			selectHandler.enableBoxSelection = false;
 			selectHandler.enableOverSelection = true;
+			selectHandler.active = true;
 			
-			// Add handlers
-			new WheelHandler(_map);
-			new DragHandler(_map);
+			_map.addHandler(selectHandler);
+			_map.addHandler(new WheelHandler());
+			_map.addHandler(new DragHandler());
 
 			// Set the map center
 			_map.center=new LonLat(538850.47459,5740916.1243);

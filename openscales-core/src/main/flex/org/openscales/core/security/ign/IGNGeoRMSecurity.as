@@ -203,7 +203,19 @@ package org.openscales.core.security.ign
 		}
 		
 		public function set host(value:String):void {
-			this._host = value;
+			if (! value) {
+				Trace.error("IGNGeoRMSecurity - set host: invalid void URL");
+				return;
+			}
+			var strlen:int = value.length;
+			var tail:String = value.substr(strlen-1,1);
+			if (tail != "/") {
+				this._host = value;
+			} else if((tail=="/") && (strlen > 1)) {
+				this._host = value.substr(0,strlen-1);
+			} else {
+				Trace.error("IGNGeoRMSecurity - set host: malformed host URL \""+value+"\"");
+			}
 		}
 
 		public function get key():String {

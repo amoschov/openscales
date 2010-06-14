@@ -1,5 +1,5 @@
 package org.openscales.core.layer.ogc
-{	
+{
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequestMethod;
@@ -55,7 +55,7 @@ package org.openscales.core.layer.ogc
 		private var _params:WFSParams = null;
 
 		private var _request:XMLRequest = null;	
-		
+
 		private var _firstRendering:Boolean = true;
 
 		/**
@@ -71,8 +71,15 @@ package org.openscales.core.layer.ogc
 		 * @param capabilities
 		 * @param useCapabilities
 		 */	                    
-		public function WFS(name:String, url:String, typename:String, isBaseLayer:Boolean = false, visible:Boolean = true, 
-			projection:String = null, proxy:String = null, useCapabilities:Boolean=false, capabilities:HashMap=null) {
+		public function WFS(name:String,
+							url:String,
+							typename:String,
+							isBaseLayer:Boolean = false,
+							visible:Boolean = true,
+							projection:String = null,
+							proxy:String = null,
+							useCapabilities:Boolean=false,
+							capabilities:HashMap=null) {
 
 			this.capabilities = capabilities;
 			this.useCapabilities = useCapabilities;
@@ -84,9 +91,7 @@ package org.openscales.core.layer.ogc
 			}    
 
 			this.params = new WFSParams(typename);
-				
 			this.url = url;
-			
 		}
 
 		override public function set map(map:Map):void {
@@ -100,13 +105,13 @@ package org.openscales.core.layer.ogc
 		}
 
 		override public function redraw(fullRedraw:Boolean = true):void {
+			this.clear();
 			if (!displayed) {
-				this.clear();
 				return;
 			}
-	    	
+
 			var projectedBounds:Bounds = this.map.extent.clone();
-			
+
 			if(this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
 					projectedBounds.transform(this.map.baseLayer.projection, this.projection);
 			}
@@ -117,32 +122,35 @@ package org.openscales.core.layer.ogc
 			}
 			var previousFeatureBbox:Bounds = this.featuresBbox.clone(); 
 			this.params.bbox = projectedBounds.boundsToString();
-			
+
 			if (this._firstRendering) {
 				this.featuresBbox = projectedBounds;
 				this.loadFeatures(this.getFullRequestString());
 				this._firstRendering = false;
 			} else {
-				// else reuse the existing one
-				if (previousFeatureBbox.containsBounds(projectedBounds)) {
-					super.redraw();
-				} else {
-					// Use GetCapabilities to know if all features have already been retreived.
-					// If they are, we don't request data again
-					if ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent")))) {
-						this.featuresBbox = projectedBounds;
-						this.clear();
-						this.draw();
-						this.loadFeatures(this.getFullRequestString());
-					} else {
-						super.redraw();
+				// Use GetCapabilities to know if all features have already been retreived.
+				// If they are, we don't request data again
+				if (!previousFeatureBbox.containsBounds(projectedBounds)
+					&& ((this.capabilities == null) || (this.capabilities != null && !this.featuresBbox.containsBounds(this.capabilities.getValue("Extent"))))){
+					var _features:Array = new Array();
+					if(fullRedraw) {
+						//backup previous features for proper cleanup at the end
+						_features = this.features;
 					}
+					this.featuresBbox = projectedBounds;
+					this.loadFeatures(this.getFullRequestString());
+					if(fullRedraw && _features.length>0) {
+						this.removeFeatures(_features);
+					}
+					this.draw();
+				}else {
+					this.loading = true;
+					this.draw();
+					this.loading = false;
 				}
-				
-			}				
-			
+			}
 		}
-		 
+
 		/**
 		 * Combine the layer's url with its params and these newParams.
 		 *
@@ -150,7 +158,6 @@ package org.openscales.core.layer.ogc
 		 * @param altUrl Use this as the url instead of the layer's url
 		 */
 		public function getFullRequestString(altUrl:String = null):String {
-
 			var url:String;
 
 			if (altUrl != null)
@@ -164,7 +171,6 @@ package org.openscales.core.layer.ogc
 			if (projection != null || this.map.baseLayer.projection != null)
 				this.params.srs = (projection == null) ? this.map.baseLayer.projection.srsCode : projection.srsCode;
 
-
 			var lastServerChar:String = url.charAt(url.length - 1);
 			if ((lastServerChar == "&") || (lastServerChar == "?")) {
 				requestString += this.params.toGETString();
@@ -177,7 +183,6 @@ package org.openscales.core.layer.ogc
 					requestString += '&' + this.params.toGETString();
 				}
 			}
-
 
 			return requestString;
 		}
@@ -208,13 +213,12 @@ package org.openscales.core.layer.ogc
 		public function capabilitiesGetter(caller:GetCapabilities):void {
 			if (this.params != null) {
 				this._capabilities = caller.getLayerCapabilities(this.params.typename);
-
 			}
 			if ((this._capabilities != null) && (this.projection == null)) {
 				this.projection = new ProjProjection(this._capabilities.getValue("SRS"));
 			}
 		}
-		
+
 		/**
 		 * Abort any pending requests and issue another request for data.
 		 *
@@ -229,15 +233,14 @@ package org.openscales.core.layer.ogc
 			} else {
                 Trace.warning("Warning : no LAYER_LOAD_START dispatched because map event dispatcher is not defined");
 			}
-                 
+
 			if(_request)
 				_request.destroy();
 			this.loading = true;
-
-			_request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security,onFailure);
+			
+			_request = new XMLRequest(url, onSuccess, this.proxy, URLRequestMethod.GET, this.security, onFailure);
 		}
-		
-		
+
 		/**
 		 * Called on return from request succcess.
 		 *
@@ -245,11 +248,9 @@ package org.openscales.core.layer.ogc
 		 */
 		protected function onSuccess(event:Event):void {
 			var loader:URLLoader = event.target as URLLoader;
-			//var startTime:Date;
-			//var endTime:Date;
 
 			this.loading = false;			
-			
+
 			// To avoid errors in case of the WFS server is dead
 			try {
 				var doc:XML =  new XML(loader.data);
@@ -257,26 +258,33 @@ package org.openscales.core.layer.ogc
 			catch(error:Error) {
 				Trace.error(error.message);
 			}
-			var gml:GMLFormat = new GMLFormat(this.extractAttributes);
+
+			var gml:GMLFormat = new GMLFormat(this.extractAttributes,this.addFeature);
 			if (this.map.baseLayer.projection != null && this.projection != null && this.projection.srsCode != this.map.baseLayer.projection.srsCode) {
 				gml.externalProj = this.projection;
 				gml.internalProj = this.map.baseLayer.projection;
 			}
-			
-			// TODO : Issue 217: Optimize WFS by drawing feature as soon as they are parsed
-			var features:Array = gml.read(doc) as Array;
-			this.reset();
-			this.addFeatures(features);
-			
+
+			gml.read(doc);
+
+			this.draw();
+
 			if (map) {
                 this.map.dispatchEvent(new LayerEvent(LayerEvent.LAYER_LOAD_END, this ));
 			} else {
                 Trace.warning("Warning : no LAYER_LOAD_END dispatched because map event dispatcher is not defined"); 	
 			}
 			
-			this.draw();
 		}
-		
+
+		override public function addFeature(feature:Feature, dispatchFeatureEvent:Boolean=true):void {
+			for each(var _feature:Feature in this.features)
+				if(_feature.name == feature.name)
+					return;
+			super.addFeature(feature,dispatchFeatureEvent);
+			feature.draw();
+		}
+
 		/**
 		 * Called on return from request failure.
 		 *
