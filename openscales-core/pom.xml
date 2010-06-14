@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
 	<artifactId>openscales-core</artifactId>
-	<version>1.1.9-SNAPSHOT</version>
+	<version>1.1.8</version>
 	<packaging>swc</packaging>
 	<name>Core</name>
 	<description>core modules that contains main classes like  Map, Layer, Handler ...</description>
