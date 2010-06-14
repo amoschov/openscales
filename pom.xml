@@ -191,9 +191,8 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:svn:http:///localhost/openscales/branches/openscales-1.1</connection>
-		<developerConnection>scm:svn:http://localhost/svn/openscales/branches/openscales-1.1</developerConnection>
-		<url>http://openscales.org/p/openscales/source/tree/HEAD/branches/openscales-1.1</url>
+		<connection>scm:hg:https://bitbucket.org/gis/openscales</connection>
+		<url>http://bitbucket.org/gis/openscales/src/</url>
 	</scm>
 	<ciManagement>
 		<system>hudson</system>
