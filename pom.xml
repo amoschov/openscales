@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
 	<artifactId>openscales</artifactId>
-	<version>1.1.9-SNAPSHOT</version>
+	<version>1.1.8</version>
 	<packaging>pom</packaging>
 	<name>OpenScales</name>
 	<description>OpenScales is a RIA mapping framework natively designed to allow you to build mapping RIA (Rich Internet Applications) easily</description>
@@ -43,7 +43,7 @@
 			</activation>
             <properties>
 				<mvn.site>file:///WEBS/pht/openscales.org/docs/mvn-site</mvn.site>
-				<openscales.host>localhost</openscales.host>
+				<openscales.host>openscales.org</openscales.host>
             </properties>
         </profile>
 	</profiles>
