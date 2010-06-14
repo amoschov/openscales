@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.openscales</groupId>
 	<artifactId>openscales</artifactId>
-	<version>1.1.9-SNAPSHOT</version>
+	<version>1.1.8-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>OpenScales</name>
 	<description>OpenScales is a RIA mapping framework natively designed to allow you to build mapping RIA (Rich Internet Applications) easily</description>
 
 	<!-- Commented because of http://jira.codehaus.org/browse/MSITE-159
 	<url>http://openscales.org/</url>-->
-	
+
 	<properties>
 		<flex.sdk.version>3.2.0.3958</flex.sdk.version>
 		<flexmojos.version>3.4.2</flexmojos.version>
