@@ -24,11 +24,11 @@
 	
 	<!-- Specific tools of this example -->
 	
-	<os:ControlPanel title="Layers Manager" horizontalAlign="center" x="10" y="10" width="230">
+	<os:ControlPanel title="Layers Manager"  x="10" y="10" width="230">
 		<os:LayerSwitcherComponent map="{map}" />
 	</os:ControlPanel>
 	
-	<os:ControlPanel id="capabilitiesPanel" title="Add layers from capabilities" horizontalAlign="center" x="{10}" y="{height-capabilitiesPanel.height-10}">
+	<os:ControlPanel id="capabilitiesPanel" title="Add layers from capabilities"  x="{10}" y="{height-capabilitiesPanel.height-10}">
 		<os:CapabilitiesComponent width="320" map="{map}"/>
 	</os:ControlPanel>
 	

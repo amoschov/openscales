@@ -57,7 +57,7 @@
 
 	<!-- Specific tools of this example -->
 
-	<os:ControlPanel x="10" y="10" title="Navigation" paddingRight="0" paddingLeft="0" paddingBottom="0">
+	<os:ControlPanel x="10" y="10" title="Navigation" >
 		<os:PanComponent map="{map}"/>
 		<mx:HBox width="100%" paddingLeft="5" paddingRight="5">
 			<os:ZoomComponent map="{map}"/>
