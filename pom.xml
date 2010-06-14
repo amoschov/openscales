@@ -60,8 +60,8 @@
 	</modules>
 	
 	<issueManagement>
-		<system>Indefero Issue management</system>
-		<url>http://openscales.org/p/openscales/issues/</url>
+		<system>Bitbucket Issue management</system>
+		<url>http://bitbucket.org/gis/openscales/issues</url>
 	</issueManagement>
 	<inceptionYear>2009</inceptionYear>
 	<mailingLists>
@@ -208,7 +208,7 @@
 	<licenses>
 	 	<license>
 			<name>LGPL with some exceptions / clarifications</name>
-			<url>http://openscales.org/svn/openscales/trunk/license.txt</url>
+			<url>http://openscales.org/license.html</url>
 			<distribution>repo</distribution>
 		</license>
  	</licenses>
