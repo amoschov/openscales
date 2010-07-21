@@ -10,6 +10,8 @@ package org.openscales.fx.handler.mouse
 			this.handler = new WheelHandler();
 			super();
 		}
-		
+		public function set changeCenter(value:Boolean):void {
+			(this.handler as WheelHandler).changeCenter = value;
+		}
 	}
 }

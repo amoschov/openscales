@@ -2,10 +2,10 @@ package org.openscales.core.handler.mouse {
 
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.Map;
 	import org.openscales.basetypes.LonLat;
 	import org.openscales.basetypes.Pixel;
 	import org.openscales.basetypes.Size;
+	import org.openscales.core.Map;
 	import org.openscales.core.handler.Handler;
 
 	/**
@@ -14,6 +14,7 @@ package org.openscales.core.handler.mouse {
 	public class WheelHandler extends Handler {
 
 		private static var _lastPos:Pixel = null;
+		private static var _changeCenter:Boolean = false;
 		
 		public function WheelHandler(target:Map = null, active:Boolean = true){
 			super(target,active);
@@ -31,7 +32,19 @@ package org.openscales.core.handler.mouse {
 			}
 		}
 
+		public function set changeCenter(value:Boolean):void{
+			WheelHandler._changeCenter = value;
+		}
+
 		private function onMouseWheel(event:MouseEvent):void{
+			if(!WheelHandler._changeCenter) {
+				if(event.delta > 0) {
+					this.map.zoom++;
+				}else {
+					this.map.zoom--;
+				}
+				return;
+			}
 			var mpx:Pixel = new Pixel(event.currentTarget.mouseX, event.currentTarget.mouseY);
 			if(WheelHandler._lastPos!=null && mpx.equals(WheelHandler._lastPos)) {
 				if(event.delta > 0) {
