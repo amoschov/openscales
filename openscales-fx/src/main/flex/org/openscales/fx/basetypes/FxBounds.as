@@ -13,36 +13,30 @@ package org.openscales.fx.basetypes
 			this._bounds = new Bounds();
 			super();
 		}
-		
-		/** Comment to avoid a conflict with FLex 4 classes
-		  * TODO : refactor before 1.2 release
-		  **/
-		
-		/*public function set left(value:Number):void {
+
+		public function set west(value:Number):void {
 			if(this.bounds != null)
 				this.bounds.left = value;
 		}
-		
-		public function set bottom(value:Number):void {
+
+		public function set south(value:Number):void {
 			if(this.bounds != null)
 				this.bounds.bottom = value;
 		}
-		
-		public function set right(value:Number):void {
+
+		public function set east(value:Number):void {
 			if(this.bounds != null)
 				this.bounds.right = value;
 		}
-		
-		public function set top(value:Number):void {
+
+		public function set north(value:Number):void {
 			if(this.bounds != null)
 				this.bounds.top = value;
-		}*/
-				
+		}
+
 		public function get bounds():Bounds {
 			return this._bounds;
 		}
-		
-		
-		
+
 	}
 }
