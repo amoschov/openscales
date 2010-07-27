@@ -32,7 +32,7 @@ package org.openscales.proj4as.proj {
 			var sinc:Number=Math.sin(p.y);
 			var cosc:Number=Math.cos(p.y);
 			var cosl:Number=Math.cos(p.x);
-			k=this.k0 * this.R2 / (1.0 + this.sinc0 * sinc + this.cosc0 * cosc * cosl);
+			var k:Number = this.k0 * this.R2 / (1.0 + this.sinc0 * sinc + this.cosc0 * cosc * cosl);
 			p.x=k * cosc * Math.sin(p.x);
 			p.y=k * (this.cosc0 * sinc - this.sinc0 * cosc * cosl);
 			p.x=this.a * p.x + this.x0;
@@ -41,7 +41,7 @@ package org.openscales.proj4as.proj {
 		}
 
 		override public function inverse(p:ProjPoint):ProjPoint {
-			var lon:Number, lat:Number, rho:Number, sinc:Number, cosc:Number;
+			var lon:Number, lat:Number, rho:Number, sinc:Number, cosc:Number, c:Number;
 			p.x=(p.x - this.x0) / this.a; /* descale and de-offset */
 			p.y=(p.y - this.y0) / this.a;
 
