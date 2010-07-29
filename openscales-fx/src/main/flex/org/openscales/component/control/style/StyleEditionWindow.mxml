@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Panel
 	xmlns:mx="http://www.adobe.com/2006/mxml"
-	title="Edition du style" layout="horizontal" xmlns:style="org.openscales.component.control.style.*">
+	title="Edition du style" layout="horizontal" xmlns:style="org.openscales.component.control.style.*" chromeColor="#939393" xmlns:s="library://ns.adobe.com/flex/spark">
 	
 	<mx:Script>
 		<![CDATA[
@@ -47,11 +47,11 @@
 	</mx:Script>
 	
 	<style:StyleEditor editedStyle="{this._editedStyle}"/>
-	<mx:VRule/>
 	
-	<mx:ControlBar>
-		<mx:Button id="okButton" label="Ok" click="this.onOkButtonClicked(event)" />
-		<mx:Button id="cancelButton" label="Cancel" click="this.onCancelButtonClicked(event)" />		
-	</mx:ControlBar>
+	<s:Line/>
+	<s:Panel controlBarVisible="true">
+		<s:Button id="okButton" label="Ok" click="this.onOkButtonClicked(event)" />
+		<s:Button id="cancelButton" label="Cancel" click="this.onCancelButtonClicked(event)" />
+	</s:Panel>
 	
 </mx:Panel>

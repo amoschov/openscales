@@ -1,14 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml"
-	xmlns:control="org.openscales.component.control.*">
+	xmlns:control="org.openscales.component.control.*" 
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	 >
 	
+	<!--<fx:Script>
+		<![CDATA[
+		
+		[@Embed(source='/assets/images/mapZoomIn-upskin.swf')]
+		[Bindable]
+		public var imgCls:Class;
+		
+		]]>
+	</fx:Script>-->
+	
+
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.events.MapEvent;
-			import org.openscales.core.events.LayerEvent;
+			import mx.events.SliderEvent;
+			
 			import org.openscales.basetypes.Pixel;
 			import org.openscales.core.Map;
-			import mx.events.SliderEvent;
+			import org.openscales.core.events.LayerEvent;
+			import org.openscales.core.events.MapEvent;
+			
+			import spark.events.TrackBaseEvent;
 			
 			[Bindable] private var _toolTipZoomIn:String = "Zoom In";
 			[Bindable] private var _toolTipZoomOut:String = "Zoom Out";
@@ -35,7 +51,7 @@
 				this.map.zoom++;
 			}
 
-			public function onZoomSliderThumbPress(event:SliderEvent):void {
+			public function onZoomSliderThumbPress(event:TrackBaseEvent):void {
 				zoomSlider.removeEventListener(SliderEvent.CHANGE,this.zoomSliderChange);
 				zoomSlider.addEventListener(SliderEvent.THUMB_RELEASE,this.onZoomSliderThumbRelease);
 			}
@@ -89,35 +105,36 @@
 		]]>
 	</mx:Script>
 
-	<mx:HBox verticalAlign="middle">
+	<s:HGroup verticalAlign="middle">
 
-		<mx:VBox height="100%">
+		<s:VGroup height="100%">
 
-			<mx:Button id="zoomIn"
+			<s:Button id="zoomIn"
 				toolTip="{this._toolTipZoomIn}"
 				useHandCursor="true" buttonMode="true"
 				click="this.onZoomInClick(event);"
-				icon="@Embed(source='/assets/images/mapZoomIn-upskin.swf')" width="21"/>
+				
+				/>
 
 			<mx:Spacer height="100%" />
 
-			<mx:Button id="zoomOut"
+			<s:Button id="zoomOut"
 				toolTip="{this._toolTipZoomOut}"
 				useHandCursor="true" buttonMode="true"
 				click="this.onZoomOutClick(event);"
-				icon="@Embed(source='/assets/images/mapZoomOut-upskin.swf')" width="21"/>
+			/>
 
-		</mx:VBox>
+		</s:VGroup>
 
-		<mx:VSlider id="zoomSlider"
+		<s:VSlider id="zoomSlider"
 			toolTip="{this._toolTipZoomSlider}"
 			height="100"
-			liveDragging="true" allowTrackClick="true"
-			tickInterval="1" snapInterval="1" 
+			liveDragging="true" 
+			 snapInterval="1" 
 			thumbPress="this.onZoomSliderThumbPress(event)"
 			useHandCursor="true" buttonMode="true" showDataTip="{this._showDataTip}"
 			 />
 
-	</mx:HBox>
+	</s:HGroup>
 
 </control:Control>

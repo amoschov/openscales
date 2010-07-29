@@ -41,7 +41,7 @@
 	
 	<!-- Specific tools of this example -->
 	
-	<os:ControlPanel title="Informations about the last selected feature" horizontalAlign="center" x="10" y="10">
+	<os:ControlPanel title="Informations about the last selected feature"  x="10" y="10">
 		<os:FeatureInfoComponent id="featureInfoComponent" map="{map}"
 			creationComplete="{(selectFeaturesHandler.handler as SelectFeaturesHandler).onSelectedFeature = featureInfoComponent.showInfo;}" />
 	</os:ControlPanel>
