@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <control:Control xmlns:mx="http://www.adobe.com/2006/mxml"
-				 xmlns:control="org.openscales.component.control.*" xmlns:s="library://ns.adobe.com/flex/spark">
+				 xmlns:control="org.openscales.component.control.*" 
+				 xmlns:s="library://ns.adobe.com/flex/spark" 
+				 xmlns:style="org.openscales.core.style.*"
+				 >
 	<mx:Script>
 		<![CDATA[
 			import mx.managers.CursorManager;
-
-			import org.openscales.core.events.ZoomBoxEvent;
-			import org.openscales.core.handler.zoom.ZoomBoxHandler;
-			import org.openscales.core.events.DrawingEvent;
-			import org.openscales.core.Map;
-			import org.openscales.basetypes.LonLat;
+			
 			import org.openscales.basetypes.Bounds;
+			import org.openscales.basetypes.LonLat;
 			import org.openscales.basetypes.Pixel;
+			import org.openscales.core.Map;
+			import org.openscales.core.cursor.CrosshairCursor;
+			import org.openscales.core.events.DrawingEvent;
+			import org.openscales.core.events.ZoomBoxEvent;
 			import org.openscales.core.handler.Handler;
 			import org.openscales.core.handler.mouse.DragHandler;
-			import org.openscales.core.cursor.CrosshairCursor;
+			import org.openscales.core.handler.zoom.ZoomBoxHandler;
+			
+			import spark.skins.spark.ButtonSkin;
 
 			[Bindable]
 			private var _style:Object = "default";
@@ -86,9 +91,11 @@
 			}
 		]]>
 	</mx:Script>
-	
 
-	<mx:Button id="zoombox"
+	
+	
+	<mx:Button  id="zoombox"
+			  
 			   width="{this.width}"
 			   height="{this.height}"
 			   toolTip="{this._toolTip}"
@@ -97,6 +104,6 @@
 			   selected="false"
 			   click="onSelectZoomBox(event)"
 			   styleName="{this._style}"
-			   icon="@Embed('/assets/images/icons/Icons-05.swf')"/>
+			   icon="@Embed('/assets/images/icons/Icons-05.swf')"  />
 
 </control:Control>

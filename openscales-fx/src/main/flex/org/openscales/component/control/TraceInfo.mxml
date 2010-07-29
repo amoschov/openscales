@@ -6,9 +6,11 @@
 	
 	<mx:Script>
 		<![CDATA[
-			import org.openscales.core.events.TraceEvent;
 			import org.openscales.core.Map;
 			import org.openscales.core.Trace;
+			import org.openscales.core.events.TraceEvent;
+			
+			import spark.skins.spark.ButtonSkin;
 			
 			[Bindable] private var temp:String;
 
@@ -66,7 +68,7 @@
 			text="{temp}"
 			/>
 		
-		<s:Button id="clearLogsButton" label="Clear logs" click="{clearTrace();}" />
+		<s:Button id="clearLogsButton" label="Clear logs" click="{clearTrace();}"  skinClass="spark.skins.spark.ButtonSkin" chromeColor="#383737"/>
 		
 	</s:VGroup>
 	
