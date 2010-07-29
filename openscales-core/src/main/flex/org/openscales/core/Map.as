@@ -25,7 +25,7 @@ package org.openscales.core
 	import org.openscales.core.layer.Layer;
 	import org.openscales.core.popup.Popup;
 	import org.openscales.core.security.ISecurity;
-
+	
 	/**
 	 * Instances of Map are interactive maps that can be embedded in a web pages or in
 	 * Flex or AIR applications.
@@ -41,12 +41,12 @@ package org.openscales.core
 	public class Map extends Sprite
 	{
 		public var IMAGE_RELOAD_ATTEMPTS:Number = 0;
-
+		
 		/**
 		 * The lonlat at which the layer container was re-initialized (on-zoom)
 		 */
 		private var _layerContainerOrigin:LonLat = null;
-
+		
 		private var _baseLayer:Layer = null;
 		private var _layerContainer:DraggableSprite = null;
 		private var _controls:Vector.<IControl> = new Vector.<IControl>();
@@ -77,7 +77,7 @@ package org.openscales.core
 		 */
 		public function Map(width:Number=600, height:Number=400) {
 			super();
-
+			
 			this.size = new Size(width, height);
 			
 			this._layerContainer = new DraggableSprite();
@@ -98,7 +98,7 @@ package org.openscales.core
 			
 			this._configuration = new Configuration();
 		}
-
+		
 		private function destroy():Boolean {
 			var l:Vector.<Layer> = this.layers;
 			var i:int;
@@ -119,9 +119,9 @@ package org.openscales.core
 			}
 			return true;
 		}
-
+		
 		// Layer management
-
+		
 		/**
 		 * Add a new layer to the map.
 		 * A LayerEvent.LAYER_ADDED event is triggered.
@@ -135,11 +135,11 @@ package org.openscales.core
 					return false;
 				}
 			}
-
+			
 			this._layerContainer.addChild(layer);
-
+			
 			layer.map = this;
-
+			
 			if (layer.isBaseLayer) {
 				if (this.baseLayer == null) {
 					this.baseLayer = layer;
@@ -150,14 +150,14 @@ package org.openscales.core
 			}
 			//commit temporaly to correct the fact if you  add layer dynamicaly (wms/wmcs) , that not draw the layer
 			if(layer.visible){
-			  layer.redraw();	
+				layer.redraw();	
 			}
-            
+			
 			this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_ADDED, layer));
-
+			
 			return true;
 		}
-
+		
 		/**
 		 * Add a group of layers.
 		 * @param layers to add.
@@ -169,7 +169,7 @@ package org.openscales.core
 				this.addLayer(layers[i]);
 			}
 		}
-
+		
 		/**
 		 * Allows user to specify one of the currently-loaded layers as the Map's
 		 * new base layer.
@@ -196,18 +196,18 @@ package org.openscales.core
 							// FixMe : why testing (newBaseLayer.resolutions==null) ?
 							if (this.center != null)
 								this.center.transform(this.baseLayer.projection, newBaseLayer.projection);
-	
+							
 							if (this._layerContainerOrigin != null)
 								this._layerContainerOrigin.transform(this.baseLayer.projection, newBaseLayer.projection);
 							
 							oldExtent = null;
-	                        this.maxExtent = newBaseLayer.maxExtent;
+							this.maxExtent = newBaseLayer.maxExtent;
 						}
 					}
-
+					
 					this._baseLayer = newBaseLayer;
 					this._baseLayer.visible = true;
-
+					
 					var center:LonLat = this.center;
 					if (center != null) {
 						if (oldExtent == null) {
@@ -223,12 +223,12 @@ package org.openscales.core
 							this.getZoomForExtent(this._baseLayer.maxExtent),
 							false, true);
 					}
-
+					
 					this.dispatchEvent(new LayerEvent(LayerEvent.BASE_LAYER_CHANGED, newBaseLayer));
 				}
 			}
 		}
-
+		
 		/**
 		 * The currently selected base layer.
 		 * A BaseLayer is a special kind of Layer that determines the projection,
@@ -237,7 +237,7 @@ package org.openscales.core
 		public function get baseLayer():Layer {
 			return this._baseLayer;
 		}
-
+		
 		/**
 		 * Get a layer from its name.
 		 * @param name the layer name to find.
@@ -254,7 +254,7 @@ package org.openscales.core
 			}
 			return foundLayer;
 		}
-
+		
 		/**
 		 * Removes a layer from the map by removing its visual element, then removing
 		 * it from the map's internal list of layers.
@@ -273,7 +273,7 @@ package org.openscales.core
 			var i:int = l.indexOf(layer);
 			if(i>-1)
 				l.splice(i,1);
-
+			
 			if (setNewBaseLayer && (this.baseLayer == layer)) {
 				this._baseLayer = null;
 				i = l.length;
@@ -285,10 +285,10 @@ package org.openscales.core
 					}
 				}
 			}
-
+			
 			this.dispatchEvent(new LayerEvent(LayerEvent.LAYER_REMOVED, layer));
 		}
-
+		
 		public function removeAllLayers():void {
 			for(var i:int=this.layers.length-1; i>=0; i--) {
 				removeLayer(this.layers[i],false);
@@ -310,8 +310,8 @@ package org.openscales.core
 				return;
 			}
 			/*if (control.map != this) {
-				Trace.error("Map.addControl: control not added because it is associated to an other map");
-				return;
+			Trace.error("Map.addControl: control not added because it is associated to an other map");
+			return;
 			}*/
 			// Is the input control already rgistered ?
 			// Or an other control of the same type ?
@@ -404,7 +404,7 @@ package org.openscales.core
 			}
 			this._handlers = newHandlers;
 		}
-
+		
 		/**
 		 * @param {OpenLayers.Popup} popup
 		 * @param {Boolean} exclusive If true, closes all other popups first
@@ -430,12 +430,12 @@ package org.openscales.core
 				this._layerContainer.addChild(popup);
 			}
 		}
-
+		
 		public function removePopup(popup:Popup):void {
 			if(this._layerContainer.contains(popup))
 				this._layerContainer.removeChild(popup);
 		}
-
+		
 		/**
 		 * Update map content after a resize
 		 */
@@ -445,14 +445,14 @@ package org.openscales.core
 			this.graphics.drawRect(0,0,this.size.w,this.size.h);
 			this.graphics.endFill();
 			this.scrollRect = new Rectangle(0,0,this.size.w,this.size.h);
-
+			
 			this.dispatchEvent(new MapEvent(MapEvent.RESIZE, this));
-
+			
 			if (this.baseLayer != null) {
 				this.setCenter(null,this.zoom,false,true,false,true);
 			}
 		}
-
+		
 		/**
 		 * Allows user to pan by a value of screen pixels.
 		 *
@@ -471,7 +471,7 @@ package org.openscales.core
 				this.setCenter(newCenterLonLat, NaN, false, false, tween);
 			}
 		}
-
+		
 		/**
 		 * Set the map center (and optionally, the zoom level).
 		 *
@@ -491,7 +491,7 @@ package org.openscales.core
 								  dragTween:Boolean = false,
 								  resizing:Boolean = false):void {
 			var zoomChanged:Boolean = forceZoomChange || (this.isValidZoomLevel(zoom) && (zoom!=this._zoom));
-						
+			
 			if (lonlat && !this.isValidLonLat(lonlat)) {
 				Trace.log("Not a valid center, so do nothing");
 				return;
@@ -537,7 +537,7 @@ package org.openscales.core
 				this.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this));
 			}
 		}
-
+		
 		/**
 		 * Reset the bitmap center depending on the current map center
 		 * 
@@ -556,10 +556,10 @@ package org.openscales.core
 		private function centerLayerContainer(lonlat:LonLat, tween:Boolean = false):void {
 			var originPx:Pixel = this.getMapPxFromLonLat(this._layerContainerOrigin);
 			var newPx:Pixel = this.getMapPxFromLonLat(lonlat);
-
+			
 			if (originPx == null || newPx == null)
 				return;
-
+			
 			// X and Y positions for the layer container and bitmap transition, respectively.
 			var lx:Number = originPx.x - newPx.x;
 			var ly:Number = originPx.y - newPx.y; 
@@ -567,7 +567,7 @@ package org.openscales.core
 				var bx:Number = bitmapTransition.x + lx - _layerContainer.x;
 				var by:Number = bitmapTransition.y + ly - _layerContainer.y;
 			}
-
+			
 			if(tween) {
 				var layerContainerTween:GTween = new GTween(this._layerContainer, 0.5, {x: lx, y: ly});
 				layerContainerTween.onComplete = onDragTweenComplete;
@@ -587,7 +587,7 @@ package org.openscales.core
 		private function onDragTweenComplete(tween:GTween):void {
 			this.dispatchEvent(new MapEvent(MapEvent.MOVE_END, this));
 		}
-
+		
 		/**
 		 * Check if a zoom level is valid on this map.
 		 *
@@ -598,7 +598,7 @@ package org.openscales.core
 		private function isValidZoomLevel(zoomLevel:Number):Boolean {
 			return (this.baseLayer && !isNaN(zoomLevel) && (zoomLevel >= this.baseLayer.minZoomLevel) && (zoomLevel <= this.baseLayer.maxZoomLevel));
 		}
-
+		
 		/**
 		 *  Check if a coordinate is valid on this map.
 		 *
@@ -608,7 +608,7 @@ package org.openscales.core
 		private function isValidLonLat(lonlat:LonLat):Boolean {
 			return (lonlat!=null) && this.maxExtent.containsLonLat(lonlat);
 		}
-
+		
 		/**
 		 * Find the zoom level that most closely fits the specified bounds. Note that this may
 		 * result in a zoom that does not exactly contain the entire extent.
@@ -624,7 +624,7 @@ package org.openscales.core
 			}
 			return zoom;
 		}
-
+		
 		/**
 		 * A suitable zoom level for the specified bounds. If no baselayer is set, returns null.
 		 *
@@ -639,7 +639,7 @@ package org.openscales.core
 			}
 			return zoom;
 		}
-
+		
 		/**
 		 * Zoom to the passed in bounds, recenter.
 		 *
@@ -648,15 +648,15 @@ package org.openscales.core
 		public function zoomToExtent(bounds:Bounds):void {
 			this.setCenter(bounds.centerLonLat, this.getZoomForExtent(bounds));
 		}
-
+		
 		/**
 		 * Zoom to the full extent and recenter.
 		 */
 		public function zoomToMaxExtent():void {
 			this.zoomToExtent(this.maxExtent);
 		}
-
-
+		
+		
 		/**
 		 * Return a LonLat which is the passed-in view port Pixel, translated into lon/lat
 		 *	by the current base layer
@@ -668,7 +668,7 @@ package org.openscales.core
 			}
 			return lonlat;
 		}
-
+		
 		/**
 		 * Return a Pixel which is the passed-in LonLat, translated into map
 		 * pixels by the current base layer
@@ -680,7 +680,7 @@ package org.openscales.core
 			}
 			return px;
 		}
-
+		
 		/**
 		 * Return a map Pixel computed from a layer Pixel.
 		 */
@@ -693,7 +693,7 @@ package org.openscales.core
 			}
 			return viewPortPx;
 		}
-
+		
 		/**
 		 * Return a layer Pixel computed from a map Pixel.
 		 */
@@ -706,7 +706,7 @@ package org.openscales.core
 			}
 			return layerPx;
 		}
-
+		
 		/**
 		 * Return a LonLat computed from a layer Pixel.
 		 */
@@ -714,7 +714,7 @@ package org.openscales.core
 			px = this.getMapPxFromLayerPx(px);
 			return this.getLonLatFromMapPx(px);
 		}
-
+		
 		/**
 		 * Return a layer Pixel computed from a LonLat.
 		 */
@@ -804,7 +804,7 @@ package org.openscales.core
 		{
 			this.setCenter(newCenter);
 		}
-
+		
 		/**
 		 * Current map zoom level.
 		 */
@@ -814,38 +814,35 @@ package org.openscales.core
 		}
 		public function set zoom(newZoom:Number):void 
 		{
-			 if (this.isValidZoomLevel(newZoom)) {
-			 	
-			 	//Dispatch a MapEvent with the old and new zoom
+			this.setZoom(newZoom, this.center);
+		}
+		public function setZoom(newZoom:Number, newCenter:LonLat):void {
+			if (this.isValidZoomLevel(newZoom)) {
+				//Dispatch a MapEvent with the old and new zoom
 				var mapEvent:MapEvent = new MapEvent(MapEvent.ZOOM_START,this);
 				mapEvent.oldZoom = this.zoom;
 				mapEvent.newZoom = newZoom;
 				this.dispatchEvent(mapEvent);
-			 	
 				if (this.tweenZoomEnabled)
-				{
-					this.zoomTransition(newZoom);
-				} else {
-					setCenter(null, newZoom);
-				}
-
+					this.zoomTransition(newZoom, newCenter);
+				else
+					this.setCenter(newCenter, newZoom);
 			} 
 		}
-
+		
 		/**
 		 * Copy the layerContainer in a bitmap and display this (this function is use for zoom)
 		 */
-		private function zoomTransition(newZoom:Number = -1):void {
+		private function zoomTransition(newZoom:Number, newCenter:LonLat):void {
 			if (!_zooming && newZoom >= 0) {
 				
 				// Disable more zooming until this zooming is complete 
 				this._zooming = true;
 
-				// We calculate de scale multiplicator according to the actual and new resolution
-				var resMult:Number = this.resolution / this.baseLayer.resolutions[newZoom];
+				// We calculate the scale multiplicator according to the actual and new resolution
+				const resMult:Number = this.resolution / this.baseLayer.resolutions[newZoom];
 				// We intsanciate a bitmapdata with map's size
-				var bitmapData:BitmapData = new BitmapData(this.width,this.height);
-				
+				const bitmapData:BitmapData = new BitmapData(this.width,this.height);
 
 				// We draw the old transition before drawing the better-fitting tiles on top and removing the old transition. 
 				if(this.bitmapTransition != null) {
@@ -857,7 +854,7 @@ package org.openscales.core
 					bmp.bitmapData.dispose();
 					bmp.bitmapData = null;
 				}
-
+				
 				// We draw the loaded tiles onto the background transition.
 				try {
 					// Can sometimes throw a security exception.
@@ -865,7 +862,7 @@ package org.openscales.core
 				} catch (e:Error) {
 					Trace.error("Error zooming image: " + e);
 				}
-
+				
 				// We create the background layer from the bitmap data
 				this.bitmapTransition = new DraggableSprite();
 				this.bitmapTransition.addChild(new Bitmap(bitmapData));		
@@ -873,16 +870,20 @@ package org.openscales.core
 				
 				this.addChildAt(bitmapTransition, 0);
 				
-
+				
 				// We hide the layerContainer (to avoid zooming out issues)
 				this.layerContainer.visible = false;
-
+				
 				//We calculate the bitmapTransition position
-				var x:Number = this.bitmapTransition.x-((resMult-1)*this.bitmapTransition.width)/2;
-				var y:Number = this.bitmapTransition.y-((resMult-1)*this.bitmapTransition.height)/2;
-
+				const pix:Pixel = this.getMapPxFromLonLat(newCenter);
+				const bt:DraggableSprite = this.bitmapTransition;
+				const oldCenterPix:Pixel = new Pixel(bt.x+bt.width/2, bt.y+bt.height/2);
+				const centerOffset:Pixel = new Pixel(oldCenterPix.x-pix.x, oldCenterPix.y-pix.y);
+				const alpha:Number = Math.pow(2, newZoom-this.zoom);
+				const x:Number = bt.x-((resMult-1)*(bt.width))/2+alpha*centerOffset.x;
+				const y:Number = bt.y-((resMult-1)*(bt.height))/2+alpha*centerOffset.y;
 				//The tween effect to scale and re-position the bitmapTransition
-				var tween:GTween = new GTween(this.bitmapTransition,0.3,
+				const tween:GTween = new GTween(this.bitmapTransition,0.3,
 					{
 						scaleX: resMult,
 						scaleY: resMult,
@@ -891,15 +892,15 @@ package org.openscales.core
 					});
 				tween.onComplete = clbZoomTween;
 			}
-
+			
 			// The zoom tween callback method defined here to avoid a class attribute for newZoom
 			function clbZoomTween(tween:GTween):void {
 				_zooming = false;
-				setCenter(null, newZoom);
+				setCenter(newCenter, newZoom);
 				layerContainer.visible = true;
 			} 
 		}
-
+		
 		/**	
 		 * Event handler for LayerLoadComplete event. Check here if all layers have been loaded
 		 * and if so, MapEvent.LOAD_COMPLETE can be dispatched
@@ -920,9 +921,9 @@ package org.openscales.core
 					for (i;i>-1;--i)	{
 						var layer:Layer = l[i];
 						if (layer != null && !layer.loadComplete)
-						  return;	
+							return;	
 					}
-
+					
 					// all layers are done loading.					
 					this.loading = false;
 					break;
@@ -944,7 +945,7 @@ package org.openscales.core
 				Trace.error("Map - size not changed since the value is not valid");
 			}
 		}
-
+		
 		/**
 		 * Map width in pixels.
 		 */
@@ -956,7 +957,7 @@ package org.openscales.core
 				Trace.error("Map - width not changed since the value is not valid");
 			}
 		}
-
+		
 		/**
 		 * Map height in pixels.
 		 */
@@ -968,40 +969,40 @@ package org.openscales.core
 				Trace.error("Map - height not changed since the value is not valid");
 			}
 		}
-
+		
 		/**
 		 * Map controls
 		 */
 		public function get controls():Vector.<IControl> {
 			return this._controls;
 		}
-
+		
 		/**
 		 * Map handlers
 		 */
 		public function get handlers():Vector.<IHandler> {
 			return this._handlers;
 		}
-
+		
 		/**
 		 * Map container where layers are added. It is used for panning and scaling layers.
 		 */
 		public function get layerContainer():DraggableSprite {
 			return this._layerContainer;
 		}
-
+		
 		public function get bitmapTransition():DraggableSprite {
 			return this._bitmapTransition;
 		}
-
+		
 		public function set bitmapTransition(value:DraggableSprite):void {
 			this._bitmapTransition = value;
 		}
-
+		
 		public function set maxExtent(value:Bounds):void {
 			this._maxExtent = value;
 		}
-
+		
 		/**
 		 * The maximum extent for the map.
 		 */
@@ -1023,22 +1024,22 @@ package org.openscales.core
 			}
 			return maxExtent;
 		}
-
+		
 		public function get extent():Bounds {
 			if(_extent == null){
 				var extent:Bounds = null;
-	
+				
 				if ((this.center != null) && (this.resolution != -1)) {
-	
+					
 					var w_deg:Number = this.size.w * this.resolution;
 					var h_deg:Number = this.size.h * this.resolution;
-	
+					
 					extent = new Bounds(this.center.lon - w_deg / 2,
 						this.center.lat - h_deg / 2,
 						this.center.lon + w_deg / 2,
 						this.center.lat + h_deg / 2);
 				} 
-	
+				
 				return extent;
 			}
 			else return _extent;
@@ -1049,7 +1050,7 @@ package org.openscales.core
 		public function get resolution():Number {
 			return (this.baseLayer) ? this.baseLayer.resolutions[this.zoom] : NaN;
 		}
-
+		
 		public function get scale():Number {
 			var scale:Number = NaN;
 			if (this.baseLayer) {
@@ -1090,7 +1091,7 @@ package org.openscales.core
 			}
 			return layerArray.reverse();
 		}
-	
+		
 		/**
 		 * Proxy (usually a PHP, Python, or Java script) used to request remote servers like
 		 * WFS servers in order to allow crossdomain requests. Remote servers can be used without
@@ -1099,25 +1100,25 @@ package org.openscales.core
 		public function get proxy():String {
 			return this._proxy
 		}
-
+		
 		public function set proxy(value:String):void {
 			this._proxy = value;
 		}
-
+		
 		public function set configuration(value:IConfiguration):void{
-		 	_configuration = value;
+			_configuration = value;
 		} 
 		
 		public function get configuration():IConfiguration{
-		 	return _configuration;
+			return _configuration;
 		}
 		
 		public function set tweenZoomEnabled(value:Boolean):void{
-		 	_tweenZoomEnabled = value;
+			_tweenZoomEnabled = value;
 		} 
 		
 		public function get tweenZoomEnabled():Boolean{
-		 	return _tweenZoomEnabled;
+			return _tweenZoomEnabled;
 		}
 		
 		/**
@@ -1132,13 +1133,13 @@ package org.openscales.core
 		 */
 		protected function set loading(value:Boolean):void {
 			if (value == true && this._loading == false) {
-			this._loading = value;
-			  dispatchEvent(new MapEvent(MapEvent.LOAD_START,this));
+				this._loading = value;
+				dispatchEvent(new MapEvent(MapEvent.LOAD_START,this));
 			}
-						 
+			
 			if (value == false && this._loading == true) {
-			  this._loading = value;
-			  dispatchEvent(new MapEvent(MapEvent.LOAD_END,this));
+				this._loading = value;
+				dispatchEvent(new MapEvent(MapEvent.LOAD_END,this));
 			} 
 		}
 	}

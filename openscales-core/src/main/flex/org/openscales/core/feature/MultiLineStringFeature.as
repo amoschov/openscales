@@ -1,6 +1,5 @@
 package org.openscales.core.feature
 {
-	import org.openscales.core.Trace;
 	import org.openscales.geometry.Geometry;
 	import org.openscales.geometry.LineString;
 	import org.openscales.geometry.MultiLineString;

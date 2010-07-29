@@ -10,6 +10,5 @@ package org.openscales.fx.handler.mouse
 			this.handler = new WheelHandler();
 			super();
 		}
-		
 	}
 }

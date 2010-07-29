@@ -600,7 +600,9 @@ package org.openscales.core.layer
 
 		//Getters and Setters
 		override public function get imageSize():Size {
-			return (this._imageSize || new Size(this.tileWidth, this.tileHeight)); 
+			if(this._imageSize == null)
+				this._imageSize = new Size(this.tileWidth, this.tileHeight);
+			return new Size(this.tileWidth, this.tileHeight); 
 		}
 
 		public function get grid():Vector.<Vector.<ImageTile>> {

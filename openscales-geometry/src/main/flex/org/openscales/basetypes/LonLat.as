@@ -55,7 +55,7 @@ package org.openscales.basetypes
 			return equals;
 		}
 
-		public function fromString(str:String):LonLat {
+		public static function getLonLatFromString(str:String):LonLat {
 			var pair:Array = str.split(",");
 			return new LonLat(Number(pair[0]), Number(pair[1]));
 		}

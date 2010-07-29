@@ -249,17 +249,17 @@ package org.openscales.core.layer {
 		}
 
 		public  function get inRange():Boolean {
-            var inRange:Boolean = false;
-            var resolutionProjected:Number = this.map.resolution;
-            if(this.isBaseLayer != true && this.projection.srsCode != this.map.baseLayer.projection.srsCode)
-            {
-            	resolutionProjected = Proj4as.unit_transform(this.map.baseLayer.projection,this.projection,this.map.resolution);
+	    var inRange:Boolean = false;
+			if(this.map) {
+	    	var resolutionProjected:Number = this.map.resolution;
+		    if(this.isBaseLayer != true && this.projection.srsCode != this.map.baseLayer.projection.srsCode)
+    		{
+		    	resolutionProjected = Proj4as.unit_transform(this.map.baseLayer.projection,this.projection,this.map.resolution);
+				}
+    		inRange = ((resolutionProjected >= this.minResolution) && (resolutionProjected <= this.maxResolution));
 			}
-            if (this.map) {
-            	inRange = ((resolutionProjected >= this.minResolution) && (resolutionProjected <= this.maxResolution));
-			}
-            return inRange;
-        }
+	    	return inRange;
+		}
 
 		public function getURL(bounds:Bounds):String {
 			return null;

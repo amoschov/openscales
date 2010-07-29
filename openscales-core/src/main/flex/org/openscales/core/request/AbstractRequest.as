@@ -360,6 +360,12 @@ package org.openscales.core.request
 				return;
 			}
 			this._isSent = true;
+			if(this.security != null && !this.security.initialized) {
+				Trace.log("wait for security token");
+				this.security.addWaitingRequest(this);
+				this.security.initialize();
+				return;
+			}
 			if ((AbstractRequest.maxConn == 0) || (AbstractRequest._activeConn.size() < AbstractRequest.maxConn)) {
 				this.execute();
 			} else {

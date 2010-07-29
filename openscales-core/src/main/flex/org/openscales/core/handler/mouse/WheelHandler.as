@@ -1,64 +1,49 @@
 package org.openscales.core.handler.mouse {
-
+	
 	import flash.events.MouseEvent;
 	
-	import org.openscales.core.Map;
-	import org.openscales.basetypes.LonLat;
 	import org.openscales.basetypes.Pixel;
-	import org.openscales.basetypes.Size;
+	import org.openscales.core.Map;
 	import org.openscales.core.handler.Handler;
-
+	
 	/**
 	 * Handler use to zoom in and zoom out the map thanks to the mouse wheel.
 	 */
 	public class WheelHandler extends Handler {
-
-		private static var _lastPos:Pixel = null;
 		
-		public function WheelHandler(target:Map = null, active:Boolean = true){
+		
+		public function WheelHandler(target:Map = null, active:Boolean = true) {
 			super(target,active);
 		}
-
-		override protected function registerListeners():void{
+		
+		override protected function registerListeners():void {
 			if (this.map) {
 				this.map.addEventListener(MouseEvent.MOUSE_WHEEL,this.onMouseWheel);
 			}
 		}
-
-		override protected function unregisterListeners():void{
+		
+		override protected function unregisterListeners():void {
 			if (this.map) {
 				this.map.removeEventListener(MouseEvent.MOUSE_WHEEL,this.onMouseWheel);
 			}
 		}
-
-		private function onMouseWheel(event:MouseEvent):void{
-			var mpx:Pixel = new Pixel(event.currentTarget.mouseX, event.currentTarget.mouseY);
-			if(WheelHandler._lastPos!=null && mpx.equals(WheelHandler._lastPos)) {
-				if(event.delta > 0) {
-					this.map.zoom++;
-				}else {
-					this.map.zoom--;
-				}
-				return;
-			}
-			WheelHandler._lastPos = mpx;
-			var cpx:Pixel = this.map.getMapPxFromLonLat(this.map.center);
-			var dist:Number = Math.max(Math.pow(mpx.x-cpx.x,2),Math.pow(mpx.y-cpx.y,2));
-			if(dist>150) {
-				var loc:LonLat = this.map.getLonLatFromMapPx(mpx);
-				if(event.delta > 0) {
-					this.map.setCenter(loc,this.map.zoom+1);
+		
+		private function onMouseWheel(event:MouseEvent):void {
+			if (this.map) {
+				const px:Pixel = new Pixel(this.map.mouseX, this.map.mouseY);
+				const centerPx:Pixel = new Pixel(this.map.width/2, this.map.height/2);
+				var newCenterPx:Pixel;
+				var zoom:Number = this.map.zoom;
+				if(event.delta > 0) { 
+					newCenterPx = new Pixel((px.x+centerPx.x)/2, (px.y+centerPx.y)/2);
+					zoom++;
 				} else {
-					this.map.setCenter(loc,this.map.zoom-1);
+					newCenterPx = new Pixel(2*centerPx.x-px.x, 2*centerPx.y-px.y);
+					zoom--;
 				}
-			}else if(event.delta > 0) {
-				this.map.zoom++;
-			}else {
-				this.map.zoom--;
+				this.map.setZoom(zoom, this.map.getLonLatFromMapPx(newCenterPx));
 			}
-
 		}
-
+		
 	}
 }
-
